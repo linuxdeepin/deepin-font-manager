@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="32px" height="32px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 56.2 (81672) - https://sketch.com -->
+    <title>deepin-Typeface-player</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <filter x="-16.7%" y="-13.8%" width="133.3%" height="127.6%" filterUnits="objectBoundingBox" id="filter-1">
+            <feOffset dx="0" dy="1" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="0.5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feComposite in="shadowBlurOuter1" in2="SourceAlpha" operator="out" result="shadowBlurOuter1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.15 0" type="matrix" in="shadowBlurOuter1" result="shadowMatrixOuter1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+            </feMerge>
+        </filter>
+        <linearGradient x1="15.7550535%" y1="0%" x2="85.614743%" y2="100.999999%" id="linearGradient-2">
+            <stop stop-color="#FCE7FF" offset="0%"></stop>
+            <stop stop-color="#9A8FFF" offset="100%"></stop>
+        </linearGradient>
+        <path d="M0,2.96722411 C0,1.32847148 1.32453024,0 2.96694227,0 L21.0330577,0 C22.6716547,0 24,1.32142675 24,2.96722411 L24,26.0327759 C24,27.6715285 22.6754698,29 21.0330577,29 L2.96694227,29 C1.3283453,29 0,27.6785733 0,26.0327759 L0,2.96722411 Z" id="path-3"></path>
+        <path d="M23.5,0.662506782 L23.5,0.631578947 L23.5,4.66250678 C23.5,6.30228006 22.1707011,7.63157895 20.5309278,7.63157895 L2.5,7.63157895 C1.3954305,7.63157895 0.5,6.73614845 0.5,5.63157895 C0.5,4.52700945 1.3954305,3.63157895 2.5,3.63157895 L20.5309278,3.63157895 C22.1707011,3.63157895 23.5,2.30228006 23.5,0.662506782 Z" id="path-5"></path>
+    </defs>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="按钮规范" transform="translate(-48.000000, -38.000000)">
+            <g id="deepin-Typeface-player" transform="translate(48.000000, 38.000000)">
+                <g id="deepin-font-installer-32px">
+                    <g id="编组" filter="url(#filter-1)" transform="translate(4.000000, 1.000000)">
+                        <mask id="mask-4" fill="white">
+                            <use xlink:href="#path-3"></use>
+                        </mask>
+                        <use id="蒙版" fill="url(#linearGradient-2)" xlink:href="#path-3"></use>
+                        <path d="M6,21 C7.1045695,21 8,20.1045695 8,19 L8,6 L6,6 L6,5 L18,5 L18,9 L17,9 C17,7.34314575 15.6568542,6 14,6 L10,6 L10,12 L12,12 C13.1045695,12 14,11.1045695 14,10 L14,10 L14,16 C14,14.3431458 12.6568542,13 11,13 L10,13 L10,19 C10,20.1045695 10.8954305,21 12,21 L12,21 L6,21 Z" id="F" fill="#000000" fill-rule="nonzero" mask="url(#mask-4)"></path>
+                        <g id="编组-2" mask="url(#mask-4)">
+                            <g transform="translate(1.500000, 19.368421)">
+                                <mask id="mask-6" fill="white">
+                                    <use xlink:href="#path-5"></use>
+                                </mask>
+                                <path stroke-opacity="0.2" stroke="#000000" stroke-width="1" d="M23,0.662506782 L23,0.631578947 L24,0.631578947 L24,4.66250678 C24,6.57842244 22.4468435,8.13157895 20.5309278,8.13157895 L2.5,8.13157895 C1.11928813,8.13157895 1.38777878e-16,7.01229082 0,5.63157895 C-1.38777878e-16,4.25086707 1.11928813,3.13157895 2.5,3.13157895 L20.5309278,3.13157895 C21.8945587,3.13157895 23,2.02613769 23,0.662506782 Z"></path>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
