@@ -157,8 +157,9 @@ void DFontManager::handleInstall()
 {
     if (doCmd("pkexec", QStringList() << "dfont-install" << m_instFileList)) {
         if (m_instFileList.count() == 1) {
-            emit installFinished();
+            // emit installFinished();
         }
+        Q_EMIT installFinished();
     }
 }
 
