@@ -27,7 +27,9 @@ HEADERS += homepage.h \
 	   progress.h \
 	   refreshthread.h \
     views/dfontmgrmainwindow.h \
-    globaldef.h
+    globaldef.h \
+    interfaces/dfontmenumanager.h \
+    views/dfinstallnormalwindow.h
 
 SOURCES += homepage.cpp \
            listview.cpp \
@@ -39,7 +41,9 @@ SOURCES += homepage.cpp \
 	   utils.cpp \
 	   progress.cpp \
 	   refreshthread.cpp \
-    views/dfontmgrmainwindow.cpp
+    views/dfontmgrmainwindow.cpp \
+    interfaces/dfontmenumanager.cpp \
+    views/dfinstallnormalwindow.cpp
 
 RESOURCES += deepin-font-manager.qrc
 TRANSLATIONS += translations/deepin-font-manager.ts

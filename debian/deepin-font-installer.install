@@ -1,6 +1,0 @@
-usr/bin/*
-usr/share/applications/deepin-font-installer.desktop
-usr/share/polkit-1/actions/*.policy
-usr/share/deepin-font-installer/translations/*.qm
-/usr/lib/*/dde-file-manager/plugins/previews/*.so
-/usr/share/icons/hicolor/scalable/apps/*

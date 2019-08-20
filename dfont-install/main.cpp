@@ -79,8 +79,11 @@ int main(int argc, char *argv[])
                 dirName = dirName.remove(0, 1);
             }
 
-            target = QString("%1/%2/%3").arg(sysDir, dirName, info.fileName());
-            targetDir = QString("%1/%2").arg(sysDir, dirName);
+            if (dirName.isEmpty()) {
+                dirName = info.baseName();
+            }
+            target = QObject::tr("%1/%2/%3").arg(sysDir).arg(dirName).arg(info.fileName());
+            targetDir = QObject::tr("%1/%2").arg(sysDir).arg(dirName);
 
             QDir dir(targetDir);
             dir.mkpath(".");

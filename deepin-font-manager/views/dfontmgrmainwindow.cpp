@@ -1,7 +1,12 @@
 
 #include "views/dfontmgrmainwindow.h"
-#include <dsearchedit.h>
-#include <dslider.h>
+#include "dfinstallnormalwindow.h"
+#include "globaldef.h"
+#include "interfaces/dfontmenumanager.h"
+#include "utils.h"
+
+#include <DSearchEdit>
+#include <DSlider>
 #include <DLineEdit>
 #include <DLog>
 #include <DTitlebar>
@@ -13,14 +18,20 @@
 #include <QResizeEvent>
 #include <QSlider>
 #include <QSplitter>
-#include "globaldef.h"
+#include <DFileDialog>
 
-#include <dlistwidget.h>
 
-class DFontMgrMainWindowPrivate {
+#include <DListWidget>
+
+class DFontMgrMainWindowPrivate
+{
 public:
     DFontMgrMainWindowPrivate(DFontMgrMainWindow *q)
-        : q_ptr(q) {}
+        : settingsQsPtr(new QSettings(QDir(Utils::getConfigPath()).filePath("config.conf"),
+                                      QSettings::IniFormat))
+        , q_ptr(q)
+    {
+    }
 
     //~DFontMgrMainWindowPrivate() {}
 
@@ -29,7 +40,7 @@ public:
     QLabel *logoLabel {nullptr};
 
     QFrame *toolbar {nullptr};
-    QPushButton *addFontButton {nullptr};
+    DImageButton *addFontButton {nullptr};
     DSearchEdit *searchFontEdit {nullptr};
 
     QFrame *fontShowArea {nullptr};
@@ -43,13 +54,19 @@ public:
     QFrame *leftBarHolder {nullptr};
     QFrame *rightViewHolder {nullptr};
 
+    // Menu
+    QMenu *toolBarMenu {nullptr};
+    QMenu *rightKeyMenu {nullptr};
+
+    QScopedPointer<QSettings> settingsQsPtr;
     DFontMgrMainWindow *q_ptr;
     Q_DECLARE_PUBLIC(DFontMgrMainWindow)
 };
 
 DFontMgrMainWindow::DFontMgrMainWindow(QWidget *parent)
     : DMainWindow(parent)
-    , d_ptr(new DFontMgrMainWindowPrivate(this)) {
+    , d_ptr(new DFontMgrMainWindowPrivate(this))
+{
     setWindowFlags(windowFlags() | (Qt::FramelessWindowHint | Qt::WindowMaximizeButtonHint));
 
     initUI();
@@ -58,13 +75,30 @@ DFontMgrMainWindow::DFontMgrMainWindow(QWidget *parent)
 
 DFontMgrMainWindow::~DFontMgrMainWindow() {}
 
-void DFontMgrMainWindow::initUI() {
+void DFontMgrMainWindow::initData()
+{
+    D_D(DFontMgrMainWindow);
+}
+void DFontMgrMainWindow::initUI()
+{
+    setWindowRadius(18);  // debug
     initTileBar();
     initMainVeiws();
 }
-void DFontMgrMainWindow::initConnections() {
+void DFontMgrMainWindow::initConnections()
+{
     D_D(DFontMgrMainWindow);
 
+    // Add Font button event
+    QObject::connect(d->addFontButton, &DImageButton::clicked, this,
+                     &DFontMgrMainWindow::handleAddFontEvent);
+
+    QObject::connect(this, &DFontMgrMainWindow::fileSelected, this,
+    [this](const QStringList & files) {
+        this->installFont(files);
+    });
+    // Menu event
+    QObject::connect(d->toolBarMenu, &QMenu::triggered, this, &DFontMgrMainWindow::handleMenuEvent);
     // State bar event
     QObject::connect(d->fontScaleSlider, &DSlider::valueChanged, this, [this, d](int value) {
         QString fontSizeText;
@@ -73,21 +107,19 @@ void DFontMgrMainWindow::initConnections() {
     });
 }
 
-void DFontMgrMainWindow::initTileBar() {
+void DFontMgrMainWindow::initTileBar()
+{
     D_D(DFontMgrMainWindow);
 
     initTileFrame();
 
-    // DFileMenu *menu = fileMenuManger->createToolBarSettingsMenu();
-
-    // menu->setProperty("DFileManagerWindow", (quintptr)this);
-    // menu->setProperty("ToolBarSettingsMenu", true);
+    d->toolBarMenu = DFontMenuManager::getInstance()->createToolBarSettingsMenu();
 
     bool isDXcbPlatform = true;
 
     if (isDXcbPlatform) {
         // d->toolbar->getSettingsButton()->hide();
-        // titlebar()->setMenu(menu);
+        titlebar()->setMenu(d->toolBarMenu);
         titlebar()->setContentsMargins(0, 0, 0, 0);
 
         titlebar()->setFixedHeight(FTM_TITLE_FIXED_HEIGHT);
@@ -95,7 +127,8 @@ void DFontMgrMainWindow::initTileBar() {
     }
 }
 
-void DFontMgrMainWindow::initTileFrame() {
+void DFontMgrMainWindow::initTileFrame()
+{
     D_D(DFontMgrMainWindow);
 
     d->logoLabel = new QLabel();
@@ -130,7 +163,8 @@ void DFontMgrMainWindow::initTileFrame() {
 #endif
 }
 
-void DFontMgrMainWindow::initToolBar() {
+void DFontMgrMainWindow::initToolBar()
+{
     D_D(DFontMgrMainWindow);
 
     d->toolbar = new QFrame();
@@ -140,8 +174,9 @@ void DFontMgrMainWindow::initToolBar() {
     QHBoxLayout *toolBarLayout = new QHBoxLayout();
 
     // Add Font
-    d->addFontButton = new QPushButton("AddFont");
+    d->addFontButton = new DImageButton();
     d->addFontButton->setFixedSize(QSize(36, 36));
+    d->addFontButton->setNormalPic(QString(":/images/deepin-font-manager.svg"));
 
     d->searchFontEdit = new DSearchEdit();
     d->searchFontEdit->setFixedSize(QSize(FTM_SEARCH_BAR_W, FTM_SEARCH_BAR_H));
@@ -166,7 +201,8 @@ void DFontMgrMainWindow::initToolBar() {
 #endif
 }
 
-void DFontMgrMainWindow::initMainVeiws() {
+void DFontMgrMainWindow::initMainVeiws()
+{
     D_D(DFontMgrMainWindow);
 
     d->mainWndSpliter = new QSplitter(Qt::Horizontal, this);
@@ -179,7 +215,8 @@ void DFontMgrMainWindow::initMainVeiws() {
     setCentralWidget(d->mainWndSpliter);
 }
 
-void DFontMgrMainWindow::initLeftSideBar() {
+void DFontMgrMainWindow::initLeftSideBar()
+{
     D_D(DFontMgrMainWindow);
 
     d->leftBarHolder = new QFrame(d->mainWndSpliter);
@@ -248,7 +285,8 @@ void DFontMgrMainWindow::initLeftSideBar() {
 #endif
 }
 
-void DFontMgrMainWindow::initRightFontView() {
+void DFontMgrMainWindow::initRightFontView()
+{
     Q_D(DFontMgrMainWindow);
 
     d->rightViewHolder = new QFrame(d->mainWndSpliter);
@@ -277,7 +315,8 @@ void DFontMgrMainWindow::initRightFontView() {
 #endif
 }
 
-void DFontMgrMainWindow::initStateBar() {
+void DFontMgrMainWindow::initStateBar()
+{
     Q_D(DFontMgrMainWindow);
 
     QHBoxLayout *stateBarLayout = new QHBoxLayout(this);
@@ -331,7 +370,8 @@ void DFontMgrMainWindow::initStateBar() {
 #endif
 }
 
-void DFontMgrMainWindow::resizeEvent(QResizeEvent *event) {
+void DFontMgrMainWindow::resizeEvent(QResizeEvent *event)
+{
     Q_D(DFontMgrMainWindow);
     DMainWindow::resizeEvent(event);
 
@@ -341,4 +381,60 @@ void DFontMgrMainWindow::resizeEvent(QResizeEvent *event) {
     qDebug() << "Windiw resize(" << event->size().width() << ", " << event->size().height() << ") "
              << "Button AreaWtidth=" << titlebar()->buttonAreaWidth();
 #endif
+}
+void DFontMgrMainWindow::handleAddFontEvent()
+{
+    Q_D(DFontMgrMainWindow);
+
+    DFileDialog dialog;
+    dialog.setFileMode(DFileDialog::ExistingFiles);
+    dialog.setNameFilter(Utils::suffixList());
+
+    QString historyDir = d->settingsQsPtr->value("dir").toString();
+    if (historyDir.isEmpty()) {
+        historyDir = QDir::homePath();
+    }
+    dialog.setDirectory(historyDir);
+
+    const int mode = dialog.exec();
+
+    // save the directory string to config file.
+    d->settingsQsPtr->setValue("dir", dialog.directoryUrl().toLocalFile());
+
+    // if click cancel button or close button.
+    if (mode != QDialog::Accepted) {
+        return;
+    }
+
+    Q_EMIT fileSelected(dialog.selectedFiles());
+}
+
+void DFontMgrMainWindow::handleMenuEvent(QAction *action)
+{
+    if (action->data().isValid()) {
+        bool ok = false;
+        int type = action->data().toInt(&ok);
+
+        if (ok) {
+            DFontMenuManager::MenuAction actionId = static_cast<DFontMenuManager::MenuAction>(type);
+
+            // Add menu handler code here
+            switch (actionId) {
+            case DFontMenuManager::MenuAction::M_AddFont: {
+                handleAddFontEvent();
+            }
+            break;
+            default:
+                qDebug() << "handleMenuEvent->(id=" << actionId << ")";
+            }
+        }
+    }
+}
+
+void DFontMgrMainWindow::switchAppTheme(int type) {}
+
+void DFontMgrMainWindow::installFont(const QStringList &files)
+{
+    DFInstallNormalWindow dlg(files, this);
+    dlg.exec();
 }
