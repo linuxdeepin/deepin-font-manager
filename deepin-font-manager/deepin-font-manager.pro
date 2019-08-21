@@ -29,7 +29,10 @@ HEADERS += homepage.h \
     views/dfontmgrmainwindow.h \
     globaldef.h \
     interfaces/dfontmenumanager.h \
-    views/dfinstallnormalwindow.h
+    views/dfinstallnormalwindow.h \
+    views/dfinstallerroritemwidget.h \
+    views/dfinstallerrordialog.h \
+    views/dsplitlistwidget.h
 
 SOURCES += homepage.cpp \
            listview.cpp \
@@ -43,7 +46,10 @@ SOURCES += homepage.cpp \
 	   refreshthread.cpp \
     views/dfontmgrmainwindow.cpp \
     interfaces/dfontmenumanager.cpp \
-    views/dfinstallnormalwindow.cpp
+    views/dfinstallnormalwindow.cpp \
+    views/dfinstallerroritemwidget.cpp \
+    views/dfinstallerrordialog.cpp \
+    views/dsplitlistwidget.cpp
 
 RESOURCES += deepin-font-manager.qrc
 TRANSLATIONS += translations/deepin-font-manager.ts

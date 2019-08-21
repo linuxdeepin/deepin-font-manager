@@ -1,14 +1,16 @@
 
 #include "views/dfontmgrmainwindow.h"
 #include "dfinstallnormalwindow.h"
+#include "dsplitlistwidget.h"
 #include "globaldef.h"
 #include "interfaces/dfontmenumanager.h"
 #include "utils.h"
 
-#include <DSearchEdit>
-#include <DSlider>
+#include <DFileDialog>
 #include <DLineEdit>
 #include <DLog>
+#include <DSearchEdit>
+#include <DSlider>
 #include <DTitlebar>
 #include <QFrame>
 #include <QHBoxLayout>
@@ -18,8 +20,6 @@
 #include <QResizeEvent>
 #include <QSlider>
 #include <QSplitter>
-#include <DFileDialog>
-
 
 #include <DListWidget>
 
@@ -94,9 +94,7 @@ void DFontMgrMainWindow::initConnections()
                      &DFontMgrMainWindow::handleAddFontEvent);
 
     QObject::connect(this, &DFontMgrMainWindow::fileSelected, this,
-    [this](const QStringList & files) {
-        this->installFont(files);
-    });
+                     [this](const QStringList &files) { this->installFont(files); });
     // Menu event
     QObject::connect(d->toolBarMenu, &QMenu::triggered, this, &DFontMgrMainWindow::handleMenuEvent);
     // State bar event
@@ -232,49 +230,27 @@ void DFontMgrMainWindow::initLeftSideBar()
 
     // ToDo:
     //    Need use the custom QListView replace QListWidget
-    QListWidget *leftSiderBar = new QListWidget(this);
+    DSplitListWidget *leftSiderBar = new DSplitListWidget(this);
     // leftSiderBar->setAttribute(Qt::WA_TranslucentBackground, true);
     leftSiderBar->setFrameShape(QFrame::NoFrame);
     leftSiderBar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     leftMainLayout->addWidget(leftSiderBar);
 
-#if defined(FTM_DEBUG_DATA_ON)
-    QListWidgetItem *item1 = new QListWidgetItem("所有字体");
+    QStringList titleStringList;
+    titleStringList << QString("所有字体") << QString("系统字体") << QString("用户字体")
+                    << QString("我的收藏") << QString("已激活") << QString("中文")
+                    << QString("等宽");
 
-    item1->setSizeHint(QSize(120, 40));
-    item1->setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter);
-    QListWidgetItem *item2 = new QListWidgetItem("系统字体");
-    item2->setSizeHint(QSize(120, 40));
-    item2->setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+    for (int i = 0; i < titleStringList.size(); i++) {
+        QString titleString = titleStringList.at(i);
+        QListWidgetItem *item = new QListWidgetItem(titleString);
+        item->setSizeHint(QSize(120, 40));
+        item->setData(Qt::UserRole, QVariant(i));
 
-    QListWidgetItem *item3 = new QListWidgetItem("系统字体");
-    item3->setSizeHint(QSize(120, 40));
-    item3->setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+        leftSiderBar->addItem(item);
+    }
 
-    QListWidgetItem *item4 = new QListWidgetItem("收藏字体");
-    item4->setSizeHint(QSize(120, 40));
-    item4->setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter);
-
-    QListWidgetItem *itemSperator = new QListWidgetItem();
-
-    itemSperator->setSizeHint(QSize(120, 40));
-    itemSperator->setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter);
-
-    QListWidgetItem *item5 = new QListWidgetItem("中文");
-    item5->setSizeHint(QSize(100, 40));
-    item5->setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter);
-    QListWidgetItem *item6 = new QListWidgetItem("等宽");
-    item6->setSizeHint(QSize(100, 40));
-    item6->setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter);
-
-    leftSiderBar->addItem(item1);
-    leftSiderBar->addItem(item2);
-    leftSiderBar->addItem(item3);
-    leftSiderBar->addItem(item4);
-    leftSiderBar->addItem(itemSperator);
-    leftSiderBar->addItem(item5);
-    leftSiderBar->addItem(item6);
-#endif
+    leftSiderBar->insertSplitItem(5);
 
     d->leftBarHolder->setLayout(leftMainLayout);
 
@@ -420,12 +396,11 @@ void DFontMgrMainWindow::handleMenuEvent(QAction *action)
 
             // Add menu handler code here
             switch (actionId) {
-            case DFontMenuManager::MenuAction::M_AddFont: {
-                handleAddFontEvent();
-            }
-            break;
-            default:
-                qDebug() << "handleMenuEvent->(id=" << actionId << ")";
+                case DFontMenuManager::MenuAction::M_AddFont: {
+                    handleAddFontEvent();
+                } break;
+                default:
+                    qDebug() << "handleMenuEvent->(id=" << actionId << ")";
             }
         }
     }
