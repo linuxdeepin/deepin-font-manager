@@ -1,6 +1,9 @@
 #ifndef DFINSTALLNORMALWINDOW_H
 #define DFINSTALLNORMALWINDOW_H
 
+#include "dfinstallerrordialog.h"
+#include "dfontinfomanager.h"
+
 #include <DDialog>
 #include <DLabel>
 #include <DProgressBar>
@@ -29,8 +32,12 @@ protected slots:
     void batchInstall();
     void onProgressChanged(const QString &filePath, const double &percent);
 
+    void onCancelInstall();
+    void onContinueInstall(QStringList continueInstallFontFileList);
+
 private:
     QStringList m_installFiles;
+    QList<DFInstallErrorItemModel *> m_installErrorFontModelList;
     DFontInfoManager *m_fontInfoManager;
     DFontManager *m_fontManager;
 
