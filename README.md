@@ -1,6 +1,6 @@
-# Deepin Font Installer
+# Deepin Font Manager
 
-Deepin Font Installer is used to install and uninstall font file for users with bulk install function.
+Deepin Font Manager is used to install and uninstall font file for users with bulk install function.
 
 ## Dependencies
 
@@ -15,7 +15,7 @@ Deepin Font Installer is used to install and uninstall font file for users with 
 
 ## Usage
 
-* ./deepin-font-installer
+* ./deepin-font-Manager
 
 ## Getting help
 

@@ -1,4 +1,4 @@
-Source: deepin-font-installer
+Source: deepin-font-manager
 Section: utils
 Priority: optional
 Maintainer: Rekols <rekols@foxmail.com>
@@ -6,22 +6,22 @@ Build-Depends: debhelper (>= 9),pkg-config, qt5-qmake, libdtkwidget-dev, qttools
 Standards-Version: 3.9.8
 Homepage: http://www.deepin.org
 
-Package: deepin-font-installer
+Package: deepin-font-manager
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, libdeepin-font-installer( =${binary:Version})
-Description: Deepin Font Installer binary
- Deepin Font Installer is used to install and uninstall font file for users with bulk install function.
+Depends: ${shlibs:Depends}, ${misc:Depends}, libdeepin-font-manager( =${binary:Version})
+Description: Deepin Font Manager binary
+ Deepin Font manager is used to install and uninstall font file for users with bulk install function.
 
-Package: libdeepin-font-installer
+Package: libdeepin-font-manager
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Multi-Arch: same
-Description: Deepin Font Installer library
+Description: Deepin Font Manager library
  This package contains the shared libraries.
 
-Package: libdeepin-font-installer-dev
+Package: libdeepin-font-manager-dev
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, libdeepin-font-installer( =${binary:Version})
-Description: Deepin Font Instaler Devel library
+Depends: ${shlibs:Depends}, ${misc:Depends}, libdeepin-font-manager( =${binary:Version})
+Description: Deepin Font Manager Devel library
  This package contains the header files and static libraries
- of libdeepin-font-installer
+ of libdeepin-font-manager

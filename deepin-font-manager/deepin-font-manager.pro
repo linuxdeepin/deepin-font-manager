@@ -12,8 +12,8 @@ TARGET = deepin-font-manager
 CONFIG += c++11 link_pkgconfig
 PKGCONFIG += dtkwidget freetype2 fontconfig
 
-INCLUDEPATH += $$PWD/../libdeepin-font-installer
-LIBS += -L$$OUT_PWD/../libdeepin-font-installer -ldeepin-font-installer
+INCLUDEPATH += $$PWD/../libdeepin-font-manager
+LIBS += -L$$OUT_PWD/../libdeepin-font-manager -ldeepin-font-manager
 DEFINES += QT_MESSAGELOGCONTEXT
 
 # Input

@@ -1,12 +1,12 @@
 [Desktop Entry]
 Categories=Utility
-Exec=deepin-font-installer %f
-GenericName=Font Installer
-Icon=deepin-font-installer
+Exec=deepin-font-manager %f
+GenericName=Font Manager
+Icon=deepin-font-manager
 MimeType=font/collection;font/ttf;font/otf;application/x-font-otf;application/x-font-ttf;application/x-font-type1;
-Name=Deepin Font Installer
+Name=Deepin Font Manager
 StartupNotify=true
-TryExec=deepin-font-installer
+TryExec=deepin-font-manager
 Type=Application
 X-Deepin-Vendor=deepin
 
@@ -46,8 +46,8 @@ GenericName[sq]=Instalues Shkronjash
 GenericName[sr]=Инсталатер Фонта
 GenericName[tr]=Yazı Tipi Kurucu
 GenericName[uk]=Встановлення шрифтів
-GenericName[zh_CN]=字体安装器
-GenericName[zh_TW]=字體安裝器
+GenericName[zh_CN]=字体管理器
+GenericName[zh_TW]=字體管理器
 Name[ar]=مُنصب الخطوط Deepin
 Name[ast]=Deepin Font Installer
 Name[bg]=Deepin инсталатор на шрифт
@@ -73,7 +73,7 @@ Name[ms]=Pemasang Fon Deepin
 Name[ne]=डिपिन फन्ट स्थापनाकर्ता
 Name[nl]=Deepin Lettertype-installatie
 Name[pl]=Instalator czcionek Deepin
-Name[pt]=Deepin Font Installer
+Name[pt]=Deepin Font Manager
 Name[pt_BR]=Deepin Instalador de Fontes
 Name[ro]=Instalator Deepin Font
 Name[ru]=Установщик Шрифтов Deepin
@@ -82,6 +82,6 @@ Name[sq]=Instalues Shkronjash Deepin
 Name[sr]=Дипин Инсталатер Фонта
 Name[tr]=Deepin Yazı Tipi Kurucu
 Name[uk]=Встановлення шрифтів Deepin
-Name[zh_CN]=深度字体安装器
-Name[zh_TW]=Deepin 字體安裝器
+Name[zh_CN]=深度字体管理器
+Name[zh_TW]=Deepin 字體管理器
 

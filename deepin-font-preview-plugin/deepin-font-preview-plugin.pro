@@ -11,8 +11,8 @@ TEMPLATE = lib
 CONFIG += plugin link_pkgconfig
 PKGCONFIG += freetype2 fontconfig dde-file-manager dtkwidget
 
-LIBS += -L$$OUT_PWD/../libdeepin-font-installer -ldeepin-font-installer
-INCLUDEPATH += $$PWD/../libdeepin-font-installer
+LIBS += -L$$OUT_PWD/../libdeepin-font-manager -ldeepin-font-manager
+INCLUDEPATH += $$PWD/../libdeepin-font-manager
 
 isEqual(ARCH, sw_64){
     DEFINES += SW_CPUINFO
