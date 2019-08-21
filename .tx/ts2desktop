@@ -1,4 +1,4 @@
-DESKTOP_TEMP_FILE=deepin-font-installer.desktop.tmp
-DESKTOP_SOURCE_FILE=deepin-font-installer/deepin-font-installer.desktop
-DESKTOP_DEST_FILE=deepin-font-installer/deepin-font-installer.desktop
-DESKTOP_TS_DIR=deepin-font-installer/translations/desktop
+DESKTOP_TEMP_FILE=deepin-font-manager.desktop.tmp
+DESKTOP_SOURCE_FILE=deepin-font-manager/deepin-font-manager.desktop
+DESKTOP_DEST_FILE=deepin-font-manager/deepin-font-manager.desktop
+DESKTOP_TS_DIR=deepin-font-manager/translations/desktop

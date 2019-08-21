@@ -3,26 +3,26 @@ host = https://www.transifex.com
 minimum_perc = 80
 mode = developer
 
-[deepin-font-installer.deepin-font-installer]
-file_filter = deepin-font-installer/translations/deepin-font-installer_<lang>.ts
-source_file = deepin-font-installer/translations/deepin-font-installer.ts
+[deepin-font-manager.deepin-font-manager]
+file_filter = deepin-font-manager/translations/deepin-font-manager_<lang>.ts
+source_file = deepin-font-manager/translations/deepin-font-manager.ts
 source_lang = en
 type = QT
 
 [deepin-font-installer.deepin-font-installer-desktop]
-file_filter = deepin-font-installer/translations/desktop/desktop_<lang>.ts
-source_file = deepin-font-installer/translations/desktop/desktop.ts
+file_filter = deepin-font-manager/translations/desktop/desktop_<lang>.ts
+source_file = deepin-font-manager/translations/desktop/desktop.ts
 source_lang = en
 type = QT
 
-[deepin-font-installer.policy-install]
-file_filter = deepin-font-installer/policy-install-translation/policy_<lang>.ts
-source_file = deepin-font-installer/policy-install-translation/policy.ts
+[deepin-font-manager.policy-install]
+file_filter = deepin-font-manager/policy-install-translation/policy_<lang>.ts
+source_file = deepin-font-manager/policy-install-translation/policy.ts
 source_lang = en
 type = QT
 
-[deepin-font-installer.policy-uninstall]
-file_filter = deepin-font-installer/policy-uninstall-translation/policy_<lang>.ts
-source_file = deepin-font-installer/policy-uninstall-translation/policy.ts
+[deepin-font-manager.policy-uninstall]
+file_filter = deepin-font-manager/policy-uninstall-translation/policy_<lang>.ts
+source_file = deepin-font-manager/policy-uninstall-translation/policy.ts
 source_lang = en
 type = QT

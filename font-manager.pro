@@ -6,11 +6,11 @@ TEMPLATE = subdirs
 
 SUBDIRS += \
            deepin-font-manager\
-           libdeepin-font-installer \
+           libdeepin-font-manager \
            deepin-font-preview-plugin \
            dfont-install \
 	   dfont-uninstall
 
-deepin-font-manager.depends = libdeepin-font-installer
-deepin-font-preview-plugin.depends = libdeepin-font-installer
-dfont-install.depends = libdeepin-font-installer
+deepin-font-manager.depends = libdeepin-font-manager
+deepin-font-preview-plugin.depends = libdeepin-font-manager
+dfont-install.depends = libdeepin-font-manager

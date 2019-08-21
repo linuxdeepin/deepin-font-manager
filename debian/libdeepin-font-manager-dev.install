@@ -1,0 +1,3 @@
+usr/include/deepin-font-manager/
+usr/lib/*/pkgconfig/deepin-font-manager.pc
+usr/lib/*/libdeepin-font-manager.so

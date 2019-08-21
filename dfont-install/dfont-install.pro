@@ -11,8 +11,8 @@ TEMPLATE = app
 
 SOURCES += main.cpp
 DEFINES += QT_DEPRECATED_WARNINGS
-INCLUDEPATH += $$PWD/../libdeepin-font-installer
-LIBS += -L$$OUT_PWD/../libdeepin-font-installer -ldeepin-font-installer
+INCLUDEPATH += $$PWD/../libdeepin-font-manager
+LIBS += -L$$OUT_PWD/../libdeepin-font-manager -ldeepin-font-manager
 
 target.path = /usr/bin
 

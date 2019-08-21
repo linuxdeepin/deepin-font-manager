@@ -29,7 +29,8 @@
 DWIDGET_USE_NAMESPACE
 DCORE_USE_NAMESPACE
 
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[])
+{
     // load dtk xcb plugin.
     DApplication::loadDXcbPlugin();
 
@@ -45,8 +46,8 @@ int main(int argc, char* argv[]) {
     app.setProductName(DApplication::translate("Main", "Deepin Font Manager"));
     // app.setStyleSheet(Utils::getQssContent(":/qss/style.qss"));
     app.setApplicationDescription(DApplication::translate(
-        "Main",
-        "Deepin Font Manager is used to install and uninstall font file for users with bulk install function."));
+                                      "Main",
+                                      "Deepin Font Manager is used to install and uninstall font file for users with bulk install function."));
 
     // temp skin change
     app.setStyle("chameleon");

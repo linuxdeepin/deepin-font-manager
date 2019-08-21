@@ -6,7 +6,7 @@ QT += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = deepin-font-installer
+TARGET = deepin-font-manager
 TEMPLATE = lib
 CONFIG += c++11 link_pkgconfig
 PKGCONFIG += freetype2 fontconfig dtkwidget
@@ -33,11 +33,11 @@ SOURCES += \
 QMAKE_PKGCONFIG_LIBDIR = $$target.path
 QMAKE_PKGCONFIG_VERSION = $$VERSION
 QMAKE_PKGCONFIG_DESTDIR = pkgconfig
-QMAKE_PKGCONFIG_NAME = deepin-font-installer
-QMAKE_PKGCONFIG_DESCRIPTION = Deepin Font Installer Header Files
+QMAKE_PKGCONFIG_NAME = deepin-font-manager
+QMAKE_PKGCONFIG_DESCRIPTION = Deepin Font Manager Header Files
 QMAKE_PKGCONFIG_INCDIR = $$includes.path
 
-includes.path = $$INCLUDE_INSTALL_DIR/deepin-font-installer
+includes.path = $$INCLUDE_INSTALL_DIR/deepin-font-manager
 includes.files += $$PWD/*.h
 
 isEmpty(PREFIX) {
@@ -51,12 +51,12 @@ isEmpty(LIB_INSTALL_DIR) {
 }
 
 isEmpty(INCLUDE_INSTALL_DIR) {
-    includes.path = $$PREFIX/include/deepin-font-installer
+    includes.path = $$PREFIX/include/deepin-font-manager
 } else {
-    includes.path = $$INCLUDE_INSTALL_DIR/deepin-font-installer
+    includes.path = $$INCLUDE_INSTALL_DIR/deepin-font-manager
 }
 
-contents_file.path = /usr/share/deepin-font-installer/
+contents_file.path = /usr/share/deepin-font-manager/
 contents_file.files += $$PWD/CONTENTS.txt
 
 INSTALLS += target includes contents_file
