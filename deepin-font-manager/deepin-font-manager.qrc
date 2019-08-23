@@ -16,5 +16,7 @@
         <file>images/add-font-press.svg</file>
         <file>images/exception-logo.svg</file>
         <file>images/font-info-logo.svg</file>
+        <file>images/collection_normal.svg</file>
+        <file>images/uncollection_normal.svg</file>
     </qresource>
 </RCC>
