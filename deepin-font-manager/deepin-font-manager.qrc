@@ -11,5 +11,10 @@
         <file>images/font_loaded.svg</file>
         <file>images/font_unload.svg</file>
         <file>images/deepin-font-manager.svg</file>
+        <file>images/add-font-hover.svg</file>
+        <file>images/add-font-normal.svg</file>
+        <file>images/add-font-press.svg</file>
+        <file>images/exception-logo.svg</file>
+        <file>images/font-info-logo.svg</file>
     </qresource>
 </RCC>

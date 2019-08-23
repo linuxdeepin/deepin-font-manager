@@ -14,6 +14,11 @@ public:
 
     static DFontMenuManager *getInstance();
 
+    enum MenuType {
+        ToolBarMenu,
+        RightKeyMenu,
+    };
+
     enum MenuAction {
         M_Separator,
         M_AddFont,
@@ -22,6 +27,11 @@ public:
         M_ThemeDark,
         M_ThemeFollowSystem,
         M_Help,
+        M_EnableOrDisable,
+        M_DeleteFont,
+        M_Faverator,
+        M_FontInfo,
+        M_ShowFontPostion,
     };
 
     struct FMenuItem {
@@ -34,6 +44,7 @@ public:
 
         QString actionName;
         MenuAction actionId;
+        QAction   *action {nullptr};
         bool fHaveSubMenu {false};
         QVector<FMenuItem *> subMenulist;
     };
@@ -41,11 +52,15 @@ public:
     typedef void (*FMenuActionTriggle)(QAction *);
 
     QMenu *createToolBarSettingsMenu(FMenuActionTriggle actionTriggle = nullptr);
+    QMenu *createRightKeyMenu(FMenuActionTriggle actionTriggle = nullptr);
+
+    QAction *getActionByMenuAction(MenuAction maction, MenuType menuType);
 
 private:
     void initMenuData();
 
-    QMap<MenuAction, FMenuItem *> fontMenus;
+    QMap<MenuAction, FMenuItem *> m_fontToolsBarMenus;
+    QMap<MenuAction, FMenuItem *> m_fontRightKeyMenus;
 
 private:
     static DFontMenuManager *instance;
