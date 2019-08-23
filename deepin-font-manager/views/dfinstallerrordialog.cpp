@@ -60,7 +60,7 @@ void DFInstallErrorDialog::initTitleBar()
     logoLabel = new DLabel;
     logoLabel->setFixedSize(QSize(32, 32));
     logoLabel->setFocusPolicy(Qt::NoFocus);
-    logoLabel->setPixmap(QPixmap(":/images/deepin-font-manager.svg"));
+    logoLabel->setPixmap(QPixmap(":/images/exception-logo.svg"));
 
     titleLabel = new DLabel;
     titleLabel->setText(QString("安装出错"));

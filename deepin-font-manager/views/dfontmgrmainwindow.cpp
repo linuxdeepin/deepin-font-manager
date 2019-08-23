@@ -5,6 +5,7 @@
 #include "globaldef.h"
 #include "interfaces/dfontmenumanager.h"
 #include "utils.h"
+#include "views/dfontinfodialog.h"
 
 #include <DFileDialog>
 #include <DLineEdit>
@@ -40,7 +41,7 @@ public:
     QLabel *logoLabel {nullptr};
 
     QFrame *toolbar {nullptr};
-    DImageButton *addFontButton {nullptr};
+    DPushButton *addFontButton {nullptr};
     DSearchEdit *searchFontEdit {nullptr};
 
     QFrame *fontShowArea {nullptr};
@@ -67,7 +68,7 @@ DFontMgrMainWindow::DFontMgrMainWindow(QWidget *parent)
     : DMainWindow(parent)
     , d_ptr(new DFontMgrMainWindowPrivate(this))
 {
-    setWindowFlags(windowFlags() | (Qt::FramelessWindowHint | Qt::WindowMaximizeButtonHint));
+    // setWindowFlags(windowFlags() | (Qt::FramelessWindowHint | Qt::WindowMaximizeButtonHint));
 
     initUI();
     initConnections();
@@ -90,13 +91,18 @@ void DFontMgrMainWindow::initConnections()
     D_D(DFontMgrMainWindow);
 
     // Add Font button event
-    QObject::connect(d->addFontButton, &DImageButton::clicked, this,
+    QObject::connect(d->addFontButton, &DPushButton::clicked, this,
                      &DFontMgrMainWindow::handleAddFontEvent);
 
     QObject::connect(this, &DFontMgrMainWindow::fileSelected, this,
                      [this](const QStringList &files) { this->installFont(files); });
     // Menu event
     QObject::connect(d->toolBarMenu, &QMenu::triggered, this, &DFontMgrMainWindow::handleMenuEvent);
+
+    // Right Key menu
+    QObject::connect(d->rightKeyMenu, &QMenu::triggered, this,
+                     &DFontMgrMainWindow::handleMenuEvent);
+
     // State bar event
     QObject::connect(d->fontScaleSlider, &DSlider::valueChanged, this, [this, d](int value) {
         QString fontSizeText;
@@ -165,16 +171,20 @@ void DFontMgrMainWindow::initToolBar()
 {
     D_D(DFontMgrMainWindow);
 
-    d->toolbar = new QFrame();
+    d->toolbar = new QFrame(this);
     d->toolbar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     d->toolbar->setObjectName("ToolBar");
 
     QHBoxLayout *toolBarLayout = new QHBoxLayout();
 
     // Add Font
-    d->addFontButton = new DImageButton();
+    d->addFontButton = new DPushButton(this);
     d->addFontButton->setFixedSize(QSize(36, 36));
-    d->addFontButton->setNormalPic(QString(":/images/deepin-font-manager.svg"));
+    //    d->addFontButton->setNormalPic(QString(":/images/add-font-normal.svg"));
+    //    d->addFontButton->setHoverPic(QString(":/images/add-font-hover.svg"));
+    //    d->addFontButton->setPressPic(QString(":/images/add-font-press.svg"));
+    d->addFontButton->setIcon(QIcon(":/images/add-font-normal.svg"));
+    d->addFontButton->setFocusPolicy(Qt::FocusPolicy::NoFocus);
 
     d->searchFontEdit = new DSearchEdit();
     d->searchFontEdit->setFixedSize(QSize(FTM_SEARCH_BAR_W, FTM_SEARCH_BAR_H));
@@ -396,11 +406,15 @@ void DFontMgrMainWindow::handleMenuEvent(QAction *action)
 
             // Add menu handler code here
             switch (actionId) {
-                case DFontMenuManager::MenuAction::M_AddFont: {
-                    handleAddFontEvent();
-                } break;
-                default:
-                    qDebug() << "handleMenuEvent->(id=" << actionId << ")";
+            case DFontMenuManager::MenuAction::M_AddFont: {
+                handleAddFontEvent();
+            } break;
+            case DFontMenuManager::MenuAction::M_Help: {
+                DFontInfoDialog dlg;
+                dlg.exec();
+            } break;
+            default:
+                qDebug() << "handleMenuEvent->(id=" << actionId << ")";
             }
         }
     }
@@ -412,4 +426,11 @@ void DFontMgrMainWindow::installFont(const QStringList &files)
 {
     DFInstallNormalWindow dlg(files, this);
     dlg.exec();
+}
+
+void DFontMgrMainWindow::initRightKeyMenu()
+{
+    Q_D(DFontMgrMainWindow);
+
+    d->rightKeyMenu = DFontMenuManager::getInstance()->createRightKeyMenu();
 }
