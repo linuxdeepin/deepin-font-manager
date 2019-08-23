@@ -246,6 +246,7 @@ void DFontMgrMainWindow::initLeftSideBar()
     leftSiderBar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     leftMainLayout->addWidget(leftSiderBar);
 
+#warning need internationalization
     QStringList titleStringList;
     titleStringList << QString("所有字体") << QString("系统字体") << QString("用户字体")
                     << QString("我的收藏") << QString("已激活") << QString("中文")
@@ -287,6 +288,9 @@ void DFontMgrMainWindow::initRightFontView()
     d->fontShowArea->setFrameShape(QFrame::NoFrame);
     d->fontShowArea->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
+    initFontPreviewItemsData();
+    initFontPreviewListView(d->fontShowArea);
+
     // initialize state bar
     initStateBar();
 
@@ -297,8 +301,60 @@ void DFontMgrMainWindow::initRightFontView()
 
     // Debug layout code
 #ifdef FTM_DEBUG_LAYOUT_COLOR
+    d->fontShowArea->setStyleSheet("background: blue");
+    m_fontPreviewListView->setStyleSheet("background: green");
     d->rightViewHolder->setStyleSheet("background: red");
 #endif
+}
+
+//初始化字体预览ListView
+void DFontMgrMainWindow::initFontPreviewListView(QFrame *parent)
+{
+    QVBoxLayout *listViewVBoxLayout = new QVBoxLayout();
+    listViewVBoxLayout->setMargin(0);
+    listViewVBoxLayout->setContentsMargins(0, 0, 0, 0);
+    listViewVBoxLayout->setSpacing(0);
+    parent->setLayout(listViewVBoxLayout);
+
+    m_fontPreviewListView = new DFontPreviewListView;
+    m_fontPreviewListView->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+    m_fontPreviewListView->setVerticalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAlwaysOff);
+    m_fontPreviewListView->setHorizontalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAlwaysOff);
+    m_fontPreviewItemDelegate = new DFontPreviewItemDelegate(this);
+    m_fontPreviewListView->setItemDelegate(m_fontPreviewItemDelegate);
+    m_fontPreviewListView->setModel(m_fontPreviewItemModel);
+    m_fontPreviewListView->setContextMenuPolicy(Qt::CustomContextMenu);
+
+    m_fontPreviewListView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+    listViewVBoxLayout->addWidget(m_fontPreviewListView);
+}
+
+void DFontMgrMainWindow::initFontPreviewItemsData()
+{
+    QStringList fontNameList;
+    fontNameList << "Arial"
+                 << "Serif"
+                 << "Lato"
+                 << "Chalkboard"
+                 << "Courier"
+                 << "Bitstream Charter"
+                 << "Dejavu Sans Mono"
+                 << "Times New Roman";
+    m_fontPreviewItemModel = new QStandardItemModel;
+    for (int i = 0; i < fontNameList.size(); ++i) {
+        DFontPreviewItemData itemData;
+
+        itemData.strFontName = fontNameList.at(i);
+        itemData.strFontPreview = QString("Don't let your dreams be dreams");
+        itemData.bEnabled = false;
+        itemData.bCollected = false;
+
+        QStandardItem *item = new QStandardItem;
+        item->setData(QVariant::fromValue(itemData), Qt::DisplayRole);
+
+        m_fontPreviewItemModel->appendRow(item);
+    }
 }
 
 void DFontMgrMainWindow::initStateBar()
@@ -406,15 +462,15 @@ void DFontMgrMainWindow::handleMenuEvent(QAction *action)
 
             // Add menu handler code here
             switch (actionId) {
-            case DFontMenuManager::MenuAction::M_AddFont: {
-                handleAddFontEvent();
-            } break;
-            case DFontMenuManager::MenuAction::M_Help: {
-                DFontInfoDialog dlg;
-                dlg.exec();
-            } break;
-            default:
-                qDebug() << "handleMenuEvent->(id=" << actionId << ")";
+                case DFontMenuManager::MenuAction::M_AddFont: {
+                    handleAddFontEvent();
+                } break;
+                case DFontMenuManager::MenuAction::M_Help: {
+                    DFontInfoDialog dlg;
+                    dlg.exec();
+                } break;
+                default:
+                    qDebug() << "handleMenuEvent->(id=" << actionId << ")";
             }
         }
     }

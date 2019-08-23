@@ -1,6 +1,10 @@
 #ifndef DFONTMGRMAINWINDOW_H
 #define DFONTMGRMAINWINDOW_H
 
+#include "dfontpreviewitemdef.h"
+#include "dfontpreviewitemdelegate.h"
+#include "dfontpreviewlistview.h"
+
 #include <DMainWindow>
 
 DWIDGET_USE_NAMESPACE
@@ -38,11 +42,18 @@ protected:
     void initRightFontView();
     void initStateBar();
     void initRightKeyMenu();
+    void initFontPreviewListView(QFrame *parent);
+    void initFontPreviewItemsData();
 
     void handleAddFontEvent();
     void switchAppTheme(int type);
     void installFont(const QStringList &files);
     void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
+
+    QList<DFontPreviewItemData> m_fontPreviewItemDataList;
+    QStandardItemModel *m_fontPreviewItemModel;
+    DFontPreviewItemDelegate *m_fontPreviewItemDelegate;
+    DFontPreviewListView *m_fontPreviewListView;
 signals:
     void fileSelected(const QStringList files) const;
 public slots:

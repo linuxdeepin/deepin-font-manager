@@ -12,7 +12,8 @@ TARGET = deepin-font-manager
 CONFIG += c++11 link_pkgconfig
 PKGCONFIG += dtkwidget freetype2 fontconfig
 
-INCLUDEPATH += $$PWD/../libdeepin-font-manager
+INCLUDEPATH += $$PWD/../libdeepin-font-manager \
+               $$PWD/interfaces
 LIBS += -L$$OUT_PWD/../libdeepin-font-manager -ldeepin-font-manager
 DEFINES += QT_MESSAGELOGCONTEXT
 
@@ -29,6 +30,9 @@ HEADERS += homepage.h \
     views/dfontmgrmainwindow.h \
     globaldef.h \
     interfaces/dfontmenumanager.h \
+    interfaces/dfontpreviewitemdef.h \
+    interfaces/dfontpreviewitemdelegate.h \
+    interfaces/dfontpreviewlistview.h \
     views/dfinstallnormalwindow.h \
     views/dfinstallerroritemwidget.h \
     views/dfinstallerrordialog.h \
@@ -47,6 +51,8 @@ SOURCES += homepage.cpp \
 	   refreshthread.cpp \
     views/dfontmgrmainwindow.cpp \
     interfaces/dfontmenumanager.cpp \
+    interfaces/dfontpreviewitemdelegate.cpp \
+    interfaces/dfontpreviewlistview.cpp \
     views/dfinstallnormalwindow.cpp \
     views/dfinstallerroritemwidget.cpp \
     views/dfinstallerrordialog.cpp \
