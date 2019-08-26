@@ -1,9 +1,13 @@
 #ifndef DFONTPREVIEWLISTVIEW_H
 #define DFONTPREVIEWLISTVIEW_H
 
-#include <QMouseEvent>
+#include "dfontpreviewitemdef.h"
+#include "dfontpreviewitemdelegate.h"
 
 #include <DListView>
+
+#include <QMouseEvent>
+#include <QSortFilterProxyModel>
 
 DWIDGET_USE_NAMESPACE
 
@@ -14,19 +18,33 @@ class DFontPreviewListView : public DListView
 public:
     explicit DFontPreviewListView(QWidget *parent = nullptr);
 
+    void initFontListData();
+    void initDelegate();
+
     void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
     void setSelection(const QRect &rect,
                       QItemSelectionModel::SelectionFlags command) Q_DECL_OVERRIDE;
 
     void setModel(QAbstractItemModel *model) Q_DECL_OVERRIDE;
 
+    void setRightContextMenu(QMenu *rightMenu);
+
+    QModelIndex currModelIndex();
+    DFontPreviewItemData currModelData();
+    QSortFilterProxyModel *getFontPreviewProxyModel();
+
 private:
     void initConnections();
 
     bool m_bLeftMouse;
     QStandardItemModel *m_fontPreviewItemModel;
+    QList<DFontPreviewItemData> m_fontPreviewItemDataList;
+    DFontPreviewItemDelegate *m_fontPreviewItemDelegate;
+
+    QMenu *m_rightMenu;
 
     QModelIndex m_currModelIndex;
+    QSortFilterProxyModel *m_fontPreviewProxyModel;
 
 signals:
     //用于DFontPreviewListView内部使用的信号
@@ -37,31 +55,11 @@ signals:
     //右键菜单
     void onContextMenu(QModelIndex index);
 
-    //添加字体
-    void onAddFont(QModelIndex index);
-    //启用字体
-    void onEnableFont(QModelIndex index);
-    //删除字体
-    void onDeleteFont(QModelIndex index);
-    //收藏字体
-    void onCollectFont(QModelIndex index);
-    //显示字体信息
-    void onDisplayFontInfo(QModelIndex index);
-    //在文件管理器中显示
-    void onShowFontFile(QModelIndex index);
-
 private slots:
 
     void onListViewItemEnableBtnClicked(QModelIndex index);
     void onListViewItemCollectionBtnClicked(QModelIndex index);
     void onListViewShowContextMenu(QModelIndex index);
-
-    void onClickAddFontRightMenu();
-    void onClickEnableFontRightMenu();
-    void onClickDeleteFontRightMenu();
-    void onClickCollectFontRightMenu();
-    void onClickDisplayFontInfoRightMenu();
-    void onClickShowFontFileRightMenu();
 };
 
 #endif  // DFONTPREVIEWLISTVIEW_H

@@ -9,10 +9,12 @@
 
 #include <DFileDialog>
 #include <DLineEdit>
+#include <DListWidget>
 #include <DLog>
 #include <DSearchEdit>
 #include <DSlider>
 #include <DTitlebar>
+
 #include <QFrame>
 #include <QHBoxLayout>
 #include <QLabel>
@@ -21,8 +23,6 @@
 #include <QResizeEvent>
 #include <QSlider>
 #include <QSplitter>
-
-#include <DListWidget>
 
 class DFontMgrMainWindowPrivate
 {
@@ -84,6 +84,7 @@ void DFontMgrMainWindow::initUI()
 {
     setWindowRadius(18);  // debug
     initTileBar();
+    initRightKeyMenu();
     initMainVeiws();
 }
 void DFontMgrMainWindow::initConnections()
@@ -109,6 +110,12 @@ void DFontMgrMainWindow::initConnections()
         fontSizeText.sprintf(FMT_FONT_SIZE, value);
         d->fontSizeLabel->setText(fontSizeText);
     });
+
+    // Search text changed
+    QObject::connect(d->searchFontEdit, SIGNAL(textChanged()), this, SLOT(onSearchTextChanged()));
+
+    QObject::connect(d->textInputEdit, SIGNAL(textChanged(const QString &)), this,
+                     SLOT(onPreviewTextChanged(const QString &)));
 }
 
 void DFontMgrMainWindow::initTileBar()
@@ -288,7 +295,6 @@ void DFontMgrMainWindow::initRightFontView()
     d->fontShowArea->setFrameShape(QFrame::NoFrame);
     d->fontShowArea->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-    initFontPreviewItemsData();
     initFontPreviewListView(d->fontShowArea);
 
     // initialize state bar
@@ -310,6 +316,8 @@ void DFontMgrMainWindow::initRightFontView()
 //初始化字体预览ListView
 void DFontMgrMainWindow::initFontPreviewListView(QFrame *parent)
 {
+    Q_D(DFontMgrMainWindow);
+
     QVBoxLayout *listViewVBoxLayout = new QVBoxLayout();
     listViewVBoxLayout->setMargin(0);
     listViewVBoxLayout->setContentsMargins(0, 0, 0, 0);
@@ -320,41 +328,12 @@ void DFontMgrMainWindow::initFontPreviewListView(QFrame *parent)
     m_fontPreviewListView->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     m_fontPreviewListView->setVerticalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAlwaysOff);
     m_fontPreviewListView->setHorizontalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAlwaysOff);
-    m_fontPreviewItemDelegate = new DFontPreviewItemDelegate(this);
-    m_fontPreviewListView->setItemDelegate(m_fontPreviewItemDelegate);
-    m_fontPreviewListView->setModel(m_fontPreviewItemModel);
-    m_fontPreviewListView->setContextMenuPolicy(Qt::CustomContextMenu);
 
     m_fontPreviewListView->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
+    m_fontPreviewListView->setRightContextMenu(d->rightKeyMenu);
+
     listViewVBoxLayout->addWidget(m_fontPreviewListView);
-}
-
-void DFontMgrMainWindow::initFontPreviewItemsData()
-{
-    QStringList fontNameList;
-    fontNameList << "Arial"
-                 << "Serif"
-                 << "Lato"
-                 << "Chalkboard"
-                 << "Courier"
-                 << "Bitstream Charter"
-                 << "Dejavu Sans Mono"
-                 << "Times New Roman";
-    m_fontPreviewItemModel = new QStandardItemModel;
-    for (int i = 0; i < fontNameList.size(); ++i) {
-        DFontPreviewItemData itemData;
-
-        itemData.strFontName = fontNameList.at(i);
-        itemData.strFontPreview = QString("Don't let your dreams be dreams");
-        itemData.bEnabled = false;
-        itemData.bCollected = false;
-
-        QStandardItem *item = new QStandardItem;
-        item->setData(QVariant::fromValue(itemData), Qt::DisplayRole);
-
-        m_fontPreviewItemModel->appendRow(item);
-    }
 }
 
 void DFontMgrMainWindow::initStateBar()
@@ -462,15 +441,21 @@ void DFontMgrMainWindow::handleMenuEvent(QAction *action)
 
             // Add menu handler code here
             switch (actionId) {
-            case DFontMenuManager::MenuAction::M_AddFont: {
-                handleAddFontEvent();
-            } break;
-            case DFontMenuManager::MenuAction::M_Help: {
-                DFontInfoDialog dlg;
-                dlg.exec();
-            } break;
-            default:
-                qDebug() << "handleMenuEvent->(id=" << actionId << ")";
+                case DFontMenuManager::MenuAction::M_AddFont: {
+                    handleAddFontEvent();
+                } break;
+                case DFontMenuManager::MenuAction::M_DeleteFont: {
+                    DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
+                    qDebug() << currItemData.strFontName;
+                    qDebug() << currItemData.pFontInfo->filePath;
+                    qDebug() << m_fontPreviewListView->currModelIndex().row();
+                } break;
+                case DFontMenuManager::MenuAction::M_Help: {
+                    DFontInfoDialog dlg;
+                    dlg.exec();
+                } break;
+                default:
+                    qDebug() << "handleMenuEvent->(id=" << actionId << ")";
             }
         }
     }
@@ -489,4 +474,41 @@ void DFontMgrMainWindow::initRightKeyMenu()
     Q_D(DFontMgrMainWindow);
 
     d->rightKeyMenu = DFontMenuManager::getInstance()->createRightKeyMenu();
+}
+
+void DFontMgrMainWindow::onSearchTextChanged()
+{
+    Q_D(DFontMgrMainWindow);
+
+    QString strSearchFontName = d->searchFontEdit->text();
+    qDebug() << strSearchFontName << endl;
+
+    QSortFilterProxyModel *filterModel = m_fontPreviewListView->getFontPreviewProxyModel();
+
+    //根据搜索框内容实时过滤列表
+    filterModel->setFilterKeyColumn(0);
+    filterModel->setFilterRegExp(strSearchFontName);
+
+    QString strPreviewText = d->textInputEdit->text();
+    if (strPreviewText.length() > 0) {
+        for (int rowIndex = 0; rowIndex < filterModel->rowCount(); rowIndex++) {
+            QModelIndex modelIndex = filterModel->index(rowIndex, 0);
+            filterModel->setData(modelIndex, QVariant(strPreviewText), Qt::UserRole + 1);
+        }
+    }
+}
+
+void DFontMgrMainWindow::onPreviewTextChanged(const QString &currStr)
+{
+    QString previewText = currStr;
+    if (0 == currStr.length()) {
+        previewText = FTM_DEFAULT_PREVIEW_TEXT;
+    }
+
+    QSortFilterProxyModel *filterModel = m_fontPreviewListView->getFontPreviewProxyModel();
+
+    for (int rowIndex = 0; rowIndex < filterModel->rowCount(); rowIndex++) {
+        QModelIndex modelIndex = filterModel->index(rowIndex, 0);
+        filterModel->setData(modelIndex, QVariant(previewText), Qt::UserRole + 1);
+    }
 }
