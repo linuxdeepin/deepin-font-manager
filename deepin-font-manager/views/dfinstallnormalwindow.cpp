@@ -21,6 +21,8 @@ DFInstallNormalWindow::DFInstallNormalWindow(const QStringList &files, QWidget *
     initConnections();
 }
 
+DFInstallNormalWindow::~DFInstallNormalWindow() {}
+
 void DFInstallNormalWindow::initUI()
 {
     setFixedSize(QSize(380, 136));
@@ -62,7 +64,7 @@ void DFInstallNormalWindow::initUI()
     m_progressStepLabel->setText("正在验证字体…");
     m_currentFontLabel = new DLabel(this);
     m_currentFontLabel->setFixedHeight(18);
-    m_currentFontLabel->setText("SourceHanSansSC-ExtraLight.ttf");
+    m_currentFontLabel->setText("");
 
     m_progressBar = new DProgressBar(this);
     m_progressBar->setFixedHeight(6);
@@ -98,21 +100,23 @@ void DFInstallNormalWindow::initVerifyTimer()
 void DFInstallNormalWindow::initConnections()
 {
     connect(m_verifyTimer.get(), &QTimer::timeout, this, [=]() {
-        // Check installed & damaged font file here
-        if (!verifyFontFiles()) {
-            qDebug() << " start Exception dailog\n";
-            DFInstallErrorDialog dlg;
-            connect(&dlg, &DFInstallErrorDialog::onCancelInstall, this,
-                    &DFInstallNormalWindow::onCancelInstall);
-            connect(&dlg, &DFInstallErrorDialog::onContinueInstall, this,
-                    &DFInstallNormalWindow::onContinueInstall);
-            dlg.initInstallErrorFontViews(m_installErrorFontModelList);
-            dlg.exec();
+        // Install the font list ,which may be changed in exception window
+        batchInstall();
+    });
 
-            return;
+    // Handle reinstall signal
+    connect(this, &DFInstallNormalWindow::batchReinstall, this, [=](QStringList reinstallFiles) {
+        // Reinstall the user selected files
+        m_installFiles.clear();
+        m_installState = InstallState::reinstall;
+
+        foreach (auto it, reinstallFiles) {
+            m_installFiles.append(it);
         }
 
-        // Install the font list ,which may be changed in exception window
+#ifdef QT_QML_DEBUG
+        qDebug() << __FUNCTION__ << " [reinstallFiles=" << m_installFiles << "]";
+#endif
         batchInstall();
     });
 
@@ -126,71 +130,140 @@ void DFInstallNormalWindow::initConnections()
         // ToDo:
         //   May send signal to mainwindow refresh new installed font
         // QMIT notfiyRefresh;
-        // this->close();
+
+        m_installFiles.clear();
+        m_installState = InstallState::reinstall;
+
+        // Update the installtion file list showed in exception dialog
+        foreach (auto it, m_installedFiles) {
+            m_installFiles.append(it);
+        }
+
+        foreach (auto it, m_damagedFiles) {
+            m_installFiles.append(it);
+        }
+
+        if (ifNeedShowExceptionWindow()) {
+            showInstallErrDlg();
+        } else {
+            this->close();
+        }
     });
 
     initVerifyTimer();
 }
 
-int DFInstallNormalWindow::verifyFontFiles()
+void DFInstallNormalWindow::verifyFontFiles()
 {
     // debug
     DFontInfo *pfontInfo = nullptr;
 
-    int damageFileCnt = 0;
-    int installedFileCnt = 0;
-    int newFileCnt = 0;
+    m_damagedFiles.clear();
+    m_installedFiles.clear();
+    m_newInstallFiles.clear();
 
     m_installErrorFontModelList.clear();
     foreach (auto it, m_installFiles) {
         pfontInfo = m_fontInfoManager->getFontInfo(it);
         if (pfontInfo->isError) {
-            damageFileCnt++;
-            DFInstallErrorItemModel *itemModel = new DFInstallErrorItemModel;
-            QFileInfo fileInfo(it);
-            itemModel->bSelectable = false;
-            itemModel->strFontFileName = fileInfo.fileName();
-            itemModel->strFontFilePath = fileInfo.filePath();
-            itemModel->strFontInstallStatus = QString("文件异常");
-            m_installErrorFontModelList.push_back(itemModel);
-            qDebug() << "verifyFontFiles->" << it << " :Damaged file";
+            m_damagedFiles.append(it);
+
+#ifdef QT_QML_DEBUG
+            qDebug() << __FUNCTION__ << " (" << it << " :Damaged file)";
+#endif
         } else if (m_fontInfoManager->isFontInstalled(pfontInfo)) {
-            installedFileCnt++;
-            DFInstallErrorItemModel *itemModel = new DFInstallErrorItemModel;
-            QFileInfo fileInfo(it);
-            itemModel->bSelectable = true;
-            itemModel->strFontFileName = fileInfo.fileName();
-            itemModel->strFontFilePath = fileInfo.filePath();
-            itemModel->strFontInstallStatus = QString("已安装相同版本");
-            m_installErrorFontModelList.push_back(itemModel);
-            qDebug() << "verifyFontFiles->" << it << " :Installed file";
+            m_installedFiles.append(it);
+
+#ifdef QT_QML_DEBUG
+            qDebug() << __FUNCTION__ << " (" << it << " :Installed file)";
+#endif
         } else {
-            newFileCnt++;
-            qDebug() << "newFileCnt++" << it << " :new file";
+            m_newInstallFiles.append(it);
+
+#ifdef QT_QML_DEBUG
+            qDebug() << __FUNCTION__ << " (" << it << " :New file)";
+#endif
         }
     }
+}
 
-    return !(damageFileCnt > 0 || installedFileCnt > 0);
+bool DFInstallNormalWindow::ifNeedShowExceptionWindow() const
+{
+    // If have new install file,install first,then check the exception list
+    if (InstallState::Install == m_installState && m_newInstallFiles.size() > 0) {
+        return false;
+    }
+
+    // For all selected files is installed & damage
+    if (InstallState::Install == m_installState &&
+        (m_installedFiles.size() > 0 || m_damagedFiles.size() > 0)) {
+        return true;
+    }
+
+    if (InstallState::reinstall == m_installState && m_installedFiles.size() > 0) {
+        return true;
+    }
+
+    if (InstallState::reinstall == m_installState && m_damagedFiles.size() > 0) {
+        return true;
+    }
+
+    return false;
 }
 
 void DFInstallNormalWindow::resizeEvent(QResizeEvent *event)
 {
     DDialog::resizeEvent(event);
-    qDebug() << "Dialog(" << event->size().width() << " ," << event->size().height() << ")";
-    // m_titleFrame->resize(event->size().width() - 50, 50);
+
     m_mainFrame->resize(event->size().width(), event->size().height());
 }
 
 void DFInstallNormalWindow::batchInstall()
 {
+    // Check&Sort uninstalled ,installed & damaged font file here
+    verifyFontFiles();
+
+    if (InstallState::Install == m_installState && ifNeedShowExceptionWindow()) {
+#ifdef QT_QML_DEBUG
+        qDebug() << "User selected files are installed & damaged!";
+#endif
+        showInstallErrDlg();
+        return;
+    }
+
+    QStringList installList;
+
+    if (m_installState == InstallState::Install) {
+        if (m_newInstallFiles.size() > 0) {
+            foreach (auto it, m_newInstallFiles) {
+                installList.append(it);
+            }
+        }
+
+        m_newInstallFiles.clear();
+    }
+
+    if (m_installState == InstallState::reinstall) {
+        if (m_installedFiles.size() > 0) {
+            foreach (auto it, m_installedFiles) {
+                installList.append(it);
+            }
+        }
+
+        m_installedFiles.clear();
+    }
+
     m_fontManager->setType(DFontManager::Install);
-    m_fontManager->setInstallFileList(m_installFiles);
+    m_fontManager->setInstallFileList(installList);
     m_fontManager->start();
 }
 
 void DFInstallNormalWindow::onCancelInstall()
 {
-    qDebug() << "onCancelInstall";
+#ifdef QT_QML_DEBUG
+    qDebug() << __FUNCTION__ << " called";
+#endif
+
     m_fontManager->terminate();
     m_fontManager->wait();
 
@@ -199,10 +272,13 @@ void DFInstallNormalWindow::onCancelInstall()
 
 void DFInstallNormalWindow::onContinueInstall(QStringList continueInstallFontFileList)
 {
-    qDebug() << "onContinueInstall" << continueInstallFontFileList;
-    m_fontManager->setType(DFontManager::Install);
-    m_fontManager->setInstallFileList(continueInstallFontFileList);
-    m_fontManager->start();
+#ifdef QT_QML_DEBUG
+    qDebug() << __FUNCTION__ << " called:" << continueInstallFontFileList;
+#endif
+
+    m_installState = InstallState::reinstall;
+
+    Q_EMIT batchReinstall(continueInstallFontFileList);
 }
 
 void DFInstallNormalWindow::onProgressChanged(const QString &filePath, const double &percent)
@@ -214,4 +290,17 @@ void DFInstallNormalWindow::onProgressChanged(const QString &filePath, const dou
     DFontInfo *fontInfo = m_fontInfoManager->getFontInfo(filePath);
     m_currentFontLabel->setText(fontInfo->familyName);
     m_progressBar->setValue(static_cast<int>(percent));
+    m_progressBar->setTextVisible(false);
+}
+
+void DFInstallNormalWindow::showInstallErrDlg()
+{
+    DFInstallErrorDialog dfErrDialog(this, m_installFiles);
+
+    connect(&dfErrDialog, &DFInstallErrorDialog::onCancelInstall, this,
+            &DFInstallNormalWindow::onCancelInstall);
+    connect(&dfErrDialog, &DFInstallErrorDialog::onContinueInstall, this,
+            &DFInstallNormalWindow::onContinueInstall);
+
+    dfErrDialog.exec();
 }

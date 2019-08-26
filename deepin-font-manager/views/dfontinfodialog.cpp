@@ -36,6 +36,9 @@ void DFontInfoDialog::initUI()
     m_fontFileName->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     m_fontFileName->setAlignment(Qt::AlignVCenter | Qt::AlignHCenter);
     m_fontFileName->setFixedHeight(18);
+    QFont fileNameFont;
+    fileNameFont.setPixelSize(12);
+    m_fontFileName->setFont(fileNameFont);
     m_fontFileName->setText("SourceHanSansSC-ExtraLight");
 
     /**************************Basic info panel****BEGIN*******************************/
@@ -50,11 +53,19 @@ void DFontInfoDialog::initUI()
 
     DLabel *panelName = new DLabel(this);
     panelName->setFixedSize(QSize(60, 20));
+    QFont panelNameFont;
+    // panelNameFont.setBold(true);
+    panelNameFont.setPixelSize(14);
+    panelName->setFont(panelNameFont);
     panelName->setText("基本信息");
 
     // Style Row
+    QFont basicInfoFont;
+    basicInfoFont.setPixelSize(12);
+
     DLabel *styleName = new DLabel(this);
     styleName->setFixedSize(QSize(60, 18));
+    styleName->setFont(basicInfoFont);
     styleName->setText("样式");
 
     QHBoxLayout *styleLayout = new QHBoxLayout(this);
@@ -63,6 +74,7 @@ void DFontInfoDialog::initUI()
     m_fontSytleName = new DLabel(this);
     m_fontSytleName->setFixedHeight(18);
     m_fontSytleName->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    m_fontSytleName->setFont(basicInfoFont);
     m_fontSytleName->setText("Regular");
     styleLayout->addSpacing(4);
     styleLayout->addWidget(m_fontSytleName);
@@ -70,6 +82,7 @@ void DFontInfoDialog::initUI()
     // Type Row
     DLabel *typeName = new DLabel(this);
     typeName->setFixedSize(QSize(60, 18));
+    typeName->setFont(basicInfoFont);
     typeName->setText("类型");
 
     QHBoxLayout *typeLayout = new QHBoxLayout(this);
@@ -78,6 +91,7 @@ void DFontInfoDialog::initUI()
     m_fontTypeName = new DLabel(this);
     m_fontTypeName->setFixedHeight(18);
     m_fontTypeName->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    m_fontTypeName->setFont(basicInfoFont);
     m_fontTypeName->setText("True Type");
     typeLayout->addSpacing(4);
     typeLayout->addWidget(m_fontTypeName);
@@ -85,6 +99,7 @@ void DFontInfoDialog::initUI()
     // Version row
     DLabel *versionName = new DLabel(this);
     versionName->setFixedSize(QSize(60, 18));
+    versionName->setFont(basicInfoFont);
     versionName->setText("版本");
 
     m_fontVersion = new QTextEdit(this);
@@ -93,11 +108,7 @@ void DFontInfoDialog::initUI()
     m_fontVersion->setAlignment(Qt::AlignTop | Qt::AlignLeft);
     m_fontVersion->setFrameShape(QFrame::Shape::NoFrame);
     m_fontVersion->setContentsMargins(0, 0, 0, 0);
-    // ToDo:
-    //    Need store in config file
-    //    QFont ft;
-    //    ft.setPixelSize(12);
-    //    m_fontVersion->setFont(ft);
+    m_fontVersion->setFont(basicInfoFont);
     m_fontVersion->setText(
         "Copyright 2014~2015 Adobe Syste-ms Incorporated (http://www.adob.com/), with Reserved "
         "Font Name cc Source.");
@@ -105,6 +116,7 @@ void DFontInfoDialog::initUI()
     // Description row
     DLabel *despName = new DLabel(this);
     despName->setFixedSize(QSize(60, 18));
+    despName->setFont(basicInfoFont);
     despName->setText("描述");
 
     /* Text in QTextEdit have about 4px left-margin,that can't
@@ -117,6 +129,7 @@ void DFontInfoDialog::initUI()
     m_fontDescription = new DLabel(this);
     m_fontDescription->setFixedHeight(18);
     m_fontDescription->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    m_fontDescription->setFont(basicInfoFont);
     m_fontDescription->setText("未知");
     depsLayout->addSpacing(4);
     depsLayout->addWidget(m_fontDescription);

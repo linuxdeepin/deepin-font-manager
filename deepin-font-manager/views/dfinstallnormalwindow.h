@@ -4,6 +4,9 @@
 #include "dfinstallerrordialog.h"
 #include "dfontinfomanager.h"
 
+#include <QStringList>
+#include <QTimer>
+
 #include <DDialog>
 #include <DLabel>
 #include <DProgressBar>
@@ -15,8 +18,10 @@ class DFontInfoManager;
 
 class DFInstallNormalWindow : public DDialog
 {
+    Q_OBJECT
 public:
     DFInstallNormalWindow(const QStringList &files = QStringList(), QWidget *parent = nullptr);
+    ~DFInstallNormalWindow() override;
 
 protected:
     static constexpr int VERIFY_DELYAY_TIME = 1000;
@@ -25,9 +30,11 @@ protected:
     void initConnections();
     void initVerifyTimer();
 
-    int verifyFontFiles();
+    void verifyFontFiles();
+    bool ifNeedShowExceptionWindow() const;
 
     void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
+
 protected slots:
     void batchInstall();
     void onProgressChanged(const QString &filePath, const double &percent);
@@ -35,8 +42,20 @@ protected slots:
     void onCancelInstall();
     void onContinueInstall(QStringList continueInstallFontFileList);
 
+    void showInstallErrDlg();
+signals:
+    void batchReinstall(QStringList reinstallFiles);
+
 private:
+    enum InstallState { Install, reinstall, damaged };
+
     QStringList m_installFiles;
+    QStringList m_installedFiles;
+    QStringList m_newInstallFiles;
+    QStringList m_damagedFiles;
+
+    InstallState m_installState {Install};
+
     QList<DFInstallErrorItemModel *> m_installErrorFontModelList;
     DFontInfoManager *m_fontInfoManager;
     DFontManager *m_fontManager;

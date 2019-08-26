@@ -462,15 +462,15 @@ void DFontMgrMainWindow::handleMenuEvent(QAction *action)
 
             // Add menu handler code here
             switch (actionId) {
-                case DFontMenuManager::MenuAction::M_AddFont: {
-                    handleAddFontEvent();
-                } break;
-                case DFontMenuManager::MenuAction::M_Help: {
-                    DFontInfoDialog dlg;
-                    dlg.exec();
-                } break;
-                default:
-                    qDebug() << "handleMenuEvent->(id=" << actionId << ")";
+            case DFontMenuManager::MenuAction::M_AddFont: {
+                handleAddFontEvent();
+            } break;
+            case DFontMenuManager::MenuAction::M_Help: {
+                DFontInfoDialog dlg;
+                dlg.exec();
+            } break;
+            default:
+                qDebug() << "handleMenuEvent->(id=" << actionId << ")";
             }
         }
     }
