@@ -3,7 +3,6 @@
 
 #include "dfinstallerroritemwidget.h"
 #include "dfontinfomanager.h"
-#include "dsplitlistwidget.h"
 
 #include <DDialog>
 #include <DFrame>
@@ -19,21 +18,25 @@ class DFInstallErrorDialog : public DDialog
     Q_OBJECT
 
 public:
-    explicit DFInstallErrorDialog(QWidget *parent = nullptr);
+    explicit DFInstallErrorDialog(QWidget *parent = nullptr,
+                                  QStringList errorInstallFontFileList = QStringList());
     ~DFInstallErrorDialog();
 
+    void initData();
     void initUI();
 
     void resizeEvent(QResizeEvent *event);
 
     void initMainFrame();
     void initTitleBar();
-    void initInstallErrorFontViews(QList<DFInstallErrorItemModel *> installErrorFontModelList);
+    void initInstallErrorFontViews();
+
+    int getErrorFontCheckedCount();
 
     DFrame *m_mainFrame;
     QVBoxLayout *m_mainLayout;
 
-    DSplitListWidget *m_installErrorListWidget;
+    DListWidget *m_installErrorListWidget;
 
     DPushButton *m_quitInstallBtn;
     DPushButton *m_continueInstallBtn;
@@ -44,6 +47,7 @@ private:
     DLabel *titleLabel;
     DFrame *contentFrame;
 
+    QStringList m_errorInstallFiles;
     QList<DFInstallErrorItemModel *> m_installErrorFontModelList;
 
 signals:
