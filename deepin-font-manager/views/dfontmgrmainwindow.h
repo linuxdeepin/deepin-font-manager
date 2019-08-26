@@ -1,8 +1,6 @@
 #ifndef DFONTMGRMAINWINDOW_H
 #define DFONTMGRMAINWINDOW_H
 
-#include "dfontpreviewitemdef.h"
-#include "dfontpreviewitemdelegate.h"
 #include "dfontpreviewlistview.h"
 
 #include <DMainWindow>
@@ -50,14 +48,14 @@ protected:
     void installFont(const QStringList &files);
     void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
 
-    QList<DFontPreviewItemData> m_fontPreviewItemDataList;
-    QStandardItemModel *m_fontPreviewItemModel;
-    DFontPreviewItemDelegate *m_fontPreviewItemDelegate;
     DFontPreviewListView *m_fontPreviewListView;
 signals:
     void fileSelected(const QStringList files) const;
 public slots:
     void handleMenuEvent(QAction *);
+
+    void onSearchTextChanged();
+    void onPreviewTextChanged(const QString &currStr);
 
 protected:
     QScopedPointer<DFontMgrMainWindowPrivate> d_ptr;

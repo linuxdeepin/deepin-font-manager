@@ -103,7 +103,9 @@ void DFInstallErrorDialog::initTitleBar()
     titleLabel = new DLabel;
 #warning need internationalization
     titleLabel->setText(QString("安装出错"));
-    titleLabel->setStyleSheet("font-family:SourceHanSansSC-Medium;font-size:14px;color:#2C4767;");
+    QFont titleFont;
+    titleFont.setPixelSize(14);
+    titleLabel->setFont(titleFont);
     titleLabel->setAlignment(Qt::AlignCenter);
     titleLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
@@ -154,16 +156,19 @@ void DFInstallErrorDialog::initInstallErrorFontViews()
     QButtonGroup *btnGroup = new QButtonGroup(this);
     btnGroup->setExclusive(true);
 
+    QFont btnFont;
+    btnFont.setPixelSize(14);
+
     m_quitInstallBtn = new DPushButton;
+    m_quitInstallBtn->setFont(btnFont);
 #warning need internationalization
     m_quitInstallBtn->setText(QString("退出安装"));
-    m_quitInstallBtn->setStyleSheet("font-family:SourceHanSansSC-Medium;font-size:14px;");
     m_quitInstallBtn->setFixedSize(204, 36);
 
     m_continueInstallBtn = new DPushButton;
+    m_continueInstallBtn->setFont(btnFont);
 #warning need internationalization
     m_continueInstallBtn->setText(QString("继续安装"));
-    m_continueInstallBtn->setStyleSheet("font-family:SourceHanSansSC-Medium;font-size:14px;");
     m_continueInstallBtn->setFixedSize(204, 36);
 
     //所有字体都未勾选时，禁止点击"继续安装"

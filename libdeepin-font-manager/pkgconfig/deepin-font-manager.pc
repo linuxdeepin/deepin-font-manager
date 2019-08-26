@@ -5,7 +5,7 @@ includedir=${prefix}/include
 
 
 Name: deepin-font-manager
-Description: Deepin Font Installer Header Files
+Description: Deepin Font Manager Header Files
 Version: 1.0.0
 Libs: -ldeepin-font-manager 
 Cflags: 

@@ -1,6 +1,8 @@
 #include "dfinstallerroritemwidget.h"
 
 #include <DLog>
+#include <DPalette>
+
 #include <QVBoxLayout>
 
 DFInstallErrorItemModel::DFInstallErrorItemModel()
@@ -34,16 +36,22 @@ void DFInstallErrorItemWidget::initUI()
     checkLayout->addWidget(m_chooseCheck);
 
     m_fontFileNameLabel = new DLabel(this);
+    QFont fontNameFont;
+    fontNameFont.setPixelSize(14);
+    m_fontFileNameLabel->setFont(fontNameFont);
     m_fontFileNameLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
     m_fontFileNameLabel->setText(m_itemModel->strFontFileName);
-    m_fontFileNameLabel->setStyleSheet(
-        "font-family:SourceHanSansSC-Medium;font-size:14px;color:#2C4767;");
 
     m_fontInstallStatusLabel = new DLabel(this);
+    QFont installStatusFont;
+    installStatusFont.setPixelSize(11);
+    m_fontInstallStatusLabel->setFont(installStatusFont);
+    DPalette pa = m_fontInstallStatusLabel->palette();
+    QColor color = pa.color(QPalette::Text);
+    pa.setColor(DPalette::Text, pa.color(DPalette::TextWarning));
+    m_fontInstallStatusLabel->setPalette(pa);
     m_fontInstallStatusLabel->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
     m_fontInstallStatusLabel->setText(m_itemModel->strFontInstallStatus);
-    m_fontInstallStatusLabel->setStyleSheet(
-        "font-family:SourceHanSansSC-Medium;font-size:11px;color:#FF6D6D;");
 
     layout->addLayout(checkLayout);
     layout->addWidget(m_fontFileNameLabel);

@@ -1,4 +1,5 @@
 #include "dfontpreviewlistview.h"
+#include "dfontinfomanager.h"
 #include "dfontpreviewitemdelegate.h"
 
 #include <DLog>
@@ -9,7 +10,49 @@ DWIDGET_USE_NAMESPACE
 DFontPreviewListView::DFontPreviewListView(QWidget *parent)
     : DListView(parent)
 {
+    initFontListData();
+    initDelegate();
     initConnections();
+}
+
+void DFontPreviewListView::initFontListData()
+{
+    QStringList fontNameList;
+    DFontInfoManager *fontInfoMgr = DFontInfoManager::instance();
+    QStringList strAllFontList = fontInfoMgr->getAllFontPath();
+    //    qDebug() << strAllFontList << endl;
+
+    m_fontPreviewItemModel = new QStandardItemModel;
+    for (int i = 0; i < strAllFontList.size(); ++i) {
+        QString filePath = strAllFontList.at(i);
+        if (filePath.length() > 0) {
+            DFontPreviewItemData itemData;
+            QFileInfo filePathInfo(filePath);
+            itemData.pFontInfo = fontInfoMgr->getFontInfo(filePath);
+            itemData.strFontName = filePathInfo.fileName();
+            itemData.strFontPreview = FTM_DEFAULT_PREVIEW_TEXT;
+            itemData.bEnabled = false;
+            itemData.bCollected = false;
+
+            QStandardItem *item = new QStandardItem;
+            item->setData(QVariant(itemData.strFontName), Qt::UserRole);
+            item->setData(QVariant::fromValue(itemData), Qt::DisplayRole);
+
+            m_fontPreviewItemModel->appendRow(item);
+        }
+    }
+}
+
+void DFontPreviewListView::initDelegate()
+{
+    m_fontPreviewItemDelegate = new DFontPreviewItemDelegate(this);
+    this->setItemDelegate(m_fontPreviewItemDelegate);
+
+    m_fontPreviewProxyModel = new QSortFilterProxyModel(this);
+    m_fontPreviewProxyModel->setSourceModel(m_fontPreviewItemModel);
+    m_fontPreviewProxyModel->setDynamicSortFilter(true);
+    m_fontPreviewProxyModel->setFilterRole(Qt::UserRole);
+    this->setModel(m_fontPreviewProxyModel);
 }
 
 void DFontPreviewListView::initConnections()
@@ -66,80 +109,50 @@ void DFontPreviewListView::setModel(QAbstractItemModel *model)
 void DFontPreviewListView::onListViewItemEnableBtnClicked(QModelIndex index)
 {
     DFontPreviewItemData itemData =
-        qvariant_cast<DFontPreviewItemData>(m_fontPreviewItemModel->data(index));
+        qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(index));
     itemData.bEnabled = !itemData.bEnabled;
 
-    m_fontPreviewItemModel->setData(index, QVariant::fromValue(itemData), Qt::DisplayRole);
+    m_fontPreviewProxyModel->setData(index, QVariant::fromValue(itemData), Qt::DisplayRole);
 }
 
 void DFontPreviewListView::onListViewItemCollectionBtnClicked(QModelIndex index)
 {
     DFontPreviewItemData itemData =
-        qvariant_cast<DFontPreviewItemData>(m_fontPreviewItemModel->data(index));
+        qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(index));
     itemData.bCollected = !itemData.bCollected;
 
-    m_fontPreviewItemModel->setData(index, QVariant::fromValue(itemData), Qt::DisplayRole);
+    m_fontPreviewProxyModel->setData(index, QVariant::fromValue(itemData), Qt::DisplayRole);
 }
 
 void DFontPreviewListView::onListViewShowContextMenu(QModelIndex index)
 {
     Q_UNUSED(index)
 
-    DMenu *rightMenu = new DMenu(this);
-#warning need internationalization
-    QString strAddFont = QString("添加字体");
-    QString strEnableFont = QString("启用字体");
-    QString strDeleteFont = QString("删除字体");
-    QString strCollectFont = QString("收藏");
-    QString strDisplayFontInfo = QString("显示信息");
-    QString strShowFontFileInExplorer = QString("在文件管理器中显示");
-
-    QAction *addFontAction = rightMenu->addAction(strAddFont);
-    QAction *enableFontAction = rightMenu->addAction(strEnableFont);
-    QAction *deletFontAction = rightMenu->addAction(strDeleteFont);
-    QAction *collectFontAction = rightMenu->addAction(strCollectFont);
-    QAction *displayFontInfoAction = rightMenu->addAction(strDisplayFontInfo);
-    QAction *showFontFileInExplorerAction = rightMenu->addAction(strShowFontFileInExplorer);
-
-    connect(addFontAction, SIGNAL(triggered(bool)), this, SLOT(onClickAddFontRightMenu()));
-    connect(enableFontAction, SIGNAL(triggered(bool)), this, SLOT(onClickEnableFontRightMenu()));
-    connect(deletFontAction, SIGNAL(triggered(bool)), this, SLOT(onClickDeleteFontRightMenu()));
-    connect(collectFontAction, SIGNAL(triggered(bool)), this, SLOT(onClickCollectFontRightMenu()));
-    connect(displayFontInfoAction, SIGNAL(triggered(bool)), this,
-            SLOT(onClickDisplayFontInfoRightMenu()));
-    connect(showFontFileInExplorerAction, SIGNAL(triggered(bool)), this,
-            SLOT(onClickShowFontFileRightMenu()));
+    DMenu *rightMenu = m_rightMenu;
 
     //在当前鼠标位置显示
     rightMenu->exec(QCursor::pos());
 }
 
-void DFontPreviewListView::onClickAddFontRightMenu()
+void DFontPreviewListView::setRightContextMenu(QMenu *rightMenu)
 {
-    emit onAddFont(m_currModelIndex);
+    m_rightMenu = rightMenu;
 }
 
-void DFontPreviewListView::onClickEnableFontRightMenu()
+QModelIndex DFontPreviewListView::currModelIndex()
 {
-    emit onEnableFont(m_currModelIndex);
+    return m_currModelIndex;
 }
 
-void DFontPreviewListView::onClickDeleteFontRightMenu()
+DFontPreviewItemData DFontPreviewListView::currModelData()
 {
-    emit onDeleteFont(m_currModelIndex);
+    QVariant varModel = m_fontPreviewProxyModel->data(m_currModelIndex, Qt::DisplayRole);
+
+    DFontPreviewItemData itemData = varModel.value<DFontPreviewItemData>();
+    return itemData;
 }
 
-void DFontPreviewListView::onClickCollectFontRightMenu()
+QSortFilterProxyModel *DFontPreviewListView::getFontPreviewProxyModel()
 {
-    emit onCollectFont(m_currModelIndex);
-}
-
-void DFontPreviewListView::onClickDisplayFontInfoRightMenu()
-{
-    emit onDisplayFontInfo(m_currModelIndex);
-}
-
-void DFontPreviewListView::onClickShowFontFileRightMenu()
-{
-    emit onShowFontFile(m_currModelIndex);
+    return m_fontPreviewProxyModel;
 }
