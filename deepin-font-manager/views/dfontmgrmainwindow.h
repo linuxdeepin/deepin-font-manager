@@ -24,7 +24,7 @@ public:
 
     static constexpr int MIN_FONT_SIZE = 6;
     static constexpr int MAX_FONT_SIZE = 60;
-    static constexpr int DEFAULT_FONT_SIZE = MIN_FONT_SIZE;
+    static constexpr int DEFAULT_FONT_SIZE = FTM_DEFAULT_PREVIEW_FONTSIZE;
     static constexpr char *FMT_FONT_SIZE = "%dpx";
 
 protected:
@@ -56,6 +56,7 @@ public slots:
 
     void onSearchTextChanged();
     void onPreviewTextChanged(const QString &currStr);
+    void onFontSizeChanged(int fontSize);
 
 protected:
     QScopedPointer<DFontMgrMainWindowPrivate> d_ptr;

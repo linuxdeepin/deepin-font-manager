@@ -180,10 +180,7 @@ void DFInstallErrorDialog::initInstallErrorFontViews()
     btnGroup->addButton(m_continueInstallBtn, 1);
 
     m_quitInstallBtn->setCheckable(true);
-    m_quitInstallBtn->setFocusPolicy(Qt::FocusPolicy::NoFocus);
-
     m_continueInstallBtn->setCheckable(true);
-    m_continueInstallBtn->setFocusPolicy(Qt::FocusPolicy::NoFocus);
 
     connect(btnGroup, SIGNAL(buttonClicked(int)), this, SLOT(onControlButtonClicked(int)));
 

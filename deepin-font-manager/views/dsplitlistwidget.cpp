@@ -2,6 +2,7 @@
 
 #include <DHorizontalLine>
 #include <DLog>
+
 #include <QVBoxLayout>
 
 DWIDGET_USE_NAMESPACE

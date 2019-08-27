@@ -1,6 +1,9 @@
 #include "dfontpreviewitemdelegate.h"
 #include "utils.h"
 
+#include <DApplication>
+#include <DLog>
+
 #include <QCheckBox>
 #include <QEvent>
 #include <QImageReader>
@@ -9,12 +12,13 @@
 #include <QStyle>
 #include <QStyledItemDelegate>
 #include <QSvgGenerator>
-
-#include <DApplication>
-#include <DLog>
+#include <QTextLayout>
+#include <QTextLine>
 
 DTK_USE_NAMESPACE
 DWIDGET_USE_NAMESPACE
+
+#define FTM_PREVIEW_ITEM_HEIGHT 130
 
 DFontPreviewItemDelegate::DFontPreviewItemDelegate(QObject *parent)
     : QStyledItemDelegate(parent)
@@ -29,12 +33,14 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
 
         QVariant varFontName = index.data(Qt::UserRole);
         QVariant varFontPreviewText = index.data(Qt::UserRole + 1);
+        QVariant varFontSize = index.data(Qt::UserRole + 2);
         QVariant variant = index.data(Qt::DisplayRole);
 
         DFontPreviewItemData data = variant.value<DFontPreviewItemData>();
 
         QString strFontName = data.strFontName;
         QString strFontPreview = data.strFontPreview;
+        int iFontSize = data.iFontSize;
 
         if (!varFontName.isNull()) {
             strFontName = varFontName.toString();
@@ -42,6 +48,10 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
 
         if (!varFontPreviewText.isNull()) {
             strFontPreview = varFontPreviewText.toString();
+        }
+
+        if (!varFontSize.isNull()) {
+            iFontSize = varFontSize.toInt();
         }
 
         QStyleOptionViewItem viewOption(option);  //用来在视图中画一个item
@@ -59,8 +69,7 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
         QRect fontNameRect = QRect(rect.left() + 50, rect.top() + 5, rect.width() - 50 - 33, 20);
         QRect collectIconRect =
             QRect(rect.right() - 33, rect.top() + 10, collectIconSize, collectIconSize);
-        QRect fontPreviewRect =
-            QRect(rect.left() + 50, rect.top() + 20, rect.width() - 50, rect.height());
+        QRect fontPreviewRect;
 
         QCheckBox checkBox;
         //绘制checkbox
@@ -82,10 +91,10 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
         nameFont.setPixelSize(14);
         painter->setPen(QPen(Qt::black));
         painter->setFont(nameFont);
-        painter->drawText(fontNameRect, Qt::AlignLeft, strFontName);
+        painter->drawText(fontNameRect, Qt::AlignLeft | Qt::AlignTop, strFontName);
 
         QFont preivewFont(data.pFontInfo->familyName);
-        preivewFont.setPixelSize(30);
+        preivewFont.setPixelSize(iFontSize);
         QString styleName = data.pFontInfo->styleName;
 
         if (styleName.contains("Italic")) {
@@ -112,16 +121,21 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
             preivewFont.setWeight(QFont::Black);
         }
 
-        //        qDebug() << "rect.width():" << rect.width() << endl;
-        QFontMetrics fm(preivewFont);
-        //        qDebug() << "fm.width(strFontPreview):" << fm.width(strFontPreview) << endl;
-        QString strElidedText =
-            fm.elidedText(strFontPreview, Qt::ElideRight, rect.width() - 100, Qt::TextShowMnemonic);
+        QFontMetrics fontMetric(preivewFont);
+        QString strElidedText = fontMetric.elidedText(strFontPreview, Qt::ElideRight,
+                                                      rect.width() - 50 - 33, Qt::TextShowMnemonic);
 
+        int yOffset = 0;
+        if (iFontSize > 55) {
+            yOffset = 20;
+        }
+
+        fontPreviewRect = QRect(rect.left() + 50, rect.top() + yOffset, rect.width() - 50,
+                                rect.height() - yOffset);
         //绘制预览字体
         painter->setPen(QPen(Qt::black));
         painter->setFont(preivewFont);
-        painter->drawText(fontPreviewRect, Qt::AlignLeft, strElidedText);
+        painter->drawText(fontPreviewRect, Qt::AlignLeft | Qt::AlignVCenter, strElidedText);
 
         QString strStatus = QString("normal");
         QString strCollectionImageSrc = QString(":/images/collection_%1.svg").arg(strStatus);
@@ -147,5 +161,5 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
 QSize DFontPreviewItemDelegate::sizeHint(const QStyleOptionViewItem &option,
                                          const QModelIndex &index) const
 {
-    return QSize(option.rect.width(), 72);
+    return QSize(option.rect.width(), FTM_PREVIEW_ITEM_HEIGHT);
 }
