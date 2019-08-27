@@ -29,8 +29,9 @@ void DFontPreviewListView::initFontListData()
             DFontPreviewItemData itemData;
             QFileInfo filePathInfo(filePath);
             itemData.pFontInfo = fontInfoMgr->getFontInfo(filePath);
-            itemData.strFontName = filePathInfo.fileName();
+            itemData.strFontName = filePathInfo.baseName();
             itemData.strFontPreview = FTM_DEFAULT_PREVIEW_TEXT;
+            itemData.iFontSize = FTM_DEFAULT_PREVIEW_FONTSIZE;
             itemData.bEnabled = false;
             itemData.bCollected = false;
 

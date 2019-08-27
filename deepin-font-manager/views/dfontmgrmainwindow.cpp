@@ -109,6 +109,8 @@ void DFontMgrMainWindow::initConnections()
         QString fontSizeText;
         fontSizeText.sprintf(FMT_FONT_SIZE, value);
         d->fontSizeLabel->setText(fontSizeText);
+
+        onFontSizeChanged(value);
     });
 
     // Search text changed
@@ -361,6 +363,8 @@ void DFontMgrMainWindow::initStateBar()
     d->fontScaleSlider->setTracking(true);
     d->fontScaleSlider->setTickPosition(QSlider::NoTicks);
     d->fontScaleSlider->setRange(MIN_FONT_SIZE, MAX_FONT_SIZE);
+    //设置初始显示字体大小
+    d->fontScaleSlider->setValue(DEFAULT_FONT_SIZE);
 
     d->fontSizeLabel = new QLabel(this);
     d->fontSizeLabel->setFixedSize(FTM_SBAR_FSIZE_LABEL_W, FTM_SBAR_FSIZE_LABEL_H);
@@ -482,6 +486,9 @@ void DFontMgrMainWindow::onSearchTextChanged()
 
     QString strSearchFontName = d->searchFontEdit->text();
     qDebug() << strSearchFontName << endl;
+    QString strFontSize = d->fontSizeLabel->text();
+    int iFontSize = strFontSize.remove("px").toInt();
+    //    qDebug() << "Font size: " << strFontSize << "\t" << iFontSize << endl;
 
     QSortFilterProxyModel *filterModel = m_fontPreviewListView->getFontPreviewProxyModel();
 
@@ -489,26 +496,41 @@ void DFontMgrMainWindow::onSearchTextChanged()
     filterModel->setFilterKeyColumn(0);
     filterModel->setFilterRegExp(strSearchFontName);
 
-    QString strPreviewText = d->textInputEdit->text();
-    if (strPreviewText.length() > 0) {
-        for (int rowIndex = 0; rowIndex < filterModel->rowCount(); rowIndex++) {
-            QModelIndex modelIndex = filterModel->index(rowIndex, 0);
-            filterModel->setData(modelIndex, QVariant(strPreviewText), Qt::UserRole + 1);
-        }
-    }
+    //    qDebug() << "filter Count:" << filterModel->rowCount() << endl;
+
+    QString previewText = d->textInputEdit->text();
+    onPreviewTextChanged(previewText);
 }
 
 void DFontMgrMainWindow::onPreviewTextChanged(const QString &currStr)
 {
+    Q_D(DFontMgrMainWindow);
+
     QString previewText = currStr;
     if (0 == currStr.length()) {
         previewText = FTM_DEFAULT_PREVIEW_TEXT;
     }
+
+    QString strFontSize = d->fontSizeLabel->text();
+    int iFontSize = strFontSize.remove("px").toInt();
+    //    qDebug() << "onPreviewTextChanged Font size: " << strFontSize << "\t" << iFontSize <<
+    //    endl;
 
     QSortFilterProxyModel *filterModel = m_fontPreviewListView->getFontPreviewProxyModel();
 
     for (int rowIndex = 0; rowIndex < filterModel->rowCount(); rowIndex++) {
         QModelIndex modelIndex = filterModel->index(rowIndex, 0);
         filterModel->setData(modelIndex, QVariant(previewText), Qt::UserRole + 1);
+        filterModel->setData(modelIndex, QVariant(iFontSize), Qt::UserRole + 2);
+    }
+}
+
+void DFontMgrMainWindow::onFontSizeChanged(int fontSize)
+{
+    QSortFilterProxyModel *filterModel = m_fontPreviewListView->getFontPreviewProxyModel();
+
+    for (int rowIndex = 0; rowIndex < filterModel->rowCount(); rowIndex++) {
+        QModelIndex modelIndex = filterModel->index(rowIndex, 0);
+        filterModel->setData(modelIndex, QVariant(fontSize), Qt::UserRole + 2);
     }
 }

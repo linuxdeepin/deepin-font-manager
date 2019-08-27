@@ -46,9 +46,9 @@ void DFInstallErrorItemWidget::initUI()
     QFont installStatusFont;
     installStatusFont.setPixelSize(11);
     m_fontInstallStatusLabel->setFont(installStatusFont);
-    DPalette pa = m_fontInstallStatusLabel->palette();
-    QColor color = pa.color(QPalette::Text);
-    pa.setColor(DPalette::Text, pa.color(DPalette::TextWarning));
+    DPalette pa = DPalette::get(m_fontInstallStatusLabel);
+    QColor color = pa.color(DPalette::TextWarning);
+    pa.setColor(DPalette::Text, color);
     m_fontInstallStatusLabel->setPalette(pa);
     m_fontInstallStatusLabel->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
     m_fontInstallStatusLabel->setText(m_itemModel->strFontInstallStatus);
