@@ -1,10 +1,13 @@
 #include "dfontinfodialog.h"
+#include "dfontpreviewitemdef.h"
 
+#include <QFileInfo>
 #include <QTextBlock>
 #include <QVBoxLayout>
 
-DFontInfoDialog::DFontInfoDialog(QWidget *parent)
+DFontInfoDialog::DFontInfoDialog(DFontPreviewItemData *fontInfo, QWidget *parent)
     : DDialog(parent)
+    , m_fontInfo(fontInfo)
 {
     initUI();
     initConnections();
@@ -157,6 +160,8 @@ void DFontInfoDialog::initUI()
 
     m_mainFrame->setLayout(mainLayout);
 
+    // Update font info to UI
+    updateFontInfo();
 #ifdef FTM_DEBUG_LAYOUT_COLOR
     m_mainFrame->setStyleSheet("background: red");
     m_fontLogo->setStyleSheet("background: silver");
@@ -175,4 +180,30 @@ void DFontInfoDialog::resizeEvent(QResizeEvent *event)
     DDialog::resizeEvent(event);
 
     m_mainFrame->setFixedSize(event->size().width(), event->size().height());
+}
+
+void DFontInfoDialog::updateFontInfo()
+{
+    if (nullptr != m_fontInfo) {
+        if (!m_fontInfo->pFontInfo->filePath.isEmpty()) {
+            QFileInfo file(m_fontInfo->pFontInfo->filePath);
+            m_fontFileName->setText(file.fileName());
+        }
+
+        if (!m_fontInfo->pFontInfo->styleName.isEmpty()) {
+            m_fontSytleName->setText(m_fontInfo->pFontInfo->styleName);
+        }
+
+        if (!m_fontInfo->pFontInfo->type.isEmpty()) {
+            m_fontTypeName->setText(m_fontInfo->pFontInfo->type);
+        }
+
+        if (!m_fontInfo->pFontInfo->copyright.isEmpty()) {
+            m_fontVersion->setText(m_fontInfo->pFontInfo->copyright);
+        }
+
+        if (!m_fontInfo->pFontInfo->description.isEmpty()) {
+            m_fontDescription->setText(m_fontInfo->pFontInfo->description);
+        }
+    }
 }

@@ -23,6 +23,8 @@ public:
     DFInstallNormalWindow(const QStringList &files = QStringList(), QWidget *parent = nullptr);
     ~DFInstallNormalWindow() override;
 
+    void setSkipException(bool skip);
+
 protected:
     static constexpr int VERIFY_DELYAY_TIME = 1000;
 
@@ -53,6 +55,9 @@ private:
     QStringList m_installedFiles;
     QStringList m_newInstallFiles;
     QStringList m_damagedFiles;
+
+    // Skip popup exception dialog if true
+    bool m_isNeedSkipException {false};
 
     InstallState m_installState {Install};
 

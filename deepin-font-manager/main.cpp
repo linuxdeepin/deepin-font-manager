@@ -17,14 +17,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <DApplication>
-#include <DLog>
-#include <DWidgetUtil>
-#include <QCommandLineParser>
-#include <QDebug>
 #include "globaldef.h"
 #include "utils.h"
 #include "views/dfontmgrmainwindow.h"
+
+#include <QCommandLineParser>
+#include <QDebug>
+
+#include <DApplication>
+#include <DLog>
+#include <DWidgetUtil>
 
 DWIDGET_USE_NAMESPACE
 DCORE_USE_NAMESPACE
@@ -45,9 +47,10 @@ int main(int argc, char *argv[])
     app.setProductIcon(QIcon(":/images/deepin-font-manager.svg"));
     app.setProductName(DApplication::translate("Main", "Deepin Font Manager"));
     // app.setStyleSheet(Utils::getQssContent(":/qss/style.qss"));
-    app.setApplicationDescription(DApplication::translate(
-                                      "Main",
-                                      "Deepin Font Manager is used to install and uninstall font file for users with bulk install function."));
+    app.setApplicationDescription(
+        DApplication::translate("Main",
+                                "Deepin Font Manager is used to install and uninstall font file "
+                                "for users with bulk install function."));
 
     // temp skin change
     app.setStyle("chameleon");
@@ -68,19 +71,25 @@ int main(int argc, char *argv[])
     parser.addPositionalArgument("filename", "Font file path.", "file [file..]");
     parser.process(app);
 
-    // init modules.
-    DFontMgrMainWindow mainWnd;
-    mainWnd.setMinimumSize(DEFAULT_WINDOWS_WIDTH, DEFAULT_WINDOWS_HEIGHT);
-    mainWnd.setWindowIcon(QIcon(":/images/deepin-font-manager.svg"));
-    mainWnd.show();
-
-    Dtk::Widget::moveToCenter(&mainWnd);
-
     const QStringList fileList = parser.positionalArguments();
 
+    // init modules.
+    QScopedPointer<DFontMgrMainWindow> pqsMainWnd(new DFontMgrMainWindow());
+
     // handle command line parser.
-    if (!fileList.isEmpty()) {
-        QMetaObject::invokeMethod(&mainWnd, "onSelected", Qt::QueuedConnection, Q_ARG(QStringList, fileList));
+    // Double click font file start quick install UI
+
+    pqsMainWnd->setMinimumSize(DEFAULT_WINDOWS_WIDTH, DEFAULT_WINDOWS_HEIGHT);
+    pqsMainWnd->setWindowIcon(QIcon(":/images/deepin-font-manager.svg"));
+    pqsMainWnd->show();
+
+    Dtk::Widget::moveToCenter(pqsMainWnd.get());
+
+    if (fileList.size() > 0) {
+        pqsMainWnd->setVisible(false);
+        pqsMainWnd->setQuickInstallMode(true);
+        QMetaObject::invokeMethod(pqsMainWnd.get(), "quickModeInstall", Qt::QueuedConnection,
+                                  Q_ARG(QStringList, fileList));
     }
 
     return app.exec();
