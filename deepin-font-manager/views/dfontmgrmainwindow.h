@@ -19,13 +19,15 @@ class DFontMgrMainWindow : public DMainWindow
     Q_OBJECT
 
 public:
-    explicit DFontMgrMainWindow(QWidget *parent = nullptr);
+    explicit DFontMgrMainWindow(bool isQuickMode = false, QWidget *parent = nullptr);
     ~DFontMgrMainWindow();
 
     static constexpr int MIN_FONT_SIZE = 6;
     static constexpr int MAX_FONT_SIZE = 60;
     static constexpr int DEFAULT_FONT_SIZE = FTM_DEFAULT_PREVIEW_FONTSIZE;
     static constexpr char *FMT_FONT_SIZE = "%dpx";
+
+    void setQuickInstallMode(bool isQuick);
 
 protected:
     void initData();
@@ -51,6 +53,9 @@ protected:
     DFontPreviewListView *m_fontPreviewListView;
 signals:
     void fileSelected(const QStringList files) const;
+
+    // Only use when user double click font file
+    void quickModeInstall(const QStringList files) const;
 public slots:
     void handleMenuEvent(QAction *);
 
@@ -59,6 +64,9 @@ public slots:
     void onFontSizeChanged(int fontSize);
 
 protected:
+    // For quick install mode
+    bool m_isQuickMode = {false};
+
     QScopedPointer<DFontMgrMainWindowPrivate> d_ptr;
     Q_DECLARE_PRIVATE_D(qGetPtrHelper(d_ptr), DFontMgrMainWindow)
 };

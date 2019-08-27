@@ -6,6 +6,7 @@
 #include "interfaces/dfontmenumanager.h"
 #include "utils.h"
 #include "views/dfontinfodialog.h"
+#include "views/dfquickinstallwindow.h"
 
 #include <DFileDialog>
 #include <DLineEdit>
@@ -64,8 +65,9 @@ public:
     Q_DECLARE_PUBLIC(DFontMgrMainWindow)
 };
 
-DFontMgrMainWindow::DFontMgrMainWindow(QWidget *parent)
+DFontMgrMainWindow::DFontMgrMainWindow(bool isQuickMode, QWidget *parent)
     : DMainWindow(parent)
+    , m_isQuickMode(isQuickMode)
     , d_ptr(new DFontMgrMainWindowPrivate(this))
 {
     // setWindowFlags(windowFlags() | (Qt::FramelessWindowHint | Qt::WindowMaximizeButtonHint));
@@ -105,13 +107,22 @@ void DFontMgrMainWindow::initConnections()
                      &DFontMgrMainWindow::handleMenuEvent);
 
     // State bar event
-    QObject::connect(d->fontScaleSlider, &DSlider::valueChanged, this, [this, d](int value) {
+    QObject::connect(d->fontScaleSlider, &DSlider::valueChanged, this, [d](int value) {
         QString fontSizeText;
         fontSizeText.sprintf(FMT_FONT_SIZE, value);
         d->fontSizeLabel->setText(fontSizeText);
 
         onFontSizeChanged(value);
     });
+
+    // Quick install mode handle
+    QObject::connect(this, &DFontMgrMainWindow::quickModeInstall, this,
+                     [this](const QStringList &files) {
+                         DFQuickInstallWindow quickInstallDlg(files);
+                         connect(&quickInstallDlg, &DDialog::accepted, this,
+                                 [this, &files]() { this->installFont(files); });
+                         quickInstallDlg.exec();
+                     });
 
     // Search text changed
     QObject::connect(d->searchFontEdit, SIGNAL(textChanged()), this, SLOT(onSearchTextChanged()));
@@ -445,6 +456,7 @@ void DFontMgrMainWindow::handleMenuEvent(QAction *action)
 
             // Add menu handler code here
             switch (actionId) {
+<<<<<<< HEAD
                 case DFontMenuManager::MenuAction::M_AddFont: {
                     handleAddFontEvent();
                 } break;
@@ -460,6 +472,22 @@ void DFontMgrMainWindow::handleMenuEvent(QAction *action)
                 } break;
                 default:
                     qDebug() << "handleMenuEvent->(id=" << actionId << ")";
+=======
+            case DFontMenuManager::MenuAction::M_AddFont: {
+                handleAddFontEvent();
+            } break;
+            case DFontMenuManager::MenuAction::M_FontInfo: {
+                DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
+                DFontInfoDialog fontInfoDlg(&currItemData);
+                fontInfoDlg.exec();
+            } break;
+            case DFontMenuManager::MenuAction::M_DeleteFont: {
+            } break;
+            case DFontMenuManager::MenuAction::M_Help: {
+            } break;
+            default:
+                qDebug() << "handleMenuEvent->(id=" << actionId << ")";
+>>>>>>>     chore: add click font file install
             }
         }
     }
@@ -469,8 +497,10 @@ void DFontMgrMainWindow::switchAppTheme(int type) {}
 
 void DFontMgrMainWindow::installFont(const QStringList &files)
 {
-    DFInstallNormalWindow dlg(files, this);
-    dlg.exec();
+    qDebug() << __FUNCTION__ << files;
+    DFInstallNormalWindow dfNormalInstalldlg(files, this);
+    dfNormalInstalldlg.setSkipException(true);
+    dfNormalInstalldlg.exec();
 }
 
 void DFontMgrMainWindow::initRightKeyMenu()
@@ -480,15 +510,29 @@ void DFontMgrMainWindow::initRightKeyMenu()
     d->rightKeyMenu = DFontMenuManager::getInstance()->createRightKeyMenu();
 }
 
+<<<<<<< HEAD
+=======
+void DFontMgrMainWindow::setQuickInstallMode(bool isQuick)
+{
+#ifdef QT_QML_DEBUG
+    qDebug() << __FUNCTION__ << " isQuickMode=" << isQuick;
+#endif
+    m_isQuickMode = isQuick;
+}
+
+>>>>>>>     chore: add click font file install
 void DFontMgrMainWindow::onSearchTextChanged()
 {
     Q_D(DFontMgrMainWindow);
 
     QString strSearchFontName = d->searchFontEdit->text();
     qDebug() << strSearchFontName << endl;
+<<<<<<< HEAD
     QString strFontSize = d->fontSizeLabel->text();
     int iFontSize = strFontSize.remove("px").toInt();
     //    qDebug() << "Font size: " << strFontSize << "\t" << iFontSize << endl;
+=======
+>>>>>>>     chore: add click font file install
 
     QSortFilterProxyModel *filterModel = m_fontPreviewListView->getFontPreviewProxyModel();
 
@@ -496,31 +540,48 @@ void DFontMgrMainWindow::onSearchTextChanged()
     filterModel->setFilterKeyColumn(0);
     filterModel->setFilterRegExp(strSearchFontName);
 
+<<<<<<< HEAD
     //    qDebug() << "filter Count:" << filterModel->rowCount() << endl;
 
     QString previewText = d->textInputEdit->text();
     onPreviewTextChanged(previewText);
+=======
+    QString strPreviewText = d->textInputEdit->text();
+    if (strPreviewText.length() > 0) {
+        for (int rowIndex = 0; rowIndex < filterModel->rowCount(); rowIndex++) {
+            QModelIndex modelIndex = filterModel->index(rowIndex, 0);
+            filterModel->setData(modelIndex, QVariant(strPreviewText), Qt::UserRole + 1);
+        }
+    }
+>>>>>>>     chore: add click font file install
 }
 
 void DFontMgrMainWindow::onPreviewTextChanged(const QString &currStr)
 {
+<<<<<<< HEAD
     Q_D(DFontMgrMainWindow);
 
+=======
+>>>>>>>     chore: add click font file install
     QString previewText = currStr;
     if (0 == currStr.length()) {
         previewText = FTM_DEFAULT_PREVIEW_TEXT;
     }
 
+<<<<<<< HEAD
     QString strFontSize = d->fontSizeLabel->text();
     int iFontSize = strFontSize.remove("px").toInt();
     //    qDebug() << "onPreviewTextChanged Font size: " << strFontSize << "\t" << iFontSize <<
     //    endl;
 
+=======
+>>>>>>>     chore: add click font file install
     QSortFilterProxyModel *filterModel = m_fontPreviewListView->getFontPreviewProxyModel();
 
     for (int rowIndex = 0; rowIndex < filterModel->rowCount(); rowIndex++) {
         QModelIndex modelIndex = filterModel->index(rowIndex, 0);
         filterModel->setData(modelIndex, QVariant(previewText), Qt::UserRole + 1);
+<<<<<<< HEAD
         filterModel->setData(modelIndex, QVariant(iFontSize), Qt::UserRole + 2);
     }
 }
@@ -532,5 +593,7 @@ void DFontMgrMainWindow::onFontSizeChanged(int fontSize)
     for (int rowIndex = 0; rowIndex < filterModel->rowCount(); rowIndex++) {
         QModelIndex modelIndex = filterModel->index(rowIndex, 0);
         filterModel->setData(modelIndex, QVariant(fontSize), Qt::UserRole + 2);
+=======
+>>>>>>>     chore: add click font file install
     }
 }

@@ -189,6 +189,10 @@ void DFInstallNormalWindow::verifyFontFiles()
 
 bool DFInstallNormalWindow::ifNeedShowExceptionWindow() const
 {
+    // Skip Exception dialog
+    if (m_isNeedSkipException) {
+        return false;
+    }
     // If have new install file,install first,then check the exception list
     if (InstallState::Install == m_installState && m_newInstallFiles.size() > 0) {
         return false;
@@ -303,4 +307,9 @@ void DFInstallNormalWindow::showInstallErrDlg()
             &DFInstallNormalWindow::onContinueInstall);
 
     dfErrDialog.exec();
+}
+
+void DFInstallNormalWindow::setSkipException(bool skip)
+{
+    m_isNeedSkipException = skip;
 }

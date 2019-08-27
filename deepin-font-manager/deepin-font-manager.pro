@@ -37,7 +37,8 @@ HEADERS += homepage.h \
     views/dfinstallerroritemwidget.h \
     views/dfinstallerrordialog.h \
     views/dsplitlistwidget.h \
-    views/dfontinfodialog.h
+    views/dfontinfodialog.h \
+    views/dfquickinstallwindow.h
 
 SOURCES += homepage.cpp \
            listview.cpp \
@@ -57,7 +58,8 @@ SOURCES += homepage.cpp \
     views/dfinstallerroritemwidget.cpp \
     views/dfinstallerrordialog.cpp \
     views/dsplitlistwidget.cpp \
-    views/dfontinfodialog.cpp
+    views/dfontinfodialog.cpp \
+    views/dfquickinstallwindow.cpp
 
 RESOURCES += deepin-font-manager.qrc
 TRANSLATIONS += translations/deepin-font-manager.ts

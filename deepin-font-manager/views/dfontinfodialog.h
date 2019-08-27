@@ -10,11 +10,12 @@
 
 DWIDGET_USE_NAMESPACE
 
+class DFontPreviewItemData;
 class DFontInfoDialog : public DDialog
 {
     Q_OBJECT
 public:
-    explicit DFontInfoDialog(QWidget* parent = nullptr);
+    explicit DFontInfoDialog(DFontPreviewItemData* fontInfo, QWidget* parent = nullptr);
 
     static constexpr int DEFAULT_WINDOW_W = 300;
     static constexpr int DEFAULT_WINDOW_H = 446;
@@ -22,6 +23,7 @@ public:
 protected:
     void initUI();
     void initConnections();
+    void updateFontInfo();
 
     void resizeEvent(QResizeEvent* event) override;
 signals:
@@ -39,6 +41,8 @@ private:
     DLabel* m_fontTypeName {nullptr};
     QTextEdit* m_fontVersion {nullptr};
     DLabel* m_fontDescription {nullptr};
+
+    DFontPreviewItemData* m_fontInfo;
 };
 
 #endif  // DFONTINFODIALOG_H
