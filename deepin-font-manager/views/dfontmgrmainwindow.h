@@ -27,6 +27,8 @@ public:
     static constexpr int DEFAULT_FONT_SIZE = FTM_DEFAULT_PREVIEW_FONTSIZE;
     static constexpr char *FMT_FONT_SIZE = "%dpx";
 
+    enum Theme { Dark, Light, FollowSystem };
+
     void setQuickInstallMode(bool isQuick);
 
 protected:
