@@ -126,7 +126,8 @@ void DFontMgrMainWindow::initConnections()
                      });
 
     // Search text changed
-    QObject::connect(d->searchFontEdit, SIGNAL(textChanged()), this, SLOT(onSearchTextChanged()));
+    QObject::connect(d->searchFontEdit, SIGNAL(textChanged(const QString &)), this,
+                     SLOT(onSearchTextChanged(const QString &)));
 
     QObject::connect(d->textInputEdit, SIGNAL(textChanged(const QString &)), this,
                      SLOT(onPreviewTextChanged(const QString &)));
@@ -266,24 +267,6 @@ void DFontMgrMainWindow::initLeftSideBar()
     leftSiderBar->setFrameShape(QFrame::NoFrame);
     leftSiderBar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     leftMainLayout->addWidget(leftSiderBar);
-
-#warning need internationalization
-    QStringList titleStringList;
-    titleStringList << QString("所有字体") << QString("系统字体") << QString("用户字体")
-                    << QString("我的收藏") << QString("已激活") << QString("中文")
-                    << QString("等宽");
-
-    for (int i = 0; i < titleStringList.size(); i++) {
-        QString titleString = titleStringList.at(i);
-        QListWidgetItem *item = new QListWidgetItem(titleString);
-        item->setSizeHint(QSize(120, 40));
-        item->setData(Qt::UserRole, QVariant(i));
-
-        leftSiderBar->addItem(item);
-    }
-
-    leftSiderBar->insertSplitItem(5);
-
     d->leftBarHolder->setLayout(leftMainLayout);
 
     // Debug layout code
@@ -457,29 +440,29 @@ void DFontMgrMainWindow::handleMenuEvent(QAction *action)
 
             // Add menu handler code here
             switch (actionId) {
-            case DFontMenuManager::MenuAction::M_AddFont: {
-                handleAddFontEvent();
-            } break;
-            case DFontMenuManager::MenuAction::M_ThemeDark:
-                switchAppTheme(Theme::Dark);
-                break;
-            case DFontMenuManager::MenuAction::M_ThemeLight:
-                switchAppTheme(Theme::Light);
-                break;
-            case DFontMenuManager::MenuAction::M_ThemeFollowSystem:
-                switchAppTheme(Theme::FollowSystem);
-                break;
-            case DFontMenuManager::MenuAction::M_FontInfo: {
-                DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
-                DFontInfoDialog fontInfoDlg(&currItemData);
-                fontInfoDlg.exec();
-            } break;
-            case DFontMenuManager::MenuAction::M_DeleteFont: {
-            } break;
-            case DFontMenuManager::MenuAction::M_Help: {
-            } break;
-            default:
-                qDebug() << "handleMenuEvent->(id=" << actionId << ")";
+                case DFontMenuManager::MenuAction::M_AddFont: {
+                    handleAddFontEvent();
+                } break;
+                case DFontMenuManager::MenuAction::M_ThemeDark:
+                    switchAppTheme(Theme::Dark);
+                    break;
+                case DFontMenuManager::MenuAction::M_ThemeLight:
+                    switchAppTheme(Theme::Light);
+                    break;
+                case DFontMenuManager::MenuAction::M_ThemeFollowSystem:
+                    switchAppTheme(Theme::FollowSystem);
+                    break;
+                case DFontMenuManager::MenuAction::M_FontInfo: {
+                    DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
+                    DFontInfoDialog fontInfoDlg(&currItemData);
+                    fontInfoDlg.exec();
+                } break;
+                case DFontMenuManager::MenuAction::M_DeleteFont: {
+                } break;
+                case DFontMenuManager::MenuAction::M_Help: {
+                } break;
+                default:
+                    qDebug() << "handleMenuEvent->(id=" << actionId << ")";
             }
         }
     }
@@ -491,17 +474,17 @@ void DFontMgrMainWindow::switchAppTheme(int type)
 
     if (app) {
         switch (type) {
-        case Theme::Dark: {
-            app->setTheme("dark");
-        } break;
-        case Theme::Light: {
-            app->setTheme("light");
-        } break;
-        case Theme::FollowSystem: {
-            // Not implementated
-        } break;
-        default:
-            qDebug() << "Unknow Theme type = " << type;
+            case Theme::Dark: {
+                app->setTheme("dark");
+            } break;
+            case Theme::Light: {
+                app->setTheme("light");
+            } break;
+            case Theme::FollowSystem: {
+                // Not implementated
+            } break;
+            default:
+                qDebug() << "Unknow Theme type = " << type;
         }
     }
 }
@@ -529,11 +512,11 @@ void DFontMgrMainWindow::setQuickInstallMode(bool isQuick)
     m_isQuickMode = isQuick;
 }
 
-void DFontMgrMainWindow::onSearchTextChanged()
+void DFontMgrMainWindow::onSearchTextChanged(const QString &currStr)
 {
     Q_D(DFontMgrMainWindow);
 
-    QString strSearchFontName = d->searchFontEdit->text();
+    QString strSearchFontName = currStr;
     qDebug() << strSearchFontName << endl;
 
     QString strFontSize = d->fontSizeLabel->text();

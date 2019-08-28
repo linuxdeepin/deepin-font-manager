@@ -20,12 +20,12 @@ class DFontMgrMainWindow : public DMainWindow
 
 public:
     explicit DFontMgrMainWindow(bool isQuickMode = false, QWidget *parent = nullptr);
-    ~DFontMgrMainWindow();
+    ~DFontMgrMainWindow() override;
 
     static constexpr int MIN_FONT_SIZE = 6;
     static constexpr int MAX_FONT_SIZE = 60;
     static constexpr int DEFAULT_FONT_SIZE = FTM_DEFAULT_PREVIEW_FONTSIZE;
-    static constexpr char *FMT_FONT_SIZE = "%dpx";
+    static constexpr char const *FMT_FONT_SIZE = "%dpx";
 
     enum Theme { Dark, Light, FollowSystem };
 
@@ -61,7 +61,7 @@ signals:
 public slots:
     void handleMenuEvent(QAction *);
 
-    void onSearchTextChanged();
+    void onSearchTextChanged(const QString &currStr);
     void onPreviewTextChanged(const QString &currStr);
     void onFontSizeChanged(int fontSize);
 

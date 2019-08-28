@@ -37,6 +37,7 @@ void DFontPreviewListView::initFontListData()
 
             QStandardItem *item = new QStandardItem;
             item->setData(QVariant(itemData.strFontName), Qt::UserRole);
+            item->setData(QVariant(itemData.pFontInfo->filePath), Qt::UserRole + 3);
             item->setData(QVariant::fromValue(itemData), Qt::DisplayRole);
 
             m_fontPreviewItemModel->appendRow(item);
