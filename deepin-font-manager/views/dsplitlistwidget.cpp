@@ -23,6 +23,9 @@ DSplitListWidget::DSplitListWidget(QWidget *parent)
 {
     //去除选中项的边框
     this->setItemDelegate(new DNoFocusDelegate());
+
+    initListData();
+    initConnections();
 }
 
 DSplitListWidget::~DSplitListWidget() {}
@@ -53,6 +56,31 @@ QWidget *DSplitListWidget::initSplitWidget(int widgetWidth, int widgetHeight)
     return splitWidget;
 }
 
+void DSplitListWidget::initListData()
+{
+#warning need internationalization
+    m_titleStringList << QString("所有字体") << QString("系统字体") << QString("用户字体")
+                      << QString("我的收藏") << QString("已激活") << QString("中文")
+                      << QString("等宽");
+
+    for (int i = 0; i < m_titleStringList.size(); i++) {
+        QString titleString = m_titleStringList.at(i);
+        QListWidgetItem *item = new QListWidgetItem(titleString);
+        item->setSizeHint(QSize(120, 40));
+        item->setData(Qt::UserRole, QVariant::fromValue(i));
+
+        this->addItem(item);
+    }
+
+    this->insertSplitItem(5);
+}
+
+void DSplitListWidget::initConnections()
+{
+    QObject::connect(this, SIGNAL(itemClicked(QListWidgetItem *)), this,
+                     SLOT(onListWidgetItemClicked(QListWidgetItem *)));
+}
+
 void DSplitListWidget::insertSplitItem(int row)
 {
     int splitCount = 0;
@@ -76,4 +104,10 @@ void DSplitListWidget::insertSplitItem(int row)
     QWidget *splitWidget = initSplitWidget(itemSize.width(), itemSize.height());
     this->insertItem(insertIndex, itemSperator);
     this->setItemWidget(itemSperator, splitWidget);
+}
+
+void DSplitListWidget::onListWidgetItemClicked(QListWidgetItem *item)
+{
+    int rowIndex = this->row(item);
+    emit onListWidgetItemClicked(rowIndex);
 }
