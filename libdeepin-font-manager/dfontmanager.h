@@ -27,11 +27,7 @@ class DFontManager : public QThread
     Q_OBJECT
 
 public:
-    enum Type {
-        Install,
-        ReInstall,
-        UnInstall
-    };
+    enum Type { Install, ReInstall, UnInstall };
 
     static DFontManager *instance();
     DFontManager(QObject *parent = nullptr);
@@ -52,7 +48,7 @@ signals:
     void installPositionChanged(const QString &instPath);
     void reinstalling();
     void uninstalling();
-    void installFinished();
+    void installFinished(int state);
     void reinstallFinished();
     void uninstallFinished();
 

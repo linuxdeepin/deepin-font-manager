@@ -27,11 +27,11 @@ void DFInstallNormalWindow::initUI()
 {
     setFixedSize(QSize(380, 136));
 
-    QVBoxLayout *mainLayout = new QVBoxLayout(this);
+    QVBoxLayout *mainLayout = new QVBoxLayout();
     mainLayout->setSpacing(0);
     mainLayout->setContentsMargins(10, 0, 0, 0);
 
-    QHBoxLayout *titleLayout = new QHBoxLayout(this);
+    QHBoxLayout *titleLayout = new QHBoxLayout();
     titleLayout->setSpacing(0);
     titleLayout->setContentsMargins(0, 0, 0, 0);
 
@@ -126,26 +126,31 @@ void DFInstallNormalWindow::initConnections()
     connect(m_fontManager, &DFontManager::batchInstall, this,
             &DFInstallNormalWindow::onProgressChanged);
 
-    connect(m_fontManager, &DFontManager::installFinished, this, [=]() {
+    connect(m_fontManager, &DFontManager::installFinished, this, [=](int state) {
         // ToDo:
         //   May send signal to mainwindow refresh new installed font
         // QMIT notfiyRefresh;
 
-        m_installFiles.clear();
-        m_installState = InstallState::reinstall;
+        if (0 == state) {
+            m_installFiles.clear();
+            m_installState = InstallState::reinstall;
 
-        // Update the installtion file list showed in exception dialog
-        foreach (auto it, m_installedFiles) {
-            m_installFiles.append(it);
-        }
+            // Update the installtion file list showed in exception dialog
+            foreach (auto it, m_installedFiles) {
+                m_installFiles.append(it);
+            }
 
-        foreach (auto it, m_damagedFiles) {
-            m_installFiles.append(it);
-        }
+            foreach (auto it, m_damagedFiles) {
+                m_installFiles.append(it);
+            }
 
-        if (ifNeedShowExceptionWindow()) {
-            showInstallErrDlg();
+            if (ifNeedShowExceptionWindow()) {
+                showInstallErrDlg();
+            } else {
+                this->close();
+            }
         } else {
+            // User cancel in athorisze window
             this->close();
         }
     });

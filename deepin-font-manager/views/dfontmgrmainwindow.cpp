@@ -5,6 +5,7 @@
 #include "globaldef.h"
 #include "interfaces/dfontmenumanager.h"
 #include "utils.h"
+#include "views/dfdeletedialog.h"
 #include "views/dfontinfodialog.h"
 #include "views/dfquickinstallwindow.h"
 
@@ -25,6 +26,7 @@
 #include <DSearchEdit>
 #include <DSlider>
 #include <DTitlebar>
+#include <QMessageBox>
 
 class DFontMgrMainWindowPrivate
 {
@@ -106,6 +108,18 @@ void DFontMgrMainWindow::initConnections()
     // Right Key menu
     QObject::connect(d->rightKeyMenu, &QMenu::triggered, this,
                      &DFontMgrMainWindow::handleMenuEvent);
+    // Initialize rigth menu it state
+    QObject::connect(d->rightKeyMenu, &QMenu::aboutToShow, this, [=]() {
+        DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
+
+        // Disable delete menu for system font
+        QAction *delAction = DFontMenuManager::getInstance()->getActionByMenuAction(
+            DFontMenuManager::M_DeleteFont, DFontMenuManager::MenuType::RightKeyMenu);
+
+        if (nullptr != delAction && currItemData.pFontInfo->isSystemFont) {
+            delAction->setDisabled(true);
+        }
+    });
 
     // State bar event
     QObject::connect(d->fontScaleSlider, &DSlider::valueChanged, this, [this, d](int value) {
@@ -149,7 +163,7 @@ void DFontMgrMainWindow::initTileBar()
         titlebar()->setContentsMargins(0, 0, 0, 0);
 
         titlebar()->setFixedHeight(FTM_TITLE_FIXED_HEIGHT);
-        titlebar()->setCustomWidget(d->titleFrame, Qt::AlignLeft);
+        titlebar()->setCustomWidget(d->titleFrame, false);
     }
 }
 
@@ -171,7 +185,7 @@ void DFontMgrMainWindow::initTileFrame()
 
     initToolBar();
 
-    QHBoxLayout *titleLayout = new QHBoxLayout(this);
+    QHBoxLayout *titleLayout = new QHBoxLayout();
     titleLayout->setMargin(0);
     titleLayout->setSpacing(0);
     titleLayout->addSpacing(8);
@@ -256,7 +270,7 @@ void DFontMgrMainWindow::initLeftSideBar()
     d->leftBarHolder->setContentsMargins(10, 0, 10, 0);
     // d->leftBarHolder->setAttribute(Qt::WA_TranslucentBackground, true);
 
-    QVBoxLayout *leftMainLayout = new QVBoxLayout(this);
+    QVBoxLayout *leftMainLayout = new QVBoxLayout();
     leftMainLayout->setContentsMargins(0, 0, 0, 0);
     leftMainLayout->setSpacing(0);
 
@@ -284,7 +298,7 @@ void DFontMgrMainWindow::initRightFontView()
     d->rightViewHolder->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     d->rightViewHolder->setObjectName("rightMainLayoutHolder");
 
-    QVBoxLayout *rightMainLayout = new QVBoxLayout(this);
+    QVBoxLayout *rightMainLayout = new QVBoxLayout();
     rightMainLayout->setContentsMargins(0, 0, 0, 0);
     rightMainLayout->setSpacing(0);
 
@@ -337,7 +351,7 @@ void DFontMgrMainWindow::initStateBar()
 {
     Q_D(DFontMgrMainWindow);
 
-    QHBoxLayout *stateBarLayout = new QHBoxLayout(this);
+    QHBoxLayout *stateBarLayout = new QHBoxLayout();
     stateBarLayout->setContentsMargins(0, 0, 0, 0);
     stateBarLayout->setSpacing(0);
 
@@ -440,29 +454,42 @@ void DFontMgrMainWindow::handleMenuEvent(QAction *action)
 
             // Add menu handler code here
             switch (actionId) {
-                case DFontMenuManager::MenuAction::M_AddFont: {
-                    handleAddFontEvent();
-                } break;
-                case DFontMenuManager::MenuAction::M_ThemeDark:
-                    switchAppTheme(Theme::Dark);
-                    break;
-                case DFontMenuManager::MenuAction::M_ThemeLight:
-                    switchAppTheme(Theme::Light);
-                    break;
-                case DFontMenuManager::MenuAction::M_ThemeFollowSystem:
-                    switchAppTheme(Theme::FollowSystem);
-                    break;
-                case DFontMenuManager::MenuAction::M_FontInfo: {
+            case DFontMenuManager::MenuAction::M_AddFont: {
+                handleAddFontEvent();
+            } break;
+            case DFontMenuManager::MenuAction::M_ThemeDark:
+                switchAppTheme(Theme::Dark);
+                break;
+            case DFontMenuManager::MenuAction::M_ThemeLight:
+                switchAppTheme(Theme::Light);
+                break;
+            case DFontMenuManager::MenuAction::M_ThemeFollowSystem:
+                switchAppTheme(Theme::FollowSystem);
+                break;
+            case DFontMenuManager::MenuAction::M_FontInfo: {
+                DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
+                DFontInfoDialog fontInfoDlg(&currItemData);
+                fontInfoDlg.exec();
+            } break;
+            case DFontMenuManager::MenuAction::M_DeleteFont: {
+                DFDeleteDialog confirmDelDlg;
+                connect(&confirmDelDlg, &DFDeleteDialog::accepted, this, [this]() {
+                    // Add Delete font code Here
                     DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
-                    DFontInfoDialog fontInfoDlg(&currItemData);
-                    fontInfoDlg.exec();
-                } break;
-                case DFontMenuManager::MenuAction::M_DeleteFont: {
-                } break;
-                case DFontMenuManager::MenuAction::M_Help: {
-                } break;
-                default:
-                    qDebug() << "handleMenuEvent->(id=" << actionId << ")";
+                    qDebug() << "Confirm delete:" << currItemData.pFontInfo->filePath
+                             << " is system font:" << currItemData.pFontInfo->isSystemFont;
+                });
+
+                confirmDelDlg.exec();
+
+            } break;
+            case DFontMenuManager::MenuAction::M_ShowFontPostion:
+                showFontFilePostion();
+                break;
+            case DFontMenuManager::MenuAction::M_Help: {
+            } break;
+            default:
+                qDebug() << "handleMenuEvent->(id=" << actionId << ")";
             }
         }
     }
@@ -474,17 +501,17 @@ void DFontMgrMainWindow::switchAppTheme(int type)
 
     if (app) {
         switch (type) {
-            case Theme::Dark: {
-                app->setTheme("dark");
-            } break;
-            case Theme::Light: {
-                app->setTheme("light");
-            } break;
-            case Theme::FollowSystem: {
-                // Not implementated
-            } break;
-            default:
-                qDebug() << "Unknow Theme type = " << type;
+        case Theme::Dark: {
+            app->setTheme("dark");
+        } break;
+        case Theme::Light: {
+            app->setTheme("light");
+        } break;
+        case Theme::FollowSystem: {
+            // Not implementated
+        } break;
+        default:
+            qDebug() << "Unknow Theme type = " << type;
         }
     }
 }
@@ -493,7 +520,10 @@ void DFontMgrMainWindow::installFont(const QStringList &files)
 {
     qDebug() << __FUNCTION__ << files;
     DFInstallNormalWindow dfNormalInstalldlg(files, this);
-    dfNormalInstalldlg.setSkipException(true);
+    if (m_isQuickMode) {
+        dfNormalInstalldlg.setSkipException(true);
+    }
+
     dfNormalInstalldlg.exec();
 }
 
@@ -573,5 +603,22 @@ void DFontMgrMainWindow::onFontSizeChanged(int fontSize)
     for (int rowIndex = 0; rowIndex < filterModel->rowCount(); rowIndex++) {
         QModelIndex modelIndex = filterModel->index(rowIndex, 0);
         filterModel->setData(modelIndex, QVariant(fontSize), Qt::UserRole + 2);
+    }
+}
+
+void DFontMgrMainWindow::showFontFilePostion()
+{
+    DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
+
+    if (nullptr != currItemData.pFontInfo) {
+        QUrl url =
+            QUrl::fromLocalFile(QFileInfo(currItemData.pFontInfo->filePath).dir().absolutePath());
+        qDebug() << QUrl::fromLocalFile(currItemData.pFontInfo->filePath).toString();
+        QUrlQuery query;
+        query.addQueryItem("selectUrl",
+                           QUrl::fromLocalFile(currItemData.pFontInfo->filePath).toString());
+        url.setQuery(query);
+
+        QProcess::startDetached(DEEPIN_FILE_MANAGE_NAME, QStringList(url.toString()));
     }
 }

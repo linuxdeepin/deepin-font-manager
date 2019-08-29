@@ -18,10 +18,10 @@
  */
 
 #include "dfontmanager.h"
-#include <QProcess>
+#include <QDebug>
 #include <QJsonDocument>
 #include <QJsonObject>
-#include <QDebug>
+#include <QProcess>
 
 static DFontManager *INSTANCE = 0;
 
@@ -37,12 +37,9 @@ DFontManager *DFontManager::instance()
 DFontManager::DFontManager(QObject *parent)
     : QThread(parent)
 {
-
 }
 
-DFontManager::~DFontManager()
-{
-}
+DFontManager::~DFontManager() {}
 
 void DFontManager::setType(Type type)
 {
@@ -83,7 +80,6 @@ void DFontManager::handleInstallOutput(const QString &output)
             emit batchInstall(object.value("FilePath").toString(),
                               object.value("Percent").toDouble());
         }
-
     }
 }
 
@@ -126,7 +122,7 @@ void DFontManager::run()
 bool DFontManager::doCmd(const QString &program, const QStringList &arguments)
 {
     QProcess *process = new QProcess;
-    bool failed = false;
+    int failed = false;
 
     switch (m_type) {
     case Install:
@@ -159,7 +155,10 @@ void DFontManager::handleInstall()
         if (m_instFileList.count() == 1) {
             // emit installFinished();
         }
-        Q_EMIT installFinished();
+        Q_EMIT installFinished(0);
+    } else {
+        // For:unathorized exit
+        Q_EMIT installFinished(127);
     }
 }
 

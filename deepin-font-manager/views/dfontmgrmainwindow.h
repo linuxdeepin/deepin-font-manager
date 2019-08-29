@@ -27,7 +27,11 @@ public:
     static constexpr int DEFAULT_FONT_SIZE = FTM_DEFAULT_PREVIEW_FONTSIZE;
     static constexpr char const *FMT_FONT_SIZE = "%dpx";
 
-    enum Theme { Dark, Light, FollowSystem };
+    enum Theme {
+        Dark,
+        Light,
+        FollowSystem,
+    };
 
     void setQuickInstallMode(bool isQuick);
 
@@ -50,6 +54,8 @@ protected:
     void handleAddFontEvent();
     void switchAppTheme(int type);
     void installFont(const QStringList &files);
+    void showFontFilePostion();
+
     void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
 
     DFontPreviewListView *m_fontPreviewListView;

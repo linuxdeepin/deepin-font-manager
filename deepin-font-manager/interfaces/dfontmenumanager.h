@@ -2,10 +2,12 @@
 #define DFONTMENUMANAGER_H
 
 #include <QAction>
+#include <QActionGroup>
 #include <QMenu>
 #include <QObject>
 #include <QSet>
 #include <QVector>
+
 class DFontMenuManager : public QObject
 {
     Q_OBJECT
@@ -35,17 +37,20 @@ public:
     };
 
     struct FMenuItem {
-        FMenuItem(QString name, MenuAction id, bool haveSubMenu = false)
+        FMenuItem(QString name, MenuAction id, bool haveSubMenu = false, bool group = false)
             : actionName(name)
             , actionId(id)
             , fHaveSubMenu(haveSubMenu)
+            , fGroupSubMenu(group)
         {
         }
 
         QString actionName;
         MenuAction actionId;
-        QAction   *action {nullptr};
+        QAction *action {nullptr};
         bool fHaveSubMenu {false};
+        bool fGroupSubMenu {false};
+        QActionGroup *actionGroup {nullptr};
         QVector<FMenuItem *> subMenulist;
     };
 
@@ -61,6 +66,9 @@ private:
 
     QMap<MenuAction, FMenuItem *> m_fontToolsBarMenus;
     QMap<MenuAction, FMenuItem *> m_fontRightKeyMenus;
+
+    QVector<FMenuItem *> m_fontToolBarMenuData;
+    QVector<FMenuItem *> m_fontRightMenuData;
 
 private:
     static DFontMenuManager *instance;

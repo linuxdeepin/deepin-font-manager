@@ -25,40 +25,25 @@ void DFontMenuManager::initMenuData()
     //    Need to localize the menu string
 
     // Tools bar menu & Right key menu.
-    m_fontToolsBarMenus.insert(MenuAction::M_AddFont,
-                               new FMenuItem("添加字体", MenuAction::M_AddFont));
-
-    FMenuItem *themeMenus = new FMenuItem("主题", MenuAction::M_Theme, true);
+    m_fontToolBarMenuData.push_back(new FMenuItem("添加字体", MenuAction::M_AddFont));
+    FMenuItem *themeMenus = new FMenuItem("主题", MenuAction::M_Theme, true, true);
     themeMenus->subMenulist.push_back(new FMenuItem("浅色主体", MenuAction::M_ThemeLight));
     themeMenus->subMenulist.push_back(new FMenuItem("深色主体", MenuAction::M_ThemeDark));
     themeMenus->subMenulist.push_back(new FMenuItem("跟随系统", MenuAction::M_ThemeFollowSystem));
-    m_fontToolsBarMenus.insert(MenuAction::M_Theme, themeMenus);
-    m_fontToolsBarMenus.insert(MenuAction::M_Help, new FMenuItem("帮助", MenuAction ::M_Help));
+    m_fontToolBarMenuData.push_back(themeMenus);
+    m_fontToolBarMenuData.push_back(new FMenuItem("帮助", MenuAction ::M_Help));
+    m_fontToolBarMenuData.push_back(new FMenuItem("", MenuAction::M_Separator));
 
     // Right key menu data
-    m_fontRightKeyMenus.insert(MenuAction::M_AddFont,
-                               new FMenuItem("添加字体", MenuAction::M_AddFont));
-
-    m_fontRightKeyMenus.insert(MenuAction::M_Separator, new FMenuItem("", MenuAction::M_Separator));
-
-    m_fontRightKeyMenus.insert(MenuAction::M_EnableOrDisable,
-                               new FMenuItem("启用字体", MenuAction::M_EnableOrDisable));
-    m_fontRightKeyMenus.insert(MenuAction::M_DeleteFont,
-                               new FMenuItem("删除字体", MenuAction::M_DeleteFont));
-    m_fontRightKeyMenus.insert(MenuAction::M_Faverator,
-                               new FMenuItem("收藏", MenuAction::M_Faverator));
-
-    m_fontRightKeyMenus.insert(MenuAction::M_Separator, new FMenuItem("", MenuAction::M_Separator));
-
-    m_fontRightKeyMenus.insert(MenuAction::M_FontInfo,
-                               new FMenuItem("显示信息", MenuAction::M_FontInfo));
-
-    m_fontRightKeyMenus.insert(MenuAction::M_Separator, new FMenuItem("", MenuAction::M_Separator));
-
-    m_fontRightKeyMenus.insert(MenuAction::M_ShowFontPostion,
-                               new FMenuItem("在文件管理器中显示", MenuAction::M_ShowFontPostion));
-
-    qDebug() << " font menu size = " << m_fontToolsBarMenus.size();
+    m_fontRightMenuData.push_back(new FMenuItem("添加字体", MenuAction::M_AddFont));
+    m_fontRightMenuData.push_back(new FMenuItem("", MenuAction::M_Separator));
+    m_fontRightMenuData.push_back(new FMenuItem("启用字体", MenuAction::M_EnableOrDisable));
+    m_fontRightMenuData.push_back(new FMenuItem("删除字体", MenuAction::M_DeleteFont));
+    m_fontRightMenuData.push_back(new FMenuItem("收藏", MenuAction::M_Faverator));
+    m_fontRightMenuData.push_back(new FMenuItem("", MenuAction::M_Separator));
+    m_fontRightMenuData.push_back(new FMenuItem("显示信息", MenuAction::M_FontInfo));
+    m_fontRightMenuData.push_back(new FMenuItem("", MenuAction::M_Separator));
+    m_fontRightMenuData.push_back(new FMenuItem("在文件管理器中显示", MenuAction::M_ShowFontPostion));
 }
 
 QMenu *DFontMenuManager::createToolBarSettingsMenu(FMenuActionTriggle actionTriggle)
@@ -67,28 +52,39 @@ QMenu *DFontMenuManager::createToolBarSettingsMenu(FMenuActionTriggle actionTrig
 
     QMenu *mainMenu = new QMenu();
 
-    QMap<MenuAction, FMenuItem *>::const_iterator it = m_fontToolsBarMenus.constBegin();
-    for (; it != m_fontToolsBarMenus.constEnd(); it++) {
+    for (auto it : m_fontToolBarMenuData) {
         QAction *newAction = nullptr;
 
-        if (it.key() == MenuAction::M_Separator) {
+        if (it->actionId == MenuAction::M_Separator) {
             mainMenu->addSeparator();
             continue;
         }
 
-        if (!it.value()->fHaveSubMenu) {
-            newAction = mainMenu->addAction(it.value()->actionName);
-            newAction->setData(it.key());
-            it.value()->action = newAction;
+        if (!it->fHaveSubMenu) {
+            newAction = mainMenu->addAction(it->actionName);
+            newAction->setData(it->actionId);
+            it->action = newAction;
+
+            m_fontToolsBarMenus.insert(it->actionId, it);
         } else {
-            QMenu *subMenu = mainMenu->addMenu(it.value()->actionName);
+            QMenu *subMenu = mainMenu->addMenu(it->actionName);
 
-            QVector<FMenuItem *>::Iterator iter = it.value()->subMenulist.begin();
+            // Create a action group for group menu
+            if (it->fGroupSubMenu) {
+                it->actionGroup = new QActionGroup(subMenu);
+            }
 
-            for (; iter != it.value()->subMenulist.end(); iter++) {
-                newAction = subMenu->addAction((*iter)->actionName);
-                newAction->setData((*iter)->actionId);
-                (*iter)->action = newAction;
+            for (auto iter : it->subMenulist) {
+                newAction = subMenu->addAction(iter->actionName);
+                newAction->setData(iter->actionId);
+                iter->action = newAction;
+
+                if (it->fGroupSubMenu) {
+                    newAction->setCheckable(true);
+                    it->actionGroup->addAction(newAction);
+                }
+
+                m_fontToolsBarMenus.insert(iter->actionId, iter);
             }
         }
     }
@@ -102,28 +98,29 @@ QMenu *DFontMenuManager::createRightKeyMenu(FMenuActionTriggle actionTriggle)
 
     QMenu *rightKeyMenu = new QMenu();
 
-    QMap<MenuAction, FMenuItem *>::const_iterator it = m_fontRightKeyMenus.constBegin();
-    for (; it != m_fontRightKeyMenus.constEnd(); it++) {
+    for (auto it : m_fontRightMenuData) {
         QAction *newAction = nullptr;
 
-        if (it.key() == MenuAction::M_Separator) {
+        if (it->actionId == MenuAction::M_Separator) {
             rightKeyMenu->addSeparator();
             continue;
         }
 
-        if (!it.value()->fHaveSubMenu) {
-            newAction = rightKeyMenu->addAction(it.value()->actionName);
-            newAction->setData(it.key());
-            it.value()->action = newAction;
+        if (!it->fHaveSubMenu) {
+            newAction = rightKeyMenu->addAction(it->actionName);
+            newAction->setData(it->actionId);
+            it->action = newAction;
+
+            m_fontRightKeyMenus.insert(it->actionId, it);
         } else {
-            QMenu *subMenu = rightKeyMenu->addMenu(it.value()->actionName);
+            QMenu *subMenu = rightKeyMenu->addMenu(it->actionName);
 
-            QVector<FMenuItem *>::Iterator iter = it.value()->subMenulist.begin();
+            for (auto iter : it->subMenulist) {
+                newAction = subMenu->addAction(iter->actionName);
+                newAction->setData(iter->actionId);
+                iter->action = newAction;
 
-            for (; iter != it.value()->subMenulist.end(); iter++) {
-                newAction = subMenu->addAction((*iter)->actionName);
-                newAction->setData((*iter)->actionId);
-                (*iter)->action = newAction;
+                m_fontRightKeyMenus.insert(iter->actionId, iter);
             }
         }
     }
@@ -146,8 +143,7 @@ QAction *DFontMenuManager::getActionByMenuAction(MenuAction maction, MenuType me
             action = it.value()->action;
         }
     } else {
-        qDebug() << __FUNCTION__ << " Unknow menu type = " << menuType
-                 << " for MenuAction=" << maction;
+        qDebug() << __FUNCTION__ << " Unknow menu type = " << menuType << " for MenuAction=" << maction;
     }
 
     return action;

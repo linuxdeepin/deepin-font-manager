@@ -18,10 +18,10 @@
  */
 
 #include "dfontinfomanager.h"
-#include <QFileInfo>
-#include <QProcess>
 #include <QDebug>
 #include <QDir>
+#include <QFileInfo>
+#include <QProcess>
 
 #include <fontconfig/fontconfig.h>
 #include <ft2build.h>
@@ -34,6 +34,11 @@
 
 static QList<DFontInfo *> dataList;
 static DFontInfoManager *INSTANCE = 0;
+
+inline bool isSystemFont(QString filePath)
+{
+    return filePath.contains("/usr/share/fonts/deepin-font-install") ? false : true;
+}
 
 QString convertToUtf8(char *content, int len)
 {
@@ -52,7 +57,7 @@ QString convertToUtf8(char *content, int len)
     convertedStr = QString::fromUtf8(QByteArray(backupPtr, actuallyUsed));
     iconv_close(code);
 
-    delete []backupPtr;
+    delete[] backupPtr;
     return convertedStr;
 }
 
@@ -71,9 +76,7 @@ DFontInfoManager::DFontInfoManager(QObject *parent)
     refreshList();
 }
 
-DFontInfoManager::~DFontInfoManager()
-{
-}
+DFontInfoManager::~DFontInfoManager() {}
 
 void DFontInfoManager::refreshList()
 {
@@ -84,6 +87,7 @@ void DFontInfoManager::refreshList()
 
     for (auto path : getAllFontPath()) {
         DFontInfo *fontInfo = getFontInfo(path);
+        fontInfo->isSystemFont = isSystemFont(path);
         dataList << fontInfo;
     }
 }
@@ -92,7 +96,8 @@ QStringList DFontInfoManager::getAllFontPath() const
 {
     QStringList pathList;
     QProcess *process = new QProcess;
-    process->start("fc-list", QStringList() << ":" << "file");
+    process->start("fc-list", QStringList() << ":"
+                                            << "file");
     process->waitForFinished(-1);
 
     QString output = process->readAllStandardOutput();
@@ -112,8 +117,7 @@ QString DFontInfoManager::getInstalledFontPath(DFontInfo *info)
     QString filePath = nullptr;
 
     for (const auto &famItem : famList) {
-        if (info->familyName == famItem->familyName &&
-            info->styleName == famItem->styleName) {
+        if (info->familyName == famItem->familyName && info->styleName == famItem->styleName) {
             filePath = famItem->filePath;
             break;
         }
@@ -139,6 +143,8 @@ QString DFontInfoManager::getFontType(const QString &filePath)
 DFontInfo *DFontInfoManager::getFontInfo(const QString &filePath)
 {
     DFontInfo *fontInfo = new DFontInfo;
+    fontInfo->isSystemFont = isSystemFont(filePath);
+
     FT_Library m_library = 0;
     FT_Face m_face = 0;
 
@@ -169,9 +175,9 @@ DFontInfo *DFontInfoManager::getFontInfo(const QString &filePath)
             }
 
             // only handle the unicode names for US langid.
-            if (!(sname.platform_id == TT_PLATFORM_MICROSOFT &&
-                  sname.encoding_id == TT_MS_ID_UNICODE_CS &&
-                  sname.language_id == TT_MS_LANGID_ENGLISH_UNITED_STATES)) {
+            if (!(sname.platform_id == TT_PLATFORM_MICROSOFT
+                  && sname.encoding_id == TT_MS_ID_UNICODE_CS
+                  && sname.language_id == TT_MS_LANGID_ENGLISH_UNITED_STATES)) {
                 continue;
             }
 
@@ -183,17 +189,17 @@ DFontInfo *DFontInfoManager::getFontInfo(const QString &filePath)
 
             switch (sname.name_id) {
             case TT_NAME_ID_COPYRIGHT:
-                fontInfo->copyright = convertToUtf8((char *) sname.string, sname.string_len);
+                fontInfo->copyright = convertToUtf8((char *)sname.string, sname.string_len);
                 fontInfo->copyright = fontInfo->copyright.simplified();
                 break;
 
             case TT_NAME_ID_VERSION_STRING:
-                fontInfo->version = convertToUtf8((char *) sname.string, sname.string_len);
+                fontInfo->version = convertToUtf8((char *)sname.string, sname.string_len);
                 fontInfo->version = fontInfo->version.remove("Version").simplified();
                 break;
 
             case TT_NAME_ID_DESCRIPTION:
-                fontInfo->description = convertToUtf8((char *) sname.string, sname.string_len);
+                fontInfo->description = convertToUtf8((char *)sname.string, sname.string_len);
                 fontInfo->description = fontInfo->description.simplified();
                 break;
             default:
