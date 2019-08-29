@@ -22,8 +22,7 @@
 
 #include <QObject>
 
-struct DFontInfo
-{
+struct DFontInfo {
     QString filePath;
     QString familyName;
     QString styleName;
@@ -34,10 +33,11 @@ struct DFontInfo
     QString sysVersion;
     bool isInstalled;
     bool isError;
+    bool isSystemFont {true};  // Default is system font
 
-    bool operator ==(const DFontInfo &info) {
-        return info.familyName == familyName &&
-               info.styleName == styleName;
+    bool operator==(const DFontInfo &info)
+    {
+        return info.familyName == familyName && info.styleName == styleName;
     }
 };
 

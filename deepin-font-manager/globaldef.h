@@ -24,6 +24,9 @@
 #define FTM_SBAR_FSIZE_LABEL_H 40
 #define FTM_SBAR_FSIZE_LABEL_W 32
 
+// File manager binary name
+#define DEEPIN_FILE_MANAGE_NAME "dde-file-manager"
+
 // Left side bar debug test data
 #define FTM_DEBUG_DATA_ON
 

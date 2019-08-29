@@ -167,7 +167,7 @@ void DFQuickInstallWindow::onFileSelected(QStringList fileList)
             if (m_fontInfoManager->isFontInstalled(pfontInfo)) {
                 DPalette pa = m_stateLabel->palette();
                 QColor color = pa.color(DPalette::TextWarning);
-                pa.setColor(DPalette::Text, color);
+                pa.setColor(DPalette::WindowText, color);
                 m_stateLabel->setPalette(pa);
 
                 m_stateLabel->setText(QString("已安装"));
