@@ -63,6 +63,8 @@ public:
     QMenu *toolBarMenu {nullptr};
     QMenu *rightKeyMenu {nullptr};
 
+    DSplitListWidget *leftSiderBar {nullptr};
+
     QScopedPointer<QSettings> settingsQsPtr;
     DFontMgrMainWindow *q_ptr;
     Q_DECLARE_PUBLIC(DFontMgrMainWindow)
@@ -145,6 +147,9 @@ void DFontMgrMainWindow::initConnections()
 
     QObject::connect(d->textInputEdit, SIGNAL(textChanged(const QString &)), this,
                      SLOT(onPreviewTextChanged(const QString &)));
+
+    QObject::connect(d->leftSiderBar, SIGNAL(onListWidgetItemClicked(int)), this,
+                     SLOT(onLeftSiderBarItemClicked(int)));
 }
 
 void DFontMgrMainWindow::initTileBar()
@@ -276,17 +281,17 @@ void DFontMgrMainWindow::initLeftSideBar()
 
     // ToDo:
     //    Need use the custom QListView replace QListWidget
-    DSplitListWidget *leftSiderBar = new DSplitListWidget(this);
+    d->leftSiderBar = new DSplitListWidget(this);
     // leftSiderBar->setAttribute(Qt::WA_TranslucentBackground, true);
-    leftSiderBar->setFrameShape(QFrame::NoFrame);
-    leftSiderBar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    leftMainLayout->addWidget(leftSiderBar);
+    d->leftSiderBar->setFrameShape(QFrame::NoFrame);
+    d->leftSiderBar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    leftMainLayout->addWidget(d->leftSiderBar);
     d->leftBarHolder->setLayout(leftMainLayout);
 
     // Debug layout code
 #ifdef FTM_DEBUG_LAYOUT_COLOR
     d->leftBarHolder->setStyleSheet("background: blue");
-    leftSiderBar->setStyleSheet("background: yellow");
+    d->leftSiderBar->setStyleSheet("background: yellow");
 #endif
 }
 
@@ -549,28 +554,16 @@ void DFontMgrMainWindow::onSearchTextChanged(const QString &currStr)
     QString strSearchFontName = currStr;
     qDebug() << strSearchFontName << endl;
 
-    QString strFontSize = d->fontSizeLabel->text();
-    int iFontSize = strFontSize.remove("px").toInt();
-    //    qDebug() << "Font size: " << strFontSize << "\t" << iFontSize << endl;
-
-    QSortFilterProxyModel *filterModel = m_fontPreviewListView->getFontPreviewProxyModel();
+    DFontPreviewProxyModel *filterModel = m_fontPreviewListView->getFontPreviewProxyModel();
 
     //根据搜索框内容实时过滤列表
     filterModel->setFilterKeyColumn(0);
-    filterModel->setFilterRegExp(strSearchFontName);
+    filterModel->setFilterFontNamePattern(strSearchFontName);
 
-    //    qDebug() << "filter Count:" << filterModel->rowCount() << endl;
+    qDebug() << __FUNCTION__ << "filter Count:" << filterModel->rowCount() << endl;
 
     QString previewText = d->textInputEdit->text();
     onPreviewTextChanged(previewText);
-
-    QString strPreviewText = d->textInputEdit->text();
-    if (strPreviewText.length() > 0) {
-        for (int rowIndex = 0; rowIndex < filterModel->rowCount(); rowIndex++) {
-            QModelIndex modelIndex = filterModel->index(rowIndex, 0);
-            filterModel->setData(modelIndex, QVariant(strPreviewText), Qt::UserRole + 1);
-        }
-    }
 }
 
 void DFontMgrMainWindow::onPreviewTextChanged(const QString &currStr)
@@ -584,10 +577,9 @@ void DFontMgrMainWindow::onPreviewTextChanged(const QString &currStr)
 
     QString strFontSize = d->fontSizeLabel->text();
     int iFontSize = strFontSize.remove("px").toInt();
-    //    qDebug() << "onPreviewTextChanged Font size: " << strFontSize << "\t" << iFontSize <<
-    //    endl;
 
-    QSortFilterProxyModel *filterModel = m_fontPreviewListView->getFontPreviewProxyModel();
+    DFontPreviewProxyModel *filterModel = m_fontPreviewListView->getFontPreviewProxyModel();
+    qDebug() << __FUNCTION__ << "filter Count:" << filterModel->rowCount() << endl;
 
     for (int rowIndex = 0; rowIndex < filterModel->rowCount(); rowIndex++) {
         QModelIndex modelIndex = filterModel->index(rowIndex, 0);
@@ -598,7 +590,8 @@ void DFontMgrMainWindow::onPreviewTextChanged(const QString &currStr)
 
 void DFontMgrMainWindow::onFontSizeChanged(int fontSize)
 {
-    QSortFilterProxyModel *filterModel = m_fontPreviewListView->getFontPreviewProxyModel();
+    DFontPreviewProxyModel *filterModel = m_fontPreviewListView->getFontPreviewProxyModel();
+    qDebug() << __FUNCTION__ << "filter Count:" << filterModel->rowCount() << endl;
 
     for (int rowIndex = 0; rowIndex < filterModel->rowCount(); rowIndex++) {
         QModelIndex modelIndex = filterModel->index(rowIndex, 0);
@@ -606,6 +599,7 @@ void DFontMgrMainWindow::onFontSizeChanged(int fontSize)
     }
 }
 
+<<<<<<< HEAD
 void DFontMgrMainWindow::showFontFilePostion()
 {
     DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
@@ -621,4 +615,23 @@ void DFontMgrMainWindow::showFontFilePostion()
 
         QProcess::startDetached(DEEPIN_FILE_MANAGE_NAME, QStringList(url.toString()));
     }
+=======
+void DFontMgrMainWindow::onLeftSiderBarItemClicked(int index)
+{
+    Q_D(DFontMgrMainWindow);
+
+    DSplitListWidget *listWidget = d->leftSiderBar;
+    QListWidgetItem *item = listWidget->item(index);
+    DSplitListWidget::FontGroup filterGroup =
+        item->data(Qt::UserRole).value<DSplitListWidget::FontGroup>();
+
+    qDebug() << filterGroup << endl;
+
+    DFontPreviewProxyModel *filterModel = m_fontPreviewListView->getFontPreviewProxyModel();
+    filterModel->setFilterKeyColumn(0);
+    filterModel->setFilterGroup(filterGroup);
+
+    QString previewText = d->textInputEdit->text();
+    onPreviewTextChanged(previewText);
+>>>>>>>     chore: add sqlite management, handle font collection and font category filter
 }

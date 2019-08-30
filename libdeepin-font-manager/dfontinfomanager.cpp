@@ -105,7 +105,10 @@ QStringList DFontInfoManager::getAllFontPath() const
     process->deleteLater();
 
     for (QString line : lines) {
-        pathList << line.remove(QChar(':')).simplified();
+        QString filePath = line.remove(QChar(':')).simplified();
+        if (filePath.length() > 0) {
+            pathList << filePath;
+        }
     }
 
     return pathList;
@@ -188,6 +191,7 @@ DFontInfo *DFontInfoManager::getFontInfo(const QString &filePath)
             // }
 
             switch (sname.name_id) {
+<<<<<<< HEAD
             case TT_NAME_ID_COPYRIGHT:
                 fontInfo->copyright = convertToUtf8((char *)sname.string, sname.string_len);
                 fontInfo->copyright = fontInfo->copyright.simplified();
@@ -204,6 +208,24 @@ DFontInfo *DFontInfoManager::getFontInfo(const QString &filePath)
                 break;
             default:
                 break;
+=======
+                case TT_NAME_ID_COPYRIGHT:
+                    fontInfo->copyright = convertToUtf8((char *)sname.string, sname.string_len);
+                    fontInfo->copyright = fontInfo->copyright.simplified();
+                    break;
+
+                case TT_NAME_ID_VERSION_STRING:
+                    fontInfo->version = convertToUtf8((char *)sname.string, sname.string_len);
+                    fontInfo->version = fontInfo->version.remove("Version").simplified();
+                    break;
+
+                case TT_NAME_ID_DESCRIPTION:
+                    fontInfo->description = convertToUtf8((char *)sname.string, sname.string_len);
+                    fontInfo->description = fontInfo->description.simplified();
+                    break;
+                default:
+                    break;
+>>>>>>>     chore: add sqlite management, handle font collection and font category filter
             }
         }
     }

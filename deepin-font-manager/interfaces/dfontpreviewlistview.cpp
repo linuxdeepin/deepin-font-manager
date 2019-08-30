@@ -1,18 +1,43 @@
 #include "dfontpreviewlistview.h"
+#include <fontconfig/fontconfig.h>
 #include "dfontinfomanager.h"
 #include "dfontpreviewitemdelegate.h"
 
 #include <DLog>
 #include <DMenu>
 
+#include <QFontDatabase>
+#include <QSet>
+
 DWIDGET_USE_NAMESPACE
 
 DFontPreviewListView::DFontPreviewListView(QWidget *parent)
     : DListView(parent)
+    , m_sqlUtil(new DSqliteUtil(".font_manager.db"))
 {
+    setAutoScroll(false);
+
     initFontListData();
     initDelegate();
     initConnections();
+}
+
+DFontPreviewListView::~DFontPreviewListView()
+{
+    delete m_sqlUtil;
+}
+
+QMap<QString, QString> DFontPreviewListView::mapItemData(DFontPreviewItemData itemData)
+{
+    QMap<QString, QString> mapData;
+    mapData.insert("fontName", itemData.strFontName);
+    mapData.insert("familyName", itemData.pFontInfo->familyName);
+    mapData.insert("isEnabled", QString::number(itemData.isEnabled));
+    mapData.insert("isCollected", QString::number(itemData.isCollected));
+    mapData.insert("filePath", itemData.pFontInfo->filePath);
+    mapData.insert("appFontId", QString::number(itemData.appFontId));
+
+    return mapData;
 }
 
 void DFontPreviewListView::initFontListData()
@@ -20,29 +45,120 @@ void DFontPreviewListView::initFontListData()
     QStringList fontNameList;
     DFontInfoManager *fontInfoMgr = DFontInfoManager::instance();
     QStringList strAllFontList = fontInfoMgr->getAllFontPath();
-    //    qDebug() << strAllFontList << endl;
 
+    qDebug() << "strAllFontList.size()" << strAllFontList.size() << endl;
+
+    int recordCount = m_sqlUtil->getRecordCount();
+    if (recordCount > 0) {
+        QList<QMap<QString, QString>> recordList;
+
+        QList<QString> keyList;
+        keyList.append("fontId");
+        keyList.append("fontName");
+        keyList.append("familyName");
+        keyList.append("isEnabled");
+        keyList.append("isCollected");
+        keyList.append("filePath");
+        keyList.append("appFontId");
+
+        m_sqlUtil->findRecords(keyList, &recordList);
+
+        QSet<QString> dbFilePathSet;
+        m_fontPreviewItemModel = new QStandardItemModel;
+        for (int i = 0; i < recordList.size(); ++i) {
+            QMap<QString, QString> record = recordList.at(i);
+            if (record.size() > 0) {
+                DFontPreviewItemData itemData;
+                QString filePath = record.value("filePath");
+                QFileInfo filePathInfo(filePath);
+                itemData.strFontId = record.value("fontId");
+                itemData.pFontInfo = fontInfoMgr->getFontInfo(filePath);
+                itemData.strFontName = record.value("fontName");
+                itemData.pFontInfo->familyName = record.value("familyName");
+                itemData.strFontFileName = filePathInfo.baseName();
+                itemData.strFontPreview = FTM_DEFAULT_PREVIEW_TEXT;
+                itemData.iFontSize = FTM_DEFAULT_PREVIEW_FONTSIZE;
+                itemData.isEnabled = record.value("isEnabled").toInt();
+                itemData.isCollected = record.value("isCollected").toInt();
+                itemData.appFontId = record.value("appFontId").toInt();
+
+                if (itemData.isCollected) {
+                    qDebug() << itemData.strFontName << record.value("isCollected").toInt() << endl;
+                }
+
+                QStandardItem *item = new QStandardItem;
+                item->setData(QVariant::fromValue(itemData), Qt::DisplayRole);
+
+                m_fontPreviewItemModel->appendRow(item);
+
+                dbFilePathSet.insert(filePath);
+            }
+        }
+
+        //根据文件路径比较出不同的字体文件
+        QSet<QString> fontListSet = strAllFontList.toSet();
+        QSet<QString> diffSet = fontListSet.subtract(dbFilePathSet);
+        if (diffSet.count() > 0) {
+            QList<QString> diffFilePathList = diffSet.toList();
+            for (int i = 0; i < diffFilePathList.size(); ++i) {
+                QString filePath = diffFilePathList.at(i);
+                if (filePath.length() > 0) {
+                    insertFontItemData(filePath, strAllFontList.size() + i + 1);
+                }
+            }
+        }
+
+        return;
+    }
+
+    //开启事务
+    m_sqlUtil->m_db.transaction();
     m_fontPreviewItemModel = new QStandardItemModel;
     for (int i = 0; i < strAllFontList.size(); ++i) {
         QString filePath = strAllFontList.at(i);
         if (filePath.length() > 0) {
-            DFontPreviewItemData itemData;
-            QFileInfo filePathInfo(filePath);
-            itemData.pFontInfo = fontInfoMgr->getFontInfo(filePath);
-            itemData.strFontName = filePathInfo.baseName();
-            itemData.strFontPreview = FTM_DEFAULT_PREVIEW_TEXT;
-            itemData.iFontSize = FTM_DEFAULT_PREVIEW_FONTSIZE;
-            itemData.bEnabled = false;
-            itemData.bCollected = false;
-
-            QStandardItem *item = new QStandardItem;
-            item->setData(QVariant(itemData.strFontName), Qt::UserRole);
-            item->setData(QVariant(itemData.pFontInfo->filePath), Qt::UserRole + 3);
-            item->setData(QVariant::fromValue(itemData), Qt::DisplayRole);
-
-            m_fontPreviewItemModel->appendRow(item);
+            insertFontItemData(filePath, i + 1);
         }
     }
+
+    m_sqlUtil->m_db.commit();
+}
+
+void DFontPreviewListView::insertFontItemData(QString filePath, int index)
+{
+    DFontInfoManager *fontInfoMgr = DFontInfoManager::instance();
+    DFontPreviewItemData itemData;
+    QFileInfo filePathInfo(filePath);
+    itemData.pFontInfo = fontInfoMgr->getFontInfo(filePath);
+
+    int appFontId = QFontDatabase::addApplicationFont(filePath);
+    QStringList fontFamilyList = QFontDatabase::applicationFontFamilies(appFontId);
+    if (fontFamilyList.size() > 0) {
+        QString fontFamily = QString(fontFamilyList.first().toLocal8Bit());
+        if (itemData.pFontInfo->styleName.length() > 0) {
+            itemData.strFontName =
+                QString("%1-%2").arg(fontFamily).arg(itemData.pFontInfo->styleName);
+        } else {
+            itemData.strFontName = fontFamily;
+        }
+        itemData.pFontInfo->familyName = fontFamily;
+    } else {
+        itemData.strFontName = itemData.pFontInfo->familyName;
+    }
+    itemData.strFontId = QString::number(index);
+    itemData.appFontId = appFontId;
+    itemData.strFontFileName = filePathInfo.baseName();
+    itemData.strFontPreview = FTM_DEFAULT_PREVIEW_TEXT;
+    itemData.iFontSize = FTM_DEFAULT_PREVIEW_FONTSIZE;
+    itemData.isEnabled = true;
+    itemData.isCollected = false;
+
+    QStandardItem *item = new QStandardItem;
+    item->setData(QVariant::fromValue(itemData), Qt::DisplayRole);
+
+    m_fontPreviewItemModel->appendRow(item);
+
+    m_sqlUtil->addRecord(mapItemData(itemData));
 }
 
 void DFontPreviewListView::initDelegate()
@@ -50,10 +166,9 @@ void DFontPreviewListView::initDelegate()
     m_fontPreviewItemDelegate = new DFontPreviewItemDelegate(this);
     this->setItemDelegate(m_fontPreviewItemDelegate);
 
-    m_fontPreviewProxyModel = new QSortFilterProxyModel(this);
+    m_fontPreviewProxyModel = new DFontPreviewProxyModel(this);
     m_fontPreviewProxyModel->setSourceModel(m_fontPreviewItemModel);
     m_fontPreviewProxyModel->setDynamicSortFilter(true);
-    m_fontPreviewProxyModel->setFilterRole(Qt::UserRole);
     this->setModel(m_fontPreviewProxyModel);
 }
 
@@ -112,7 +227,7 @@ void DFontPreviewListView::onListViewItemEnableBtnClicked(QModelIndex index)
 {
     DFontPreviewItemData itemData =
         qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(index));
-    itemData.bEnabled = !itemData.bEnabled;
+    itemData.isEnabled = !itemData.isEnabled;
 
     m_fontPreviewProxyModel->setData(index, QVariant::fromValue(itemData), Qt::DisplayRole);
 }
@@ -121,7 +236,13 @@ void DFontPreviewListView::onListViewItemCollectionBtnClicked(QModelIndex index)
 {
     DFontPreviewItemData itemData =
         qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(index));
-    itemData.bCollected = !itemData.bCollected;
+    itemData.isCollected = !itemData.isCollected;
+
+    QMap<QString, QString> where;
+    where.insert("fontId", itemData.strFontId);
+    QMap<QString, QString> data;
+    data.insert("isCollected", QString::number(itemData.isCollected));
+    m_sqlUtil->updateRecord(where, data);
 
     m_fontPreviewProxyModel->setData(index, QVariant::fromValue(itemData), Qt::DisplayRole);
 }
@@ -154,7 +275,7 @@ DFontPreviewItemData DFontPreviewListView::currModelData()
     return itemData;
 }
 
-QSortFilterProxyModel *DFontPreviewListView::getFontPreviewProxyModel()
+DFontPreviewProxyModel *DFontPreviewListView::getFontPreviewProxyModel()
 {
     return m_fontPreviewProxyModel;
 }

@@ -6,6 +6,7 @@
 
 #include <QCheckBox>
 #include <QEvent>
+#include <QFontDatabase>
 #include <QImageReader>
 #include <QMouseEvent>
 #include <QPainter>
@@ -31,20 +32,14 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
     if (index.isValid()) {
         painter->save();
 
-        QVariant varFontName = index.data(Qt::UserRole);
         QVariant varFontPreviewText = index.data(Qt::UserRole + 1);
         QVariant varFontSize = index.data(Qt::UserRole + 2);
-        QVariant variant = index.data(Qt::DisplayRole);
+        QVariant varDisplay = index.data(Qt::DisplayRole);
 
-        DFontPreviewItemData data = variant.value<DFontPreviewItemData>();
+        DFontPreviewItemData data = varDisplay.value<DFontPreviewItemData>();
 
-        QString strFontName = data.strFontName;
         QString strFontPreview = data.strFontPreview;
         int iFontSize = data.iFontSize;
-
-        if (!varFontName.isNull()) {
-            strFontName = varFontName.toString();
-        }
 
         if (!varFontPreviewText.isNull()) {
             strFontPreview = varFontPreviewText.toString();
@@ -74,7 +69,7 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
         QCheckBox checkBox;
         //绘制checkbox
         QStyleOptionButton checkBoxOption;
-        bool checked = data.bEnabled;
+        bool checked = data.isEnabled;
         checkBoxOption.state |= QStyle::State_Enabled;
         //根据值判断是否选中
         if (checked) {
@@ -91,7 +86,7 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
         nameFont.setPixelSize(14);
         painter->setPen(QPen(Qt::black));
         painter->setFont(nameFont);
-        painter->drawText(fontNameRect, Qt::AlignLeft | Qt::AlignTop, strFontName);
+        painter->drawText(fontNameRect, Qt::AlignLeft | Qt::AlignTop, data.strFontName);
 
         QFont preivewFont(data.pFontInfo->familyName);
         preivewFont.setPixelSize(iFontSize);
@@ -142,7 +137,7 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
         QString strUnCollectionImageSrc = QString(":/images/uncollection_%1.svg").arg(strStatus);
 
         QPixmap pixmap;
-        if (data.bCollected) {
+        if (data.isCollected) {
             pixmap =
                 Utils::renderSVG(strCollectionImageSrc, QSize(collectIconSize, collectIconSize));
         } else {

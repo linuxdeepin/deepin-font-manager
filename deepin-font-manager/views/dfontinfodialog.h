@@ -10,7 +10,7 @@
 
 DWIDGET_USE_NAMESPACE
 
-class DFontPreviewItemData;
+struct DFontPreviewItemData;
 class DFontInfoDialog : public DDialog
 {
     Q_OBJECT
