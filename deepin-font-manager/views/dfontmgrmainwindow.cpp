@@ -599,7 +599,6 @@ void DFontMgrMainWindow::onFontSizeChanged(int fontSize)
     }
 }
 
-<<<<<<< HEAD
 void DFontMgrMainWindow::showFontFilePostion()
 {
     DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
@@ -615,7 +614,8 @@ void DFontMgrMainWindow::showFontFilePostion()
 
         QProcess::startDetached(DEEPIN_FILE_MANAGE_NAME, QStringList(url.toString()));
     }
-=======
+}
+
 void DFontMgrMainWindow::onLeftSiderBarItemClicked(int index)
 {
     Q_D(DFontMgrMainWindow);
@@ -633,5 +633,4 @@ void DFontMgrMainWindow::onLeftSiderBarItemClicked(int index)
 
     QString previewText = d->textInputEdit->text();
     onPreviewTextChanged(previewText);
->>>>>>>     chore: add sqlite management, handle font collection and font category filter
 }
