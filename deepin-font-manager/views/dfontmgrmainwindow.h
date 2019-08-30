@@ -71,6 +71,8 @@ public slots:
     void onPreviewTextChanged(const QString &currStr);
     void onFontSizeChanged(int fontSize);
 
+    void onLeftSiderBarItemClicked(int index);
+
 protected:
     // For quick install mode
     bool m_isQuickMode = {false};
