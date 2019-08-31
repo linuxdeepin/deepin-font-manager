@@ -3,6 +3,7 @@
 
 #include "dfontpreviewlistview.h"
 
+#include <DFrame>
 #include <DMainWindow>
 
 DWIDGET_USE_NAMESPACE
@@ -12,7 +13,7 @@ DWIDGET_USE_NAMESPACE
  *     The font manager may need to be move to library.
  *
  */
-
+class DFQuickInstallWindow;
 class DFontMgrMainWindowPrivate;
 class DFontMgrMainWindow : public DMainWindow
 {
@@ -42,21 +43,18 @@ protected:
 
     void initTileBar();
     void initTileFrame();
-    void initToolBar();
     void initMainVeiws();
     void initLeftSideBar();
     void initRightFontView();
     void initStateBar();
     void initRightKeyMenu();
-    void initFontPreviewListView(QFrame *parent);
+    void initFontPreviewListView(DFrame *parent);
     void initFontPreviewItemsData();
 
     void handleAddFontEvent();
     void switchAppTheme(int type);
     void installFont(const QStringList &files);
     void showFontFilePostion();
-
-    void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
 
     DFontPreviewListView *m_fontPreviewListView;
 signals:
@@ -76,6 +74,7 @@ public slots:
 protected:
     // For quick install mode
     bool m_isQuickMode = {false};
+    QScopedPointer<DFQuickInstallWindow> m_quickInstallWnd;
 
     QScopedPointer<DFontMgrMainWindowPrivate> d_ptr;
     Q_DECLARE_PRIVATE_D(qGetPtrHelper(d_ptr), DFontMgrMainWindow)

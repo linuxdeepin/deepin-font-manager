@@ -5,12 +5,13 @@
 #include <QResizeEvent>
 #include <QVBoxLayout>
 
+#include <DLog>
 #include <DPalette>
 #include <DPushButton>
 #include <DTitlebar>
 
 DFQuickInstallWindow::DFQuickInstallWindow(QStringList files, QWidget *parent)
-    : DDialog(parent)
+    : DMainWindow(parent)
     , m_fontInfoManager(DFontInfoManager::instance())
     , m_fontManager(DFontManager::instance())
     , m_installFiles(files)
@@ -18,57 +19,58 @@ DFQuickInstallWindow::DFQuickInstallWindow(QStringList files, QWidget *parent)
     initUI();
     initConnections();
 
-    Q_EMIT fileSelected(m_installFiles);
+    // Q_EMIT fileSelected(m_installFiles);
+}
+
+DFQuickInstallWindow::~DFQuickInstallWindow()
+{
+    qDebug() << __FUNCTION__ << "destructor";
 }
 
 void DFQuickInstallWindow::initUI()
 {
     setFixedSize(QSize(DEFAULT_WINDOW_W, DEFAULT_WINDOW_H));
-
-    // setIcon(QIcon(":/images/deepin-font-manager.svg"), QSize(32, 32));
+    // titlebar()->setIcon(QIcon(":/images/deepin-font-manager.svg"));
     // titlebar()->setTitle("思源字体");
     // titlebar()->setT  //   "思源字体");
     // ToDo:
     //    Need localize the string
     setWindowIcon(QIcon(":/images/deepin-font-manager.svg"));
 
-    QVBoxLayout *mainLayout = new QVBoxLayout(this);
-    mainLayout->setAlignment(Qt::AlignTop | Qt::AlignHCenter);
-    mainLayout->setContentsMargins(10, 0, 10, 10);
-    mainLayout->setSpacing(0);
-
-    QHBoxLayout *titleLayout = new QHBoxLayout(this);
-    titleLayout->setSpacing(0);
-    titleLayout->setContentsMargins(0, 0, 0, 0);
-
-    m_titleFrame = new QFrame(this);
-    m_titleFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    m_titleFrame->setFixedHeight(37);
-
     m_logoLabel = new DLabel(this);
-    m_logoLabel->setObjectName("logoLabel");
+    m_logoLabel->setObjectName("LogoLabel");
     m_logoLabel->setFixedSize(QSize(32, 32));
     m_logoLabel->setFocusPolicy(Qt::NoFocus);
     m_logoLabel->setAttribute(Qt::WA_TransparentForMouseEvents);
     m_logoLabel->setPixmap(QPixmap(":/images/deepin-font-manager.svg"));
 
     m_titleLabel = new DLabel(this);
-    m_titleLabel->setObjectName("tileNameLabel");
-    m_titleLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    m_titleLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    m_titleLabel->setText("思源字体");
 
-    // m_titleLabel->setText("思源字体");
+    m_titleFrame = new DFrame(this);
+    m_titleFrame->setObjectName("TitleBar");
+    // d->titleFrame->setStyleSheet("background: yellow");  // debug
+    m_titleFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-    // titleLayout->addSpacing(10);
-    titleLayout->addWidget(m_logoLabel, 0, Qt::AlignLeft | Qt::AlignBottom);
-    titleLayout->addStretch();
-    titleLayout->addWidget(m_titleLabel, 0, Qt::AlignBottom | Qt::AlignHCenter);
-    titleLayout->addStretch();
-    titleLayout->addSpacing(32);
+    QHBoxLayout *titleLayout = new QHBoxLayout();
+    titleLayout->setContentsMargins(0, 0, 0, 0);
+    titleLayout->setMargin(0);
+    titleLayout->setSpacing(0);
+
+    titleLayout->addSpacing(7);
+    titleLayout->addWidget(m_logoLabel);
+    titleLayout->addStretch(2);
+    titleLayout->addWidget(m_titleLabel, 0, Qt::AlignBottom);
+    titleLayout->addStretch(1);
 
     m_titleFrame->setLayout(titleLayout);
 
-    mainLayout->addWidget(m_titleFrame);
-    mainLayout->addSpacing(10);
+    titlebar()->setCustomWidget(m_titleFrame, false);
+
+    QVBoxLayout *mainLayout = new QVBoxLayout();
+    mainLayout->setContentsMargins(20, 0, 20, 10);
+    mainLayout->setSpacing(0);
 
     // Style combox
     m_fontType = new DComboBox(this);
@@ -76,8 +78,10 @@ void DFQuickInstallWindow::initUI()
 
     // Text Preview
     m_fontPreviewTxt = new DTextEdit(this);
-    m_fontPreviewTxt->setFixedSize(QSize(381, 216));
-    m_fontPreviewTxt->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    // m_fontPreviewTxt->setFixedSize(QSize(381, 216));
+
+    // m_fontPreviewTxt->setFixedHeight(216);
+    m_fontPreviewTxt->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     QFont previewFont;
     previewFont.setPixelSize(28);
     m_fontPreviewTxt->setFont(previewFont);
@@ -90,21 +94,20 @@ void DFQuickInstallWindow::initUI()
         "AaBbCc ＡａＢｂＣｃ");
 
     // Action bar
-    QHBoxLayout *actionBarLayout = new QHBoxLayout(this);
+    QHBoxLayout *actionBarLayout = new QHBoxLayout();
     actionBarLayout->setContentsMargins(0, 0, 0, 0);
     actionBarLayout->setSpacing(0);
 
-    QFont actionFont;
-    actionFont.setPixelSize(14);
+    //    QFont actionFont;
+    //    actionFont.setPixelSize(14);
 
     m_stateLabel = new DLabel(this);
     m_stateLabel->setFixedHeight(36);
     m_stateLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    m_stateLabel->setFont(actionFont);
+    // m_stateLabel->setFont(actionFont);
     QPalette pa = m_stateLabel->palette();
     pa.setBrush(QPalette::Text, DPalette::get(m_stateLabel).textWarning());
     m_stateLabel->setPalette(pa);
-    // m_stateLabel->setText("未安装");
 
     m_actionBtn = new DPushButton(this);
     m_actionBtn->setFixedSize(QSize(120, 36));
@@ -112,31 +115,33 @@ void DFQuickInstallWindow::initUI()
     // m_actionBtn->setFont(actionFont);
     m_actionBtn->setText("安装字体");
 
-    actionBarLayout->addSpacing(20);
+    // actionBarLayout->addSpacing(20);
     actionBarLayout->addWidget(m_stateLabel);
     actionBarLayout->addStretch();
     actionBarLayout->addWidget(m_actionBtn);
     actionBarLayout->addSpacing(20);
 
-    mainLayout->addWidget(m_fontType, 0, Qt::AlignHCenter);
+    mainLayout->addWidget(m_fontType, 0, Qt::AlignCenter);
     mainLayout->addSpacing(10);
-    mainLayout->addWidget(m_fontPreviewTxt, 0, Qt::AlignHCenter);
+    mainLayout->addWidget(m_fontPreviewTxt);
     mainLayout->addSpacing(16);
     mainLayout->addLayout(actionBarLayout);
 
-    m_mainFrame = new QFrame(this);
-    m_mainFrame->setFrameShape(QFrame::Shape::NoFrame);
+    m_mainFrame = new DFrame(this);
+    m_mainFrame->setFrameShape(DFrame::Shape::NoFrame);
     m_mainFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     m_mainFrame->setLayout(mainLayout);
 
+    setCentralWidget(m_mainFrame);
+
 #ifdef FTM_DEBUG_LAYOUT_COLOR
     m_mainFrame->setStyleSheet("background: red");
-    m_titleLabel->setStyleSheet("background: silver");
-    m_logoLabel->setStyleSheet("background: silver");
-    m_titleFrame->setStyleSheet("background: yellow");
     m_fontPreviewTxt->setStyleSheet("background: blue");
     m_fontType->setStyleSheet("background: green");
     m_stateLabel->setStyleSheet("background: green");
+    m_titleFrame->setStyleSheet("background: green");
+    m_stateLabel->setStyleSheet("background: blue");
+    m_titleLabel->setStyleSheet("background: yellow");
 #endif
 }
 
@@ -148,9 +153,9 @@ void DFQuickInstallWindow::initConnections()
 
 void DFQuickInstallWindow::resizeEvent(QResizeEvent *event)
 {
-    DDialog::resizeEvent(event);
+    DMainWindow::resizeEvent(event);
 
-    m_mainFrame->setFixedSize(event->size().width(), event->size().height());
+    // m_mainFrame->setFixedSize(event->size().width() - 150, event->size().height());
 }
 
 void DFQuickInstallWindow::onFileSelected(QStringList fileList)
@@ -193,5 +198,7 @@ void DFQuickInstallWindow::onFileSelected(QStringList fileList)
 
 void DFQuickInstallWindow::onInstallBtnClicked()
 {
-    accept();
+    // Close Quick install first
+    close();
+    Q_EMIT quickInstall();
 }
