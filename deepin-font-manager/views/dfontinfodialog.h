@@ -1,10 +1,10 @@
 #ifndef DFONTINFODIALOG_H
 #define DFONTINFODIALOG_H
 
-#include <QFrame>
 #include <QResizeEvent>
 
 #include <DDialog>
+#include <DFrame>
 #include <DLabel>
 #include <QTextEdit>
 
@@ -31,12 +31,12 @@ signals:
 public slots:
 
 private:
-    QFrame* m_mainFrame {nullptr};
+    DFrame* m_mainFrame {nullptr};
 
     DLabel* m_fontLogo {nullptr};
     DLabel* m_fontFileName {nullptr};
 
-    QFrame* m_basicInfoFrame {nullptr};
+    DFrame* m_basicInfoFrame {nullptr};
     DLabel* m_fontSytleName {nullptr};
     DLabel* m_fontTypeName {nullptr};
     QTextEdit* m_fontVersion {nullptr};

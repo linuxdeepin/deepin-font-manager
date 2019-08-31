@@ -2,6 +2,7 @@
 #include "dfontpreviewitemdef.h"
 
 #include <QFileInfo>
+#include <QFontMetrics>
 #include <QTextBlock>
 #include <QVBoxLayout>
 
@@ -20,13 +21,13 @@ void DFontInfoDialog::initUI()
     // ToDo:
     //    Need localize the string
 
-    QVBoxLayout *mainLayout = new QVBoxLayout(this);
+    QVBoxLayout *mainLayout = new QVBoxLayout();
     mainLayout->setAlignment(Qt::AlignTop | Qt::AlignHCenter);
     mainLayout->setContentsMargins(10, 0, 10, 10);
     mainLayout->setSpacing(0);
 
-    m_mainFrame = new QFrame(this);
-    m_mainFrame->setFrameShape(QFrame::Shape::NoFrame);
+    m_mainFrame = new DFrame(this);
+    m_mainFrame->setFrameShape(DFrame::Shape::NoFrame);
     m_mainFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     // Font logo
@@ -45,11 +46,11 @@ void DFontInfoDialog::initUI()
     m_fontFileName->setText("SourceHanSansSC-ExtraLight");
 
     /**************************Basic info panel****BEGIN*******************************/
-    m_basicInfoFrame = new QFrame(this);
-    m_basicInfoFrame->setFrameShape(QFrame::Shape::NoFrame);
+    m_basicInfoFrame = new DFrame(this);
+    m_basicInfoFrame->setFrameShape(DFrame::Shape::NoFrame);
     m_basicInfoFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-    QGridLayout *baseicInfoLayout = new QGridLayout(this);
+    QGridLayout *baseicInfoLayout = new QGridLayout();
     baseicInfoLayout->setAlignment(Qt::AlignTop /*| Qt::AlignVCenter*/);
     baseicInfoLayout->setContentsMargins(10, 5, 0, 0);
     baseicInfoLayout->setSpacing(8);
@@ -71,7 +72,7 @@ void DFontInfoDialog::initUI()
     styleName->setFont(basicInfoFont);
     styleName->setText("样式");
 
-    QHBoxLayout *styleLayout = new QHBoxLayout(this);
+    QHBoxLayout *styleLayout = new QHBoxLayout();
     styleLayout->setSpacing(0);
 
     m_fontSytleName = new DLabel(this);
@@ -88,7 +89,7 @@ void DFontInfoDialog::initUI()
     typeName->setFont(basicInfoFont);
     typeName->setText("类型");
 
-    QHBoxLayout *typeLayout = new QHBoxLayout(this);
+    QHBoxLayout *typeLayout = new QHBoxLayout();
     typeLayout->setSpacing(0);
 
     m_fontTypeName = new DLabel(this);
@@ -109,9 +110,10 @@ void DFontInfoDialog::initUI()
     m_fontVersion->setFixedHeight(72);
     m_fontVersion->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     m_fontVersion->setAlignment(Qt::AlignTop | Qt::AlignLeft);
-    m_fontVersion->setFrameShape(QFrame::Shape::NoFrame);
+    m_fontVersion->setFrameShape(DFrame::Shape::NoFrame);
     m_fontVersion->setContentsMargins(0, 0, 0, 0);
     m_fontVersion->setFont(basicInfoFont);
+    m_fontVersion->setFocusPolicy(Qt::FocusPolicy::NoFocus);
     m_fontVersion->setText(
         "Copyright 2014~2015 Adobe Syste-ms Incorporated (http://www.adob.com/), with Reserved "
         "Font Name cc Source.");
@@ -126,7 +128,7 @@ void DFontInfoDialog::initUI()
      * be removed, so add a QHBoxLayout in row tow and add 4px space
      * to align row two
      */
-    QHBoxLayout *depsLayout = new QHBoxLayout(this);
+    QHBoxLayout *depsLayout = new QHBoxLayout();
     depsLayout->setSpacing(0);
 
     m_fontDescription = new DLabel(this);
@@ -134,8 +136,9 @@ void DFontInfoDialog::initUI()
     m_fontDescription->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     m_fontDescription->setFont(basicInfoFont);
     m_fontDescription->setText("未知");
+
     depsLayout->addSpacing(4);
-    depsLayout->addWidget(m_fontDescription);
+    depsLayout->addWidget(m_fontDescription, 1);
 
     baseicInfoLayout->addWidget(panelName, 0, 0);
     baseicInfoLayout->addWidget(styleName, 1, 0);
@@ -168,8 +171,9 @@ void DFontInfoDialog::initUI()
     m_fontFileName->setStyleSheet("background: silver");
     m_basicInfoFrame->setStyleSheet("background: yellow");
     panelName->setStyleSheet("background: blue");
-    // versionName->setStyleSheet("background: green");
-    // m_fontVersion->setStyleSheet("background: green");
+    versionName->setStyleSheet("background: green");
+    m_fontVersion->setStyleSheet("background: green");
+    m_fontDescription->setStyleSheet("background: green");
 #endif
 }
 
@@ -203,7 +207,9 @@ void DFontInfoDialog::updateFontInfo()
         }
 
         if (!m_fontInfo->pFontInfo->description.isEmpty()) {
-            m_fontDescription->setText(m_fontInfo->pFontInfo->description);
+            QString elideString = m_fontDescription->fontMetrics().elidedText(
+                m_fontInfo->pFontInfo->description, Qt::ElideRight, 200);
+            m_fontDescription->setText(elideString);
         }
     }
 }
