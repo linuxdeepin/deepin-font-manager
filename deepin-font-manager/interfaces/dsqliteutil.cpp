@@ -159,7 +159,6 @@ bool DSqliteUtil::updateRecord(QMap<QString, QString> where, QMap<QString, QStri
         return false;
     } else {
         qDebug() << "update data success!";
-        m_query->finish();
         return true;
     }
 }
@@ -244,4 +243,19 @@ int DSqliteUtil::getRecordCount(QString table_name)
     }
 
     return resultCount;
+}
+
+bool DSqliteUtil::delAllRecords(QString table_name)
+{
+    QString sql = "delete from " + table_name;
+    qDebug() << sql;
+    m_query->prepare(sql);
+
+    if (!m_query->exec()) {
+        qDebug() << "delete all records failed!";
+        return false;
+    } else {
+        qDebug() << "delete all records success!";
+        return true;
+    }
 }

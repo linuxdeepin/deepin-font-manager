@@ -26,6 +26,9 @@ public:
     //删除一条记录
     bool delRecord(QMap<QString, QString> where, QString table_name = "t_fontmanager");
 
+    //删除所有记录
+    bool delAllRecords(QString table_name = "t_fontmanager");
+
     //更新数据
     bool updateRecord(QMap<QString, QString> where, QMap<QString, QString> data,
                       QString table_name = "t_fontmanager");

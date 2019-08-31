@@ -70,6 +70,10 @@ void DSplitListWidget::initListData()
         item->setData(Qt::UserRole, QVariant::fromValue(i));
 
         this->addItem(item);
+
+        if (0 == i) {
+            item->setSelected(true);
+        }
     }
 
     this->insertSplitItem(5);

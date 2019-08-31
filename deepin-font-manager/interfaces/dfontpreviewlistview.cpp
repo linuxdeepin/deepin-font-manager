@@ -2,6 +2,7 @@
 #include <fontconfig/fontconfig.h>
 #include "dfontinfomanager.h"
 #include "dfontpreviewitemdelegate.h"
+#include "globaldef.h"
 
 #include <DLog>
 #include <DMenu>
@@ -48,83 +49,29 @@ void DFontPreviewListView::initFontListData()
 
     qDebug() << "strAllFontList.size()" << strAllFontList.size() << endl;
 
+    m_fontPreviewItemModel = new QStandardItemModel;
+
     int recordCount = m_sqlUtil->getRecordCount();
     if (recordCount > 0) {
-        QList<QMap<QString, QString>> recordList;
 
-        QList<QString> keyList;
-        keyList.append("fontId");
-        keyList.append("fontName");
-        keyList.append("familyName");
-        keyList.append("isEnabled");
-        keyList.append("isCollected");
-        keyList.append("filePath");
-        keyList.append("appFontId");
-
-        m_sqlUtil->findRecords(keyList, &recordList);
-
-        QSet<QString> dbFilePathSet;
-        m_fontPreviewItemModel = new QStandardItemModel;
-        for (int i = 0; i < recordList.size(); ++i) {
-            QMap<QString, QString> record = recordList.at(i);
-            if (record.size() > 0) {
-                DFontPreviewItemData itemData;
-                QString filePath = record.value("filePath");
-                QFileInfo filePathInfo(filePath);
-                itemData.strFontId = record.value("fontId");
-                itemData.pFontInfo = fontInfoMgr->getFontInfo(filePath);
-                itemData.strFontName = record.value("fontName");
-                itemData.pFontInfo->familyName = record.value("familyName");
-                itemData.strFontFileName = filePathInfo.baseName();
-                itemData.strFontPreview = FTM_DEFAULT_PREVIEW_TEXT;
-                itemData.iFontSize = FTM_DEFAULT_PREVIEW_FONTSIZE;
-                itemData.isEnabled = record.value("isEnabled").toInt();
-                itemData.isCollected = record.value("isCollected").toInt();
-                itemData.appFontId = record.value("appFontId").toInt();
-
-                if (itemData.isCollected) {
-                    qDebug() << itemData.strFontName << record.value("isCollected").toInt() << endl;
-                }
-
-                QStandardItem *item = new QStandardItem;
-                item->setData(QVariant::fromValue(itemData), Qt::DisplayRole);
-
-                m_fontPreviewItemModel->appendRow(item);
-
-                dbFilePathSet.insert(filePath);
-            }
-        }
-
-        //根据文件路径比较出不同的字体文件
-        QSet<QString> fontListSet = strAllFontList.toSet();
-        QSet<QString> diffSet = fontListSet.subtract(dbFilePathSet);
-        if (diffSet.count() > 0) {
-            QList<QString> diffFilePathList = diffSet.toList();
-            for (int i = 0; i < diffFilePathList.size(); ++i) {
-                QString filePath = diffFilePathList.at(i);
-                if (filePath.length() > 0) {
-                    insertFontItemData(filePath, strAllFontList.size() + i + 1);
-                }
-            }
-        }
+        refreshFontListData(m_fontPreviewItemModel);
 
         return;
     }
 
     //开启事务
     m_sqlUtil->m_db.transaction();
-    m_fontPreviewItemModel = new QStandardItemModel;
     for (int i = 0; i < strAllFontList.size(); ++i) {
         QString filePath = strAllFontList.at(i);
         if (filePath.length() > 0) {
-            insertFontItemData(filePath, i + 1);
+            insertFontItemData(m_fontPreviewItemModel, filePath, i + 1);
         }
     }
 
     m_sqlUtil->m_db.commit();
 }
 
-void DFontPreviewListView::insertFontItemData(QString filePath, int index)
+void DFontPreviewListView::insertFontItemData(QStandardItemModel *sourceModel, QString filePath, int index)
 {
     DFontInfoManager *fontInfoMgr = DFontInfoManager::instance();
     DFontPreviewItemData itemData;
@@ -156,9 +103,84 @@ void DFontPreviewListView::insertFontItemData(QString filePath, int index)
     QStandardItem *item = new QStandardItem;
     item->setData(QVariant::fromValue(itemData), Qt::DisplayRole);
 
-    m_fontPreviewItemModel->appendRow(item);
+    sourceModel->appendRow(item);
 
     m_sqlUtil->addRecord(mapItemData(itemData));
+}
+
+void DFontPreviewListView::refreshFontListData(QStandardItemModel *sourceModel)
+{
+    DFontInfoManager *fontInfoMgr = DFontInfoManager::instance();
+    QStringList strAllFontList = fontInfoMgr->getAllFontPath();
+
+    QList<QMap<QString, QString>> recordList;
+
+    QList<QString> keyList;
+    keyList.append("fontId");
+    keyList.append("fontName");
+    keyList.append("familyName");
+    keyList.append("isEnabled");
+    keyList.append("isCollected");
+    keyList.append("filePath");
+    keyList.append("appFontId");
+
+    m_sqlUtil->findRecords(keyList, &recordList);
+
+    //开启事务
+    m_sqlUtil->m_db.transaction();
+
+    QSet<QString> dbFilePathSet;
+    for (int i = 0; i < recordList.size(); ++i) {
+        QMap<QString, QString> record = recordList.at(i);
+        if (record.size() > 0) {
+            DFontPreviewItemData itemData;
+            itemData.strFontId = record.value("fontId");
+            QString filePath = record.value("filePath");
+            QFileInfo filePathInfo(filePath);
+            //如果字体文件已经不存在，则从t_manager表中删除
+            if (!filePathInfo.exists()) {
+                QMap<QString, QString> where;
+                where.insert("fontId", itemData.strFontId);
+                m_sqlUtil->delRecord(where);
+                continue;
+            }
+
+            itemData.pFontInfo = fontInfoMgr->getFontInfo(filePath);
+            itemData.strFontName = record.value("fontName");
+            itemData.pFontInfo->familyName = record.value("familyName");
+            itemData.strFontFileName = filePathInfo.baseName();
+            itemData.strFontPreview = FTM_DEFAULT_PREVIEW_TEXT;
+            itemData.iFontSize = FTM_DEFAULT_PREVIEW_FONTSIZE;
+            itemData.isEnabled = record.value("isEnabled").toInt();
+            itemData.isCollected = record.value("isCollected").toInt();
+            itemData.appFontId = record.value("appFontId").toInt();
+
+            QStandardItem *item = new QStandardItem;
+            item->setData(QVariant::fromValue(itemData), Qt::DisplayRole);
+
+            sourceModel->appendRow(item);
+
+            //只添加已启用的字体, 用于下面比对系统中是否有新增字体文件
+            if (itemData.isEnabled) {
+                dbFilePathSet.insert(filePath);
+            }
+        }
+    }
+
+    //根据文件路径比较出不同的字体文件
+    QSet<QString> fontListSet = strAllFontList.toSet();
+    QSet<QString> diffSet = fontListSet.subtract(dbFilePathSet);
+    qDebug() << "diffSet count:" << diffSet.count();
+    if (diffSet.count() > 0) {
+        QList<QString> diffFilePathList = diffSet.toList();
+        for (int i = 0; i < diffFilePathList.size(); ++i) {
+            QString filePath = diffFilePathList.at(i);
+            if (filePath.length() > 0) {
+                insertFontItemData(sourceModel, filePath, strAllFontList.size() + i + 1);
+            }
+        }
+    }
+    m_sqlUtil->m_db.commit();
 }
 
 void DFontPreviewListView::initDelegate()
@@ -229,6 +251,20 @@ void DFontPreviewListView::onListViewItemEnableBtnClicked(QModelIndex index)
         qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(index));
     itemData.isEnabled = !itemData.isEnabled;
 
+#warning todo...
+    if (itemData.isEnabled) {
+
+    }
+    else {
+
+    }
+
+    QMap<QString, QString> where;
+    where.insert("fontId", itemData.strFontId);
+    QMap<QString, QString> data;
+    data.insert("isEnabled", QString::number(itemData.isEnabled));
+    m_sqlUtil->updateRecord(where, data);
+
     m_fontPreviewProxyModel->setData(index, QVariant::fromValue(itemData), Qt::DisplayRole);
 }
 
@@ -270,12 +306,24 @@ QModelIndex DFontPreviewListView::currModelIndex()
 DFontPreviewItemData DFontPreviewListView::currModelData()
 {
     QVariant varModel = m_fontPreviewProxyModel->data(m_currModelIndex, Qt::DisplayRole);
-
     DFontPreviewItemData itemData = varModel.value<DFontPreviewItemData>();
+
     return itemData;
 }
 
 DFontPreviewProxyModel *DFontPreviewListView::getFontPreviewProxyModel()
 {
     return m_fontPreviewProxyModel;
+}
+
+void DFontPreviewListView::removeRowAtIndex(QModelIndex modelIndex)
+{
+    QVariant varModel = m_fontPreviewProxyModel->data(modelIndex, Qt::DisplayRole);
+    DFontPreviewItemData itemData = varModel.value<DFontPreviewItemData>();
+
+    QMap<QString, QString> where;
+    where.insert("fontId", itemData.strFontId);
+    m_sqlUtil->delRecord(where);
+
+    m_fontPreviewProxyModel->removeRow(modelIndex.row(), modelIndex.parent());
 }
