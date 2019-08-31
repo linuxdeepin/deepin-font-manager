@@ -1,9 +1,8 @@
 #ifndef DFQUICKINSTALL_H
 #define DFQUICKINSTALL_H
-#include <QFrame>
 
 #include <DComboBox>
-#include <DDialog>
+#include <DFrame>
 #include <DLabel>
 #include <DMainWindow>
 #include <DTextEdit>
@@ -13,11 +12,13 @@ DWIDGET_USE_NAMESPACE
 class DFontInfoManager;
 class DFontManager;
 
-class DFQuickInstallWindow : public DDialog
+class DFQuickInstallWindow : public DMainWindow
 {
     Q_OBJECT
 public:
-    explicit DFQuickInstallWindow(QStringList files, QWidget* parent = nullptr);
+    explicit DFQuickInstallWindow(QStringList files = QStringList(), QWidget* parent = nullptr);
+
+    ~DFQuickInstallWindow() override;
 
     static constexpr int DEFAULT_WINDOW_W = 480;
     static constexpr int DEFAULT_WINDOW_H = 380;
@@ -29,6 +30,7 @@ protected:
     void resizeEvent(QResizeEvent* event) override;
 signals:
     void fileSelected(QStringList fileList);
+    void quickInstall();
 
 public slots:
     void onFileSelected(QStringList fileList);
@@ -37,8 +39,8 @@ public slots:
 private:
     DLabel* m_logoLabel {nullptr};
     DLabel* m_titleLabel {nullptr};
-    QFrame* m_titleFrame {nullptr};
-    QFrame* m_mainFrame {nullptr};
+    DFrame* m_titleFrame {nullptr};
+    DFrame* m_mainFrame {nullptr};
 
     DComboBox* m_fontType {nullptr};
     DTextEdit* m_fontPreviewTxt {nullptr};

@@ -2,11 +2,10 @@
 #include "dfontmanager.h"
 #include "globaldef.h"
 
-#include <DLog>
-#include <QFrame>
 #include <QResizeEvent>
-#include <QTimer>
 #include <QVBoxLayout>
+
+#include <DLog>
 
 DWIDGET_USE_NAMESPACE
 
@@ -35,7 +34,7 @@ void DFInstallNormalWindow::initUI()
     titleLayout->setSpacing(0);
     titleLayout->setContentsMargins(0, 0, 0, 0);
 
-    m_titleFrame = new QFrame(this);
+    m_titleFrame = new DFrame(this);
     m_titleFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     m_titleFrame->setFixedHeight(50);
 
@@ -77,7 +76,7 @@ void DFInstallNormalWindow::initUI()
     mainLayout->addWidget(m_progressBar);
     mainLayout->addSpacing(20);
 
-    m_mainFrame = new QFrame(this);
+    m_mainFrame = new DFrame(this);
     m_mainFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     m_mainFrame->setLayout(mainLayout);
 
@@ -206,8 +205,8 @@ bool DFInstallNormalWindow::ifNeedShowExceptionWindow() const
     }
 
     // For all selected files is installed & damage
-    if (InstallState::Install == m_installState &&
-        (m_installedFiles.size() > 0 || m_damagedFiles.size() > 0)) {
+    if (InstallState::Install == m_installState
+        && (m_installedFiles.size() > 0 || m_damagedFiles.size() > 0)) {
         return true;
     }
 

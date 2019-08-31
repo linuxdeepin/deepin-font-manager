@@ -86,6 +86,8 @@ int main(int argc, char *argv[])
     Dtk::Widget::moveToCenter(pqsMainWnd.get());
 
     if (fileList.size() > 0) {
+        qDebug() << "File:" << fileList << " to quick install.";
+
         pqsMainWnd->setVisible(false);
         pqsMainWnd->setQuickInstallMode(true);
         QMetaObject::invokeMethod(pqsMainWnd.get(), "quickModeInstall", Qt::QueuedConnection,

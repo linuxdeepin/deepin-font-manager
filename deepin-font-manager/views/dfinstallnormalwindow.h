@@ -8,6 +8,7 @@
 #include <QTimer>
 
 #include <DDialog>
+#include <DFrame>
 #include <DLabel>
 #include <DProgressBar>
 
@@ -68,8 +69,8 @@ private:
 
     DLabel *m_logoLabel {nullptr};
     DLabel *m_titleLabel {nullptr};
-    QFrame *m_titleFrame {nullptr};
-    QFrame *m_mainFrame {nullptr};
+    DFrame *m_titleFrame {nullptr};
+    DFrame *m_mainFrame {nullptr};
 
     DLabel *m_progressStepLabel {nullptr};
     DLabel *m_currentFontLabel {nullptr};

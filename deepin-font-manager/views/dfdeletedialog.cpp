@@ -1,8 +1,9 @@
 #include "dfdeletedialog.h"
 
-#include <QFrame>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
+
+#include <DFrame>
 
 DFDeleteDialog::DFDeleteDialog(QWidget *parent)
     : DDialog(parent)
@@ -21,7 +22,7 @@ void DFDeleteDialog::initUI()
     mainLayout->setSpacing(0);
     mainLayout->setContentsMargins(10, 10, 10, 10);
 
-    QFrame *mainFrame = new QFrame(this);
+    DFrame *mainFrame = new DFrame(this);
     /// mainFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     mainFrame->setFixedSize(QSize(DEFAULT_WINDOW_W, DEFAULT_WINDOW_H));
 
