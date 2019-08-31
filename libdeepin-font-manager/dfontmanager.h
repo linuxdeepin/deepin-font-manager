@@ -21,6 +21,7 @@
 #define DFONTMANAGER_H
 
 #include <QThread>
+#include <QModelIndex>
 
 class DFontManager : public QThread
 {
@@ -37,6 +38,7 @@ public:
     void setInstallFileList(const QStringList &list);
     void setReInstallFile(const QString &reinstFile, const QString &sysFile);
     void setUnInstallFile(const QString &filePath);
+    void setUnInstallFile(const QString &filePath, const QModelIndex &uninstallIndex);
 
 private slots:
     void handleInstallOutput(const QString &output);
@@ -51,6 +53,7 @@ signals:
     void installFinished(int state);
     void reinstallFinished();
     void uninstallFinished();
+    void uninstallFontFinished(const QModelIndex &uninstallIndex);
 
 protected:
     void run();
@@ -66,6 +69,7 @@ private:
     QString m_uninstFile;
     QString m_reinstFile;
     QString m_sysFile;
+    QModelIndex m_uninstModelIndex;
     Type m_type;
 };
 

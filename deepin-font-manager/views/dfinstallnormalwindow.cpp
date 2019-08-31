@@ -147,6 +147,8 @@ void DFInstallNormalWindow::initConnections()
             if (ifNeedShowExceptionWindow()) {
                 showInstallErrDlg();
             } else {
+                qDebug() << "quit install process!" << endl;
+                emit finishFontInstall();
                 this->close();
             }
         } else {

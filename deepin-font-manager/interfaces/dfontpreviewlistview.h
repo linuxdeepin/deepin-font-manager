@@ -23,6 +23,7 @@ public:
 
     void initFontListData();
     void initDelegate();
+    void refreshFontListData(QStandardItemModel *sourceModel);
 
     void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
     void setSelection(const QRect &rect,
@@ -35,10 +36,11 @@ public:
     QModelIndex currModelIndex();
     DFontPreviewItemData currModelData();
     DFontPreviewProxyModel *getFontPreviewProxyModel();
+    void removeRowAtIndex(QModelIndex modelIndex);
 
 private:
     void initConnections();
-    void insertFontItemData(QString filePath, int index);
+    void insertFontItemData(QStandardItemModel *sourceModel, QString filePath, int index);
     QMap<QString, QString> mapItemData(DFontPreviewItemData itemData);
 
     bool m_bLeftMouse;

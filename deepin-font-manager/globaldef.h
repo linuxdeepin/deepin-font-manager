@@ -33,4 +33,6 @@
 // Uncomment follow line if need debug layout
 //#define FTM_DEBUG_LAYOUT_COLOR
 
+#define FTM_ENABLE_DISABLE_CACHE_DIR "/usr/local/.deep_fontmanger_cache"
+
 #endif  // GLOBALDEF_H

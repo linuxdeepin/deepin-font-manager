@@ -2,6 +2,7 @@
 #define DFONTMGRMAINWINDOW_H
 
 #include "dfontpreviewlistview.h"
+#include "dfontmanager.h"
 
 #include <DMainWindow>
 
@@ -72,10 +73,13 @@ public slots:
     void onFontSizeChanged(int fontSize);
 
     void onLeftSiderBarItemClicked(int index);
+    void onFontInstallFinished();
+    void onFontUninstallFinished(const QModelIndex &uninstallIndex);
 
 protected:
     // For quick install mode
     bool m_isQuickMode = {false};
+    DFontManager *m_fontManager;
 
     QScopedPointer<DFontMgrMainWindowPrivate> d_ptr;
     Q_DECLARE_PRIVATE_D(qGetPtrHelper(d_ptr), DFontMgrMainWindow)

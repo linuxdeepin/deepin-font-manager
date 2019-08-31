@@ -17,12 +17,16 @@ public:
 
     bool isFontNameContainsPattern(QString fontName) const;
 
+    bool isChineseFont(QString fontFilePath) const;
+
     void setFilterFontNamePattern(const QString &pattern);
 
 private:
     int m_filterGroup;
     bool m_useSystemFilter;
     QString m_fontNamePattern;
+
+    QStringList m_chineFontPathList;
 };
 
 #endif  // DFONTPREVIEWPROXYMODEL_H

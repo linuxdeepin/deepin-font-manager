@@ -52,6 +52,7 @@ public:
 
     void refreshList();
     QStringList getAllFontPath() const;
+    QStringList getAllChineseFontPath() const;
     QString getInstalledFontPath(DFontInfo *info);
     QString getFontType(const QString &filePath);
     DFontInfo *getFontInfo(const QString &filePath);

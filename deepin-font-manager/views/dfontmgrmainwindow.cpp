@@ -73,6 +73,7 @@ public:
 DFontMgrMainWindow::DFontMgrMainWindow(bool isQuickMode, QWidget *parent)
     : DMainWindow(parent)
     , m_isQuickMode(isQuickMode)
+    , m_fontManager(DFontManager::instance())
     , d_ptr(new DFontMgrMainWindowPrivate(this))
 {
     // setWindowFlags(windowFlags() | (Qt::FramelessWindowHint | Qt::WindowMaximizeButtonHint));
@@ -150,6 +151,9 @@ void DFontMgrMainWindow::initConnections()
 
     QObject::connect(d->leftSiderBar, SIGNAL(onListWidgetItemClicked(int)), this,
                      SLOT(onLeftSiderBarItemClicked(int)));
+
+    QObject::connect(m_fontManager, SIGNAL(uninstallFontFinished(const QModelIndex &)), this, SLOT(onFontUninstallFinished(const QModelIndex &)));
+
 }
 
 void DFontMgrMainWindow::initTileBar()
@@ -287,6 +291,8 @@ void DFontMgrMainWindow::initLeftSideBar()
     d->leftSiderBar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     leftMainLayout->addWidget(d->leftSiderBar);
     d->leftBarHolder->setLayout(leftMainLayout);
+
+    d->leftSiderBar->setFocus();
 
     // Debug layout code
 #ifdef FTM_DEBUG_LAYOUT_COLOR
@@ -483,10 +489,26 @@ void DFontMgrMainWindow::handleMenuEvent(QAction *action)
                     DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
                     qDebug() << "Confirm delete:" << currItemData.pFontInfo->filePath
                              << " is system font:" << currItemData.pFontInfo->isSystemFont;
+
+                    QModelIndex currModelIndex = m_fontPreviewListView->currModelIndex();
+                    QString uninstallFilePath = currItemData.pFontInfo->filePath;
+                    m_fontManager->setType(DFontManager::UnInstall);
+                    m_fontManager->setUnInstallFile(uninstallFilePath, currModelIndex);
+                    m_fontManager->start();
                 });
 
                 confirmDelDlg.exec();
 
+            } break;
+            case DFontMenuManager::MenuAction::M_EnableOrDisable: {
+
+                QModelIndex modelIndex = m_fontPreviewListView->currModelIndex();
+                emit m_fontPreviewListView->onClickEnableButton(modelIndex);
+            } break;
+            case DFontMenuManager::MenuAction::M_Faverator: {
+
+                QModelIndex modelIndex = m_fontPreviewListView->currModelIndex();
+                emit m_fontPreviewListView->onClickCollectionButton(modelIndex);
             } break;
             case DFontMenuManager::MenuAction::M_ShowFontPostion:
                 showFontFilePostion();
@@ -528,6 +550,9 @@ void DFontMgrMainWindow::installFont(const QStringList &files)
     if (m_isQuickMode) {
         dfNormalInstalldlg.setSkipException(true);
     }
+
+    //安装结束后刷新字体列表
+    connect(&dfNormalInstalldlg, &DFInstallNormalWindow::finishFontInstall, this, &DFontMgrMainWindow::onFontInstallFinished);
 
     dfNormalInstalldlg.exec();
 }
@@ -633,4 +658,18 @@ void DFontMgrMainWindow::onLeftSiderBarItemClicked(int index)
 
     QString previewText = d->textInputEdit->text();
     onPreviewTextChanged(previewText);
+}
+
+void DFontMgrMainWindow::onFontInstallFinished()
+{
+    DFontPreviewProxyModel *filterModel = m_fontPreviewListView->getFontPreviewProxyModel();
+    QStandardItemModel *sourceModel = qobject_cast<QStandardItemModel *>(filterModel->sourceModel());
+
+    m_fontPreviewListView->refreshFontListData(sourceModel);
+}
+
+void DFontMgrMainWindow::onFontUninstallFinished(const QModelIndex &uninstallIndex)
+{
+    qDebug() << "finished remove row:" << uninstallIndex.row() << endl;
+    m_fontPreviewListView->removeRowAtIndex(uninstallIndex);
 }
