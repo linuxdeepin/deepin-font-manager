@@ -614,12 +614,17 @@ void DFontMgrMainWindow::showFontFilePostion()
 void DFontMgrMainWindow::onLeftSiderBarItemClicked(int index)
 {
     Q_D(DFontMgrMainWindow);
+    qDebug() << index << endl;
 
     DSplitListWidget *listWidget = d->leftSiderBar;
     QListWidgetItem *item = listWidget->item(index);
-    DSplitListWidget::FontGroup filterGroup
-        = item->data(Qt::UserRole).value<DSplitListWidget::FontGroup>();
+    QVariant varUserData = item->data(Qt::UserRole).value<QVariant>();
+    DSplitListWidget::FontGroup filterGroup = qvariant_cast<DSplitListWidget::FontGroup>(varUserData);
 
+    if (varUserData.toInt() < 0) {
+        qDebug() << varUserData.toInt() << endl;
+        return;
+    }
     qDebug() << filterGroup << endl;
 
     DFontPreviewProxyModel *filterModel = m_fontPreviewListView->getFontPreviewProxyModel();

@@ -1,5 +1,4 @@
 #include "dfontpreviewlistview.h"
-#include <fontconfig/fontconfig.h>
 #include "dfontinfomanager.h"
 #include "dfontpreviewitemdelegate.h"
 #include "globaldef.h"
@@ -14,7 +13,7 @@ DWIDGET_USE_NAMESPACE
 
 DFontPreviewListView::DFontPreviewListView(QWidget *parent)
     : DListView(parent)
-    , m_sqlUtil(new DSqliteUtil(".font_manager.db"))
+    , m_dbManager(DFMDBManager::instance())
 {
     setAutoScroll(false);
 
@@ -25,20 +24,6 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
 
 DFontPreviewListView::~DFontPreviewListView()
 {
-    delete m_sqlUtil;
-}
-
-QMap<QString, QString> DFontPreviewListView::mapItemData(DFontPreviewItemData itemData)
-{
-    QMap<QString, QString> mapData;
-    mapData.insert("fontName", itemData.strFontName);
-    mapData.insert("familyName", itemData.pFontInfo->familyName);
-    mapData.insert("isEnabled", QString::number(itemData.isEnabled));
-    mapData.insert("isCollected", QString::number(itemData.isCollected));
-    mapData.insert("filePath", itemData.pFontInfo->filePath);
-    mapData.insert("appFontId", QString::number(itemData.appFontId));
-
-    return mapData;
 }
 
 void DFontPreviewListView::initFontListData()
@@ -51,16 +36,16 @@ void DFontPreviewListView::initFontListData()
 
     m_fontPreviewItemModel = new QStandardItemModel;
 
-    int recordCount = m_sqlUtil->getRecordCount();
+    int recordCount = m_dbManager->getRecordCount();
     if (recordCount > 0) {
 
-        refreshFontListData(m_fontPreviewItemModel);
+        refreshFontListData(m_fontPreviewItemModel, true);
 
         return;
     }
 
     //开启事务
-    m_sqlUtil->m_db.transaction();
+    m_dbManager->beginTransaction();
     for (int i = 0; i < strAllFontList.size(); ++i) {
         QString filePath = strAllFontList.at(i);
         if (filePath.length() > 0) {
@@ -68,7 +53,7 @@ void DFontPreviewListView::initFontListData()
         }
     }
 
-    m_sqlUtil->m_db.commit();
+    m_dbManager->endTransaction();
 }
 
 void DFontPreviewListView::insertFontItemData(QStandardItemModel *sourceModel, QString filePath, int index)
@@ -105,65 +90,41 @@ void DFontPreviewListView::insertFontItemData(QStandardItemModel *sourceModel, Q
 
     sourceModel->appendRow(item);
 
-    m_sqlUtil->addRecord(mapItemData(itemData));
+    m_dbManager->addFontInfo(itemData);
 }
 
-void DFontPreviewListView::refreshFontListData(QStandardItemModel *sourceModel)
+void DFontPreviewListView::refreshFontListData(QStandardItemModel *sourceModel, bool isStartup)
 {
     DFontInfoManager *fontInfoMgr = DFontInfoManager::instance();
     QStringList strAllFontList = fontInfoMgr->getAllFontPath();
 
-    QList<QMap<QString, QString>> recordList;
-
-    QList<QString> keyList;
-    keyList.append("fontId");
-    keyList.append("fontName");
-    keyList.append("familyName");
-    keyList.append("isEnabled");
-    keyList.append("isCollected");
-    keyList.append("filePath");
-    keyList.append("appFontId");
-
-    m_sqlUtil->findRecords(keyList, &recordList);
+    QList <DFontPreviewItemData> fontInfoList = m_dbManager->getAllFontInfo();
 
     //开启事务
-    m_sqlUtil->m_db.transaction();
+    m_dbManager->beginTransaction();
 
     QSet<QString> dbFilePathSet;
-    for (int i = 0; i < recordList.size(); ++i) {
-        QMap<QString, QString> record = recordList.at(i);
-        if (record.size() > 0) {
-            DFontPreviewItemData itemData;
-            itemData.strFontId = record.value("fontId");
-            QString filePath = record.value("filePath");
-            QFileInfo filePathInfo(filePath);
-            //如果字体文件已经不存在，则从t_manager表中删除
-            if (!filePathInfo.exists()) {
-                QMap<QString, QString> where;
-                where.insert("fontId", itemData.strFontId);
-                m_sqlUtil->delRecord(where);
-                continue;
-            }
+    for (int i = 0; i < fontInfoList.size(); ++i) {
 
-            itemData.pFontInfo = fontInfoMgr->getFontInfo(filePath);
-            itemData.strFontName = record.value("fontName");
-            itemData.pFontInfo->familyName = record.value("familyName");
-            itemData.strFontFileName = filePathInfo.baseName();
-            itemData.strFontPreview = FTM_DEFAULT_PREVIEW_TEXT;
-            itemData.iFontSize = FTM_DEFAULT_PREVIEW_FONTSIZE;
-            itemData.isEnabled = record.value("isEnabled").toInt();
-            itemData.isCollected = record.value("isCollected").toInt();
-            itemData.appFontId = record.value("appFontId").toInt();
+        DFontPreviewItemData itemData = fontInfoList.at(i);
+        QString filePath = itemData.pFontInfo->filePath;
+        QFileInfo filePathInfo(filePath);
+        //如果字体文件已经不存在，则从t_manager表中删除
+        if (!filePathInfo.exists()) {
+            m_dbManager->deleteFontInfo("fontId", itemData.strFontId);
+            continue;
+        }
 
-            QStandardItem *item = new QStandardItem;
-            item->setData(QVariant::fromValue(itemData), Qt::DisplayRole);
+        QStandardItem *item = new QStandardItem;
+        item->setData(QVariant::fromValue(itemData), Qt::DisplayRole);
 
+        if (isStartup) {
             sourceModel->appendRow(item);
+        }
 
-            //只添加已启用的字体, 用于下面比对系统中是否有新增字体文件
-            if (itemData.isEnabled) {
-                dbFilePathSet.insert(filePath);
-            }
+        //只添加已启用的字体, 用于下面比对系统中是否有新增字体文件
+        if (itemData.isEnabled) {
+            dbFilePathSet.insert(filePath);
         }
     }
 
@@ -180,7 +141,8 @@ void DFontPreviewListView::refreshFontListData(QStandardItemModel *sourceModel)
             }
         }
     }
-    m_sqlUtil->m_db.commit();
+
+    m_dbManager->endTransaction();
 }
 
 void DFontPreviewListView::initDelegate()
@@ -254,16 +216,11 @@ void DFontPreviewListView::onListViewItemEnableBtnClicked(QModelIndex index)
 #warning todo...
     if (itemData.isEnabled) {
 
-    }
-    else {
+    } else {
 
     }
 
-    QMap<QString, QString> where;
-    where.insert("fontId", itemData.strFontId);
-    QMap<QString, QString> data;
-    data.insert("isEnabled", QString::number(itemData.isEnabled));
-    m_sqlUtil->updateRecord(where, data);
+    m_dbManager->updateFontInfoByFontId(itemData.strFontId, "isEnabled", QString::number(itemData.isEnabled));
 
     m_fontPreviewProxyModel->setData(index, QVariant::fromValue(itemData), Qt::DisplayRole);
 }
@@ -274,11 +231,7 @@ void DFontPreviewListView::onListViewItemCollectionBtnClicked(QModelIndex index)
         qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(index));
     itemData.isCollected = !itemData.isCollected;
 
-    QMap<QString, QString> where;
-    where.insert("fontId", itemData.strFontId);
-    QMap<QString, QString> data;
-    data.insert("isCollected", QString::number(itemData.isCollected));
-    m_sqlUtil->updateRecord(where, data);
+    m_dbManager->updateFontInfoByFontId(itemData.strFontId, "isCollected", QString::number(itemData.isCollected));
 
     m_fontPreviewProxyModel->setData(index, QVariant::fromValue(itemData), Qt::DisplayRole);
 }
@@ -321,9 +274,7 @@ void DFontPreviewListView::removeRowAtIndex(QModelIndex modelIndex)
     QVariant varModel = m_fontPreviewProxyModel->data(modelIndex, Qt::DisplayRole);
     DFontPreviewItemData itemData = varModel.value<DFontPreviewItemData>();
 
-    QMap<QString, QString> where;
-    where.insert("fontId", itemData.strFontId);
-    m_sqlUtil->delRecord(where);
+    m_dbManager->deleteFontInfoByFontId(itemData.strFontId);
 
     m_fontPreviewProxyModel->removeRow(modelIndex.row(), modelIndex.parent());
 }

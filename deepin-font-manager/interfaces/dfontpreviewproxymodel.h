@@ -19,6 +19,8 @@ public:
 
     bool isChineseFont(QString fontFilePath) const;
 
+    bool isMonoSpaceFont(QString fontFilePath) const;
+
     void setFilterFontNamePattern(const QString &pattern);
 
 private:
@@ -27,6 +29,7 @@ private:
     QString m_fontNamePattern;
 
     QStringList m_chineFontPathList;
+    QStringList m_monoSpaceFontPathList;
 };
 
 #endif  // DFONTPREVIEWPROXYMODEL_H

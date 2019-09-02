@@ -41,7 +41,8 @@ HEADERS += homepage.h \
     views/dsplitlistwidget.h \
     views/dfontinfodialog.h \
     views/dfquickinstallwindow.h \
-    views/dfdeletedialog.h
+    views/dfdeletedialog.h \
+    interfaces/dfmdbmanager.h
 
 SOURCES += homepage.cpp \
            listview.cpp \
@@ -65,7 +66,8 @@ SOURCES += homepage.cpp \
     views/dsplitlistwidget.cpp \
     views/dfontinfodialog.cpp \
     views/dfquickinstallwindow.cpp \
-    views/dfdeletedialog.cpp
+    views/dfdeletedialog.cpp \
+    interfaces/dfmdbmanager.cpp
 
 RESOURCES += deepin-font-manager.qrc
 TRANSLATIONS += translations/deepin-font-manager.ts

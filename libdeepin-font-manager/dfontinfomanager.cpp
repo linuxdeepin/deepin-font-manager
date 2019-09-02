@@ -135,6 +135,28 @@ QStringList DFontInfoManager::getAllChineseFontPath() const
     return pathList;
 }
 
+
+QStringList DFontInfoManager::getAllMonoSpaceFontPath() const
+{
+    QStringList pathList;
+    QProcess *process = new QProcess;
+    process->start("fc-list", QStringList() << ":spacing=mono");
+    process->waitForFinished(-1);
+
+    QString output = process->readAllStandardOutput();
+    QStringList lines = output.split(QChar('\n'));
+    process->deleteLater();
+
+    for (QString line : lines) {
+        QString filePath = line.split(QChar(':')).first().simplified();
+        if (filePath.length() > 0) {
+            pathList << filePath;
+        }
+    }
+
+    return pathList;
+}
+
 QString DFontInfoManager::getInstalledFontPath(DFontInfo *info)
 {
     const QList<DFontInfo *> famList = dataList;
