@@ -2,7 +2,7 @@
 
 #include <QDebug>
 
-DSqliteUtil::DSqliteUtil(const QString& strDatabase)
+DSqliteUtil::DSqliteUtil(const QString &strDatabase)
     : m_strDatabase(strDatabase)
     , m_query(nullptr)
 {
@@ -12,12 +12,14 @@ DSqliteUtil::DSqliteUtil(const QString& strDatabase)
 
 DSqliteUtil::~DSqliteUtil()
 {
-    if (m_query)
+    if (m_query) {
         delete m_query;
+    }
+
     m_db.close();
 }
 
-bool DSqliteUtil::createConnection(const QString& database)
+bool DSqliteUtil::createConnection(const QString &database)
 {
     QStringList drivers = QSqlDatabase::drivers();
     qDebug() << drivers;
@@ -164,7 +166,7 @@ bool DSqliteUtil::updateRecord(QMap<QString, QString> where, QMap<QString, QStri
 }
 
 //查找所有记录
-bool DSqliteUtil::findRecords(QList<QString> key, QList<QMap<QString, QString>>* row,
+bool DSqliteUtil::findRecords(QList<QString> key, QList<QMap<QString, QString>> *row,
                               QString table_name)
 {
     QString sql = "select ";
@@ -195,7 +197,7 @@ bool DSqliteUtil::findRecords(QList<QString> key, QList<QMap<QString, QString>>*
 
 //按条件查找
 bool DSqliteUtil::findRecords(QList<QString> key, QMap<QString, QString> where,
-                              QList<QList<QString>>* row, QString table_name)
+                              QList<QMap<QString, QString>> *row, QString table_name)
 {
     QString sql = "select ";
     int columnLen = key.size();
@@ -215,11 +217,11 @@ bool DSqliteUtil::findRecords(QList<QString> key, QMap<QString, QString> where,
     m_query->prepare(sql);
     if (m_query->exec()) {
         while (m_query->next()) {
-            QList<QString> lstRow;
+            QMap<QString, QString> mapRow;
             for (int i = 0; i < columnLen; i++) {
-                lstRow.append(m_query->value(i).toString());
+                mapRow.insert(key.at(i), m_query->value(i).toString());
             }
-            row->append(lstRow);
+            row->append(mapRow);
         }
         qDebug() << "find data success!";
         return true;

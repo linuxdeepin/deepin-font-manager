@@ -4,7 +4,7 @@
 #include "dfontpreviewitemdef.h"
 #include "dfontpreviewitemdelegate.h"
 #include "dfontpreviewproxymodel.h"
-#include "dsqliteutil.h"
+#include "dfmdbmanager.h"
 
 #include <DListView>
 
@@ -23,7 +23,7 @@ public:
 
     void initFontListData();
     void initDelegate();
-    void refreshFontListData(QStandardItemModel *sourceModel);
+    void refreshFontListData(QStandardItemModel *sourceModel, bool isStartup=false);
 
     void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
     void setSelection(const QRect &rect,
@@ -38,10 +38,11 @@ public:
     DFontPreviewProxyModel *getFontPreviewProxyModel();
     void removeRowAtIndex(QModelIndex modelIndex);
 
+    DFMDBManager *m_dbManager;
+
 private:
     void initConnections();
     void insertFontItemData(QStandardItemModel *sourceModel, QString filePath, int index);
-    QMap<QString, QString> mapItemData(DFontPreviewItemData itemData);
 
     bool m_bLeftMouse;
     QStandardItemModel *m_fontPreviewItemModel;
@@ -52,8 +53,6 @@ private:
 
     QModelIndex m_currModelIndex;
     DFontPreviewProxyModel *m_fontPreviewProxyModel;
-
-    DSqliteUtil *m_sqlUtil;
 
 signals:
     //用于DFontPreviewListView内部使用的信号

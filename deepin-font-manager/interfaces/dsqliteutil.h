@@ -38,7 +38,7 @@ public:
                      QString table_name = "t_fontmanager");
 
     //按条件查找
-    bool findRecords(QList<QString> key, QMap<QString, QString> where, QList<QList<QString>> *row,
+    bool findRecords(QList<QString> key, QMap<QString, QString> where, QList<QMap<QString, QString>> *row,
                      QString table_name = "t_fontmanager");
 
     int getRecordCount(QString table_name = "t_fontmanager");
