@@ -169,7 +169,7 @@ void DFQuickInstallWindow::onFileSelected(QStringList fileList)
             m_actionBtn->setDisabled(true);
             m_fontType->setVisible(false);
         } else {
-            if (m_fontInfoManager->isFontInstalled(pfontInfo)) {
+            if (pfontInfo->isInstalled) {
                 DPalette pa = m_stateLabel->palette();
                 QColor color = pa.color(DPalette::TextWarning);
                 pa.setColor(DPalette::WindowText, color);

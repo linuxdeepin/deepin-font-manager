@@ -43,6 +43,8 @@ public:
 
     int getRecordCount(QString table_name = "t_fontmanager");
 
+    int getMaxFontId(QString table_name = "t_fontmanager");
+
     QSqlDatabase m_db;
 
 private:

@@ -18,9 +18,12 @@
  */
 
 #include "dfontinfomanager.h"
+#include "dfmdbmanager.h"
+
 #include <QDebug>
 #include <QDir>
 #include <QFileInfo>
+#include <QFontDatabase>
 #include <QProcess>
 
 #include <fontconfig/fontconfig.h>
@@ -31,6 +34,7 @@
 #include FT_TYPE1_TABLES_H
 #include FT_SFNT_NAMES_H
 #include FT_TRUETYPE_IDS_H
+
 
 static QList<DFontInfo *> dataList;
 static DFontInfoManager *INSTANCE = 0;
@@ -254,7 +258,25 @@ DFontInfo *DFontInfoManager::getFontInfo(const QString &filePath)
         }
     }
 
-    fontInfo->isInstalled = isFontInstalled(fontInfo);
+    DFMDBManager *dbManager = DFMDBManager::instance();
+    if (dbManager->getRecordCount() > 0) {
+        fontInfo->sysVersion = fontInfo->version;
+
+        int appFontId = QFontDatabase::addApplicationFont(filePath);
+        QStringList fontFamilyList = QFontDatabase::applicationFontFamilies(appFontId);
+        if (fontFamilyList.size() > 0) {
+            QString fontFamily = QString(fontFamilyList.first().toLocal8Bit());
+            fontInfo->familyName = fontFamily;
+        }
+
+        if (!dbManager->isFontInfoExist(fontInfo)) {
+            fontInfo->isInstalled = false;
+        } else {
+            fontInfo->isInstalled = true;
+        }
+    } else {
+        fontInfo->isInstalled = isFontInstalled(fontInfo);
+    }
 
     // destroy object.
     FT_Done_Face(m_face);

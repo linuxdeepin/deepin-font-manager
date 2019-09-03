@@ -112,7 +112,6 @@ bool DFontPreviewProxyModel::isCustomFilterAcceptsRow(const QModelIndex &modelIn
             return true;
         }
     } break;
-#warning to do...
     //中文字体
     case DSplitListWidget::ChineseFont: {
         QString fontFilePath = itemData.pFontInfo->filePath;

@@ -187,10 +187,10 @@ bool DSqliteUtil::findRecords(QList<QString> key, QList<QMap<QString, QString>> 
             }
             row->append(mapRow);
         }
-        qDebug() << "find data success!";
+        qDebug() << "find all data success!";
         return true;
     } else {
-        qDebug() << "find data failed!";
+        qDebug() << "find all data failed!";
         return false;
     }
 }
@@ -210,9 +210,9 @@ bool DSqliteUtil::findRecords(QList<QString> key, QMap<QString, QString> where,
     sql += " where ";
     for (QMap<QString, QString>::const_iterator it = where.constBegin(); it != where.constEnd();
          it++) {
-        sql += it.key() + "=" + it.value() + ",";
+        sql += it.key() + "='" + it.value() + "' and ";
     }
-    sql.chop(1);
+    sql.chop(5);
     qDebug() << sql;
     m_query->prepare(sql);
     if (m_query->exec()) {
@@ -223,10 +223,10 @@ bool DSqliteUtil::findRecords(QList<QString> key, QMap<QString, QString> where,
             }
             row->append(mapRow);
         }
-        qDebug() << "find data success!";
+        qDebug() << "find data by condition success!";
         return true;
     } else {
-        qDebug() << "find data failed!";
+        qDebug() << "find data by condition failed!";
         return false;
     }
 }
@@ -245,6 +245,22 @@ int DSqliteUtil::getRecordCount(QString table_name)
     }
 
     return resultCount;
+}
+
+int DSqliteUtil::getMaxFontId(QString table_name)
+{
+    QString sql = "select max(fontId) from " + table_name;
+    qDebug() << sql;
+    m_query->prepare(sql);
+
+    int maxFontId = 0;
+    if (m_query->exec()) {
+        if (m_query->next()) {
+            maxFontId = m_query->value(0).toInt();
+        }
+    }
+
+    return maxFontId;
 }
 
 bool DSqliteUtil::delAllRecords(QString table_name)
