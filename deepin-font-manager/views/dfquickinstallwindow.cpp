@@ -2,6 +2,7 @@
 #include "dfontinfomanager.h"
 #include "dfontmanager.h"
 
+#include <QFontDatabase>
 #include <QResizeEvent>
 #include <QVBoxLayout>
 
@@ -82,9 +83,9 @@ void DFQuickInstallWindow::initUI()
 
     // m_fontPreviewTxt->setFixedHeight(216);
     m_fontPreviewTxt->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    QFont previewFont;
-    previewFont.setPixelSize(28);
-    m_fontPreviewTxt->setFont(previewFont);
+    //    QFont previewFont;
+    //    previewFont.setPixelSize(28);
+    //    m_fontPreviewTxt->setFont(previewFont);
     m_fontPreviewTxt->setText(
         "汉体书写信息技术标准相容\n"
         "档案下载使用界面简单\n"
@@ -182,6 +183,7 @@ void DFQuickInstallWindow::onFileSelected(QStringList fileList)
             }
 
             m_titleLabel->setText(pfontInfo->familyName);
+
             if (pfontInfo->styleName.isEmpty()) {
                 m_fontType->addItem("Unknow");
             } else {
@@ -192,6 +194,8 @@ void DFQuickInstallWindow::onFileSelected(QStringList fileList)
             if (!pfontInfo->familyName.isEmpty()) {
                 m_titleLabel->setText(pfontInfo->familyName);
             }
+
+            InitPreviewFont(pfontInfo);
         }
     }
 }
@@ -201,4 +205,56 @@ void DFQuickInstallWindow::onInstallBtnClicked()
     // Close Quick install first
     close();
     Q_EMIT quickInstall();
+}
+
+void DFQuickInstallWindow::InitPreviewFont(DFontInfo *dfontInfo)
+{
+    qDebug() << __FUNCTION__ << "enter";
+
+    if (!dfontInfo->isError) {
+        dfontInfo = m_fontInfoManager->getFontInfo(dfontInfo->filePath);
+        if (!dfontInfo->isInstalled) {
+            int fontId = QFontDatabase::addApplicationFont(dfontInfo->filePath);
+            QStringList familys = QFontDatabase::applicationFontFamilies(fontId);
+
+            if (familys.size() > 0) {
+                dfontInfo->familyName = familys.at(0);
+            }
+        }
+
+        qDebug() << __FUNCTION__ << dfontInfo->familyName;
+
+        QFont preivewFont;
+        preivewFont.setFamily(dfontInfo->familyName);
+        preivewFont.setPixelSize(28);
+        QString styleName = dfontInfo->styleName;
+
+        if (styleName.contains("Italic")) {
+            preivewFont.setItalic(true);
+        }
+
+        if (styleName.contains("Regular")) {
+            preivewFont.setWeight(QFont::Normal);
+        } else if (styleName.contains("Bold")) {
+            preivewFont.setWeight(QFont::Bold);
+        } else if (styleName.contains("Light")) {
+            preivewFont.setWeight(QFont::Light);
+        } else if (styleName.contains("Thin")) {
+            preivewFont.setWeight(QFont::Thin);
+        } else if (styleName.contains("ExtraLight")) {
+            preivewFont.setWeight(QFont::ExtraLight);
+        } else if (styleName.contains("ExtraBold")) {
+            preivewFont.setWeight(QFont::ExtraBold);
+        } else if (styleName.contains("Medium")) {
+            preivewFont.setWeight(QFont::Medium);
+        } else if (styleName.contains("DemiBold")) {
+            preivewFont.setWeight(QFont::DemiBold);
+        } else if (styleName.contains("Black")) {
+            preivewFont.setWeight(QFont::Black);
+        }
+
+        m_fontPreviewTxt->setFont(preivewFont);
+
+        m_titleLabel->setText(dfontInfo->familyName);
+    }
 }

@@ -17,14 +17,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QCoreApplication>
 #include <QCommandLineParser>
+#include <QCoreApplication>
 #include <QCryptographicHash>
+#include <QDebug>
+#include <QDir>
 #include <QFile>
 #include <QFileInfo>
 #include <QProcess>
-#include <QDir>
-#include <QDebug>
 #include <QThread>
 #include <iostream>
 
@@ -37,17 +37,26 @@ int main(int argc, char *argv[])
     const QStringList fileList = parser.positionalArguments();
     std::cout << 0 << std::endl;
 
-    for (const QString file : fileList) {
-        QFile openFile(file);
+    QDir userFontDir("/usr/share/fonts/");
+    QDir systemFontDir("/usr/share/fonts/deepin-font-install");
 
-        if (openFile.remove()) {
-            // remove empty directroy.
-            const QString dirPath = QFileInfo(file).absolutePath();
-            const QDir dir(dirPath);
-            if (dir.entryList(QDir::Files).count() == 0) {
-                dir.rmdir(dirPath);
-            }
+    for (QString file : fileList) {
+        QFileInfo openFile(file);
 
+        QDir fileDir(openFile.path());
+
+        // For security, check the font dir is valid
+        if (userFontDir == fileDir || systemFontDir == fileDir) {
+#ifdef QT_DEBUG
+            qDebug() << "Invalid dir:" << fileDir.path();
+#endif
+            continue;
+        }
+
+        if (fileDir.removeRecursively()) {
+#ifdef QT_DEBUG
+            qDebug() << "Delete font ok:" << fileDir.path() << " " << openFile.completeSuffix();
+#endif
             QProcess process;
             process.start("fc-cache");
             process.waitForFinished();
