@@ -11,6 +11,7 @@ DWIDGET_USE_NAMESPACE
 
 class DFontInfoManager;
 class DFontManager;
+class DFontInfo;
 
 class DFQuickInstallWindow : public DMainWindow
 {
@@ -26,6 +27,7 @@ public:
 protected:
     void initUI();
     void initConnections();
+    void InitPreviewFont(DFontInfo* dfontInfo);
 
     void resizeEvent(QResizeEvent* event) override;
 signals:
