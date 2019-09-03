@@ -30,11 +30,9 @@ HEADERS += homepage.h \
     views/dfontmgrmainwindow.h \
     globaldef.h \
     interfaces/dfontmenumanager.h \
-    interfaces/dfontpreviewitemdef.h \
     interfaces/dfontpreviewitemdelegate.h \
     interfaces/dfontpreviewproxymodel.h \
     interfaces/dfontpreviewlistview.h \
-    interfaces/dsqliteutil.h \
     views/dfinstallnormalwindow.h \
     views/dfinstallerroritemwidget.h \
     views/dfinstallerrordialog.h \
@@ -42,7 +40,6 @@ HEADERS += homepage.h \
     views/dfontinfodialog.h \
     views/dfquickinstallwindow.h \
     views/dfdeletedialog.h \
-    interfaces/dfmdbmanager.h
 
 SOURCES += homepage.cpp \
            listview.cpp \
@@ -59,15 +56,13 @@ SOURCES += homepage.cpp \
     interfaces/dfontpreviewitemdelegate.cpp \
     interfaces/dfontpreviewproxymodel.cpp \
     interfaces/dfontpreviewlistview.cpp \
-    interfaces/dsqliteutil.cpp \
     views/dfinstallnormalwindow.cpp \
     views/dfinstallerroritemwidget.cpp \
     views/dfinstallerrordialog.cpp \
     views/dsplitlistwidget.cpp \
     views/dfontinfodialog.cpp \
     views/dfquickinstallwindow.cpp \
-    views/dfdeletedialog.cpp \
-    interfaces/dfmdbmanager.cpp
+    views/dfdeletedialog.cpp
 
 RESOURCES += deepin-font-manager.qrc
 TRANSLATIONS += translations/deepin-font-manager.ts

@@ -51,7 +51,7 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
 
         QStyleOptionViewItem viewOption(option);  //用来在视图中画一个item
 
-        QRectF rect;
+        QRect rect;
         rect.setX(option.rect.x());
         rect.setY(option.rect.y());
         rect.setWidth(option.rect.width());
@@ -156,5 +156,6 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
 QSize DFontPreviewItemDelegate::sizeHint(const QStyleOptionViewItem &option,
                                          const QModelIndex &index) const
 {
+    Q_UNUSED(index)
     return QSize(option.rect.width(), FTM_PREVIEW_ITEM_HEIGHT);
 }

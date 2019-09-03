@@ -122,10 +122,7 @@ void DFontPreviewListView::refreshFontListData(QStandardItemModel *sourceModel, 
             sourceModel->appendRow(item);
         }
 
-        //只添加已启用的字体, 用于下面比对系统中是否有新增字体文件
-        if (itemData.isEnabled) {
-            dbFilePathSet.insert(filePath);
-        }
+        dbFilePathSet.insert(filePath);
     }
 
     //根据文件路径比较出不同的字体文件
@@ -133,11 +130,12 @@ void DFontPreviewListView::refreshFontListData(QStandardItemModel *sourceModel, 
     QSet<QString> diffSet = fontListSet.subtract(dbFilePathSet);
     qDebug() << "diffSet count:" << diffSet.count();
     if (diffSet.count() > 0) {
+        int maxFontId = m_dbManager->getCurrMaxFontId();
         QList<QString> diffFilePathList = diffSet.toList();
         for (int i = 0; i < diffFilePathList.size(); ++i) {
             QString filePath = diffFilePathList.at(i);
             if (filePath.length() > 0) {
-                insertFontItemData(sourceModel, filePath, strAllFontList.size() + i + 1);
+                insertFontItemData(sourceModel, filePath, maxFontId + i + 1);
             }
         }
     }

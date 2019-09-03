@@ -177,7 +177,7 @@ void DFInstallNormalWindow::verifyFontFiles()
 #ifdef QT_QML_DEBUG
             qDebug() << __FUNCTION__ << " (" << it << " :Damaged file)";
 #endif
-        } else if (m_fontInfoManager->isFontInstalled(pfontInfo)) {
+        } else if (pfontInfo->isInstalled) {
             m_installedFiles.append(it);
 
 #ifdef QT_QML_DEBUG

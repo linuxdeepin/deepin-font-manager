@@ -19,8 +19,9 @@ public:
 
     DFontPreviewItemData findFontInfoByFontId(QString strFontId);
     DFontPreviewItemData findFontInfoByFilePath(QString strFontFilePath);
+    int getCurrMaxFontId();
 
-    bool isFontInfoExist(QString strFontFilePath);
+    bool isFontInfoExist(DFontInfo *newFileFontInfo);
 
     bool addFontInfo(DFontPreviewItemData itemData);
     bool deleteFontInfo(const QString &strKey, const QString &strValue);
@@ -34,6 +35,8 @@ public:
 
 private:
     QMap<QString, QString> mapItemData(DFontPreviewItemData itemData);
+    DFontInfo *getDFontInfo(const QMap<QString, QString> &record);
+    inline bool isSystemFont(QString filePath);
 
     DSqliteUtil *m_sqlUtil;
 };

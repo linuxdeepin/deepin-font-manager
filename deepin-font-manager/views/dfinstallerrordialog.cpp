@@ -35,7 +35,7 @@ void DFInstallErrorDialog::initData()
             itemModel->strFontInstallStatus = QString("文件异常");
             m_installErrorFontModelList.push_back(itemModel);
             qDebug() << "verifyFontFiles->" << it << " :Damaged file";
-        } else if (fontInfoManager->isFontInstalled(pfontInfo)) {
+        } else if (pfontInfo->isInstalled) {
             DFInstallErrorItemModel *itemModel = new DFInstallErrorItemModel;
             QFileInfo fileInfo(it);
             itemModel->bSelectable = true;
