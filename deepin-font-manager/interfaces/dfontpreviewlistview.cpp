@@ -63,22 +63,14 @@ void DFontPreviewListView::insertFontItemData(QStandardItemModel *sourceModel, Q
     QFileInfo filePathInfo(filePath);
     itemData.pFontInfo = fontInfoMgr->getFontInfo(filePath);
 
-    int appFontId = QFontDatabase::addApplicationFont(filePath);
-    QStringList fontFamilyList = QFontDatabase::applicationFontFamilies(appFontId);
-    if (fontFamilyList.size() > 0) {
-        QString fontFamily = QString(fontFamilyList.first().toLocal8Bit());
-        if (itemData.pFontInfo->styleName.length() > 0) {
-            itemData.strFontName =
-                QString("%1-%2").arg(fontFamily).arg(itemData.pFontInfo->styleName);
-        } else {
-            itemData.strFontName = fontFamily;
-        }
-        itemData.pFontInfo->familyName = fontFamily;
+    if (itemData.pFontInfo->styleName.length() > 0) {
+        itemData.strFontName =
+            QString("%1-%2").arg(itemData.pFontInfo->familyName).arg(itemData.pFontInfo->styleName);
     } else {
         itemData.strFontName = itemData.pFontInfo->familyName;
     }
     itemData.strFontId = QString::number(index);
-    itemData.appFontId = appFontId;
+    itemData.appFontId = index;
     itemData.strFontFileName = filePathInfo.baseName();
     itemData.strFontPreview = FTM_DEFAULT_PREVIEW_TEXT;
     itemData.iFontSize = FTM_DEFAULT_PREVIEW_FONTSIZE;

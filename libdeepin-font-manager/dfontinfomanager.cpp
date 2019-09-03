@@ -19,6 +19,7 @@
 
 #include "dfontinfomanager.h"
 #include "dfmdbmanager.h"
+#include "dfreetypeutil.h"
 
 #include <QDebug>
 #include <QDir>
@@ -211,7 +212,7 @@ DFontInfo *DFontInfoManager::getFontInfo(const QString &filePath)
     // get the basic data.
     fontInfo->isError = false;
     fontInfo->filePath = filePath;
-    fontInfo->familyName = QString::fromLatin1(m_face->family_name);
+    fontInfo->familyName = QString::fromUtf8(DFreeTypeUtil::getFontFamilyName(m_face));
     fontInfo->styleName = QString::fromLatin1(m_face->style_name);
     fontInfo->type = getFontType(filePath);
 
