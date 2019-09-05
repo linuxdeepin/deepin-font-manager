@@ -169,7 +169,7 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
 void DFontPreviewListView::setSelection(const QRect &rect,
                                         QItemSelectionModel::SelectionFlags command)
 {
-    Q_UNUSED(command)
+    DListView::setSelection(rect, command);
 
     QPoint selectionPoint(rect.x(), rect.y());
     QModelIndex modelIndex = indexAt(selectionPoint);

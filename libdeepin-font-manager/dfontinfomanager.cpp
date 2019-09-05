@@ -263,12 +263,12 @@ DFontInfo *DFontInfoManager::getFontInfo(const QString &filePath)
     if (dbManager->getRecordCount() > 0) {
         fontInfo->sysVersion = fontInfo->version;
 
-        int appFontId = QFontDatabase::addApplicationFont(filePath);
-        QStringList fontFamilyList = QFontDatabase::applicationFontFamilies(appFontId);
-        if (fontFamilyList.size() > 0) {
-            QString fontFamily = QString(fontFamilyList.first().toLocal8Bit());
-            fontInfo->familyName = fontFamily;
-        }
+//        int appFontId = QFontDatabase::addApplicationFont(filePath);
+//        QStringList fontFamilyList = QFontDatabase::applicationFontFamilies(appFontId);
+//        if (fontFamilyList.size() > 0) {
+//            QString fontFamily = QString(fontFamilyList.first().toLocal8Bit());
+//            fontInfo->familyName = fontFamily;
+//        }
 
         if (!dbManager->isFontInfoExist(fontInfo)) {
             fontInfo->isInstalled = false;

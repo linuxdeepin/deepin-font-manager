@@ -2,6 +2,7 @@
 #include "utils.h"
 
 #include <DApplication>
+#include <DPalette>
 #include <DLog>
 
 #include <QCheckBox>
@@ -21,6 +22,8 @@ DWIDGET_USE_NAMESPACE
 
 #define FTM_PREVIEW_ITEM_HEIGHT 130
 
+#define FTM_IS_USE_ROUND_CORNER true
+
 DFontPreviewItemDelegate::DFontPreviewItemDelegate(QObject *parent)
     : QStyledItemDelegate(parent)
 {
@@ -31,6 +34,7 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
 {
     if (index.isValid()) {
         painter->save();
+        painter->setRenderHint(QPainter::Antialiasing, true);
 
         QVariant varFontPreviewText = index.data(Qt::UserRole + 1);
         QVariant varFontSize = index.data(Qt::UserRole + 2);
@@ -51,11 +55,53 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
 
         QStyleOptionViewItem viewOption(option);  //用来在视图中画一个item
 
+        DPalette::ColorGroup cg = option.state & QStyle::State_Enabled
+                                  ? DPalette::Normal : DPalette::Disabled;
+        if (cg == DPalette::Normal && !(option.state & QStyle::State_Active)) {
+            cg = DPalette::Inactive;
+        }
+
         QRect rect;
         rect.setX(option.rect.x());
         rect.setY(option.rect.y());
         rect.setWidth(option.rect.width());
         rect.setHeight(option.rect.height());
+
+        if (FTM_IS_USE_ROUND_CORNER) {
+            QPainterPath path;
+            const int radius = 10;
+
+            path.moveTo(rect.bottomRight() - QPointF(0, radius));
+            path.lineTo(rect.topRight() + QPointF(0, radius));
+            path.arcTo(QRectF(QPointF(rect.topRight() - QPointF(radius * 2, 0)), QSize(radius * 2, radius * 2)), 0, 90);
+            path.lineTo(rect.topLeft() + QPointF(radius, 0));
+            path.arcTo(QRectF(QPointF(rect.topLeft()), QSize(radius * 2, radius * 2)), 90, 90);
+            path.lineTo(rect.bottomLeft() - QPointF(0, radius));
+            path.arcTo(QRectF(QPointF(rect.bottomLeft() - QPointF(0, radius * 2)), QSize(radius * 2, radius * 2)), 180, 90);
+            path.lineTo(rect.bottomLeft() + QPointF(radius, 0));
+            path.arcTo(QRectF(QPointF(rect.bottomRight() - QPointF(radius * 2, radius * 2)), QSize(radius * 2, radius * 2)), 270, 90);
+
+            if (option.state & QStyle::State_Selected) {
+                painter->fillPath(path, option.palette.color(cg, DPalette::Highlight));
+            }
+
+        } else {
+
+            QPainterPath path;
+            path.moveTo(rect.topRight());
+            path.lineTo(rect.topLeft());
+            path.quadTo(rect.topLeft(), rect.topLeft());
+            path.lineTo(rect.bottomLeft());
+            path.quadTo(rect.bottomLeft(), rect.bottomLeft());
+            path.lineTo(rect.bottomRight());
+            path.quadTo(rect.bottomRight(), rect.bottomRight());
+            path.lineTo(rect.topRight());
+            path.quadTo(rect.topRight(), rect.topRight());
+
+            if (option.state & QStyle::State_Selected) {
+                painter->fillRect(rect, option.palette.brush(cg, DPalette::Highlight));
+            }
+        }
 
         int checkBoxSize = 14;
         int collectIconSize = 22;
