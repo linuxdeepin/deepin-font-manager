@@ -1,6 +1,7 @@
 #ifndef DFQUICKINSTALL_H
 #define DFQUICKINSTALL_H
 
+#include <DApplication>
 #include <DComboBox>
 #include <DFrame>
 #include <DLabel>

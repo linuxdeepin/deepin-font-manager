@@ -3,6 +3,7 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 
+#include <DApplication>
 #include <DFrame>
 
 DFDeleteDialog::DFDeleteDialog(QWidget *parent)
@@ -34,12 +35,14 @@ void DFDeleteDialog::initUI()
     m_fontLogo->setPixmap(QPixmap(":/images/deepin-font-manager.svg"));
 
     m_messageA = new DLabel(this);
-    m_messageA->setText("您确定要删除此字体吗?");
+    m_messageA->setText(
+        DApplication::translate("DeleteConfirmDailog", "Are you sure to delete this font?"));
     m_messageA->setFixedHeight(20);
     m_messageA->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
     m_messageB = new DLabel(this);
-    m_messageB->setText("删除后该字体将不可用于其他应用程序");
+    m_messageB->setText(DApplication::translate(
+        "DeleteConfirmDailog", "This font will not be available to applications."));
     m_messageB->setFixedHeight(20);
     m_messageB->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
@@ -49,11 +52,11 @@ void DFDeleteDialog::initUI()
 
     m_cancelBtn = new DPushButton(this);
     m_cancelBtn->setFixedSize(QSize(170, 36));
-    m_cancelBtn->setText("取消");
+    m_cancelBtn->setText(DApplication::translate("DeleteConfirmDailog", "Cancel"));
 
     m_confirmBtn = new DPushButton(this);
     m_confirmBtn->setFixedSize(QSize(170, 36));
-    m_confirmBtn->setText("确认");
+    m_confirmBtn->setText(DApplication::translate("DeleteConfirmDailog", "Confirm"));
 
     actionBarLayout->addWidget(m_cancelBtn);
     actionBarLayout->addWidget(m_confirmBtn);

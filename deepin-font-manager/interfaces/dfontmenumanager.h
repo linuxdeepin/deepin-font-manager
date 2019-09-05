@@ -1,12 +1,18 @@
 #ifndef DFONTMENUMANAGER_H
 #define DFONTMENUMANAGER_H
+#include "dfontpreviewitemdef.h"
 
 #include <QAction>
 #include <QActionGroup>
-#include <QMenu>
 #include <QObject>
 #include <QSet>
 #include <QVector>
+
+#include <DMenu>
+
+DWIDGET_USE_NAMESPACE
+
+class DFontPreviewItemData;
 
 class DFontMenuManager : public QObject
 {
@@ -56,8 +62,8 @@ public:
 
     typedef void (*FMenuActionTriggle)(QAction *);
 
-    QMenu *createToolBarSettingsMenu(FMenuActionTriggle actionTriggle = nullptr);
-    QMenu *createRightKeyMenu(FMenuActionTriggle actionTriggle = nullptr);
+    DMenu *createToolBarSettingsMenu(FMenuActionTriggle actionTriggle = nullptr);
+    DMenu *createRightKeyMenu(FMenuActionTriggle actionTriggle = nullptr);
 
     QAction *getActionByMenuAction(MenuAction maction, MenuType menuType);
 
@@ -75,6 +81,7 @@ private:
 signals:
 
 public slots:
+    void onRightKeyMenuPopup(DFontPreviewItemData fontData);
 };
 
 #endif  // DFONTMENUMANAGER_H

@@ -1,6 +1,10 @@
 #include "interfaces/dfontmenumanager.h"
 
+#include <DApplication>
 #include <DLog>
+
+DWIDGET_USE_NAMESPACE
+DCORE_USE_NAMESPACE
 
 DFontMenuManager *DFontMenuManager::instance = nullptr;
 
@@ -25,32 +29,46 @@ void DFontMenuManager::initMenuData()
     //    Need to localize the menu string
 
     // Tools bar menu & Right key menu.
-    m_fontToolBarMenuData.push_back(new FMenuItem("添加字体", MenuAction::M_AddFont));
-    FMenuItem *themeMenus = new FMenuItem("主题", MenuAction::M_Theme, true, true);
-    themeMenus->subMenulist.push_back(new FMenuItem("浅色主体", MenuAction::M_ThemeLight));
-    themeMenus->subMenulist.push_back(new FMenuItem("深色主体", MenuAction::M_ThemeDark));
-    themeMenus->subMenulist.push_back(new FMenuItem("跟随系统", MenuAction::M_ThemeFollowSystem));
+    m_fontToolBarMenuData.push_back(
+        new FMenuItem(DApplication::translate("Menu", "Add Fonts"), MenuAction::M_AddFont));
+    FMenuItem *themeMenus =
+        new FMenuItem(DApplication::translate("Menu", "Theme"), MenuAction::M_Theme, true, true);
+    themeMenus->subMenulist.push_back(
+        new FMenuItem(DApplication::translate("Menu", "Light Theme"), MenuAction::M_ThemeLight));
+    themeMenus->subMenulist.push_back(
+        new FMenuItem(DApplication::translate("Menu", "Dark Theme"), MenuAction::M_ThemeDark));
+    themeMenus->subMenulist.push_back(new FMenuItem(
+        DApplication::translate("Menu", "Follow System"), MenuAction::M_ThemeFollowSystem));
     m_fontToolBarMenuData.push_back(themeMenus);
-    m_fontToolBarMenuData.push_back(new FMenuItem("帮助", MenuAction ::M_Help));
+
+    m_fontToolBarMenuData.push_back(
+        new FMenuItem(DApplication::translate("Menu", "Help"), MenuAction ::M_Help));
+
     m_fontToolBarMenuData.push_back(new FMenuItem("", MenuAction::M_Separator));
 
     // Right key menu data
-    m_fontRightMenuData.push_back(new FMenuItem("添加字体", MenuAction::M_AddFont));
+    m_fontRightMenuData.push_back(
+        new FMenuItem(DApplication::translate("Menu", "Add Fonts"), MenuAction::M_AddFont));
     m_fontRightMenuData.push_back(new FMenuItem("", MenuAction::M_Separator));
-    m_fontRightMenuData.push_back(new FMenuItem("启用字体", MenuAction::M_EnableOrDisable));
-    m_fontRightMenuData.push_back(new FMenuItem("删除字体", MenuAction::M_DeleteFont));
-    m_fontRightMenuData.push_back(new FMenuItem("收藏", MenuAction::M_Faverator));
+    m_fontRightMenuData.push_back(new FMenuItem(DApplication::translate("Menu", "Enable Font"),
+                                                MenuAction::M_EnableOrDisable));
+    m_fontRightMenuData.push_back(
+        new FMenuItem(DApplication::translate("Menu", "Delete Font"), MenuAction::M_DeleteFont));
+    m_fontRightMenuData.push_back(
+        new FMenuItem(DApplication::translate("Menu", "Add Favorite"), MenuAction::M_Faverator));
     m_fontRightMenuData.push_back(new FMenuItem("", MenuAction::M_Separator));
-    m_fontRightMenuData.push_back(new FMenuItem("显示信息", MenuAction::M_FontInfo));
+    m_fontRightMenuData.push_back(
+        new FMenuItem(DApplication::translate("Menu", "Font Detail"), MenuAction::M_FontInfo));
     m_fontRightMenuData.push_back(new FMenuItem("", MenuAction::M_Separator));
-    m_fontRightMenuData.push_back(new FMenuItem("在文件管理器中显示", MenuAction::M_ShowFontPostion));
+    m_fontRightMenuData.push_back(new FMenuItem(
+        DApplication::translate("Menu", "Font File Position"), MenuAction::M_ShowFontPostion));
 }
 
 QMenu *DFontMenuManager::createToolBarSettingsMenu(FMenuActionTriggle actionTriggle)
 {
     Q_UNUSED(actionTriggle);
 
-    QMenu *mainMenu = new QMenu();
+    DMenu *mainMenu = new DMenu();
 
     for (auto it : m_fontToolBarMenuData) {
         QAction *newAction = nullptr;
@@ -67,7 +85,7 @@ QMenu *DFontMenuManager::createToolBarSettingsMenu(FMenuActionTriggle actionTrig
 
             m_fontToolsBarMenus.insert(it->actionId, it);
         } else {
-            QMenu *subMenu = mainMenu->addMenu(it->actionName);
+            DMenu *subMenu = mainMenu->addMenu(it->actionName);
 
             // Create a action group for group menu
             if (it->fGroupSubMenu) {
@@ -96,7 +114,7 @@ QMenu *DFontMenuManager::createRightKeyMenu(FMenuActionTriggle actionTriggle)
 {
     Q_UNUSED(actionTriggle);
 
-    QMenu *rightKeyMenu = new QMenu();
+    DMenu *rightKeyMenu = new DMenu();
 
     for (auto it : m_fontRightMenuData) {
         QAction *newAction = nullptr;
@@ -113,7 +131,7 @@ QMenu *DFontMenuManager::createRightKeyMenu(FMenuActionTriggle actionTriggle)
 
             m_fontRightKeyMenus.insert(it->actionId, it);
         } else {
-            QMenu *subMenu = rightKeyMenu->addMenu(it->actionName);
+            DMenu *subMenu = rightKeyMenu->addMenu(it->actionName);
 
             for (auto iter : it->subMenulist) {
                 newAction = subMenu->addAction(iter->actionName);
@@ -143,8 +161,43 @@ QAction *DFontMenuManager::getActionByMenuAction(MenuAction maction, MenuType me
             action = it.value()->action;
         }
     } else {
-        qDebug() << __FUNCTION__ << " Unknow menu type = " << menuType << " for MenuAction=" << maction;
+        qDebug() << __FUNCTION__ << " Unknow menu type = " << menuType
+                 << " for MenuAction=" << maction;
     }
 
     return action;
+}
+
+void DFontMenuManager::onRightKeyMenuPopup(DFontPreviewItemData fontData)
+{
+    // Disable delete menu for system font
+    QAction *delAction = DFontMenuManager::getInstance()->getActionByMenuAction(
+        DFontMenuManager::M_DeleteFont, DFontMenuManager::MenuType::RightKeyMenu);
+
+    QAction *faveriteAction = DFontMenuManager::getInstance()->getActionByMenuAction(
+        DFontMenuManager::M_Faverator, DFontMenuManager::MenuType::RightKeyMenu);
+
+    QAction *enableOrDisableAction = DFontMenuManager::getInstance()->getActionByMenuAction(
+        DFontMenuManager::M_EnableOrDisable, DFontMenuManager::MenuType::RightKeyMenu);
+
+    // Disable delete menu on system font
+    if (nullptr != delAction && fontData.pFontInfo->isSystemFont) {
+        delAction->setDisabled(true);
+    } else {
+        delAction->setDisabled(false);
+    }
+
+    // Favarite font Menu
+    if (nullptr != faveriteAction && fontData.isCollected) {
+        faveriteAction->setText(DApplication::translate("Menu", "Remove Favorite"));
+    } else {
+        faveriteAction->setText(DApplication::translate("Menu", "Add Favorite"));
+    }
+
+    // Enable/Disable Menu
+    if (nullptr != enableOrDisableAction && fontData.isEnabled) {
+        enableOrDisableAction->setText(DApplication::translate("Menu", "Disable Font"));
+    } else {
+        enableOrDisableAction->setText(DApplication::translate("Menu", "Enable Font"));
+    }
 }

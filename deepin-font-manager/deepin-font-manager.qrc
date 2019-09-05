@@ -1,7 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>qss/light.qss</file>
-        <file>qss/dark.qss</file>
         <file>images/icon.svg</file>
         <file>images/split_line.svg</file>
         <file>images/close_normal.svg</file>

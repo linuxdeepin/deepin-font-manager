@@ -1,14 +1,21 @@
 #include "dfmdbmanager.h"
 #include "dfontinfomanager.h"
 
-#include <QFileInfo>
+#include <QDir>
+
+#include <DLog>
 
 static DFMDBManager *INSTANCE = nullptr;
 
 DFMDBManager::DFMDBManager(QObject *parent)
     : QObject(parent)
-    , m_sqlUtil(new DSqliteUtil(".font_manager.db"))
+    , m_sqlUtil(new DSqliteUtil(QDir::homePath() + "/.deepin-font-manager/.font_manager.db"))
 {
+    QDir dbdir(QDir::homePath() + "/.deepin-font-manager/");
+    if (!dbdir.exists()) {
+        dbdir.mkdir(QDir::homePath() + "/.deepin-font-manager/");
+        qDebug() << __FUNCTION__ << QDir::homePath() + "/.deepin-font-manager/";
+    }
 }
 
 DFMDBManager::~DFMDBManager()
@@ -344,12 +351,14 @@ bool DFMDBManager::deleteFontInfoByFontId(const QString &strFontId)
     return m_sqlUtil->delRecord(where);
 }
 
-bool DFMDBManager::updateFontInfo(const QMap<QString, QString> &whereMap, const QMap<QString, QString> &dataMap)
+bool DFMDBManager::updateFontInfo(const QMap<QString, QString> &whereMap,
+                                  const QMap<QString, QString> &dataMap)
 {
     return m_sqlUtil->updateRecord(whereMap, dataMap);
 }
 
-bool DFMDBManager::updateFontInfoByFontId(const QString &strFontId, const QMap<QString, QString> &dataMap)
+bool DFMDBManager::updateFontInfoByFontId(const QString &strFontId,
+                                          const QMap<QString, QString> &dataMap)
 {
     QMap<QString, QString> where;
     where.insert("fontId", strFontId);
@@ -357,7 +366,8 @@ bool DFMDBManager::updateFontInfoByFontId(const QString &strFontId, const QMap<Q
     return m_sqlUtil->updateRecord(where, dataMap);
 }
 
-bool DFMDBManager::updateFontInfoByFontId(const QString &strFontId, const QString &strKey, const QString &strValue)
+bool DFMDBManager::updateFontInfoByFontId(const QString &strFontId, const QString &strKey,
+                                          const QString &strValue)
 {
     QMap<QString, QString> where;
     where.insert("fontId", strFontId);

@@ -18,15 +18,7 @@ LIBS += -L$$OUT_PWD/../libdeepin-font-manager -ldeepin-font-manager
 DEFINES += QT_MESSAGELOGCONTEXT
 
 # Input
-HEADERS += homepage.h \
-           listview.h \
-	   listitem.h \
-	   mainwindow.h \
-	   multifilepage.h \
-	   singlefilepage.h \
-	   utils.h \
-	   progress.h \
-	   refreshthread.h \
+HEADERS += utils.h \
     views/dfontmgrmainwindow.h \
     globaldef.h \
     interfaces/dfontmenumanager.h \
@@ -41,16 +33,8 @@ HEADERS += homepage.h \
     views/dfquickinstallwindow.h \
     views/dfdeletedialog.h \
 
-SOURCES += homepage.cpp \
-           listview.cpp \
-	   listitem.cpp \
-	   main.cpp \
-	   mainwindow.cpp \
-	   multifilepage.cpp \
-	   singlefilepage.cpp \
+SOURCES += main.cpp \
 	   utils.cpp \
-	   progress.cpp \
-	   refreshthread.cpp \
     views/dfontmgrmainwindow.cpp \
     interfaces/dfontmenumanager.cpp \
     interfaces/dfontpreviewitemdelegate.cpp \
