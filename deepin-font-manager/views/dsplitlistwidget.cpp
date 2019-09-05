@@ -1,5 +1,6 @@
 #include "dsplitlistwidget.h"
 
+#include <DApplication>
 #include <DHorizontalLine>
 #include <DLog>
 
@@ -58,10 +59,13 @@ QWidget *DSplitListWidget::initSplitWidget(int widgetWidth, int widgetHeight)
 
 void DSplitListWidget::initListData()
 {
-#warning need internationalization
-    m_titleStringList << QString("所有字体") << QString("系统字体") << QString("用户字体")
-                      << QString("我的收藏") << QString("已激活") << QString("中文")
-                      << QString("等宽");
+    m_titleStringList << DApplication::translate("Category", "All Fonts")
+                      << DApplication::translate("Category", "System Fonts")
+                      << DApplication::translate("Category", "User Fonts")
+                      << DApplication::translate("Category", "My Favorite")
+                      << DApplication::translate("Category", "Active Fonts")
+                      << DApplication::translate("Category", "Chinese")
+                      << DApplication::translate("Category", "Monospace");
 
     for (int i = 0; i < m_titleStringList.size(); i++) {
         QString titleString = m_titleStringList.at(i);

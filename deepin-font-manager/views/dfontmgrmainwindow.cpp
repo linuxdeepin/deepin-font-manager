@@ -69,8 +69,8 @@ public:
 DFontMgrMainWindow::DFontMgrMainWindow(bool isQuickMode, QWidget *parent)
     : DMainWindow(parent)
     , m_isQuickMode(isQuickMode)
-    , m_quickInstallWnd(new DFQuickInstallWindow())
     , m_fontManager(DFontManager::instance())
+    , m_quickInstallWnd(new DFQuickInstallWindow())
     , d_ptr(new DFontMgrMainWindowPrivate(this))
 {
     // setWindowFlags(windowFlags() | (Qt::FramelessWindowHint | Qt::WindowMaximizeButtonHint));
@@ -115,16 +115,7 @@ void DFontMgrMainWindow::initConnections()
     QObject::connect(d->rightKeyMenu, &QMenu::aboutToShow, this, [=]() {
         DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
 
-        // Disable delete menu for system font
-        QAction *delAction = DFontMenuManager::getInstance()->getActionByMenuAction(
-            DFontMenuManager::M_DeleteFont, DFontMenuManager::MenuType::RightKeyMenu);
-
-        // Disable delete menu on system font
-        if (nullptr != delAction && currItemData.pFontInfo->isSystemFont) {
-            delAction->setDisabled(true);
-        } else {
-            delAction->setDisabled(false);
-        }
+        DFontMenuManager::getInstance()->onRightKeyMenuPopup(currItemData);
     });
 
     // State bar event
@@ -157,8 +148,8 @@ void DFontMgrMainWindow::initConnections()
     QObject::connect(d->leftSiderBar, SIGNAL(onListWidgetItemClicked(int)), this,
                      SLOT(onLeftSiderBarItemClicked(int)));
 
-    QObject::connect(m_fontManager, SIGNAL(uninstallFontFinished(const QModelIndex &)), this, SLOT(onFontUninstallFinished(const QModelIndex &)));
-
+    QObject::connect(m_fontManager, SIGNAL(uninstallFontFinished(const QModelIndex &)), this,
+                     SLOT(onFontUninstallFinished(const QModelIndex &)));
 }
 
 void DFontMgrMainWindow::initTileBar()
@@ -208,7 +199,7 @@ void DFontMgrMainWindow::initTileFrame()
     d->searchFontEdit = new DSearchEdit();
     // d->searchFontEdit->setFixedSize(QSize(FTM_SEARCH_BAR_W, FTM_SEARCH_BAR_H));
     d->searchFontEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    d->searchFontEdit->setPlaceHolder(QString("搜索"));
+    d->searchFontEdit->setPlaceHolder(DApplication::translate("SearchBar", "Search"));
 
     QHBoxLayout *titleLayout = new QHBoxLayout();
     titleLayout->setContentsMargins(0, 0, 0, 0);
@@ -355,7 +346,7 @@ void DFontMgrMainWindow::initStateBar()
     d->textInputEdit->setFixedHeight(FTM_SBAR_TXT_EDIT_H);
     d->textInputEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     d->textInputEdit->setClearButtonEnabled(true);
-    d->textInputEdit->setPlaceholderText("输入文本内容进行预览");
+    d->textInputEdit->setPlaceholderText(DApplication::translate("StateBar", "Input preview text"));
 
     d->fontScaleSlider = new DSlider(Qt::Orientation::Horizontal, this);
     d->fontScaleSlider->setFixedSize(FTM_SBAR_SLIDER_W, FTM_SBAR_SLIDER_H);
@@ -369,6 +360,10 @@ void DFontMgrMainWindow::initStateBar()
     d->fontSizeLabel = new DLabel(this);
     d->fontSizeLabel->setFixedSize(FTM_SBAR_FSIZE_LABEL_W, FTM_SBAR_FSIZE_LABEL_H);
     d->fontSizeLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+
+    QFont fontSize;
+    fontSize.setPixelSize(14);
+    d->fontSizeLabel->setFont(fontSize);
     // d->fontSizeLabel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     // Init the default font size
     QString defaultFontSize;
@@ -469,12 +464,10 @@ void DFontMgrMainWindow::handleMenuEvent(QAction *action)
 
             } break;
             case DFontMenuManager::MenuAction::M_EnableOrDisable: {
-
                 QModelIndex modelIndex = m_fontPreviewListView->currModelIndex();
                 emit m_fontPreviewListView->onClickEnableButton(modelIndex);
             } break;
             case DFontMenuManager::MenuAction::M_Faverator: {
-
                 QModelIndex modelIndex = m_fontPreviewListView->currModelIndex();
                 emit m_fontPreviewListView->onClickCollectionButton(modelIndex);
             } break;
@@ -482,7 +475,6 @@ void DFontMgrMainWindow::handleMenuEvent(QAction *action)
                 showFontFilePostion();
                 break;
             case DFontMenuManager::MenuAction::M_Help: {
-                emit quickModeInstall(QStringList());
             } break;
             default:
                 qDebug() << "handleMenuEvent->(id=" << actionId << ")";
@@ -520,9 +512,11 @@ void DFontMgrMainWindow::installFont(const QStringList &files)
         dfNormalInstalldlg.setSkipException(true);
     }
 
-    Dtk::Widget::moveToCenter(&dfNormalInstalldlg);
     //安装结束后刷新字体列表
-    connect(&dfNormalInstalldlg, &DFInstallNormalWindow::finishFontInstall, this, &DFontMgrMainWindow::onFontInstallFinished);
+    connect(&dfNormalInstalldlg, &DFInstallNormalWindow::finishFontInstall, this,
+            &DFontMgrMainWindow::onFontInstallFinished);
+
+    Dtk::Widget::moveToCenter(&dfNormalInstalldlg);
     dfNormalInstalldlg.exec();
 }
 
@@ -598,9 +592,11 @@ void DFontMgrMainWindow::showFontFilePostion()
     DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
 
     if (nullptr != currItemData.pFontInfo) {
-        QUrl url
-            = QUrl::fromLocalFile(QFileInfo(currItemData.pFontInfo->filePath).dir().absolutePath());
+
+        QUrl url = QUrl::fromLocalFile(QFileInfo(currItemData.pFontInfo->filePath).dir().absolutePath());
+
         qDebug() << QUrl::fromLocalFile(currItemData.pFontInfo->filePath).toString();
+
         QUrlQuery query;
         query.addQueryItem("selectUrl",
                            QUrl::fromLocalFile(currItemData.pFontInfo->filePath).toString());
@@ -618,6 +614,7 @@ void DFontMgrMainWindow::onLeftSiderBarItemClicked(int index)
     DSplitListWidget *listWidget = d->leftSiderBar;
     QListWidgetItem *item = listWidget->item(index);
     QVariant varUserData = item->data(Qt::UserRole).value<QVariant>();
+
     DSplitListWidget::FontGroup filterGroup = qvariant_cast<DSplitListWidget::FontGroup>(varUserData);
 
     if (varUserData.toInt() < 0) {
@@ -637,6 +634,7 @@ void DFontMgrMainWindow::onLeftSiderBarItemClicked(int index)
 void DFontMgrMainWindow::onFontInstallFinished()
 {
     DFontPreviewProxyModel *filterModel = m_fontPreviewListView->getFontPreviewProxyModel();
+
     QStandardItemModel *sourceModel = qobject_cast<QStandardItemModel *>(filterModel->sourceModel());
 
     m_fontPreviewListView->refreshFontListData(sourceModel);

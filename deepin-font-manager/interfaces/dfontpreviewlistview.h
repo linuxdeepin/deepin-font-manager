@@ -23,7 +23,8 @@ public:
 
     void initFontListData();
     void initDelegate();
-    void refreshFontListData(QStandardItemModel *sourceModel, bool isStartup=false);
+
+    void refreshFontListData(QStandardItemModel *sourceModel, bool isStartup = false);
 
     void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
     void setSelection(const QRect &rect,

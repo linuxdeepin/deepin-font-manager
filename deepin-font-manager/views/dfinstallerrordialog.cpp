@@ -1,12 +1,14 @@
 #include "dfinstallerrordialog.h"
 #include "dfontinfomanager.h"
 
-#include <DCheckBox>
-#include <DListWidget>
-#include <DLog>
 #include <QButtonGroup>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
+
+#include <DApplication>
+#include <DCheckBox>
+#include <DListWidget>
+#include <DLog>
 
 DFInstallErrorDialog::DFInstallErrorDialog(QWidget *parent, QStringList errorInstallFontFileList)
     : DDialog(parent)
@@ -32,7 +34,9 @@ void DFInstallErrorDialog::initData()
             itemModel->bChecked = false;
             itemModel->strFontFileName = fileInfo.fileName();
             itemModel->strFontFilePath = fileInfo.filePath();
-            itemModel->strFontInstallStatus = QString("文件异常");
+            itemModel->strFontInstallStatus =
+                DApplication::translate("ExceptionWindow", "File Error");
+
             m_installErrorFontModelList.push_back(itemModel);
             qDebug() << "verifyFontFiles->" << it << " :Damaged file";
         } else if (pfontInfo->isInstalled) {
@@ -43,7 +47,9 @@ void DFInstallErrorDialog::initData()
             itemModel->bChecked = true;
             itemModel->strFontFileName = fileInfo.fileName();
             itemModel->strFontFilePath = fileInfo.filePath();
-            itemModel->strFontInstallStatus = QString("已安装相同版本");
+            itemModel->strFontInstallStatus =
+                DApplication::translate("ExceptionWindow", "Installed");
+
             m_installErrorFontModelList.push_back(itemModel);
             qDebug() << "verifyFontFiles->" << it << " :Installed file";
         } else {
@@ -101,8 +107,7 @@ void DFInstallErrorDialog::initTitleBar()
     logoLabel->setPixmap(QPixmap(":/images/exception-logo.svg"));
 
     titleLabel = new DLabel;
-#warning need internationalization
-    titleLabel->setText(QString("安装出错"));
+    titleLabel->setText(DApplication::translate("ExceptionWindow", "Install Error"));
     QFont titleFont;
     titleFont.setPixelSize(14);
     titleLabel->setFont(titleFont);
@@ -161,14 +166,12 @@ void DFInstallErrorDialog::initInstallErrorFontViews()
 
     m_quitInstallBtn = new DPushButton;
     m_quitInstallBtn->setFont(btnFont);
-#warning need internationalization
-    m_quitInstallBtn->setText(QString("退出安装"));
+    m_quitInstallBtn->setText(DApplication::translate("ExceptionWindow", "Exit"));
     m_quitInstallBtn->setFixedSize(204, 36);
 
     m_continueInstallBtn = new DPushButton;
     m_continueInstallBtn->setFont(btnFont);
-#warning need internationalization
-    m_continueInstallBtn->setText(QString("继续安装"));
+    m_continueInstallBtn->setText(DApplication::translate("ExceptionWindow", "Continue"));
     m_continueInstallBtn->setFixedSize(204, 36);
 
     //所有字体都未勾选时，禁止点击"继续安装"

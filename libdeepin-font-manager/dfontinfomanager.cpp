@@ -19,6 +19,7 @@
 
 #include "dfontinfomanager.h"
 #include "dfmdbmanager.h"
+#include "dfreetypeutil.h"
 
 #include <QDebug>
 #include <QDir>
@@ -100,8 +101,8 @@ QStringList DFontInfoManager::getAllFontPath() const
 {
     QStringList pathList;
     QProcess *process = new QProcess;
-    process->start("fc-list", QStringList() << ":"
-                                            << "file");
+
+    process->start("fc-list", QStringList() << ":" << "file");
     process->waitForFinished(-1);
 
     QString output = process->readAllStandardOutput();
@@ -152,7 +153,7 @@ QStringList DFontInfoManager::getAllMonoSpaceFontPath() const
     process->deleteLater();
 
     for (QString line : lines) {
-        QString filePath = line.split(QChar(':')).first().simplified();
+        QString filePath = line.remove(QChar(':')).simplified();
         if (filePath.length() > 0) {
             pathList << filePath;
         }
@@ -211,7 +212,7 @@ DFontInfo *DFontInfoManager::getFontInfo(const QString &filePath)
     // get the basic data.
     fontInfo->isError = false;
     fontInfo->filePath = filePath;
-    fontInfo->familyName = QString::fromLatin1(m_face->family_name);
+    fontInfo->familyName = QString::fromUtf8(DFreeTypeUtil::getFontFamilyName(m_face));
     fontInfo->styleName = QString::fromLatin1(m_face->style_name);
     fontInfo->type = getFontType(filePath);
 
@@ -262,12 +263,12 @@ DFontInfo *DFontInfoManager::getFontInfo(const QString &filePath)
     if (dbManager->getRecordCount() > 0) {
         fontInfo->sysVersion = fontInfo->version;
 
-        int appFontId = QFontDatabase::addApplicationFont(filePath);
-        QStringList fontFamilyList = QFontDatabase::applicationFontFamilies(appFontId);
-        if (fontFamilyList.size() > 0) {
-            QString fontFamily = QString(fontFamilyList.first().toLocal8Bit());
-            fontInfo->familyName = fontFamily;
-        }
+//        int appFontId = QFontDatabase::addApplicationFont(filePath);
+//        QStringList fontFamilyList = QFontDatabase::applicationFontFamilies(appFontId);
+//        if (fontFamilyList.size() > 0) {
+//            QString fontFamily = QString(fontFamilyList.first().toLocal8Bit());
+//            fontInfo->familyName = fontFamily;
+//        }
 
         if (!dbManager->isFontInfoExist(fontInfo)) {
             fontInfo->isInstalled = false;

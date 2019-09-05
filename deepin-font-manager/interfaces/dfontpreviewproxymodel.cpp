@@ -45,8 +45,9 @@ void DFontPreviewProxyModel::setFilterFontNamePattern(const QString &pattern)
 bool DFontPreviewProxyModel::isFontNameContainsPattern(QString fontName) const
 {
     if (m_fontNamePattern.length() > 0) {
-        return fontName.contains(m_fontNamePattern);
+        return fontName.contains(m_fontNamePattern, Qt::CaseInsensitive);
     }
+
     return true;
 }
 

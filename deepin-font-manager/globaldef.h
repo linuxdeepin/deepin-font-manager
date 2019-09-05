@@ -10,7 +10,7 @@
 #define FTM_SEARCH_BAR_H 36
 
 // Left navigation bar
-#define FTM_LEFT_SIDE_BAR_WITHD 140
+#define FTM_LEFT_SIDE_BAR_WITHD 145
 
 // State bar
 #define FTM_SBAR_HEIGHT 56
@@ -22,7 +22,7 @@
 #define FTM_SBAR_SLIDER_W 200
 
 #define FTM_SBAR_FSIZE_LABEL_H 40
-#define FTM_SBAR_FSIZE_LABEL_W 32
+#define FTM_SBAR_FSIZE_LABEL_W 60
 
 // File manager binary name
 #define DEEPIN_FILE_MANAGE_NAME "dde-file-manager"

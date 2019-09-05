@@ -6,6 +6,8 @@
 #include <QTextBlock>
 #include <QVBoxLayout>
 
+#include <DApplication>
+
 DFontInfoDialog::DFontInfoDialog(DFontPreviewItemData *fontInfo, QWidget *parent)
     : DDialog(parent)
     , m_fontInfo(fontInfo)
@@ -61,7 +63,7 @@ void DFontInfoDialog::initUI()
     // panelNameFont.setBold(true);
     panelNameFont.setPixelSize(14);
     panelName->setFont(panelNameFont);
-    panelName->setText("基本信息");
+    panelName->setText(DApplication::translate("FontDetailDailog", "Basic Information"));
 
     // Style Row
     QFont basicInfoFont;
@@ -70,7 +72,7 @@ void DFontInfoDialog::initUI()
     DLabel *styleName = new DLabel(this);
     styleName->setFixedSize(QSize(60, 18));
     styleName->setFont(basicInfoFont);
-    styleName->setText("样式");
+    styleName->setText(DApplication::translate("FontDetailDailog", "Style"));
 
     QHBoxLayout *styleLayout = new QHBoxLayout();
     styleLayout->setSpacing(0);
@@ -87,7 +89,7 @@ void DFontInfoDialog::initUI()
     DLabel *typeName = new DLabel(this);
     typeName->setFixedSize(QSize(60, 18));
     typeName->setFont(basicInfoFont);
-    typeName->setText("类型");
+    typeName->setText(DApplication::translate("FontDetailDailog", "Type"));
 
     QHBoxLayout *typeLayout = new QHBoxLayout();
     typeLayout->setSpacing(0);
@@ -104,7 +106,7 @@ void DFontInfoDialog::initUI()
     DLabel *versionName = new DLabel(this);
     versionName->setFixedSize(QSize(60, 18));
     versionName->setFont(basicInfoFont);
-    versionName->setText("版本");
+    versionName->setText(DApplication::translate("FontDetailDailog", "Version"));
 
     m_fontVersion = new QTextEdit(this);
     m_fontVersion->setFixedHeight(72);
@@ -122,7 +124,7 @@ void DFontInfoDialog::initUI()
     DLabel *despName = new DLabel(this);
     despName->setFixedSize(QSize(60, 18));
     despName->setFont(basicInfoFont);
-    despName->setText("描述");
+    despName->setText(DApplication::translate("FontDetailDailog", "Description"));
 
     /* Text in QTextEdit have about 4px left-margin,that can't
      * be removed, so add a QHBoxLayout in row tow and add 4px space
@@ -135,7 +137,7 @@ void DFontInfoDialog::initUI()
     m_fontDescription->setFixedHeight(18);
     m_fontDescription->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     m_fontDescription->setFont(basicInfoFont);
-    m_fontDescription->setText("未知");
+    m_fontDescription->setText(DApplication::translate("FontDetailDailog", "Unkonw"));
 
     depsLayout->addSpacing(4);
     depsLayout->addWidget(m_fontDescription, 1);

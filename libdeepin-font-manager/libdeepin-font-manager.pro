@@ -22,9 +22,9 @@ HEADERS += \
 	   dfontmanager.h \
            dfontloadthread.h \
            dfontwidget.h \
-           dsqliteutil.h \
            dfmdbmanager.h \
            dsqliteutil.h \
+           dfreetypeutil.h \
            dfontpreviewitemdef.h
 
 SOURCES += \
@@ -34,7 +34,8 @@ SOURCES += \
            dfontloadthread.cpp \
            dfontwidget.cpp \
            dfmdbmanager.cpp \
-           dsqliteutil.cpp
+           dsqliteutil.cpp \
+           dfreetypeutil.cpp
 
 QMAKE_PKGCONFIG_LIBDIR = $$target.path
 QMAKE_PKGCONFIG_VERSION = $$VERSION

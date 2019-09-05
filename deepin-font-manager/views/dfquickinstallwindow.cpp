@@ -86,6 +86,7 @@ void DFQuickInstallWindow::initUI()
     //    QFont previewFont;
     //    previewFont.setPixelSize(28);
     //    m_fontPreviewTxt->setFont(previewFont);
+
     m_fontPreviewTxt->setText(
         "汉体书写信息技术标准相容\n"
         "档案下载使用界面简单\n"
@@ -114,7 +115,7 @@ void DFQuickInstallWindow::initUI()
     m_actionBtn->setFixedSize(QSize(120, 36));
     m_actionBtn->setFocusPolicy(Qt::FocusPolicy::NoFocus);
     // m_actionBtn->setFont(actionFont);
-    m_actionBtn->setText("安装字体");
+    m_actionBtn->setText(DApplication::translate("QuickInstallWindow", "Install Font"));
 
     // actionBarLayout->addSpacing(20);
     actionBarLayout->addWidget(m_stateLabel);
@@ -166,7 +167,7 @@ void DFQuickInstallWindow::onFileSelected(QStringList fileList)
 
         DFontInfo *pfontInfo = m_fontInfoManager->getFontInfo(file);
         if (pfontInfo->isError) {
-            m_stateLabel->setText(QString("文件损坏!"));
+            m_stateLabel->setText(DApplication::translate("QuickInstallWindow", "File Error"));
             m_actionBtn->setDisabled(true);
             m_fontType->setVisible(false);
         } else {
@@ -175,17 +176,17 @@ void DFQuickInstallWindow::onFileSelected(QStringList fileList)
                 QColor color = pa.color(DPalette::TextWarning);
                 pa.setColor(DPalette::WindowText, color);
                 m_stateLabel->setPalette(pa);
-
-                m_stateLabel->setText(QString("已安装"));
+                m_stateLabel->setText(DApplication::translate("QuickInstallWindow", "Installed"));
 
             } else {
-                m_stateLabel->setText(QString("未安装"));
+                m_stateLabel->setText(
+                    DApplication::translate("QuickInstallWindow", "Not Installed"));
             }
 
             m_titleLabel->setText(pfontInfo->familyName);
 
             if (pfontInfo->styleName.isEmpty()) {
-                m_fontType->addItem("Unknow");
+                m_fontType->addItem(DApplication::translate("QuickInstallWindow", "Unknow"));
             } else {
                 m_fontType->clear();
                 m_fontType->addItem(pfontInfo->styleName);

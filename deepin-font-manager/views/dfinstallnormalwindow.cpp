@@ -5,6 +5,7 @@
 #include <QResizeEvent>
 #include <QVBoxLayout>
 
+#include <DApplication>
 #include <DLog>
 
 DWIDGET_USE_NAMESPACE
@@ -48,7 +49,7 @@ void DFInstallNormalWindow::initUI()
     m_titleLabel = new DLabel(this);
     m_titleLabel->setObjectName("tileNameLabel");
     m_titleLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    m_titleLabel->setText("安装字体");
+    m_titleLabel->setText(DApplication::translate("NormalInstallWindow", "Font Installation"));
 
     // titleLayout->addSpacing(10);
     titleLayout->addWidget(m_logoLabel);
@@ -60,7 +61,8 @@ void DFInstallNormalWindow::initUI()
 
     m_progressStepLabel = new DLabel(this);
     m_progressStepLabel->setFixedHeight(20);
-    m_progressStepLabel->setText("正在验证字体…");
+    m_progressStepLabel->setText(DApplication::translate("NormalInstallWindow", "Verifing Font…"));
+
     m_currentFontLabel = new DLabel(this);
     m_currentFontLabel->setFixedHeight(18);
     m_currentFontLabel->setText("");

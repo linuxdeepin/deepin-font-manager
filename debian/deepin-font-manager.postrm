@@ -1,0 +1,3 @@
+#! /bin/bash
+#rm font manager owner data
+rm -rf ~/.deepin-font-manager/
