@@ -30,6 +30,8 @@ public:
     bool updateFontInfoByFontId(const QString &strFontId, const QMap<QString, QString> &dataMap);
     bool updateFontInfoByFontId(const QString &strFontId, const QString &strKey, const QString &strValue);
 
+    bool updateFontInfoByFontFilePath(const QString &strFontFilePath, const QString &strKey, const QString &strValue);
+
     void beginTransaction();
     void endTransaction();
 

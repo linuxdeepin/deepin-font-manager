@@ -2,6 +2,7 @@
 #include "dfontinfomanager.h"
 #include "dfontpreviewitemdelegate.h"
 #include "globaldef.h"
+#include "dfmxmlwrapper.h"
 
 #include <DLog>
 #include <DMenu>
@@ -30,14 +31,15 @@ void DFontPreviewListView::initFontListData()
 {
     QStringList fontNameList;
     DFontInfoManager *fontInfoMgr = DFontInfoManager::instance();
-    QStringList strAllFontList = fontInfoMgr->getAllFontPath();
-
-    qDebug() << "strAllFontList.size()" << strAllFontList.size() << endl;
+    QStringList disableFontList = DFMXmlWrapper::getFontConfigDisableFontPathList();
 
     m_fontPreviewItemModel = new QStandardItemModel;
 
     int recordCount = m_dbManager->getRecordCount();
     if (recordCount > 0) {
+
+        //从fontconfig配置文件同步字体启用/禁用状态数据
+        syncFontEnableDisableStatusData(disableFontList);
 
         refreshFontListData(m_fontPreviewItemModel, true);
 
@@ -46,6 +48,9 @@ void DFontPreviewListView::initFontListData()
 
     //开启事务
     m_dbManager->beginTransaction();
+
+    QStringList strAllFontList = fontInfoMgr->getAllFontPath();
+    qDebug() << "strAllFontList.size()" << strAllFontList.size() << endl;
     for (int i = 0; i < strAllFontList.size(); ++i) {
         QString filePath = strAllFontList.at(i);
         if (filePath.length() > 0) {
@@ -91,7 +96,7 @@ void DFontPreviewListView::refreshFontListData(QStandardItemModel *sourceModel, 
     DFontInfoManager *fontInfoMgr = DFontInfoManager::instance();
     QStringList strAllFontList = fontInfoMgr->getAllFontPath();
 
-    QList <DFontPreviewItemData> fontInfoList = m_dbManager->getAllFontInfo();
+    QList<DFontPreviewItemData> fontInfoList = m_dbManager->getAllFontInfo();
 
     //开启事务
     m_dbManager->beginTransaction();
@@ -131,6 +136,42 @@ void DFontPreviewListView::refreshFontListData(QStandardItemModel *sourceModel, 
                 insertFontItemData(sourceModel, filePath, maxFontId + i + 1);
             }
         }
+    }
+
+    m_dbManager->endTransaction();
+}
+
+void DFontPreviewListView::syncFontEnableDisableStatusData(QStringList disableFontPathList)
+{
+    //disableFontPathList为被禁用的字体路径列表
+    if (disableFontPathList.size() == 0) {
+        return;
+    }
+
+    QMap<QString, bool> disableFontMap;
+    for(int i=0; i<disableFontPathList.size(); i++) {
+        QString disableFontPath = disableFontPathList.at(i);
+        disableFontMap.insert(disableFontPath, true);
+    }
+
+    //开启事务
+    m_dbManager->beginTransaction();
+
+    QList<DFontPreviewItemData> fontInfoList = m_dbManager->getAllFontInfo();
+
+    for(int i=0; i<fontInfoList.size(); i++) {
+        DFontPreviewItemData fontItemData = fontInfoList.at(i);
+        QString keyFilePath = fontItemData.pFontInfo->filePath;
+
+        //disableFontMap为被禁用的字体map
+        if (disableFontMap.value(keyFilePath)) {
+            fontItemData.isEnabled = false;
+        }
+        else {
+            fontItemData.isEnabled = true;
+        }
+
+        m_dbManager->updateFontInfoByFontFilePath(keyFilePath, "isEnabled", QString::number(fontItemData.isEnabled));
     }
 
     m_dbManager->endTransaction();
@@ -198,17 +239,60 @@ void DFontPreviewListView::setModel(QAbstractItemModel *model)
     DListView::setModel(model);
 }
 
+bool DFontPreviewListView::enableFont(DFontPreviewItemData itemData)
+{
+    QString filePath = QDir::homePath() + "/.config/fontconfig/conf.d/" + FTM_REJECT_FONT_CONF_FILENAME;
+    bool isCreateSuccess = DFMXmlWrapper::createFontConfigFile(filePath);
+
+    if (!isCreateSuccess) {
+        return false;
+    }
+
+    QStringList strFontPathList;
+    DFMXmlWrapper::queryAllChildNodes_Text(filePath, "rejectfont", strFontPathList);
+
+    QString fontFilePath = itemData.pFontInfo->filePath;
+    qDebug() << strFontPathList << endl;
+    qDebug() << fontFilePath << endl;
+    if (strFontPathList.contains(fontFilePath)) {
+        return DFMXmlWrapper::deleteNodeWithText(filePath, "pattern", fontFilePath);
+    }
+
+    return false;
+}
+
+bool DFontPreviewListView::disableFont(DFontPreviewItemData itemData)
+{
+    QString fontConfigPath = DFMXmlWrapper::m_fontConfigFilePath;
+    bool isCreateSuccess = DFMXmlWrapper::createFontConfigFile(fontConfigPath);
+
+    if (!isCreateSuccess) {
+        return false;
+    }
+
+    QStringList strDisableFontPathList = DFMXmlWrapper::getFontConfigDisableFontPathList();
+
+    QString fontFilePath = itemData.pFontInfo->filePath;
+    qDebug() << strDisableFontPathList << endl;
+    if (!strDisableFontPathList.contains(fontFilePath)) {
+        return DFMXmlWrapper::addPatternNodesWithText(fontConfigPath, "rejectfont", fontFilePath);
+    }
+
+    return false;
+}
+
 void DFontPreviewListView::onListViewItemEnableBtnClicked(QModelIndex index)
 {
     DFontPreviewItemData itemData =
         qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(index));
     itemData.isEnabled = !itemData.isEnabled;
 
-#warning todo...
+    qDebug()<< "familyName" <<itemData.pFontInfo->familyName << endl;
+
     if (itemData.isEnabled) {
-
+        enableFont(itemData);
     } else {
-
+        disableFont(itemData);
     }
 
     m_dbManager->updateFontInfoByFontId(itemData.strFontId, "isEnabled", QString::number(itemData.isEnabled));

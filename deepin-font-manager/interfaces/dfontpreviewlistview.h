@@ -45,6 +45,12 @@ private:
     void initConnections();
     void insertFontItemData(QStandardItemModel *sourceModel, QString filePath, int index);
 
+    //从fontconfig配置文件同步字体启用/禁用状态数据
+    void syncFontEnableDisableStatusData(QStringList disableFontPathList);
+
+    bool enableFont(DFontPreviewItemData itemData);
+    bool disableFont(DFontPreviewItemData itemData);
+
     bool m_bLeftMouse;
     QStandardItemModel *m_fontPreviewItemModel;
     QList<DFontPreviewItemData> m_fontPreviewItemDataList;

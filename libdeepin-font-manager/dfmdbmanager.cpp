@@ -375,6 +375,17 @@ bool DFMDBManager::updateFontInfoByFontId(const QString &strFontId, const QStrin
     return m_sqlUtil->updateRecord(where, dataMap);
 }
 
+bool DFMDBManager::updateFontInfoByFontFilePath(const QString &strFontFilePath, const QString &strKey, const QString &strValue)
+{
+    QMap<QString, QString> where;
+    where.insert("filePath", strFontFilePath);
+
+    QMap<QString, QString> dataMap;
+    dataMap.insert(strKey, strValue);
+
+    return m_sqlUtil->updateRecord(where, dataMap);
+}
+
 void DFMDBManager::beginTransaction()
 {
     m_sqlUtil->m_db.transaction();

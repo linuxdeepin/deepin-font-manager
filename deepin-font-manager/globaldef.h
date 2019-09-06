@@ -35,4 +35,6 @@
 
 #define FTM_ENABLE_DISABLE_CACHE_DIR "/usr/local/.deep_fontmanger_cache"
 
+#define FTM_REJECT_FONT_CONF_FILENAME  QString("71-DeepInFontManager-Reject.conf")
+
 #endif  // GLOBALDEF_H

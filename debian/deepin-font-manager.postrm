@@ -1,3 +1,16 @@
 #! /bin/bash
 #rm font manager owner data
-rm -rf ~/.deepin-font-manager/
+#ToDo: this scripts just work on desktop not on server
+#who -u may list more than one line on server
+username=`who -u | awk '{print $1}'`
+font_mgr_data_dir="/home/${username}/.deepin-font-manager/"
+font_config_data_file="/home/${username}/.config/fontconfig/conf.d/71-DeepInFontManager-Reject.conf"
+
+if [ -d ${font_mgr_data_dir} ];then
+    rm -rf ${font_mgr_data_dir}
+
+    #debug
+    #echo clear font_mgr_data_dir
+fi
+
+rm -rf ${font_config_data_file}

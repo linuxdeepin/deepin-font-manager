@@ -111,6 +111,7 @@ QStringList DFontInfoManager::getAllFontPath() const
 
     for (QString line : lines) {
         QString filePath = line.remove(QChar(':')).simplified();
+        qDebug() << __FUNCTION__ << "::" << filePath;
         if (filePath.length() > 0) {
             pathList << filePath;
         }
@@ -213,6 +214,18 @@ DFontInfo *DFontInfoManager::getFontInfo(const QString &filePath)
     fontInfo->isError = false;
     fontInfo->filePath = filePath;
     fontInfo->familyName = QString::fromUtf8(DFreeTypeUtil::getFontFamilyName(m_face));
+    if (fontInfo->familyName.length() < 1) {
+        fontInfo->familyName = QString::fromLatin1(m_face->family_name);
+    }
+    if (fontInfo->familyName.length() < 1) {
+        int appFontId = QFontDatabase::addApplicationFont(filePath);
+        QStringList fontFamilyList = QFontDatabase::applicationFontFamilies(appFontId);
+        if (fontFamilyList.size() > 0) {
+            QString fontFamily = QString(fontFamilyList.first().toLocal8Bit());
+            fontInfo->familyName = fontFamily;
+        }
+    }
+
     fontInfo->styleName = QString::fromLatin1(m_face->style_name);
     fontInfo->type = getFontType(filePath);
 
@@ -262,14 +275,6 @@ DFontInfo *DFontInfoManager::getFontInfo(const QString &filePath)
     DFMDBManager *dbManager = DFMDBManager::instance();
     if (dbManager->getRecordCount() > 0) {
         fontInfo->sysVersion = fontInfo->version;
-
-//        int appFontId = QFontDatabase::addApplicationFont(filePath);
-//        QStringList fontFamilyList = QFontDatabase::applicationFontFamilies(appFontId);
-//        if (fontFamilyList.size() > 0) {
-//            QString fontFamily = QString(fontFamilyList.first().toLocal8Bit());
-//            fontInfo->familyName = fontFamily;
-//        }
-
         if (!dbManager->isFontInfoExist(fontInfo)) {
             fontInfo->isInstalled = false;
         } else {
