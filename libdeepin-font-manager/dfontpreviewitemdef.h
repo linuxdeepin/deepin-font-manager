@@ -9,6 +9,13 @@
 #define FTM_DEFAULT_PREVIEW_TEXT QString("Don't let your dreams be dreams")
 #define FTM_DEFAULT_PREVIEW_FONTSIZE 30
 
+typedef enum IconStatus
+{
+    IconHover = 0,
+    IconPress,
+    IconNormal
+} IconStatus;
+
 struct DFontPreviewItemData {
     DFontInfo *pFontInfo;     //字体信息
     QString strFontName;      //字体名称
@@ -19,6 +26,8 @@ struct DFontPreviewItemData {
     bool isCollected;         //是否收藏
     QString strFontId;        //字体唯一id,对应数据库表中的fontId
     int appFontId;            // QFontDatabase::addApplicationFont返回的ID
+
+    IconStatus collectIconStatus;
 };
 
 Q_DECLARE_METATYPE(DFontPreviewItemData)

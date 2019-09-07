@@ -12,7 +12,7 @@
 
 DWIDGET_USE_NAMESPACE
 
-class DFontPreviewItemData;
+struct DFontPreviewItemData;
 class DFontMenuManager : public QObject
 {
     Q_OBJECT

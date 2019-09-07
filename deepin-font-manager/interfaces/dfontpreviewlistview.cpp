@@ -17,6 +17,7 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
     , m_dbManager(DFMDBManager::instance())
 {
     setAutoScroll(false);
+    setMouseTracking(true);
 
     initFontListData();
     initDelegate();
@@ -198,14 +199,85 @@ void DFontPreviewListView::initConnections()
             &DFontPreviewListView::onListViewShowContextMenu);
 }
 
+void DFontPreviewListView::mouseMoveEvent(QMouseEvent *event)
+{
+    DListView::mouseMoveEvent(event);
+
+    QPoint mousePos = event->pos();
+
+    QModelIndex rowModelIndex = indexAt(event->pos());
+    QRect rect = rectForIndex(rowModelIndex);
+
+    int collectIconSize = 22;
+    QRect collectIconRect =
+        QRect(rect.right() - 33, rect.top() + 10, collectIconSize, collectIconSize);
+
+    DFontPreviewItemData itemData =
+        qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(rowModelIndex));
+
+    if (collectIconRect.contains(mousePos)) {
+        itemData.collectIconStatus = IconHover;
+    }
+    else {
+        itemData.collectIconStatus = IconNormal;
+    }
+    m_fontPreviewProxyModel->setData(rowModelIndex, QVariant::fromValue(itemData), Qt::DisplayRole);
+}
+
 void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
 {
+    DListView::mousePressEvent(event);
+
+    QPoint mousePos = event->pos();
+
+    QModelIndex rowModelIndex = indexAt(event->pos());
+    QRect rect = rectForIndex(rowModelIndex);
+
+    int collectIconSize = 22;
+    QRect collectIconRect =
+        QRect(rect.right() - 33, rect.top() + 10, collectIconSize, collectIconSize);
+
+    DFontPreviewItemData itemData =
+        qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(rowModelIndex));
+
+    if (collectIconRect.contains(mousePos)) {
+        itemData.collectIconStatus = IconPress;
+    }
+    else {
+        itemData.collectIconStatus = IconNormal;
+    }
+    m_fontPreviewProxyModel->setData(rowModelIndex, QVariant::fromValue(itemData), Qt::DisplayRole);
+
     if (event->button() == Qt::LeftButton) {
         m_bLeftMouse = true;
     } else {
         m_bLeftMouse = false;
     }
-    DListView::mousePressEvent(event);
+}
+
+void DFontPreviewListView::mouseReleaseEvent(QMouseEvent *event)
+{
+    DListView::mouseReleaseEvent(event);
+
+    QPoint selectionPoint = event->pos();
+
+    QModelIndex rowModelIndex = indexAt(selectionPoint);
+    m_currModelIndex = rowModelIndex;
+
+    DFontPreviewItemData itemData =
+        qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(rowModelIndex));
+
+    itemData.collectIconStatus = IconNormal;
+    m_fontPreviewProxyModel->setData(rowModelIndex, QVariant::fromValue(itemData), Qt::DisplayRole);
+
+    if (selectionPoint.x() < 50) {
+        //触发启用/禁用字体
+        emit onClickEnableButton(rowModelIndex);
+    } else if ((selectionPoint.x() > (this->width() - 50)) &&
+               (selectionPoint.x() < this->width())) {
+        //触发收藏/取消收藏
+        emit onClickCollectionButton(rowModelIndex);
+    }
 }
 
 void DFontPreviewListView::setSelection(const QRect &rect,
@@ -218,17 +290,7 @@ void DFontPreviewListView::setSelection(const QRect &rect,
     qDebug() << modelIndex.row() << endl;
     m_currModelIndex = modelIndex;
 
-    if (m_bLeftMouse) {
-        if (selectionPoint.x() < 50) {
-            //触发启用/禁用字体
-            emit onClickEnableButton(modelIndex);
-        } else if ((selectionPoint.x() > (this->width() - 50)) &&
-                   (selectionPoint.x() < this->width())) {
-            //触发收藏/取消收藏
-            emit onClickCollectionButton(modelIndex);
-        }
-        return;
-    } else {
+    if (!m_bLeftMouse) {
         emit onShowContextMenu(modelIndex);
     }
 }

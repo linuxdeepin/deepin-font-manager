@@ -27,6 +27,10 @@ public:
     void refreshFontListData(QStandardItemModel *sourceModel, bool isStartup = false);
 
     void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+    void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+
+    void mouseReleaseEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+
     void setSelection(const QRect &rect,
                       QItemSelectionModel::SelectionFlags command) Q_DECL_OVERRIDE;
 

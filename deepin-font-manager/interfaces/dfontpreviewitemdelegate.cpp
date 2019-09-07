@@ -82,7 +82,8 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
             path.arcTo(QRectF(QPointF(rect.bottomRight() - QPointF(radius * 2, radius * 2)), QSize(radius * 2, radius * 2)), 270, 90);
 
             if (option.state & QStyle::State_Selected) {
-                painter->fillPath(path, option.palette.color(cg, DPalette::Highlight));
+                QColor fillColor = option.palette.color(cg, DPalette::Dark);
+                painter->fillPath(path, fillColor);
             }
 
         } else {
@@ -99,7 +100,8 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
             path.quadTo(rect.topRight(), rect.topRight());
 
             if (option.state & QStyle::State_Selected) {
-                painter->fillRect(rect, option.palette.brush(cg, DPalette::Highlight));
+                QColor fillColor = option.palette.color(cg, DPalette::Dark);
+                painter->fillPath(path, fillColor);
             }
         }
 
@@ -179,14 +181,31 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
         painter->drawText(fontPreviewRect, Qt::AlignLeft | Qt::AlignVCenter, strElidedText);
 
         QString strStatus = QString("normal");
-        QString strCollectionImageSrc = QString(":/images/collection_%1.svg").arg(strStatus);
-        QString strUnCollectionImageSrc = QString(":/images/uncollection_%1.svg").arg(strStatus);
+        switch (data.collectIconStatus) {
+        case IconHover: {
+            strStatus = QString("hover");
+        } break;
+        case IconPress: {
+            strStatus = QString("press");
+        } break;
+        default: {
+            strStatus = QString("normal");
+        } break;
+        }
 
         QPixmap pixmap;
         if (data.isCollected) {
+            QString strCollectionImageSrc = QString(":/images/collection_%1.svg").arg(strStatus);
+            if (IconPress == data.collectIconStatus) {
+                qDebug() << strCollectionImageSrc << endl;
+            }
             pixmap =
                 Utils::renderSVG(strCollectionImageSrc, QSize(collectIconSize, collectIconSize));
         } else {
+            QString strUnCollectionImageSrc = QString(":/images/uncollection_%1.svg").arg(strStatus);
+            if (IconPress == data.collectIconStatus) {
+                qDebug() << strUnCollectionImageSrc << endl;
+            }
             pixmap =
                 Utils::renderSVG(strUnCollectionImageSrc, QSize(collectIconSize, collectIconSize));
         }
