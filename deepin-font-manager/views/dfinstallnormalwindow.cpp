@@ -265,8 +265,21 @@ void DFInstallNormalWindow::batchInstall()
         m_installedFiles.clear();
     }
 
+    //ToDo:
+    //    A temp resolution for installtion.
+    //dfont-install don't need query database anymore
+    QStringList installListWithFamliyName;
+    foreach(auto it, installList) {
+        QScopedPointer<DFontInfo> pFontInfo(m_fontInfoManager->getFontInfo(it));
+        QString familyName = pFontInfo->familyName;
+
+         installListWithFamliyName.append(it+"|"+familyName);
+
+         qDebug() << " Prepare install file: " << it+"|"+familyName;
+    }
+
     m_fontManager->setType(DFontManager::Install);
-    m_fontManager->setInstallFileList(installList);
+    m_fontManager->setInstallFileList(installListWithFamliyName);
     m_fontManager->start();
 }
 

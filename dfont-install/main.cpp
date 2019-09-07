@@ -17,8 +17,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "dfontinfomanager.h"
-
 #include <QCoreApplication>
 #include <QCommandLineParser>
 #include <QCryptographicHash>
@@ -51,44 +49,28 @@ int main(int argc, char *argv[])
     const QString sysDir = "/usr/share/fonts/deepin-font-install";
     const QStringList fileList = parser.positionalArguments();
 
-    DFontInfoManager *fontInfoManager = DFontInfoManager::instance();
     QProcess *process = new QProcess;
     QString target = "";
     QString targetDir = "";
 
-    for (const QString file : fileList) {
-        DFontInfo *fontInfo = fontInfoManager->getFontInfo(file);
-        const bool isInstalled = fontInfo->isInstalled;
+    for ( QString file : fileList) {
+        QStringList fileParamList = file.split("|");
+        QString filePathOrig = fileParamList.at(0);
+        QString familyName = fileParamList.at(1);
 
-        // reinstall status.
-        if (fileList.count() == 1 && isInstalled) {
-            std::cout << 0 << std::endl;
+        const QFileInfo info(filePathOrig);
+        QString dirName = familyName;
+
+        if (dirName.isEmpty()) {
+            dirName = info.baseName();
         }
 
-        if (isInstalled) {
-            const QString sysPath = fontInfoManager->getInstalledFontPath(fontInfo);
-            target = sysPath;
+        target = QObject::tr("%1/%2/%3").arg(sysDir).arg(dirName).arg(info.fileName());
+        targetDir = QObject::tr("%1/%2").arg(sysDir).arg(dirName);
 
-            process->start("cp", QStringList() << "-f" << file << target);
-            process->waitForFinished(-1);
-        } else {
-            const QFileInfo info(file);
-            QString dirName = fontInfo->familyName;
-
-            if (dirName.at(0) == '.') {
-                dirName = dirName.remove(0, 1);
-            }
-
-            if (dirName.isEmpty()) {
-                dirName = info.baseName();
-            }
-            target = QObject::tr("%1/%2/%3").arg(sysDir).arg(dirName).arg(info.fileName());
-            targetDir = QObject::tr("%1/%2").arg(sysDir).arg(dirName);
-
-            QDir dir(targetDir);
-            dir.mkpath(".");
-            QFile::copy(file, target);
-        }
+        QDir dir(targetDir);
+        dir.mkpath(".");
+        QFile::copy(file, target);
 
         // set permission.
         process->start("chmod", QStringList() << "644" << target);
@@ -102,7 +84,7 @@ int main(int argc, char *argv[])
             QThread::msleep(50);
         } else {
             QJsonObject object;
-            object.insert("FilePath", file);
+            object.insert("FilePath", filePathOrig);
             object.insert("Percent", currentIndex / double(count) * 100);
 
             QJsonDocument document;
