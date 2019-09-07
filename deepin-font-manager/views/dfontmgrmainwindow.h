@@ -58,6 +58,7 @@ protected:
     void showFontFilePostion();
 
     DFontPreviewListView *m_fontPreviewListView;
+    DListView *m_noResultListView;
 signals:
     void fileSelected(const QStringList files) const;
 
@@ -73,6 +74,8 @@ public slots:
     void onLeftSiderBarItemClicked(int index);
     void onFontInstallFinished();
     void onFontUninstallFinished(const QModelIndex &uninstallIndex);
+
+    void onFontListViewRowCountChanged(int rowCount);
 
 protected:
     // For quick install mode

@@ -15,8 +15,8 @@ DFontPreviewProxyModel::DFontPreviewProxyModel(QObject *parent)
     DFontInfoManager *fontInfoManager = DFontInfoManager::instance();
     m_chineFontPathList = fontInfoManager->getAllChineseFontPath();
     m_monoSpaceFontPathList = fontInfoManager->getAllMonoSpaceFontPath();
-//    qDebug() << m_chineFontPathList;
-//    qDebug() << m_monoSpaceFontPathList;
+//    qDebug() << "m_chineFontPathList"<< m_chineFontPathList;
+//    qDebug() << "m_monoSpaceFontPathList" << m_monoSpaceFontPathList;
 }
 
 void DFontPreviewProxyModel::setFilterGroup(int filterGroup)
@@ -147,4 +147,15 @@ bool DFontPreviewProxyModel::filterAcceptsRow(int source_row,
     } else {
         return false;
     }
+}
+
+int DFontPreviewProxyModel::rowCount(const QModelIndex &parent) const
+{
+    Q_UNUSED(parent)
+
+    int rowCount = QSortFilterProxyModel::rowCount();
+//    qDebug() << __FUNCTION__ << rowCount << endl;
+    emit this->onFilterFinishRowCountChanged(rowCount);
+
+    return rowCount;
 }

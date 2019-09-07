@@ -5,10 +5,14 @@
 
 class DFontPreviewProxyModel : public QSortFilterProxyModel
 {
+    Q_OBJECT
+
 public:
     explicit DFontPreviewProxyModel(QObject *parent = nullptr);
 
-    bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
+    bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const override;
+    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+
     void setFilterGroup(int filterGroup);
 
     void setUseSystemFilter(bool useSystemFilter);
@@ -22,6 +26,9 @@ public:
     bool isMonoSpaceFont(QString fontFilePath) const;
 
     void setFilterFontNamePattern(const QString &pattern);
+
+signals:
+    void onFilterFinishRowCountChanged(int rowCount) const;
 
 private:
     int m_filterGroup;

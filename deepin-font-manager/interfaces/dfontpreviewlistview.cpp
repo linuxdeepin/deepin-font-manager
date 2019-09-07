@@ -83,6 +83,7 @@ void DFontPreviewListView::insertFontItemData(QStandardItemModel *sourceModel, Q
     itemData.iFontSize = FTM_DEFAULT_PREVIEW_FONTSIZE;
     itemData.isEnabled = true;
     itemData.isCollected = false;
+    itemData.pFontInfo->isInstalled = true;
 
     QStandardItem *item = new QStandardItem;
     item->setData(QVariant::fromValue(itemData), Qt::DisplayRole);
@@ -303,21 +304,21 @@ void DFontPreviewListView::setModel(QAbstractItemModel *model)
 
 bool DFontPreviewListView::enableFont(DFontPreviewItemData itemData)
 {
-    QString filePath = QDir::homePath() + "/.config/fontconfig/conf.d/" + FTM_REJECT_FONT_CONF_FILENAME;
-    bool isCreateSuccess = DFMXmlWrapper::createFontConfigFile(filePath);
+    QString fontConfigPath = DFMXmlWrapper::m_fontConfigFilePath;
+    bool isCreateSuccess = DFMXmlWrapper::createFontConfigFile(fontConfigPath);
 
     if (!isCreateSuccess) {
         return false;
     }
 
     QStringList strFontPathList;
-    DFMXmlWrapper::queryAllChildNodes_Text(filePath, "rejectfont", strFontPathList);
+    DFMXmlWrapper::queryAllChildNodes_Text(fontConfigPath, "rejectfont", strFontPathList);
 
     QString fontFilePath = itemData.pFontInfo->filePath;
     qDebug() << strFontPathList << endl;
     qDebug() << fontFilePath << endl;
     if (strFontPathList.contains(fontFilePath)) {
-        return DFMXmlWrapper::deleteNodeWithText(filePath, "pattern", fontFilePath);
+        return DFMXmlWrapper::deleteNodeWithText(fontConfigPath, "pattern", fontFilePath);
     }
 
     return false;

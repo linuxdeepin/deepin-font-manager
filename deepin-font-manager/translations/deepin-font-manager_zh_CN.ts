@@ -18,6 +18,10 @@
             <source>Search</source>
             <translation>搜索</translation>
         </message>
+        <message>
+            <source>No Result</source>
+            <translation>无结果</translation>
+        </message>
     </context>
     <context>
         <name>Menu</name>

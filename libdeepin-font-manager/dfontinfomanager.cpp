@@ -154,7 +154,7 @@ QStringList DFontInfoManager::getAllMonoSpaceFontPath() const
     process->deleteLater();
 
     for (QString line : lines) {
-        QString filePath = line.remove(QChar(':')).simplified();
+        QString filePath = line.split(QChar(':')).first().simplified();
         if (filePath.length() > 0) {
             pathList << filePath;
         }

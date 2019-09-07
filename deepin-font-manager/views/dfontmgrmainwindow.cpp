@@ -150,6 +150,9 @@ void DFontMgrMainWindow::initConnections()
 
     QObject::connect(m_fontManager, SIGNAL(uninstallFontFinished(const QModelIndex &)), this,
                      SLOT(onFontUninstallFinished(const QModelIndex &)));
+
+    DFontPreviewProxyModel *filterModel = m_fontPreviewListView->getFontPreviewProxyModel();
+    QObject::connect(filterModel, SIGNAL(onFilterFinishRowCountChanged(int)), this, SLOT(onFontListViewRowCountChanged(int)));
 }
 
 void DFontMgrMainWindow::initTileBar()
@@ -327,6 +330,24 @@ void DFontMgrMainWindow::initFontPreviewListView(DFrame *parent)
     m_fontPreviewListView->setRightContextMenu(d->rightKeyMenu);
 
     listViewVBoxLayout->addWidget(m_fontPreviewListView);
+
+    m_noResultListView = new DListView;
+
+    DLabel *noResultLabel = new DLabel(m_noResultListView);
+    noResultLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    noResultLabel->setText(DApplication::translate("SearchBar", "No Result"));
+    QFont labelFont;
+    labelFont.setPixelSize(20);
+    noResultLabel->setFont(labelFont);
+    noResultLabel->setAlignment(Qt::AlignCenter);
+
+    QVBoxLayout *lblLayout = new QVBoxLayout;
+    lblLayout->addWidget(noResultLabel);
+
+    m_noResultListView->setLayout(lblLayout);
+    listViewVBoxLayout->addWidget(m_noResultListView);
+
+    m_noResultListView->hide();
 }
 
 void DFontMgrMainWindow::initStateBar()
@@ -644,4 +665,17 @@ void DFontMgrMainWindow::onFontUninstallFinished(const QModelIndex &uninstallInd
 {
     qDebug() << "finished remove row:" << uninstallIndex.row() << endl;
     m_fontPreviewListView->removeRowAtIndex(uninstallIndex);
+}
+
+void DFontMgrMainWindow::onFontListViewRowCountChanged(int rowCount)
+{
+    qDebug() << "filter list view " << rowCount;
+    if (0 == rowCount) {
+        m_fontPreviewListView->hide();
+        m_noResultListView->show();
+    }
+    else {
+        m_fontPreviewListView->show();
+        m_noResultListView->hide();
+    }
 }

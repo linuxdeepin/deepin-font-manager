@@ -11,11 +11,6 @@ DFMDBManager::DFMDBManager(QObject *parent)
     : QObject(parent)
     , m_sqlUtil(new DSqliteUtil(QDir::homePath() + "/.deepin-font-manager/.font_manager.db"))
 {
-    QDir dbdir(QDir::homePath() + "/.deepin-font-manager/");
-    if (!dbdir.exists()) {
-        dbdir.mkdir(QDir::homePath() + "/.deepin-font-manager/");
-        qDebug() << __FUNCTION__ << QDir::homePath() + "/.deepin-font-manager/";
-    }
 }
 
 DFMDBManager::~DFMDBManager()

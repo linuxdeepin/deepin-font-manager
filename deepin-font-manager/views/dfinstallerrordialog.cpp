@@ -1,5 +1,6 @@
 #include "dfinstallerrordialog.h"
 #include "dfontinfomanager.h"
+#include "utils.h"
 
 #include <QButtonGroup>
 #include <QHBoxLayout>
@@ -104,7 +105,7 @@ void DFInstallErrorDialog::initTitleBar()
     logoLabel = new DLabel;
     logoLabel->setFixedSize(QSize(32, 32));
     logoLabel->setFocusPolicy(Qt::NoFocus);
-    logoLabel->setPixmap(QPixmap(":/images/exception-logo.svg"));
+    logoLabel->setPixmap(Utils::renderSVG(":/images/exception-logo.svg", logoLabel->size()));
 
     titleLabel = new DLabel;
     titleLabel->setText(DApplication::translate("ExceptionWindow", "Install Error"));

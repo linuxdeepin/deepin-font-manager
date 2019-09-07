@@ -18,6 +18,10 @@
             <source>Search</source>
             <translation type="unfinished"/>
         </message>
+        <message>
+            <source>No Result</source>
+            <translation type="unfinished"/>
+        </message>
     </context>
     <context>
         <name>Menu</name>

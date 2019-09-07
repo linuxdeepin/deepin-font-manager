@@ -1,11 +1,18 @@
 #include "dsqliteutil.h"
 
+#include <QDir>
 #include <QDebug>
 
 DSqliteUtil::DSqliteUtil(const QString &strDatabase)
     : m_strDatabase(strDatabase)
     , m_query(nullptr)
 {
+    QDir dbdir(QDir::homePath() + "/.deepin-font-manager/");
+    if (!dbdir.exists()) {
+        dbdir.mkdir(QDir::homePath() + "/.deepin-font-manager/");
+        qDebug() << __FUNCTION__ << QDir::homePath() + "/.deepin-font-manager/";
+    }
+
     createConnection(m_strDatabase);
     createTable();
 }

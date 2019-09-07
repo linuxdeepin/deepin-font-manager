@@ -70,7 +70,7 @@ int main(int argc, char *argv[])
 
         QDir dir(targetDir);
         dir.mkpath(".");
-        QFile::copy(file, target);
+        QFile::copy(filePathOrig, target);
 
         // set permission.
         process->start("chmod", QStringList() << "644" << target);
