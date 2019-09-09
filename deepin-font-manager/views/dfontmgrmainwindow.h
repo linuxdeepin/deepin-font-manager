@@ -53,7 +53,6 @@ protected:
     void initFontPreviewItemsData();
 
     void handleAddFontEvent();
-    void switchAppTheme(int type);
     void installFont(const QStringList &files);
     void showFontFilePostion();
 

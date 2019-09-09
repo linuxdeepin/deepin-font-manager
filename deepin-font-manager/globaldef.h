@@ -37,4 +37,7 @@
 
 #define FTM_REJECT_FONT_CONF_FILENAME  QString("71-DeepInFontManager-Reject.conf")
 
+//Font Manager Theme Key
+#define FTM_THEME_KEY "FontManagerTheme"
+
 #endif  // GLOBALDEF_H

@@ -31,16 +31,6 @@ void DFontMenuManager::initMenuData()
     // Tools bar menu & Right key menu.
     m_fontToolBarMenuData.push_back(
         new FMenuItem(DApplication::translate("Menu", "Add Fonts"), MenuAction::M_AddFont));
-    FMenuItem *themeMenus =
-        new FMenuItem(DApplication::translate("Menu", "Theme"), MenuAction::M_Theme, true, true);
-    themeMenus->subMenulist.push_back(
-        new FMenuItem(DApplication::translate("Menu", "Light Theme"), MenuAction::M_ThemeLight));
-    themeMenus->subMenulist.push_back(
-        new FMenuItem(DApplication::translate("Menu", "Dark Theme"), MenuAction::M_ThemeDark));
-    themeMenus->subMenulist.push_back(new FMenuItem(
-        DApplication::translate("Menu", "Follow System"), MenuAction::M_ThemeFollowSystem));
-    m_fontToolBarMenuData.push_back(themeMenus);
-
     m_fontToolBarMenuData.push_back(
         new FMenuItem(DApplication::translate("Menu", "Help"), MenuAction ::M_Help));
 

@@ -75,6 +75,7 @@ DFontMgrMainWindow::DFontMgrMainWindow(bool isQuickMode, QWidget *parent)
 {
     // setWindowFlags(windowFlags() | (Qt::FramelessWindowHint | Qt::WindowMaximizeButtonHint));
 
+    initData();
     initUI();
     initConnections();
 }
@@ -85,9 +86,24 @@ void DFontMgrMainWindow::initData()
 {
     D_D(DFontMgrMainWindow);
 
-    // Not use now
-    Q_UNUSED(d);
+    //Initialize app Theme
+    QVariant theme;
+    theme = d->settingsQsPtr->value(FTM_THEME_KEY);
+
+    bool ok = false;
+    int color = theme.toInt(&ok);
+
+    DGuiApplicationHelper::ColorType colorType = DGuiApplicationHelper::ColorType::UnknownType;
+
+    if (ok) {
+        colorType = static_cast<DGuiApplicationHelper::ColorType>(color);
+    }
+
+    qDebug() << __FUNCTION__ << "init theme = " << colorType;
+
+    DGuiApplicationHelper::instance()->setPaletteType(colorType);
 }
+
 void DFontMgrMainWindow::initUI()
 {
     setWindowRadius(18);  // debug
@@ -107,6 +123,14 @@ void DFontMgrMainWindow::initConnections()
                      [this](const QStringList &files) { this->installFont(files); });
     // Menu event
     QObject::connect(d->toolBarMenu, &QMenu::triggered, this, &DFontMgrMainWindow::handleMenuEvent);
+
+    //Theme change event
+    QObject::connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::paletteTypeChanged,
+                     [this] (DGuiApplicationHelper::ColorType type) {
+        qDebug() << "Update Theme type:" << type;
+        //Save theme value
+        d_func()->settingsQsPtr->setValue(FTM_THEME_KEY, type);
+    });
 
     // Right Key menu
     QObject::connect(d->rightKeyMenu, &QMenu::triggered, this,
@@ -452,15 +476,6 @@ void DFontMgrMainWindow::handleMenuEvent(QAction *action)
             case DFontMenuManager::MenuAction::M_AddFont: {
                 handleAddFontEvent();
             } break;
-            case DFontMenuManager::MenuAction::M_ThemeDark:
-                switchAppTheme(Theme::Dark);
-                break;
-            case DFontMenuManager::MenuAction::M_ThemeLight:
-                switchAppTheme(Theme::Light);
-                break;
-            case DFontMenuManager::MenuAction::M_ThemeFollowSystem:
-                switchAppTheme(Theme::FollowSystem);
-                break;
             case DFontMenuManager::MenuAction::M_FontInfo: {
                 DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
                 DFontInfoDialog fontInfoDlg(&currItemData);
@@ -500,27 +515,6 @@ void DFontMgrMainWindow::handleMenuEvent(QAction *action)
             default:
                 qDebug() << "handleMenuEvent->(id=" << actionId << ")";
             }
-        }
-    }
-}
-
-void DFontMgrMainWindow::switchAppTheme(int type)
-{
-    DApplication *app = qobject_cast<DApplication *>(qApp);
-
-    if (app) {
-        switch (type) {
-        case Theme::Dark: {
-            app->setTheme("dark");
-        } break;
-        case Theme::Light: {
-            app->setTheme("light");
-        } break;
-        case Theme::FollowSystem: {
-            // Not implementated
-        } break;
-        default:
-            qDebug() << "Unknow Theme type = " << type;
         }
     }
 }
