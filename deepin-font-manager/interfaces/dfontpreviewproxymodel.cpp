@@ -86,7 +86,7 @@ bool DFontPreviewProxyModel::isCustomFilterAcceptsRow(const QModelIndex &modelIn
     }
     //只显示系统字体
     case DSplitListWidget::SysFont: {
-        QString fontFilePath = itemData.pFontInfo->filePath;
+        QString fontFilePath = itemData.fontInfo.filePath;
         if (fontFilePath.startsWith("/usr/share/fonts/") &&
             !fontFilePath.contains("deepin-font-install") &&
             isFontNameContainsPattern(fontName)) {
@@ -95,7 +95,7 @@ bool DFontPreviewProxyModel::isCustomFilterAcceptsRow(const QModelIndex &modelIn
     } break;
     //只显示用户字体
     case DSplitListWidget::UserFont: {
-        QString fontFilePath = itemData.pFontInfo->filePath;
+        QString fontFilePath = itemData.fontInfo.filePath;
         if (fontFilePath.contains("deepin-font-install") &&
             isFontNameContainsPattern(fontName)) {
             return true;
@@ -115,14 +115,14 @@ bool DFontPreviewProxyModel::isCustomFilterAcceptsRow(const QModelIndex &modelIn
     } break;
     //中文字体
     case DSplitListWidget::ChineseFont: {
-        QString fontFilePath = itemData.pFontInfo->filePath;
+        QString fontFilePath = itemData.fontInfo.filePath;
         if (isChineseFont(fontFilePath) && isFontNameContainsPattern(fontName)) {
             return true;
         }
     } break;
     //等宽字体
     case DSplitListWidget::EqualWidthFont: {
-        QString fontFilePath = itemData.pFontInfo->filePath;
+        QString fontFilePath = itemData.fontInfo.filePath;
         if (isMonoSpaceFont(fontFilePath) && isFontNameContainsPattern(fontName)) {
             return true;
         }

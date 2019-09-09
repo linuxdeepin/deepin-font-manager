@@ -28,7 +28,7 @@ public:
 protected:
     void initUI();
     void initConnections();
-    void InitPreviewFont(DFontInfo* dfontInfo);
+    void InitPreviewFont(DFontInfo fontInfo);
 
     void resizeEvent(QResizeEvent* event) override;
 signals:

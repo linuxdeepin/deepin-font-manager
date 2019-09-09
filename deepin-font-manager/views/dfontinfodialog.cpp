@@ -191,26 +191,26 @@ void DFontInfoDialog::resizeEvent(QResizeEvent *event)
 void DFontInfoDialog::updateFontInfo()
 {
     if (nullptr != m_fontInfo) {
-        if (!m_fontInfo->pFontInfo->filePath.isEmpty()) {
-            QFileInfo file(m_fontInfo->pFontInfo->filePath);
+        if (!m_fontInfo->fontInfo.filePath.isEmpty()) {
+            QFileInfo file(m_fontInfo->fontInfo.filePath);
             m_fontFileName->setText(file.fileName());
         }
 
-        if (!m_fontInfo->pFontInfo->styleName.isEmpty()) {
-            m_fontSytleName->setText(m_fontInfo->pFontInfo->styleName);
+        if (!m_fontInfo->fontInfo.styleName.isEmpty()) {
+            m_fontSytleName->setText(m_fontInfo->fontInfo.styleName);
         }
 
-        if (!m_fontInfo->pFontInfo->type.isEmpty()) {
-            m_fontTypeName->setText(m_fontInfo->pFontInfo->type);
+        if (!m_fontInfo->fontInfo.type.isEmpty()) {
+            m_fontTypeName->setText(m_fontInfo->fontInfo.type);
         }
 
-        if (!m_fontInfo->pFontInfo->copyright.isEmpty()) {
-            m_fontVersion->setText(m_fontInfo->pFontInfo->copyright);
+        if (!m_fontInfo->fontInfo.copyright.isEmpty()) {
+            m_fontVersion->setText(m_fontInfo->fontInfo.copyright);
         }
 
-        if (!m_fontInfo->pFontInfo->description.isEmpty()) {
+        if (!m_fontInfo->fontInfo.description.isEmpty()) {
             QString elideString = m_fontDescription->fontMetrics().elidedText(
-                m_fontInfo->pFontInfo->description, Qt::ElideRight, 200);
+                m_fontInfo->fontInfo.description, Qt::ElideRight, 200);
             m_fontDescription->setText(elideString);
         }
     }

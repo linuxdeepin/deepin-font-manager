@@ -166,13 +166,13 @@ void DFQuickInstallWindow::onFileSelected(QStringList fileList)
     if (fileList.size() > 0) {
         QString file = fileList.at(0);
 
-        DFontInfo *pfontInfo = m_fontInfoManager->getFontInfo(file);
-        if (pfontInfo->isError) {
+        DFontInfo fontInfo = m_fontInfoManager->getFontInfo(file);
+        if (fontInfo.isError) {
             m_stateLabel->setText(DApplication::translate("QuickInstallWindow", "File Error"));
             m_actionBtn->setDisabled(true);
             m_fontType->setVisible(false);
         } else {
-            if (pfontInfo->isInstalled) {
+            if (fontInfo.isInstalled) {
                 DPalette pa = m_stateLabel->palette();
                 QColor color = pa.color(DPalette::TextWarning);
                 pa.setColor(DPalette::WindowText, color);
@@ -184,20 +184,20 @@ void DFQuickInstallWindow::onFileSelected(QStringList fileList)
                     DApplication::translate("QuickInstallWindow", "Not Installed"));
             }
 
-            m_titleLabel->setText(pfontInfo->familyName);
+            m_titleLabel->setText(fontInfo.familyName);
 
-            if (pfontInfo->styleName.isEmpty()) {
+            if (fontInfo.styleName.isEmpty()) {
                 m_fontType->addItem(DApplication::translate("QuickInstallWindow", "Unknow"));
             } else {
                 m_fontType->clear();
-                m_fontType->addItem(pfontInfo->styleName);
+                m_fontType->addItem(fontInfo.styleName);
             }
 
-            if (!pfontInfo->familyName.isEmpty()) {
-                m_titleLabel->setText(pfontInfo->familyName);
+            if (!fontInfo.familyName.isEmpty()) {
+                m_titleLabel->setText(fontInfo.familyName);
             }
 
-            InitPreviewFont(pfontInfo);
+            InitPreviewFont(fontInfo);
         }
     }
 }
@@ -209,27 +209,27 @@ void DFQuickInstallWindow::onInstallBtnClicked()
     Q_EMIT quickInstall();
 }
 
-void DFQuickInstallWindow::InitPreviewFont(DFontInfo *dfontInfo)
+void DFQuickInstallWindow::InitPreviewFont(DFontInfo fontInfo)
 {
     qDebug() << __FUNCTION__ << "enter";
 
-    if (!dfontInfo->isError) {
-        dfontInfo = m_fontInfoManager->getFontInfo(dfontInfo->filePath);
-        if (!dfontInfo->isInstalled) {
-            int fontId = QFontDatabase::addApplicationFont(dfontInfo->filePath);
+    if (!fontInfo.isError) {
+        fontInfo = m_fontInfoManager->getFontInfo(fontInfo.filePath);
+        if (!fontInfo.isInstalled) {
+            int fontId = QFontDatabase::addApplicationFont(fontInfo.filePath);
             QStringList familys = QFontDatabase::applicationFontFamilies(fontId);
 
             if (familys.size() > 0) {
-                dfontInfo->familyName = familys.at(0);
+                fontInfo.familyName = familys.at(0);
             }
         }
 
-        qDebug() << __FUNCTION__ << dfontInfo->familyName;
+        qDebug() << __FUNCTION__ << fontInfo.familyName;
 
         QFont preivewFont;
-        preivewFont.setFamily(dfontInfo->familyName);
+        preivewFont.setFamily(fontInfo.familyName);
         preivewFont.setPixelSize(28);
-        QString styleName = dfontInfo->styleName;
+        QString styleName = fontInfo.styleName;
 
         if (styleName.contains("Italic")) {
             preivewFont.setItalic(true);
@@ -257,6 +257,6 @@ void DFQuickInstallWindow::InitPreviewFont(DFontInfo *dfontInfo)
 
         m_fontPreviewTxt->setFont(preivewFont);
 
-        m_titleLabel->setText(dfontInfo->familyName);
+        m_titleLabel->setText(fontInfo.familyName);
     }
 }

@@ -136,9 +136,9 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
         painter->setFont(nameFont);
         painter->drawText(fontNameRect, Qt::AlignLeft | Qt::AlignTop, data.strFontName);
 
-        QFont preivewFont(data.pFontInfo->familyName);
+        QFont preivewFont(data.fontInfo.familyName);
         preivewFont.setPixelSize(iFontSize);
-        QString styleName = data.pFontInfo->styleName;
+        QString styleName = data.fontInfo.styleName;
 
         if (styleName.contains("Italic")) {
             preivewFont.setItalic(true);

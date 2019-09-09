@@ -37,7 +37,7 @@
 #include FT_TRUETYPE_IDS_H
 
 
-static QList<DFontInfo *> dataList;
+static QList<DFontInfo> dataList;
 static DFontInfoManager *INSTANCE = 0;
 
 inline bool isSystemFont(QString filePath)
@@ -86,13 +86,12 @@ DFontInfoManager::~DFontInfoManager() {}
 void DFontInfoManager::refreshList()
 {
     if (!dataList.isEmpty()) {
-        qDeleteAll(dataList.begin(), dataList.end());
         dataList.clear();
     }
 
     for (auto path : getAllFontPath()) {
-        DFontInfo *fontInfo = getFontInfo(path);
-        fontInfo->isSystemFont = isSystemFont(path);
+        DFontInfo fontInfo = getFontInfo(path);
+        fontInfo.isSystemFont = isSystemFont(path);
         dataList << fontInfo;
     }
 }
@@ -111,7 +110,6 @@ QStringList DFontInfoManager::getAllFontPath() const
 
     for (QString line : lines) {
         QString filePath = line.remove(QChar(':')).simplified();
-        qDebug() << __FUNCTION__ << "::" << filePath;
         if (filePath.length() > 0) {
             pathList << filePath;
         }
@@ -163,14 +161,14 @@ QStringList DFontInfoManager::getAllMonoSpaceFontPath() const
     return pathList;
 }
 
-QString DFontInfoManager::getInstalledFontPath(DFontInfo *info)
+QString DFontInfoManager::getInstalledFontPath(const DFontInfo &info)
 {
-    const QList<DFontInfo *> famList = dataList;
+    const QList<DFontInfo> famList = dataList;
     QString filePath = nullptr;
 
     for (const auto &famItem : famList) {
-        if (info->familyName == famItem->familyName && info->styleName == famItem->styleName) {
-            filePath = famItem->filePath;
+        if (info.familyName == famItem.familyName && info.styleName == famItem.styleName) {
+            filePath = famItem.filePath;
             break;
         }
     }
@@ -192,10 +190,10 @@ QString DFontInfoManager::getFontType(const QString &filePath)
     }
 }
 
-DFontInfo *DFontInfoManager::getFontInfo(const QString &filePath)
+DFontInfo DFontInfoManager::getFontInfo(const QString &filePath)
 {
-    DFontInfo *fontInfo = new DFontInfo;
-    fontInfo->isSystemFont = isSystemFont(filePath);
+    DFontInfo fontInfo;
+    fontInfo.isSystemFont = isSystemFont(filePath);
 
     FT_Library m_library = 0;
     FT_Face m_face = 0;
@@ -204,30 +202,35 @@ DFontInfo *DFontInfoManager::getFontInfo(const QString &filePath)
     FT_Error error = FT_New_Face(m_library, filePath.toUtf8().constData(), 0, &m_face);
 
     if (error != 0) {
-        fontInfo->isError = true;
+        fontInfo.isError = true;
         FT_Done_Face(m_face);
         FT_Done_FreeType(m_library);
         return fontInfo;
     }
 
     // get the basic data.
-    fontInfo->isError = false;
-    fontInfo->filePath = filePath;
-    fontInfo->familyName = QString::fromUtf8(DFreeTypeUtil::getFontFamilyName(m_face));
-    if (fontInfo->familyName.length() < 1) {
-        fontInfo->familyName = QString::fromLatin1(m_face->family_name);
+    fontInfo.isError = false;
+    fontInfo.filePath = filePath;
+
+    int appFontId = QFontDatabase::addApplicationFont(filePath);
+    QStringList fontFamilyList = QFontDatabase::applicationFontFamilies(appFontId);
+    if (fontFamilyList.size() > 0) {
+        QString fontFamily = QString(fontFamilyList.first().toLocal8Bit());
+        fontInfo.familyName = fontFamily;
     }
-    if (fontInfo->familyName.length() < 1) {
-        int appFontId = QFontDatabase::addApplicationFont(filePath);
-        QStringList fontFamilyList = QFontDatabase::applicationFontFamilies(appFontId);
-        if (fontFamilyList.size() > 0) {
-            QString fontFamily = QString(fontFamilyList.first().toLocal8Bit());
-            fontInfo->familyName = fontFamily;
-        }
+    qDebug() << "QFontDatabase::applicationFontFamilies:" << fontInfo.familyName << endl;
+
+    if (fontInfo.familyName.trimmed().length() < 1) {
+        fontInfo.familyName = QString::fromUtf8(DFreeTypeUtil::getFontFamilyName(m_face));
+        qDebug() << "DFreeTypeUtil::getFontFamilyName:" << fontInfo.familyName << endl;
+    }
+    if (fontInfo.familyName.trimmed().length() < 1) {
+        fontInfo.familyName = QString::fromLatin1(m_face->family_name);
+        qDebug() << "m_face->family_name:" << fontInfo.familyName << endl;
     }
 
-    fontInfo->styleName = QString::fromLatin1(m_face->style_name);
-    fontInfo->type = getFontType(filePath);
+    fontInfo.styleName = QString::fromLatin1(m_face->style_name);
+    fontInfo.type = getFontType(filePath);
 
     if (FT_IS_SFNT(m_face)) {
         FT_SfntName sname;
@@ -253,18 +256,18 @@ DFontInfo *DFontInfoManager::getFontInfo(const QString &filePath)
 
             switch (sname.name_id) {
             case TT_NAME_ID_COPYRIGHT:
-                fontInfo->copyright = convertToUtf8((char *)sname.string, sname.string_len);
-                fontInfo->copyright = fontInfo->copyright.simplified();
+                fontInfo.copyright = convertToUtf8((char *)sname.string, sname.string_len);
+                fontInfo.copyright = fontInfo.copyright.simplified();
                 break;
 
             case TT_NAME_ID_VERSION_STRING:
-                fontInfo->version = convertToUtf8((char *)sname.string, sname.string_len);
-                fontInfo->version = fontInfo->version.remove("Version").simplified();
+                fontInfo.version = convertToUtf8((char *)sname.string, sname.string_len);
+                fontInfo.version = fontInfo.version.remove("Version").simplified();
                 break;
 
             case TT_NAME_ID_DESCRIPTION:
-                fontInfo->description = convertToUtf8((char *)sname.string, sname.string_len);
-                fontInfo->description = fontInfo->description.simplified();
+                fontInfo.description = convertToUtf8((char *)sname.string, sname.string_len);
+                fontInfo.description = fontInfo.description.simplified();
                 break;
             default:
                 break;
@@ -274,14 +277,14 @@ DFontInfo *DFontInfoManager::getFontInfo(const QString &filePath)
 
     DFMDBManager *dbManager = DFMDBManager::instance();
     if (dbManager->getRecordCount() > 0) {
-        fontInfo->sysVersion = fontInfo->version;
+        fontInfo.sysVersion = fontInfo.version;
         if (!dbManager->isFontInfoExist(fontInfo)) {
-            fontInfo->isInstalled = false;
+            fontInfo.isInstalled = false;
         } else {
-            fontInfo->isInstalled = true;
+            fontInfo.isInstalled = true;
         }
     } else {
-        fontInfo->isInstalled = isFontInstalled(fontInfo);
+        fontInfo.isInstalled = isFontInstalled(fontInfo);
     }
 
     // destroy object.
@@ -291,15 +294,15 @@ DFontInfo *DFontInfoManager::getFontInfo(const QString &filePath)
     return fontInfo;
 }
 
-bool DFontInfoManager::isFontInstalled(DFontInfo *data)
+bool DFontInfoManager::isFontInstalled(DFontInfo data)
 {
-    const QList<DFontInfo *> list = dataList;
+    const QList<DFontInfo> list = dataList;
 
     for (int i = 0; i < list.count(); ++i) {
-        DFontInfo *item = list.at(i);
+        DFontInfo item = list.at(i);
 
-        if (*data == *item) {
-            data->sysVersion = item->version;
+        if (data == item) {
+            data.sysVersion = item.version;
             return true;
         }
     }

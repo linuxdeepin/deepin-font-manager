@@ -23,12 +23,12 @@ DFInstallErrorDialog::~DFInstallErrorDialog() {}
 
 void DFInstallErrorDialog::initData()
 {
-    DFontInfo *pfontInfo = nullptr;
+    DFontInfo fontInfo;
     DFontInfoManager *fontInfoManager = DFontInfoManager::instance();
     m_installErrorFontModelList.clear();
     foreach (auto it, m_errorInstallFiles) {
-        pfontInfo = fontInfoManager->getFontInfo(it);
-        if (pfontInfo->isError) {
+        fontInfo = fontInfoManager->getFontInfo(it);
+        if (fontInfo.isError) {
             DFInstallErrorItemModel *itemModel = new DFInstallErrorItemModel;
             QFileInfo fileInfo(it);
             itemModel->bSelectable = true;
@@ -40,7 +40,7 @@ void DFInstallErrorDialog::initData()
 
             m_installErrorFontModelList.push_back(itemModel);
             qDebug() << "verifyFontFiles->" << it << " :Damaged file";
-        } else if (pfontInfo->isInstalled) {
+        } else if (fontInfo.isInstalled) {
             DFInstallErrorItemModel *itemModel = new DFInstallErrorItemModel;
             QFileInfo fileInfo(it);
             itemModel->bSelectable = true;

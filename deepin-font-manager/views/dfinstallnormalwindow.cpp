@@ -164,7 +164,7 @@ void DFInstallNormalWindow::initConnections()
 void DFInstallNormalWindow::verifyFontFiles()
 {
     // debug
-    DFontInfo *pfontInfo = nullptr;
+    DFontInfo fontInfo;
 
     m_damagedFiles.clear();
     m_installedFiles.clear();
@@ -172,14 +172,14 @@ void DFInstallNormalWindow::verifyFontFiles()
 
     m_installErrorFontModelList.clear();
     foreach (auto it, m_installFiles) {
-        pfontInfo = m_fontInfoManager->getFontInfo(it);
-        if (pfontInfo->isError) {
+        fontInfo = m_fontInfoManager->getFontInfo(it);
+        if (fontInfo.isError) {
             m_damagedFiles.append(it);
 
 #ifdef QT_QML_DEBUG
             qDebug() << __FUNCTION__ << " (" << it << " :Damaged file)";
 #endif
-        } else if (pfontInfo->isInstalled) {
+        } else if (fontInfo.isInstalled) {
             m_installedFiles.append(it);
 
 #ifdef QT_QML_DEBUG
@@ -270,8 +270,8 @@ void DFInstallNormalWindow::batchInstall()
     //dfont-install don't need query database anymore
     QStringList installListWithFamliyName;
     foreach(auto it, installList) {
-        QScopedPointer<DFontInfo> pFontInfo(m_fontInfoManager->getFontInfo(it));
-        QString familyName = pFontInfo->familyName;
+        DFontInfo fontInfo = m_fontInfoManager->getFontInfo(it);
+        QString familyName = fontInfo.familyName;
 
          installListWithFamliyName.append(it+"|"+familyName);
 
@@ -312,8 +312,8 @@ void DFInstallNormalWindow::onProgressChanged(const QString &filePath, const dou
         return;
     }
 
-    DFontInfo *fontInfo = m_fontInfoManager->getFontInfo(filePath);
-    m_currentFontLabel->setText(fontInfo->familyName);
+    DFontInfo fontInfo = m_fontInfoManager->getFontInfo(filePath);
+    m_currentFontLabel->setText(fontInfo.familyName);
     m_progressBar->setValue(static_cast<int>(percent));
     m_progressBar->setTextVisible(false);
 }

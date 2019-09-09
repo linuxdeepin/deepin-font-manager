@@ -17,7 +17,7 @@ typedef enum IconStatus
 } IconStatus;
 
 struct DFontPreviewItemData {
-    DFontInfo *pFontInfo;     //字体信息
+    DFontInfo fontInfo;       //字体信息
     QString strFontName;      //字体名称
     QString strFontFileName;  //字体文件名称
     int iFontSize;            //字体大小
@@ -28,6 +28,32 @@ struct DFontPreviewItemData {
     int appFontId;            // QFontDatabase::addApplicationFont返回的ID
 
     IconStatus collectIconStatus;
+
+    DFontPreviewItemData()
+    {
+        fontInfo.filePath = "";
+        fontInfo.familyName = "";
+        fontInfo.styleName = "";
+        fontInfo.type = "";
+        fontInfo.version = "";
+        fontInfo.copyright = "";
+        fontInfo.description = "";
+        fontInfo.sysVersion = "";
+        fontInfo.isInstalled = false;
+        fontInfo.isError = false;
+        fontInfo.isSystemFont = true;
+
+        strFontName = "";
+        strFontFileName = "";
+        iFontSize = 0;
+        strFontPreview = "";
+        isEnabled = false;
+        isCollected = false;
+        strFontId = "";
+        appFontId = 0;
+
+        collectIconStatus = IconNormal;
+    }
 };
 
 Q_DECLARE_METATYPE(DFontPreviewItemData)

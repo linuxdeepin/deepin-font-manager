@@ -471,11 +471,11 @@ void DFontMgrMainWindow::handleMenuEvent(QAction *action)
                 connect(&confirmDelDlg, &DFDeleteDialog::accepted, this, [this]() {
                     // Add Delete font code Here
                     DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
-                    qDebug() << "Confirm delete:" << currItemData.pFontInfo->filePath
-                             << " is system font:" << currItemData.pFontInfo->isSystemFont;
+                    qDebug() << "Confirm delete:" << currItemData.fontInfo.filePath
+                             << " is system font:" << currItemData.fontInfo.isSystemFont;
 
                     QModelIndex currModelIndex = m_fontPreviewListView->currModelIndex();
-                    QString uninstallFilePath = currItemData.pFontInfo->filePath;
+                    QString uninstallFilePath = currItemData.fontInfo.filePath;
                     m_fontManager->setType(DFontManager::UnInstall);
                     m_fontManager->setUnInstallFile(uninstallFilePath, currModelIndex);
                     m_fontManager->start();
@@ -612,15 +612,15 @@ void DFontMgrMainWindow::showFontFilePostion()
 {
     DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
 
-    if (nullptr != currItemData.pFontInfo) {
+    if (-1 != currItemData.strFontId && currItemData.fontInfo.filePath.length() > 0) {
 
-        QUrl url = QUrl::fromLocalFile(QFileInfo(currItemData.pFontInfo->filePath).dir().absolutePath());
+        QUrl url = QUrl::fromLocalFile(QFileInfo(currItemData.fontInfo.filePath).dir().absolutePath());
 
-        qDebug() << QUrl::fromLocalFile(currItemData.pFontInfo->filePath).toString();
+        qDebug() << QUrl::fromLocalFile(currItemData.fontInfo.filePath).toString();
 
         QUrlQuery query;
         query.addQueryItem("selectUrl",
-                           QUrl::fromLocalFile(currItemData.pFontInfo->filePath).toString());
+                           QUrl::fromLocalFile(currItemData.fontInfo.filePath).toString());
         url.setQuery(query);
 
         QProcess::startDetached(DEEPIN_FILE_MANAGE_NAME, QStringList(url.toString()));
@@ -669,7 +669,6 @@ void DFontMgrMainWindow::onFontUninstallFinished(const QModelIndex &uninstallInd
 
 void DFontMgrMainWindow::onFontListViewRowCountChanged(int rowCount)
 {
-    qDebug() << "filter list view " << rowCount;
     if (0 == rowCount) {
         m_fontPreviewListView->hide();
         m_noResultListView->show();

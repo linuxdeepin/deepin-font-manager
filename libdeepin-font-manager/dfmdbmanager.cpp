@@ -32,23 +32,23 @@ inline bool DFMDBManager::isSystemFont(QString filePath)
     return filePath.contains("/usr/share/fonts/deepin-font-install") ? false : true;
 }
 
-DFontInfo *DFMDBManager::getDFontInfo(const QMap<QString, QString> &record)
+DFontInfo DFMDBManager::getDFontInfo(const QMap<QString, QString> &record)
 {
-    DFontInfo *pFontInfo = new DFontInfo;
+    DFontInfo fontInfo;
 
-    pFontInfo->filePath = record.value("filePath");
-    pFontInfo->familyName = record.value("familyName");
-    pFontInfo->styleName = record.value("styleName");
-    pFontInfo->type = record.value("type");
-    pFontInfo->version = record.value("version");
-    pFontInfo->copyright = record.value("copyright");
-    pFontInfo->description = record.value("description");
-    pFontInfo->sysVersion = record.value("sysVersion");
-    pFontInfo->isInstalled = record.value("isInstalled").toInt();
-    pFontInfo->isError = record.value("isError").toInt();
-    pFontInfo->isSystemFont = isSystemFont(pFontInfo->filePath);
+    fontInfo.filePath = record.value("filePath");
+    fontInfo.familyName = record.value("familyName");
+    fontInfo.styleName = record.value("styleName");
+    fontInfo.type = record.value("type");
+    fontInfo.version = record.value("version");
+    fontInfo.copyright = record.value("copyright");
+    fontInfo.description = record.value("description");
+    fontInfo.sysVersion = record.value("sysVersion");
+    fontInfo.isInstalled = record.value("isInstalled").toInt();
+    fontInfo.isError = record.value("isError").toInt();
+    fontInfo.isSystemFont = isSystemFont(fontInfo.filePath);
 
-    return pFontInfo;
+    return fontInfo;
 }
 
 QList<DFontPreviewItemData> DFMDBManager::getAllFontInfo()
@@ -89,7 +89,7 @@ QList<DFontPreviewItemData> DFMDBManager::getAllFontInfo()
             itemData.isEnabled = record.value("isEnabled").toInt();
             itemData.isCollected = record.value("isCollected").toInt();
             itemData.appFontId = record.value("appFontId").toInt();
-            itemData.pFontInfo = getDFontInfo(record);
+            itemData.fontInfo = getDFontInfo(record);
 
             fontItemDataList.push_back(itemData);
         }
@@ -142,7 +142,7 @@ QList<DFontPreviewItemData> DFMDBManager::findFontInfosByCondition(QMap<QString,
             itemData.isEnabled = record.value("isEnabled").toInt();
             itemData.isCollected = record.value("isCollected").toInt();
             itemData.appFontId = record.value("appFontId").toInt();
-            itemData.pFontInfo = getDFontInfo(record);
+            itemData.fontInfo = getDFontInfo(record);
 
             fontItemDataList.push_back(itemData);
         }
@@ -192,7 +192,7 @@ DFontPreviewItemData DFMDBManager::findFontInfoByFontId(QString strFontId)
             itemData.isEnabled = record.value("isEnabled").toInt();
             itemData.isCollected = record.value("isCollected").toInt();
             itemData.appFontId = record.value("appFontId").toInt();
-            itemData.pFontInfo = getDFontInfo(record);
+            itemData.fontInfo = getDFontInfo(record);
 
             fontItemDataList.push_back(itemData);
         }
@@ -200,7 +200,6 @@ DFontPreviewItemData DFMDBManager::findFontInfoByFontId(QString strFontId)
 
     DFontPreviewItemData itemData;
     itemData.strFontId = "-1";
-    itemData.pFontInfo = nullptr;
     if (recordList.size() > 0) {
         itemData = fontItemDataList.first();
     }
@@ -249,7 +248,7 @@ DFontPreviewItemData DFMDBManager::findFontInfoByFilePath(QString strFontFilePat
             itemData.isEnabled = record.value("isEnabled").toInt();
             itemData.isCollected = record.value("isCollected").toInt();
             itemData.appFontId = record.value("appFontId").toInt();
-            itemData.pFontInfo = getDFontInfo(record);
+            itemData.fontInfo = getDFontInfo(record);
 
             fontItemDataList.push_back(itemData);
         }
@@ -257,7 +256,6 @@ DFontPreviewItemData DFMDBManager::findFontInfoByFilePath(QString strFontFilePat
 
     DFontPreviewItemData itemData;
     itemData.strFontId = "-1";
-    itemData.pFontInfo = nullptr;
     if (recordList.size() > 0) {
         itemData = fontItemDataList.first();
     }
@@ -270,7 +268,7 @@ int DFMDBManager::getCurrMaxFontId()
     return m_sqlUtil->getMaxFontId();
 }
 
-bool DFMDBManager::isFontInfoExist(DFontInfo *newFileFontInfo)
+bool DFMDBManager::isFontInfoExist(const DFontInfo &newFileFontInfo)
 {
     QList<DFontPreviewItemData> fontItemDataList;
 
@@ -294,8 +292,8 @@ bool DFMDBManager::isFontInfoExist(DFontInfo *newFileFontInfo)
     keyList.append("appFontId");
 
     QMap<QString, QString> whereMap;
-    whereMap.insert("familyName", newFileFontInfo->familyName);
-    whereMap.insert("styleName", newFileFontInfo->styleName);
+    whereMap.insert("familyName", newFileFontInfo.familyName);
+    whereMap.insert("styleName", newFileFontInfo.styleName);
     m_sqlUtil->findRecords(keyList, whereMap, &recordList);
 
     if (recordList.size() > 0) {
@@ -312,16 +310,16 @@ QMap<QString, QString> DFMDBManager::mapItemData(DFontPreviewItemData itemData)
     mapData.insert("fontName", itemData.strFontName);
     mapData.insert("isEnabled", QString::number(itemData.isEnabled));
     mapData.insert("isCollected", QString::number(itemData.isCollected));
-    mapData.insert("filePath", itemData.pFontInfo->filePath);
-    mapData.insert("familyName", itemData.pFontInfo->familyName);
-    mapData.insert("styleName", itemData.pFontInfo->styleName);
-    mapData.insert("type", itemData.pFontInfo->type);
-    mapData.insert("version", itemData.pFontInfo->version);
-    mapData.insert("copyright", itemData.pFontInfo->copyright);
-    mapData.insert("description", itemData.pFontInfo->description);
-    mapData.insert("sysVersion", itemData.pFontInfo->sysVersion);
-    mapData.insert("isInstalled", QString::number(itemData.pFontInfo->isInstalled));
-    mapData.insert("isError", QString::number(itemData.pFontInfo->isError));
+    mapData.insert("filePath", itemData.fontInfo.filePath);
+    mapData.insert("familyName", itemData.fontInfo.familyName);
+    mapData.insert("styleName", itemData.fontInfo.styleName);
+    mapData.insert("type", itemData.fontInfo.type);
+    mapData.insert("version", itemData.fontInfo.version);
+    mapData.insert("copyright", itemData.fontInfo.copyright);
+    mapData.insert("description", itemData.fontInfo.description);
+    mapData.insert("sysVersion", itemData.fontInfo.sysVersion);
+    mapData.insert("isInstalled", QString::number(itemData.fontInfo.isInstalled));
+    mapData.insert("isError", QString::number(itemData.fontInfo.isError));
     mapData.insert("appFontId", QString::number(itemData.appFontId));
 
     return mapData;
