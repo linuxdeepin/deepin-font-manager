@@ -21,6 +21,7 @@
 #define UTILS_H
 
 #include <QObject>
+#include <QMap>
 
 class Utils : public QObject
 {
@@ -29,6 +30,8 @@ class Utils : public QObject
 public:
     Utils(QObject *parent = nullptr);
     ~Utils();
+
+    static QMap<QString, QPixmap> m_imgCacheMap;
 
     static QString getQssContent(const QString &filePath);
     static QString getConfigPath();

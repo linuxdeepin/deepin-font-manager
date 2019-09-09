@@ -1,5 +1,6 @@
 #include "dfontinfodialog.h"
 #include "dfontpreviewitemdef.h"
+#include "utils.h"
 
 #include <QFileInfo>
 #include <QFontMetrics>
@@ -35,7 +36,7 @@ void DFontInfoDialog::initUI()
     // Font logo
     m_fontLogo = new DLabel(this);
     m_fontLogo->setFixedSize(QSize(128, 128));
-    m_fontLogo->setPixmap(QPixmap(":/images/font-info-logo.svg"));
+    m_fontLogo->setPixmap(Utils::renderSVG(":/images/font-info-logo.svg", m_fontLogo->size()));
 
     // Font file name
     m_fontFileName = new DLabel(this);

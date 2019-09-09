@@ -1,6 +1,7 @@
 #include "dfinstallnormalwindow.h"
 #include "dfontmanager.h"
 #include "globaldef.h"
+#include "utils.h"
 
 #include <QResizeEvent>
 #include <QVBoxLayout>
@@ -44,7 +45,7 @@ void DFInstallNormalWindow::initUI()
     m_logoLabel->setFixedSize(QSize(32, 32));
     m_logoLabel->setFocusPolicy(Qt::NoFocus);
     m_logoLabel->setAttribute(Qt::WA_TransparentForMouseEvents);
-    m_logoLabel->setPixmap(QPixmap(":/images/deepin-font-manager.svg"));
+    m_logoLabel->setPixmap(Utils::renderSVG(":/images/deepin-font-manager.svg", m_logoLabel->size()));
 
     m_titleLabel = new DLabel(this);
     m_titleLabel->setObjectName("tileNameLabel");

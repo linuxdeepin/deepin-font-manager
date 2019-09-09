@@ -25,7 +25,9 @@ struct DFontPreviewItemData {
     bool isEnabled;           //是否启用
     bool isCollected;         //是否收藏
     QString strFontId;        //字体唯一id,对应数据库表中的fontId
-    int appFontId;            // QFontDatabase::addApplicationFont返回的ID
+
+    bool isChineseFont;       //是否中文字体
+    bool isMonoSpace;         //是否等宽字体
 
     IconStatus collectIconStatus;
 
@@ -50,7 +52,9 @@ struct DFontPreviewItemData {
         isEnabled = false;
         isCollected = false;
         strFontId = "";
-        appFontId = 0;
+
+        isChineseFont = false;
+        isMonoSpace = false;
 
         collectIconStatus = IconNormal;
     }

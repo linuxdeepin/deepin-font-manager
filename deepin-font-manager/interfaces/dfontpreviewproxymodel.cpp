@@ -12,11 +12,6 @@ DFontPreviewProxyModel::DFontPreviewProxyModel(QObject *parent)
     , m_useSystemFilter(true)
     , m_fontNamePattern("")
 {
-    DFontInfoManager *fontInfoManager = DFontInfoManager::instance();
-    m_chineFontPathList = fontInfoManager->getAllChineseFontPath();
-    m_monoSpaceFontPathList = fontInfoManager->getAllMonoSpaceFontPath();
-//    qDebug() << "m_chineFontPathList"<< m_chineFontPathList;
-//    qDebug() << "m_monoSpaceFontPathList" << m_monoSpaceFontPathList;
 }
 
 void DFontPreviewProxyModel::setFilterGroup(int filterGroup)
@@ -49,24 +44,6 @@ bool DFontPreviewProxyModel::isFontNameContainsPattern(QString fontName) const
     }
 
     return true;
-}
-
-bool DFontPreviewProxyModel::isChineseFont(QString fontFilePath) const
-{
-    if (m_chineFontPathList.contains(fontFilePath)) {
-        return true;
-    }
-
-    return false;
-}
-
-bool DFontPreviewProxyModel::isMonoSpaceFont(QString fontFilePath) const
-{
-    if (m_monoSpaceFontPathList.contains(fontFilePath)) {
-        return true;
-    }
-
-    return false;
 }
 
 bool DFontPreviewProxyModel::isCustomFilterAcceptsRow(const QModelIndex &modelIndex) const
@@ -115,15 +92,13 @@ bool DFontPreviewProxyModel::isCustomFilterAcceptsRow(const QModelIndex &modelIn
     } break;
     //中文字体
     case DSplitListWidget::ChineseFont: {
-        QString fontFilePath = itemData.fontInfo.filePath;
-        if (isChineseFont(fontFilePath) && isFontNameContainsPattern(fontName)) {
+        if (itemData.isChineseFont && isFontNameContainsPattern(fontName)) {
             return true;
         }
     } break;
     //等宽字体
     case DSplitListWidget::EqualWidthFont: {
-        QString fontFilePath = itemData.fontInfo.filePath;
-        if (isMonoSpaceFont(fontFilePath) && isFontNameContainsPattern(fontName)) {
+        if (itemData.isMonoSpace && isFontNameContainsPattern(fontName)) {
             return true;
         }
 

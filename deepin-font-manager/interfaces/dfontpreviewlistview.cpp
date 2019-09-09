@@ -50,19 +50,23 @@ void DFontPreviewListView::initFontListData()
     //开启事务
     m_dbManager->beginTransaction();
 
+
+    QStringList chineseFontPathList = fontInfoMgr->getAllChineseFontPath();
+    QStringList monoSpaceFontPathList = fontInfoMgr->getAllMonoSpaceFontPath();
     QStringList strAllFontList = fontInfoMgr->getAllFontPath();
     qDebug() << "strAllFontList.size()" << strAllFontList.size() << endl;
     for (int i = 0; i < strAllFontList.size(); ++i) {
         QString filePath = strAllFontList.at(i);
         if (filePath.length() > 0) {
-            insertFontItemData(m_fontPreviewItemModel, filePath, i + 1);
+            insertFontItemData(m_fontPreviewItemModel, filePath, i + 1, chineseFontPathList, monoSpaceFontPathList);
         }
     }
 
     m_dbManager->endTransaction();
 }
 
-void DFontPreviewListView::insertFontItemData(QStandardItemModel *sourceModel, QString filePath, int index)
+void DFontPreviewListView::insertFontItemData(QStandardItemModel *sourceModel, QString filePath, int index,
+                                              QStringList chineseFontPathList, QStringList monoSpaceFontPathList)
 {
     DFontInfoManager *fontInfoMgr = DFontInfoManager::instance();
     DFontPreviewItemData itemData;
@@ -77,12 +81,14 @@ void DFontPreviewListView::insertFontItemData(QStandardItemModel *sourceModel, Q
     }
 
     itemData.strFontId = QString::number(index);
-    itemData.appFontId = index;
     itemData.strFontFileName = filePathInfo.baseName();
     itemData.strFontPreview = FTM_DEFAULT_PREVIEW_TEXT;
     itemData.iFontSize = FTM_DEFAULT_PREVIEW_FONTSIZE;
     itemData.isEnabled = true;
     itemData.isCollected = false;
+    itemData.isChineseFont = chineseFontPathList.contains(filePath);
+    itemData.isMonoSpace = monoSpaceFontPathList.contains(filePath);
+
     itemData.fontInfo.isInstalled = true;
 
     QStandardItem *item = new QStandardItem;
@@ -99,6 +105,8 @@ void DFontPreviewListView::refreshFontListData(QStandardItemModel *sourceModel, 
     QStringList strAllFontList = fontInfoMgr->getAllFontPath();
 
     QList<DFontPreviewItemData> fontInfoList = m_dbManager->getAllFontInfo();
+    QStringList chineseFontPathList = fontInfoMgr->getAllChineseFontPath();
+    QStringList monoSpaceFontPathList = fontInfoMgr->getAllMonoSpaceFontPath();
 
     //开启事务
     m_dbManager->beginTransaction();
@@ -126,8 +134,8 @@ void DFontPreviewListView::refreshFontListData(QStandardItemModel *sourceModel, 
     }
 
     //根据文件路径比较出不同的字体文件
-    QSet<QString> fontListSet = strAllFontList.toSet();
-    QSet<QString> diffSet = fontListSet.subtract(dbFilePathSet);
+    QSet<QString> allFontListSet = strAllFontList.toSet();
+    QSet<QString> diffSet = allFontListSet.subtract(dbFilePathSet);
     qDebug() << "diffSet count:" << diffSet.count();
     if (diffSet.count() > 0) {
         int maxFontId = m_dbManager->getCurrMaxFontId();
@@ -135,7 +143,7 @@ void DFontPreviewListView::refreshFontListData(QStandardItemModel *sourceModel, 
         for (int i = 0; i < diffFilePathList.size(); ++i) {
             QString filePath = diffFilePathList.at(i);
             if (filePath.length() > 0) {
-                insertFontItemData(sourceModel, filePath, maxFontId + i + 1);
+                insertFontItemData(sourceModel, filePath, maxFontId + i + 1, chineseFontPathList, monoSpaceFontPathList);
             }
         }
     }

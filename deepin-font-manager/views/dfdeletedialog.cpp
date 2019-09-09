@@ -1,4 +1,5 @@
 #include "dfdeletedialog.h"
+#include "utils.h"
 
 #include <QHBoxLayout>
 #include <QVBoxLayout>
@@ -32,7 +33,7 @@ void DFDeleteDialog::initUI()
     m_fontLogo->setFixedSize(QSize(32, 32));
     m_fontLogo->setFocusPolicy(Qt::NoFocus);
     m_fontLogo->setAttribute(Qt::WA_TransparentForMouseEvents);
-    m_fontLogo->setPixmap(QPixmap(":/images/deepin-font-manager.svg"));
+    m_fontLogo->setPixmap(Utils::renderSVG(":/images/deepin-font-manager.svg", m_fontLogo->size()));
 
     m_messageA = new DLabel(this);
     m_messageA->setText(

@@ -12,7 +12,7 @@ DWIDGET_USE_NAMESPACE
 
 class DFontInfoManager;
 class DFontManager;
-class DFontInfo;
+struct DFontInfo;
 
 class DFQuickInstallWindow : public DMainWindow
 {

@@ -1,7 +1,7 @@
 #ifndef DSPLITLISTWIDGET_H
 #define DSPLITLISTWIDGET_H
 
-#include <DListWidget>
+#include <DListView>
 
 #include <QMetaType>
 #include <QStyledItemDelegate>
@@ -11,10 +11,14 @@ DWIDGET_USE_NAMESPACE
 class DNoFocusDelegate : public QStyledItemDelegate
 {
     void paint(QPainter *painter, const QStyleOptionViewItem &option,
-               const QModelIndex &index) const;
+               const QModelIndex &index) const override;
+
+    QSize sizeHint(const QStyleOptionViewItem &option,
+                   const QModelIndex &index) const override;
+
 };
 
-class DSplitListWidget : public DListWidget
+class DSplitListWidget : public DListView
 {
     Q_OBJECT
 public:
@@ -29,22 +33,19 @@ public:
     };
 
     explicit DSplitListWidget(QWidget *parent = nullptr);
-    ~DSplitListWidget();
+    ~DSplitListWidget() override;
 
     void initListData();
-    void initConnections();
 
-    QWidget *initSplitWidget(int widgetWidth, int widgetHeight);
-    void insertSplitItem(int row);
+    void mouseReleaseEvent(QMouseEvent *event) override;
 
     QStringList m_titleStringList;
+    QMap<QString,int> m_titleStringIndexMap;
+    QStandardItemModel *m_categoryItemModell;
+
 
 signals:
     void onListWidgetItemClicked(int index);
-
-protected slots:
-
-    void onListWidgetItemClicked(QListWidgetItem *item);
 };
 
 Q_DECLARE_METATYPE(DSplitListWidget::FontGroup)

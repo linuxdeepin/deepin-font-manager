@@ -33,6 +33,8 @@
 #include <QImageReader>
 #include <QPixmap>
 
+QMap<QString, QPixmap> Utils::m_imgCacheMap;
+
 Utils::Utils(QObject *parent)
     : QObject(parent)
 {
@@ -81,6 +83,10 @@ QString Utils::suffixList()
 
 QPixmap Utils::renderSVG(const QString &filePath, const QSize &size)
 {
+    if (m_imgCacheMap.contains(filePath)) {
+        return m_imgCacheMap.value(filePath);
+    }
+
     QImageReader reader;
     QPixmap pixmap;
 
@@ -94,6 +100,8 @@ QPixmap Utils::renderSVG(const QString &filePath, const QSize &size)
     } else {
         pixmap.load(filePath);
     }
+
+    m_imgCacheMap.insert(filePath, pixmap);
 
     return pixmap;
 }

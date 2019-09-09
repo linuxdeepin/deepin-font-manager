@@ -21,10 +21,6 @@ public:
 
     bool isFontNameContainsPattern(QString fontName) const;
 
-    bool isChineseFont(QString fontFilePath) const;
-
-    bool isMonoSpaceFont(QString fontFilePath) const;
-
     void setFilterFontNamePattern(const QString &pattern);
 
 signals:
@@ -34,9 +30,6 @@ private:
     int m_filterGroup;
     bool m_useSystemFilter;
     QString m_fontNamePattern;
-
-    QStringList m_chineFontPathList;
-    QStringList m_monoSpaceFontPathList;
 };
 
 #endif  // DFONTPREVIEWPROXYMODEL_H

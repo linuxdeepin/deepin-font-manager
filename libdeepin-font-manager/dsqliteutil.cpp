@@ -80,7 +80,8 @@ description TEXT,\
 sysVersion TEXT, \
 isInstalled TINYINT,\
 isError TINYINT,\
-appFontId INTEGER)";
+isChineseFont TINYINT,\
+isMonoSpace TINYINT)";
 
     if (!m_query->exec(createTableSql)) {
         qDebug() << "create table failed!";

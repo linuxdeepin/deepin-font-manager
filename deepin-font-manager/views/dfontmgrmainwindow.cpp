@@ -208,7 +208,7 @@ void DFontMgrMainWindow::initTileFrame()
     d->logoLabel->setFixedSize(QSize(32, 32));
     d->logoLabel->setFocusPolicy(Qt::NoFocus);
     d->logoLabel->setAttribute(Qt::WA_TransparentForMouseEvents);
-    d->logoLabel->setPixmap(QPixmap(":/images/deepin-font-manager.svg"));
+    d->logoLabel->setPixmap(Utils::renderSVG(":/images/deepin-font-manager.svg", d->logoLabel->size()));
 
     d->titleFrame = new DFrame(this);
     d->titleFrame->setObjectName("TitleBar");
@@ -274,7 +274,7 @@ void DFontMgrMainWindow::initLeftSideBar()
     d->leftBarHolder->setObjectName("leftMainLayoutHolder");
     d->leftBarHolder->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
     d->leftBarHolder->setFixedWidth(FTM_LEFT_SIDE_BAR_WITHD);
-    d->leftBarHolder->setContentsMargins(10, 0, 10, 0);
+    d->leftBarHolder->setContentsMargins(0, 0, 2, 0);
     // d->leftBarHolder->setAttribute(Qt::WA_TranslucentBackground, true);
 
     QVBoxLayout *leftMainLayout = new QVBoxLayout();
@@ -625,18 +625,9 @@ void DFontMgrMainWindow::showFontFilePostion()
 void DFontMgrMainWindow::onLeftSiderBarItemClicked(int index)
 {
     Q_D(DFontMgrMainWindow);
-    qDebug() << index << endl;
+    qDebug() << __FUNCTION__ << index << endl;
+    DSplitListWidget::FontGroup filterGroup = qvariant_cast<DSplitListWidget::FontGroup>(index);
 
-    DSplitListWidget *listWidget = d->leftSiderBar;
-    QListWidgetItem *item = listWidget->item(index);
-    QVariant varUserData = item->data(Qt::UserRole).value<QVariant>();
-
-    DSplitListWidget::FontGroup filterGroup = qvariant_cast<DSplitListWidget::FontGroup>(varUserData);
-
-    if (varUserData.toInt() < 0) {
-        qDebug() << varUserData.toInt() << endl;
-        return;
-    }
     qDebug() << filterGroup << endl;
 
     DFontPreviewProxyModel *filterModel = m_fontPreviewListView->getFontPreviewProxyModel();

@@ -39,6 +39,7 @@ private:
     QMap<QString, QString> mapItemData(DFontPreviewItemData itemData);
     DFontInfo getDFontInfo(const QMap<QString, QString> &record);
     inline bool isSystemFont(QString filePath);
+    inline void appendAllKeys(QList<QString> &keyList);
 
     DSqliteUtil *m_sqlUtil;
 };

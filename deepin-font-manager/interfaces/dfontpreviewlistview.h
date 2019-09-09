@@ -47,7 +47,8 @@ public:
 
 private:
     void initConnections();
-    void insertFontItemData(QStandardItemModel *sourceModel, QString filePath, int index);
+    void insertFontItemData(QStandardItemModel *sourceModel, QString filePath, int index,
+                            QStringList chineseFontPathList, QStringList monoSpaceFontPathList);
 
     //从fontconfig配置文件同步字体启用/禁用状态数据
     void syncFontEnableDisableStatusData(QStringList disableFontPathList);
