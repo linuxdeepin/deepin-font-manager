@@ -10,6 +10,7 @@
 #include <DPalette>
 #include <DPushButton>
 #include <DTitlebar>
+#include <DApplicationHelper>
 
 DFQuickInstallWindow::DFQuickInstallWindow(QStringList files, QWidget *parent)
     : DMainWindow(parent)
@@ -107,8 +108,8 @@ void DFQuickInstallWindow::initUI()
     m_stateLabel->setFixedHeight(36);
     m_stateLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     // m_stateLabel->setFont(actionFont);
-    QPalette pa = m_stateLabel->palette();
-    pa.setBrush(QPalette::Text, DPalette::get(m_stateLabel).textWarning());
+    DPalette pa = DApplicationHelper::instance()->palette(m_stateLabel);
+    pa.setBrush(QPalette::Text,  pa.brush(DPalette::ColorType::TextWarning));
     m_stateLabel->setPalette(pa);
 
     m_actionBtn = new DPushButton(this);

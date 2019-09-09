@@ -1,9 +1,10 @@
 #include "dfinstallerroritemwidget.h"
 
+#include <QVBoxLayout>
+
 #include <DLog>
 #include <DPalette>
-
-#include <QVBoxLayout>
+#include <DApplicationHelper>
 
 DFInstallErrorItemModel::DFInstallErrorItemModel()
 {
@@ -46,10 +47,11 @@ void DFInstallErrorItemWidget::initUI()
     QFont installStatusFont;
     installStatusFont.setPixelSize(11);
     m_fontInstallStatusLabel->setFont(installStatusFont);
-    DPalette pa = m_fontInstallStatusLabel->palette();
+
+    DPalette pa = DApplicationHelper::instance()->palette(m_fontInstallStatusLabel);
     QColor color = pa.color(QPalette::Text);
     pa.setColor(DPalette::Text, pa.color(DPalette::TextWarning));
-    m_fontInstallStatusLabel->setPalette(pa);
+    DApplicationHelper::instance()->setPalette(m_fontInstallStatusLabel, pa);
     m_fontInstallStatusLabel->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
     m_fontInstallStatusLabel->setText(m_itemModel->strFontInstallStatus);
 
