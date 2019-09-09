@@ -40,4 +40,12 @@
 //Font Manager Theme Key
 #define FTM_THEME_KEY "FontManagerTheme"
 
+//Deepin manaul binary name
+#define DEEPIN_MANUAL_NAME "dman"
+
+//ToDo:
+//Need to modify font manager binary name when dman is updated
+//Font manager binary name
+#define DEEPIN_FONT_MANAGER "deepin-font-installer"
+
 #endif  // GLOBALDEF_H
