@@ -3,18 +3,16 @@
 
 #include "dfontpreviewitemdef.h"
 
-#include <QMetaType>
-#include <QModelIndex>
-#include <QStandardItemModel>
-#include <QString>
-#include <QStyledItemDelegate>
+#include <DStyledItemDelegate>
 
-class DFontPreviewItemDelegate : public QStyledItemDelegate
+DWIDGET_USE_NAMESPACE
+
+class DFontPreviewItemDelegate : public DStyledItemDelegate
 {
     Q_OBJECT
 
 public:
-    explicit DFontPreviewItemDelegate(QObject *parent = nullptr);
+    explicit DFontPreviewItemDelegate(QAbstractItemView *parent = nullptr);
 
     void paint(QPainter *painter, const QStyleOptionViewItem &option,
                const QModelIndex &index) const Q_DECL_OVERRIDE;

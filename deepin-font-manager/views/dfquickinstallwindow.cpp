@@ -174,9 +174,8 @@ void DFQuickInstallWindow::onFileSelected(QStringList fileList)
             m_fontType->setVisible(false);
         } else {
             if (fontInfo.isInstalled) {
-                DPalette pa = m_stateLabel->palette();
-                QColor color = pa.color(DPalette::TextWarning);
-                pa.setColor(DPalette::WindowText, color);
+                DPalette pa = DApplicationHelper::instance()->palette(m_stateLabel);
+                pa.setBrush(DPalette::WindowText, pa.color(DPalette::TextWarning));
                 m_stateLabel->setPalette(pa);
                 m_stateLabel->setText(DApplication::translate("QuickInstallWindow", "Installed"));
 

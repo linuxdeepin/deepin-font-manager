@@ -1,20 +1,20 @@
 #include "dsplitlistwidget.h"
 
 #include <QPainter>
-#include <QVBoxLayout>
 #include <QMouseEvent>
-#include <QStandardItemModel>
 
 #include <DApplication>
-#include <DHorizontalLine>
 #include <DLog>
-
-DWIDGET_USE_NAMESPACE
 
 #define FTM_IS_USE_ROUND_CORNER true
 #define FTM_SPLIT_TOP_SPACE_TAG "_space_"
 #define FTM_SPLIT_TOP_SPLIT_TAG "_split_"
 #define FTM_SPLIT_LINE_INDEX    6
+
+DNoFocusDelegate::DNoFocusDelegate(QAbstractItemView *parent)
+    :DStyledItemDelegate(parent)
+{
+}
 
 //用于去除选中项的边框
 void DNoFocusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
@@ -106,11 +106,11 @@ void DNoFocusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
             painter->setFont(nameFont);
 
             if (option.state & QStyle::State_Selected) {
-                painter->setPen(QPen(Qt::white));
+                painter->setPen(QPen(option.palette.color(DPalette::Text)));
                 painter->drawText(fontNameRect, Qt::AlignLeft | Qt::AlignVCenter, strTitle);
             }
             else {
-                painter->setPen(QPen(Qt::black));
+                painter->setPen(QPen(option.palette.color(DPalette::Text)));
                 painter->drawText(fontNameRect, Qt::AlignLeft | Qt::AlignVCenter, strTitle);
             }
         }
@@ -142,7 +142,7 @@ DSplitListWidget::DSplitListWidget(QWidget *parent)
     : DListView(parent)
 {
     //去除选中项的边框
-    this->setItemDelegate(new DNoFocusDelegate());
+    this->setItemDelegate(new DNoFocusDelegate(this));
     this->setEditTriggers(QAbstractItemView::EditTrigger::NoEditTriggers);
     this->setAutoScroll(false);
 

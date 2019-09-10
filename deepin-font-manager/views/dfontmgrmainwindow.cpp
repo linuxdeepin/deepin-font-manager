@@ -587,8 +587,8 @@ void DFontMgrMainWindow::onPreviewTextChanged(const QString &currStr)
 
     for (int rowIndex = 0; rowIndex < filterModel->rowCount(); rowIndex++) {
         QModelIndex modelIndex = filterModel->index(rowIndex, 0);
-        filterModel->setData(modelIndex, QVariant(previewText), Qt::UserRole + 1);
-        filterModel->setData(modelIndex, QVariant(iFontSize), Qt::UserRole + 2);
+        filterModel->setData(modelIndex, QVariant(previewText), Dtk::UserRole + 1);
+        filterModel->setData(modelIndex, QVariant(iFontSize), Dtk::UserRole + 2);
     }
 }
 
@@ -599,7 +599,7 @@ void DFontMgrMainWindow::onFontSizeChanged(int fontSize)
 
     for (int rowIndex = 0; rowIndex < filterModel->rowCount(); rowIndex++) {
         QModelIndex modelIndex = filterModel->index(rowIndex, 0);
-        filterModel->setData(modelIndex, QVariant(fontSize), Qt::UserRole + 2);
+        filterModel->setData(modelIndex, QVariant(fontSize), Dtk::UserRole + 2);
     }
 }
 

@@ -1,31 +1,19 @@
 #include "dfontpreviewitemdelegate.h"
 #include "utils.h"
 
+#include <QPainter>
+
 #include <DApplication>
 #include <DPalette>
 #include <DLog>
-
-#include <QCheckBox>
-#include <QEvent>
-#include <QFontDatabase>
-#include <QImageReader>
-#include <QMouseEvent>
-#include <QPainter>
-#include <QStyle>
-#include <QStyledItemDelegate>
-#include <QSvgGenerator>
-#include <QTextLayout>
-#include <QTextLine>
-
-DTK_USE_NAMESPACE
-DWIDGET_USE_NAMESPACE
+#include <DCheckBox>
 
 #define FTM_PREVIEW_ITEM_HEIGHT 130
 
 #define FTM_IS_USE_ROUND_CORNER true
 
-DFontPreviewItemDelegate::DFontPreviewItemDelegate(QObject *parent)
-    : QStyledItemDelegate(parent)
+DFontPreviewItemDelegate::DFontPreviewItemDelegate(QAbstractItemView *parent)
+    : DStyledItemDelegate(parent)
 {
 }
 
@@ -36,8 +24,8 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
         painter->save();
         painter->setRenderHint(QPainter::Antialiasing, true);
 
-        QVariant varFontPreviewText = index.data(Qt::UserRole + 1);
-        QVariant varFontSize = index.data(Qt::UserRole + 2);
+        QVariant varFontPreviewText = index.data(Dtk::UserRole + 1);
+        QVariant varFontSize = index.data(Dtk::UserRole + 2);
         QVariant varDisplay = index.data(Qt::DisplayRole);
 
         DFontPreviewItemData data = varDisplay.value<DFontPreviewItemData>();
@@ -82,7 +70,7 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
             path.arcTo(QRectF(QPointF(rect.bottomRight() - QPointF(radius * 2, radius * 2)), QSize(radius * 2, radius * 2)), 270, 90);
 
             if (option.state & QStyle::State_Selected) {
-                QColor fillColor = option.palette.color(cg, DPalette::Dark);
+                QColor fillColor = option.palette.color(DPalette::Background);
                 painter->fillPath(path, fillColor);
             }
 
@@ -100,7 +88,7 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
             path.quadTo(rect.topRight(), rect.topRight());
 
             if (option.state & QStyle::State_Selected) {
-                QColor fillColor = option.palette.color(cg, DPalette::Dark);
+                QColor fillColor = option.palette.color(DPalette::Background);
                 painter->fillPath(path, fillColor);
             }
         }
@@ -114,7 +102,7 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
             QRect(rect.right() - 33, rect.top() + 10, collectIconSize, collectIconSize);
         QRect fontPreviewRect;
 
-        QCheckBox checkBox;
+        DCheckBox checkBox;
         //绘制checkbox
         QStyleOptionButton checkBoxOption;
         bool checked = data.isEnabled;
@@ -132,7 +120,7 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
 
         QFont nameFont;
         nameFont.setPixelSize(14);
-        painter->setPen(QPen(Qt::black));
+        painter->setPen(QPen(option.palette.color(DPalette::Text)));
         painter->setFont(nameFont);
         painter->drawText(fontNameRect, Qt::AlignLeft | Qt::AlignTop, data.strFontName);
 
@@ -176,7 +164,7 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
         fontPreviewRect = QRect(rect.left() + 50, rect.top() + yOffset, rect.width() - 50,
                                 rect.height() - yOffset);
         //绘制预览字体
-        painter->setPen(QPen(Qt::black));
+        painter->setPen(QPen(option.palette.color(DPalette::Text)));
         painter->setFont(preivewFont);
         painter->drawText(fontPreviewRect, Qt::AlignLeft | Qt::AlignVCenter, strElidedText);
 

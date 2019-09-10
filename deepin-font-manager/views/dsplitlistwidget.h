@@ -4,12 +4,15 @@
 #include <DListView>
 
 #include <QMetaType>
-#include <QStyledItemDelegate>
+#include <DStyledItemDelegate>
 
 DWIDGET_USE_NAMESPACE
 
-class DNoFocusDelegate : public QStyledItemDelegate
+class DNoFocusDelegate : public DStyledItemDelegate
 {
+public:
+    DNoFocusDelegate(QAbstractItemView *parent = nullptr);
+
     void paint(QPainter *painter, const QStyleOptionViewItem &option,
                const QModelIndex &index) const override;
 
