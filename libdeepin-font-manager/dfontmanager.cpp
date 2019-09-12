@@ -72,8 +72,12 @@ void DFontManager::setUnInstallFile(const QString &filePath, const QModelIndex &
     m_uninstModelIndex = uninstallIndex;
 }
 
-void DFontManager::handleInstallOutput(const QString &output)
+void DFontManager::handleInstallOutput()
 {
+    QProcess *process = dynamic_cast<QProcess *>(sender());
+    qDebug() << process->processId();
+    QString output = process->readAllStandardOutput();
+
     // single file installation.
     if (m_instFileList.count() == 1) {
         emit installPositionChanged(output);
@@ -89,8 +93,11 @@ void DFontManager::handleInstallOutput(const QString &output)
     }
 }
 
-void DFontManager::handleReInstallOutput(const QString &output)
+void DFontManager::handleReInstallOutput()
 {
+    QProcess *process = dynamic_cast<QProcess *>(sender());
+    qDebug() << process->processId();
+    QString output = process->readAllStandardOutput();
     // 0 is installing.
     if (output.toInt() == 0) {
         emit reinstalling();
@@ -99,8 +106,11 @@ void DFontManager::handleReInstallOutput(const QString &output)
     }
 }
 
-void DFontManager::handleUnInstallOutput(const QString &output)
+void DFontManager::handleUnInstallOutput()
 {
+    QProcess *process = dynamic_cast<QProcess *>(sender());
+    qDebug() << process->processId();
+    QString output = process->readAllStandardOutput();
     if (output.toInt() == 0) {
         emit uninstalling();
     } else {
@@ -129,28 +139,31 @@ bool DFontManager::doCmd(const QString &program, const QStringList &arguments)
 {
     QProcess *process = new QProcess;
     int failed = false;
+    qDebug() << "QProcess start";
 
     switch (m_type) {
     case Install:
-        connect(process, &QProcess::readyReadStandardOutput, this,
-                [=] { handleInstallOutput(process->readAllStandardOutput()); });
+        connect(process, SIGNAL(readyReadStandardOutput()), this,
+            SLOT(handleInstallOutput()));
         break;
 
     case ReInstall:
-        connect(process, &QProcess::readyReadStandardOutput, this,
-                [=] { handleReInstallOutput(process->readAllStandardOutput()); });
+        connect(process, SIGNAL(readyReadStandardOutput()), this,
+            SLOT(handleReInstallOutput()));
         break;
 
     case UnInstall:
-        connect(process, &QProcess::readyReadStandardOutput, this,
-                [=] { handleUnInstallOutput(process->readAllStandardOutput()); });
+        connect(process, SIGNAL(readyReadStandardOutput()), this,
+            SLOT(handleUnInstallOutput()));
         break;
     }
 
+    connect(process, SIGNAL(finished(int)), this, SLOT(handleProcessFinished(int)));
+
     process->start(program, arguments);
     process->waitForFinished(-1);
+
     failed |= process->exitCode();
-    process->deleteLater();
 
     return !failed;
 }
@@ -170,11 +183,13 @@ void DFontManager::handleInstall()
 
 void DFontManager::handleUnInstall()
 {
+    qDebug() << "waitForFinished";
     if (doCmd("pkexec", QStringList() << "dfont-uninstall" << m_uninstFile)) {
         emit uninstallFinished();
 
         emit uninstallFontFinished(m_uninstModelIndex);
     }
+
 }
 
 void DFontManager::handleReInstall()
@@ -182,4 +197,12 @@ void DFontManager::handleReInstall()
     if (doCmd("pkexec", QStringList() << "dfont-install" << m_reinstFile)) {
         emit reinstallFinished();
     }
+}
+
+void DFontManager::handleProcessFinished(int exitCode)
+{
+    QProcess *process = dynamic_cast<QProcess *>(sender());
+    qDebug() << process->processId();
+    qDebug() << exitCode << endl;
+    process->deleteLater();
 }

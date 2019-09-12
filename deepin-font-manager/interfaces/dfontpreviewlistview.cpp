@@ -119,6 +119,8 @@ void DFontPreviewListView::refreshFontListData(QStandardItemModel *sourceModel, 
         QFileInfo filePathInfo(filePath);
         //如果字体文件已经不存在，则从t_manager表中删除
         if (!filePathInfo.exists()) {
+            //删除字体之前启用字体，防止下次重新安装后就被禁用
+            enableFont(itemData);
             m_dbManager->deleteFontInfo("fontId", itemData.strFontId);
             continue;
         }
@@ -420,6 +422,8 @@ void DFontPreviewListView::removeRowAtIndex(QModelIndex modelIndex)
     QVariant varModel = m_fontPreviewProxyModel->data(modelIndex, Qt::DisplayRole);
     DFontPreviewItemData itemData = varModel.value<DFontPreviewItemData>();
 
+    //删除字体之前启用字体，防止下次重新安装后就被禁用
+    enableFont(itemData);
     m_dbManager->deleteFontInfoByFontId(itemData.strFontId);
 
     m_fontPreviewProxyModel->removeRow(modelIndex.row(), modelIndex.parent());

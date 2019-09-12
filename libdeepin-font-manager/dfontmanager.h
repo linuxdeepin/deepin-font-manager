@@ -41,9 +41,10 @@ public:
     void setUnInstallFile(const QString &filePath, const QModelIndex &uninstallIndex);
 
 private slots:
-    void handleInstallOutput(const QString &output);
-    void handleReInstallOutput(const QString &output);
-    void handleUnInstallOutput(const QString &output);
+    void handleInstallOutput();
+    void handleReInstallOutput();
+    void handleUnInstallOutput();
+    void handleProcessFinished(int exitCode);
 
 signals:
     void batchInstall(const QString &filePath, const double &percent);
