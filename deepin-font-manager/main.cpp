@@ -20,6 +20,7 @@
 #include "globaldef.h"
 #include "utils.h"
 #include "views/dfontmgrmainwindow.h"
+#include "singlefontapplication.h"
 
 #include <QCommandLineParser>
 #include <QDebug>
@@ -37,7 +38,7 @@ int main(int argc, char *argv[])
     DApplication::loadDXcbPlugin();
 
     // init Dtk application's attrubites.
-    DApplication app(argc, argv);
+    SingleFontApplication app(argc, argv);
     app.setTheme("light");
     app.setAttribute(Qt::AA_UseHighDpiPixmaps);
     app.loadTranslator();
@@ -55,44 +56,16 @@ int main(int argc, char *argv[])
     // temp skin change
     app.setStyle("chameleon");
 
-    if (!app.setSingleInstance("deepin-font-manager")) {
-        qDebug() << "Deepin Font Manager is Single instance only now!";
-        return 0;
-    }
-
     DLogManager::registerConsoleAppender();
     DLogManager::registerFileAppender();
 
-    // add command line parser to app.
-    QCommandLineParser parser;
-    parser.setApplicationDescription("Deepin Font Manager.");
-    parser.addHelpOption();
-    parser.addVersionOption();
-    parser.addPositionalArgument("filename", "Font file path.", "file [file..]");
-    parser.process(app);
+    if(!app.isRunning()) {
+        app.setMainWindow(new DFontMgrMainWindow());
 
-    const QStringList fileList = parser.positionalArguments();
+        app.activateWindow();
 
-    // init modules.
-    QScopedPointer<DFontMgrMainWindow> pqsMainWnd(new DFontMgrMainWindow());
-
-    // handle command line parser.
-    // Double click font file start quick install UI
-
-    pqsMainWnd->setMinimumSize(DEFAULT_WINDOWS_WIDTH, DEFAULT_WINDOWS_HEIGHT);
-    pqsMainWnd->setWindowIcon(QIcon(":/images/deepin-font-manager.svg"));
-    pqsMainWnd->show();
-
-    Dtk::Widget::moveToCenter(pqsMainWnd.get());
-
-    if (fileList.size() > 0) {
-        qDebug() << "File:" << fileList << " to quick install.";
-
-        pqsMainWnd->setVisible(false);
-        pqsMainWnd->setQuickInstallMode(true);
-        QMetaObject::invokeMethod(pqsMainWnd.get(), "quickModeInstall", Qt::QueuedConnection,
-                                  Q_ARG(QStringList, fileList));
+        return app.exec();
     }
 
-    return app.exec();
+    return 0;
 }

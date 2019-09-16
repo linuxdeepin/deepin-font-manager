@@ -158,7 +158,10 @@ void DFontMgrMainWindow::initConnections()
                                  [this, files]() { this->installFont(files); });
                          m_quickInstallWnd.get()->setWindowModality(Qt::WindowModal);
                          m_quickInstallWnd->onFileSelected(files);
-                         m_quickInstallWnd.get()->show();
+                         m_quickInstallWnd->show();
+                         m_quickInstallWnd->raise();       //Reative the window
+                         m_quickInstallWnd->activateWindow();
+
                          Dtk::Widget::moveToCenter(m_quickInstallWnd.get());
                      });
 
@@ -549,6 +552,11 @@ void DFontMgrMainWindow::setQuickInstallMode(bool isQuick)
     qDebug() << __FUNCTION__ << " isQuickMode=" << isQuick;
 #endif
     m_isQuickMode = isQuick;
+}
+
+void DFontMgrMainWindow::hideQucikInstallWindow()
+{
+    m_quickInstallWnd->setVisible(false);
 }
 
 void DFontMgrMainWindow::onSearchTextChanged(const QString &currStr)

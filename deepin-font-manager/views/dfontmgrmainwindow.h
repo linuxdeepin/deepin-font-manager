@@ -36,6 +36,7 @@ public:
     };
 
     void setQuickInstallMode(bool isQuick);
+    void hideQucikInstallWindow();
 
 protected:
     void initData();
