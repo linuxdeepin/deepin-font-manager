@@ -56,7 +56,6 @@ protected:
     void handleAddFontEvent();
     void installFont(const QStringList &files);
     void showFontFilePostion();
-    void showManual();
 
     DFontPreviewListView *m_fontPreviewListView;
     DListView *m_noResultListView;

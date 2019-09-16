@@ -31,9 +31,6 @@ void DFontMenuManager::initMenuData()
     // Tools bar menu & Right key menu.
     m_fontToolBarMenuData.push_back(
         new FMenuItem(DApplication::translate("Menu", "Add Fonts"), MenuAction::M_AddFont));
-    m_fontToolBarMenuData.push_back(
-        new FMenuItem(DApplication::translate("Menu", "Help"), MenuAction ::M_Help));
-
     m_fontToolBarMenuData.push_back(new FMenuItem("", MenuAction::M_Separator));
 
     // Right key menu data

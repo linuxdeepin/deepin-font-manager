@@ -190,9 +190,9 @@ void DSplitListWidget::initListData()
 
     this->setModel(m_categoryItemModell);
 
-    //默认选中列表中的第一个
-    QModelIndex index = m_categoryItemModell->index(0, 0);
-    selectionModel()->select(index, QItemSelectionModel::ClearAndSelect);
+    //设置默认选中
+    QModelIndex index = m_categoryItemModell->index(1, 0);
+    selectionModel()->select(index, QItemSelectionModel::Select);
 }
 
 void DSplitListWidget::mouseReleaseEvent(QMouseEvent *event)

@@ -29,7 +29,6 @@ public:
     enum MenuAction {
         M_Separator,
         M_AddFont,
-        M_Help,
         M_EnableOrDisable,
         M_DeleteFont,
         M_Faverator,

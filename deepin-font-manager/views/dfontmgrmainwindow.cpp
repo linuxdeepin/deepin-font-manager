@@ -513,9 +513,6 @@ void DFontMgrMainWindow::handleMenuEvent(QAction *action)
             case DFontMenuManager::MenuAction::M_ShowFontPostion:
                 showFontFilePostion();
                 break;
-            case DFontMenuManager::MenuAction::M_Help: {
-                showManual();
-            } break;
             default:
                 qDebug() << "handleMenuEvent->(id=" << actionId << ")";
             }
@@ -671,8 +668,4 @@ void DFontMgrMainWindow::onFontListViewRowCountChanged(int rowCount)
         m_fontPreviewListView->show();
         m_noResultListView->hide();
     }
-}
-
-void DFontMgrMainWindow::showManual() {
-    QProcess::startDetached(DEEPIN_MANUAL_NAME, QStringList(DEEPIN_FONT_MANAGER));
 }
