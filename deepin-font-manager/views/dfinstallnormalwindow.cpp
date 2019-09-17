@@ -41,14 +41,15 @@ void DFInstallNormalWindow::initUI()
     m_titleFrame->setFixedHeight(50);
 
     m_logoLabel = new DLabel(this);
-    m_logoLabel->setObjectName("logoLabel");
     m_logoLabel->setFixedSize(QSize(32, 32));
     m_logoLabel->setFocusPolicy(Qt::NoFocus);
     m_logoLabel->setAttribute(Qt::WA_TransparentForMouseEvents);
     m_logoLabel->setPixmap(Utils::renderSVG(":/images/deepin-font-manager.svg", m_logoLabel->size()));
 
     m_titleLabel = new DLabel(this);
-    m_titleLabel->setObjectName("tileNameLabel");
+    QFont titleFont;
+    titleFont.setPixelSize(14);
+    m_titleLabel->setFont(titleFont);
     m_titleLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     m_titleLabel->setText(DApplication::translate("NormalInstallWindow", "Font Installation"));
 
@@ -61,10 +62,16 @@ void DFInstallNormalWindow::initUI()
     mainLayout->addWidget(m_titleFrame, 0, Qt::AlignTop);
 
     m_progressStepLabel = new DLabel(this);
+    QFont pslFont;
+    pslFont.setPixelSize(14);
+    m_progressStepLabel->setFont(pslFont);
     m_progressStepLabel->setFixedHeight(20);
     m_progressStepLabel->setText(DApplication::translate("NormalInstallWindow", "Verifing Font…"));
 
     m_currentFontLabel = new DLabel(this);
+    QFont cflFont;
+    cflFont.setPixelSize(14);
+    m_currentFontLabel->setFont(cflFont);
     m_currentFontLabel->setFixedHeight(18);
     m_currentFontLabel->setText("");
 

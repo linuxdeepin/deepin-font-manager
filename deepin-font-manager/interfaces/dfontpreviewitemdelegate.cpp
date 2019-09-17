@@ -168,18 +168,18 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
         painter->setFont(preivewFont);
         painter->drawText(fontPreviewRect, Qt::AlignLeft | Qt::AlignVCenter, strElidedText);
 
-        QString strStatus = QString("normal");
-        switch (data.collectIconStatus) {
-        case IconHover: {
-            strStatus = QString("hover");
-        } break;
-        case IconPress: {
-            strStatus = QString("press");
-        } break;
-        default: {
-            strStatus = QString("normal");
-        } break;
-        }
+        QString strStatus = QString("press");
+//        switch (data.collectIconStatus) {
+//        case IconHover: {
+//            strStatus = QString("hover");
+//        } break;
+//        case IconPress: {
+//            strStatus = QString("press");
+//        } break;
+//        default: {
+//            strStatus = QString("normal");
+//        } break;
+//        }
 
         QPixmap pixmap;
         if (data.isCollected) {

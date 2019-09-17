@@ -227,6 +227,9 @@ void DFontMgrMainWindow::initTileFrame()
 
     // Search font
     d->searchFontEdit = new DSearchEdit();
+    QFont searchFont;
+    searchFont.setPixelSize(14);
+    d->searchFontEdit->setFont(searchFont);
     // d->searchFontEdit->setFixedSize(QSize(FTM_SEARCH_BAR_W, FTM_SEARCH_BAR_H));
     d->searchFontEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     d->searchFontEdit->setPlaceHolder(DApplication::translate("SearchBar", "Search"));
@@ -391,6 +394,9 @@ void DFontMgrMainWindow::initStateBar()
     d->stateBar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     d->textInputEdit = new DLineEdit(this);
+    QFont searchFont;
+    searchFont.setPixelSize(14);
+    d->textInputEdit->setFont(searchFont);
     d->textInputEdit->setFixedHeight(FTM_SBAR_TXT_EDIT_H);
     d->textInputEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     d->textInputEdit->setClearButtonEnabled(true);
