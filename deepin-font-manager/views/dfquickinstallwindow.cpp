@@ -109,9 +109,7 @@ void DFQuickInstallWindow::initUI()
     m_stateLabel->setFixedHeight(36);
     m_stateLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     // m_stateLabel->setFont(actionFont);
-    DPalette pa = DApplicationHelper::instance()->palette(m_stateLabel);
-    pa.setBrush(QPalette::Text,  pa.brush(DPalette::ColorType::TextWarning));
-    m_stateLabel->setPalette(pa);
+    m_oldPaStateLbl = DApplicationHelper::instance()->palette(m_stateLabel);
 
     m_actionBtn = new DPushButton(this);
     m_actionBtn->setFixedSize(QSize(120, 36));
@@ -180,6 +178,7 @@ void DFQuickInstallWindow::onFileSelected(QStringList fileList)
                 m_stateLabel->setText(DApplication::translate("QuickInstallWindow", "Installed"));
 
             } else {
+                m_stateLabel->setPalette(m_oldPaStateLbl);
                 m_stateLabel->setText(
                     DApplication::translate("QuickInstallWindow", "Not Installed"));
             }

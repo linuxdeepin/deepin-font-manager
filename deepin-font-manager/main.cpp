@@ -28,6 +28,7 @@
 #include <DApplication>
 #include <DLog>
 #include <DWidgetUtil>
+#include <DApplicationSettings>
 
 DWIDGET_USE_NAMESPACE
 DCORE_USE_NAMESPACE
@@ -39,15 +40,14 @@ int main(int argc, char *argv[])
 
     // init Dtk application's attrubites.
     SingleFontApplication app(argc, argv);
-    app.setTheme("light");
     app.setAttribute(Qt::AA_UseHighDpiPixmaps);
     app.loadTranslator();
+    app.setApplicationName("deepin-font-manager");
     app.setOrganizationName("deepin");
     app.setApplicationVersion(DApplication::buildVersion("1.0"));
     app.setApplicationAcknowledgementPage("https://www.deepin.org/original/deepin-font-installer/");
     app.setProductIcon(QIcon(":/images/deepin-font-manager.svg"));
     app.setProductName(DApplication::translate("Main", "Deepin Font Manager"));
-    // app.setStyleSheet(Utils::getQssContent(":/qss/style.qss"));
     app.setApplicationDescription(
         DApplication::translate("Main",
                                 "Deepin Font Manager is used to install and uninstall font file "

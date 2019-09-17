@@ -55,6 +55,8 @@ private:
     DFontManager* m_fontManager;
 
     QStringList m_installFiles;
+
+    DPalette m_oldPaStateLbl;
 };
 
 #endif  // DFQUICKINSTALL_H
