@@ -405,9 +405,11 @@ void DFontMgrMainWindow::initStateBar()
     d->fontScaleSlider = new DSlider(Qt::Orientation::Horizontal, this);
     d->fontScaleSlider->setFixedSize(FTM_SBAR_SLIDER_W, FTM_SBAR_SLIDER_H);
     // d->fontScaleSlider->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    d->fontScaleSlider->setTracking(true);
-    d->fontScaleSlider->setTickPosition(QSlider::NoTicks);
-    d->fontScaleSlider->setRange(MIN_FONT_SIZE, MAX_FONT_SIZE);
+//    d->fontScaleSlider->setTracking(true);
+//    d->fontScaleSlider->setTickPosition(QSlider::NoTicks);
+//    d->fontScaleSlider->setRange(MIN_FONT_SIZE, MAX_FONT_SIZE);
+    d->fontScaleSlider->setMinimum(MIN_FONT_SIZE);
+    d->fontScaleSlider->setMaximum(MAX_FONT_SIZE);
     //设置初始显示字体大小
     d->fontScaleSlider->setValue(DEFAULT_FONT_SIZE);
 
