@@ -32,8 +32,11 @@
 #include <QStandardPaths>
 #include <QImageReader>
 #include <QPixmap>
+#include <QFile>
+#include <QFontDatabase>
 
-QMap<QString, QPixmap> Utils::m_imgCacheMap;
+QHash<QString, QPixmap> Utils::m_imgCacheHash;
+QHash<QString, QString> Utils::m_fontNameCache;
 
 Utils::Utils(QObject *parent)
     : QObject(parent)
@@ -83,8 +86,8 @@ QString Utils::suffixList()
 
 QPixmap Utils::renderSVG(const QString &filePath, const QSize &size)
 {
-    if (m_imgCacheMap.contains(filePath)) {
-        return m_imgCacheMap.value(filePath);
+    if (m_imgCacheHash.contains(filePath)) {
+        return m_imgCacheHash.value(filePath);
     }
 
     QImageReader reader;
@@ -101,7 +104,34 @@ QPixmap Utils::renderSVG(const QString &filePath, const QSize &size)
         pixmap.load(filePath);
     }
 
-    m_imgCacheMap.insert(filePath, pixmap);
+    m_imgCacheHash.insert(filePath, pixmap);
 
     return pixmap;
+}
+
+QString Utils::loadFontFamilyFromFiles(const QString &fontFileName)
+{
+    if (m_fontNameCache.contains(fontFileName)) {
+        return m_fontNameCache.value(fontFileName);
+    }
+
+    QString font = "";
+
+    QFile fontFile(fontFileName);
+    if(!fontFile.open(QIODevice::ReadOnly))
+    {
+        qDebug()<<"Open font file error";
+        return font;
+    }
+
+    int loadedFontID = QFontDatabase::addApplicationFontFromData(fontFile.readAll());
+    QStringList loadedFontFamilies = QFontDatabase::applicationFontFamilies(loadedFontID);
+    if(!loadedFontFamilies.empty())
+    {
+        font = loadedFontFamilies.at(0);
+    }
+    fontFile.close();
+
+    m_fontNameCache.insert(fontFileName, font);
+    return font;
 }

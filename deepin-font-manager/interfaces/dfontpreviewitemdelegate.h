@@ -21,7 +21,9 @@ public:
                    const QModelIndex &index) const Q_DECL_OVERRIDE;
 
     QRect m_checkboxRect;
-signals:
+
+private:
+    QAbstractItemView *m_parentView;
 };
 
 #endif  // DFONTPREVIEWITEMDELEGATE_H

@@ -21,7 +21,7 @@
 #define UTILS_H
 
 #include <QObject>
-#include <QMap>
+#include <QHash>
 
 class Utils : public QObject
 {
@@ -31,13 +31,15 @@ public:
     Utils(QObject *parent = nullptr);
     ~Utils();
 
-    static QMap<QString, QPixmap> m_imgCacheMap;
+    static QHash<QString, QPixmap> m_imgCacheHash;
+    static QHash<QString, QString> m_fontNameCache;
 
     static QString getQssContent(const QString &filePath);
     static QString getConfigPath();
     static bool isFontMimeType(const QString &filePath);
     static QString suffixList();
     static QPixmap renderSVG(const QString &filePath, const QSize &size);
+    static QString loadFontFamilyFromFiles(const QString &fontFileName);
 };
 
 #endif

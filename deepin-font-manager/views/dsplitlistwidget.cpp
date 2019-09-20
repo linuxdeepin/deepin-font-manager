@@ -1,4 +1,6 @@
 #include "dsplitlistwidget.h"
+#include "globaldef.h"
+#include "utils.h"
 
 #include <QPainter>
 #include <QMouseEvent>
@@ -6,7 +8,6 @@
 #include <DApplication>
 #include <DLog>
 
-#define FTM_IS_USE_ROUND_CORNER true
 #define FTM_SPLIT_TOP_SPACE_TAG "_space_"
 #define FTM_SPLIT_TOP_SPLIT_TAG "_split_"
 #define FTM_SPLIT_LINE_INDEX    6
@@ -25,7 +26,6 @@ void DNoFocusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
         painter->setRenderHint(QPainter::Antialiasing, true);
 
         QVariant varDisplay = index.data(Qt::DisplayRole);
-
         QString strTitle = varDisplay.value<QString>();
 
         QStyleOptionViewItem viewOption(option);  //用来在视图中画一个item
@@ -36,13 +36,28 @@ void DNoFocusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
             cg = DPalette::Inactive;
         }
 
-        QRect rect;
-        rect.setX(option.rect.x());
-        rect.setY(option.rect.y());
-        rect.setWidth(option.rect.width());
-        rect.setHeight(option.rect.height());
+        if (strTitle.startsWith(FTM_SPLIT_TOP_SPACE_TAG)) {
+            //用于ListView顶部空白
+        }
+        else if (strTitle.startsWith(FTM_SPLIT_TOP_SPLIT_TAG)) {
 
-        if (FTM_IS_USE_ROUND_CORNER) {
+            QRect lineRect;
+            lineRect.setX(option.rect.x()+10);
+            lineRect.setY(option.rect.y()+option.rect.height()-2);
+            lineRect.setWidth(option.rect.width()-20);
+            lineRect.setHeight(2);
+
+            //绘制分割线
+            QColor fillColor = option.palette.color(cg, DPalette::Dark);
+            painter->fillRect(lineRect, fillColor);
+        }
+        else {
+
+            QRect rect;
+            rect.setX(option.rect.x());
+            rect.setY(option.rect.y());
+            rect.setWidth(option.rect.width());
+            rect.setHeight(option.rect.height());
 
             QRect paintRect = QRect(rect.left()+10, rect.top(), rect.width()-20, rect.height());
 
@@ -61,52 +76,21 @@ void DNoFocusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
 
             if (option.state & QStyle::State_Selected) {
                 QColor fillColor = option.palette.color(cg, DPalette::Highlight);
-                painter->fillPath(path, fillColor);
+                painter->setBrush(QBrush(fillColor));
+                painter->fillPath(path, painter->brush());
             }
-
-        } else {
-            QRect paintRect = QRect(rect.left()+10, rect.top(), rect.width()-20, rect.height());
-
-            QPainterPath path;
-            path.moveTo(paintRect.topRight());
-            path.lineTo(paintRect.topLeft());
-            path.quadTo(paintRect.topLeft(), paintRect.topLeft());
-            path.lineTo(paintRect.bottomLeft());
-            path.quadTo(paintRect.bottomLeft(), paintRect.bottomLeft());
-            path.lineTo(paintRect.bottomRight());
-            path.quadTo(paintRect.bottomRight(), paintRect.bottomRight());
-            path.lineTo(paintRect.topRight());
-            path.quadTo(paintRect.topRight(), paintRect.topRight());
-
-            if (option.state & QStyle::State_Selected) {
-                QColor fillColor = option.palette.color(cg, DPalette::Highlight);
-                painter->fillPath(path, fillColor);
-            }
-        }
-
-        if (strTitle.startsWith(FTM_SPLIT_TOP_SPACE_TAG)) {
-            //用于ListView顶部空白
-        }
-        else if (strTitle.startsWith(FTM_SPLIT_TOP_SPLIT_TAG)) {
-
-            //绘制分割线
-            QColor penColor = option.palette.color(cg, DPalette::Dark);
-            QPen pen = QPen(penColor);
-            pen.setWidth(2);
-            painter->setPen(pen);
-            painter->drawLine(10, rect.top()+rect.height()/2, rect.width()-20, rect.top()+rect.height()/2);
-        }
-        else {
 
             //绘制标题
-            QRect fontNameRect = QRect(rect.left()+20, rect.top(), rect.width()-20, rect.height());
+            QRect fontNameRect = QRect(rect.left()+20, rect.top()+(rect.height()-20)/2, rect.width()-20, 20);
 
-            QFont nameFont;
+            QString fontFamilyName = Utils::loadFontFamilyFromFiles(":/images/SourceHanSansCN-Medium.ttf");
+            QFont nameFont(fontFamilyName);
+            nameFont.setWeight(QFont::Medium);
             nameFont.setPixelSize(14);
             painter->setFont(nameFont);
 
             if (option.state & QStyle::State_Selected) {
-                painter->setPen(QPen(option.palette.color(DPalette::Text)));
+                painter->setPen(QPen(option.palette.color(DPalette::HighlightedText)));
                 painter->drawText(fontNameRect, Qt::AlignLeft | Qt::AlignVCenter, strTitle);
             }
             else {
@@ -131,10 +115,10 @@ QSize DNoFocusDelegate::sizeHint(const QStyleOptionViewItem &option,
         return QSize(option.rect.width(), 10);
     }
     else if (FTM_SPLIT_LINE_INDEX == rowIndex) {
-        return QSize(option.rect.width(), 25);
+        return QSize(option.rect.width(), 24);
     }
     else {
-        return QSize(option.rect.width(), 38);
+        return QSize(option.rect.width(), 36);
     }
 }
 

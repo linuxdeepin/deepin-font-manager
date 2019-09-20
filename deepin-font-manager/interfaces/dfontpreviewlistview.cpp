@@ -16,8 +16,16 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
     : DListView(parent)
     , m_dbManager(DFMDBManager::instance())
 {
-    setAutoScroll(false);
+    QWidget *topSpaceWidget = new QWidget;
+    topSpaceWidget->setFixedSize(this->width(), 10);
+    this->addHeaderWidget(topSpaceWidget);
+
+    QWidget *bottomSpaceWidget = new QWidget;
+    bottomSpaceWidget->setFixedSize(this->width(), 1);
+    this->addFooterWidget(bottomSpaceWidget);
+
     setMouseTracking(true);
+    setUpdatesEnabled(true);
 
     initFontListData();
     initDelegate();
