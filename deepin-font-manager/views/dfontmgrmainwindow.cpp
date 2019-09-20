@@ -107,7 +107,7 @@ void DFontMgrMainWindow::initData()
 void DFontMgrMainWindow::initUI()
 {
     setWindowRadius(18);  // debug
-    setWindowOpacity(0.8);
+    //setWindowOpacity(0.8);
     initTileBar();
     initRightKeyMenu();
     initMainVeiws();
@@ -227,7 +227,7 @@ void DFontMgrMainWindow::initTileFrame()
     d->addFontButton->setFocusPolicy(Qt::FocusPolicy::NoFocus);
 
     // Search font
-    d->searchFontEdit = new DSearchEdit();
+    d->searchFontEdit = new DSearchEdit(this);
     QFont searchFont;
     searchFont.setPixelSize(14);
     d->searchFontEdit->setFont(searchFont);
