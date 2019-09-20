@@ -6,23 +6,23 @@
 
 // Tool Search bar
 #define FTM_TITLE_FIXED_HEIGHT 50
-#define FTM_SEARCH_BAR_W 350
-#define FTM_SEARCH_BAR_H 36
+#define FTM_SEARCH_BAR_W 358
+#define FTM_SEARCH_BAR_H 44
 
 // Left navigation bar
-#define FTM_LEFT_SIDE_BAR_WITHD 145
+#define FTM_LEFT_SIDE_BAR_WIDTH 145
 
 // State bar
 #define FTM_SBAR_HEIGHT 56
 
-#define FTM_SBAR_TXT_EDIT_H 40
-#define FTM_SBAR_TXT_EDIT_W 380  // Not used,Expanding now
+#define FTM_SBAR_TXT_EDIT_H 44
+#define FTM_SBAR_TXT_EDIT_W 384  // Not used,Expanding now
 
 #define FTM_SBAR_SLIDER_H 40
-#define FTM_SBAR_SLIDER_W 200
+#define FTM_SBAR_SLIDER_W 199
 
 #define FTM_SBAR_FSIZE_LABEL_H 40
-#define FTM_SBAR_FSIZE_LABEL_W 60
+#define FTM_SBAR_FSIZE_LABEL_W 32
 
 // File manager binary name
 #define DEEPIN_FILE_MANAGE_NAME "dde-file-manager"

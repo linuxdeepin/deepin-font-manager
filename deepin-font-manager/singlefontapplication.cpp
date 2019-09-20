@@ -141,6 +141,7 @@ void SingleFontApplication::activateWindow() {
         m_qspMainWnd->show();
         m_qspMainWnd->raise();
         m_qspMainWnd->activateWindow(); // Reactive main window
+        m_qspMainWnd->resize(DEFAULT_WINDOWS_WIDTH, DEFAULT_WINDOWS_HEIGHT);
 
         Dtk::Widget::moveToCenter(m_qspMainWnd.get());
 

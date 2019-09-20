@@ -107,6 +107,7 @@ void DFontMgrMainWindow::initData()
 void DFontMgrMainWindow::initUI()
 {
     setWindowRadius(18);  // debug
+    setWindowOpacity(0.8);
     initTileBar();
     initRightKeyMenu();
     initMainVeiws();
@@ -221,7 +222,7 @@ void DFontMgrMainWindow::initTileFrame()
 
     // Add Font
     d->addFontButton = new DIconButton(DStyle::StandardPixmap::SP_IncreaseElement, this);
-    d->addFontButton->setFixedSize(QSize(38, 38));
+    d->addFontButton->setFixedSize(QSize(40, 40));
     d->addFontButton->setFlat(false);
     d->addFontButton->setFocusPolicy(Qt::FocusPolicy::NoFocus);
 
@@ -230,8 +231,8 @@ void DFontMgrMainWindow::initTileFrame()
     QFont searchFont;
     searchFont.setPixelSize(14);
     d->searchFontEdit->setFont(searchFont);
-    // d->searchFontEdit->setFixedSize(QSize(FTM_SEARCH_BAR_W, FTM_SEARCH_BAR_H));
-    d->searchFontEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+     d->searchFontEdit->setFixedSize(QSize(FTM_SEARCH_BAR_W, FTM_SEARCH_BAR_H));
+    //d->searchFontEdit->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     d->searchFontEdit->setPlaceHolder(DApplication::translate("SearchBar", "Search"));
 
     QHBoxLayout *titleLayout = new QHBoxLayout();
@@ -242,10 +243,11 @@ void DFontMgrMainWindow::initTileFrame()
     titleLayout->addSpacing(7);
     titleLayout->addWidget(d->logoLabel);
     titleLayout->addSpacing(14);
-    titleLayout->addWidget(d->addFontButton);
-    titleLayout->addSpacing(142);
-    titleLayout->addWidget(d->searchFontEdit, 1);
-    titleLayout->addSpacing(60);
+    titleLayout->addWidget(d->addFontButton, 0, Qt::AlignLeft);
+    titleLayout->addSpacing(115);
+    titleLayout->addStretch(1);
+    titleLayout->addWidget(d->searchFontEdit);
+    titleLayout->addStretch(1);
 
     d->titleFrame->setLayout(titleLayout);
 
@@ -279,7 +281,7 @@ void DFontMgrMainWindow::initLeftSideBar()
     d->leftBarHolder = new DFrame(d->mainWndSpliter);
     d->leftBarHolder->setObjectName("leftMainLayoutHolder");
     d->leftBarHolder->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
-    d->leftBarHolder->setFixedWidth(FTM_LEFT_SIDE_BAR_WITHD);
+    d->leftBarHolder->setFixedWidth(FTM_LEFT_SIDE_BAR_WIDTH);
     d->leftBarHolder->setContentsMargins(0, 0, 2, 0);
     // d->leftBarHolder->setAttribute(Qt::WA_TranslucentBackground, true);
 
@@ -397,7 +399,7 @@ void DFontMgrMainWindow::initStateBar()
     QFont searchFont;
     searchFont.setPixelSize(14);
     d->textInputEdit->setFont(searchFont);
-    d->textInputEdit->setFixedHeight(FTM_SBAR_TXT_EDIT_H);
+    d->textInputEdit->setMinimumSize(QSize(FTM_SBAR_TXT_EDIT_W,FTM_SBAR_TXT_EDIT_H));
     d->textInputEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     d->textInputEdit->setClearButtonEnabled(true);
     d->textInputEdit->setPlaceholderText(DApplication::translate("StateBar", "Input preview text"));
@@ -414,8 +416,11 @@ void DFontMgrMainWindow::initStateBar()
     d->fontScaleSlider->setValue(DEFAULT_FONT_SIZE);
 
     d->fontSizeLabel = new DLabel(this);
+    QFont fontScaleFont;
+    fontScaleFont.setPixelSize(14);
+    d->fontSizeLabel->setFont(fontScaleFont);
     d->fontSizeLabel->setFixedSize(FTM_SBAR_FSIZE_LABEL_W, FTM_SBAR_FSIZE_LABEL_H);
-    d->fontSizeLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+    d->fontSizeLabel->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
 
     QFont fontSize;
     fontSize.setPixelSize(14);
@@ -426,11 +431,10 @@ void DFontMgrMainWindow::initStateBar()
     defaultFontSize.sprintf(FMT_FONT_SIZE, DEFAULT_FONT_SIZE);
     d->fontSizeLabel->setText(defaultFontSize);
 
-    stateBarLayout->setAlignment(Qt::AlignVCenter | Qt::AlignVCenter);
     stateBarLayout->addSpacing(10);
-    stateBarLayout->addWidget(d->textInputEdit);
+    stateBarLayout->addWidget(d->textInputEdit, 1);
     stateBarLayout->addSpacing(20);
-    stateBarLayout->addWidget(d->fontScaleSlider, 0, Qt::AlignVCenter);
+    stateBarLayout->addWidget(d->fontScaleSlider);
     stateBarLayout->addSpacing(20);
     stateBarLayout->addWidget(d->fontSizeLabel);
     stateBarLayout->addSpacing(20);
