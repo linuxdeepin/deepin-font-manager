@@ -107,7 +107,6 @@ void DFontMgrMainWindow::initData()
 void DFontMgrMainWindow::initUI()
 {
     setWindowRadius(18);  // debug
-    //setWindowOpacity(0.8);
     initTileBar();
     initRightKeyMenu();
     initMainVeiws();

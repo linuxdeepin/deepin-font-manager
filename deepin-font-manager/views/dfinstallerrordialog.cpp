@@ -7,6 +7,7 @@
 #include <QVBoxLayout>
 
 #include <DApplication>
+#include <DApplicationHelper>
 #include <DCheckBox>
 #include <DListWidget>
 #include <DLog>
@@ -17,6 +18,8 @@ DFInstallErrorDialog::DFInstallErrorDialog(QWidget *parent, QStringList errorIns
 {
     initData();
     initUI();
+
+    resetContinueInstallBtnStatus();
 }
 
 DFInstallErrorDialog::~DFInstallErrorDialog() {}
@@ -28,33 +31,31 @@ void DFInstallErrorDialog::initData()
     m_installErrorFontModelList.clear();
     foreach (auto it, m_errorInstallFiles) {
         fontInfo = fontInfoManager->getFontInfo(it);
+
+        DFInstallErrorItemModel itemModel;
         if (fontInfo.isError) {
-            DFInstallErrorItemModel *itemModel = new DFInstallErrorItemModel;
             QFileInfo fileInfo(it);
-            itemModel->bSelectable = true;
-            itemModel->bChecked = false;
-            itemModel->strFontFileName = fileInfo.fileName();
-            itemModel->strFontFilePath = fileInfo.filePath();
-            itemModel->strFontInstallStatus =
-                DApplication::translate("ExceptionWindow", "File Error");
+            itemModel.bSelectable = false;
+            itemModel.bChecked = false;
+            itemModel.strFontFileName = fileInfo.fileName();
+            itemModel.strFontFilePath = fileInfo.filePath();
+            itemModel.strFontInstallStatus = DApplication::translate("ExceptionWindow", "File Error");
 
             m_installErrorFontModelList.push_back(itemModel);
-            qDebug() << "verifyFontFiles->" << it << " :Damaged file";
+            qDebug() << "***********verifyFontFiles->" << it << " :Damaged file";
         } else if (fontInfo.isInstalled) {
-            DFInstallErrorItemModel *itemModel = new DFInstallErrorItemModel;
             QFileInfo fileInfo(it);
-            itemModel->bSelectable = true;
+            itemModel.bSelectable = true;
             //默认勾选已安装字体
-            itemModel->bChecked = true;
-            itemModel->strFontFileName = fileInfo.fileName();
-            itemModel->strFontFilePath = fileInfo.filePath();
-            itemModel->strFontInstallStatus =
-                DApplication::translate("ExceptionWindow", "Installed");
+            itemModel.bChecked = true;
+            itemModel.strFontFileName = fileInfo.fileName();
+            itemModel.strFontFilePath = fileInfo.filePath();
+            itemModel.strFontInstallStatus = DApplication::translate("ExceptionWindow", "Installed");
 
             m_installErrorFontModelList.push_back(itemModel);
-            qDebug() << "verifyFontFiles->" << it << " :Installed file";
+            qDebug() << "***********verifyFontFiles->" << it << " :Installed file";
         } else {
-            qDebug() << "newFileCnt++" << it << " :new file";
+            qDebug() << "***********newFileCnt++" << it << " :new file";
         }
     }
 }
@@ -136,9 +137,18 @@ void DFInstallErrorDialog::initTitleBar()
 int DFInstallErrorDialog::getErrorFontCheckedCount()
 {
     int checkedCount = 0;
-    foreach (DFInstallErrorItemModel *itemModel, m_installErrorFontModelList) {
-        if (itemModel->bChecked) {
+    QStandardItemModel *sourceModel = m_installErrorListView->getErrorListSourceModel();
+    qDebug() << "***** rowCount:" << sourceModel->rowCount();
+    for(int i=0; i<sourceModel->rowCount(); i++) {
+        QModelIndex index = sourceModel->index(i, 0);
+        DFInstallErrorItemModel itemModel = qvariant_cast<DFInstallErrorItemModel>(
+                    sourceModel->data(index));
+        if (itemModel.bChecked) {
+            qDebug() << "***** itemModel.bChecked" << itemModel.strFontFileName << ": true";
             ++checkedCount;
+        }
+        else {
+            qDebug() << "***** itemModel.bChecked" << itemModel.strFontFileName << ": false";
         }
     }
     return checkedCount;
@@ -146,13 +156,18 @@ int DFInstallErrorDialog::getErrorFontCheckedCount()
 
 void DFInstallErrorDialog::initInstallErrorFontViews()
 {
-    contentFrame = new QFrame(this);
+    contentFrame = new DFrame(this);
     contentFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     QVBoxLayout *contentLayout = new QVBoxLayout;
     contentLayout->setMargin(0);
     contentLayout->setSpacing(0);
     contentLayout->setContentsMargins(0, 0, 0, 0);
+
+    QVBoxLayout *listViewLayout = new QVBoxLayout;
+    listViewLayout->setMargin(0);
+    listViewLayout->setSpacing(0);
+    listViewLayout->setContentsMargins(0, 0, 0, 0);
 
     QHBoxLayout *buttonLayout = new QHBoxLayout;
     buttonLayout->setMargin(0);
@@ -170,15 +185,10 @@ void DFInstallErrorDialog::initInstallErrorFontViews()
     m_quitInstallBtn->setText(DApplication::translate("ExceptionWindow", "Exit"));
     m_quitInstallBtn->setFixedSize(204, 36);
 
-    m_continueInstallBtn = new DPushButton;
+    m_continueInstallBtn = new QPushButton;
     m_continueInstallBtn->setFont(btnFont);
     m_continueInstallBtn->setText(DApplication::translate("ExceptionWindow", "Continue"));
     m_continueInstallBtn->setFixedSize(204, 36);
-
-    //所有字体都未勾选时，禁止点击"继续安装"
-    if (0 == getErrorFontCheckedCount()) {
-        m_continueInstallBtn->setEnabled(false);
-    }
 
     btnGroup->addButton(m_quitInstallBtn, 0);
     btnGroup->addButton(m_continueInstallBtn, 1);
@@ -192,66 +202,51 @@ void DFInstallErrorDialog::initInstallErrorFontViews()
     buttonLayout->addSpacing(20);
     buttonLayout->addWidget(m_continueInstallBtn);
 
-    m_installErrorListWidget = new DListWidget(this);
-    m_installErrorListWidget->setAttribute(Qt::WA_TranslucentBackground, true);
-    m_installErrorListWidget->setFrameShape(QFrame::NoFrame);
-    m_installErrorListWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    m_installErrorListWidget->setAutoScroll(false);
-    for (int i = 0; i < m_installErrorFontModelList.size(); i++) {
-        DFInstallErrorItemModel *itemModel = m_installErrorFontModelList.at(i);
+    m_installErrorListView = new DFInstallErrorListView(m_installErrorFontModelList, this);
+    m_installErrorListView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    m_installErrorListView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    //设置背景透明
+    m_installErrorListView->setAttribute(Qt::WA_TranslucentBackground, true);
 
-        QListWidgetItem *listItem = new QListWidgetItem(m_installErrorListWidget);
-        if (!itemModel->bSelectable) {
-            listItem->setFlags(listItem->flags() & ~Qt::ItemIsSelectable & ~Qt::ItemIsEnabled);
-        }
-
-        listItem->setSizeHint(QSize(0, 48));
-        m_installErrorListWidget->addItem(listItem);
-        DFInstallErrorItemWidget *itemWidget = new DFInstallErrorItemWidget(itemModel);
-        m_installErrorListWidget->setItemWidget(listItem, itemWidget);
-    }
-
-    contentLayout->addWidget(m_installErrorListWidget);
+    listViewLayout->addWidget(m_installErrorListView);
+    contentLayout->addLayout(listViewLayout);
     contentLayout->addLayout(buttonLayout);
 
     contentFrame->setLayout(contentLayout);
 
     m_mainLayout->addWidget(contentFrame);
 
-    connect(m_installErrorListWidget, SIGNAL(itemClicked(QListWidgetItem *)), this,
-            SLOT(onListItemClicked(QListWidgetItem *)));
+    connect(m_installErrorListView, SIGNAL(onClickErrorListItem(QModelIndex)), this,
+            SLOT(onListItemClicked(QModelIndex)));
 
     // Debug layout code
 #ifdef FTM_DEBUG_LAYOUT_COLOR
-    contentFrame->setStyleSheet("background-color:green");
+    m_installErrorListView->setStyleSheet("background-color:cyan");
+    contentFrame->setStyleSheet("background-color:blue");
 #endif
 }
 
-void DFInstallErrorDialog::onListItemClicked(QListWidgetItem *item)
+void DFInstallErrorDialog::resetContinueInstallBtnStatus()
 {
-    DFInstallErrorItemWidget *widget =
-        qobject_cast<DFInstallErrorItemWidget *>(m_installErrorListWidget->itemWidget(item));
-    DFInstallErrorItemModel *itemModel = widget->m_itemModel;
-
-    if (!itemModel->bSelectable) {
-        return;
+    //所有字体都未勾选时，禁止点击"继续安装"
+    if (0 == getErrorFontCheckedCount()) {
+        m_continueInstallBtn->setEnabled(false);
+        m_continueInstallBtn->setAttribute(Qt::WA_TransparentForMouseEvents, true);
     }
-
-    DCheckBox *chooseCheck = widget->m_chooseCheck;
-    if (Qt::CheckState::Checked == chooseCheck->checkState()) {
-        itemModel->bChecked = false;
-        //所有字体都未勾选时，禁止点击"继续安装"
-        if (0 == getErrorFontCheckedCount()) {
-            m_continueInstallBtn->setEnabled(false);
-        }
-
-    } else {
-        itemModel->bChecked = true;
+    else {
         m_continueInstallBtn->setEnabled(true);
+        m_continueInstallBtn->setAttribute(Qt::WA_TransparentForMouseEvents, false);
     }
+}
 
-    chooseCheck->setChecked(itemModel->bChecked);
-    widget->m_itemModel->bChecked = itemModel->bChecked;
+void DFInstallErrorDialog::onListItemClicked(QModelIndex index)
+{
+    DFInstallErrorItemModel itemModel =
+        qvariant_cast<DFInstallErrorItemModel>(m_installErrorListView->getErrorListSourceModel()->data(index));
+    itemModel.bChecked = !itemModel.bChecked;
+    m_installErrorListView->getErrorListSourceModel()->setData(index, QVariant::fromValue(itemModel), Qt::DisplayRole);
+
+    resetContinueInstallBtnStatus();
 }
 
 void DFInstallErrorDialog::onControlButtonClicked(int btnIndex)
@@ -265,9 +260,9 @@ void DFInstallErrorDialog::onControlButtonClicked(int btnIndex)
 
         //根据用户勾选情况添加到继续安装列表中
         for (int i = 0; i < m_installErrorFontModelList.size(); i++) {
-            DFInstallErrorItemModel *itemModel = m_installErrorFontModelList.at(i);
-            if (itemModel->bChecked) {
-                continueInstallFontFileList.push_back(itemModel->strFontFilePath);
+            DFInstallErrorItemModel itemModel = m_installErrorFontModelList.at(i);
+            if (itemModel.bChecked) {
+                continueInstallFontFileList.push_back(itemModel.strFontFilePath);
             }
         }
 

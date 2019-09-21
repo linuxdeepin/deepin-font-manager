@@ -3,12 +3,12 @@
 
 #include "dfinstallerroritemwidget.h"
 #include "dfontinfomanager.h"
+#include "dfinstallerrorlistview.h"
 
 #include <DDialog>
 #include <DFrame>
 #include <DLabel>
 #include <DPushButton>
-#include <QListWidgetItem>
 #include <QResizeEvent>
 
 DWIDGET_USE_NAMESPACE
@@ -36,26 +36,28 @@ public:
     DFrame *m_mainFrame;
     QVBoxLayout *m_mainLayout;
 
-    DListWidget *m_installErrorListWidget;
+    DFInstallErrorListView *m_installErrorListView;
 
     DPushButton *m_quitInstallBtn;
-    DPushButton *m_continueInstallBtn;
+    QPushButton *m_continueInstallBtn;
 
 private:
+    void resetContinueInstallBtnStatus();
+
     DFrame *titleFrame;
     DLabel *logoLabel;
     DLabel *titleLabel;
     DFrame *contentFrame;
 
     QStringList m_errorInstallFiles;
-    QList<DFInstallErrorItemModel *> m_installErrorFontModelList;
+    QList<DFInstallErrorItemModel> m_installErrorFontModelList;
 
 signals:
     void onCancelInstall();
     void onContinueInstall(QStringList continueInstallFontFilelList);
 
 public slots:
-    void onListItemClicked(QListWidgetItem *item);
+    void onListItemClicked(QModelIndex index);
 
     void onControlButtonClicked(int btnIndex);
 };

@@ -3,37 +3,30 @@
 
 #include "globaldef.h"
 
-#include <DCheckBox>
-#include <DLabel>
+#include <QMetaType>
 #include <QString>
 
-DWIDGET_USE_NAMESPACE
+#include <DCheckBox>
+#include <DLabel>
 
-class DFInstallErrorItemModel
+struct DFInstallErrorItemModel
 {
-public:
     bool bChecked;
     bool bSelectable;
     QString strFontFileName;
     QString strFontFilePath;
     QString strFontInstallStatus;
 
-    DFInstallErrorItemModel();
+    DFInstallErrorItemModel()
+    {
+        bChecked = false;
+        bSelectable = true;
+        strFontFileName = "";
+        strFontFilePath = "";
+        strFontInstallStatus = "";
+    }
 };
 
-class DFInstallErrorItemWidget : public QWidget
-{
-    Q_OBJECT
-public:
-    DFInstallErrorItemWidget(DFInstallErrorItemModel *itemModel);
-
-    void initUI();
-
-    DFInstallErrorItemModel *m_itemModel;
-
-    DCheckBox *m_chooseCheck;
-    DLabel *m_fontFileNameLabel;
-    DLabel *m_fontInstallStatusLabel;
-};
+Q_DECLARE_METATYPE(DFInstallErrorItemModel)
 
 #endif  // DFINSTALLERRORITEMWIDGET_H

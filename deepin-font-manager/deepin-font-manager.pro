@@ -31,6 +31,7 @@ HEADERS += utils.h \
     views/dsplitlistwidget.h \
     views/dfontinfodialog.h \
     views/dfquickinstallwindow.h \
+    views/dfinstallerrorlistview.h \
     views/dfdeletedialog.h \
     singlefontapplication.h
 
@@ -43,8 +44,8 @@ SOURCES += main.cpp \
     interfaces/dfontpreviewlistview.cpp \
     interfaces/dfmxmlwrapper.cpp \
     views/dfinstallnormalwindow.cpp \
-    views/dfinstallerroritemwidget.cpp \
     views/dfinstallerrordialog.cpp \
+    views/dfinstallerrorlistview.cpp \
     views/dsplitlistwidget.cpp \
     views/dfontinfodialog.cpp \
     views/dfquickinstallwindow.cpp \
