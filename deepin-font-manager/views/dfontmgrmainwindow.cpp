@@ -106,7 +106,6 @@ void DFontMgrMainWindow::initData()
 
 void DFontMgrMainWindow::initUI()
 {
-    setWindowRadius(18);  // debug
     initTileBar();
     initRightKeyMenu();
     initMainVeiws();

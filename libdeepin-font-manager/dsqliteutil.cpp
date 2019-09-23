@@ -1,7 +1,13 @@
 #include "dsqliteutil.h"
 
 #include <QDir>
-#include <QDebug>
+
+#include <DLog>
+
+#ifdef qDebug
+#undef qDebug
+#define qDebug while(false) QMessageLogger().noDebug
+#endif
 
 DSqliteUtil::DSqliteUtil(const QString &strDatabase)
     : m_strDatabase(strDatabase)

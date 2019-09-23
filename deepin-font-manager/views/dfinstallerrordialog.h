@@ -1,7 +1,7 @@
 #ifndef DFINSTALLERRORDIALOG_H
 #define DFINSTALLERRORDIALOG_H
 
-#include "dfinstallerroritemwidget.h"
+#include "dfinstallerroritemmodel.h"
 #include "dfontinfomanager.h"
 #include "dfinstallerrorlistview.h"
 

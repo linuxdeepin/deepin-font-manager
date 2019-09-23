@@ -9,6 +9,8 @@
 #include <DApplication>
 #include <DApplicationHelper>
 
+#define FTM_ERROR_ITEM_FONTNAME_LEFT    39
+
 //DFInstallErrorListDelegate
 DFInstallErrorListDelegate::DFInstallErrorListDelegate(QAbstractItemView *parent)
     :DStyledItemDelegate(parent)
@@ -71,8 +73,6 @@ void DFInstallErrorListDelegate::paint(QPainter *painter, const QStyleOptionView
         }
 
         //绘制复选框
-        int checkBoxSize = 20;
-        //绘制checkbox
         QStyleOptionButton checkBoxOption;
         bool checked = itemModel.bChecked;
         checkBoxOption.state |= QStyle::State_Enabled;
@@ -83,6 +83,7 @@ void DFInstallErrorListDelegate::paint(QPainter *painter, const QStyleOptionView
             checkBoxOption.state |= QStyle::State_Off;
         }
 
+        int checkBoxSize = 20;
         DCheckBox checkBox;
         QRect checkboxRect = QRect(bgRect.left() + 8, bgRect.top()+14+2, checkBoxSize-4, checkBoxSize-4);
         checkBoxOption.rect = checkboxRect;
@@ -92,7 +93,11 @@ void DFInstallErrorListDelegate::paint(QPainter *painter, const QStyleOptionView
                                              &checkBox);
 
         int statusLabelMaxWidth = 80;
-        QRect fontFileNameRect = QRect(bgRect.left()+39, bgRect.top(), bgRect.width()-39-statusLabelMaxWidth, bgRect.height());
+        int fontNameLeft = FTM_ERROR_ITEM_FONTNAME_LEFT;
+        QRect fontFileNameRect = QRect(bgRect.left()+fontNameLeft,
+                                       bgRect.top(),
+                                       bgRect.width()-fontNameLeft-statusLabelMaxWidth,
+                                       bgRect.height());
 
         QFont nameFont;
         nameFont.setPixelSize(14);
@@ -217,7 +222,7 @@ void DFInstallErrorListView::setSelection(const QRect &rect, QItemSelectionModel
             return;
         }
 
-        if (selectionPoint.x() < 39) {
+        if (selectionPoint.x() < FTM_ERROR_ITEM_FONTNAME_LEFT) {
 
             emit onClickErrorListItem(modelIndex);
         }

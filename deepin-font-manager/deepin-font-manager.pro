@@ -26,7 +26,7 @@ HEADERS += utils.h \
     interfaces/dfontpreviewlistview.h \
     interfaces/dfmxmlwrapper.h \
     views/dfinstallnormalwindow.h \
-    views/dfinstallerroritemwidget.h \
+    views/dfinstallerroritemmodel.h \
     views/dfinstallerrordialog.h \
     views/dsplitlistwidget.h \
     views/dfontinfodialog.h \

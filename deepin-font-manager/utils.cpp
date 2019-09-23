@@ -115,23 +115,23 @@ QString Utils::loadFontFamilyFromFiles(const QString &fontFileName)
         return m_fontNameCache.value(fontFileName);
     }
 
-    QString font = "";
+    QString fontFamilyName = "";
 
     QFile fontFile(fontFileName);
     if(!fontFile.open(QIODevice::ReadOnly))
     {
         qDebug()<<"Open font file error";
-        return font;
+        return fontFamilyName;
     }
 
     int loadedFontID = QFontDatabase::addApplicationFontFromData(fontFile.readAll());
     QStringList loadedFontFamilies = QFontDatabase::applicationFontFamilies(loadedFontID);
     if(!loadedFontFamilies.empty())
     {
-        font = loadedFontFamilies.at(0);
+        fontFamilyName = loadedFontFamilies.at(0);
     }
     fontFile.close();
 
-    m_fontNameCache.insert(fontFileName, font);
-    return font;
+    m_fontNameCache.insert(fontFileName, fontFamilyName);
+    return fontFamilyName;
 }

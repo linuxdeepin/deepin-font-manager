@@ -1,7 +1,7 @@
 #ifndef DFINSTALLERRORLISTVIEW_H
 #define DFINSTALLERRORLISTVIEW_H
 
-#include "dfinstallerroritemwidget.h"
+#include "dfinstallerroritemmodel.h"
 
 #include <DListView>
 
