@@ -129,6 +129,12 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
         QRect fontNameRect = QRect(bgRect.left() + 50 - 2, checkboxRealRect.top()-5, bgRect.width() - 15 - 50, checkboxRealRect.height()+10);
         painter->drawText(fontNameRect, Qt::AlignLeft | Qt::AlignVCenter, data.strFontName);
 
+        QString strImgPrefix = "";
+        DGuiApplicationHelper *appHelper = DGuiApplicationHelper::instance();
+        if ( DGuiApplicationHelper::DarkType == appHelper->themeType()) {
+            strImgPrefix = "dark_";
+        }
+
         QString strStatus = QString("press");
         switch (data.collectIconStatus) {
         case IconHover: {
@@ -136,6 +142,7 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
         } break;
         case IconPress: {
             strStatus = QString("press");
+            strImgPrefix = "";
         } break;
         default: {
             strStatus = QString("normal");
@@ -144,10 +151,10 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
 
         QPixmap pixmap;
         if (data.isCollected) {
-            QString strImageSrc = QString(":/images/collection_%1.svg").arg(strStatus);
+            QString strImageSrc = QString(":/images/%1collection_%2.svg").arg(strImgPrefix).arg(strStatus);
             pixmap = Utils::renderSVG(strImageSrc, QSize(collectIconSize, collectIconSize));
         } else {
-            QString strImageSrc = QString(":/images/uncollection_%1.svg").arg(strStatus);
+            QString strImageSrc = QString(":/images/%1uncollection_%2.svg").arg(strImgPrefix).arg(strStatus);
             pixmap = Utils::renderSVG(strImageSrc, QSize(collectIconSize, collectIconSize));
         }
 

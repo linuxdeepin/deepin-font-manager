@@ -21,5 +21,9 @@
         <file>images/uncollection_press.svg</file>
         <file>images/uncollection_hover.svg</file>
         <file>images/SourceHanSansCN-Medium.ttf</file>
+        <file>images/dark_collection_normal.svg</file>
+        <file>images/dark_collection_hover.svg</file>
+        <file>images/dark_uncollection_hover.svg</file>
+        <file>images/dark_uncollection_normal.svg</file>
     </qresource>
 </RCC>

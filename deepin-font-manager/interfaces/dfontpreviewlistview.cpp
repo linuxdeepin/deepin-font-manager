@@ -6,6 +6,7 @@
 
 #include <DLog>
 #include <DMenu>
+#include <DGuiApplicationHelper>
 
 #include <QFontDatabase>
 #include <QSet>
@@ -216,6 +217,12 @@ void DFontPreviewListView::initConnections()
             &DFontPreviewListView::onListViewItemCollectionBtnClicked);
     connect(this, &DFontPreviewListView::onShowContextMenu, this,
             &DFontPreviewListView::onListViewShowContextMenu, Qt::ConnectionType::QueuedConnection);
+
+    //Theme change event
+    QObject::connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::paletteTypeChanged,
+                     [this] (DGuiApplicationHelper::ColorType type) {
+        this->update();
+    });
 }
 
 void DFontPreviewListView::mouseMoveEvent(QMouseEvent *event)

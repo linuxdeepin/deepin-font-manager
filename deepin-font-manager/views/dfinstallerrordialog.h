@@ -39,7 +39,7 @@ public:
     DFInstallErrorListView *m_installErrorListView;
 
     DPushButton *m_quitInstallBtn;
-    QPushButton *m_continueInstallBtn;
+    DPushButton *m_continueInstallBtn;
 
 private:
     void resetContinueInstallBtnStatus();

@@ -9,7 +9,6 @@
 #include <DApplication>
 #include <DApplicationHelper>
 #include <DCheckBox>
-#include <DListWidget>
 #include <DLog>
 
 DFInstallErrorDialog::DFInstallErrorDialog(QWidget *parent, QStringList errorInstallFontFileList)
@@ -42,7 +41,7 @@ void DFInstallErrorDialog::initData()
             itemModel.strFontInstallStatus = DApplication::translate("ExceptionWindow", "File Error");
 
             m_installErrorFontModelList.push_back(itemModel);
-            qDebug() << "***********verifyFontFiles->" << it << " :Damaged file";
+            qDebug() << "verifyFontFiles->" << it << " :Damaged file";
         } else if (fontInfo.isInstalled) {
             QFileInfo fileInfo(it);
             itemModel.bSelectable = true;
@@ -53,9 +52,9 @@ void DFInstallErrorDialog::initData()
             itemModel.strFontInstallStatus = DApplication::translate("ExceptionWindow", "Installed");
 
             m_installErrorFontModelList.push_back(itemModel);
-            qDebug() << "***********verifyFontFiles->" << it << " :Installed file";
+            qDebug() << "verifyFontFiles->" << it << " :Installed file";
         } else {
-            qDebug() << "***********newFileCnt++" << it << " :new file";
+            qDebug() << "verifyFontFiles->" << it << " :new file";
         }
     }
 }
@@ -138,17 +137,12 @@ int DFInstallErrorDialog::getErrorFontCheckedCount()
 {
     int checkedCount = 0;
     QStandardItemModel *sourceModel = m_installErrorListView->getErrorListSourceModel();
-    qDebug() << "***** rowCount:" << sourceModel->rowCount();
     for(int i=0; i<sourceModel->rowCount(); i++) {
         QModelIndex index = sourceModel->index(i, 0);
         DFInstallErrorItemModel itemModel = qvariant_cast<DFInstallErrorItemModel>(
                     sourceModel->data(index));
         if (itemModel.bChecked) {
-            qDebug() << "***** itemModel.bChecked" << itemModel.strFontFileName << ": true";
             ++checkedCount;
-        }
-        else {
-            qDebug() << "***** itemModel.bChecked" << itemModel.strFontFileName << ": false";
         }
     }
     return checkedCount;
@@ -177,7 +171,7 @@ void DFInstallErrorDialog::initInstallErrorFontViews()
     QButtonGroup *btnGroup = new QButtonGroup(this);
     btnGroup->setExclusive(true);
 
-    QFont btnFont;
+    QFont btnFont = Utils::loadFontFamilyFromFiles(":/images/SourceHanSansCN-Medium.ttf");
     btnFont.setPixelSize(14);
 
     m_quitInstallBtn = new DPushButton;
@@ -185,16 +179,13 @@ void DFInstallErrorDialog::initInstallErrorFontViews()
     m_quitInstallBtn->setText(DApplication::translate("ExceptionWindow", "Exit"));
     m_quitInstallBtn->setFixedSize(204, 36);
 
-    m_continueInstallBtn = new QPushButton;
+    m_continueInstallBtn = new DPushButton;
     m_continueInstallBtn->setFont(btnFont);
     m_continueInstallBtn->setText(DApplication::translate("ExceptionWindow", "Continue"));
     m_continueInstallBtn->setFixedSize(204, 36);
 
     btnGroup->addButton(m_quitInstallBtn, 0);
     btnGroup->addButton(m_continueInstallBtn, 1);
-
-    m_quitInstallBtn->setCheckable(true);
-    m_continueInstallBtn->setCheckable(true);
 
     connect(btnGroup, SIGNAL(buttonClicked(int)), this, SLOT(onControlButtonClicked(int)));
 
