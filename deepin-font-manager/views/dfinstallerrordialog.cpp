@@ -8,6 +8,7 @@
 
 #include <DApplication>
 #include <DApplicationHelper>
+#include <DVerticalLine>
 #include <DCheckBox>
 #include <DLog>
 
@@ -15,6 +16,8 @@ DFInstallErrorDialog::DFInstallErrorDialog(QWidget *parent, QStringList errorIns
     : DDialog(parent)
     , m_errorInstallFiles(errorInstallFontFileList)
 {
+    setWindowOpacity(0.3);
+
     initData();
     initUI();
 
@@ -109,7 +112,8 @@ void DFInstallErrorDialog::initTitleBar()
 
     titleLabel = new DLabel;
     titleLabel->setText(DApplication::translate("ExceptionWindow", "Install Error"));
-    QFont titleFont;
+    QString fontFamilyName = Utils::loadFontFamilyFromFiles(":/images/SourceHanSansCN-Medium.ttf");
+    QFont titleFont(fontFamilyName);
     titleFont.setPixelSize(14);
     titleLabel->setFont(titleFont);
     titleLabel->setAlignment(Qt::AlignCenter);
@@ -118,7 +122,7 @@ void DFInstallErrorDialog::initTitleBar()
     QHBoxLayout *titleLayout = new QHBoxLayout;
     titleLayout->setMargin(0);
     titleLayout->setAlignment(Qt::AlignVCenter);
-    titleLayout->setContentsMargins(5, 0, 5 + 32, 0);
+    titleLayout->setContentsMargins(9, 0, 9 + 32, 0);
     titleLayout->setSpacing(0);
     titleLayout->addWidget(logoLabel);
     titleLayout->addWidget(titleLabel);
@@ -166,42 +170,56 @@ void DFInstallErrorDialog::initInstallErrorFontViews()
     QHBoxLayout *buttonLayout = new QHBoxLayout;
     buttonLayout->setMargin(0);
     buttonLayout->setSpacing(0);
-    buttonLayout->setContentsMargins(10, 0, 10, 10);
+    buttonLayout->setContentsMargins(6, 6, 6, 6);
+
+    DFrame *btnFrame = new DFrame;
+    btnFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    btnFrame->setFixedHeight(36+20);
+    btnFrame->setLayout(buttonLayout);
 
     QButtonGroup *btnGroup = new QButtonGroup(this);
     btnGroup->setExclusive(true);
 
-    QFont btnFont = Utils::loadFontFamilyFromFiles(":/images/SourceHanSansCN-Medium.ttf");
+    QString fontFamilyName = Utils::loadFontFamilyFromFiles(":/images/SourceHanSansCN-Medium.ttf");
+    QFont btnFont(fontFamilyName);
     btnFont.setPixelSize(14);
+    btnFont.setWeight(QFont::Medium);
 
     m_quitInstallBtn = new DPushButton;
+    m_quitInstallBtn->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     m_quitInstallBtn->setFont(btnFont);
     m_quitInstallBtn->setText(DApplication::translate("ExceptionWindow", "Exit"));
-    m_quitInstallBtn->setFixedSize(204, 36);
 
-    m_continueInstallBtn = new DPushButton;
+    m_continueInstallBtn = new DSuggestButton;
+    m_continueInstallBtn->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     m_continueInstallBtn->setFont(btnFont);
     m_continueInstallBtn->setText(DApplication::translate("ExceptionWindow", "Continue"));
-    m_continueInstallBtn->setFixedSize(204, 36);
 
     btnGroup->addButton(m_quitInstallBtn, 0);
     btnGroup->addButton(m_continueInstallBtn, 1);
 
     connect(btnGroup, SIGNAL(buttonClicked(int)), this, SLOT(onControlButtonClicked(int)));
 
+    DVerticalLine *verticalSplit = new DVerticalLine;
+    DPalette pa = DApplicationHelper::instance()->palette(verticalSplit);
+    QColor splitColor = pa.color(DPalette::AlternateBase);
+    pa.setBrush(DPalette::Background, splitColor);
+    verticalSplit->setPalette(pa);
+    verticalSplit->setFixedHeight(28);
+
     buttonLayout->addWidget(m_quitInstallBtn);
-    buttonLayout->addSpacing(20);
+    buttonLayout->addSpacing(6);
+    buttonLayout->addWidget(verticalSplit);
+    buttonLayout->addSpacing(6);
     buttonLayout->addWidget(m_continueInstallBtn);
 
     m_installErrorListView = new DFInstallErrorListView(m_installErrorFontModelList, this);
     m_installErrorListView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     m_installErrorListView->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    //设置背景透明
-    m_installErrorListView->setAttribute(Qt::WA_TranslucentBackground, true);
 
     listViewLayout->addWidget(m_installErrorListView);
     contentLayout->addLayout(listViewLayout);
-    contentLayout->addLayout(buttonLayout);
+    contentLayout->addWidget(btnFrame);
 
     contentFrame->setLayout(contentLayout);
 

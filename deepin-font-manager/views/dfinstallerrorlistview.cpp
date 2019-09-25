@@ -95,9 +95,9 @@ void DFInstallErrorListDelegate::paint(QPainter *painter, const QStyleOptionView
         int statusLabelMaxWidth = 80;
         int fontNameLeft = FTM_ERROR_ITEM_FONTNAME_LEFT;
         QRect fontFileNameRect = QRect(bgRect.left()+fontNameLeft,
-                                       bgRect.top(),
+                                       checkboxRect.top(),
                                        bgRect.width()-fontNameLeft-statusLabelMaxWidth,
-                                       bgRect.height());
+                                       checkboxRect.height());
 
         QFont nameFont;
         nameFont.setPixelSize(14);
@@ -148,6 +148,10 @@ DFInstallErrorListView::DFInstallErrorListView(QList<DFInstallErrorItemModel> in
     : DListView(parent)
     , m_installErrorFontModelList(installErrorFontModelList)
 {
+    QWidget *topSpaceWidget = new QWidget;
+    topSpaceWidget->setFixedSize(this->width(), 70-FTM_TITLE_FIXED_HEIGHT);
+    this->addHeaderWidget(topSpaceWidget);
+
     setAutoScroll(true);
     setMouseTracking(true);
 

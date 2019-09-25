@@ -217,12 +217,6 @@ void DFontPreviewListView::initConnections()
             &DFontPreviewListView::onListViewItemCollectionBtnClicked);
     connect(this, &DFontPreviewListView::onShowContextMenu, this,
             &DFontPreviewListView::onListViewShowContextMenu, Qt::ConnectionType::QueuedConnection);
-
-    //Theme change event
-    QObject::connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::paletteTypeChanged,
-                     [this] (DGuiApplicationHelper::ColorType type) {
-        this->update();
-    });
 }
 
 void DFontPreviewListView::mouseMoveEvent(QMouseEvent *event)
@@ -296,11 +290,16 @@ void DFontPreviewListView::mouseReleaseEvent(QMouseEvent *event)
     itemData.collectIconStatus = IconNormal;
     m_fontPreviewProxyModel->setData(rowModelIndex, QVariant::fromValue(itemData), Qt::DisplayRole);
 
-    if (selectionPoint.x() < 50) {
+    QRect rect = rectForIndex(rowModelIndex);
+    int checkBoxSize = 20;
+    QRect checkboxRealRect = QRect(rect.left() + 25, rect.top() + 10, checkBoxSize, checkBoxSize);
+    int collectIconSize = 22;
+    QRect collectIconRect =
+        QRect(rect.right() - 33, rect.top() + 10, collectIconSize, collectIconSize);
+    if (checkboxRealRect.contains(selectionPoint)) {
         //触发启用/禁用字体
         emit onClickEnableButton(rowModelIndex);
-    } else if ((selectionPoint.x() > (this->width() - 50)) &&
-               (selectionPoint.x() < this->width())) {
+    } else if (collectIconRect.contains(selectionPoint)) {
         //触发收藏/取消收藏
         emit onClickCollectionButton(rowModelIndex);
     }

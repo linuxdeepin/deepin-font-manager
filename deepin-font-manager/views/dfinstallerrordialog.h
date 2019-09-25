@@ -9,6 +9,7 @@
 #include <DFrame>
 #include <DLabel>
 #include <DPushButton>
+#include <DSuggestButton>
 #include <QResizeEvent>
 
 DWIDGET_USE_NAMESPACE
@@ -39,7 +40,7 @@ public:
     DFInstallErrorListView *m_installErrorListView;
 
     DPushButton *m_quitInstallBtn;
-    DPushButton *m_continueInstallBtn;
+    DSuggestButton *m_continueInstallBtn;
 
 private:
     void resetContinueInstallBtnStatus();

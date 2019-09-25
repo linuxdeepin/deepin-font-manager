@@ -131,7 +131,7 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
 
         QString strImgPrefix = "";
         DGuiApplicationHelper *appHelper = DGuiApplicationHelper::instance();
-        if ( DGuiApplicationHelper::DarkType == appHelper->themeType()) {
+        if (DGuiApplicationHelper::DarkType == appHelper->themeType()) {
             strImgPrefix = "dark_";
         }
 

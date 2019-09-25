@@ -53,8 +53,7 @@ int main(int argc, char *argv[])
                                 "Deepin Font Manager is used to install and uninstall font file "
                                 "for users with bulk install function."));
 
-    // temp skin change
-    app.setStyle("chameleon");
+    DApplicationSettings settings;
 
     DLogManager::registerConsoleAppender();
     DLogManager::registerFileAppender();

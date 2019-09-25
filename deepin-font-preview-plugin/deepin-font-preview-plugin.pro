@@ -4,12 +4,12 @@
 #
 #-------------------------------------------------
 
-QT       += core gui widgets
+QT       += core gui widgets dtkwidget
 
 TARGET = deepin-font-preview-plugin
 TEMPLATE = lib
 CONFIG += plugin link_pkgconfig
-PKGCONFIG += freetype2 fontconfig dde-file-manager dtkwidget
+PKGCONFIG += freetype2 fontconfig dde-file-manager
 
 LIBS += -L$$OUT_PWD/../libdeepin-font-manager -ldeepin-font-manager
 INCLUDEPATH += $$PWD/../libdeepin-font-manager

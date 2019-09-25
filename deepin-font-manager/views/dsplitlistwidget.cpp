@@ -5,7 +5,9 @@
 #include <QPainter>
 #include <QMouseEvent>
 
+#include <DStyleHelper>
 #include <DApplication>
+#include <DApplicationHelper>
 #include <DLog>
 
 #define FTM_SPLIT_TOP_SPACE_TAG "_space_"
@@ -14,6 +16,7 @@
 
 DNoFocusDelegate::DNoFocusDelegate(QAbstractItemView *parent)
     :DStyledItemDelegate(parent)
+    , m_parentView(parent)
 {
 }
 
@@ -48,7 +51,9 @@ void DNoFocusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
             lineRect.setHeight(2);
 
             //绘制分割线
-            QColor fillColor = option.palette.color(cg, DPalette::Dark);
+            DPalette pa = DApplicationHelper::instance()->palette(m_parentView);
+            DStyleHelper styleHelper;
+            QColor fillColor = styleHelper.getColor(static_cast<const QStyleOption *>(&option), pa, DPalette::ItemBackground);
             painter->fillRect(lineRect, fillColor);
         }
         else {
