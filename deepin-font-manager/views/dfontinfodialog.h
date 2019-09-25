@@ -39,7 +39,7 @@ private:
     DFrame* m_basicInfoFrame {nullptr};
     DLabel* m_fontSytleName {nullptr};
     DLabel* m_fontTypeName {nullptr};
-    QTextEdit* m_fontVersion {nullptr};
+    DLabel* m_fontVersion {nullptr};
     DLabel* m_fontDescription {nullptr};
 
     DFontPreviewItemData* m_fontInfo;

@@ -40,6 +40,8 @@ public:
     static QString suffixList();
     static QPixmap renderSVG(const QString &filePath, const QSize &size);
     static QString loadFontFamilyFromFiles(const QString &fontFileName);
+
+    static const QString holdTextInRect(const QFont &font, QString text, const QSize &size);
 };
 
 #endif

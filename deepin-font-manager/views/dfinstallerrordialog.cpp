@@ -16,7 +16,7 @@ DFInstallErrorDialog::DFInstallErrorDialog(QWidget *parent, QStringList errorIns
     : DDialog(parent)
     , m_errorInstallFiles(errorInstallFontFileList)
 {
-    setWindowOpacity(0.3);
+    //setWindowOpacity(0.3); //Debug
 
     initData();
     initUI();

@@ -8,6 +8,7 @@
 #include <QVBoxLayout>
 
 #include <DApplication>
+#include <DLog>
 
 DFontInfoDialog::DFontInfoDialog(DFontPreviewItemData *fontInfo, QWidget *parent)
     : DDialog(parent)
@@ -20,6 +21,8 @@ DFontInfoDialog::DFontInfoDialog(DFontPreviewItemData *fontInfo, QWidget *parent
 void DFontInfoDialog::initUI()
 {
     setFixedSize(QSize(DEFAULT_WINDOW_W, DEFAULT_WINDOW_H));
+
+    //setWindowOpacity(0.5); //Debug
 
     // ToDo:
     //    Need localize the string
@@ -53,20 +56,25 @@ void DFontInfoDialog::initUI()
     m_basicInfoFrame->setFrameShape(DFrame::Shape::NoFrame);
     m_basicInfoFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-    QGridLayout *baseicInfoLayout = new QGridLayout();
+    QVBoxLayout *baseicInfoLayout = new QVBoxLayout();
     baseicInfoLayout->setAlignment(Qt::AlignTop /*| Qt::AlignVCenter*/);
     baseicInfoLayout->setContentsMargins(10, 5, 0, 0);
-    baseicInfoLayout->setSpacing(8);
+    baseicInfoLayout->setSpacing(0);
 
     DLabel *panelName = new DLabel(this);
-    panelName->setFixedSize(QSize(60, 20));
+    panelName->setFixedHeight(20);
     QFont panelNameFont;
     // panelNameFont.setBold(true);
     panelNameFont.setPixelSize(14);
     panelName->setFont(panelNameFont);
+    panelName->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     panelName->setText(DApplication::translate("FontDetailDailog", "Basic Information"));
 
     // Style Row
+    QHBoxLayout* styleRowLayout = new QHBoxLayout();
+    styleRowLayout->setContentsMargins(0, 0, 0, 0);
+    styleRowLayout->setSpacing(0);
+
     QFont basicInfoFont;
     basicInfoFont.setPixelSize(12);
 
@@ -74,42 +82,51 @@ void DFontInfoDialog::initUI()
     styleName->setFixedSize(QSize(60, 18));
     styleName->setFont(basicInfoFont);
     styleName->setText(DApplication::translate("FontDetailDailog", "Style"));
-
-    QHBoxLayout *styleLayout = new QHBoxLayout();
-    styleLayout->setSpacing(0);
+    styleName->setAlignment(Qt::AlignLeft);
 
     m_fontSytleName = new DLabel(this);
     m_fontSytleName->setFixedHeight(18);
     m_fontSytleName->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     m_fontSytleName->setFont(basicInfoFont);
     m_fontSytleName->setText("Regular");
-    styleLayout->addSpacing(4);
-    styleLayout->addWidget(m_fontSytleName);
+    m_fontSytleName->setAlignment(Qt::AlignLeft);
+
+    styleRowLayout->addWidget(styleName);
+    styleRowLayout->addWidget(m_fontSytleName);
 
     // Type Row
+    QHBoxLayout* typeRowLayout = new QHBoxLayout();
+    typeRowLayout->setContentsMargins(0, 0, 0, 0);
+    typeRowLayout->setSpacing(0);
+
     DLabel *typeName = new DLabel(this);
     typeName->setFixedSize(QSize(60, 18));
     typeName->setFont(basicInfoFont);
     typeName->setText(DApplication::translate("FontDetailDailog", "Type"));
-
-    QHBoxLayout *typeLayout = new QHBoxLayout();
-    typeLayout->setSpacing(0);
+    typeName->setAlignment(Qt::AlignLeft);
 
     m_fontTypeName = new DLabel(this);
     m_fontTypeName->setFixedHeight(18);
     m_fontTypeName->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     m_fontTypeName->setFont(basicInfoFont);
     m_fontTypeName->setText("True Type");
-    typeLayout->addSpacing(4);
-    typeLayout->addWidget(m_fontTypeName);
+    m_fontTypeName->setAlignment(Qt::AlignLeft);
+
+    typeRowLayout->addWidget(typeName);
+    typeRowLayout->addWidget(m_fontTypeName,1);
 
     // Version row
+    QHBoxLayout* versionRowLayout = new QHBoxLayout();
+    versionRowLayout->setContentsMargins(0, 0, 0, 0);
+    versionRowLayout->setSpacing(0);
+
     DLabel *versionName = new DLabel(this);
     versionName->setFixedSize(QSize(60, 18));
     versionName->setFont(basicInfoFont);
     versionName->setText(DApplication::translate("FontDetailDailog", "Version"));
+    versionName->setAlignment(Qt::AlignLeft);
 
-    m_fontVersion = new QTextEdit(this);
+    m_fontVersion = new DLabel(this);
     m_fontVersion->setFixedHeight(72);
     m_fontVersion->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     m_fontVersion->setAlignment(Qt::AlignTop | Qt::AlignLeft);
@@ -118,48 +135,50 @@ void DFontInfoDialog::initUI()
     m_fontVersion->setFont(basicInfoFont);
     m_fontVersion->setFocusPolicy(Qt::FocusPolicy::NoFocus);
     m_fontVersion->setText(
-        "Copyright 2014~2015 Adobe Syste-ms Incorporated (http://www.adob.com/), with Reserved "
-        "Font Name cc Source.");
+                "Copyright 2014~2015 Adobe Syste-ms Incorporated (http://www.adob.com/), with Reserved "
+                "Font Name cc Source.");
+    m_fontVersion->setWordWrap(true);
+
+    versionRowLayout->addWidget(versionName,0,Qt::AlignTop);
+    versionRowLayout->addWidget(m_fontVersion);
 
     // Description row
+    QHBoxLayout* despRowLayout = new QHBoxLayout();
+    despRowLayout->setContentsMargins(0, 0, 0, 0);
+    despRowLayout->setSpacing(0);
+
     DLabel *despName = new DLabel(this);
     despName->setFixedSize(QSize(60, 18));
     despName->setFont(basicInfoFont);
     despName->setText(DApplication::translate("FontDetailDailog", "Description"));
-
-    /* Text in QTextEdit have about 4px left-margin,that can't
-     * be removed, so add a QHBoxLayout in row tow and add 4px space
-     * to align row two
-     */
-    QHBoxLayout *depsLayout = new QHBoxLayout();
-    depsLayout->setSpacing(0);
+    despName->setAlignment(Qt::AlignLeft);
 
     m_fontDescription = new DLabel(this);
     m_fontDescription->setFixedHeight(18);
     m_fontDescription->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     m_fontDescription->setFont(basicInfoFont);
     m_fontDescription->setText(DApplication::translate("FontDetailDailog", "Unkonw"));
+    m_fontDescription->setAlignment(Qt::AlignLeft);
 
-    depsLayout->addSpacing(4);
-    depsLayout->addWidget(m_fontDescription, 1);
+    despRowLayout->addWidget(despName);
+    despRowLayout->addWidget(m_fontDescription, 1);
 
-    baseicInfoLayout->addWidget(panelName, 0, 0);
-    baseicInfoLayout->addWidget(styleName, 1, 0);
-    baseicInfoLayout->addLayout(styleLayout, 1, 1);
-    baseicInfoLayout->addWidget(typeName, 2, 0);
-    baseicInfoLayout->addLayout(typeLayout, 2, 1);
-    baseicInfoLayout->addWidget(versionName, 3, 0, Qt::AlignTop);
-    baseicInfoLayout->addWidget(m_fontVersion, 3, 1);
-    baseicInfoLayout->addWidget(despName, 4, 0);
-    baseicInfoLayout->addLayout(depsLayout, 4, 1);
+    baseicInfoLayout->addWidget(panelName);
+    baseicInfoLayout->addSpacing(8);
+    baseicInfoLayout->addLayout(styleRowLayout);
+    baseicInfoLayout->addSpacing(8);
+    baseicInfoLayout->addLayout(typeRowLayout);
+    baseicInfoLayout->addSpacing(8);
+    baseicInfoLayout->addLayout(versionRowLayout);
+    baseicInfoLayout->addLayout(despRowLayout);
 
     m_basicInfoFrame->setLayout(baseicInfoLayout);
     /**************************Basic info panel****END*******************************/
 
     // Add childs to main layout
-    mainLayout->addSpacing(58);
+    mainLayout->addSpacing(50);
     mainLayout->addWidget(m_fontLogo, 0, Qt::AlignHCenter);
-    mainLayout->addSpacing(16);
+    mainLayout->addSpacing(9);
     mainLayout->addWidget(m_fontFileName);
     mainLayout->addSpacing(45);
     mainLayout->addWidget(m_basicInfoFrame);
@@ -171,11 +190,12 @@ void DFontInfoDialog::initUI()
 #ifdef FTM_DEBUG_LAYOUT_COLOR
     m_mainFrame->setStyleSheet("background: red");
     m_fontLogo->setStyleSheet("background: silver");
+    m_fontTypeName->setStyleSheet("background: silver");
     m_fontFileName->setStyleSheet("background: silver");
     m_basicInfoFrame->setStyleSheet("background: yellow");
     panelName->setStyleSheet("background: blue");
     versionName->setStyleSheet("background: green");
-    m_fontVersion->setStyleSheet("background: green");
+    m_fontVersion->setStyleSheet("background: silver");
     m_fontDescription->setStyleSheet("background: green");
 #endif
 }
@@ -206,12 +226,16 @@ void DFontInfoDialog::updateFontInfo()
         }
 
         if (!m_fontInfo->fontInfo.copyright.isEmpty()) {
-            m_fontVersion->setText(m_fontInfo->fontInfo.copyright);
+            m_fontVersion->setText(Utils::holdTextInRect(
+                                       m_fontVersion->font(),
+                                       m_fontInfo->fontInfo.copyright,
+                                       QSize(200,72) )
+                                   );
         }
 
         if (!m_fontInfo->fontInfo.description.isEmpty()) {
             QString elideString = m_fontDescription->fontMetrics().elidedText(
-                m_fontInfo->fontInfo.description, Qt::ElideRight, 200);
+                        m_fontInfo->fontInfo.description, Qt::ElideRight, 200);
             m_fontDescription->setText(elideString);
         }
     }

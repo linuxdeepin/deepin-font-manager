@@ -34,6 +34,8 @@
 #include <QPixmap>
 #include <QFile>
 #include <QFontDatabase>
+#include <QFontMetrics>
+#include <QTextLayout>
 
 QHash<QString, QPixmap> Utils::m_imgCacheHash;
 QHash<QString, QString> Utils::m_fontNameCache;
@@ -134,4 +136,53 @@ QString Utils::loadFontFamilyFromFiles(const QString &fontFileName)
 
     m_fontNameCache.insert(fontFileName, fontFamilyName);
     return fontFamilyName;
+}
+
+const QString Utils::holdTextInRect(const QFont &font, QString text, const QSize &size)
+{
+    QFontMetrics fm(font);
+    QTextLayout layout(text);
+
+    layout.setFont(font);
+
+    QStringList lines;
+    QTextOption &text_option = *const_cast<QTextOption *>(&layout.textOption());
+
+    text_option.setWrapMode(QTextOption::WordWrap);
+    text_option.setAlignment(Qt::AlignTop | Qt::AlignLeft);
+
+    layout.beginLayout();
+
+    QTextLine line = layout.createLine();
+    int height = 0;
+    int lineHeight = fm.height();
+
+    while (line.isValid()) {
+        height += lineHeight;
+
+        if (height + lineHeight > size.height()) {
+            const QString &end_str = fm.elidedText(text.mid(line.textStart()), Qt::ElideRight, size.width());
+
+            layout.endLayout();
+            layout.setText(end_str);
+
+            text_option.setWrapMode(QTextOption::NoWrap);
+            layout.beginLayout();
+            line = layout.createLine();
+            line.setLineWidth(size.width() - 1);
+            text = end_str;
+        } else {
+            line.setLineWidth(size.width());
+        }
+
+        lines.append(text.mid(line.textStart(), line.textLength()));
+
+        if (height + lineHeight > size.height()) break;
+
+        line = layout.createLine();
+    }
+
+    layout.endLayout();
+
+    return lines.join("");
 }

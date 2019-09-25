@@ -269,6 +269,13 @@ void DFontMgrMainWindow::initMainVeiws()
     initLeftSideBar();
     initRightFontView();
 
+    //Disable spliter drag & resize
+    QSplitterHandle *handle = d->mainWndSpliter->handle(1);
+    if (handle) {
+        handle->setFixedWidth(FTM_LEFT_SIDE_BAR_WIDTH);
+        handle->setDisabled(true);
+    }
+
     setCentralWidget(d->mainWndSpliter);
 }
 
