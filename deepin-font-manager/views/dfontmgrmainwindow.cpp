@@ -35,12 +35,7 @@ public:
     }
 
     //~DFontMgrMainWindowPrivate() {}
-
-    DFrame *titleFrame {nullptr};
-
-    DLabel *logoLabel {nullptr};
-
-    DFrame *toolbar {nullptr};
+    DFrame *titleActionArea {nullptr};
     DIconButton *addFontButton {nullptr};
     DSearchEdit *searchFontEdit {nullptr};
 
@@ -197,7 +192,6 @@ void DFontMgrMainWindow::initTileBar()
         titlebar()->setContentsMargins(0, 0, 0, 0);
 
         titlebar()->setFixedHeight(FTM_TITLE_FIXED_HEIGHT);
-        titlebar()->setCustomWidget(d->titleFrame, false);
     }
 }
 
@@ -205,55 +199,44 @@ void DFontMgrMainWindow::initTileFrame()
 {
     D_D(DFontMgrMainWindow);
 
-    d->logoLabel = new DLabel(this);
-    d->logoLabel->setObjectName("LogoLabel");
-    d->logoLabel->setFixedSize(QSize(32, 32));
-    d->logoLabel->setFocusPolicy(Qt::NoFocus);
-    d->logoLabel->setAttribute(Qt::WA_TransparentForMouseEvents);
-    d->logoLabel->setPixmap(Utils::renderSVG(":/images/deepin-font-manager.svg", d->logoLabel->size()));
+    //Add logo
+    titlebar()->setIcon(QIcon(Utils::renderSVG(
+                                  ":/images/deepin-font-manager.svg"
+                                  ,QSize(32, 32)
+                                  ) ) );
 
-    d->titleFrame = new DFrame(this);
-    d->titleFrame->setObjectName("TitleBar");
-    d->titleFrame->setFixedHeight(FTM_TITLE_FIXED_HEIGHT);
-    // d->titleFrame->setStyleSheet("background: yellow");  // debug
-    d->titleFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    //Action area add a extra space
+    d->titleActionArea = new DFrame(this);
+    d->titleActionArea->setFixedSize(QSize(58,FTM_TITLE_FIXED_HEIGHT));
+
+    QHBoxLayout* titleActionAreaLayout = new QHBoxLayout(d->titleActionArea);
+    titleActionAreaLayout->setSpacing(0);
+    titleActionAreaLayout->setContentsMargins(0,0,0,0);
 
     // Add Font
     d->addFontButton = new DIconButton(DStyle::StandardPixmap::SP_IncreaseElement, this);
-    d->addFontButton->setFixedSize(QSize(40, 40));
+    d->addFontButton->setFixedSize(QSize(43, 43));
     d->addFontButton->setFlat(false);
     d->addFontButton->setFocusPolicy(Qt::FocusPolicy::NoFocus);
+
+    titleActionAreaLayout->addWidget(d->addFontButton);
 
     // Search font
     d->searchFontEdit = new DSearchEdit(this);
     QFont searchFont;
     searchFont.setPixelSize(14);
     d->searchFontEdit->setFont(searchFont);
-     d->searchFontEdit->setFixedSize(QSize(FTM_SEARCH_BAR_W, FTM_SEARCH_BAR_H));
+    d->searchFontEdit->setFixedSize(QSize(FTM_SEARCH_BAR_W, FTM_SEARCH_BAR_H));
     //d->searchFontEdit->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     d->searchFontEdit->setPlaceHolder(DApplication::translate("SearchBar", "Search"));
 
-    QHBoxLayout *titleLayout = new QHBoxLayout();
-    titleLayout->setContentsMargins(0, 0, 0, 0);
-    titleLayout->setMargin(0);
-    titleLayout->setSpacing(0);
-
-    titleLayout->addSpacing(7);
-    titleLayout->addWidget(d->logoLabel);
-    titleLayout->addSpacing(14);
-    titleLayout->addWidget(d->addFontButton, 0, Qt::AlignLeft);
-    titleLayout->addSpacing(115);
-    titleLayout->addStretch(1);
-    titleLayout->addWidget(d->searchFontEdit);
-    titleLayout->addStretch(1);
-
-    d->titleFrame->setLayout(titleLayout);
+    titlebar()->addWidget(d->titleActionArea, Qt::AlignLeft|Qt::AlignVCenter);
+    titlebar()->addWidget(d->searchFontEdit, Qt::AlignCenter);
 
     // Debug layout code
 #ifdef FTM_DEBUG_LAYOUT_COLOR
-    d->logoLabel->setStyleSheet("background: silver");
+    d->titleActionArea->setStyleSheet("background: red");
     d->addFontButton->setStyleSheet("background: silver");
-    d->titleFrame->setStyleSheet("background: black");
     d->searchFontEdit->setStyleSheet("background: yellow");
 #endif
 }
