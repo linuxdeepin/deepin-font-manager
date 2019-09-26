@@ -56,6 +56,8 @@ private:
     bool enableFont(DFontPreviewItemData itemData);
     bool disableFont(DFontPreviewItemData itemData);
 
+    inline QRect getCollectionIconRect(QRect visualRect);
+
     bool m_bLeftMouse;
     QStandardItemModel *m_fontPreviewItemModel;
     QList<DFontPreviewItemData> m_fontPreviewItemDataList;

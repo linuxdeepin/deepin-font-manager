@@ -4,6 +4,8 @@
 #include "dfontpreviewlistview.h"
 #include "dfontmanager.h"
 
+#include <QShortcut>
+
 #include <DFrame>
 #include <DMainWindow>
 
@@ -42,6 +44,7 @@ protected:
     void initData();
     void initUI();
     void initConnections();
+    void initShortcuts();
 
     void initTileBar();
     void initTileFrame();
@@ -80,8 +83,12 @@ public slots:
 protected:
     // For quick install mode
     bool m_isQuickMode = {false};
-
     DFontManager *m_fontManager;
+    QShortcut *m_scFullScreen;  //全屏快捷键F11
+    QShortcut *m_scZoomIn;        //放大字体快捷键Ctrl+=
+    QShortcut *m_scZoomOut;       //放大字体快捷键Ctrl+-
+    QShortcut *m_scDefaultSize;   //默认⼤⼩字体快捷键Ctrl+0
+    int m_previewFontSize;
 
     QScopedPointer<DFQuickInstallWindow> m_quickInstallWnd;
 

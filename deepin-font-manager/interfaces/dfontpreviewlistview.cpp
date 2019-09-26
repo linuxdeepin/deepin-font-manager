@@ -25,6 +25,7 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
     bottomSpaceWidget->setFixedSize(this->width(), 1);
     this->addFooterWidget(bottomSpaceWidget);
 
+    setAutoScroll(true);
     setMouseTracking(true);
     setUpdatesEnabled(true);
 
@@ -219,29 +220,33 @@ void DFontPreviewListView::initConnections()
             &DFontPreviewListView::onListViewShowContextMenu, Qt::ConnectionType::QueuedConnection);
 }
 
+QRect DFontPreviewListView::getCollectionIconRect(QRect visualRect)
+{
+    int collectIconSize = 22+10;
+    return QRect(visualRect.right() - 10 - 33, visualRect.top()+10-5, collectIconSize, collectIconSize);
+}
+
 void DFontPreviewListView::mouseMoveEvent(QMouseEvent *event)
 {
     DListView::mouseMoveEvent(event);
 
-    QPoint mousePos = event->pos();
+    QPoint clickPoint = event->pos();
 
-    QModelIndex rowModelIndex = indexAt(event->pos());
-    QRect rect = rectForIndex(rowModelIndex);
+    QModelIndex modelIndex = indexAt(clickPoint);
+    QRect rect = visualRect(modelIndex);
 
-    int collectIconSize = 22;
-    QRect collectIconRect =
-        QRect(rect.right() - 33, rect.top() + 10, collectIconSize, collectIconSize);
+    QRect collectIconRect = getCollectionIconRect(rect);
 
     DFontPreviewItemData itemData =
-        qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(rowModelIndex));
+        qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(modelIndex));
 
-    if (collectIconRect.contains(mousePos)) {
+    if (collectIconRect.contains(clickPoint)) {
         itemData.collectIconStatus = IconHover;
     }
     else {
         itemData.collectIconStatus = IconNormal;
     }
-    m_fontPreviewProxyModel->setData(rowModelIndex, QVariant::fromValue(itemData), Qt::DisplayRole);
+    m_fontPreviewProxyModel->setData(modelIndex, QVariant::fromValue(itemData), Qt::DisplayRole);
 }
 
 void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
@@ -254,54 +259,52 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
 
     DListView::mousePressEvent(event);
 
-    QPoint mousePos = event->pos();
+    QPoint clickPoint = event->pos();
 
-    QModelIndex rowModelIndex = indexAt(event->pos());
-    QRect rect = rectForIndex(rowModelIndex);
+    QModelIndex modelIndex = indexAt(clickPoint);
+    QRect rect = visualRect(modelIndex);
 
-    int collectIconSize = 22;
-    QRect collectIconRect =
-        QRect(rect.right() - 33, rect.top() + 10, collectIconSize, collectIconSize);
+    QRect collectIconRect = getCollectionIconRect(rect);
 
     DFontPreviewItemData itemData =
-        qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(rowModelIndex));
+        qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(modelIndex));
 
-    if (collectIconRect.contains(mousePos)) {
+    if (collectIconRect.contains(clickPoint)) {
         itemData.collectIconStatus = IconPress;
     }
     else {
         itemData.collectIconStatus = IconNormal;
     }
-    m_fontPreviewProxyModel->setData(rowModelIndex, QVariant::fromValue(itemData), Qt::DisplayRole);
+    m_fontPreviewProxyModel->setData(modelIndex, QVariant::fromValue(itemData), Qt::DisplayRole);
 }
 
 void DFontPreviewListView::mouseReleaseEvent(QMouseEvent *event)
 {
     DListView::mouseReleaseEvent(event);
 
-    QPoint selectionPoint = event->pos();
+    QPoint clickPoint = event->pos();
 
-    QModelIndex rowModelIndex = indexAt(selectionPoint);
-    m_currModelIndex = rowModelIndex;
+    QModelIndex modelIndex = indexAt(clickPoint);
+    m_currModelIndex = modelIndex;
 
     DFontPreviewItemData itemData =
-        qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(rowModelIndex));
+        qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(modelIndex));
 
     itemData.collectIconStatus = IconNormal;
-    m_fontPreviewProxyModel->setData(rowModelIndex, QVariant::fromValue(itemData), Qt::DisplayRole);
+    m_fontPreviewProxyModel->setData(modelIndex, QVariant::fromValue(itemData), Qt::DisplayRole);
 
-    QRect rect = rectForIndex(rowModelIndex);
-    int checkBoxSize = 20;
-    QRect checkboxRealRect = QRect(rect.left() + 25, rect.top() + 10, checkBoxSize, checkBoxSize);
-    int collectIconSize = 22;
-    QRect collectIconRect =
-        QRect(rect.right() - 33, rect.top() + 10, collectIconSize, collectIconSize);
-    if (checkboxRealRect.contains(selectionPoint)) {
+    QRect rect = visualRect(modelIndex);
+
+    int checkBoxSize = 20+10;
+    QRect checkboxRealRect = QRect(rect.left() + 25, rect.top()+10-5, checkBoxSize, checkBoxSize);
+    QRect collectIconRect = getCollectionIconRect(rect);
+
+    if (checkboxRealRect.contains(clickPoint)) {
         //触发启用/禁用字体
-        emit onClickEnableButton(rowModelIndex);
-    } else if (collectIconRect.contains(selectionPoint)) {
+        emit onClickEnableButton(modelIndex);
+    } else if (collectIconRect.contains(clickPoint)) {
         //触发收藏/取消收藏
-        emit onClickCollectionButton(rowModelIndex);
+        emit onClickCollectionButton(modelIndex);
     }
 }
 
@@ -310,9 +313,8 @@ void DFontPreviewListView::setSelection(const QRect &rect,
 {
     DListView::setSelection(rect, command);
 
-    QPoint selectionPoint(rect.x(), rect.y());
-    QModelIndex modelIndex = indexAt(selectionPoint);
-    qDebug() << modelIndex.row() << endl;
+    QPoint clickPoint(rect.x(), rect.y());
+    QModelIndex modelIndex = indexAt(clickPoint);
     m_currModelIndex = modelIndex;
 
     if (!m_bLeftMouse) {

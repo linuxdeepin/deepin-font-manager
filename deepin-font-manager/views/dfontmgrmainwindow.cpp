@@ -10,8 +10,10 @@
 #include "views/dfquickinstallwindow.h"
 
 #include <QHBoxLayout>
+#include <QShortcut>
 
 #include <DApplication>
+#include <DApplicationHelper>
 #include <DFileDialog>
 #include <DIconButton>
 #include <DLabel>
@@ -46,7 +48,7 @@ public:
     DSlider *fontScaleSlider {nullptr};
     DLabel *fontSizeLabel {nullptr};
 
-    QSplitter *mainWndSpliter {nullptr};
+    DSplitter *mainWndSpliter {nullptr};
     DFrame *leftBarHolder {nullptr};
     DFrame *rightViewHolder {nullptr};
 
@@ -65,6 +67,11 @@ DFontMgrMainWindow::DFontMgrMainWindow(bool isQuickMode, QWidget *parent)
     : DMainWindow(parent)
     , m_isQuickMode(isQuickMode)
     , m_fontManager(DFontManager::instance())
+    , m_scFullScreen(nullptr)
+    , m_scZoomIn(nullptr)
+    , m_scZoomOut(nullptr)
+    , m_scDefaultSize(nullptr)
+    , m_previewFontSize(DEFAULT_FONT_SIZE)
     , m_quickInstallWnd(new DFQuickInstallWindow())
     , d_ptr(new DFontMgrMainWindowPrivate(this))
 {
@@ -73,6 +80,7 @@ DFontMgrMainWindow::DFontMgrMainWindow(bool isQuickMode, QWidget *parent)
     initData();
     initUI();
     initConnections();
+    initShortcuts();
 }
 
 DFontMgrMainWindow::~DFontMgrMainWindow() {}
@@ -105,6 +113,7 @@ void DFontMgrMainWindow::initUI()
     initRightKeyMenu();
     initMainVeiws();
 }
+
 void DFontMgrMainWindow::initConnections()
 {
     D_D(DFontMgrMainWindow);
@@ -176,6 +185,70 @@ void DFontMgrMainWindow::initConnections()
     QObject::connect(filterModel, SIGNAL(onFilterFinishRowCountChanged(int)), this, SLOT(onFontListViewRowCountChanged(int)));
 }
 
+void DFontMgrMainWindow::initShortcuts()
+{
+    D_D(DFontMgrMainWindow);
+
+    //设置最大化快捷键
+    if (!m_scFullScreen) {
+        m_scFullScreen = new QShortcut(QKeySequence(Qt::Key_F11), this);
+        m_scFullScreen->setContext(Qt::ApplicationShortcut);
+        m_scFullScreen->setAutoRepeat(false);
+
+        connect(m_scFullScreen, &QShortcut::activated, this, [this]{
+            if (this->isFullScreen()) {
+                this->showNormal();
+            }
+            else {
+                this->showFullScreen();
+            }
+        });
+    }
+
+    //设置字体放大快捷键
+    if (!m_scZoomIn) {
+        m_scZoomIn = new QShortcut(this);
+        m_scZoomIn->setKey(tr("ctrl+="));
+        m_scZoomIn->setContext(Qt::ApplicationShortcut);
+        m_scZoomIn->setAutoRepeat(false);
+
+        connect(m_scZoomIn, &QShortcut::activated, this, [this, d]{
+            if (m_previewFontSize < MAX_FONT_SIZE) {
+                ++m_previewFontSize;
+            }
+            d->fontScaleSlider->setValue(m_previewFontSize);
+        });
+    }
+
+    //设置字体缩小快捷键
+    if (!m_scZoomOut) {
+        m_scZoomOut = new QShortcut(this);
+        m_scZoomOut->setKey(tr("ctrl+-"));
+        m_scZoomOut->setContext(Qt::ApplicationShortcut);
+        m_scZoomOut->setAutoRepeat(false);
+
+        connect(m_scZoomOut, &QShortcut::activated, this, [this, d]{
+            if (m_previewFontSize > MIN_FONT_SIZE) {
+                --m_previewFontSize;
+            }
+            d->fontScaleSlider->setValue(m_previewFontSize);
+        });
+    }
+
+    //设置字体默认大小快捷键
+    if (!m_scDefaultSize) {
+        m_scDefaultSize = new QShortcut(this);
+        m_scDefaultSize->setKey(tr("ctrl+0"));
+        m_scDefaultSize->setContext(Qt::ApplicationShortcut);
+        m_scDefaultSize->setAutoRepeat(false);
+
+        connect(m_scDefaultSize, &QShortcut::activated, this, [this, d]{
+            m_previewFontSize = DEFAULT_FONT_SIZE;
+            d->fontScaleSlider->setValue(DEFAULT_FONT_SIZE);
+        });
+    }
+}
+
 void DFontMgrMainWindow::initTileBar()
 {
     D_D(DFontMgrMainWindow);
@@ -245,7 +318,7 @@ void DFontMgrMainWindow::initMainVeiws()
 {
     D_D(DFontMgrMainWindow);
 
-    d->mainWndSpliter = new QSplitter(Qt::Horizontal, this);
+    d->mainWndSpliter = new DSplitter(Qt::Horizontal, this);
     // For Debug
     // d->mainWndSpliter->setStyleSheet("QSplitter::handle { background-color: red }");
 
@@ -255,8 +328,15 @@ void DFontMgrMainWindow::initMainVeiws()
     //Disable spliter drag & resize
     QSplitterHandle *handle = d->mainWndSpliter->handle(1);
     if (handle) {
-        handle->setFixedWidth(FTM_LEFT_SIDE_BAR_WIDTH);
+        handle->setFixedWidth(2);
         handle->setDisabled(true);
+
+        DPalette pa = DApplicationHelper::instance()->palette(handle);
+        QBrush splitBrush = pa.brush(DPalette::ItemBackground);
+        pa.setBrush(DPalette::Background, splitBrush);
+        handle->setPalette(pa);
+        handle->setBackgroundRole(QPalette::Background);
+        handle->setAutoFillBackground(true);
     }
 
     setCentralWidget(d->mainWndSpliter);

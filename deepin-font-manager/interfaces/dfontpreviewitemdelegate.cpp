@@ -1,4 +1,4 @@
-#include "dfontpreviewitemdelegate.h"
+﻿#include "dfontpreviewitemdelegate.h"
 #include "globaldef.h"
 #include "utils.h"
 
@@ -13,8 +13,6 @@
 #include <DLabel>
 
 DWIDGET_USE_NAMESPACE
-
-#define FTM_PREVIEW_ITEM_HEIGHT 72+2
 
 DFontPreviewItemDelegate::DFontPreviewItemDelegate(QAbstractItemView *parent)
     : DStyledItemDelegate(parent)
@@ -92,12 +90,14 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
             DStyleHelper styleHelper;
             QColor fillColor = styleHelper.getColor(static_cast<const QStyleOption *>(&option), DPalette::ToolTipText);
             fillColor.setAlphaF(0.2);
+            painter->setBrush(QBrush(fillColor));
             painter->fillPath(path, fillColor);
         }
         else {
             DPalette pa = DApplicationHelper::instance()->palette(m_parentView);
             DStyleHelper styleHelper;
             QColor fillColor = styleHelper.getColor(static_cast<const QStyleOption *>(&option), pa, DPalette::ItemBackground);
+            painter->setBrush(QBrush(fillColor));
             painter->fillPath(path, fillColor);
         }
 

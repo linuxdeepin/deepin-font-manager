@@ -201,11 +201,14 @@ void DFInstallErrorDialog::initInstallErrorFontViews()
     connect(btnGroup, SIGNAL(buttonClicked(int)), this, SLOT(onControlButtonClicked(int)));
 
     DVerticalLine *verticalSplit = new DVerticalLine;
-    DPalette pa = DApplicationHelper::instance()->palette(verticalSplit);
-    QColor splitColor = pa.color(DPalette::AlternateBase);
-    pa.setBrush(DPalette::Background, splitColor);
-    verticalSplit->setPalette(pa);
+    verticalSplit->setFixedWidth(1);
     verticalSplit->setFixedHeight(28);
+    DPalette pa = DApplicationHelper::instance()->palette(verticalSplit);
+    QBrush splitBrush = pa.brush(DPalette::ItemBackground);
+    pa.setBrush(DPalette::Background, splitBrush);
+    verticalSplit->setPalette(pa);
+    verticalSplit->setBackgroundRole(QPalette::Background);
+    verticalSplit->setAutoFillBackground(true);
 
     buttonLayout->addWidget(m_quitInstallBtn);
     buttonLayout->addSpacing(6);
