@@ -289,7 +289,7 @@ void DFontMgrMainWindow::initTileFrame()
 
     // Add Font
     d->addFontButton = new DIconButton(DStyle::StandardPixmap::SP_IncreaseElement, this);
-    d->addFontButton->setFixedSize(QSize(43, 43));
+    d->addFontButton->setFixedSize(QSize(38, 38));
     d->addFontButton->setFlat(false);
     d->addFontButton->setFocusPolicy(Qt::FocusPolicy::NoFocus);
 

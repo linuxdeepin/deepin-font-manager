@@ -5,6 +5,7 @@
 #include <QVBoxLayout>
 
 #include <DApplication>
+#include <DApplicationHelper>
 #include <DFrame>
 
 DFDeleteDialog::DFDeleteDialog(QWidget *parent)
@@ -17,6 +18,7 @@ DFDeleteDialog::DFDeleteDialog(QWidget *parent)
 void DFDeleteDialog::initUI()
 {
     setFixedSize(QSize(DEFAULT_WINDOW_W, DEFAULT_WINDOW_H));
+    setWindowOpacity(0.5);
 
     //    setIconPixmap(QPixmap(":/images/deepin-font-manager.svg"));
     //    setTitle("确认删除窗口标题");
@@ -52,25 +54,38 @@ void DFDeleteDialog::initUI()
     actionBarLayout->setContentsMargins(0, 0, 0, 0);
 
     m_cancelBtn = new DPushButton(this);
-    m_cancelBtn->setFixedSize(QSize(170, 36));
+    m_cancelBtn->setFixedHeight(42);
+    m_cancelBtn->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
     m_cancelBtn->setText(DApplication::translate("DeleteConfirmDailog", "Cancel"));
 
     m_confirmBtn = new DPushButton(this);
-    m_confirmBtn->setFixedSize(QSize(170, 36));
+    m_confirmBtn->setFixedHeight(42);
+    m_confirmBtn->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
     m_confirmBtn->setText(DApplication::translate("DeleteConfirmDailog", "Confirm"));
 
+    DVerticalLine *verticalSplite = new DVerticalLine(this);
+    DPalette pa = DApplicationHelper::instance()->palette(verticalSplite);
+    QColor splitColor = pa.color(DPalette::ItemBackground);
+    pa.setBrush(DPalette::Background, splitColor);
+    verticalSplite->setPalette(pa);
+    verticalSplite->setBackgroundRole(QPalette::Background);
+    verticalSplite->setAutoFillBackground(true);
+    verticalSplite->setFixedSize(3,28);
+
     actionBarLayout->addWidget(m_cancelBtn);
+    actionBarLayout->addSpacing(8);
+    actionBarLayout->addWidget(verticalSplite);
+    actionBarLayout->addSpacing(8);
     actionBarLayout->addWidget(m_confirmBtn);
 
     mainLayout->addWidget(m_fontLogo, 0, Qt::AlignLeft | Qt::AlignTop);
-    mainLayout->addStretch();
+    mainLayout->addSpacing(6);
     mainLayout->addWidget(m_messageA, 0, Qt::AlignCenter);
-    mainLayout->setSpacing(8);
+    mainLayout->addSpacing(8);
     mainLayout->addWidget(m_messageB, 0, Qt::AlignCenter);
     mainLayout->addStretch();
     mainLayout->addLayout(actionBarLayout);
     mainFrame->setLayout(mainLayout);
-    // mainFrame->setStyleSheet("background: blue");
 }
 
 void DFDeleteDialog::initConnections()
