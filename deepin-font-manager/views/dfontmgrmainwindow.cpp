@@ -75,6 +75,7 @@ DFontMgrMainWindow::DFontMgrMainWindow(bool isQuickMode, QWidget *parent)
     , m_quickInstallWnd(new DFQuickInstallWindow())
     , d_ptr(new DFontMgrMainWindowPrivate(this))
 {
+    // setWindowOpacity(0.5); //Debug
     // setWindowFlags(windowFlags() | (Qt::FramelessWindowHint | Qt::WindowMaximizeButtonHint));
 
     initData();
@@ -470,7 +471,7 @@ void DFontMgrMainWindow::initStateBar()
     d->textInputEdit->setMinimumSize(QSize(FTM_SBAR_TXT_EDIT_W,FTM_SBAR_TXT_EDIT_H));
     d->textInputEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     d->textInputEdit->setClearButtonEnabled(true);
-    d->textInputEdit->setPlaceholderText(DApplication::translate("StateBar", "Input preview text"));
+    d->textInputEdit->lineEdit()->setPlaceholderText(DApplication::translate("StateBar", "Input preview text"));
 
     d->fontScaleSlider = new DSlider(Qt::Orientation::Horizontal, this);
     d->fontScaleSlider->setFixedSize(FTM_SBAR_SLIDER_W, FTM_SBAR_SLIDER_H);
