@@ -183,7 +183,7 @@ void DFontMgrMainWindow::initConnections()
                      SLOT(onFontUninstallFinished(const QModelIndex &)));
 
     DFontPreviewProxyModel *filterModel = m_fontPreviewListView->getFontPreviewProxyModel();
-    QObject::connect(filterModel, SIGNAL(onFilterFinishRowCountChanged(int)), this, SLOT(onFontListViewRowCountChanged(int)));
+    QObject::connect(filterModel, SIGNAL(onFilterFinishRowCountChanged(bool)), this, SLOT(onFontListViewRowCountChanged(bool)));
 }
 
 void DFontMgrMainWindow::initShortcuts()
@@ -742,14 +742,20 @@ void DFontMgrMainWindow::onFontUninstallFinished(const QModelIndex &uninstallInd
     m_fontPreviewListView->removeRowAtIndex(uninstallIndex);
 }
 
-void DFontMgrMainWindow::onFontListViewRowCountChanged(int rowCount)
+void DFontMgrMainWindow::onFontListViewRowCountChanged(bool bShowNoResult)
 {
-    if (0 == rowCount) {
+    if (bShowNoResult) {
         m_fontPreviewListView->hide();
         m_noResultListView->show();
     }
     else {
         m_fontPreviewListView->show();
         m_noResultListView->hide();
+    }
+
+    int sourceModelRowCount = DFMDBManager::instance()->getRecordCount();
+    DFontPreviewProxyModel *fontPreviewProxyModel = m_fontPreviewListView->getFontPreviewProxyModel();
+    if (fontPreviewProxyModel) {
+        fontPreviewProxyModel->setSourceModelRowCount(sourceModelRowCount);
     }
 }

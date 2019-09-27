@@ -1,6 +1,7 @@
 #ifndef DFONTPREVIEWPROXYMODEL_H
 #define DFONTPREVIEWPROXYMODEL_H
 
+#include <QStandardItemModel>
 #include <QSortFilterProxyModel>
 
 class DFontPreviewProxyModel : public QSortFilterProxyModel
@@ -23,11 +24,14 @@ public:
 
     void setFilterFontNamePattern(const QString &pattern);
 
+    void setSourceModelRowCount(int totalRowCount);
+
 signals:
-    void onFilterFinishRowCountChanged(int rowCount) const;
+    void onFilterFinishRowCountChanged(bool bShowNoResult) const;
 
 private:
     int m_filterGroup;
+    int m_lastSourceModelRowCount;
     bool m_useSystemFilter;
     QString m_fontNamePattern;
 };

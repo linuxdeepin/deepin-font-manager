@@ -78,7 +78,7 @@ public slots:
     void onFontInstallFinished();
     void onFontUninstallFinished(const QModelIndex &uninstallIndex);
 
-    void onFontListViewRowCountChanged(int rowCount);
+    void onFontListViewRowCountChanged(bool bShowNoResult);
 
 protected:
     // For quick install mode

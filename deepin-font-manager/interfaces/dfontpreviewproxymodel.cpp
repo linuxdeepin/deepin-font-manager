@@ -4,11 +4,10 @@
 
 #include <DLog>
 
-#include <QStandardItemModel>
-
 DFontPreviewProxyModel::DFontPreviewProxyModel(QObject *parent)
     : QSortFilterProxyModel(parent)
     , m_filterGroup(DSplitListWidget::AllFont)
+    , m_lastSourceModelRowCount(0)
     , m_useSystemFilter(true)
     , m_fontNamePattern("")
 {
@@ -124,13 +123,35 @@ bool DFontPreviewProxyModel::filterAcceptsRow(int source_row,
     }
 }
 
+void DFontPreviewProxyModel::setSourceModelRowCount(int totalRowCount)
+{
+    m_lastSourceModelRowCount = totalRowCount;
+}
+
 int DFontPreviewProxyModel::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent)
 
-    int rowCount = QSortFilterProxyModel::rowCount();
-//    qDebug() << __FUNCTION__ << rowCount << endl;
-    emit this->onFilterFinishRowCountChanged(rowCount);
+    int filterRowCount = QSortFilterProxyModel::rowCount();
+    QStandardItemModel *sourceModel = qobject_cast<QStandardItemModel *>(this->sourceModel());
+    bool bShowNoResult = false;
+    if (0 == filterRowCount) {
+        bShowNoResult = true;
+        int totalRowCount = 0;
+        if (sourceModel) {
+            totalRowCount = sourceModel->rowCount();
+            qDebug() << "totalRowCount:" << sourceModel->rowCount() << endl;
+            qDebug() << "m_lastSourceModelRowCount" << m_lastSourceModelRowCount << endl;
+        }
+        if (totalRowCount != m_lastSourceModelRowCount) {
+            bShowNoResult = false;
+        }
+    }
+    else {
+        bShowNoResult = false;
+    }
 
-    return rowCount;
+    emit this->onFilterFinishRowCountChanged(bShowNoResult);
+
+    return filterRowCount;
 }
