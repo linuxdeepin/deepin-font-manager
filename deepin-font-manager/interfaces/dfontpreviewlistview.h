@@ -59,14 +59,14 @@ private:
     inline QRect getCollectionIconRect(QRect visualRect);
 
     bool m_bLeftMouse;
-    QStandardItemModel *m_fontPreviewItemModel;
+    QStandardItemModel *m_fontPreviewItemModel {nullptr};
     QList<DFontPreviewItemData> m_fontPreviewItemDataList;
-    DFontPreviewItemDelegate *m_fontPreviewItemDelegate;
+    DFontPreviewItemDelegate *m_fontPreviewItemDelegate {nullptr};
 
-    QMenu *m_rightMenu;
+    QMenu *m_rightMenu {nullptr};
 
     QModelIndex m_currModelIndex;
-    DFontPreviewProxyModel *m_fontPreviewProxyModel;
+    DFontPreviewProxyModel *m_fontPreviewProxyModel {nullptr};
 
 signals:
     //用于DFontPreviewListView内部使用的信号
