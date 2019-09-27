@@ -18,7 +18,7 @@ DFDeleteDialog::DFDeleteDialog(QWidget *parent)
 void DFDeleteDialog::initUI()
 {
     setFixedSize(QSize(DEFAULT_WINDOW_W, DEFAULT_WINDOW_H));
-    setWindowOpacity(0.5);
+    //    setWindowOpacity(0.5);
 
     //    setIconPixmap(QPixmap(":/images/deepin-font-manager.svg"));
     //    setTitle("确认删除窗口标题");

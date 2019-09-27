@@ -44,7 +44,6 @@ void DFInstallErrorDialog::initData()
             itemModel.strFontInstallStatus = DApplication::translate("ExceptionWindow", "File Error");
 
             m_installErrorFontModelList.push_back(itemModel);
-            qDebug() << "verifyFontFiles->" << it << " :Damaged file";
         } else if (fontInfo.isInstalled) {
             QFileInfo fileInfo(it);
             itemModel.bSelectable = true;
@@ -55,9 +54,8 @@ void DFInstallErrorDialog::initData()
             itemModel.strFontInstallStatus = DApplication::translate("ExceptionWindow", "Installed");
 
             m_installErrorFontModelList.push_back(itemModel);
-            qDebug() << "verifyFontFiles->" << it << " :Installed file";
         } else {
-            qDebug() << "verifyFontFiles->" << it << " :new file";
+//            qDebug() << "verifyFontFiles->" << it << " :new file";
         }
     }
 }

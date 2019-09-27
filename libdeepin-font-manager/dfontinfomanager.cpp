@@ -218,15 +218,12 @@ DFontInfo DFontInfoManager::getFontInfo(const QString &filePath)
         QString fontFamily = QString(fontFamilyList.first().toLocal8Bit());
         fontInfo.familyName = fontFamily;
     }
-    qDebug() << "QFontDatabase::applicationFontFamilies:" << fontInfo.familyName << endl;
 
     if (fontInfo.familyName.trimmed().length() < 1) {
         fontInfo.familyName = QString::fromUtf8(DFreeTypeUtil::getFontFamilyName(m_face));
-        qDebug() << "DFreeTypeUtil::getFontFamilyName:" << fontInfo.familyName << endl;
     }
     if (fontInfo.familyName.trimmed().length() < 1) {
         fontInfo.familyName = QString::fromLatin1(m_face->family_name);
-        qDebug() << "m_face->family_name:" << fontInfo.familyName << endl;
     }
 
     fontInfo.styleName = QString::fromLatin1(m_face->style_name);

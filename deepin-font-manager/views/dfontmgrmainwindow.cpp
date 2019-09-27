@@ -435,12 +435,15 @@ void DFontMgrMainWindow::initFontPreviewListView(DFrame *parent)
     m_noResultListView = new DListView;
 
     DLabel *noResultLabel = new DLabel(m_noResultListView);
-    noResultLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    noResultLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    noResultLabel->setFixedHeight(30);
     noResultLabel->setText(DApplication::translate("SearchBar", "No Result"));
-    QFont labelFont;
+    QString fontFamilyName = Utils::loadFontFamilyFromFiles(":/images/SourceHanSansCN-Normal.ttf");
+    QFont labelFont(fontFamilyName);
+    labelFont.setWeight(QFont::ExtraLight);
     labelFont.setPixelSize(20);
     noResultLabel->setFont(labelFont);
-    noResultLabel->setAlignment(Qt::AlignCenter);
+    noResultLabel->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
 
     QVBoxLayout *lblLayout = new QVBoxLayout;
     lblLayout->addWidget(noResultLabel);
