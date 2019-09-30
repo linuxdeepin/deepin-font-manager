@@ -679,6 +679,8 @@ void DFontMgrMainWindow::onPreviewTextChanged(const QString &currStr)
         filterModel->setData(modelIndex, QVariant(previewText), Dtk::UserRole + 1);
         filterModel->setData(modelIndex, QVariant(iFontSize), Dtk::UserRole + 2);
     }
+
+    m_fontPreviewListView->scrollToTop();
 }
 
 void DFontMgrMainWindow::onFontSizeChanged(int fontSize)
