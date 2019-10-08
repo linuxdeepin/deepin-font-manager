@@ -26,5 +26,6 @@
         <file>images/dark_uncollection_normal.svg</file>
         <file>images/SourceHanSansCN-Medium.ttf</file>
         <file>images/SourceHanSansCN-Normal.ttf</file>
+        <file>images/SourceHanSansCN-Bold.ttf</file>
     </qresource>
 </RCC>

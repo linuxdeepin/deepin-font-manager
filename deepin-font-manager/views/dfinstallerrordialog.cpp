@@ -221,7 +221,6 @@ void DFInstallErrorDialog::initInstallErrorFontViews()
     QString fontFamilyName = Utils::loadFontFamilyFromFiles(":/images/SourceHanSansCN-Medium.ttf");
     QFont btnFont(fontFamilyName);
     btnFont.setPixelSize(14);
-    btnFont.setWeight(QFont::Medium);
 
     m_quitInstallBtn = new DPushButton;
     m_quitInstallBtn->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);

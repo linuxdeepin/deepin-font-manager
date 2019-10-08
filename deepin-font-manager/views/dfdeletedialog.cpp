@@ -37,31 +37,53 @@ void DFDeleteDialog::initUI()
     m_fontLogo->setAttribute(Qt::WA_TransparentForMouseEvents);
     m_fontLogo->setPixmap(Utils::renderSVG(":/images/deepin-font-manager.svg", m_fontLogo->size()));
 
+    QString msgFontFamily = Utils::loadFontFamilyFromFiles(":/images/SourceHanSansCN-Medium.ttf");
+    QString msgBFontFamily = Utils::loadFontFamilyFromFiles(":/images/SourceHanSansCN-Bold.ttf");
+
     m_messageA = new DLabel(this);
     m_messageA->setText(
         DApplication::translate("DeleteConfirmDailog", "Are you sure to delete this font?"));
     m_messageA->setFixedHeight(20);
     m_messageA->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    QFont msgAFont(msgFontFamily);
+    msgAFont.setPixelSize(14);
+    m_messageA->setFont(msgAFont);
 
     m_messageB = new DLabel(this);
     m_messageB->setText(DApplication::translate(
-        "DeleteConfirmDailog", "This font will not be available to applications."));
+        "DeleteConfirmDailog", "This font will not be available to applications"));
     m_messageB->setFixedHeight(20);
     m_messageB->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    QFont msgBFont(msgBFontFamily);
+    msgBFont.setPixelSize(14);
+    msgBFont.setWeight(QFont::Bold);
+    m_messageB->setFont(msgBFont);
+//    DPalette paMsgB = DApplicationHelper::instance()->palette(m_messageB);
+//    paMsgB.setColor(DPalette::WindowText, QColor("#6A829F"));
+//    m_messageB->setPalette(paMsgB);
+
+    QString fontFamilyName = Utils::loadFontFamilyFromFiles(":/images/SourceHanSansCN-Medium.ttf");
+    QFont btnFont(fontFamilyName);
+    btnFont.setPixelSize(14);
 
     QHBoxLayout *actionBarLayout = new QHBoxLayout();
     actionBarLayout->setSpacing(0);
     actionBarLayout->setContentsMargins(0, 0, 0, 0);
 
     m_cancelBtn = new DPushButton(this);
-    m_cancelBtn->setFixedHeight(42);
+    m_cancelBtn->setFixedHeight(38);
     m_cancelBtn->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
     m_cancelBtn->setText(DApplication::translate("DeleteConfirmDailog", "Cancel"));
+    m_cancelBtn->setFont(btnFont);
 
     m_confirmBtn = new DPushButton(this);
-    m_confirmBtn->setFixedHeight(42);
+    m_confirmBtn->setFixedHeight(38);
     m_confirmBtn->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
-    m_confirmBtn->setText(DApplication::translate("DeleteConfirmDailog", "Confirm"));
+    m_confirmBtn->setText(DApplication::translate("DeleteConfirmDailog", "Delete"));
+    m_confirmBtn->setFont(btnFont);
+    DPalette paBtn = DApplicationHelper::instance()->palette(m_confirmBtn);
+    paBtn.setColor(DPalette::ButtonText, paBtn.color(DPalette::TextWarning));
+    m_confirmBtn->setPalette(paBtn);
 
     DVerticalLine *verticalSplite = new DVerticalLine(this);
     DPalette pa = DApplicationHelper::instance()->palette(verticalSplite);

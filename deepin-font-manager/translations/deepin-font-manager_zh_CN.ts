@@ -142,8 +142,8 @@
             <translation>您确定要删除此字体吗?</translation>
         </message>
         <message>
-            <source>This font will not be available to applications.</source>
-            <translation>删除后该字体将不可用于其他应用程序.</translation>
+            <source>This font will not be available to applications</source>
+            <translation>删除后该字体将不可用于其他应用程序</translation>
         </message>
         <message>
             <source>Cancel</source>
@@ -152,6 +152,10 @@
         <message>
             <source>Confirm</source>
             <translation>确认</translation>
+        </message>
+        <message>
+            <source>Delete</source>
+            <translation>删除</translation>
         </message>
     </context>
     <context>
