@@ -4,6 +4,7 @@
 #include <DDialog>
 #include <DLabel>
 #include <DPushButton>
+#include <DWarningButton>
 
 DWIDGET_USE_NAMESPACE
 
@@ -28,7 +29,7 @@ private:
     DLabel* m_messageA;
     DLabel* m_messageB;
     DPushButton* m_cancelBtn;
-    DPushButton* m_confirmBtn;
+    DWarningButton* m_confirmBtn;
 };
 
 #endif  // DFDELETEDIALOG_H

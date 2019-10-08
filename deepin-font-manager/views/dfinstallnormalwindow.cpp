@@ -18,6 +18,8 @@ DFInstallNormalWindow::DFInstallNormalWindow(const QStringList &files, QWidget *
     , m_fontManager(DFontManager::instance())
     , m_verifyTimer(new QTimer(this))
 {
+//    setWindowOpacity(0.5);
+
     initUI();
     initConnections();
 }
@@ -46,23 +48,34 @@ void DFInstallNormalWindow::initUI()
     m_logoLabel->setAttribute(Qt::WA_TransparentForMouseEvents);
     m_logoLabel->setPixmap(Utils::renderSVG(":/images/deepin-font-manager.svg", m_logoLabel->size()));
 
+    QString fontFamily = Utils::loadFontFamilyFromFiles(":/images/SourceHanSansCN-Medium.ttf");
+
     m_titleLabel = new DLabel(this);
-    QFont titleFont;
+    QFont titleFont(fontFamily);
+    titleFont.setWeight(QFont::Medium);
     titleFont.setPixelSize(14);
     m_titleLabel->setFont(titleFont);
+    m_titleLabel->setAlignment(Qt::AlignBottom | Qt::AlignHCenter);
     m_titleLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    m_titleLabel->setFixedHeight(20);
     m_titleLabel->setText(DApplication::translate("NormalInstallWindow", "Font Installation"));
 
     // titleLayout->addSpacing(10);
     titleLayout->addWidget(m_logoLabel);
-    titleLayout->addWidget(m_titleLabel, 0, Qt::AlignHCenter | Qt::AlignVCenter);
+    titleLayout->addWidget(m_titleLabel);
+    titleLayout->addSpacing(10+m_logoLabel->width());
 
     m_titleFrame->setLayout(titleLayout);
 
     mainLayout->addWidget(m_titleFrame, 0, Qt::AlignTop);
 
+    QVBoxLayout *contentLayout = new QVBoxLayout();
+    contentLayout->setSpacing(0);
+    contentLayout->setContentsMargins(10, 0, 0, 0);
+
     m_progressStepLabel = new DLabel(this);
-    QFont pslFont;
+    QFont pslFont(fontFamily);
+    pslFont.setWeight(QFont::Medium);
     pslFont.setPixelSize(14);
     m_progressStepLabel->setFont(pslFont);
     m_progressStepLabel->setFixedHeight(20);
@@ -76,15 +89,18 @@ void DFInstallNormalWindow::initUI()
     m_currentFontLabel->setText("");
 
     m_progressBar = new DProgressBar(this);
+    m_progressBar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     m_progressBar->setFixedHeight(6);
 
-    mainLayout->addSpacing(10);
-    mainLayout->addWidget(m_progressStepLabel);
-    mainLayout->addSpacing(7);
-    mainLayout->addWidget(m_currentFontLabel);
-    mainLayout->addSpacing(7);
-    mainLayout->addWidget(m_progressBar);
-    mainLayout->addSpacing(20);
+    contentLayout->addSpacing(10);
+    contentLayout->addWidget(m_progressStepLabel);
+    contentLayout->addSpacing(7);
+    contentLayout->addWidget(m_currentFontLabel);
+    contentLayout->addSpacing(7);
+    contentLayout->addWidget(m_progressBar);
+    contentLayout->addSpacing(20);
+
+    mainLayout->addLayout(contentLayout);
 
     m_mainFrame = new DFrame(this);
     m_mainFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);

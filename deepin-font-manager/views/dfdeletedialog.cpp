@@ -76,14 +76,11 @@ void DFDeleteDialog::initUI()
     m_cancelBtn->setText(DApplication::translate("DeleteConfirmDailog", "Cancel"));
     m_cancelBtn->setFont(btnFont);
 
-    m_confirmBtn = new DPushButton(this);
+    m_confirmBtn = new DWarningButton(this);
     m_confirmBtn->setFixedHeight(38);
     m_confirmBtn->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
     m_confirmBtn->setText(DApplication::translate("DeleteConfirmDailog", "Delete"));
     m_confirmBtn->setFont(btnFont);
-    DPalette paBtn = DApplicationHelper::instance()->palette(m_confirmBtn);
-    paBtn.setColor(DPalette::ButtonText, paBtn.color(DPalette::TextWarning));
-    m_confirmBtn->setPalette(paBtn);
 
     DVerticalLine *verticalSplite = new DVerticalLine(this);
     DPalette pa = DApplicationHelper::instance()->palette(verticalSplite);
