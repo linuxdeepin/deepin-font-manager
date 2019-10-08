@@ -5,18 +5,56 @@
 #include <QButtonGroup>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
+#include <QStylePainter>
 
 #include <DApplication>
+#include <DStyleHelper>
+#include <DGuiApplicationHelper>
 #include <DApplicationHelper>
+#include <DStyleOptionButton>
 #include <DVerticalLine>
 #include <DCheckBox>
 #include <DLog>
+
+#include "dstyleoption.h"
+
+DWIDGET_USE_NAMESPACE
+
+DFMSuggestButton::DFMSuggestButton(QWidget *parent)
+    : QPushButton(parent)
+{
+
+}
+
+DFMSuggestButton::DFMSuggestButton(const QString &text, QWidget *parent)
+    : QPushButton(text, parent)
+{
+}
+
+void DFMSuggestButton::paintEvent(QPaintEvent *event)
+{
+    Q_UNUSED(event)
+
+    QStylePainter p(this);
+    DStyleOptionButton option;
+    initStyleOption(&option);
+    option.init(this);
+    option.features |= QStyleOptionButton::ButtonFeature(DStyleOptionButton::SuggestButton);
+
+    DGuiApplicationHelper *appHelper = DGuiApplicationHelper::instance();
+    DPalette pa = appHelper->standardPalette(appHelper->themeType());
+    option.palette.setColor(QPalette::ButtonText, pa.color(QPalette::HighlightedText));
+    option.palette.setBrush(QPalette::Light, pa.brush(DPalette::LightLively));
+    option.palette.setBrush(QPalette::Dark, pa.brush(DPalette::DarkLively));
+
+    p.drawControl(QStyle::CE_PushButton, option);
+}
 
 DFInstallErrorDialog::DFInstallErrorDialog(QWidget *parent, QStringList errorInstallFontFileList)
     : DDialog(parent)
     , m_errorInstallFiles(errorInstallFontFileList)
 {
-    //setWindowOpacity(0.3); //Debug
+//    setWindowOpacity(0.3); //Debug
 
     initData();
     initUI();
@@ -115,12 +153,13 @@ void DFInstallErrorDialog::initTitleBar()
     titleFont.setPixelSize(14);
     titleLabel->setFont(titleFont);
     titleLabel->setAlignment(Qt::AlignCenter);
-    titleLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    titleLabel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    titleLabel->setFixedSize(368, 32);
 
     QHBoxLayout *titleLayout = new QHBoxLayout;
     titleLayout->setMargin(0);
     titleLayout->setAlignment(Qt::AlignVCenter);
-    titleLayout->setContentsMargins(9, 0, 9 + 32, 0);
+    titleLayout->setContentsMargins(10, 9, 0, 0);
     titleLayout->setSpacing(0);
     titleLayout->addWidget(logoLabel);
     titleLayout->addWidget(titleLabel);
@@ -168,11 +207,12 @@ void DFInstallErrorDialog::initInstallErrorFontViews()
     QHBoxLayout *buttonLayout = new QHBoxLayout;
     buttonLayout->setMargin(0);
     buttonLayout->setSpacing(0);
-    buttonLayout->setContentsMargins(6, 6, 6, 6);
+    buttonLayout->setContentsMargins(10, 0, 10, 0);
 
+    int btnHeight = 38;
     DFrame *btnFrame = new DFrame;
     btnFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    btnFrame->setFixedHeight(36+20);
+    btnFrame->setFixedHeight(btnHeight+15);
     btnFrame->setLayout(buttonLayout);
 
     QButtonGroup *btnGroup = new QButtonGroup(this);
@@ -186,10 +226,12 @@ void DFInstallErrorDialog::initInstallErrorFontViews()
     m_quitInstallBtn = new DPushButton;
     m_quitInstallBtn->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     m_quitInstallBtn->setFont(btnFont);
+    m_quitInstallBtn->setFixedSize(204, btnHeight);
     m_quitInstallBtn->setText(DApplication::translate("ExceptionWindow", "Exit"));
 
     m_continueInstallBtn = new DSuggestButton;
     m_continueInstallBtn->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    m_continueInstallBtn->setFixedSize(204, btnHeight);
     m_continueInstallBtn->setFont(btnFont);
     m_continueInstallBtn->setText(DApplication::translate("ExceptionWindow", "Continue"));
 
@@ -209,9 +251,9 @@ void DFInstallErrorDialog::initInstallErrorFontViews()
     verticalSplit->setAutoFillBackground(true);
 
     buttonLayout->addWidget(m_quitInstallBtn);
-    buttonLayout->addSpacing(6);
+    buttonLayout->addSpacing(10);
     buttonLayout->addWidget(verticalSplit);
-    buttonLayout->addSpacing(6);
+    buttonLayout->addSpacing(9);
     buttonLayout->addWidget(m_continueInstallBtn);
 
     m_installErrorListView = new DFInstallErrorListView(m_installErrorFontModelList, this);

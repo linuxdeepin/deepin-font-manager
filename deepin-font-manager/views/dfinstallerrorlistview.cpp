@@ -1,5 +1,6 @@
 #include "dfinstallerrorlistview.h"
 #include "globaldef.h"
+#include "utils.h"
 
 #include <QPainter>
 #include <QMouseEvent>
@@ -47,7 +48,7 @@ void DFInstallErrorListDelegate::paint(QPainter *painter, const QStyleOptionView
         rect.setWidth(option.rect.width());
         rect.setHeight(option.rect.height());
 
-        QRect bgRect = QRect(rect.left()+10, rect.top(), rect.width()-20, rect.height());
+        QRect bgRect = QRect(rect.left()+10, rect.top(), rect.width()-18, rect.height());
 
         if (itemModel.bSelectable) {
 
@@ -85,7 +86,7 @@ void DFInstallErrorListDelegate::paint(QPainter *painter, const QStyleOptionView
 
         int checkBoxSize = 20;
         DCheckBox checkBox;
-        QRect checkboxRect = QRect(bgRect.left() + 8, bgRect.top()+14+2, checkBoxSize-4, checkBoxSize-4);
+        QRect checkboxRect = QRect(bgRect.left() + 10, bgRect.top()+14+2, checkBoxSize-4, checkBoxSize-4);
         checkBoxOption.rect = checkboxRect;
         DApplication::style()->drawPrimitive(QStyle::PE_IndicatorCheckBox,
                                              &checkBoxOption,
@@ -99,7 +100,8 @@ void DFInstallErrorListDelegate::paint(QPainter *painter, const QStyleOptionView
                                        bgRect.width()-fontNameLeft-statusLabelMaxWidth,
                                        checkboxRect.height());
 
-        QFont nameFont;
+        QString fontFamilyName = Utils::loadFontFamilyFromFiles(":/images/SourceHanSansCN-Medium.ttf");
+        QFont nameFont(fontFamilyName);
         nameFont.setPixelSize(14);
         painter->setFont(nameFont);
 
@@ -117,7 +119,7 @@ void DFInstallErrorListDelegate::paint(QPainter *painter, const QStyleOptionView
                                         statusLabelMaxWidth,
                                         bgRect.height());
 
-        QFont installStatusFont;
+        QFont installStatusFont(fontFamilyName);
         installStatusFont.setPixelSize(11);
         painter->setFont(installStatusFont);
 

@@ -9,10 +9,26 @@
 #include <DFrame>
 #include <DLabel>
 #include <DPushButton>
-#include <DSuggestButton>
+//#include <DSuggestButton>
 #include <QResizeEvent>
 
 DWIDGET_USE_NAMESPACE
+DCORE_USE_NAMESPACE
+
+class DFMSuggestButton;
+typedef DFMSuggestButton DSuggestButton;
+
+class DFMSuggestButton : public QPushButton, public DObject
+{
+    Q_OBJECT
+
+public:
+    explicit DFMSuggestButton(QWidget *parent = nullptr);
+    explicit DFMSuggestButton(const QString &text, QWidget *parent = nullptr);
+
+protected:
+    void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
+};
 
 class DFInstallErrorDialog : public DDialog
 {
