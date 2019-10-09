@@ -24,6 +24,7 @@ struct DFontPreviewItemData {
     int iFontSize;            //字体大小
     QString strFontPreview;   //字体预览内容
     bool isEnabled;           //是否启用
+    bool isPreviewEnabled;    //是否启用(用于预览字体delegate,由于启用/禁用字体不是及时生效,需要该字段保存启用历史状态)
     bool isCollected;         //是否收藏
     QString strFontId;        //字体唯一id,对应数据库表中的fontId
 
@@ -51,6 +52,7 @@ struct DFontPreviewItemData {
         iFontSize = 0;
         strFontPreview = "";
         isEnabled = false;
+        isPreviewEnabled = false;
         isCollected = false;
         strFontId = "";
 

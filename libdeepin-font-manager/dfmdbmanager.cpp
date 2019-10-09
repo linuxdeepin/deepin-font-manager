@@ -32,6 +32,28 @@ inline bool DFMDBManager::isSystemFont(QString filePath)
     return filePath.contains("/usr/share/fonts/deepin-font-install") ? false : true;
 }
 
+DFontPreviewItemData DFMDBManager::parseRecordToItemData(const QMap<QString, QString> &record)
+{
+    DFontPreviewItemData itemData;
+
+    itemData.strFontId = record.value("fontId");
+    QString filePath = record.value("filePath");
+    itemData.strFontName = record.value("fontName");
+    QFileInfo filePathInfo(filePath);
+    itemData.strFontFileName = filePathInfo.baseName();
+    itemData.strFontPreview = FTM_DEFAULT_PREVIEW_TEXT;
+    itemData.iFontSize = FTM_DEFAULT_PREVIEW_FONTSIZE;
+    itemData.isEnabled = record.value("isEnabled").toInt();
+    itemData.isPreviewEnabled = itemData.isEnabled;
+    itemData.isCollected = record.value("isCollected").toInt();
+    itemData.isChineseFont = record.value("isChineseFont").toInt();
+    itemData.isMonoSpace = record.value("isMonoSpace").toInt();
+
+    itemData.fontInfo = getDFontInfo(record);
+
+    return itemData;
+}
+
 DFontInfo DFMDBManager::getDFontInfo(const QMap<QString, QString> &record)
 {
     DFontInfo fontInfo;
@@ -84,20 +106,7 @@ QList<DFontPreviewItemData> DFMDBManager::getAllFontInfo()
     for (int i = 0; i < recordList.size(); ++i) {
         QMap<QString, QString> record = recordList.at(i);
         if (record.size() > 0) {
-            DFontPreviewItemData itemData;
-            itemData.strFontId = record.value("fontId");
-            QString filePath = record.value("filePath");
-            itemData.strFontName = record.value("fontName");
-            QFileInfo filePathInfo(filePath);
-            itemData.strFontFileName = filePathInfo.baseName();
-            itemData.strFontPreview = FTM_DEFAULT_PREVIEW_TEXT;
-            itemData.iFontSize = FTM_DEFAULT_PREVIEW_FONTSIZE;
-            itemData.isEnabled = record.value("isEnabled").toInt();
-            itemData.isCollected = record.value("isCollected").toInt();
-            itemData.isChineseFont = record.value("isChineseFont").toInt();
-            itemData.isMonoSpace = record.value("isMonoSpace").toInt();
-            itemData.fontInfo = getDFontInfo(record);
-
+            DFontPreviewItemData itemData = parseRecordToItemData(record);
             fontItemDataList.push_back(itemData);
         }
     }
@@ -124,20 +133,7 @@ QList<DFontPreviewItemData> DFMDBManager::findFontInfosByCondition(QMap<QString,
     for (int i = 0; i < recordList.size(); ++i) {
         QMap<QString, QString> record = recordList.at(i);
         if (record.size() > 0) {
-            DFontPreviewItemData itemData;
-            itemData.strFontId = record.value("fontId");
-            QString filePath = record.value("filePath");
-            itemData.strFontName = record.value("fontName");
-            QFileInfo filePathInfo(filePath);
-            itemData.strFontFileName = filePathInfo.baseName();
-            itemData.strFontPreview = FTM_DEFAULT_PREVIEW_TEXT;
-            itemData.iFontSize = FTM_DEFAULT_PREVIEW_FONTSIZE;
-            itemData.isEnabled = record.value("isEnabled").toInt();
-            itemData.isCollected = record.value("isCollected").toInt();
-            itemData.isChineseFont = record.value("isChineseFont").toInt();
-            itemData.isMonoSpace = record.value("isMonoSpace").toInt();
-            itemData.fontInfo = getDFontInfo(record);
-
+            DFontPreviewItemData itemData = parseRecordToItemData(record);
             fontItemDataList.push_back(itemData);
         }
     }
@@ -161,20 +157,7 @@ DFontPreviewItemData DFMDBManager::findFontInfoByFontId(QString strFontId)
     for (int i = 0; i < recordList.size(); ++i) {
         QMap<QString, QString> record = recordList.at(i);
         if (record.size() > 0) {
-            DFontPreviewItemData itemData;
-            itemData.strFontId = record.value("fontId");
-            QString filePath = record.value("filePath");
-            itemData.strFontName = record.value("fontName");
-            QFileInfo filePathInfo(filePath);
-            itemData.strFontFileName = filePathInfo.baseName();
-            itemData.strFontPreview = FTM_DEFAULT_PREVIEW_TEXT;
-            itemData.iFontSize = FTM_DEFAULT_PREVIEW_FONTSIZE;
-            itemData.isEnabled = record.value("isEnabled").toInt();
-            itemData.isCollected = record.value("isCollected").toInt();
-            itemData.isChineseFont = record.value("isChineseFont").toInt();
-            itemData.isMonoSpace = record.value("isMonoSpace").toInt();
-            itemData.fontInfo = getDFontInfo(record);
-
+            DFontPreviewItemData itemData = parseRecordToItemData(record);
             fontItemDataList.push_back(itemData);
         }
     }
@@ -204,20 +187,7 @@ DFontPreviewItemData DFMDBManager::findFontInfoByFilePath(QString strFontFilePat
     for (int i = 0; i < recordList.size(); ++i) {
         QMap<QString, QString> record = recordList.at(i);
         if (record.size() > 0) {
-            DFontPreviewItemData itemData;
-            itemData.strFontId = record.value("fontId");
-            QString filePath = record.value("filePath");
-            itemData.strFontName = record.value("fontName");
-            QFileInfo filePathInfo(filePath);
-            itemData.strFontFileName = filePathInfo.baseName();
-            itemData.strFontPreview = FTM_DEFAULT_PREVIEW_TEXT;
-            itemData.iFontSize = FTM_DEFAULT_PREVIEW_FONTSIZE;
-            itemData.isEnabled = record.value("isEnabled").toInt();
-            itemData.isCollected = record.value("isCollected").toInt();
-            itemData.isChineseFont = record.value("isChineseFont").toInt();
-            itemData.isMonoSpace = record.value("isMonoSpace").toInt();
-            itemData.fontInfo = getDFontInfo(record);
-
+            DFontPreviewItemData itemData = parseRecordToItemData(record);
             fontItemDataList.push_back(itemData);
         }
     }

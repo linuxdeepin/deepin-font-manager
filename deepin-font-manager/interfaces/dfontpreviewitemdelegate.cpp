@@ -163,45 +163,65 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
                                           collectIconSize, collectIconSize);
         painter->drawPixmap(collectIconRealRect, pixmap);
 
-        QFont preivewFont(data.fontInfo.familyName);
-        preivewFont.setPixelSize(iFontSize);
-        QString styleName = data.fontInfo.styleName;
-
-        if (styleName.contains("Italic")) {
-            preivewFont.setItalic(true);
-        }
-
-        if (styleName.contains("Regular")) {
-            preivewFont.setWeight(QFont::Normal);
-        } else if (styleName.contains("Bold")) {
-            preivewFont.setWeight(QFont::Bold);
-        } else if (styleName.contains("Light")) {
-            preivewFont.setWeight(QFont::Light);
-        } else if (styleName.contains("Thin")) {
-            preivewFont.setWeight(QFont::Thin);
-        } else if (styleName.contains("ExtraLight")) {
-            preivewFont.setWeight(QFont::ExtraLight);
-        } else if (styleName.contains("ExtraBold")) {
-            preivewFont.setWeight(QFont::ExtraBold);
-        } else if (styleName.contains("Medium")) {
-            preivewFont.setWeight(QFont::Medium);
-        } else if (styleName.contains("DemiBold")) {
-            preivewFont.setWeight(QFont::DemiBold);
-        } else if (styleName.contains("Black")) {
-            preivewFont.setWeight(QFont::Black);
-        }
-
-        QFontMetrics fontMetric(preivewFont);
-        QString strElidedText = fontMetric.elidedText(strFontPreview, Qt::ElideRight,
-                                                      bgRect.width() - 50 - collectIconSize - 15, Qt::TextShowMnemonic);
-
         QRect fontPreviewRect = QRect(fontNameRect.left(), bgRect.top() + 26, bgRect.width() - 50 - collectIconSize - 15,
                                 bgRect.height() - 26);
-        //绘制预览字体
-        painter->setPen(QPen(option.palette.color(DPalette::Text)));
-        painter->setFont(preivewFont);
-        painter->drawText(fontPreviewRect, Qt::AlignLeft | Qt::AlignVCenter, strElidedText);
+        if (data.isPreviewEnabled) {
 
+            QFont preivewFont(data.fontInfo.familyName);
+            preivewFont.setPixelSize(iFontSize);
+            QString styleName = data.fontInfo.styleName;
+
+            if (styleName.contains("Italic")) {
+                preivewFont.setItalic(true);
+            }
+
+            if (styleName.contains("Regular")) {
+                preivewFont.setWeight(QFont::Normal);
+            } else if (styleName.contains("Bold")) {
+                preivewFont.setWeight(QFont::Bold);
+            } else if (styleName.contains("Light")) {
+                preivewFont.setWeight(QFont::Light);
+            } else if (styleName.contains("Thin")) {
+                preivewFont.setWeight(QFont::Thin);
+            } else if (styleName.contains("ExtraLight")) {
+                preivewFont.setWeight(QFont::ExtraLight);
+            } else if (styleName.contains("ExtraBold")) {
+                preivewFont.setWeight(QFont::ExtraBold);
+            } else if (styleName.contains("Medium")) {
+                preivewFont.setWeight(QFont::Medium);
+            } else if (styleName.contains("DemiBold")) {
+                preivewFont.setWeight(QFont::DemiBold);
+            } else if (styleName.contains("Black")) {
+                preivewFont.setWeight(QFont::Black);
+            }
+
+            QFontMetrics fontMetric(preivewFont);
+            QString previewText = Utils::convertToPreviewString(data.fontInfo.filePath, strFontPreview);
+            QString elidedText = fontMetric.elidedText(previewText,
+                                                       Qt::ElideRight,
+                                                       bgRect.width() - 50 - collectIconSize - 15,
+                                                       Qt::TextShowMnemonic);
+            //绘制预览字体
+            painter->setPen(QPen(option.palette.color(DPalette::Text)));
+            painter->setFont(preivewFont);
+            painter->drawText(fontPreviewRect, Qt::AlignLeft | Qt::AlignVCenter, elidedText);
+        }
+        else {
+
+            //禁用字体时使用系统默认字体显示
+            QFont preivewFont;
+            preivewFont.setPixelSize(iFontSize);
+            QFontMetrics fontMetric(preivewFont);
+            QString previewText = strFontPreview;
+            QString elidedText = fontMetric.elidedText(previewText,
+                                                       Qt::ElideRight,
+                                                       bgRect.width() - 50 - collectIconSize - 15,
+                                                       Qt::TextShowMnemonic);
+            //绘制预览字体
+            painter->setPen(QPen(option.palette.color(DPalette::Text)));
+            painter->setFont(preivewFont);
+            painter->drawText(fontPreviewRect, Qt::AlignLeft | Qt::AlignVCenter, elidedText);
+        }
         painter->restore();
     } else {
         QStyledItemDelegate::paint(painter, option, index);

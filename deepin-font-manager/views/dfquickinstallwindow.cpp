@@ -254,6 +254,10 @@ void DFQuickInstallWindow::InitPreviewFont(DFontInfo fontInfo)
             preivewFont.setWeight(QFont::Black);
         }
 
+        QString strFontPreview = m_fontPreviewTxt->toPlainText();
+        strFontPreview = Utils::convertToPreviewString(fontInfo.filePath, strFontPreview);
+
+        m_fontPreviewTxt->setText(strFontPreview);
         m_fontPreviewTxt->setFont(preivewFont);
 
         m_titleLabel->setText(fontInfo.familyName);

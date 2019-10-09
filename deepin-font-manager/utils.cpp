@@ -186,3 +186,39 @@ const QString Utils::holdTextInRect(const QFont &font, QString text, const QSize
 
     return lines.join("");
 }
+
+QString Utils::convertToPreviewString(QString fontFilePath, QString srcString)
+{
+    if (fontFilePath.isEmpty()) {
+        return srcString;
+    }
+
+    QString strFontPreview = srcString;
+
+    QRawFont rawFont(fontFilePath, 0, QFont::PreferNoHinting);
+    bool isSupport = rawFont.supportsCharacter(QChar('a'));
+    bool isSupportF = rawFont.supportsCharacter(QChar('a'|0xf000));
+    if ((!isSupport && isSupportF)) {
+        QChar *chArr = new QChar[srcString.length()+1];
+        for(int i=0; i<srcString.length(); i++)
+        {
+            int ch = srcString.at(i).toLatin1();
+            //判断字符ascii在32～126范围内(共95个)
+            if (ch >= 32 && ch <= 126)
+            {
+                ch |= 0xf000;
+                chArr[i] = QChar(ch);
+            }
+            else
+            {
+                chArr[i] = srcString.at(i);
+            }
+        }
+        chArr[srcString.length()] = '\0';
+        QString strResult(chArr);
+        strFontPreview = strResult;
+        delete[] chArr;
+    }
+
+    return strFontPreview;
+}

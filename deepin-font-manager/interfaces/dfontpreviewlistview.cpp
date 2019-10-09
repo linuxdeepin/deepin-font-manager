@@ -95,6 +95,7 @@ void DFontPreviewListView::insertFontItemData(QStandardItemModel *sourceModel, Q
     itemData.strFontPreview = FTM_DEFAULT_PREVIEW_TEXT;
     itemData.iFontSize = FTM_DEFAULT_PREVIEW_FONTSIZE;
     itemData.isEnabled = true;
+    itemData.isPreviewEnabled = true;
     itemData.isCollected = false;
     itemData.isChineseFont = chineseFontPathList.contains(filePath);
     itemData.isMonoSpace = monoSpaceFontPathList.contains(filePath);
@@ -193,9 +194,11 @@ void DFontPreviewListView::syncFontEnableDisableStatusData(QStringList disableFo
         //disableFontMap为被禁用的字体map
         if (disableFontMap.value(keyFilePath)) {
             fontItemData.isEnabled = false;
+            fontItemData.isPreviewEnabled = false;
         }
         else {
             fontItemData.isEnabled = true;
+            fontItemData.isPreviewEnabled = true;
         }
 
         m_dbManager->updateFontInfoByFontFilePath(keyFilePath, "isEnabled", QString::number(fontItemData.isEnabled));
