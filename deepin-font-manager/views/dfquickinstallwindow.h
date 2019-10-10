@@ -40,9 +40,7 @@ public slots:
     void onInstallBtnClicked();
 
 private:
-    DLabel* m_logoLabel {nullptr};
     DLabel* m_titleLabel {nullptr};
-    DFrame* m_titleFrame {nullptr};
     DFrame* m_mainFrame {nullptr};
 
     DComboBox* m_fontType {nullptr};

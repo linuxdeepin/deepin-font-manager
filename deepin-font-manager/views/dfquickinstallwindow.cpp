@@ -33,46 +33,21 @@ DFQuickInstallWindow::~DFQuickInstallWindow()
 void DFQuickInstallWindow::initUI()
 {
     setFixedSize(QSize(DEFAULT_WINDOW_W, DEFAULT_WINDOW_H));
-    // titlebar()->setIcon(QIcon(":/images/deepin-font-manager.svg"));
-    // titlebar()->setTitle("思源字体");
-    // titlebar()->setT  //   "思源字体");
-    // ToDo:
-    //    Need localize the string
+
+    //Set task bar icon
     setWindowIcon(QIcon(":/images/deepin-font-manager.svg"));
 
-    m_logoLabel = new DLabel(this);
-    m_logoLabel->setObjectName("LogoLabel");
-    m_logoLabel->setFixedSize(QSize(32, 32));
-    m_logoLabel->setFocusPolicy(Qt::NoFocus);
-    m_logoLabel->setAttribute(Qt::WA_TransparentForMouseEvents);
-    m_logoLabel->setPixmap(Utils::renderSVG(":/images/deepin-font-manager.svg", m_logoLabel->size()));
+    titlebar()->setFixedHeight(40);
+    titlebar()->setIcon(QIcon(":/images/deepin-font-manager.svg"));
 
     m_titleLabel = new DLabel(this);
     m_titleLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     m_titleLabel->setText("思源字体");
 
-    m_titleFrame = new DFrame(this);
-    m_titleFrame->setObjectName("TitleBar");
-    // d->titleFrame->setStyleSheet("background: yellow");  // debug
-    m_titleFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-
-    QHBoxLayout *titleLayout = new QHBoxLayout();
-    titleLayout->setContentsMargins(0, 0, 0, 0);
-    titleLayout->setMargin(0);
-    titleLayout->setSpacing(0);
-
-    titleLayout->addSpacing(7);
-    titleLayout->addWidget(m_logoLabel);
-    titleLayout->addStretch(2);
-    titleLayout->addWidget(m_titleLabel, 0, Qt::AlignBottom);
-    titleLayout->addStretch(1);
-
-    m_titleFrame->setLayout(titleLayout);
-
-    titlebar()->setCustomWidget(m_titleFrame, false);
+    titlebar()->addWidget(m_titleLabel, Qt::AlignBottom|Qt::AlignHCenter);
 
     QVBoxLayout *mainLayout = new QVBoxLayout();
-    mainLayout->setContentsMargins(20, 0, 20, 10);
+    mainLayout->setContentsMargins(20, 0, 20, 20);
     mainLayout->setSpacing(0);
 
     // Style combox
@@ -85,9 +60,13 @@ void DFQuickInstallWindow::initUI()
 
     // m_fontPreviewTxt->setFixedHeight(216);
     m_fontPreviewTxt->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    //    QFont previewFont;
-    //    previewFont.setPixelSize(28);
-    //    m_fontPreviewTxt->setFont(previewFont);
+    QFont previewFont;
+    previewFont.setPixelSize(28);
+    m_fontPreviewTxt->setFont(previewFont);
+    m_fontPreviewTxt->document()->setDefaultTextOption(QTextOption(Qt::AlignHCenter));
+    m_fontPreviewTxt->document()->setDefaultFont(previewFont);
+    m_fontPreviewTxt->setFocusPolicy(Qt::FocusPolicy::NoFocus);
+    m_fontPreviewTxt->setReadOnly(true);
 
     m_fontPreviewTxt->setText(
         "汉体书写信息技术标准相容\n"
@@ -112,7 +91,7 @@ void DFQuickInstallWindow::initUI()
     m_oldPaStateLbl = DApplicationHelper::instance()->palette(m_stateLabel);
 
     m_actionBtn = new DPushButton(this);
-    m_actionBtn->setFixedSize(QSize(120, 36));
+    m_actionBtn->setFixedSize(QSize(120, 40));
     m_actionBtn->setFocusPolicy(Qt::FocusPolicy::NoFocus);
     // m_actionBtn->setFont(actionFont);
     m_actionBtn->setText(DApplication::translate("QuickInstallWindow", "Install Font"));
@@ -121,8 +100,9 @@ void DFQuickInstallWindow::initUI()
     actionBarLayout->addWidget(m_stateLabel);
     actionBarLayout->addStretch();
     actionBarLayout->addWidget(m_actionBtn);
-    actionBarLayout->addSpacing(20);
+    //actionBarLayout->addSpacing(20);
 
+    mainLayout->addSpacing(6);
     mainLayout->addWidget(m_fontType, 0, Qt::AlignCenter);
     mainLayout->addSpacing(10);
     mainLayout->addWidget(m_fontPreviewTxt);
