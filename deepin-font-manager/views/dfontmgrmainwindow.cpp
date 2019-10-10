@@ -274,10 +274,7 @@ void DFontMgrMainWindow::initTileFrame()
     D_D(DFontMgrMainWindow);
 
     //Add logo
-    titlebar()->setIcon(QIcon(Utils::renderSVG(
-                                  ":/images/deepin-font-manager.svg"
-                                  ,QSize(32, 32)
-                                  ) ) );
+    titlebar()->setIcon(QIcon::fromTheme(DEEPIN_FONT_MANAGER));
 
     //Action area add a extra space
     d->titleActionArea = new DFrame(this);

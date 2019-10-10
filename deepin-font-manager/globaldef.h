@@ -43,9 +43,7 @@
 //Deepin manaul binary name
 #define DEEPIN_MANUAL_NAME "dman"
 
-//ToDo:
-//Need to modify font manager binary name when dman is updated
 //Font manager binary name
-#define DEEPIN_FONT_MANAGER "deepin-font-installer"
+#define DEEPIN_FONT_MANAGER "deepin-font-manager"
 
 #endif  // GLOBALDEF_H

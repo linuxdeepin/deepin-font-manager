@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
     app.setOrganizationName("deepin");
     app.setApplicationVersion(DApplication::buildVersion("1.0"));
     app.setApplicationAcknowledgementPage("https://www.deepin.org/original/deepin-font-installer/");
-    app.setProductIcon(QIcon(":/images/deepin-font-manager.svg"));
+    app.setProductIcon(QIcon::fromTheme(DEEPIN_FONT_MANAGER));
     app.setProductName(DApplication::translate("Main", "Deepin Font Manager"));
     app.setApplicationDescription(
         DApplication::translate("Main",

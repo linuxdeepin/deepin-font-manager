@@ -38,7 +38,7 @@ void SingleFontApplication::setMainWindow(DMainWindow *mainWindow)
 {
     m_qspMainWnd.reset(mainWindow);
     m_qspMainWnd->setMinimumSize(DEFAULT_WINDOWS_WIDTH, DEFAULT_WINDOWS_HEIGHT);
-    m_qspMainWnd->setWindowIcon(QIcon(":/images/deepin-font-manager.svg"));
+    m_qspMainWnd->setWindowIcon(QIcon::fromTheme(DEEPIN_FONT_MANAGER));
 }
 
 void SingleFontApplication::parseCmdLine(){

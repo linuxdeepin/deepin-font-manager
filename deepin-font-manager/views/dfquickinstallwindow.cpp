@@ -2,6 +2,7 @@
 #include "dfontinfomanager.h"
 #include "dfontmanager.h"
 #include "utils.h"
+#include "globaldef.h"
 
 #include <QFontDatabase>
 #include <QResizeEvent>
@@ -35,10 +36,10 @@ void DFQuickInstallWindow::initUI()
     setFixedSize(QSize(DEFAULT_WINDOW_W, DEFAULT_WINDOW_H));
 
     //Set task bar icon
-    setWindowIcon(QIcon(":/images/deepin-font-manager.svg"));
+    setWindowIcon(QIcon::fromTheme(DEEPIN_FONT_MANAGER));
 
     titlebar()->setFixedHeight(40);
-    titlebar()->setIcon(QIcon(":/images/deepin-font-manager.svg"));
+    titlebar()->setIcon(QIcon::fromTheme(DEEPIN_FONT_MANAGER));
 
     m_titleLabel = new DLabel(this);
     m_titleLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
