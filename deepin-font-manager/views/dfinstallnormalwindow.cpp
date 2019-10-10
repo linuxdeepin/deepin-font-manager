@@ -89,8 +89,8 @@ void DFInstallNormalWindow::initUI()
     m_currentFontLabel->setText("");
 
     m_progressBar = new DProgressBar(this);
-    m_progressBar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    m_progressBar->setFixedHeight(6);
+    m_progressBar->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    m_progressBar->setFixedSize(380-42, 6);
 
     contentLayout->addSpacing(10);
     contentLayout->addWidget(m_progressStepLabel);
