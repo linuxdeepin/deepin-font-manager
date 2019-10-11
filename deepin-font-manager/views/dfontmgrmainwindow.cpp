@@ -743,13 +743,17 @@ void DFontMgrMainWindow::onFontUninstallFinished(const QModelIndex &uninstallInd
 
 void DFontMgrMainWindow::onFontListViewRowCountChanged(bool bShowNoResult)
 {
+    Q_D(DFontMgrMainWindow);
+
     if (bShowNoResult) {
         m_fontPreviewListView->hide();
         m_noResultListView->show();
+        d->stateBar->hide();
     }
     else {
         m_fontPreviewListView->show();
         m_noResultListView->hide();
+        d->stateBar->show();
     }
 
     int sourceModelRowCount = DFMDBManager::instance()->getRecordCount();

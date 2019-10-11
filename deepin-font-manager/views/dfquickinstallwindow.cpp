@@ -33,6 +33,10 @@ DFQuickInstallWindow::~DFQuickInstallWindow()
 
 void DFQuickInstallWindow::initUI()
 {
+    //hide maximize button, minimize button & menu button
+    setWindowFlags(windowFlags() & ~Qt::WindowMaximizeButtonHint & ~Qt::WindowMinimizeButtonHint);
+    titlebar()->setMenuVisible(false);
+
     setFixedSize(QSize(DEFAULT_WINDOW_W, DEFAULT_WINDOW_H));
 
     //Set task bar icon
