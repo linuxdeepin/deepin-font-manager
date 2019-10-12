@@ -43,6 +43,10 @@ void DFQuickInstallWindow::initUI()
     //Set task bar icon
     setWindowIcon(QIcon::fromTheme(DEEPIN_FONT_MANAGER));
 
+    //Clear titlebar's background
+    titlebar()->setBackgroundRole(QPalette::Background);
+    titlebar()->setAutoFillBackground(false);
+
     titlebar()->setFixedHeight(40);
     titlebar()->setIcon(QIcon::fromTheme(DEEPIN_FONT_MANAGER));
 

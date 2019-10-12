@@ -55,7 +55,7 @@ void DFontPreviewer::paintEvent(QPaintEvent *event) {
 
     painter.setRenderHint(QPainter::Antialiasing);
     DPalette pa = DApplicationHelper::instance()->palette(this);
-    painter.setBrush(QBrush(pa.color(DPalette::Button)));
+    painter.setBrush(QBrush(pa.color(DPalette::Base)));
     painter.setPen(Qt::transparent);
 
     QRect rect = this->rect();
