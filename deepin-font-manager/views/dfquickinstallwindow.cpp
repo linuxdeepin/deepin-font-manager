@@ -3,6 +3,7 @@
 #include "dfontmanager.h"
 #include "utils.h"
 #include "globaldef.h"
+#include "interfaces/dfontpreviewer.h"
 
 #include <QFontDatabase>
 #include <QResizeEvent>
@@ -60,7 +61,7 @@ void DFQuickInstallWindow::initUI()
     m_fontType->setFixedSize(QSize(114, 36));
 
     // Text Preview
-    m_fontPreviewTxt = new DTextEdit(this);
+    m_fontPreviewTxt = new DFontPreviewer(this);
     // m_fontPreviewTxt->setFixedSize(QSize(381, 216));
 
     // m_fontPreviewTxt->setFixedHeight(216);
@@ -68,18 +69,6 @@ void DFQuickInstallWindow::initUI()
     QFont previewFont;
     previewFont.setPixelSize(28);
     m_fontPreviewTxt->setFont(previewFont);
-    m_fontPreviewTxt->document()->setDefaultTextOption(QTextOption(Qt::AlignHCenter));
-    m_fontPreviewTxt->document()->setDefaultFont(previewFont);
-    m_fontPreviewTxt->setFocusPolicy(Qt::FocusPolicy::NoFocus);
-    m_fontPreviewTxt->setReadOnly(true);
-
-    m_fontPreviewTxt->setText(
-        "汉体书写信息技术标准相容\n"
-        "档案下载使用界面简单\n"
-        "支援服务升级资讯专业制作\n"
-        "创意空间快速无线上网\n"
-        "㈠㈡㈢㈣㈤㈥㈦㈧㈨㈩\n"
-        "AaBbCc ＡａＢｂＣｃ");
 
     // Action bar
     QHBoxLayout *actionBarLayout = new QHBoxLayout();
@@ -239,11 +228,8 @@ void DFQuickInstallWindow::InitPreviewFont(DFontInfo fontInfo)
             preivewFont.setWeight(QFont::Black);
         }
 
-        QString strFontPreview = m_fontPreviewTxt->toPlainText();
-        strFontPreview = Utils::convertToPreviewString(fontInfo.filePath, strFontPreview);
-
-        m_fontPreviewTxt->setText(strFontPreview);
         m_fontPreviewTxt->setFont(preivewFont);
+        m_fontPreviewTxt->setPreviewFontPath(fontInfo.filePath);
 
         m_titleLabel->setText(fontInfo.familyName);
     }

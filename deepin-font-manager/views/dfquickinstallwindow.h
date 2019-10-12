@@ -13,6 +13,7 @@ DWIDGET_USE_NAMESPACE
 class DFontInfoManager;
 class DFontManager;
 struct DFontInfo;
+class DFontPreviewer;
 
 class DFQuickInstallWindow : public DMainWindow
 {
@@ -44,7 +45,7 @@ private:
     DFrame* m_mainFrame {nullptr};
 
     DComboBox* m_fontType {nullptr};
-    DTextEdit* m_fontPreviewTxt {nullptr};
+    DFontPreviewer* m_fontPreviewTxt {nullptr};
 
     DLabel* m_stateLabel {nullptr};
     DPushButton* m_actionBtn {nullptr};

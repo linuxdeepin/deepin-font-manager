@@ -33,7 +33,8 @@ HEADERS += utils.h \
     views/dfquickinstallwindow.h \
     views/dfinstallerrorlistview.h \
     views/dfdeletedialog.h \
-    singlefontapplication.h
+    singlefontapplication.h \
+    interfaces/dfontpreviewer.h
 
 SOURCES += main.cpp \
 	   utils.cpp \
@@ -50,7 +51,8 @@ SOURCES += main.cpp \
     views/dfontinfodialog.cpp \
     views/dfquickinstallwindow.cpp \
     views/dfdeletedialog.cpp \
-    singlefontapplication.cpp
+    singlefontapplication.cpp \
+    interfaces/dfontpreviewer.cpp
 
 RESOURCES += deepin-font-manager.qrc
 TRANSLATIONS += translations/deepin-font-manager.ts
