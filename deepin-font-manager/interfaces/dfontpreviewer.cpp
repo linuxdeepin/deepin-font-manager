@@ -33,6 +33,8 @@ void DFontPreviewer::InitConnections()
 
 void DFontPreviewer::onPreviewFontChanged()
 {
+    m_previewTexts.clear();
+    InitData();
     foreach(auto it, m_previewTexts) {
         QString text = Utils::convertToPreviewString(m_fontPath, it);
         m_previewTexts.replaceInStrings(it, text);
@@ -66,7 +68,7 @@ void DFontPreviewer::paintEvent(QPaintEvent *event) {
     painterPath.addRoundedRect(rect, 8, 8);
     painter.drawPath(painterPath);
 
-    int topSpace = 5;
+    int topSpace = 0;
     int fontHeight = painter.font().pixelSize();
     int textline = m_previewTexts.size();
     int textSpace = (event->rect().height() - textline*fontHeight-topSpace) / (textline+1);
