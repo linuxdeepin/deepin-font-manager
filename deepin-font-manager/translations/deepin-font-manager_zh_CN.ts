@@ -4,12 +4,12 @@
     <context>
         <name>Main</name>
         <message>
-            <source>Deepin Font Installer</source>
-            <translation>深度字管理器</translation>
+            <source>Deepin Font Manager</source>
+            <translation>深度字体管理器</translation>
         </message>
         <message>
-            <source>Deepin Font Installer is used to install and uninstall font file for users with bulk install function.</source>
-            <translation>深度字体安装器用于帮助用户安装和卸载字体文件，支持批量安装。</translation>
+            <source>Deepin Font Manager is used to install and uninstall font file for users with bulk install function.</source>
+            <translation>深度字体管理器用于帮助用户安装和卸载字体文件，支持批量安装。</translation>
         </message>
     </context>
     <context>
