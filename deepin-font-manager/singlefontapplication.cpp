@@ -149,7 +149,7 @@ void SingleFontApplication::activateWindow() {
 
         Q_ASSERT(pMainWnd != nullptr);
 
-        if (m_selectedFiles.size() > 0) {
+        if (m_selectedFiles.size() > 0 && (!m_selectedFiles.at(0).isEmpty())) {
             qDebug() << "File:" << m_selectedFiles << " to quick install.";
 
             m_qspMainWnd->setVisible(false);

@@ -46,7 +46,7 @@ void DFInstallNormalWindow::initUI()
     m_logoLabel->setFixedSize(QSize(32, 32));
     m_logoLabel->setFocusPolicy(Qt::NoFocus);
     m_logoLabel->setAttribute(Qt::WA_TransparentForMouseEvents);
-    m_logoLabel->setPixmap(Utils::renderSVG(":/images/deepin-font-manager.svg", m_logoLabel->size()));
+    m_logoLabel->setPixmap(QIcon::fromTheme(DEEPIN_FONT_MANAGER).pixmap( m_logoLabel->size()));
 
     QString fontFamily = Utils::loadFontFamilyFromFiles(":/images/SourceHanSansCN-Medium.ttf");
 
