@@ -72,7 +72,7 @@ DFontMgrMainWindow::DFontMgrMainWindow(bool isQuickMode, QWidget *parent)
     , m_scZoomOut(nullptr)
     , m_scDefaultSize(nullptr)
     , m_previewFontSize(DEFAULT_FONT_SIZE)
-    , m_quickInstallWnd(new DFQuickInstallWindow())
+    , m_quickInstallWnd(nullptr)
     , d_ptr(new DFontMgrMainWindowPrivate(this))
 {
     // setWindowOpacity(0.5); //Debug
@@ -154,20 +154,6 @@ void DFontMgrMainWindow::initConnections()
 
         onFontSizeChanged(value);
     });
-
-    // Quick install mode handle
-    QObject::connect(this, &DFontMgrMainWindow::quickModeInstall, this,
-                     [this](const QStringList &files) {
-                         connect(m_quickInstallWnd.get(), &DFQuickInstallWindow::quickInstall, this,
-                                 [this, files]() { this->installFont(files); });
-                         m_quickInstallWnd.get()->setWindowModality(Qt::WindowModal);
-                         m_quickInstallWnd->onFileSelected(files);
-                         m_quickInstallWnd->show();
-                         m_quickInstallWnd->raise();       //Reative the window
-                         m_quickInstallWnd->activateWindow();
-
-                         Dtk::Widget::moveToCenter(m_quickInstallWnd.get());
-                     });
 
     // Search text changed
     QObject::connect(d->searchFontEdit, SIGNAL(textChanged(const QString &)), this,
@@ -634,7 +620,30 @@ void DFontMgrMainWindow::setQuickInstallMode(bool isQuick)
 
 void DFontMgrMainWindow::hideQucikInstallWindow()
 {
-    m_quickInstallWnd->setVisible(false);
+    if (m_quickInstallWnd.get() != nullptr) {
+        m_quickInstallWnd->setVisible(false);
+    }
+}
+
+void DFontMgrMainWindow::InitQuickWindowIfNeeded()
+{
+    if (m_quickInstallWnd.get() == nullptr) {
+        m_quickInstallWnd.reset(new DFQuickInstallWindow());
+
+        // Quick install mode handle
+        QObject::connect(this, &DFontMgrMainWindow::quickModeInstall, this,
+                         [this](const QStringList &files) {
+            connect(m_quickInstallWnd.get(), &DFQuickInstallWindow::quickInstall, this,
+                    [this, files]() { this->installFont(files); });
+            m_quickInstallWnd.get()->setWindowModality(Qt::WindowModal);
+            m_quickInstallWnd->onFileSelected(files);
+            m_quickInstallWnd->show();
+            m_quickInstallWnd->raise();       //Reative the window
+            m_quickInstallWnd->activateWindow();
+
+            Dtk::Widget::moveToCenter(m_quickInstallWnd.get());
+        });
+    }
 }
 
 void DFontMgrMainWindow::onSearchTextChanged(const QString &currStr)

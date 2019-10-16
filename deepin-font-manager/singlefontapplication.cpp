@@ -153,6 +153,7 @@ void SingleFontApplication::activateWindow() {
             qDebug() << "File:" << m_selectedFiles << " to quick install.";
 
             m_qspMainWnd->setVisible(false);
+            pMainWnd->InitQuickWindowIfNeeded();
             pMainWnd->setQuickInstallMode(true);
             QMetaObject::invokeMethod(m_qspMainWnd.get(), "quickModeInstall", Qt::QueuedConnection,
                                       Q_ARG(QStringList, m_selectedFiles));
