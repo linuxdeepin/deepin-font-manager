@@ -3,6 +3,7 @@
 
 #include "dfontpreviewitemdef.h"
 #include "dfontpreviewitemdelegate.h"
+#include "dfontpreviewlistdatathread.h"
 #include "dfontpreviewproxymodel.h"
 #include "dfmdbmanager.h"
 
@@ -24,7 +25,9 @@ public:
     void initFontListData();
     void initDelegate();
 
-    void refreshFontListData(QStandardItemModel *sourceModel, bool isStartup = false);
+    int getListDataCount();
+    bool isListDataLoadFinished();
+    void refreshFontListData();
 
     void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
     void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
@@ -43,22 +46,17 @@ public:
     DFontPreviewProxyModel *getFontPreviewProxyModel();
     void removeRowAtIndex(QModelIndex modelIndex);
 
-    DFMDBManager *m_dbManager;
-
 private:
     void initConnections();
-    void insertFontItemData(QStandardItemModel *sourceModel, QString filePath, int index,
-                            QStringList chineseFontPathList, QStringList monoSpaceFontPathList);
-
-    //从fontconfig配置文件同步字体启用/禁用状态数据
-    void syncFontEnableDisableStatusData(QStringList disableFontPathList);
 
     bool enableFont(DFontPreviewItemData itemData);
     bool disableFont(DFontPreviewItemData itemData);
 
     inline QRect getCollectionIconRect(QRect visualRect);
 
+    bool m_bLoadDataFinish;
     bool m_bLeftMouse;
+    QWidget *m_parentWidget;
     QStandardItemModel *m_fontPreviewItemModel {nullptr};
     QList<DFontPreviewItemData> m_fontPreviewItemDataList;
     DFontPreviewItemDelegate *m_fontPreviewItemDelegate {nullptr};
@@ -67,6 +65,8 @@ private:
 
     QModelIndex m_currModelIndex;
     DFontPreviewProxyModel *m_fontPreviewProxyModel {nullptr};
+
+    DFontPreviewListDataThread *m_dataThread;
 
 signals:
     //用于DFontPreviewListView内部使用的信号
@@ -82,6 +82,7 @@ private slots:
     void onListViewItemEnableBtnClicked(QModelIndex index);
     void onListViewItemCollectionBtnClicked(QModelIndex index);
     void onListViewShowContextMenu(QModelIndex index);
+    void onFinishedDataLoad();
 };
 
 #endif  // DFONTPREVIEWLISTVIEW_H

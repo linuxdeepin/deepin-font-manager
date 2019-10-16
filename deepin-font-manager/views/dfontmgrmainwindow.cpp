@@ -167,9 +167,6 @@ void DFontMgrMainWindow::initConnections()
 
     QObject::connect(m_fontManager, SIGNAL(uninstallFontFinished(const QModelIndex &)), this,
                      SLOT(onFontUninstallFinished(const QModelIndex &)));
-
-    DFontPreviewProxyModel *filterModel = m_fontPreviewListView->getFontPreviewProxyModel();
-    QObject::connect(filterModel, SIGNAL(onFilterFinishRowCountChanged(bool)), this, SLOT(onFontListViewRowCountChanged(bool)));
 }
 
 void DFontMgrMainWindow::initShortcuts()
@@ -650,6 +647,10 @@ void DFontMgrMainWindow::onSearchTextChanged(const QString &currStr)
 {
     Q_D(DFontMgrMainWindow);
 
+    if (!m_fontPreviewListView->isListDataLoadFinished()) {
+        return;
+    }
+
     QString strSearchFontName = currStr;
     qDebug() << strSearchFontName << endl;
 
@@ -668,6 +669,10 @@ void DFontMgrMainWindow::onSearchTextChanged(const QString &currStr)
 void DFontMgrMainWindow::onPreviewTextChanged(const QString &currStr)
 {
     Q_D(DFontMgrMainWindow);
+
+    if (!m_fontPreviewListView->isListDataLoadFinished()) {
+        return;
+    }
 
     QString previewText = currStr;
     if (0 == currStr.length()) {
@@ -691,6 +696,10 @@ void DFontMgrMainWindow::onPreviewTextChanged(const QString &currStr)
 
 void DFontMgrMainWindow::onFontSizeChanged(int fontSize)
 {
+    if (!m_fontPreviewListView->isListDataLoadFinished()) {
+        return;
+    }
+
     DFontPreviewProxyModel *filterModel = m_fontPreviewListView->getFontPreviewProxyModel();
     qDebug() << __FUNCTION__ << "filter Count:" << filterModel->rowCount() << endl;
 
@@ -722,6 +731,11 @@ void DFontMgrMainWindow::showFontFilePostion()
 void DFontMgrMainWindow::onLeftSiderBarItemClicked(int index)
 {
     Q_D(DFontMgrMainWindow);
+
+    if (!m_fontPreviewListView->isListDataLoadFinished()) {
+        return;
+    }
+
     qDebug() << __FUNCTION__ << index << endl;
     DSplitListWidget::FontGroup filterGroup = qvariant_cast<DSplitListWidget::FontGroup>(index);
 
@@ -737,11 +751,7 @@ void DFontMgrMainWindow::onLeftSiderBarItemClicked(int index)
 
 void DFontMgrMainWindow::onFontInstallFinished()
 {
-    DFontPreviewProxyModel *filterModel = m_fontPreviewListView->getFontPreviewProxyModel();
-
-    QStandardItemModel *sourceModel = qobject_cast<QStandardItemModel *>(filterModel->sourceModel());
-
-    m_fontPreviewListView->refreshFontListData(sourceModel);
+    m_fontPreviewListView->refreshFontListData();
 }
 
 void DFontMgrMainWindow::onFontUninstallFinished(const QModelIndex &uninstallIndex)
