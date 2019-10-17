@@ -61,10 +61,6 @@ void DFontPreviewListView::refreshFontListData()
 
     QList<DFontPreviewItemData> fontInfoList = m_dataThread->getFontModelList();
     qDebug() << "total count:" << fontInfoList.size();
-    int sourceModelRowCount = fontInfoList.size();
-    if (m_fontPreviewProxyModel) {
-        m_fontPreviewProxyModel->setSourceModelRowCount(sourceModelRowCount);
-    }
 
     QList<DFontPreviewItemData> diffFontInfoList = m_dataThread->getDiffFontModelList();
     QStandardItemModel *sourceModel = qobject_cast<QStandardItemModel *>(m_fontPreviewProxyModel->sourceModel());
@@ -85,11 +81,6 @@ void DFontPreviewListView::onFinishedDataLoad()
     //qDebug() << "onFinishedDataLoad thread id = " << QThread::currentThreadId();
     QList<DFontPreviewItemData> fontInfoList = m_dataThread->getFontModelList();
     //qDebug() << fontInfoList.size();
-    int sourceModelRowCount = fontInfoList.size();
-    if (m_fontPreviewProxyModel) {
-        m_fontPreviewProxyModel->setSourceModelRowCount(sourceModelRowCount);
-    }
-
     for (int i = 0; i < fontInfoList.size(); ++i) {
 
         DFontPreviewItemData itemData = fontInfoList.at(i);
@@ -381,5 +372,5 @@ void DFontPreviewListView::removeRowAtIndex(QModelIndex modelIndex)
 
     m_fontPreviewProxyModel->removeRow(modelIndex.row(), modelIndex.parent());
 
-    m_dataThread->removeFontDataAtIndex(itemData.index);
+    m_dataThread->removeFontData(itemData);
 }

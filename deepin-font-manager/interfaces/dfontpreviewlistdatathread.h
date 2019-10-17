@@ -19,7 +19,7 @@ public:
     void syncFontEnableDisableStatusData(QStringList disableFontPathList);
 
     void refreshFontListData(bool isStartup = false);
-    void removeFontDataAtIndex(int removeIndex);
+    void removeFontData(DFontPreviewItemData removeItemData);
 
     void insertFontItemData(QString filePath,
                             int index,

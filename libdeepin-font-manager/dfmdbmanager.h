@@ -32,7 +32,7 @@ public:
     void endTransaction();
 
 private:
-    DFontPreviewItemData parseRecordToItemData(const QMap<QString, QString> &record, int index);
+    DFontPreviewItemData parseRecordToItemData(const QMap<QString, QString> &record);
     QMap<QString, QString> mapItemData(DFontPreviewItemData itemData);
     DFontInfo getDFontInfo(const QMap<QString, QString> &record);
     inline bool isSystemFont(QString filePath);

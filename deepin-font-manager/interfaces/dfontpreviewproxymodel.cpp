@@ -1,13 +1,13 @@
 #include "dfontpreviewproxymodel.h"
 #include "dfontpreviewitemdef.h"
 #include "views/dsplitlistwidget.h"
+#include "dfontpreviewlistdatathread.h"
 
 #include <DLog>
 
 DFontPreviewProxyModel::DFontPreviewProxyModel(QObject *parent)
     : QSortFilterProxyModel(parent)
     , m_filterGroup(DSplitListWidget::AllFont)
-    , m_lastSourceModelRowCount(0)
     , m_useSystemFilter(true)
     , m_fontNamePattern("")
 {
@@ -123,27 +123,18 @@ bool DFontPreviewProxyModel::filterAcceptsRow(int source_row,
     }
 }
 
-void DFontPreviewProxyModel::setSourceModelRowCount(int totalRowCount)
-{
-    m_lastSourceModelRowCount = totalRowCount;
-}
-
 int DFontPreviewProxyModel::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent)
 
     int filterRowCount = QSortFilterProxyModel::rowCount();
-    QStandardItemModel *sourceModel = qobject_cast<QStandardItemModel *>(this->sourceModel());
+    qDebug() << "filterRowCount" << filterRowCount;
     bool bShowNoResult = false;
     if (0 == filterRowCount) {
         bShowNoResult = true;
-        int totalRowCount = 0;
-        if (sourceModel) {
-            totalRowCount = sourceModel->rowCount();
-            qDebug() << "totalRowCount:" << sourceModel->rowCount() << endl;
-            qDebug() << "m_lastSourceModelRowCount" << m_lastSourceModelRowCount << endl;
-        }
-        if (totalRowCount != m_lastSourceModelRowCount) {
+        DFontPreviewListDataThread *dataThread = DFontPreviewListDataThread::instance();
+        //结果为空时安装单个字体后filterRowCount不会变成１，这时需要自己判断处理下
+        if (1 == dataThread->getDiffFontModelList().size()) {
             bShowNoResult = false;
         }
     }

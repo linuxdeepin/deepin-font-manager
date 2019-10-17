@@ -94,7 +94,6 @@ void DFontPreviewListDataThread::insertFontItemData(QString filePath,
         itemData.strFontName = itemData.fontInfo.familyName;
     }
 
-    itemData.index = index;
     itemData.strFontId = QString::number(index);
     itemData.strFontFileName = filePathInfo.baseName();
     itemData.strFontPreview = FTM_DEFAULT_PREVIEW_TEXT;
@@ -163,9 +162,21 @@ void DFontPreviewListDataThread::refreshFontListData(bool isStartup)
     }
 }
 
-void DFontPreviewListDataThread::removeFontDataAtIndex(int removeIndex)
+void DFontPreviewListDataThread::removeFontData(DFontPreviewItemData removeItemData)
 {
-    m_fontModelList.removeAt(removeIndex);
+    m_diffFontModelList.clear();
+
+    int removeIndex = -1;
+    for(int i=0; i<m_fontModelList.size(); i++) {
+        DFontPreviewItemData itemData = m_fontModelList.at(i);
+        if (itemData.strFontId == removeItemData.strFontId) {
+            removeIndex = i;
+        }
+    }
+
+    if (removeIndex != -1) {
+        m_fontModelList.removeAt(removeIndex);
+    }
 }
 
 void DFontPreviewListDataThread::syncFontEnableDisableStatusData(QStringList disableFontPathList)

@@ -32,11 +32,10 @@ inline bool DFMDBManager::isSystemFont(QString filePath)
     return filePath.contains("/usr/share/fonts/deepin-font-install") ? false : true;
 }
 
-DFontPreviewItemData DFMDBManager::parseRecordToItemData(const QMap<QString, QString> &record, int index)
+DFontPreviewItemData DFMDBManager::parseRecordToItemData(const QMap<QString, QString> &record)
 {
     DFontPreviewItemData itemData;
 
-    itemData.index = index;
     itemData.strFontId = record.value("fontId");
     QString filePath = record.value("filePath");
     itemData.strFontName = record.value("fontName");
@@ -107,7 +106,7 @@ QList<DFontPreviewItemData> DFMDBManager::getAllFontInfo()
     for (int i = 0; i < recordList.size(); ++i) {
         QMap<QString, QString> record = recordList.at(i);
         if (record.size() > 0) {
-            DFontPreviewItemData itemData = parseRecordToItemData(record, i);
+            DFontPreviewItemData itemData = parseRecordToItemData(record);
             fontItemDataList.push_back(itemData);
         }
     }

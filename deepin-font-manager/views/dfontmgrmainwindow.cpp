@@ -774,10 +774,4 @@ void DFontMgrMainWindow::onFontListViewRowCountChanged(bool bShowNoResult)
         m_noResultListView->hide();
         d->stateBar->show();
     }
-
-    int sourceModelRowCount = DFMDBManager::instance()->getRecordCount();
-    DFontPreviewProxyModel *fontPreviewProxyModel = m_fontPreviewListView->getFontPreviewProxyModel();
-    if (fontPreviewProxyModel) {
-        fontPreviewProxyModel->setSourceModelRowCount(sourceModelRowCount);
-    }
 }
