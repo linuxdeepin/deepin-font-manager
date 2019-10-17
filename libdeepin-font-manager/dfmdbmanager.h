@@ -15,10 +15,6 @@ public:
     QList<DFontPreviewItemData> getAllFontInfo();
     int getRecordCount();
 
-    QList<DFontPreviewItemData> findFontInfosByCondition(QMap<QString, QString> whereMap);
-
-    DFontPreviewItemData findFontInfoByFontId(QString strFontId);
-    DFontPreviewItemData findFontInfoByFilePath(QString strFontFilePath);
     int getCurrMaxFontId();
 
     bool isFontInfoExist(const DFontInfo &newFileFontInfo);
@@ -36,7 +32,7 @@ public:
     void endTransaction();
 
 private:
-    DFontPreviewItemData parseRecordToItemData(const QMap<QString, QString> &record);
+    DFontPreviewItemData parseRecordToItemData(const QMap<QString, QString> &record, int index);
     QMap<QString, QString> mapItemData(DFontPreviewItemData itemData);
     DFontInfo getDFontInfo(const QMap<QString, QString> &record);
     inline bool isSystemFont(QString filePath);

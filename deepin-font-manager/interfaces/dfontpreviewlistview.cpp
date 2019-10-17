@@ -60,36 +60,31 @@ void DFontPreviewListView::refreshFontListData()
     m_dataThread->refreshFontListData();
 
     QList<DFontPreviewItemData> fontInfoList = m_dataThread->getFontModelList();
-    //qDebug() << fontInfoList.size();
+    qDebug() << "total count:" << fontInfoList.size();
     int sourceModelRowCount = fontInfoList.size();
     if (m_fontPreviewProxyModel) {
         m_fontPreviewProxyModel->setSourceModelRowCount(sourceModelRowCount);
     }
 
-    for (int i = 0; i < fontInfoList.size(); ++i) {
+    QList<DFontPreviewItemData> diffFontInfoList = m_dataThread->getDiffFontModelList();
+    QStandardItemModel *sourceModel = qobject_cast<QStandardItemModel *>(m_fontPreviewProxyModel->sourceModel());
+    for (int i = 0; i < diffFontInfoList.size(); ++i) {
 
-        DFontPreviewItemData itemData = fontInfoList.at(i);
+        DFontPreviewItemData itemData = diffFontInfoList.at(i);
         QString filePath = itemData.fontInfo.filePath;
         QFileInfo filePathInfo(filePath);
-        //如果字体文件已经不存在，则从t_manager表中删除
-        if (!filePathInfo.exists()) {
-            //删除字体之前启用字体，防止下次重新安装后就被禁用
-            enableFont(itemData);
-            DFMDBManager::instance()->deleteFontInfo("fontId", itemData.strFontId);
-            continue;
-        }
 
         QStandardItem *item = new QStandardItem;
         item->setData(QVariant::fromValue(itemData), Qt::DisplayRole);
-        m_fontPreviewItemModel->appendRow(item);
+        sourceModel->appendRow(item);
     }
 }
 
 void DFontPreviewListView::onFinishedDataLoad()
 {
-    qDebug() << "onFinishedDataLoad thread id = " << QThread::currentThreadId();
+    //qDebug() << "onFinishedDataLoad thread id = " << QThread::currentThreadId();
     QList<DFontPreviewItemData> fontInfoList = m_dataThread->getFontModelList();
-    qDebug() << fontInfoList.size();
+    //qDebug() << fontInfoList.size();
     int sourceModelRowCount = fontInfoList.size();
     if (m_fontPreviewProxyModel) {
         m_fontPreviewProxyModel->setSourceModelRowCount(sourceModelRowCount);
@@ -314,7 +309,7 @@ void DFontPreviewListView::onListViewItemEnableBtnClicked(QModelIndex index)
         qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(index));
     itemData.isEnabled = !itemData.isEnabled;
 
-    qDebug()<< "familyName" <<itemData.fontInfo.familyName << endl;
+    qDebug()<< "familyName" << itemData.fontInfo.familyName << endl;
 
     if (itemData.isEnabled) {
         enableFont(itemData);
@@ -385,4 +380,6 @@ void DFontPreviewListView::removeRowAtIndex(QModelIndex modelIndex)
     DFMDBManager::instance()->deleteFontInfoByFontId(itemData.strFontId);
 
     m_fontPreviewProxyModel->removeRow(modelIndex.row(), modelIndex.parent());
+
+    m_dataThread->removeFontDataAtIndex(itemData.index);
 }

@@ -28,6 +28,8 @@ struct DFontPreviewItemData {
     bool isCollected;         //是否收藏
     QString strFontId;        //字体唯一id,对应数据库表中的fontId
 
+    int index;                //字体index
+
     bool isChineseFont;       //是否中文字体
     bool isMonoSpace;         //是否等宽字体
 
@@ -50,6 +52,7 @@ struct DFontPreviewItemData {
         strFontName = "";
         strFontFileName = "";
         iFontSize = 0;
+        index = 0;
         strFontPreview = "";
         isEnabled = false;
         isPreviewEnabled = false;

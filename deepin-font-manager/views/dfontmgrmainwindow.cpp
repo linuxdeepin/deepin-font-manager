@@ -401,7 +401,7 @@ void DFontMgrMainWindow::initFontPreviewListView(DFrame *parent)
     listViewVBoxLayout->setSpacing(0);
     parent->setLayout(listViewVBoxLayout);
 
-    m_fontPreviewListView = new DFontPreviewListView;
+    m_fontPreviewListView = new DFontPreviewListView(this);
     m_fontPreviewListView->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     m_fontPreviewListView->setVerticalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAlwaysOff);
     m_fontPreviewListView->setHorizontalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAlwaysOff);

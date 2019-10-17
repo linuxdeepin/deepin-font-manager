@@ -19,13 +19,16 @@ public:
     void syncFontEnableDisableStatusData(QStringList disableFontPathList);
 
     void refreshFontListData(bool isStartup = false);
+    void removeFontDataAtIndex(int removeIndex);
 
     void insertFontItemData(QString filePath,
                             int index,
                             QStringList chineseFontPathList,
-                            QStringList monoSpaceFontPathList);
+                            QStringList monoSpaceFontPathList,
+                            bool isStartup = false);
 
-    QList<DFontPreviewItemData> getFontModelList();
+    QList<DFontPreviewItemData> getFontModelList() const;
+    QList<DFontPreviewItemData> getDiffFontModelList() const;
 
 signals:
     void resultReady();
@@ -39,6 +42,7 @@ protected:
 
     DFMDBManager *m_dbManager;
     QList<DFontPreviewItemData> m_fontModelList;
+    QList<DFontPreviewItemData> m_diffFontModelList;
 };
 
 #endif // DFONTPREVIEWLISTDATATHREAD_H

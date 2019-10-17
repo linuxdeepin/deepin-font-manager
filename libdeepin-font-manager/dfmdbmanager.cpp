@@ -32,10 +32,11 @@ inline bool DFMDBManager::isSystemFont(QString filePath)
     return filePath.contains("/usr/share/fonts/deepin-font-install") ? false : true;
 }
 
-DFontPreviewItemData DFMDBManager::parseRecordToItemData(const QMap<QString, QString> &record)
+DFontPreviewItemData DFMDBManager::parseRecordToItemData(const QMap<QString, QString> &record, int index)
 {
     DFontPreviewItemData itemData;
 
+    itemData.index = index;
     itemData.strFontId = record.value("fontId");
     QString filePath = record.value("filePath");
     itemData.strFontName = record.value("fontName");
@@ -106,7 +107,7 @@ QList<DFontPreviewItemData> DFMDBManager::getAllFontInfo()
     for (int i = 0; i < recordList.size(); ++i) {
         QMap<QString, QString> record = recordList.at(i);
         if (record.size() > 0) {
-            DFontPreviewItemData itemData = parseRecordToItemData(record);
+            DFontPreviewItemData itemData = parseRecordToItemData(record, i);
             fontItemDataList.push_back(itemData);
         }
     }
@@ -117,88 +118,6 @@ QList<DFontPreviewItemData> DFMDBManager::getAllFontInfo()
 int DFMDBManager::getRecordCount()
 {
     return m_sqlUtil->getRecordCount();
-}
-
-QList<DFontPreviewItemData> DFMDBManager::findFontInfosByCondition(QMap<QString, QString> whereMap)
-{
-    QList<DFontPreviewItemData> fontItemDataList;
-
-    QList<QMap<QString, QString>> recordList;
-
-    QList<QString> keyList;
-    appendAllKeys(keyList);
-
-    m_sqlUtil->findRecords(keyList, whereMap, &recordList);
-
-    for (int i = 0; i < recordList.size(); ++i) {
-        QMap<QString, QString> record = recordList.at(i);
-        if (record.size() > 0) {
-            DFontPreviewItemData itemData = parseRecordToItemData(record);
-            fontItemDataList.push_back(itemData);
-        }
-    }
-
-    return fontItemDataList;
-}
-
-DFontPreviewItemData DFMDBManager::findFontInfoByFontId(QString strFontId)
-{
-    QList<DFontPreviewItemData> fontItemDataList;
-
-    QList<QMap<QString, QString>> recordList;
-
-    QList<QString> keyList;
-    appendAllKeys(keyList);
-
-    QMap<QString, QString> whereMap;
-    whereMap.insert("fontId", strFontId);
-    m_sqlUtil->findRecords(keyList, whereMap, &recordList);
-
-    for (int i = 0; i < recordList.size(); ++i) {
-        QMap<QString, QString> record = recordList.at(i);
-        if (record.size() > 0) {
-            DFontPreviewItemData itemData = parseRecordToItemData(record);
-            fontItemDataList.push_back(itemData);
-        }
-    }
-
-    DFontPreviewItemData itemData;
-    itemData.strFontId = "-1";
-    if (recordList.size() > 0) {
-        itemData = fontItemDataList.first();
-    }
-
-    return itemData;
-}
-
-DFontPreviewItemData DFMDBManager::findFontInfoByFilePath(QString strFontFilePath)
-{
-    QList<DFontPreviewItemData> fontItemDataList;
-
-    QList<QMap<QString, QString>> recordList;
-
-    QList<QString> keyList;
-    appendAllKeys(keyList);
-
-    QMap<QString, QString> whereMap;
-    whereMap.insert("filePath", strFontFilePath);
-    m_sqlUtil->findRecords(keyList, whereMap, &recordList);
-
-    for (int i = 0; i < recordList.size(); ++i) {
-        QMap<QString, QString> record = recordList.at(i);
-        if (record.size() > 0) {
-            DFontPreviewItemData itemData = parseRecordToItemData(record);
-            fontItemDataList.push_back(itemData);
-        }
-    }
-
-    DFontPreviewItemData itemData;
-    itemData.strFontId = "-1";
-    if (recordList.size() > 0) {
-        itemData = fontItemDataList.first();
-    }
-
-    return itemData;
 }
 
 int DFMDBManager::getCurrMaxFontId()

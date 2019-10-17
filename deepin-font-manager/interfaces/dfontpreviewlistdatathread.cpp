@@ -27,6 +27,8 @@ DFontPreviewListDataThread::~DFontPreviewListDataThread() {
 
 void DFontPreviewListDataThread::doWork()
 {
+    m_fontModelList.clear();
+
     qDebug() << "doWork thread id = " << QThread::currentThreadId();
     QStringList fontNameList;
     DFontInfoManager *fontInfoMgr = DFontInfoManager::instance();
@@ -55,7 +57,7 @@ void DFontPreviewListDataThread::doWork()
     for (int i = 0; i < strAllFontList.size(); ++i) {
         QString filePath = strAllFontList.at(i);
         if (filePath.length() > 0) {
-            insertFontItemData(filePath, i + 1, chineseFontPathList, monoSpaceFontPathList);
+            insertFontItemData(filePath, i + 1, chineseFontPathList, monoSpaceFontPathList, true);
         }
     }
 
@@ -64,15 +66,21 @@ void DFontPreviewListDataThread::doWork()
     emit resultReady();
 }
 
-QList<DFontPreviewItemData> DFontPreviewListDataThread::getFontModelList()
+QList<DFontPreviewItemData> DFontPreviewListDataThread::getFontModelList() const
 {
     return m_fontModelList;
+}
+
+QList<DFontPreviewItemData> DFontPreviewListDataThread::getDiffFontModelList() const
+{
+    return m_diffFontModelList;
 }
 
 void DFontPreviewListDataThread::insertFontItemData(QString filePath,
                                                     int index,
                                                     QStringList chineseFontPathList,
-                                                    QStringList monoSpaceFontPathList)
+                                                    QStringList monoSpaceFontPathList,
+                                                    bool isStartup)
 {
     DFontInfoManager *fontInfoMgr = DFontInfoManager::instance();
     DFontPreviewItemData itemData;
@@ -86,6 +94,7 @@ void DFontPreviewListDataThread::insertFontItemData(QString filePath,
         itemData.strFontName = itemData.fontInfo.familyName;
     }
 
+    itemData.index = index;
     itemData.strFontId = QString::number(index);
     itemData.strFontFileName = filePathInfo.baseName();
     itemData.strFontPreview = FTM_DEFAULT_PREVIEW_TEXT;
@@ -99,6 +108,10 @@ void DFontPreviewListDataThread::insertFontItemData(QString filePath,
     itemData.fontInfo.isInstalled = true;
 
     m_dbManager->addFontInfo(itemData);
+
+    if (!isStartup) {
+        m_diffFontModelList.append(itemData);
+    }
 
     m_fontModelList.append(itemData);
 }
@@ -116,14 +129,18 @@ void DFontPreviewListDataThread::refreshFontListData(bool isStartup)
     for (int i = 0; i < fontInfoList.size(); ++i) {
 
         DFontPreviewItemData itemData = fontInfoList.at(i);
-        QString filePath = itemData.fontInfo.filePath;
-        QFileInfo filePathInfo(filePath);
 
-        dbFilePathSet.insert(filePath);
-
-        m_fontModelList.append(itemData);
+        if (isStartup) {
+            m_fontModelList.append(itemData);
+        }
+        else {
+            QString filePath = itemData.fontInfo.filePath;
+            QFileInfo filePathInfo(filePath);
+            dbFilePathSet.insert(filePath);
+        }
     }
 
+    m_diffFontModelList.clear();
     if (!isStartup) {
         //开启事务
         m_dbManager->beginTransaction();
@@ -138,12 +155,17 @@ void DFontPreviewListDataThread::refreshFontListData(bool isStartup)
             for (int i = 0; i < diffFilePathList.size(); ++i) {
                 QString filePath = diffFilePathList.at(i);
                 if (filePath.length() > 0) {
-                    insertFontItemData(filePath, maxFontId + i + 1, chineseFontPathList, monoSpaceFontPathList);
+                    insertFontItemData(filePath, maxFontId + i + 1, chineseFontPathList, monoSpaceFontPathList, isStartup);
                 }
             }
         }
         m_dbManager->endTransaction();
     }
+}
+
+void DFontPreviewListDataThread::removeFontDataAtIndex(int removeIndex)
+{
+    m_fontModelList.removeAt(removeIndex);
 }
 
 void DFontPreviewListDataThread::syncFontEnableDisableStatusData(QStringList disableFontPathList)
