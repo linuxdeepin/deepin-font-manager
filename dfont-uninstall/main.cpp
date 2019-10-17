@@ -53,14 +53,21 @@ int main(int argc, char *argv[])
             continue;
         }
 
-        if (fileDir.removeRecursively()) {
-#ifdef QT_DEBUG
-            qDebug() << "Delete font ok:" << fileDir.path() << " " << openFile.completeSuffix();
-#endif
-            QProcess process;
-            process.start("fc-cache");
-            process.waitForFinished();
+        QFile::remove(file);
+
+        //Fonts with same family name, different style may be
+        //installed in same dir, so only delete dir when it's
+        //empty
+        if (fileDir.isEmpty()) {
+            fileDir.removeRecursively();
         }
+
+#ifdef QT_DEBUG
+        qDebug() << "Delete font ok:" << fileDir.path() << " " << openFile.completeSuffix();
+#endif
+        QProcess process;
+        process.start("fc-cache");
+        process.waitForFinished();
     }
 
     QThread::msleep(300);
