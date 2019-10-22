@@ -1,6 +1,8 @@
 #include "dfquickinstallwindow.h"
+#include "dfinstallnormalwindow.h"
 #include "dfontinfomanager.h"
 #include "dfontmanager.h"
+#include "dfmdbmanager.h"
 #include "utils.h"
 #include "globaldef.h"
 #include "interfaces/dfontpreviewer.h"
@@ -14,11 +16,13 @@
 #include <DPushButton>
 #include <DTitlebar>
 #include <DApplicationHelper>
+#include <DWidgetUtil>
 
 DFQuickInstallWindow::DFQuickInstallWindow(QStringList files, QWidget *parent)
     : DMainWindow(parent)
     , m_fontInfoManager(DFontInfoManager::instance())
     , m_fontManager(DFontManager::instance())
+    , m_dbManager(DFMDBManager::instance())
     , m_installFiles(files)
 {
     initUI();
@@ -52,7 +56,7 @@ void DFQuickInstallWindow::initUI()
 
     m_titleLabel = new DLabel(this);
     m_titleLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    m_titleLabel->setText("思源字体");
+    m_titleLabel->setText(DApplication::translate("QuickInstallWindow", "Unknow"));
 
     titlebar()->addWidget(m_titleLabel, Qt::AlignBottom|Qt::AlignHCenter);
 
@@ -129,6 +133,9 @@ void DFQuickInstallWindow::initConnections()
 {
     connect(this, &DFQuickInstallWindow::fileSelected, this, &DFQuickInstallWindow::onFileSelected);
     connect(m_actionBtn, &DPushButton::clicked, this, &DFQuickInstallWindow::onInstallBtnClicked);
+    connect(this, &DFQuickInstallWindow::quickInstall, this, [this]() {
+        this->installFont(m_installFiles);
+    });
 }
 
 void DFQuickInstallWindow::resizeEvent(QResizeEvent *event)
@@ -143,11 +150,16 @@ void DFQuickInstallWindow::onFileSelected(QStringList fileList)
     if (fileList.size() > 0) {
         QString file = fileList.at(0);
 
+        //Clear old files
+        m_installFiles.clear();
+        m_installFiles.append(file);
+
         DFontInfo fontInfo = m_fontInfoManager->getFontInfo(file);
         if (fontInfo.isError) {
             m_stateLabel->setText(DApplication::translate("QuickInstallWindow", "File Error"));
             m_actionBtn->setDisabled(true);
-            m_fontType->setVisible(false);
+            m_fontType->clear();
+            m_fontType->addItem(DApplication::translate("QuickInstallWindow", "Unknow"));
         } else {
             if (fontInfo.isInstalled) {
                 DPalette pa = DApplicationHelper::instance()->palette(m_stateLabel);
@@ -163,10 +175,10 @@ void DFQuickInstallWindow::onFileSelected(QStringList fileList)
 
             m_titleLabel->setText(fontInfo.familyName);
 
+            m_fontType->clear();
             if (fontInfo.styleName.isEmpty()) {
                 m_fontType->addItem(DApplication::translate("QuickInstallWindow", "Unknow"));
             } else {
-                m_fontType->clear();
                 m_fontType->addItem(fontInfo.styleName);
             }
 
@@ -181,8 +193,8 @@ void DFQuickInstallWindow::onFileSelected(QStringList fileList)
 
 void DFQuickInstallWindow::onInstallBtnClicked()
 {
-    // Close Quick install first
-    close();
+    // Hide Quick install first
+    hide();
     Q_EMIT quickInstall();
 }
 
@@ -191,7 +203,7 @@ void DFQuickInstallWindow::InitPreviewFont(DFontInfo fontInfo)
     qDebug() << __FUNCTION__ << "enter";
 
     if (!fontInfo.isError) {
-        fontInfo = m_fontInfoManager->getFontInfo(fontInfo.filePath);
+        //fontInfo = m_fontInfoManager->getFontInfo(fontInfo.filePath);
         if (!fontInfo.isInstalled) {
             int fontId = QFontDatabase::addApplicationFont(fontInfo.filePath);
             QStringList familys = QFontDatabase::applicationFontFamilies(fontId);
@@ -237,4 +249,64 @@ void DFQuickInstallWindow::InitPreviewFont(DFontInfo fontInfo)
 
         m_titleLabel->setText(fontInfo.familyName);
     }
+}
+
+void DFQuickInstallWindow::installFont(const QStringList &files){
+    qDebug() << __FUNCTION__ << files;
+    DFInstallNormalWindow dfNormalInstalldlg(files, nullptr);
+
+    dfNormalInstalldlg.setSkipException(true);
+
+
+    //Update db after install finish
+    connect(&dfNormalInstalldlg, &DFInstallNormalWindow::finishFontInstall, this,
+            &DFQuickInstallWindow::onFontInstallFinished);
+
+    Dtk::Widget::moveToCenter(&dfNormalInstalldlg);
+    dfNormalInstalldlg.exec();
+}
+
+void DFQuickInstallWindow::onFontInstallFinished()
+{
+    qDebug() << __FUNCTION__ << "file:" << m_installFiles;
+
+    m_dbManager->beginTransaction();
+
+    QStringList chineseFontPathList = m_fontInfoManager->getAllChineseFontPath();
+    QStringList monoSpaceFontPathList = m_fontInfoManager->getAllMonoSpaceFontPath();
+
+    DFontPreviewItemData itemData;
+    QFileInfo filePathInfo(m_installFiles[0]);
+    itemData.fontInfo = m_fontInfoManager->getFontInfo(m_installFiles[0]);
+
+    const QString sysDir = "/usr/share/fonts/deepin-font-install";
+    QString dirName = itemData.fontInfo.familyName;
+    QString target = QObject::tr("%1/%2/%3").arg(sysDir).arg(dirName).arg(filePathInfo.fileName());
+
+    itemData.fontInfo.filePath = target;
+
+
+    if (itemData.fontInfo.styleName.length() > 0) {
+        itemData.strFontName =
+            QString("%1-%2").arg(itemData.fontInfo.familyName).arg(itemData.fontInfo.styleName);
+    } else {
+        itemData.strFontName = itemData.fontInfo.familyName;
+    }
+
+    //itemData.strFontId = QString::number(m_dbManager->getRecordCount()+1);
+    itemData.strFontFileName = filePathInfo.baseName();
+    itemData.strFontPreview = FTM_DEFAULT_PREVIEW_TEXT;
+    itemData.iFontSize = FTM_DEFAULT_PREVIEW_FONTSIZE;
+    itemData.isEnabled = true;
+    itemData.isPreviewEnabled = true;
+    itemData.isCollected = false;
+    itemData.isChineseFont = chineseFontPathList.contains(m_installFiles[0]);
+    itemData.isMonoSpace = monoSpaceFontPathList.contains(m_installFiles[0]);
+
+    itemData.fontInfo.isInstalled = true;
+
+    m_dbManager->addFontInfo(itemData);
+
+
+    m_dbManager->endTransaction();
 }

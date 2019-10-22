@@ -451,7 +451,7 @@ void DFontMgrMainWindow::initStateBar()
     QFont searchFont;
     searchFont.setPixelSize(14);
     d->textInputEdit->setFont(searchFont);
-    d->textInputEdit->setMinimumSize(QSize(FTM_SBAR_TXT_EDIT_W,FTM_SBAR_TXT_EDIT_H));
+    //d->textInputEdit->setMinimumSize(QSize(FTM_SBAR_TXT_EDIT_W,FTM_SBAR_TXT_EDIT_H));
     d->textInputEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     d->textInputEdit->setClearButtonEnabled(true);
     d->textInputEdit->lineEdit()->setPlaceholderText(DApplication::translate("StateBar", "Input preview text"));

@@ -30,6 +30,7 @@ private:
     QStringList m_selectedFiles;
 
     QScopedPointer<DMainWindow> m_qspMainWnd;  // MainWindow ptr
+    QScopedPointer<DMainWindow> m_qspQuickWnd;  // QuickInstall Window ptr
 
     bool m_isRunning {false};   //Instance already exist
     QScopedPointer<QLocalServer> m_qspLocalServer;     // socket Server

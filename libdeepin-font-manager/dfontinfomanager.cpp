@@ -78,7 +78,8 @@ DFontInfoManager *DFontInfoManager::instance()
 DFontInfoManager::DFontInfoManager(QObject *parent)
     : QObject(parent)
 {
-    refreshList();
+    //Should not be called in constructor
+    //refreshList();
 }
 
 DFontInfoManager::~DFontInfoManager() {}

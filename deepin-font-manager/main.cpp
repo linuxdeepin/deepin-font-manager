@@ -59,8 +59,6 @@ int main(int argc, char *argv[])
     DLogManager::registerFileAppender();
 
     if(!app.isRunning()) {
-        app.setMainWindow(new DFontMgrMainWindow());
-
         app.activateWindow();
 
         return app.exec();

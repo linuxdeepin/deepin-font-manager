@@ -32,6 +32,11 @@ void DFontPreviewListDataThread::doWork()
     qDebug() << "doWork thread id = " << QThread::currentThreadId();
     QStringList fontNameList;
     DFontInfoManager *fontInfoMgr = DFontInfoManager::instance();
+
+    //Call refreshList out side DFontInfoManager constructor
+    //instead of in constructor
+    fontInfoMgr->refreshList();
+
     QStringList disableFontList = DFMXmlWrapper::getFontConfigDisableFontPathList();
 
     int recordCount = m_dbManager->getRecordCount();

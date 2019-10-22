@@ -148,7 +148,7 @@ bool DFMDBManager::isFontInfoExist(const DFontInfo &newFileFontInfo)
 QMap<QString, QString> DFMDBManager::mapItemData(DFontPreviewItemData itemData)
 {
     QMap<QString, QString> mapData;
-    mapData.insert("fontId", itemData.strFontId);
+    //mapData.insert("fontId", itemData.strFontId);   //auto increament ,Don't need supply
     mapData.insert("fontName", itemData.strFontName);
     mapData.insert("isEnabled", QString::number(itemData.isEnabled));
     mapData.insert("isCollected", QString::number(itemData.isCollected));

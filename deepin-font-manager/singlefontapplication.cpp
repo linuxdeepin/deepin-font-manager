@@ -1,5 +1,6 @@
 #include "singlefontapplication.h"
 #include "views/dfontmgrmainwindow.h"
+#include "views/dfquickinstallwindow.h"
 #include "globaldef.h"
 
 #include <QFileInfo>
@@ -19,6 +20,7 @@ DCORE_USE_NAMESPACE
 SingleFontApplication::SingleFontApplication(int &argc, char **argv)
     :DApplication (argc, argv)
     ,m_qspMainWnd(nullptr)
+    ,m_qspQuickWnd(nullptr)
     ,m_qspLocalServer(nullptr)
 {
     m_serverName = QFileInfo(QCoreApplication::applicationFilePath()).fileName();
@@ -137,31 +139,48 @@ void SingleFontApplication::newLocalServer() {
 }
 
 void SingleFontApplication::activateWindow() {
-    if(m_qspMainWnd) {
+    //If quick install mode
+    if (m_selectedFiles.size() > 0 && (!m_selectedFiles.at(0).isEmpty())) {
+        qDebug() << "Active quick install window to install file:" << m_selectedFiles;
+
+        //Hide normal window in quick mode
+        if (nullptr != m_qspMainWnd.get()) {
+            m_qspMainWnd->hide();
+        }
+
+        //Init quick window at first time
+        if (nullptr == m_qspQuickWnd.get()) {
+            m_qspQuickWnd.reset(new DFQuickInstallWindow());
+        }
+
+        QMetaObject::invokeMethod(m_qspQuickWnd.get(), "fileSelected", Qt::QueuedConnection,
+                                  Q_ARG(QStringList, m_selectedFiles));
+        m_qspQuickWnd->show();
+        m_qspQuickWnd->raise();
+        m_qspQuickWnd->activateWindow(); // Reactive main window
+
+        Dtk::Widget::moveToCenter(m_qspQuickWnd.get());
+
+    } else {
+        qDebug() << "Active normal install window.";
+
+        //Hide quick window in normal mode
+        if (nullptr != m_qspQuickWnd.get()) {
+            m_qspQuickWnd->hide();
+        }
+
+        //Init Normal window at first time
+        if (nullptr == m_qspMainWnd.get()) {
+            m_qspMainWnd.reset(new DFontMgrMainWindow());
+            m_qspMainWnd->setMinimumSize(DEFAULT_WINDOWS_WIDTH, DEFAULT_WINDOWS_HEIGHT);
+        }
+
         m_qspMainWnd->show();
         m_qspMainWnd->raise();
         m_qspMainWnd->activateWindow(); // Reactive main window
-        m_qspMainWnd->resize(DEFAULT_WINDOWS_WIDTH, DEFAULT_WINDOWS_HEIGHT);
 
         Dtk::Widget::moveToCenter(m_qspMainWnd.get());
 
-        DFontMgrMainWindow* pMainWnd = reinterpret_cast<DFontMgrMainWindow*>(m_qspMainWnd.get());
-
-        Q_ASSERT(pMainWnd != nullptr);
-
-        if (m_selectedFiles.size() > 0 && (!m_selectedFiles.at(0).isEmpty())) {
-            qDebug() << "File:" << m_selectedFiles << " to quick install.";
-
-            m_qspMainWnd->setVisible(false);
-            pMainWnd->InitQuickWindowIfNeeded();
-            pMainWnd->setQuickInstallMode(true);
-            QMetaObject::invokeMethod(m_qspMainWnd.get(), "quickModeInstall", Qt::QueuedConnection,
-                                      Q_ARG(QStringList, m_selectedFiles));
-        } else {
-            //If no parameter, that is normal mode.
-            //Need hide quick window, which may be showed before.
-            pMainWnd->setQuickInstallMode(false);
-            pMainWnd->hideQucikInstallWindow();
-        }
+        m_qspMainWnd->resize(DEFAULT_WINDOWS_WIDTH, DEFAULT_WINDOWS_HEIGHT);
     }
 }

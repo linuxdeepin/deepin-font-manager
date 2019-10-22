@@ -128,7 +128,8 @@ int DFontPreviewProxyModel::rowCount(const QModelIndex &parent) const
     Q_UNUSED(parent)
 
     int filterRowCount = QSortFilterProxyModel::rowCount();
-    qDebug() << "filterRowCount" << filterRowCount;
+    //qDebug() << "filterRowCount" << filterRowCount;
+
     bool bShowNoResult = false;
     if (0 == filterRowCount) {
         bShowNoResult = true;

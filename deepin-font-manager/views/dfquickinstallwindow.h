@@ -14,6 +14,7 @@ class DFontInfoManager;
 class DFontManager;
 struct DFontInfo;
 class DFontPreviewer;
+class DFMDBManager;
 
 class DFQuickInstallWindow : public DMainWindow
 {
@@ -30,6 +31,7 @@ protected:
     void initUI();
     void initConnections();
     void InitPreviewFont(DFontInfo fontInfo);
+    void installFont(const QStringList &files);
 
     void resizeEvent(QResizeEvent* event) override;
 signals:
@@ -39,6 +41,7 @@ signals:
 public slots:
     void onFileSelected(QStringList fileList);
     void onInstallBtnClicked();
+    void onFontInstallFinished();
 
 private:
     DLabel* m_titleLabel {nullptr};
@@ -52,6 +55,8 @@ private:
 
     DFontInfoManager* m_fontInfoManager;
     DFontManager* m_fontManager;
+    DFMDBManager* m_dbManager;
+
 
     QStringList m_installFiles;
 
