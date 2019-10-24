@@ -13,13 +13,15 @@ DFontPreviewListDataThread *DFontPreviewListDataThread::instance()
 }
 
 DFontPreviewListDataThread::DFontPreviewListDataThread()
-    : m_dbManager(DFMDBManager::instance())
 {
-    mThread = new QThread();
-    this->moveToThread(mThread);
-    QObject::connect(mThread, SIGNAL(started()), this, SLOT(doWork()));
-    connect(mThread, SIGNAL(finished()), mThread, SLOT(deleteLater()));
-    mThread->start();
+    QTimer::singleShot(50, this, [this]() {
+        m_dbManager = DFMDBManager::instance();
+        mThread = new QThread();
+        moveToThread(mThread);
+        QObject::connect(mThread, SIGNAL(started()), this, SLOT(doWork()));
+        connect(mThread, SIGNAL(finished()), mThread, SLOT(deleteLater()));
+        mThread->start();
+    });
 }
 
 DFontPreviewListDataThread::~DFontPreviewListDataThread() {

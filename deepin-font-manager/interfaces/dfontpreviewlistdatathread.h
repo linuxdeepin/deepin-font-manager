@@ -37,10 +37,10 @@ protected slots:
     void doWork();
 
 protected:
-    QThread *mThread;
-    DFontPreviewListDataThread *mFunc;
+    QThread *mThread {nullptr};
+    DFontPreviewListDataThread *mFunc {nullptr};
 
-    DFMDBManager *m_dbManager;
+    DFMDBManager *m_dbManager {nullptr};
     QList<DFontPreviewItemData> m_fontModelList;
     QList<DFontPreviewItemData> m_diffFontModelList;
 };
