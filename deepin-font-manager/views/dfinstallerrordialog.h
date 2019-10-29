@@ -50,7 +50,7 @@ public:
 
     int getErrorFontCheckedCount();
 
-    DFrame *m_mainFrame;
+    QWidget *m_mainFrame;
     QVBoxLayout *m_mainLayout;
 
     DFInstallErrorListView *m_installErrorListView;
@@ -61,10 +61,10 @@ public:
 private:
     void resetContinueInstallBtnStatus();
 
-    DFrame *titleFrame;
+    QWidget *titleFrame;
     DLabel *logoLabel;
     DLabel *titleLabel;
-    DFrame *contentFrame;
+    QWidget *contentFrame;
 
     QStringList m_errorInstallFiles;
     QList<DFInstallErrorItemModel> m_installErrorFontModelList;

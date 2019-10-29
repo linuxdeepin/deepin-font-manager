@@ -37,20 +37,20 @@ public:
     }
 
     //~DFontMgrMainWindowPrivate() {}
-    DFrame *titleActionArea {nullptr};
+    QWidget *titleActionArea {nullptr};
     DIconButton *addFontButton {nullptr};
     DSearchEdit *searchFontEdit {nullptr};
 
-    DFrame *fontShowArea {nullptr};
+    QWidget *fontShowArea {nullptr};
 
-    DFrame *stateBar {nullptr};
+    QWidget *stateBar {nullptr};
     DLineEdit *textInputEdit {nullptr};
     DSlider *fontScaleSlider {nullptr};
     DLabel *fontSizeLabel {nullptr};
 
     DSplitter *mainWndSpliter {nullptr};
-    DFrame *leftBarHolder {nullptr};
-    DFrame *rightViewHolder {nullptr};
+    QWidget *leftBarHolder {nullptr};
+    QWidget *rightViewHolder {nullptr};
 
     // Menu
     DMenu *toolBarMenu {nullptr};
@@ -260,7 +260,7 @@ void DFontMgrMainWindow::initTileFrame()
     titlebar()->setIcon(QIcon::fromTheme(DEEPIN_FONT_MANAGER));
 
     //Action area add a extra space
-    d->titleActionArea = new DFrame(this);
+    d->titleActionArea = new QWidget(this);
     d->titleActionArea->setFixedSize(QSize(58,FTM_TITLE_FIXED_HEIGHT));
 
     QHBoxLayout* titleActionAreaLayout = new QHBoxLayout(d->titleActionArea);
@@ -327,11 +327,13 @@ void DFontMgrMainWindow::initLeftSideBar()
 {
     D_D(DFontMgrMainWindow);
 
-    d->leftBarHolder = new DFrame(d->mainWndSpliter);
+    d->leftBarHolder = new QWidget(d->mainWndSpliter);
     d->leftBarHolder->setObjectName("leftMainLayoutHolder");
     d->leftBarHolder->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
     d->leftBarHolder->setFixedWidth(FTM_LEFT_SIDE_BAR_WIDTH);
     d->leftBarHolder->setContentsMargins(0, 0, 2, 0);
+    d->leftBarHolder->setBackgroundRole(DPalette::Base);
+    d->leftBarHolder->setAutoFillBackground(true);
     // d->leftBarHolder->setAttribute(Qt::WA_TranslucentBackground, true);
 
     QVBoxLayout *leftMainLayout = new QVBoxLayout();
@@ -360,16 +362,18 @@ void DFontMgrMainWindow::initRightFontView()
 {
     Q_D(DFontMgrMainWindow);
 
-    d->rightViewHolder = new DFrame(d->mainWndSpliter);
+    d->rightViewHolder = new QWidget(d->mainWndSpliter);
     d->rightViewHolder->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     d->rightViewHolder->setObjectName("rightMainLayoutHolder");
+    d->rightViewHolder->setBackgroundRole(DPalette::Base);
+    d->rightViewHolder->setAutoFillBackground(true);
 
     QVBoxLayout *rightMainLayout = new QVBoxLayout();
     rightMainLayout->setContentsMargins(0, 0, 0, 0);
     rightMainLayout->setSpacing(0);
 
-    d->fontShowArea = new DFrame(this);
-    d->fontShowArea->setFrameShape(DFrame::NoFrame);
+    d->fontShowArea = new QWidget(this);
+    //d->fontShowArea->setFrameShape(DFrame::NoFrame);
     d->fontShowArea->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     initFontPreviewListView(d->fontShowArea);
@@ -391,7 +395,7 @@ void DFontMgrMainWindow::initRightFontView()
 }
 
 //初始化字体预览ListView
-void DFontMgrMainWindow::initFontPreviewListView(DFrame *parent)
+void DFontMgrMainWindow::initFontPreviewListView(QWidget *parent)
 {
     Q_D(DFontMgrMainWindow);
 
@@ -442,8 +446,8 @@ void DFontMgrMainWindow::initStateBar()
     stateBarLayout->setContentsMargins(0, 0, 0, 0);
     stateBarLayout->setSpacing(0);
 
-    d->stateBar = new DFrame(this);
-    d->stateBar->setFrameShape(DFrame::NoFrame);
+    d->stateBar = new QWidget(this);
+    //d->stateBar->setFrameShape(DFrame::NoFrame);
     d->stateBar->setFixedHeight(FTM_SBAR_HEIGHT);
     d->stateBar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 

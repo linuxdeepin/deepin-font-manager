@@ -39,6 +39,7 @@ DFQuickInstallWindow::~DFQuickInstallWindow()
 void DFQuickInstallWindow::initUI()
 {
     //hide maximize button, minimize button & menu button
+    setTitlebarShadowEnabled(false);
     setWindowFlags(windowFlags() & ~Qt::WindowMaximizeButtonHint & ~Qt::WindowMinimizeButtonHint);
     titlebar()->setMenuVisible(false);
 
@@ -111,8 +112,7 @@ void DFQuickInstallWindow::initUI()
     mainLayout->addSpacing(16);
     mainLayout->addLayout(actionBarLayout);
 
-    m_mainFrame = new DFrame(this);
-    m_mainFrame->setFrameShape(DFrame::Shape::NoFrame);
+    m_mainFrame = new QWidget(this);
     m_mainFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     m_mainFrame->setLayout(mainLayout);
 

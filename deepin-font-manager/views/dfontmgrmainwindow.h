@@ -54,7 +54,7 @@ protected:
     void initRightFontView();
     void initStateBar();
     void initRightKeyMenu();
-    void initFontPreviewListView(DFrame *parent);
+    void initFontPreviewListView(QWidget *parent);
     void initFontPreviewItemsData();
 
     void handleAddFontEvent();

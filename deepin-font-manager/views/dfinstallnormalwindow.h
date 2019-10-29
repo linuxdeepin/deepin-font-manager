@@ -69,8 +69,8 @@ private:
 
     DLabel *m_logoLabel {nullptr};
     DLabel *m_titleLabel {nullptr};
-    DFrame *m_titleFrame {nullptr};
-    DFrame *m_mainFrame {nullptr};
+    QWidget *m_titleFrame {nullptr};
+    QWidget *m_mainFrame {nullptr};
 
     DLabel *m_progressStepLabel {nullptr};
     DLabel *m_currentFontLabel {nullptr};

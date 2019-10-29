@@ -31,7 +31,7 @@ signals:
 public slots:
 
 private:
-    DFrame* m_mainFrame {nullptr};
+    QWidget* m_mainFrame {nullptr};
 
     DLabel* m_fontLogo {nullptr};
     DLabel* m_fontFileName {nullptr};

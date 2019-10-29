@@ -33,7 +33,7 @@ void DFontInfoDialog::initUI()
     mainLayout->setSpacing(0);
 
     m_mainFrame = new DFrame(this);
-    m_mainFrame->setFrameShape(DFrame::Shape::NoFrame);
+    //m_mainFrame->setFrameShape(DFrame::Shape::NoFrame);
     m_mainFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     // Font logo
@@ -53,7 +53,8 @@ void DFontInfoDialog::initUI()
 
     /**************************Basic info panel****BEGIN*******************************/
     m_basicInfoFrame = new DFrame(this);
-    m_basicInfoFrame->setFrameShape(DFrame::Shape::NoFrame);
+    m_basicInfoFrame->setBackgroundRole(DPalette::Base);
+    //m_basicInfoFrame->setFrameShape(DFrame::Shape::NoFrame);
     m_basicInfoFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     QVBoxLayout *baseicInfoLayout = new QVBoxLayout();

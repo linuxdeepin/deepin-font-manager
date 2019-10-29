@@ -38,7 +38,7 @@ void DFInstallNormalWindow::initUI()
     titleLayout->setSpacing(0);
     titleLayout->setContentsMargins(0, 0, 0, 0);
 
-    m_titleFrame = new DFrame(this);
+    m_titleFrame = new QWidget(this);
     m_titleFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     m_titleFrame->setFixedHeight(50);
 
@@ -102,7 +102,7 @@ void DFInstallNormalWindow::initUI()
 
     mainLayout->addLayout(contentLayout);
 
-    m_mainFrame = new DFrame(this);
+    m_mainFrame = new QWidget(this);
     m_mainFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     m_mainFrame->setLayout(mainLayout);
 

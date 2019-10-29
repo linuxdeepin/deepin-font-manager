@@ -122,7 +122,7 @@ void DFInstallErrorDialog::initMainFrame()
     m_mainLayout->setSpacing(0);
     m_mainLayout->setContentsMargins(0, 0, 0, 0);
 
-    m_mainFrame = new DFrame(this);
+    m_mainFrame = new QWidget(this);
     m_mainFrame->setContentsMargins(0, 0, 0, 0);
     m_mainFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
@@ -136,7 +136,7 @@ void DFInstallErrorDialog::initMainFrame()
 
 void DFInstallErrorDialog::initTitleBar()
 {
-    titleFrame = new DFrame(this);
+    titleFrame = new QWidget(this);
     titleFrame->setFixedHeight(FTM_TITLE_FIXED_HEIGHT);
     titleFrame->setContentsMargins(0, 0, 0, 0);
     titleFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
@@ -191,7 +191,7 @@ int DFInstallErrorDialog::getErrorFontCheckedCount()
 
 void DFInstallErrorDialog::initInstallErrorFontViews()
 {
-    contentFrame = new DFrame(this);
+    contentFrame = new QWidget(this);
     contentFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     QVBoxLayout *contentLayout = new QVBoxLayout;
@@ -210,7 +210,7 @@ void DFInstallErrorDialog::initInstallErrorFontViews()
     buttonLayout->setContentsMargins(10, 0, 10, 0);
 
     int btnHeight = 38;
-    DFrame *btnFrame = new DFrame;
+    QWidget *btnFrame = new QWidget;
     btnFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     btnFrame->setFixedHeight(btnHeight+15);
     btnFrame->setLayout(buttonLayout);

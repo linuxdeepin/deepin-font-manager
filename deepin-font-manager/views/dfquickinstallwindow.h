@@ -45,7 +45,7 @@ public slots:
 
 private:
     DLabel* m_titleLabel {nullptr};
-    DFrame* m_mainFrame {nullptr};
+    QWidget* m_mainFrame {nullptr};
 
     DComboBox* m_fontType {nullptr};
     DFontPreviewer* m_fontPreviewTxt {nullptr};
