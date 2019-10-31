@@ -148,6 +148,8 @@ void DFontMgrMainWindow::initConnections()
 
     // State bar event
     QObject::connect(d->fontScaleSlider, &DSlider::valueChanged, this, [this, d](int value) {
+        m_previewFontSize = value;
+
         QString fontSizeText;
         fontSizeText.sprintf(FMT_FONT_SIZE, value);
         d->fontSizeLabel->setText(fontSizeText);
