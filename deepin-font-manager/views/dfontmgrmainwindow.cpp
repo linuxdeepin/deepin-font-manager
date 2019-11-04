@@ -409,7 +409,7 @@ void DFontMgrMainWindow::initFontPreviewListView(QWidget *parent)
 
     m_fontPreviewListView = new DFontPreviewListView(this);
     m_fontPreviewListView->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
-    m_fontPreviewListView->setVerticalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAlwaysOff);
+    m_fontPreviewListView->setVerticalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAsNeeded);
     m_fontPreviewListView->setHorizontalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAlwaysOff);
 
     m_fontPreviewListView->setEditTriggers(QAbstractItemView::NoEditTriggers);
