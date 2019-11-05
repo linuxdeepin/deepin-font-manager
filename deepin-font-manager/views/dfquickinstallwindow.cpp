@@ -268,9 +268,6 @@ void DFQuickInstallWindow::installFont(const QStringList &files){
 
 void DFQuickInstallWindow::onFontInstallFinished()
 {
-    QStringList chineseFontPathList = m_fontInfoManager->getAllChineseFontPath();
-    QStringList monoSpaceFontPathList = m_fontInfoManager->getAllMonoSpaceFontPath();
-
     DFontPreviewItemData itemData;
     QFileInfo filePathInfo(m_installFiles[0]);
     itemData.fontInfo = m_fontInfoManager->getFontInfo(m_installFiles[0]);
@@ -280,6 +277,9 @@ void DFQuickInstallWindow::onFontInstallFinished()
     //Only insert record when db don't have record
     //avoid dummy record
     if (!itemData.fontInfo.isInstalled) {
+        QStringList chineseFontPathList = m_fontInfoManager->getAllChineseFontPath();
+        QStringList monoSpaceFontPathList = m_fontInfoManager->getAllMonoSpaceFontPath();
+
         m_dbManager->beginTransaction();
 
         const QString sysDir = "/usr/share/fonts/deepin-font-install";
