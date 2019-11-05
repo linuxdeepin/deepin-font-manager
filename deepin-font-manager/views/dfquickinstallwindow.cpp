@@ -268,10 +268,6 @@ void DFQuickInstallWindow::installFont(const QStringList &files){
 
 void DFQuickInstallWindow::onFontInstallFinished()
 {
-    qDebug() << __FUNCTION__ << "file:" << m_installFiles;
-
-    m_dbManager->beginTransaction();
-
     QStringList chineseFontPathList = m_fontInfoManager->getAllChineseFontPath();
     QStringList monoSpaceFontPathList = m_fontInfoManager->getAllMonoSpaceFontPath();
 
@@ -279,34 +275,42 @@ void DFQuickInstallWindow::onFontInstallFinished()
     QFileInfo filePathInfo(m_installFiles[0]);
     itemData.fontInfo = m_fontInfoManager->getFontInfo(m_installFiles[0]);
 
-    const QString sysDir = "/usr/share/fonts/deepin-font-install";
-    QString dirName = itemData.fontInfo.familyName;
-    QString target = QObject::tr("%1/%2/%3").arg(sysDir).arg(dirName).arg(filePathInfo.fileName());
+    qDebug() << __FUNCTION__ << "file:" << m_installFiles << " isInstalled:" << itemData.fontInfo.isInstalled;
 
-    itemData.fontInfo.filePath = target;
+    //Only insert record when db don't have record
+    //avoid dummy record
+    if (!itemData.fontInfo.isInstalled) {
+        m_dbManager->beginTransaction();
+
+        const QString sysDir = "/usr/share/fonts/deepin-font-install";
+        QString dirName = itemData.fontInfo.familyName;
+        QString target = QObject::tr("%1/%2/%3").arg(sysDir).arg(dirName).arg(filePathInfo.fileName());
+
+        itemData.fontInfo.filePath = target;
 
 
-    if (itemData.fontInfo.styleName.length() > 0) {
-        itemData.strFontName =
-            QString("%1-%2").arg(itemData.fontInfo.familyName).arg(itemData.fontInfo.styleName);
-    } else {
-        itemData.strFontName = itemData.fontInfo.familyName;
+        if (itemData.fontInfo.styleName.length() > 0) {
+            itemData.strFontName =
+                    QString("%1-%2").arg(itemData.fontInfo.familyName).arg(itemData.fontInfo.styleName);
+        } else {
+            itemData.strFontName = itemData.fontInfo.familyName;
+        }
+
+        //itemData.strFontId = QString::number(m_dbManager->getRecordCount()+1);
+        itemData.strFontFileName = filePathInfo.baseName();
+        itemData.strFontPreview = FTM_DEFAULT_PREVIEW_TEXT;
+        itemData.iFontSize = FTM_DEFAULT_PREVIEW_FONTSIZE;
+        itemData.isEnabled = true;
+        itemData.isPreviewEnabled = true;
+        itemData.isCollected = false;
+        itemData.isChineseFont = chineseFontPathList.contains(m_installFiles[0]);
+        itemData.isMonoSpace = monoSpaceFontPathList.contains(m_installFiles[0]);
+
+        itemData.fontInfo.isInstalled = true;
+
+        m_dbManager->addFontInfo(itemData);
+
+
+        m_dbManager->endTransaction();
     }
-
-    //itemData.strFontId = QString::number(m_dbManager->getRecordCount()+1);
-    itemData.strFontFileName = filePathInfo.baseName();
-    itemData.strFontPreview = FTM_DEFAULT_PREVIEW_TEXT;
-    itemData.iFontSize = FTM_DEFAULT_PREVIEW_FONTSIZE;
-    itemData.isEnabled = true;
-    itemData.isPreviewEnabled = true;
-    itemData.isCollected = false;
-    itemData.isChineseFont = chineseFontPathList.contains(m_installFiles[0]);
-    itemData.isMonoSpace = monoSpaceFontPathList.contains(m_installFiles[0]);
-
-    itemData.fontInfo.isInstalled = true;
-
-    m_dbManager->addFontInfo(itemData);
-
-
-    m_dbManager->endTransaction();
 }
