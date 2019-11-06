@@ -115,8 +115,8 @@
         <context>
         <name>ExceptionWindow</name>
         <message>
-            <source>Install Error</source>
-            <translation>安装出错</translation>
+            <source>Font Verification</source>
+            <translation>字体验证</translation>
         </message>
         <message>
             <source>File Error</source>

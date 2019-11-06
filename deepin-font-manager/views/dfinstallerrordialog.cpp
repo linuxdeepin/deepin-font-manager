@@ -147,7 +147,7 @@ void DFInstallErrorDialog::initTitleBar()
     logoLabel->setPixmap(Utils::renderSVG(":/images/exception-logo.svg", logoLabel->size()));
 
     titleLabel = new DLabel;
-    titleLabel->setText(DApplication::translate("ExceptionWindow", "Install Error"));
+    titleLabel->setText(DApplication::translate("ExceptionWindow", "Font Verification"));
     QString fontFamilyName = Utils::loadFontFamilyFromFiles(":/images/SourceHanSansCN-Medium.ttf");
     QFont titleFont(fontFamilyName);
     titleFont.setPixelSize(14);

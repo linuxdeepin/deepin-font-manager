@@ -115,7 +115,7 @@
     <context>
         <name>ExceptionWindow</name>
         <message>
-            <source>Install Error</source>
+            <source>Font Verification</source>
             <translation type="unfinished"/>
         </message>
         <message>
