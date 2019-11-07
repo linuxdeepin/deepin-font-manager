@@ -5,7 +5,7 @@
 
 DWIDGET_USE_NAMESPACE
 
-class DFontPreviewer : public DFrame
+class DFontPreviewer : public QWidget
 {
     Q_OBJECT
 public:

@@ -5,7 +5,7 @@
         <name>Main</name>
         <message>
             <source>Deepin Font Manager</source>
-            <translation>深度字体管理器</translation>
+            <translation>字体管理器</translation>
         </message>
         <message>
             <source>Deepin Font Manager is used to install and uninstall font file for users with bulk install function.</source>

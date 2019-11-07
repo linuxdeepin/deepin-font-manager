@@ -8,6 +8,7 @@
 #include <QVBoxLayout>
 
 #include <DApplication>
+#include <DApplicationHelper>
 #include <DLog>
 
 DFontInfoDialog::DFontInfoDialog(DFontPreviewItemData *fontInfo, QWidget *parent)
@@ -32,7 +33,7 @@ void DFontInfoDialog::initUI()
     mainLayout->setContentsMargins(10, 0, 10, 10);
     mainLayout->setSpacing(0);
 
-    m_mainFrame = new DFrame(this);
+    m_mainFrame = new QWidget(this);
     //m_mainFrame->setFrameShape(DFrame::Shape::NoFrame);
     m_mainFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
@@ -50,10 +51,14 @@ void DFontInfoDialog::initUI()
     fileNameFont.setPixelSize(12);
     m_fontFileName->setFont(fileNameFont);
     m_fontFileName->setText("SourceHanSansSC-ExtraLight");
+    // Set color
+    DPalette pa = DApplicationHelper::instance()->palette(m_fontFileName);
+    pa.setBrush(DPalette::WindowText, pa.color(DPalette::ToolTipText));
+    m_fontFileName->setPalette(pa);
 
     /**************************Basic info panel****BEGIN*******************************/
     m_basicInfoFrame = new DFrame(this);
-    m_basicInfoFrame->setBackgroundRole(DPalette::Base);
+    //m_basicInfoFrame->setBackgroundRole(DPalette::Base);
     //m_basicInfoFrame->setFrameShape(DFrame::Shape::NoFrame);
     m_basicInfoFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 

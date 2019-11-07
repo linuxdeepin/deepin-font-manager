@@ -9,7 +9,7 @@
 #include <DApplicationHelper>
 
 DFontPreviewer::DFontPreviewer(QWidget *parent)
-    : DFrame(parent)
+    : QWidget(parent)
 {
     InitData();
     InitConnections();

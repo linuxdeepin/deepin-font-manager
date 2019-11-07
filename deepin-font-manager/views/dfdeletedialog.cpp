@@ -27,7 +27,7 @@ void DFDeleteDialog::initUI()
     mainLayout->setSpacing(0);
     mainLayout->setContentsMargins(10, 10, 10, 10);
 
-    DFrame *mainFrame = new DFrame(this);
+    QWidget *mainFrame = new QWidget(this);
     /// mainFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     mainFrame->setFixedSize(QSize(DEFAULT_WINDOW_W, DEFAULT_WINDOW_H));
 
@@ -59,9 +59,10 @@ void DFDeleteDialog::initUI()
     msgBFont.setPixelSize(14);
     msgBFont.setWeight(QFont::Bold);
     m_messageB->setFont(msgBFont);
-//    DPalette paMsgB = DApplicationHelper::instance()->palette(m_messageB);
-//    paMsgB.setColor(DPalette::WindowText, QColor("#6A829F"));
-//    m_messageB->setPalette(paMsgB);
+    //Set MessageB color to TextTips
+    DPalette paMsgB = DApplicationHelper::instance()->palette(m_messageB);
+    paMsgB.setBrush(DPalette::WindowText, paMsgB.color(DPalette::TextTips));
+    m_messageB->setPalette(paMsgB);
 
     QString fontFamilyName = Utils::loadFontFamilyFromFiles(":/images/SourceHanSansCN-Medium.ttf");
     QFont btnFont(fontFamilyName);

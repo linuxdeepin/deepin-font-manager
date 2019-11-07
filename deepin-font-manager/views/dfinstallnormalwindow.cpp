@@ -7,6 +7,7 @@
 #include <QVBoxLayout>
 
 #include <DApplication>
+#include <DApplicationHelper>
 #include <DLog>
 
 DWIDGET_USE_NAMESPACE
@@ -83,10 +84,13 @@ void DFInstallNormalWindow::initUI()
 
     m_currentFontLabel = new DLabel(this);
     QFont cflFont;
-    cflFont.setPixelSize(14);
+    cflFont.setPixelSize(12);
     m_currentFontLabel->setFont(cflFont);
     m_currentFontLabel->setFixedHeight(18);
     m_currentFontLabel->setText("");
+    DPalette pa = DApplicationHelper::instance()->palette(m_currentFontLabel);
+    pa.setBrush(DPalette::WindowText, pa.color(DPalette::TextTips));
+    m_currentFontLabel->setPalette(pa);
 
     m_progressBar = new DProgressBar(this);
     m_progressBar->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);

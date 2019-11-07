@@ -4,7 +4,7 @@
     <context>
         <name>Main</name>
         <message>
-            <source>Deepin Font Manager</source>
+            <source>Font Manager</source>
             <translation type="unfinished"/>
         </message>
         <message>

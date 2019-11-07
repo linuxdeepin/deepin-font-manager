@@ -52,7 +52,7 @@ void DFQuickInstallWindow::initUI()
     titlebar()->setBackgroundRole(QPalette::Background);
     titlebar()->setAutoFillBackground(false);
 
-    titlebar()->setFixedHeight(40);
+    titlebar()->setFixedHeight(44);
     titlebar()->setIcon(QIcon::fromTheme(DEEPIN_FONT_MANAGER));
 
     m_titleLabel = new DLabel(this);
@@ -91,6 +91,9 @@ void DFQuickInstallWindow::initUI()
     m_stateLabel->setFixedHeight(36);
     m_stateLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     // m_stateLabel->setFont(actionFont);
+    DPalette pa = DApplicationHelper::instance()->palette(m_stateLabel);
+    pa.setBrush(DPalette::WindowText, pa.color(DPalette::TextTips));
+    m_stateLabel->setPalette(pa);
     m_oldPaStateLbl = DApplicationHelper::instance()->palette(m_stateLabel);
 
     m_actionBtn = new DPushButton(this);
@@ -105,7 +108,7 @@ void DFQuickInstallWindow::initUI()
     actionBarLayout->addWidget(m_actionBtn);
     //actionBarLayout->addSpacing(20);
 
-    mainLayout->addSpacing(6);
+    mainLayout->addSpacing(2);
     mainLayout->addWidget(m_fontType, 0, Qt::AlignCenter);
     mainLayout->addSpacing(10);
     mainLayout->addWidget(m_fontPreviewTxt);
@@ -157,13 +160,17 @@ void DFQuickInstallWindow::onFileSelected(QStringList fileList)
         DFontInfo fontInfo = m_fontInfoManager->getFontInfo(file);
         if (fontInfo.isError) {
             m_stateLabel->setText(DApplication::translate("QuickInstallWindow", "File Error"));
+            DPalette pa = DApplicationHelper::instance()->palette(m_stateLabel);
+            pa.setBrush(DPalette::WindowText, pa.color(DPalette::TextWarning));
+            m_stateLabel->setPalette(pa);
+
             m_actionBtn->setDisabled(true);
             m_fontType->clear();
             m_fontType->addItem(DApplication::translate("QuickInstallWindow", "Unknow"));
         } else {
             if (fontInfo.isInstalled) {
                 DPalette pa = DApplicationHelper::instance()->palette(m_stateLabel);
-                pa.setBrush(DPalette::WindowText, pa.color(DPalette::TextWarning));
+                pa.setBrush(DPalette::WindowText, QColor("#417505")/* pa.color(DPalette::TextWarning)*/);
                 m_stateLabel->setPalette(pa);
                 m_stateLabel->setText(DApplication::translate("QuickInstallWindow", "Installed"));
 
@@ -172,6 +179,8 @@ void DFQuickInstallWindow::onFileSelected(QStringList fileList)
                 m_stateLabel->setText(
                     DApplication::translate("QuickInstallWindow", "Not Installed"));
             }
+
+            m_actionBtn->setDisabled(false);
 
             m_titleLabel->setText(fontInfo.familyName);
 
