@@ -24,10 +24,6 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
     topSpaceWidget->setFixedSize(this->width(), 10);
     this->addHeaderWidget(topSpaceWidget);
 
-    QWidget *bottomSpaceWidget = new QWidget;
-    bottomSpaceWidget->setFixedSize(this->width(), 1);
-    this->addFooterWidget(bottomSpaceWidget);
-
     setAutoScroll(true);
     setMouseTracking(true);
     setUpdatesEnabled(true);

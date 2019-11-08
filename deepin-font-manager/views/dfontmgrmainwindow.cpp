@@ -43,6 +43,9 @@ public:
 
     QWidget *fontShowArea {nullptr};
 
+    //Shadow line of StateBar
+    DHorizontalLine  *sbarShadowLine {nullptr};
+
     QWidget *stateBar {nullptr};
     DLineEdit *textInputEdit {nullptr};
     DSlider *fontScaleSlider {nullptr};
@@ -380,10 +383,16 @@ void DFontMgrMainWindow::initRightFontView()
 
     initFontPreviewListView(d->fontShowArea);
 
+    // initialize statebar shadow line
+    d->sbarShadowLine = new DHorizontalLine(this);
+    d->sbarShadowLine->setFixedHeight(1);
+    d->sbarShadowLine->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+
     // initialize state bar
     initStateBar();
 
     rightMainLayout->addWidget(d->fontShowArea);
+    rightMainLayout->addWidget(d->sbarShadowLine);
     rightMainLayout->addWidget(d->stateBar);
 
     d->rightViewHolder->setLayout(rightMainLayout);
