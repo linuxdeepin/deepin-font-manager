@@ -113,6 +113,9 @@ void DFontMgrMainWindow::initData()
 
 void DFontMgrMainWindow::initUI()
 {
+    //Enable main window accept drag event
+    setAcceptDrops(true);
+
     initTileBar();
     initRightKeyMenu();
     initMainVeiws();
@@ -707,17 +710,35 @@ void DFontMgrMainWindow::handleMenuEvent(QAction *action)
 void DFontMgrMainWindow::installFont(const QStringList &files)
 {
     qDebug() << __FUNCTION__ << files;
-    DFInstallNormalWindow dfNormalInstalldlg(files, this);
+
+    if (m_fIsInstalling) {
+        qDebug() << "Already exist a installtion flow";
+        return;
+    }
+
+    m_dfNormalInstalldlg = new DFInstallNormalWindow(files, this);
     if (m_isQuickMode) {
-        dfNormalInstalldlg.setSkipException(true);
+        m_dfNormalInstalldlg->setSkipException(true);
     }
 
     //安装结束后刷新字体列表
-    connect(&dfNormalInstalldlg, &DFInstallNormalWindow::finishFontInstall, this,
+    connect(m_dfNormalInstalldlg, &DFInstallNormalWindow::finishFontInstall, this,
             &DFontMgrMainWindow::onFontInstallFinished);
 
-    Dtk::Widget::moveToCenter(&dfNormalInstalldlg);
-    dfNormalInstalldlg.exec();
+    //Set installtion flag
+    /*
+     * Add font from + ,menu, drag file to main view
+     * to task bar can start a installtion flow, so must
+     * to set flag avoid
+     */
+    m_fIsInstalling = true;
+
+    Dtk::Widget::moveToCenter(m_dfNormalInstalldlg);
+    m_dfNormalInstalldlg->exec();
+    m_dfNormalInstalldlg->deleteLater();
+
+    //Clear installtion flag when NormalInstalltion window is closed
+    m_fIsInstalling = false;
 }
 
 void DFontMgrMainWindow::initRightKeyMenu()
@@ -760,6 +781,14 @@ void DFontMgrMainWindow::InitQuickWindowIfNeeded()
 
             Dtk::Widget::moveToCenter(m_quickInstallWnd.get());
         });
+    }
+}
+
+void DFontMgrMainWindow::forceNoramlInstalltionQuitIfNeeded()
+{
+    if (m_fIsInstalling) {
+        qDebug() << "In normal installtion flow, force quit!";
+        m_dfNormalInstalldlg->breakInstalltion();
     }
 }
 
@@ -913,4 +942,62 @@ void DFontMgrMainWindow::delCurrentFont()
     });
 
     confirmDelDlg.exec();
+}
+
+void DFontMgrMainWindow::dragEnterEvent(QDragEnterEvent *event)
+{
+    //Q_D(DFontMgrMainWindow);
+
+    if (event->mimeData()->hasUrls()) {
+        QList<QUrl> dragFiles = event->mimeData()->urls();
+
+        qDebug() << dragFiles;
+        if(dragFiles.size() == 1) {
+            //For one-drag check MIME,ignore non-font file
+            if (Utils::isFontMimeType(dragFiles[0].path())) {
+                event->accept();
+                return;
+            }
+        } else {
+            //Multi-drag just accept all file at start
+            //will filter non-font files in drapEvent
+            event->accept();
+            return;
+        }
+    }
+
+    event->ignore();
+}
+
+void DFontMgrMainWindow::dropEvent(QDropEvent *event)
+{
+
+    if (event->mimeData()->hasUrls()) {
+
+        QStringList installFileList;
+
+        QList<QUrl> dragFiles = event->mimeData()->urls();
+
+        if(dragFiles.size() > 1) {
+            foreach(auto it, event->mimeData()->urls()) {
+                if (Utils::isFontMimeType(it.path())) {
+                    installFileList.append(it.path());
+                }
+            }
+        } else {
+            if (Utils::isFontMimeType(dragFiles[0].path())) {
+                installFileList.append(dragFiles[0].path());
+            }
+        }
+
+        //Check if need to trigger installtion
+        if (installFileList.size() > 0) {
+            event->accept();
+            Q_EMIT fileSelected(installFileList);
+        } else {
+            event->ignore();
+        }
+    } else {
+        event->ignore();
+    }
 }

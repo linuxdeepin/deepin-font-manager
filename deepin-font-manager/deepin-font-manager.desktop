@@ -1,6 +1,6 @@
 [Desktop Entry]
 Categories=Utility
-Exec=deepin-font-manager %f
+Exec=deepin-font-manager %F
 GenericName=Font Manager
 Icon=deepin-font-manager
 MimeType=font/collection;font/ttf;font/otf;application/x-font-otf;application/x-font-ttf;application/x-font-type1;

@@ -16,6 +16,7 @@ DWIDGET_USE_NAMESPACE
 
 class DFontManager;
 class DFontInfoManager;
+class DFInstallErrorDialog;
 
 class DFInstallNormalWindow : public DDialog
 {
@@ -25,6 +26,7 @@ public:
     ~DFInstallNormalWindow() override;
 
     void setSkipException(bool skip);
+    void breakInstalltion();
 
 protected:
     static constexpr int VERIFY_DELYAY_TIME = 1000;
@@ -75,6 +77,8 @@ private:
     DLabel *m_progressStepLabel {nullptr};
     DLabel *m_currentFontLabel {nullptr};
     DProgressBar *m_progressBar {nullptr};
+
+    DFInstallErrorDialog* m_pexceptionDlg {nullptr};
 
     QScopedPointer<QTimer> m_verifyTimer {nullptr};
 };

@@ -29,6 +29,7 @@
 #include <DLog>
 #include <DWidgetUtil>
 #include <DApplicationSettings>
+#include <DGuiApplicationHelper>
 
 DWIDGET_USE_NAMESPACE
 DCORE_USE_NAMESPACE
@@ -53,16 +54,18 @@ int main(int argc, char *argv[])
                                 "Deepin Font Manager is used to install and uninstall font file "
                                 "for users with bulk install function."));
 
+    qputenv("DTK_USE_SEMAPHORE_SINGLEINSTANCE", "1");
+    if(!DGuiApplicationHelper::instance()->setSingleInstance(app.applicationName(), DGuiApplicationHelper::UserScope)) {
+        return 0;
+    }
+
     DApplicationSettings settings;
 
     DLogManager::registerConsoleAppender();
     DLogManager::registerFileAppender();
 
-    if(!app.isRunning()) {
-        app.activateWindow();
+    app.parseCmdLine();
+    app.activateWindow();
 
-        return app.exec();
-    }
-
-    return 0;
+    return app.exec();
 }

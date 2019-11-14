@@ -46,4 +46,7 @@
 //Font manager binary name
 #define DEEPIN_FONT_MANAGER "deepin-font-manager"
 
+//Font MIME
+#define FONT_FILE_MIME "font/collection;font/ttf;font/otf;application/x-font-otf;application/x-font-ttf;application/x-font-type1;"
+
 #endif  // GLOBALDEF_H

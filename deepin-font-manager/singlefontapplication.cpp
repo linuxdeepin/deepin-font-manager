@@ -2,6 +2,7 @@
 #include "views/dfontmgrmainwindow.h"
 #include "views/dfquickinstallwindow.h"
 #include "globaldef.h"
+#include "utils.h"
 
 #include <QFileInfo>
 #include <QLocalServer>
@@ -9,31 +10,25 @@
 #include <QCommandLineParser>
 
 #include <DWidgetUtil>
+#include <DGuiApplicationHelper>
 
 #include <sys/types.h>
 #include <unistd.h>
 
 DCORE_USE_NAMESPACE
 
-#define TIME_OUT                (500)    // 500ms
-
 SingleFontApplication::SingleFontApplication(int &argc, char **argv)
     :DApplication (argc, argv)
     ,m_qspMainWnd(nullptr)
     ,m_qspQuickWnd(nullptr)
-    ,m_qspLocalServer(nullptr)
 {
-    m_serverName = QFileInfo(QCoreApplication::applicationFilePath()).fileName();
-
-    initLocalConnection();
+    connect(DGuiApplicationHelper::instance()
+            , &DGuiApplicationHelper::newProcessInstance,this
+            , &SingleFontApplication::onNewProcessInstance);
 }
 
 SingleFontApplication::~SingleFontApplication()
 {
-}
-
-bool SingleFontApplication::isRunning() {
-    return m_isRunning;
 }
 
 void SingleFontApplication::setMainWindow(DMainWindow *mainWindow)
@@ -49,7 +44,6 @@ void SingleFontApplication::parseCmdLine(){
     parser.addHelpOption();
     parser.addVersionOption();
 
-
     parser.process(*this);
 
     //Clear old parameter
@@ -62,89 +56,17 @@ void SingleFontApplication::parseCmdLine(){
     qDebug() << __FUNCTION__ << m_selectedFiles;
 }
 
-void SingleFontApplication::newLocalConnection() {
-    QScopedPointer<QLocalSocket> socket(m_qspLocalServer->nextPendingConnection());
-
-    if(socket) {
-        socket->waitForReadyRead(2*TIME_OUT);
-
-        //Read the parameter from other instance
-        QTextStream stream(socket.get());
-
-        QString selectFile = stream.readAll();
-
-        qDebug() << "Exist instance (" << getpid() << ")\n"
-                 << "New instance parameter:" << selectFile
-                 << "Old instance parameter:" << m_selectedFiles;
-
-        m_selectedFiles.clear();
-
-        if (!selectFile.isEmpty()) {
-            m_selectedFiles.append(selectFile);
-        }
-
-        activateWindow();
-    }
-}
-
-void SingleFontApplication::initLocalConnection() {
-    m_isRunning = false;
-
-    QLocalSocket socket;
-    socket.connectToServer(m_serverName);
-    if(socket.waitForConnected(TIME_OUT)) {
-        qDebug() << m_serverName + "already running.\n";
-
-        m_isRunning = true;
-
-        //Parse the command line parametes and send it
-        // to the exist instance.
-        parseCmdLine();
-
-        //send empty if no file parameter
-        QString selectedFile("");
-        if (m_selectedFiles.size() > 0) {
-            selectedFile = m_selectedFiles.at(0);
-        }
-
-        qDebug() << "New instance (" << getpid() << ") : parameter:" << selectedFile;
-
-        socket.write(selectedFile.toUtf8());
-        socket.flush();
-
-        return;
-    }
-
-    //Server not exist,create server
-    newLocalServer();
-
-    //First time start,get command line parameter
-    parseCmdLine();
-}
-
-void SingleFontApplication::newLocalServer() {
-    m_qspLocalServer.reset(new QLocalServer(this));
-
-    connect(m_qspLocalServer.get(), &QLocalServer::newConnection,
-            this, &SingleFontApplication::newLocalConnection);
-
-    if(!m_qspLocalServer->listen(m_serverName)) {
-        // Try to listen again, app crash may lead server don't be cleard
-        //so remove it directly
-        if(m_qspLocalServer->serverError() == QAbstractSocket::AddressInUseError) {
-            QLocalServer::removeServer(m_serverName);
-            m_qspLocalServer->listen(m_serverName);
-        }
-    }
-}
-
 void SingleFontApplication::activateWindow() {
     //If quick install mode
-    if (m_selectedFiles.size() > 0 && (!m_selectedFiles.at(0).isEmpty())) {
+    if (m_selectedFiles.size() == 1) {
         qDebug() << "Active quick install window to install file:" << m_selectedFiles;
 
         //Hide normal window in quick mode
         if (nullptr != m_qspMainWnd.get()) {
+            //Force quit installtion
+            reinterpret_cast<DFontMgrMainWindow*>(
+                        m_qspMainWnd.get())->forceNoramlInstalltionQuitIfNeeded();
+
             m_qspMainWnd->hide();
         }
 
@@ -182,5 +104,31 @@ void SingleFontApplication::activateWindow() {
         Dtk::Widget::moveToCenter(m_qspMainWnd.get());
 
         m_qspMainWnd->resize(DEFAULT_WINDOWS_WIDTH, DEFAULT_WINDOWS_HEIGHT);
+
+        //For: Drag files on task bar app icon
+        //need start installtion flow
+        if (m_selectedFiles.size() > 0) {
+            QMetaObject::invokeMethod(m_qspMainWnd.get(), "fileSelected", Qt::QueuedConnection,
+                                      Q_ARG(QStringList, m_selectedFiles));
+        }
     }
+}
+
+void SingleFontApplication::onNewProcessInstance(qint64 pid, const QStringList &arguments)
+{
+    Q_UNUSED(pid);
+
+    //clear old file list
+    m_selectedFiles.clear();
+
+    //<app_excename> <file list>
+    //1.Skip app-exce name p=0
+    //2.Check font file MIME,ignore invalid file.
+    for(int p=1; p<arguments.size(); p++) {
+        if (Utils::isFontMimeType(arguments[p])) {
+            m_selectedFiles.append(arguments[p]);
+        }
+    }
+
+    activateWindow();
 }

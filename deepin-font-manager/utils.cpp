@@ -19,6 +19,7 @@
  */
 
 #include "utils.h"
+#include "globaldef.h"
 
 #include <QUrl>
 #include <QDir>
@@ -73,8 +74,7 @@ bool Utils::isFontMimeType(const QString &filePath)
 {
     const QString mimeName = QMimeDatabase().mimeTypeForFile(filePath).name();;
 
-    if (mimeName.startsWith("font/") ||
-        mimeName.startsWith("application/x-font")) {
+    if (QString(FONT_FILE_MIME).contains(mimeName)) {
         return true;
     }
 

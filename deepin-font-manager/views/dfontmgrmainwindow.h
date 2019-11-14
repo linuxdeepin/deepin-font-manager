@@ -17,6 +17,7 @@ DWIDGET_USE_NAMESPACE
  *
  */
 class DFQuickInstallWindow;
+class DFInstallNormalWindow;
 class DFontMgrMainWindowPrivate;
 class DFontMgrMainWindow : public DMainWindow
 {
@@ -40,6 +41,7 @@ public:
     void setQuickInstallMode(bool isQuick);
     void hideQucikInstallWindow();
     void InitQuickWindowIfNeeded();
+    void forceNoramlInstalltionQuitIfNeeded();
 
 protected:
     void initData();
@@ -60,8 +62,11 @@ protected:
     void handleAddFontEvent();
     void installFont(const QStringList &files);
     void showFontFilePostion();
-
     void delCurrentFont();
+
+    //Add drag install
+    void dragEnterEvent(QDragEnterEvent *event) override;
+    void dropEvent(QDropEvent *event) override;
 
     DFontPreviewListView *m_fontPreviewListView;
     DListView *m_noResultListView;
@@ -103,6 +108,11 @@ protected:
     QShortcut *m_scAddFavFont    {nullptr};  //Add favorite     --> Ctrl+K
     QShortcut *m_scCancelFavFont {nullptr};  //Cancel favorite  --> Ctrl+Shift+K
     QShortcut *m_scFontInfo      {nullptr};  //Font information --> Alt+Enter
+
+    //is in installing font flow
+    //Avoid start multi-NormalInstalltion window
+    bool                    m_fIsInstalling {false};
+    DFInstallNormalWindow  *m_dfNormalInstalldlg {nullptr};
 
     QScopedPointer<DFQuickInstallWindow> m_quickInstallWnd;
 

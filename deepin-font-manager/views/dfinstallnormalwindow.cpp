@@ -173,11 +173,15 @@ void DFInstallNormalWindow::initConnections()
                 m_installFiles.append(it);
             }
 
+            //TODO:
+            //   Notify UI refresh after installtion.
+            // (need to refresh everytime???)
+            emit finishFontInstall();
+
             if (ifNeedShowExceptionWindow()) {
                 showInstallErrDlg();
             } else {
                 qDebug() << "quit install process!" << endl;
-                emit finishFontInstall();
                 this->close();
             }
         } else {
@@ -348,17 +352,30 @@ void DFInstallNormalWindow::onProgressChanged(const QString &filePath, const dou
 
 void DFInstallNormalWindow::showInstallErrDlg()
 {
-    DFInstallErrorDialog dfErrDialog(this, m_installFiles);
+    m_pexceptionDlg = new DFInstallErrorDialog(this, m_installFiles);
 
-    connect(&dfErrDialog, &DFInstallErrorDialog::onCancelInstall, this,
+    connect(m_pexceptionDlg, &DFInstallErrorDialog::onCancelInstall, this,
             &DFInstallNormalWindow::onCancelInstall);
-    connect(&dfErrDialog, &DFInstallErrorDialog::onContinueInstall, this,
+    connect(m_pexceptionDlg, &DFInstallErrorDialog::onContinueInstall, this,
             &DFInstallNormalWindow::onContinueInstall);
+//    connect(m_pexceptionDlg, &DFInstallErrorDialog::closed, this,
+//            &DFInstallNormalWindow::deleteLater);
 
-    dfErrDialog.exec();
+    m_pexceptionDlg->exec();
 }
 
 void DFInstallNormalWindow::setSkipException(bool skip)
 {
     m_isNeedSkipException = skip;
+}
+
+void DFInstallNormalWindow::breakInstalltion() {
+    //Todo:
+    //   Just close the installtion window
+    if (m_pexceptionDlg->isVisible()) {
+        m_pexceptionDlg->closed();
+        m_pexceptionDlg->deleteLater();
+    }
+
+    this->closed();
 }
