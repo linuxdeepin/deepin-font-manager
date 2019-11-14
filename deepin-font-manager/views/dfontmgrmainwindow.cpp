@@ -236,6 +236,111 @@ void DFontMgrMainWindow::initShortcuts()
             d->fontScaleSlider->setValue(DEFAULT_FONT_SIZE);
         });
     }
+
+    //Show shortcut --> Ctrl+Shift+/
+    if (nullptr == m_scShowAllSC) {
+
+    }
+
+    //Resize Window --> Ctrl+Alt+F
+    if (nullptr == m_scWndReize) {
+
+    }
+
+    //Find font --> Ctrl+F
+    if (nullptr == m_scFindFont) {
+        m_scFindFont = new QShortcut(this);
+        m_scFindFont->setKey(tr("Ctrl+F"));
+        m_scFindFont->setContext(Qt::ApplicationShortcut);
+        m_scFindFont->setAutoRepeat(false);
+
+        connect(m_scFindFont, &QShortcut::activated, this, [d]{
+            d->searchFontEdit->lineEdit()->setFocus(Qt::MouseFocusReason);
+        });
+    }
+
+    //Delete font --> Delete
+    if (nullptr == m_scDeleteFont) {
+        m_scDeleteFont = new QShortcut(this);
+        m_scDeleteFont->setKey(Qt::Key_Delete);
+        m_scDeleteFont->setContext(Qt::ApplicationShortcut);
+        m_scDeleteFont->setAutoRepeat(false);
+
+        connect(m_scDeleteFont, &QShortcut::activated, this, [this]{
+            DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
+
+            //Only can't delete user font
+            if (!currItemData.fontInfo.isSystemFont) {
+                delCurrentFont();
+            }
+        });
+    }
+
+    //Add Font --> Ctrl+O
+    if (nullptr == m_scAddNewFont) {
+        m_scAddNewFont = new QShortcut(this);
+        m_scAddNewFont->setKey(tr("Ctrl+O"));
+        m_scAddNewFont->setContext(Qt::ApplicationShortcut);
+        m_scAddNewFont->setAutoRepeat(false);
+
+        connect(m_scAddNewFont, &QShortcut::activated, this, [d]{
+            d->addFontButton->click();
+        });
+    }
+
+    //Add favorite --> Ctrl+K
+    if (nullptr == m_scAddFavFont) {
+        m_scAddFavFont = new QShortcut(this);
+        m_scAddFavFont->setKey(tr("Ctrl+K"));
+        m_scAddFavFont->setContext(Qt::ApplicationShortcut);
+        m_scAddFavFont->setAutoRepeat(false);
+
+        connect(m_scAddFavFont, &QShortcut::activated, this, [this]{
+            DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
+
+            if (!currItemData.isCollected) {
+                QAction *faveriteAction = DFontMenuManager::getInstance()->getActionByMenuAction(
+                            DFontMenuManager::M_Faverator, DFontMenuManager::MenuType::RightKeyMenu);
+                faveriteAction->trigger();
+            }
+        });
+    }
+
+    //Cancel favorite --> Ctrl+Shift+K
+    if (nullptr == m_scCancelFavFont) {
+        m_scCancelFavFont = new QShortcut(this);
+        m_scCancelFavFont->setKey(tr("Ctrl+Shift+K"));
+        m_scCancelFavFont->setContext(Qt::ApplicationShortcut);
+        m_scCancelFavFont->setAutoRepeat(false);
+
+        connect(m_scCancelFavFont, &QShortcut::activated, this, [this]{
+            DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
+
+            if (currItemData.isCollected) {
+                QAction *faveriteAction = DFontMenuManager::getInstance()->getActionByMenuAction(
+                            DFontMenuManager::M_Faverator, DFontMenuManager::MenuType::RightKeyMenu);
+                faveriteAction->trigger();
+            }
+        });
+    }
+
+    //Font information --> Alt+Enter
+    if (nullptr == m_scFontInfo) {
+        m_scFontInfo = new QShortcut(this);
+        m_scFontInfo->setKey(tr("Alt+Return"));
+        m_scFontInfo->setContext(Qt::ApplicationShortcut);
+        m_scFontInfo->setAutoRepeat(false);
+
+        connect(m_scFontInfo, &QShortcut::activated, this, [this]{
+            DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
+
+            if (!currItemData.fontInfo.filePath.isEmpty()) {
+                QAction *fontInfoAction = DFontMenuManager::getInstance()->getActionByMenuAction(
+                            DFontMenuManager::M_FontInfo, DFontMenuManager::MenuType::RightKeyMenu);
+                fontInfoAction->trigger();
+            }
+        });
+    }
 }
 
 void DFontMgrMainWindow::initTileBar()
@@ -789,4 +894,23 @@ void DFontMgrMainWindow::onFontListViewRowCountChanged(bool bShowNoResult)
         m_noResultListView->hide();
         d->stateBar->show();
     }
+}
+
+void DFontMgrMainWindow::delCurrentFont()
+{
+    DFDeleteDialog confirmDelDlg;
+    connect(&confirmDelDlg, &DFDeleteDialog::accepted, this, [this]() {
+        // Add Delete font code Here
+        DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
+        qDebug() << "Confirm delete:" << currItemData.fontInfo.filePath
+                 << " is system font:" << currItemData.fontInfo.isSystemFont;
+
+        QModelIndex currModelIndex = m_fontPreviewListView->currModelIndex();
+        QString uninstallFilePath = currItemData.fontInfo.filePath;
+        m_fontManager->setType(DFontManager::UnInstall);
+        m_fontManager->setUnInstallFile(uninstallFilePath, currModelIndex);
+        m_fontManager->start();
+    });
+
+    confirmDelDlg.exec();
 }

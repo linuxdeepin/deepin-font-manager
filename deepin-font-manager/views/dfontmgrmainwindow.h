@@ -61,6 +61,8 @@ protected:
     void installFont(const QStringList &files);
     void showFontFilePostion();
 
+    void delCurrentFont();
+
     DFontPreviewListView *m_fontPreviewListView;
     DListView *m_noResultListView;
 signals:
@@ -90,6 +92,17 @@ protected:
     QShortcut *m_scZoomOut;       //放大字体快捷键Ctrl+-
     QShortcut *m_scDefaultSize;   //默认⼤⼩字体快捷键Ctrl+0
     int m_previewFontSize;
+
+    //Stand shortcut
+    //Implement by DTK                       //Close window     --> Alt+F4
+    QShortcut *m_scShowAllSC     {nullptr};  //Show shortcut    --> Ctrl+Shift+/
+    QShortcut *m_scWndReize      {nullptr};  //Resize Window    --> Ctrl+Alt+F
+    QShortcut *m_scFindFont      {nullptr};  //Find font        --> Ctrl+F
+    QShortcut *m_scDeleteFont    {nullptr};  //Delete font      --> Delete
+    QShortcut *m_scAddNewFont    {nullptr};  //Add Font         --> Ctrl+O
+    QShortcut *m_scAddFavFont    {nullptr};  //Add favorite     --> Ctrl+K
+    QShortcut *m_scCancelFavFont {nullptr};  //Cancel favorite  --> Ctrl+Shift+K
+    QShortcut *m_scFontInfo      {nullptr};  //Font information --> Alt+Enter
 
     QScopedPointer<DFQuickInstallWindow> m_quickInstallWnd;
 
