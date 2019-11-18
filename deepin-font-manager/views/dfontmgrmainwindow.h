@@ -63,6 +63,7 @@ protected:
     void installFont(const QStringList &files);
     void showFontFilePostion();
     void delCurrentFont();
+    void showAllShortcut();
 
     //Add drag install
     void dragEnterEvent(QDragEnterEvent *event) override;
@@ -99,15 +100,17 @@ protected:
     int m_previewFontSize;
 
     //Stand shortcut
-    //Implement by DTK                       //Close window     --> Alt+F4
-    QShortcut *m_scShowAllSC     {nullptr};  //Show shortcut    --> Ctrl+Shift+/
-    QShortcut *m_scWndReize      {nullptr};  //Resize Window    --> Ctrl+Alt+F
-    QShortcut *m_scFindFont      {nullptr};  //Find font        --> Ctrl+F
-    QShortcut *m_scDeleteFont    {nullptr};  //Delete font      --> Delete
-    QShortcut *m_scAddNewFont    {nullptr};  //Add Font         --> Ctrl+O
-    QShortcut *m_scAddFavFont    {nullptr};  //Add favorite     --> Ctrl+K
-    QShortcut *m_scCancelFavFont {nullptr};  //Cancel favorite  --> Ctrl+Shift+K
-    QShortcut *m_scFontInfo      {nullptr};  //Font information --> Alt+Enter
+    //Implement by DTK                       //Close window       --> Alt+F4
+    QShortcut *m_scShowAllSC     {nullptr};  //Show shortcut      --> Ctrl+Shift+/
+    QShortcut *m_scPageUp        {nullptr};  //Show previous page --> PageUp
+    QShortcut *m_scPageDown      {nullptr};  //Show next page     --> PageDown
+    QShortcut *m_scWndReize      {nullptr};  //Resize Window      --> Ctrl+Alt+F
+    QShortcut *m_scFindFont      {nullptr};  //Find font          --> Ctrl+F
+    QShortcut *m_scDeleteFont    {nullptr};  //Delete font        --> Delete
+    QShortcut *m_scAddNewFont    {nullptr};  //Add Font           --> Ctrl+O
+    QShortcut *m_scAddFavFont    {nullptr};  //Add favorite       --> Ctrl+K
+    QShortcut *m_scCancelFavFont {nullptr};  //Cancel favorite    --> Ctrl+Shift+K
+    QShortcut *m_scFontInfo      {nullptr};  //Font information   --> Alt+Enter
 
     //is in installing font flow
     //Avoid start multi-NormalInstalltion window

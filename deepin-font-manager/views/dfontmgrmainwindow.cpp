@@ -242,12 +242,67 @@ void DFontMgrMainWindow::initShortcuts()
 
     //Show shortcut --> Ctrl+Shift+/
     if (nullptr == m_scShowAllSC) {
+        m_scShowAllSC = new QShortcut(this);
+        m_scShowAllSC->setKey(tr("Ctrl+Shift+/"));
+        m_scShowAllSC->setContext(Qt::ApplicationShortcut);
+        m_scShowAllSC->setAutoRepeat(false);
 
+        connect(m_scShowAllSC, &QShortcut::activated, this, [this]{
+            this->showAllShortcut();
+        });
+    }
+
+    //Show previous page --> PageUp
+    if (nullptr == m_scPageUp) {
+        m_scPageUp = new QShortcut(this);
+        m_scPageUp->setKey(tr("PgUp"));
+        m_scPageUp->setContext(Qt::ApplicationShortcut);
+        m_scPageUp->setAutoRepeat(false);
+
+        connect(m_scPageUp, &QShortcut::activated, this, [this]{;
+            //For: PageUP
+            //Scrolling first visible item to bottom
+            QModelIndex firstVisibleItem = this->m_fontPreviewListView->indexAt(QPoint(3,3));
+
+            if (firstVisibleItem.isValid()) {
+                m_fontPreviewListView->scrollTo(firstVisibleItem, QAbstractItemView::PositionAtBottom);
+            }
+        });
+    }
+
+    //Show next page --> PageDown
+    if (nullptr == m_scPageDown) {
+        m_scDefaultSize = new QShortcut(this);
+        m_scDefaultSize->setKey(tr("PgDown"));
+        m_scDefaultSize->setContext(Qt::ApplicationShortcut);
+        m_scDefaultSize->setAutoRepeat(false);
+
+        connect(m_scDefaultSize, &QShortcut::activated, this, [this]{
+            //For: PageDown
+            //Scrolling last visible item to top
+            QRect visibleRect = m_fontPreviewListView->geometry();
+
+            QModelIndex lastVisibleItem = this->m_fontPreviewListView->indexAt(QPoint(3,visibleRect.height()-3));
+            if (lastVisibleItem.isValid()) {
+                m_fontPreviewListView->scrollTo(lastVisibleItem, QAbstractItemView::PositionAtTop);
+            }
+        });
     }
 
     //Resize Window --> Ctrl+Alt+F
     if (nullptr == m_scWndReize) {
+        m_scWndReize = new QShortcut(this);
+        m_scWndReize->setKey(tr("Ctrl+Alt+F"));
+        m_scWndReize->setContext(Qt::ApplicationShortcut);
+        m_scWndReize->setAutoRepeat(false);
 
+        connect(m_scWndReize, &QShortcut::activated, this, [this]{
+            if (this->windowState() & Qt::WindowMaximized) {
+                this->showNormal();
+            } else if (this->windowState() == Qt::WindowNoState){
+                this->showMaximized();
+            }
+        });
     }
 
     //Find font --> Ctrl+F
@@ -1000,4 +1055,60 @@ void DFontMgrMainWindow::dropEvent(QDropEvent *event)
     } else {
         event->ignore();
     }
+}
+
+void DFontMgrMainWindow::showAllShortcut()
+{
+    QRect rect = window()->geometry();
+    QPoint pos(rect.x() + rect.width() / 2,
+               rect.y() + rect.height() / 2);
+
+    QJsonObject shortcutObj;
+    QJsonArray jsonGroups;
+
+    QMap<QString,QString> shortcutKeymap = {
+        {"Help",               "F1"},
+        {"Zoom In",            "Ctrl+-"},
+        {"Zoom Out",           "Ctrl++"},
+        {"Reset Font",         "Ctrl+0"},
+        {"Close Window",       "Alt+F4"},
+        {"Show Shortcut",      "Ctrl+Shift+/"},
+        {"Show Previous Page", "PageUp"},
+        {"Show Next Page",     "PageDown"},
+        {"Resize Window",      "Ctrl+Alt+F"},
+        {"Find Font ",         "Ctrl+F"},
+        {"Delete Font",        "Delete"},
+        {"Add Font",           "Ctrl+O"},
+        {"Add Favorite",       "Ctrl+K"},
+        {"Cancel Favorite",    "Ctrl+Shift+K"},
+        {"Font Information",   "Alt+Enter"},
+    };
+
+    QJsonObject fontMgrJsonGroup;
+    fontMgrJsonGroup.insert("groupName", tr("Font Manager"));
+    QJsonArray fontJsonItems;
+
+    for (QMap<QString,QString>::iterator it=shortcutKeymap.begin();
+         it != shortcutKeymap.end(); it++) {
+        QJsonObject jsonItem;
+        jsonItem.insert("name", QObject::tr(it.key().toUtf8().data()));
+        jsonItem.insert("value", it.value().replace("Meta", "Super"));
+        fontJsonItems.append(jsonItem);
+    }
+    fontMgrJsonGroup.insert("groupItems", fontJsonItems);
+    jsonGroups.append(fontMgrJsonGroup);
+
+    shortcutObj.insert("shortcut", jsonGroups);
+
+    QJsonDocument doc(shortcutObj);
+
+    QStringList shortcutString;
+    QString param1 = "-j=" + QString(doc.toJson().data());
+    QString param2 = "-p=" + QString::number(pos.x()) + "," + QString::number(pos.y());
+    shortcutString << param1 << param2;
+
+    QProcess* shortcutViewProcess = new QProcess();
+    shortcutViewProcess->startDetached("deepin-shortcut-viewer", shortcutString);
+
+    connect(shortcutViewProcess, SIGNAL(finished(int)), shortcutViewProcess, SLOT(deleteLater()));
 }
