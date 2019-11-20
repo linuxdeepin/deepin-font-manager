@@ -13,7 +13,7 @@
 DWIDGET_USE_NAMESPACE
 
 DFInstallNormalWindow::DFInstallNormalWindow(const QStringList &files, QWidget *parent)
-    : DDialog(parent)
+    : DFontBaseDialog(parent)
     , m_installFiles(files)
     , m_fontInfoManager(DFontInfoManager::instance())
     , m_fontManager(DFontManager::instance())
@@ -25,50 +25,22 @@ DFInstallNormalWindow::DFInstallNormalWindow(const QStringList &files, QWidget *
     initConnections();
 }
 
-DFInstallNormalWindow::~DFInstallNormalWindow() {}
+DFInstallNormalWindow::~DFInstallNormalWindow() {
+    if (nullptr != m_pexceptionDlg) {
+        delete m_pexceptionDlg;
+    }
+}
 
 void DFInstallNormalWindow::initUI()
 {
     setFixedSize(QSize(380, 136));
+    setTitle(DApplication::translate("NormalInstallWindow", "Font Installation"));
 
     QVBoxLayout *mainLayout = new QVBoxLayout();
     mainLayout->setSpacing(0);
     mainLayout->setContentsMargins(10, 0, 0, 0);
 
-    QHBoxLayout *titleLayout = new QHBoxLayout();
-    titleLayout->setSpacing(0);
-    titleLayout->setContentsMargins(0, 0, 0, 0);
-
-    m_titleFrame = new QWidget(this);
-    m_titleFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    m_titleFrame->setFixedHeight(50);
-
-    m_logoLabel = new DLabel(this);
-    m_logoLabel->setFixedSize(QSize(32, 32));
-    m_logoLabel->setFocusPolicy(Qt::NoFocus);
-    m_logoLabel->setAttribute(Qt::WA_TransparentForMouseEvents);
-    m_logoLabel->setPixmap(QIcon::fromTheme(DEEPIN_FONT_MANAGER).pixmap( m_logoLabel->size()));
-
     QString fontFamily = Utils::loadFontFamilyFromFiles(":/images/SourceHanSansCN-Medium.ttf");
-
-    m_titleLabel = new DLabel(this);
-    QFont titleFont(fontFamily);
-    titleFont.setWeight(QFont::Medium);
-    titleFont.setPixelSize(14);
-    m_titleLabel->setFont(titleFont);
-    m_titleLabel->setAlignment(Qt::AlignBottom | Qt::AlignHCenter);
-    m_titleLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    m_titleLabel->setFixedHeight(20);
-    m_titleLabel->setText(DApplication::translate("NormalInstallWindow", "Font Installation"));
-
-    // titleLayout->addSpacing(10);
-    titleLayout->addWidget(m_logoLabel);
-    titleLayout->addWidget(m_titleLabel);
-    titleLayout->addSpacing(10+m_logoLabel->width());
-
-    m_titleFrame->setLayout(titleLayout);
-
-    mainLayout->addWidget(m_titleFrame, 0, Qt::AlignTop);
 
     QVBoxLayout *contentLayout = new QVBoxLayout();
     contentLayout->setSpacing(0);
@@ -77,15 +49,17 @@ void DFInstallNormalWindow::initUI()
     m_progressStepLabel = new DLabel(this);
     QFont pslFont(fontFamily);
     pslFont.setWeight(QFont::Medium);
-    pslFont.setPixelSize(14);
+    //pslFont.setPixelSize(14);
     m_progressStepLabel->setFont(pslFont);
+    DFontSizeManager::instance()->bind(m_progressStepLabel, DFontSizeManager::T6);
     m_progressStepLabel->setFixedHeight(20);
     m_progressStepLabel->setText(DApplication::translate("NormalInstallWindow", "Verifing Font…"));
 
     m_currentFontLabel = new DLabel(this);
-    QFont cflFont;
-    cflFont.setPixelSize(12);
-    m_currentFontLabel->setFont(cflFont);
+//    QFont cflFont;
+//    cflFont.setPixelSize(12);
+//    m_currentFontLabel->setFont(cflFont);
+    DFontSizeManager::instance()->bind(m_currentFontLabel, DFontSizeManager::T8);
     m_currentFontLabel->setFixedHeight(18);
     m_currentFontLabel->setText("");
     DPalette pa = DApplicationHelper::instance()->palette(m_currentFontLabel);
@@ -110,6 +84,7 @@ void DFInstallNormalWindow::initUI()
     m_mainFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     m_mainFrame->setLayout(mainLayout);
 
+    addContent(m_mainFrame);
 #ifdef FTM_DEBUG_LAYOUT_COLOR
     m_titleFrame->setStyleSheet("background: red");
     m_mainFrame->setStyleSheet("background: green");
@@ -257,9 +232,9 @@ bool DFInstallNormalWindow::ifNeedShowExceptionWindow() const
 
 void DFInstallNormalWindow::resizeEvent(QResizeEvent *event)
 {
-    DDialog::resizeEvent(event);
+    DFontBaseDialog::resizeEvent(event);
 
-    m_mainFrame->resize(event->size().width(), event->size().height());
+    //m_mainFrame->resize(event->size().width(), event->size().height());
 }
 
 void DFInstallNormalWindow::batchInstall()
@@ -359,7 +334,7 @@ void DFInstallNormalWindow::showInstallErrDlg()
     connect(m_pexceptionDlg, &DFInstallErrorDialog::onContinueInstall, this,
             &DFInstallNormalWindow::onContinueInstall);
 //    connect(m_pexceptionDlg, &DFInstallErrorDialog::closed, this,
-//            &DFInstallNormalWindow::deleteLater);
+//            &DFInstallNormalWindow::onCancelInstall);
 
     m_pexceptionDlg->exec();
 }

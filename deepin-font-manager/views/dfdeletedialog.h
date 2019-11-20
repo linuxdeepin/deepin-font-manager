@@ -1,14 +1,15 @@
 #ifndef DFDELETEDIALOG_H
 #define DFDELETEDIALOG_H
 
-#include <DDialog>
+#include "dfontbasedialog.h"
+
 #include <DLabel>
 #include <DPushButton>
 #include <DWarningButton>
 
 DWIDGET_USE_NAMESPACE
 
-class DFDeleteDialog : public DDialog
+class DFDeleteDialog : public DFontBaseDialog
 {
     Q_OBJECT
 public:

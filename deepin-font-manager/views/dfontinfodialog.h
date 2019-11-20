@@ -1,9 +1,9 @@
 #ifndef DFONTINFODIALOG_H
 #define DFONTINFODIALOG_H
+#include "dfontbasedialog.h"
 
 #include <QResizeEvent>
 
-#include <DDialog>
 #include <DFrame>
 #include <DLabel>
 #include <QTextEdit>
@@ -11,7 +11,7 @@
 DWIDGET_USE_NAMESPACE
 
 struct DFontPreviewItemData;
-class DFontInfoDialog : public DDialog
+class DFontInfoDialog : public DFontBaseDialog
 {
     Q_OBJECT
 public:

@@ -35,7 +35,8 @@ HEADERS += utils.h \
     views/dfdeletedialog.h \
     singlefontapplication.h \
     interfaces/dfontpreviewer.h \
-    interfaces/dfontpreviewlistdatathread.h
+    interfaces/dfontpreviewlistdatathread.h \
+    interfaces/dfontbasedialog.h
 
 SOURCES += main.cpp \
 	   utils.cpp \
@@ -54,7 +55,8 @@ SOURCES += main.cpp \
     views/dfdeletedialog.cpp \
     singlefontapplication.cpp \
     interfaces/dfontpreviewer.cpp \
-    interfaces/dfontpreviewlistdatathread.cpp
+    interfaces/dfontpreviewlistdatathread.cpp \
+    interfaces/dfontbasedialog.cpp
 
 RESOURCES += deepin-font-manager.qrc
 TRANSLATIONS += translations/deepin-font-manager.ts

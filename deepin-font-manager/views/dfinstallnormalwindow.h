@@ -1,6 +1,7 @@
 #ifndef DFINSTALLNORMALWINDOW_H
 #define DFINSTALLNORMALWINDOW_H
 
+#include "dfontbasedialog.h"
 #include "dfinstallerrordialog.h"
 #include "dfontinfomanager.h"
 
@@ -18,7 +19,7 @@ class DFontManager;
 class DFontInfoManager;
 class DFInstallErrorDialog;
 
-class DFInstallNormalWindow : public DDialog
+class DFInstallNormalWindow : public DFontBaseDialog
 {
     Q_OBJECT
 public:

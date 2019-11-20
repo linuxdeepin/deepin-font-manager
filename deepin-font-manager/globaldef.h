@@ -22,7 +22,7 @@
 #define FTM_SBAR_SLIDER_W 199
 
 #define FTM_SBAR_FSIZE_LABEL_H 40
-#define FTM_SBAR_FSIZE_LABEL_W 32
+#define FTM_SBAR_FSIZE_LABEL_W 45
 
 // File manager binary name
 #define DEEPIN_FILE_MANAGE_NAME "dde-file-manager"

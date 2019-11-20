@@ -8,9 +8,10 @@
 #include <DApplication>
 #include <DApplicationHelper>
 #include <DFrame>
+#include <DFontSizeManager>
 
 DFDeleteDialog::DFDeleteDialog(QWidget *parent)
-    : DDialog(parent)
+    : DFontBaseDialog(parent)
 {
     initUI();
     initConnections();
@@ -19,24 +20,14 @@ DFDeleteDialog::DFDeleteDialog(QWidget *parent)
 void DFDeleteDialog::initUI()
 {
     setFixedSize(QSize(DEFAULT_WINDOW_W, DEFAULT_WINDOW_H));
-    //    setWindowOpacity(0.5);
+    //setWindowOpacity(0.5);
 
-    //    setIconPixmap(QPixmap(":/images/deepin-font-manager.svg"));
-    //    setTitle("确认删除窗口标题");
     QVBoxLayout *mainLayout = new QVBoxLayout();
     mainLayout->setSpacing(0);
-    mainLayout->setContentsMargins(10, 10, 10, 10);
+    mainLayout->setContentsMargins(10, 0, 10, 10);
 
     QWidget *mainFrame = new QWidget(this);
-    /// mainFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    mainFrame->setFixedSize(QSize(DEFAULT_WINDOW_W, DEFAULT_WINDOW_H));
-
-    m_fontLogo = new DLabel(this);
-    m_fontLogo->setObjectName("logoLabel");
-    m_fontLogo->setFixedSize(QSize(32, 32));
-    m_fontLogo->setFocusPolicy(Qt::NoFocus);
-    m_fontLogo->setAttribute(Qt::WA_TransparentForMouseEvents);
-    m_fontLogo->setPixmap(QIcon::fromTheme(DEEPIN_FONT_MANAGER).pixmap(m_fontLogo->size()));
+    mainFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     QString msgFontFamily = Utils::loadFontFamilyFromFiles(":/images/SourceHanSansCN-Medium.ttf");
     QString msgBFontFamily = Utils::loadFontFamilyFromFiles(":/images/SourceHanSansCN-Bold.ttf");
@@ -47,8 +38,8 @@ void DFDeleteDialog::initUI()
     m_messageA->setFixedHeight(20);
     m_messageA->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     QFont msgAFont(msgFontFamily);
-    msgAFont.setPixelSize(14);
     m_messageA->setFont(msgAFont);
+    DFontSizeManager::instance()->bind(m_messageA, DFontSizeManager::T6);
 
     m_messageB = new DLabel(this);
     m_messageB->setText(DApplication::translate(
@@ -56,9 +47,9 @@ void DFDeleteDialog::initUI()
     m_messageB->setFixedHeight(20);
     m_messageB->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     QFont msgBFont(msgBFontFamily);
-    msgBFont.setPixelSize(14);
     msgBFont.setWeight(QFont::Bold);
     m_messageB->setFont(msgBFont);
+    DFontSizeManager::instance()->bind(m_messageB, DFontSizeManager::T6);
     //Set MessageB color to TextTips
     DPalette paMsgB = DApplicationHelper::instance()->palette(m_messageB);
     paMsgB.setBrush(DPalette::WindowText, paMsgB.color(DPalette::TextTips));
@@ -66,7 +57,6 @@ void DFDeleteDialog::initUI()
 
     QString fontFamilyName = Utils::loadFontFamilyFromFiles(":/images/SourceHanSansCN-Medium.ttf");
     QFont btnFont(fontFamilyName);
-    btnFont.setPixelSize(14);
 
     QHBoxLayout *actionBarLayout = new QHBoxLayout();
     actionBarLayout->setSpacing(0);
@@ -99,14 +89,14 @@ void DFDeleteDialog::initUI()
     actionBarLayout->addSpacing(8);
     actionBarLayout->addWidget(m_confirmBtn);
 
-    mainLayout->addWidget(m_fontLogo, 0, Qt::AlignLeft | Qt::AlignTop);
-    mainLayout->addSpacing(6);
     mainLayout->addWidget(m_messageA, 0, Qt::AlignCenter);
     mainLayout->addSpacing(8);
     mainLayout->addWidget(m_messageB, 0, Qt::AlignCenter);
     mainLayout->addStretch();
     mainLayout->addLayout(actionBarLayout);
     mainFrame->setLayout(mainLayout);
+
+    addContent(mainFrame);
 }
 
 void DFDeleteDialog::initConnections()

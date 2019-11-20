@@ -1,11 +1,11 @@
 #ifndef DFINSTALLERRORDIALOG_H
 #define DFINSTALLERRORDIALOG_H
 
+#include "interfaces/dfontbasedialog.h"
 #include "dfinstallerroritemmodel.h"
 #include "dfontinfomanager.h"
 #include "dfinstallerrorlistview.h"
 
-#include <DDialog>
 #include <DFrame>
 #include <DLabel>
 #include <DPushButton>
@@ -30,7 +30,7 @@ protected:
     void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
 };
 
-class DFInstallErrorDialog : public DDialog
+class DFInstallErrorDialog : public DFontBaseDialog
 {
     Q_OBJECT
 

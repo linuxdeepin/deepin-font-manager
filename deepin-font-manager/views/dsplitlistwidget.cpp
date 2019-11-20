@@ -9,6 +9,7 @@
 #include <DApplication>
 #include <DApplicationHelper>
 #include <DLog>
+#include <DFontSizeManager>
 
 #define FTM_SPLIT_TOP_SPACE_TAG "_space_"
 #define FTM_SPLIT_TOP_SPLIT_TAG "_split_"
@@ -91,7 +92,7 @@ void DNoFocusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
             QString fontFamilyName = Utils::loadFontFamilyFromFiles(":/images/SourceHanSansCN-Medium.ttf");
             QFont nameFont(fontFamilyName);
             nameFont.setWeight(QFont::Medium);
-            nameFont.setPixelSize(14);
+            nameFont.setPixelSize(DFontSizeManager::instance()->fontPixelSize(DFontSizeManager::T6));
             painter->setFont(nameFont);
 
             if (option.state & QStyle::State_Selected) {

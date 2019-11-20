@@ -51,7 +51,7 @@ void DFMSuggestButton::paintEvent(QPaintEvent *event)
 }
 
 DFInstallErrorDialog::DFInstallErrorDialog(QWidget *parent, QStringList errorInstallFontFileList)
-    : DDialog(parent)
+    : DFontBaseDialog(parent)
     , m_errorInstallFiles(errorInstallFontFileList)
 {
 //    setWindowOpacity(0.3); //Debug
@@ -109,7 +109,7 @@ void DFInstallErrorDialog::initUI()
 
 void DFInstallErrorDialog::resizeEvent(QResizeEvent *event)
 {
-    DDialog::resizeEvent(event);
+    DFontBaseDialog::resizeEvent(event);
     m_mainFrame->resize(event->size().width(), event->size().height());
 }
 
@@ -128,6 +128,7 @@ void DFInstallErrorDialog::initMainFrame()
 
     m_mainFrame->setLayout(m_mainLayout);
 
+    addContent(m_mainFrame);
     // Debug layout code
 #ifdef FTM_DEBUG_LAYOUT_COLOR
     m_mainFrame->setStyleSheet("background-color:purple");
@@ -136,42 +137,8 @@ void DFInstallErrorDialog::initMainFrame()
 
 void DFInstallErrorDialog::initTitleBar()
 {
-    titleFrame = new QWidget(this);
-    titleFrame->setFixedHeight(FTM_TITLE_FIXED_HEIGHT);
-    titleFrame->setContentsMargins(0, 0, 0, 0);
-    titleFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-
-    logoLabel = new DLabel;
-    logoLabel->setFixedSize(QSize(32, 32));
-    logoLabel->setFocusPolicy(Qt::NoFocus);
-    logoLabel->setPixmap(Utils::renderSVG(":/images/exception-logo.svg", logoLabel->size()));
-
-    titleLabel = new DLabel;
-    titleLabel->setText(DApplication::translate("ExceptionWindow", "Font Verification"));
-    QString fontFamilyName = Utils::loadFontFamilyFromFiles(":/images/SourceHanSansCN-Medium.ttf");
-    QFont titleFont(fontFamilyName);
-    titleFont.setPixelSize(14);
-    titleLabel->setFont(titleFont);
-    titleLabel->setAlignment(Qt::AlignCenter);
-    titleLabel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    titleLabel->setFixedSize(368, 32);
-
-    QHBoxLayout *titleLayout = new QHBoxLayout;
-    titleLayout->setMargin(0);
-    titleLayout->setAlignment(Qt::AlignVCenter);
-    titleLayout->setContentsMargins(10, 9, 0, 0);
-    titleLayout->setSpacing(0);
-    titleLayout->addWidget(logoLabel);
-    titleLayout->addWidget(titleLabel);
-
-    titleFrame->setLayout(titleLayout);
-
-    m_mainLayout->addWidget(titleFrame, 0, Qt::AlignTop);
-
-    // Debug layout code
-#ifdef FTM_DEBUG_LAYOUT_COLOR
-    titleFrame->setStyleSheet("background-color:red");
-#endif
+    setIconPixmap(Utils::renderSVG(":/images/exception-logo.svg", QSize(32, 32)));
+    setTitle(DApplication::translate("ExceptionWindow", "Font Verification"));
 }
 
 int DFInstallErrorDialog::getErrorFontCheckedCount()
@@ -220,7 +187,7 @@ void DFInstallErrorDialog::initInstallErrorFontViews()
 
     QString fontFamilyName = Utils::loadFontFamilyFromFiles(":/images/SourceHanSansCN-Medium.ttf");
     QFont btnFont(fontFamilyName);
-    btnFont.setPixelSize(14);
+    //btnFont.setPixelSize(14);
 
     m_quitInstallBtn = new DPushButton;
     m_quitInstallBtn->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);

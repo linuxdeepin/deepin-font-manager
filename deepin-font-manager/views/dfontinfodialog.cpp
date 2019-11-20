@@ -10,9 +10,10 @@
 #include <DApplication>
 #include <DApplicationHelper>
 #include <DLog>
+#include <DFontSizeManager>
 
 DFontInfoDialog::DFontInfoDialog(DFontPreviewItemData *fontInfo, QWidget *parent)
-    : DDialog(parent)
+    : DFontBaseDialog(parent)
     , m_fontInfo(fontInfo)
 {
     initUI();
@@ -22,11 +23,9 @@ DFontInfoDialog::DFontInfoDialog(DFontPreviewItemData *fontInfo, QWidget *parent
 void DFontInfoDialog::initUI()
 {
     setFixedSize(QSize(DEFAULT_WINDOW_W, DEFAULT_WINDOW_H));
+    setLogoVisable(false);
 
     //setWindowOpacity(0.5); //Debug
-
-    // ToDo:
-    //    Need localize the string
 
     QVBoxLayout *mainLayout = new QVBoxLayout();
     mainLayout->setAlignment(Qt::AlignTop | Qt::AlignHCenter);
@@ -47,9 +46,10 @@ void DFontInfoDialog::initUI()
     m_fontFileName->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     m_fontFileName->setAlignment(Qt::AlignVCenter | Qt::AlignHCenter);
     m_fontFileName->setFixedHeight(18);
-    QFont fileNameFont;
-    fileNameFont.setPixelSize(12);
-    m_fontFileName->setFont(fileNameFont);
+//    QFont fileNameFont;
+//    fileNameFont.setPixelSize(12);
+//    m_fontFileName->setFont(fileNameFont);
+    DFontSizeManager::instance()->bind(m_fontFileName, DFontSizeManager::T8);
     m_fontFileName->setText("SourceHanSansSC-ExtraLight");
     // Set color
     DPalette pa = DApplicationHelper::instance()->palette(m_fontFileName);
@@ -69,10 +69,11 @@ void DFontInfoDialog::initUI()
 
     DLabel *panelName = new DLabel(this);
     panelName->setFixedHeight(20);
-    QFont panelNameFont;
-    // panelNameFont.setBold(true);
-    panelNameFont.setPixelSize(14);
-    panelName->setFont(panelNameFont);
+//    QFont panelNameFont;
+//    // panelNameFont.setBold(true);
+//    panelNameFont.setPixelSize(14);
+//    panelName->setFont(panelNameFont);
+    DFontSizeManager::instance()->bind(panelName, DFontSizeManager::T6);
     panelName->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     panelName->setText(DApplication::translate("FontDetailDailog", "Basic Information"));
 
@@ -81,19 +82,19 @@ void DFontInfoDialog::initUI()
     styleRowLayout->setContentsMargins(0, 0, 0, 0);
     styleRowLayout->setSpacing(0);
 
-    QFont basicInfoFont;
-    basicInfoFont.setPixelSize(12);
+//    QFont basicInfoFont;
+//    basicInfoFont.setPixelSize(12);
 
     DLabel *styleName = new DLabel(this);
     styleName->setFixedSize(QSize(60, 18));
-    styleName->setFont(basicInfoFont);
+    DFontSizeManager::instance()->bind(styleName, DFontSizeManager::T8);
     styleName->setText(DApplication::translate("FontDetailDailog", "Style"));
     styleName->setAlignment(Qt::AlignLeft);
 
     m_fontSytleName = new DLabel(this);
     m_fontSytleName->setFixedHeight(18);
     m_fontSytleName->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    m_fontSytleName->setFont(basicInfoFont);
+    DFontSizeManager::instance()->bind(m_fontSytleName, DFontSizeManager::T8);
     m_fontSytleName->setText("Regular");
     m_fontSytleName->setAlignment(Qt::AlignLeft);
 
@@ -107,14 +108,14 @@ void DFontInfoDialog::initUI()
 
     DLabel *typeName = new DLabel(this);
     typeName->setFixedSize(QSize(60, 18));
-    typeName->setFont(basicInfoFont);
+    DFontSizeManager::instance()->bind(typeName, DFontSizeManager::T8);
     typeName->setText(DApplication::translate("FontDetailDailog", "Type"));
     typeName->setAlignment(Qt::AlignLeft);
 
     m_fontTypeName = new DLabel(this);
     m_fontTypeName->setFixedHeight(18);
     m_fontTypeName->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    m_fontTypeName->setFont(basicInfoFont);
+    DFontSizeManager::instance()->bind(m_fontTypeName, DFontSizeManager::T8);
     m_fontTypeName->setText("True Type");
     m_fontTypeName->setAlignment(Qt::AlignLeft);
 
@@ -128,7 +129,7 @@ void DFontInfoDialog::initUI()
 
     DLabel *versionName = new DLabel(this);
     versionName->setFixedSize(QSize(60, 18));
-    versionName->setFont(basicInfoFont);
+    DFontSizeManager::instance()->bind(versionName, DFontSizeManager::T8);
     versionName->setText(DApplication::translate("FontDetailDailog", "Version"));
     versionName->setAlignment(Qt::AlignLeft);
 
@@ -138,7 +139,7 @@ void DFontInfoDialog::initUI()
     m_fontVersion->setAlignment(Qt::AlignTop | Qt::AlignLeft);
     m_fontVersion->setFrameShape(DFrame::Shape::NoFrame);
     m_fontVersion->setContentsMargins(0, 0, 0, 0);
-    m_fontVersion->setFont(basicInfoFont);
+    DFontSizeManager::instance()->bind(m_fontVersion, DFontSizeManager::T8);
     m_fontVersion->setFocusPolicy(Qt::FocusPolicy::NoFocus);
     m_fontVersion->setText(
                 "Copyright 2014~2015 Adobe Syste-ms Incorporated (http://www.adob.com/), with Reserved "
@@ -155,14 +156,14 @@ void DFontInfoDialog::initUI()
 
     DLabel *despName = new DLabel(this);
     despName->setFixedSize(QSize(60, 18));
-    despName->setFont(basicInfoFont);
+    DFontSizeManager::instance()->bind(despName, DFontSizeManager::T8);
     despName->setText(DApplication::translate("FontDetailDailog", "Description"));
     despName->setAlignment(Qt::AlignLeft);
 
     m_fontDescription = new DLabel(this);
     m_fontDescription->setFixedHeight(18);
     m_fontDescription->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    m_fontDescription->setFont(basicInfoFont);
+    DFontSizeManager::instance()->bind(m_fontDescription, DFontSizeManager::T8);
     m_fontDescription->setText(DApplication::translate("FontDetailDailog", "Unkonw"));
     m_fontDescription->setAlignment(Qt::AlignLeft);
 
@@ -182,7 +183,7 @@ void DFontInfoDialog::initUI()
     /**************************Basic info panel****END*******************************/
 
     // Add childs to main layout
-    mainLayout->addSpacing(50);
+    //mainLayout->addSpacing(50);
     mainLayout->addWidget(m_fontLogo, 0, Qt::AlignHCenter);
     mainLayout->addSpacing(9);
     mainLayout->addWidget(m_fontFileName);
@@ -190,6 +191,8 @@ void DFontInfoDialog::initUI()
     mainLayout->addWidget(m_basicInfoFrame);
 
     m_mainFrame->setLayout(mainLayout);
+
+    addContent(m_mainFrame);
 
     // Update font info to UI
     updateFontInfo();
@@ -210,9 +213,9 @@ void DFontInfoDialog::initConnections() {}
 
 void DFontInfoDialog::resizeEvent(QResizeEvent *event)
 {
-    DDialog::resizeEvent(event);
+    DFontBaseDialog::resizeEvent(event);
 
-    m_mainFrame->setFixedSize(event->size().width(), event->size().height());
+    //m_mainFrame->setFixedSize(event->size().width(), event->size().height());
 }
 
 void DFontInfoDialog::updateFontInfo()

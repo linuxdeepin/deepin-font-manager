@@ -102,7 +102,7 @@ void DFInstallErrorListDelegate::paint(QPainter *painter, const QStyleOptionView
 
         QString fontFamilyName = Utils::loadFontFamilyFromFiles(":/images/SourceHanSansCN-Medium.ttf");
         QFont nameFont(fontFamilyName);
-        nameFont.setPixelSize(14);
+        nameFont.setPixelSize(DFontSizeManager::instance()->fontPixelSize(DFontSizeManager::T6));
         painter->setFont(nameFont);
 
         if (option.state & QStyle::State_Selected) {
@@ -120,7 +120,7 @@ void DFInstallErrorListDelegate::paint(QPainter *painter, const QStyleOptionView
                                         bgRect.height());
 
         QFont installStatusFont(fontFamilyName);
-        installStatusFont.setPixelSize(11);
+        installStatusFont.setPixelSize(DFontSizeManager::instance()->fontPixelSize(DFontSizeManager::T9));
         painter->setFont(installStatusFont);
 
         DPalette pa = DApplicationHelper::instance()->palette(m_parentView);

@@ -626,10 +626,11 @@ void DFontMgrMainWindow::initStateBar()
     d->stateBar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     d->textInputEdit = new DLineEdit(this);
-    QFont searchFont;
-    searchFont.setPixelSize(14);
-    d->textInputEdit->setFont(searchFont);
+//    QFont searchFont;
+//    searchFont.setPixelSize(14);
+//    d->textInputEdit->setFont(searchFont);
     //d->textInputEdit->setMinimumSize(QSize(FTM_SBAR_TXT_EDIT_W,FTM_SBAR_TXT_EDIT_H));
+    DFontSizeManager::instance()->bind(d->textInputEdit, DFontSizeManager::T6);
     d->textInputEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     d->textInputEdit->setClearButtonEnabled(true);
     d->textInputEdit->lineEdit()->setPlaceholderText(DApplication::translate("StateBar", "Input preview text"));
@@ -652,9 +653,10 @@ void DFontMgrMainWindow::initStateBar()
     d->fontSizeLabel->setFixedSize(FTM_SBAR_FSIZE_LABEL_W, FTM_SBAR_FSIZE_LABEL_H);
     d->fontSizeLabel->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
 
-    QFont fontSize;
-    fontSize.setPixelSize(14);
-    d->fontSizeLabel->setFont(fontSize);
+//    QFont fontSize;
+//    fontSize.setPixelSize(14);
+//    d->fontSizeLabel->setFont(fontSize);
+    DFontSizeManager::instance()->bind(d->fontSizeLabel, DFontSizeManager::T6);
     // d->fontSizeLabel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     // Init the default font size
     QString defaultFontSize;
