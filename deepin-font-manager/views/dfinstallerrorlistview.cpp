@@ -93,25 +93,31 @@ void DFInstallErrorListDelegate::paint(QPainter *painter, const QStyleOptionView
                                              painter,
                                              &checkBox);
 
-        int statusLabelMaxWidth = 80;
+        int statusLabelMaxWidth = 120;
         int fontNameLeft = FTM_ERROR_ITEM_FONTNAME_LEFT;
         QRect fontFileNameRect = QRect(bgRect.left()+fontNameLeft,
-                                       checkboxRect.top(),
+                                       checkboxRect.top()-5,
                                        bgRect.width()-fontNameLeft-statusLabelMaxWidth,
-                                       checkboxRect.height());
+                                       checkboxRect.height()+10);
 
         QString fontFamilyName = Utils::loadFontFamilyFromFiles(":/images/SourceHanSansCN-Medium.ttf");
         QFont nameFont(fontFamilyName);
         nameFont.setPixelSize(DFontSizeManager::instance()->fontPixelSize(DFontSizeManager::T6));
         painter->setFont(nameFont);
 
+        QFontMetrics fontMetric(nameFont);
+        QString elidedFontFileNameText = fontMetric.elidedText(strFontFileName,
+                                                   Qt::ElideRight,
+                                                   fontFileNameRect.width(),
+                                                   Qt::TextShowMnemonic);
+
         if (option.state & QStyle::State_Selected) {
             painter->setPen(QPen(option.palette.color(DPalette::Text)));
-            painter->drawText(fontFileNameRect, Qt::AlignLeft | Qt::AlignVCenter, strFontFileName);
+            painter->drawText(fontFileNameRect, Qt::AlignLeft | Qt::AlignVCenter, elidedFontFileNameText);
         }
         else {
             painter->setPen(QPen(option.palette.color(DPalette::Text)));
-            painter->drawText(fontFileNameRect, Qt::AlignLeft | Qt::AlignVCenter, strFontFileName);
+            painter->drawText(fontFileNameRect, Qt::AlignLeft | Qt::AlignVCenter, elidedFontFileNameText);
         }
 
         QRect installStatusRect = QRect(bgRect.left()+(bgRect.width()-statusLabelMaxWidth)-10,
