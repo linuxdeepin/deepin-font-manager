@@ -144,12 +144,12 @@ DSplitListWidget::~DSplitListWidget() {}
 void DSplitListWidget::initListData()
 {
     m_titleStringList << DApplication::translate("Category", "All Fonts")
-                      << DApplication::translate("Category", "System Fonts")
-                      << DApplication::translate("Category", "User Fonts")
-                      << DApplication::translate("Category", "My Favorite")
-                      << DApplication::translate("Category", "Active Fonts")
+                      << DApplication::translate("Category", "System")
+                      << DApplication::translate("Category", "User")
+                      << DApplication::translate("Category", "Favorites")
+                      << DApplication::translate("Category", "Active")
                       << DApplication::translate("Category", "Chinese")
-                      << DApplication::translate("Category", "Monospace");
+                      << DApplication::translate("Category", "Monospaced");
 
     for(int i=0; i<m_titleStringList.size(); i++)
     {

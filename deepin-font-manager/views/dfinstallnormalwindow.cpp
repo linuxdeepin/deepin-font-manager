@@ -53,7 +53,7 @@ void DFInstallNormalWindow::initUI()
     m_progressStepLabel->setFont(pslFont);
     DFontSizeManager::instance()->bind(m_progressStepLabel, DFontSizeManager::T6);
     m_progressStepLabel->setFixedHeight(20);
-    m_progressStepLabel->setText(DApplication::translate("NormalInstallWindow", "Verifing Font…"));
+    m_progressStepLabel->setText(DApplication::translate("NormalInstallWindow", "Verifying..."));
 
     m_currentFontLabel = new DLabel(this);
 //    QFont cflFont;

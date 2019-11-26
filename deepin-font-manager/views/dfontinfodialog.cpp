@@ -75,7 +75,7 @@ void DFontInfoDialog::initUI()
 //    panelName->setFont(panelNameFont);
     DFontSizeManager::instance()->bind(panelName, DFontSizeManager::T6);
     panelName->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    panelName->setText(DApplication::translate("FontDetailDailog", "Basic Information"));
+    panelName->setText(DApplication::translate("FontDetailDailog", "Basic info"));
 
     // Style Row
     QHBoxLayout* styleRowLayout = new QHBoxLayout();

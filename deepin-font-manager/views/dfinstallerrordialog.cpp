@@ -79,7 +79,7 @@ void DFInstallErrorDialog::initData()
             itemModel.bChecked = false;
             itemModel.strFontFileName = fileInfo.fileName();
             itemModel.strFontFilePath = fileInfo.filePath();
-            itemModel.strFontInstallStatus = DApplication::translate("ExceptionWindow", "File Error");
+            itemModel.strFontInstallStatus = DApplication::translate("ExceptionWindow", "Broken file");
 
             m_installErrorFontModelList.push_back(itemModel);
         } else if (fontInfo.isInstalled) {
@@ -89,7 +89,7 @@ void DFInstallErrorDialog::initData()
             itemModel.bChecked = true;
             itemModel.strFontFileName = fileInfo.fileName();
             itemModel.strFontFilePath = fileInfo.filePath();
-            itemModel.strFontInstallStatus = DApplication::translate("ExceptionWindow", "Installed");
+            itemModel.strFontInstallStatus = DApplication::translate("ExceptionWindow", "Same version installed");
 
             m_installErrorFontModelList.push_back(itemModel);
         } else {

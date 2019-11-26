@@ -93,7 +93,7 @@ void DFInstallErrorListDelegate::paint(QPainter *painter, const QStyleOptionView
                                              painter,
                                              &checkBox);
 
-        int statusLabelMaxWidth = 120;
+        int statusLabelMaxWidth = 160;
         int fontNameLeft = FTM_ERROR_ITEM_FONTNAME_LEFT;
         QRect fontFileNameRect = QRect(bgRect.left()+fontNameLeft,
                                        checkboxRect.top()-5,
@@ -129,11 +129,17 @@ void DFInstallErrorListDelegate::paint(QPainter *painter, const QStyleOptionView
         installStatusFont.setPixelSize(DFontSizeManager::instance()->fontPixelSize(DFontSizeManager::T9));
         painter->setFont(installStatusFont);
 
+        QFontMetrics stateFontMetric(installStatusFont);
+        QString elidedStatusText = fontMetric.elidedText(strStatus,
+                                                   Qt::ElideRight,
+                                                   installStatusRect.width(),
+                                                   Qt::TextShowMnemonic);
+
         DPalette pa = DApplicationHelper::instance()->palette(m_parentView);
         DStyleHelper styleHelper;
         QColor penColor = styleHelper.getColor(static_cast<const QStyleOption *>(&option), pa, DPalette::TextWarning);
         painter->setPen(QPen(penColor));
-        painter->drawText(installStatusRect, Qt::AlignRight | Qt::AlignVCenter, strStatus);
+        painter->drawText(installStatusRect, Qt::AlignRight | Qt::AlignVCenter, elidedStatusText);
 
         painter->restore();
     } else {

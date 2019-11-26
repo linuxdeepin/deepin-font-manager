@@ -595,7 +595,7 @@ void DFontMgrMainWindow::initFontPreviewListView(QWidget *parent)
     DLabel *noResultLabel = new DLabel(m_noResultListView);
     noResultLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     noResultLabel->setFixedHeight(30);
-    noResultLabel->setText(DApplication::translate("SearchBar", "No Result"));
+    noResultLabel->setText(DApplication::translate("SearchBar", "No search results"));
     QString fontFamilyName = Utils::loadFontFamilyFromFiles(":/images/SourceHanSansCN-Normal.ttf");
     QFont labelFont(fontFamilyName);
     labelFont.setWeight(QFont::ExtraLight);

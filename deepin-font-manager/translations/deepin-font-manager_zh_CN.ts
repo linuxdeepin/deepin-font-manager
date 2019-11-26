@@ -4,12 +4,12 @@
     <context>
         <name>Main</name>
         <message>
-            <source>Deepin Font Manager</source>
+            <source>Font Manager</source>
             <translation>字体管理器</translation>
         </message>
         <message>
-            <source>Deepin Font Manager is used to install and uninstall font file for users with bulk install function.</source>
-            <translation>深度字体管理器用于帮助用户安装和卸载字体文件，支持批量安装。</translation>
+            <source>Font Manager helps users install and manage fonts.</source>
+            <translation>字体管理器是一款帮助用户安装和管理字体的工具。</translation>
         </message>
     </context>
     <context>
@@ -19,14 +19,14 @@
             <translation>搜索</translation>
         </message>
         <message>
-            <source>No Result</source>
-            <translation>无结果</translation>
+            <source>No search results</source>
+            <translation>无搜索结果</translation>
         </message>
     </context>
     <context>
         <name>Menu</name>
         <message>
-            <source>Add Fonts</source>
+            <source>Add font</source>
             <translation>添加字体</translation>
         </message>
         <message>
@@ -42,7 +42,7 @@
             <translation>深色主题</translation>
         </message>
         <message>
-            <source>Follow System</source>
+            <source>System Theme</source>
             <translation>跟随系统</translation>
         </message>
         <message>
@@ -50,31 +50,31 @@
             <translation>帮助</translation>
         </message>
         <message>
-            <source>Enable Font</source>
+            <source>Enable</source>
             <translation>启用字体</translation>
         </message>
         <message>
-            <source>Disable Font</source>
+            <source>Disable</source>
             <translation>禁用字体</translation>
         </message>
         <message>
-            <source>Delete Font</source>
+            <source>Delete</source>
             <translation>删除字体</translation>
         </message>
         <message>
-            <source>Add Favorite</source>
+            <source>Favorite</source>
             <translation>收藏</translation>
         </message>
         <message>
-            <source>Remove Favorite</source>
+            <source>Unfavorite</source>
             <translation>取消收藏</translation>
         </message>
         <message>
-            <source>Font Detail</source>
-            <translation>显示信息</translation>
+            <source>Details</source>
+            <translation>信息</translation>
         </message>
         <message>
-            <source>Font File Position</source>
+            <source>Display in file manager</source>
             <translation>在文件管理器中显示</translation>
         </message>
     </context>
@@ -85,8 +85,8 @@
             <translation>安装字体</translation>
         </message>
         <message>
-            <source>Verifing Font…</source>
-            <translation>正在验证字体…</translation>
+            <source>Verifying...</source>
+            <translation>正在验证...</translation>
         </message>
     </context>
     <context>
@@ -96,8 +96,8 @@
             <translation>未知</translation>
         </message>
         <message>
-            <source>File Error</source>
-            <translation>文件损坏</translation>
+            <source>Broken file</source>
+            <translation>文件已损坏</translation>
         </message>
         <message>
             <source>Installed</source>
@@ -119,27 +119,27 @@
             <translation>字体验证</translation>
         </message>
         <message>
-            <source>File Error</source>
-            <translation>文件异常</translation>
+            <source>Broken file</source>
+            <translation>文件已损坏</translation>
         </message>
         <message>
-            <source>Installed</source>
+            <source>Same version installed</source>
             <translation>已安装相同版本</translation>
         </message>
         <message>
             <source>Exit</source>
-            <translation>退出安装</translation>
+            <translation>退出</translation>
         </message>
         <message>
             <source>Continue</source>
-            <translation>继续安装</translation>
+            <translation>继续</translation>
         </message>
     </context>
    <context>
         <name>DeleteConfirmDailog</name>
         <message>
-            <source>Are you sure to delete this font?</source>
-            <translation>您确定要删除此字体吗?</translation>
+            <source>Are you sure you want to delete this font?</source>
+            <translation>您确定要删除该字体吗？</translation>
         </message>
         <message>
             <source>This font will not be available to applications</source>
@@ -161,7 +161,7 @@
     <context>
         <name>FontDetailDailog</name>
         <message>
-            <source>Basic Information</source>
+            <source>Basic info</source>
             <translation>基本信息</translation>
         </message>
         <message>
@@ -192,28 +192,28 @@
             <translation>所有字体</translation>
         </message>
         <message>
-            <source>System Fonts</source>
+            <source>System</source>
             <translation>系统字体</translation>
         </message>
         <message>
-            <source>User Fonts</source>
+            <source>User</source>
             <translation>用户字体</translation>
         </message>
         <message>
-            <source>My Favorite</source>
+            <source>Favorites</source>
             <translation>我的收藏</translation>
         </message>
         <message>
-            <source>Active Fonts</source>
+            <source>Active</source>
             <translation>已激活</translation>
         </message>
         <message>
             <source>Chinese</source>
-            <translation>中文</translation>
+            <translation>中文字体</translation>
         </message>
         <message>
-            <source>Monospace</source>
-            <translation>等宽</translation>
+            <source>Monospaced</source>
+            <translation>等宽字体</translation>
         </message>
     </context>
     <context>

@@ -34,7 +34,7 @@ void DFDeleteDialog::initUI()
 
     m_messageA = new DLabel(this);
     m_messageA->setText(
-        DApplication::translate("DeleteConfirmDailog", "Are you sure to delete this font?"));
+        DApplication::translate("DeleteConfirmDailog", "Are you sure you want to delete this font?"));
     m_messageA->setFixedHeight(20);
     m_messageA->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     QFont msgAFont(msgFontFamily);

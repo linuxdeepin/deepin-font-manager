@@ -8,7 +8,7 @@
             <translation type="unfinished"/>
         </message>
         <message>
-            <source>Deepin Font Manager is used to install and uninstall font file for users with bulk install function.</source>
+            <source>Font Manager helps users install and manage fonts.</source>
             <translation type="unfinished"/>
         </message>
     </context>
@@ -19,14 +19,14 @@
             <translation type="unfinished"/>
         </message>
         <message>
-            <source>No Result</source>
+            <source>No search results</source>
             <translation type="unfinished"/>
         </message>
     </context>
     <context>
         <name>Menu</name>
         <message>
-            <source>Add Fonts</source>
+            <source>Add font</source>
             <translation type="unfinished"/>
         </message>
         <message>
@@ -42,7 +42,7 @@
             <translation type="unfinished"/>
         </message>
         <message>
-            <source>Follow System</source>
+            <source>System Theme</source>
             <translation type="unfinished"/>
         </message>
         <message>
@@ -50,31 +50,31 @@
             <translation type="unfinished"/>
         </message>
         <message>
-            <source>Enable Font</source>
+            <source>Enable</source>
             <translation type="unfinished"/>
         </message>
         <message>
-            <source>Disable Font</source>
+            <source>Disable</source>
             <translation type="unfinished"/>
         </message>
         <message>
-            <source>Delete Font</source>
+            <source>Delete</source>
             <translation type="unfinished"/>
         </message>
         <message>
-            <source>Add Favorite</source>
+            <source>Favorite</source>
             <translation type="unfinished"/>
         </message>
         <message>
-            <source>Remove Favorite</source>
+            <source>Unfavorite</source>
             <translation type="unfinished"/>
         </message>
         <message>
-            <source>Font Detail</source>
+            <source>Details</source>
             <translation type="unfinished"/>
         </message>
         <message>
-            <source>Font File Position</source>
+            <source>Display in file manager</source>
             <translation type="unfinished"/>
         </message>
     </context>
@@ -85,7 +85,7 @@
             <translation type="unfinished"/>
         </message>
         <message>
-            <source>VerifyFontMessage</source>
+            <source>Verifying...</source>
             <translation type="unfinished"/>
         </message>
     </context>
@@ -96,7 +96,7 @@
             <translation type="unfinished"/>
         </message>
         <message>
-            <source>File Error</source>
+            <source>Broken file</source>
             <translation type="unfinished"/>
         </message>
         <message>
@@ -119,30 +119,30 @@
             <translation type="unfinished"/>
         </message>
         <message>
-            <source>File Error</source>
+            <source>Broken file</source>
             <translation type="unfinished"/>
         </message>
         <message>
-            <source>Installed</source>
+            <source>Same version installed</source>
             <translation type="unfinished"/>
         </message>
         <message>
-            <source>Exit Install</source>
+            <source>Exit</source>
             <translation type="unfinished"/>
         </message>
         <message>
-            <source>Continue Install</source>
+            <source>Continue</source>
             <translation type="unfinished"/>
         </message>
     </context>
     <context>
         <name>DeleteConfirmDailog</name>
         <message>
-            <source>Are you sure to delete this font?</source>
+            <source>Are you sure you want to delete this font?</source>
             <translation type="unfinished"/>
         </message>
         <message>
-            <source>This font will not be available to applications.</source>
+            <source>This font will not be available to applications</source>
             <translation type="unfinished"/>
         </message>
         <message>
@@ -157,7 +157,7 @@
     <context>
         <name>FontDetailDailog</name>
         <message>
-            <source>Base Information</source>
+            <source>Basic info</source>
             <translation type="unfinished"/>
         </message>
         <message>
@@ -188,19 +188,19 @@
             <translation type="unfinished"/>
         </message>
         <message>
-            <source>System Fonts</source>
+            <source>System</source>
             <translation type="unfinished"/>
         </message>
         <message>
-            <source>User Fonts</source>
+            <source>User</source>
             <translation type="unfinished"/>
         </message>
         <message>
-            <source>My Favorite</source>
+            <source>Favorites</source>
             <translation type="unfinished"/>
         </message>
         <message>
-            <source>Active Fonts</source>
+            <source>Active</source>
             <translation type="unfinished"/>
         </message>
         <message>
@@ -208,7 +208,7 @@
             <translation type="unfinished"/>
         </message>
         <message>
-            <source>Monospace</source>
+            <source>Monospaced</source>
             <translation type="unfinished"/>
         </message>
     </context>

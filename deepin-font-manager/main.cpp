@@ -48,11 +48,10 @@ int main(int argc, char *argv[])
     app.setApplicationVersion(DApplication::buildVersion("1.0"));
     app.setApplicationAcknowledgementPage("https://www.deepin.org/original/deepin-font-installer/");
     app.setProductIcon(QIcon::fromTheme(DEEPIN_FONT_MANAGER));
-    app.setProductName(DApplication::translate("Main", "Deepin Font Manager"));
+    app.setProductName(DApplication::translate("Main", "Font Manager"));
     app.setApplicationDescription(
         DApplication::translate("Main",
-                                "Deepin Font Manager is used to install and uninstall font file "
-                                "for users with bulk install function."));
+                                "Font Manager helps users install and manage fonts."));
 
     qputenv("DTK_USE_SEMAPHORE_SINGLEINSTANCE", "1");
     if(!DGuiApplicationHelper::instance()->setSingleInstance(app.applicationName(), DGuiApplicationHelper::UserScope)) {

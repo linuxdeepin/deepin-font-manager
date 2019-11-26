@@ -159,7 +159,7 @@ void DFQuickInstallWindow::onFileSelected(QStringList fileList)
 
         DFontInfo fontInfo = m_fontInfoManager->getFontInfo(file);
         if (fontInfo.isError) {
-            m_stateLabel->setText(DApplication::translate("QuickInstallWindow", "File Error"));
+            m_stateLabel->setText(DApplication::translate("QuickInstallWindow", "Broken file"));
             DPalette pa = DApplicationHelper::instance()->palette(m_stateLabel);
             pa.setBrush(DPalette::WindowText, pa.color(DPalette::TextWarning));
             m_stateLabel->setPalette(pa);
