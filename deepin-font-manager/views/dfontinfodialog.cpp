@@ -157,7 +157,12 @@ void DFontInfoDialog::initUI()
     DLabel *despName = new DLabel(this);
     despName->setFixedSize(QSize(60, 18));
     DFontSizeManager::instance()->bind(despName, DFontSizeManager::T8);
-    despName->setText(DApplication::translate("FontDetailDailog", "Description"));
+
+    QString elidDespStr = DApplication::translate("FontDetailDailog", "Description");
+    elidDespStr = Utils::holdTextInRect(despName->font(),
+                                        elidDespStr,
+                                        QSize(60,18));
+    despName->setText(elidDespStr);
     despName->setAlignment(Qt::AlignLeft);
 
     m_fontDescription = new DLabel(this);

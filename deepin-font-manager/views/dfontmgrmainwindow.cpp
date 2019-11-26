@@ -1070,20 +1070,20 @@ void DFontMgrMainWindow::showAllShortcut()
 
     QMap<QString,QString> shortcutKeymap = {
         {"Help",               "F1"},
-        {"Zoom In",            "Ctrl+-"},
-        {"Zoom Out",           "Ctrl++"},
-        {"Reset Font",         "Ctrl+0"},
-        {"Close Window",       "Alt+F4"},
-        {"Show Shortcut",      "Ctrl+Shift+/"},
-        {"Show Previous Page", "PageUp"},
-        {"Show Next Page",     "PageDown"},
-        {"Resize Window",      "Ctrl+Alt+F"},
-        {"Find Font ",         "Ctrl+F"},
-        {"Delete Font",        "Delete"},
-        {"Add Font",           "Ctrl+O"},
-        {"Add Favorite",       "Ctrl+K"},
-        {"Cancel Favorite",    "Ctrl+Shift+K"},
-        {"Font Information",   "Alt+Enter"},
+        {"Zoom in",            "Ctrl+-"},
+        {"Zoom out",           "Ctrl++"},
+        {"Reset font",         "Ctrl+0"},
+        {"Close window",       "Alt+F4"},
+        {"Show shortcuts",     "Ctrl+Shift+/"},
+        {"Previous page",      "PageUp"},
+        {"Next page",          "PageDown"},
+        {"Resize window",      "Ctrl+Alt+F"},
+        {"Find",               "Ctrl+F"},
+        {"Delete",             "Delete"},
+        {"Add font",           "Ctrl+O"},
+        {"Favorite",           "Ctrl+K"},
+        {"UnFavorite",         "Ctrl+Shift+K"},
+        {"Details",            "Alt+Enter"},
     };
 
     QJsonObject fontMgrJsonGroup;
@@ -1093,10 +1093,11 @@ void DFontMgrMainWindow::showAllShortcut()
     for (QMap<QString,QString>::iterator it=shortcutKeymap.begin();
          it != shortcutKeymap.end(); it++) {
         QJsonObject jsonItem;
-        jsonItem.insert("name", QObject::tr(it.key().toUtf8().data()));
+        jsonItem.insert("name", DApplication::translate("Shortcuts",it.key().toUtf8()));
         jsonItem.insert("value", it.value().replace("Meta", "Super"));
         fontJsonItems.append(jsonItem);
     }
+
     fontMgrJsonGroup.insert("groupItems", fontJsonItems);
     jsonGroups.append(fontMgrJsonGroup);
 
