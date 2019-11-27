@@ -81,7 +81,7 @@
 <context>
     <name>NormalInstallWindow</name>
     <message>
-        <source>Font Installation</source>
+        <source>Install Font</source>
         <translation>安装字体</translation>
     </message>
     <message>
@@ -181,7 +181,7 @@
         <translation>描述</translation>
     </message>
     <message>
-        <source>Unkonw</source>
+        <source>Unknow</source>
         <translation>未知</translation>
     </message>
 </context>

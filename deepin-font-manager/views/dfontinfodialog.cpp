@@ -169,7 +169,7 @@ void DFontInfoDialog::initUI()
     m_fontDescription->setFixedHeight(18);
     m_fontDescription->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     DFontSizeManager::instance()->bind(m_fontDescription, DFontSizeManager::T8);
-    m_fontDescription->setText(DApplication::translate("FontDetailDailog", "Unkonw"));
+    m_fontDescription->setText(DApplication::translate("FontDetailDailog", "Unknow"));
     m_fontDescription->setAlignment(Qt::AlignLeft);
 
     despRowLayout->addWidget(despName);

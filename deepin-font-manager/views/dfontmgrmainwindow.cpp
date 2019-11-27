@@ -1087,7 +1087,7 @@ void DFontMgrMainWindow::showAllShortcut()
     };
 
     QJsonObject fontMgrJsonGroup;
-    fontMgrJsonGroup.insert("groupName", tr("Font Manager"));
+    fontMgrJsonGroup.insert("groupName", DApplication::translate("Main","Font Manager"));
     QJsonArray fontJsonItems;
 
     for (QMap<QString,QString>::iterator it=shortcutKeymap.begin();

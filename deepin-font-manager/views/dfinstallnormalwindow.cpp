@@ -34,7 +34,7 @@ DFInstallNormalWindow::~DFInstallNormalWindow() {
 void DFInstallNormalWindow::initUI()
 {
     setFixedSize(QSize(380, 136));
-    setTitle(DApplication::translate("NormalInstallWindow", "Font Installation"));
+    setTitle(DApplication::translate("NormalInstallWindow", "Install Font"));
 
     QVBoxLayout *mainLayout = new QVBoxLayout();
     mainLayout->setSpacing(0);

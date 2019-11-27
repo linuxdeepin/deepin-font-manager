@@ -81,7 +81,7 @@
 <context>
     <name>NormalInstallWindow</name>
     <message>
-        <source>Font Installation</source>
+        <source>Install Font</source>
         <translation></translation>
     </message>
     <message>
@@ -177,7 +177,7 @@
         <translation></translation>
     </message>
     <message>
-        <source>Unkonw</source>
+        <source>Unknow</source>
         <translation></translation>
     </message>
 </context>
