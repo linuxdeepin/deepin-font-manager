@@ -92,7 +92,7 @@
 <context>
     <name>QuickInstallWindow</name>
     <message>
-        <source>Unknow</source>
+        <source>UnKnown</source>
         <translation></translation>
     </message>
     <message>
@@ -177,7 +177,7 @@
         <translation></translation>
     </message>
     <message>
-        <source>Unknow</source>
+        <source>UnKnown</source>
         <translation></translation>
     </message>
 </context>

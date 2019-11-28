@@ -57,7 +57,7 @@ void DFQuickInstallWindow::initUI()
 
     m_titleLabel = new DLabel(this);
     m_titleLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    m_titleLabel->setText(DApplication::translate("QuickInstallWindow", "Unknow"));
+    m_titleLabel->setText(DApplication::translate("QuickInstallWindow", "UnKnown"));
 
     titlebar()->addWidget(m_titleLabel, Qt::AlignBottom|Qt::AlignHCenter);
 
@@ -166,7 +166,7 @@ void DFQuickInstallWindow::onFileSelected(QStringList fileList)
 
             m_actionBtn->setDisabled(true);
             m_fontType->clear();
-            m_fontType->addItem(DApplication::translate("QuickInstallWindow", "Unknow"));
+            m_fontType->addItem(DApplication::translate("QuickInstallWindow", "UnKnown"));
         } else {
             if (fontInfo.isInstalled) {
                 DPalette pa = DApplicationHelper::instance()->palette(m_stateLabel);
@@ -186,7 +186,7 @@ void DFQuickInstallWindow::onFileSelected(QStringList fileList)
 
             m_fontType->clear();
             if (fontInfo.styleName.isEmpty()) {
-                m_fontType->addItem(DApplication::translate("QuickInstallWindow", "Unknow"));
+                m_fontType->addItem(DApplication::translate("QuickInstallWindow", "UnKnown"));
             } else {
                 m_fontType->addItem(fontInfo.styleName);
             }
