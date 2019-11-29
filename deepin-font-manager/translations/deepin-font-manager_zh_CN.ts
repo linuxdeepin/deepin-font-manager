@@ -246,20 +246,20 @@
         <translation>关闭应用</translation>
     </message>
     <message>
-        <source>Show shortcuts</source>
+        <source>Display shortcuts</source>
         <translation>显示快捷键预览</translation>
     </message>
     <message>
-        <source>Previous page</source>
+        <source>Page up</source>
         <translation>上一页</translation>
     </message>
     <message>
-        <source>Next page</source>
+        <source>Page down</source>
         <translation>下一页</translation>
     </message>
     <message>
         <source>Resize window</source>
-        <translation>窗口大小切换</translation>
+        <translation>窗口切换</translation>
     </message>
     <message>
         <source>Find</source>
@@ -282,7 +282,7 @@
         <translation>取消收藏</translation>
     </message>
     <message>
-        <source>Details</source>
+        <source>Font info</source>
         <translation>字体信息</translation>
     </message>
 </context>

@@ -242,15 +242,15 @@
         <translation></translation>
     </message>
     <message>
-        <source>Show shortcuts</source>
+        <source>Display shortcuts</source>
         <translation></translation>
     </message>
     <message>
-        <source>Previous page</source>
+        <source>Page up</source>
         <translation></translation>
     </message>
     <message>
-        <source>Next page</source>
+        <source>Page down</source>
         <translation></translation>
     </message>
     <message>
@@ -278,7 +278,7 @@
         <translation></translation>
     </message>
     <message>
-        <source>Details</source>
+        <source>Font info</source>
         <translation></translation>
     </message>
 </context>

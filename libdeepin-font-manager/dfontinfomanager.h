@@ -31,8 +31,8 @@ struct DFontInfo {
     QString copyright;
     QString description;
     QString sysVersion;
-    bool isInstalled;
-    bool isError;
+    bool isInstalled {false};
+    bool isError {false};;
     bool isSystemFont {true};  // Default is system font
 
     bool operator==(const DFontInfo &info)
