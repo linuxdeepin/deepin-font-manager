@@ -22,6 +22,17 @@
         <source>No search results</source>
         <translation>无搜索结果</translation>
     </message>
+    <message>
+        <source>No fonts</source>
+        <translation>暂无字体</translation>
+    </message>
+</context>
+<context>
+    <name>MessageManager</name>
+    <message>
+        <source>deactivated</source>
+        <translation>字体已停用</translation>
+    </message>
 </context>
 <context>
     <name>Menu</name>

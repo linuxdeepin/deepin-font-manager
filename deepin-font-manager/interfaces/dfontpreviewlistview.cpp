@@ -7,6 +7,8 @@
 #include <DLog>
 #include <DMenu>
 #include <DGuiApplicationHelper>
+#include <DApplication>
+#include <DMessageManager>
 
 #include <QFontDatabase>
 #include <QSet>
@@ -122,9 +124,9 @@ void DFontPreviewListView::initConnections()
             &DFontPreviewListView::onListViewShowContextMenu, Qt::ConnectionType::QueuedConnection);
 
     QObject::connect(m_fontPreviewProxyModel,
-                     SIGNAL(onFilterFinishRowCountChanged(bool)),
+                     SIGNAL(onFilterFinishRowCountChangedInt(unsigned int)),
                      m_parentWidget,
-                     SLOT(onFontListViewRowCountChanged(bool)));
+                     SLOT(onFontListViewRowCountChanged(unsigned int)));
 }
 
 QRect DFontPreviewListView::getCollectionIconRect(QRect visualRect)
@@ -298,10 +300,13 @@ void DFontPreviewListView::onListViewItemEnableBtnClicked(QModelIndex index)
 
     qDebug()<< "familyName" << itemData.fontInfo.familyName << endl;
 
+    QString deactivatedMessage =
+        QString("%1 %2").arg(itemData.strFontName).arg(DApplication::translate("MessageManager", "deactivated"));
     if (itemData.isEnabled) {
         enableFont(itemData);
     } else {
         disableFont(itemData);
+        DMessageManager::instance()->sendMessage(this, QIcon(":/images/ok.svg"), deactivatedMessage);
     }
 
     DFMDBManager::instance()->updateFontInfoByFontId(itemData.strFontId, "isEnabled", QString::number(itemData.isEnabled));

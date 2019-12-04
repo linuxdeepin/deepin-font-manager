@@ -36,6 +36,16 @@ void DFontPreviewProxyModel::setFilterFontNamePattern(const QString &pattern)
     invalidateFilter();
 }
 
+bool DFontPreviewProxyModel::getEditStatus() const
+{
+    return m_editStatus;
+}
+
+void DFontPreviewProxyModel::setEditStatus(bool editStatus)
+{
+    m_editStatus = editStatus;
+}
+
 bool DFontPreviewProxyModel::isFontNameContainsPattern(QString fontName) const
 {
     if (m_fontNamePattern.length() > 0) {
@@ -130,20 +140,24 @@ int DFontPreviewProxyModel::rowCount(const QModelIndex &parent) const
     int filterRowCount = QSortFilterProxyModel::rowCount();
     //qDebug() << "filterRowCount" << filterRowCount;
 
-    bool bShowNoResult = false;
+    unsigned int bShow = 0;
     if (0 == filterRowCount) {
-        bShowNoResult = true;
+        bShow = 1;
+
+        if (getEditStatus()) {
+            bShow = 2;
+        }
+
         DFontPreviewListDataThread *dataThread = DFontPreviewListDataThread::instance();
         //结果为空时安装单个字体后filterRowCount不会变成１，这时需要自己判断处理下
         if (1 == dataThread->getDiffFontModelList().size()) {
-            bShowNoResult = false;
+            bShow = 0;
         }
-    }
-    else {
-        bShowNoResult = false;
+    } else {
+        bShow = 0;
     }
 
-    emit this->onFilterFinishRowCountChanged(bShowNoResult);
+    emit this->onFilterFinishRowCountChangedInt(bShow);
 
     return filterRowCount;
 }

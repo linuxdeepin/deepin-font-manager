@@ -71,6 +71,7 @@ protected:
 
     DFontPreviewListView *m_fontPreviewListView;
     DListView *m_noResultListView;
+    DListView *m_noInstallListView;
 signals:
     void fileSelected(const QStringList files) const;
 
@@ -87,7 +88,7 @@ public slots:
     void onFontInstallFinished();
     void onFontUninstallFinished(const QModelIndex &uninstallIndex);
 
-    void onFontListViewRowCountChanged(bool bShowNoResult);
+    void onFontListViewRowCountChanged(unsigned int bShow);
 
 protected:
     // For quick install mode
@@ -98,6 +99,8 @@ protected:
     QShortcut *m_scZoomOut;       //放大字体快捷键Ctrl+-
     QShortcut *m_scDefaultSize;   //默认⼤⼩字体快捷键Ctrl+0
     int m_previewFontSize;
+
+    bool m_searchTextStatusIsEmpty = true;
 
     //Stand shortcut
     //Implement by DTK                       //Close window       --> Alt+F4

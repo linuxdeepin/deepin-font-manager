@@ -590,6 +590,7 @@ void DFontMgrMainWindow::initFontPreviewListView(QWidget *parent)
 
     listViewVBoxLayout->addWidget(m_fontPreviewListView);
 
+    // 未搜索到结果view
     m_noResultListView = new DListView;
 
     DLabel *noResultLabel = new DLabel(m_noResultListView);
@@ -610,6 +611,29 @@ void DFontMgrMainWindow::initFontPreviewListView(QWidget *parent)
     listViewVBoxLayout->addWidget(m_noResultListView);
 
     m_noResultListView->hide();
+
+    // 未安装字体view
+    m_noInstallListView = new DListView;
+
+    DLabel *noInstallLabel = new DLabel(m_noInstallListView);
+    noInstallLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    noInstallLabel->setFixedHeight(30);
+    noInstallLabel->setText(DApplication::translate("SearchBar", "No fonts"));
+    QString fontFamilyNameNoInstall = Utils::loadFontFamilyFromFiles(":/images/SourceHanSansCN-Normal.ttf");
+    QFont labelFontNoInstall(fontFamilyNameNoInstall);
+    labelFontNoInstall.setWeight(QFont::ExtraLight);
+    labelFontNoInstall.setPixelSize(20);
+    noInstallLabel->setFont(labelFontNoInstall);
+    noInstallLabel->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
+
+    QVBoxLayout *lblLayoutNoInstall = new QVBoxLayout;
+    lblLayoutNoInstall->addWidget(noInstallLabel);
+
+    m_noInstallListView->setLayout(lblLayoutNoInstall);
+    listViewVBoxLayout->addWidget(m_noInstallListView);
+
+    m_noInstallListView->hide();
+
 }
 
 void DFontMgrMainWindow::initStateBar()
@@ -860,11 +884,14 @@ void DFontMgrMainWindow::onSearchTextChanged(const QString &currStr)
     QString strSearchFontName = currStr;
     qDebug() << strSearchFontName << endl;
 
+    m_searchTextStatusIsEmpty = d->searchFontEdit->text().isEmpty();
+
     DFontPreviewProxyModel *filterModel = m_fontPreviewListView->getFontPreviewProxyModel();
 
     //根据搜索框内容实时过滤列表
     filterModel->setFilterKeyColumn(0);
     filterModel->setFilterFontNamePattern(strSearchFontName);
+    filterModel->setEditStatus(m_searchTextStatusIsEmpty);
 
     qDebug() << __FUNCTION__ << "filter Count:" << filterModel->rowCount() << endl;
 
@@ -895,6 +922,7 @@ void DFontMgrMainWindow::onPreviewTextChanged(const QString &currStr)
         QModelIndex modelIndex = filterModel->index(rowIndex, 0);
         filterModel->setData(modelIndex, QVariant(previewText), Dtk::UserRole + 1);
         filterModel->setData(modelIndex, QVariant(iFontSize), Dtk::UserRole + 2);
+        filterModel->setEditStatus(m_searchTextStatusIsEmpty);
     }
 
     m_fontPreviewListView->scrollToTop();
@@ -912,6 +940,7 @@ void DFontMgrMainWindow::onFontSizeChanged(int fontSize)
     for (int rowIndex = 0; rowIndex < filterModel->rowCount(); rowIndex++) {
         QModelIndex modelIndex = filterModel->index(rowIndex, 0);
         filterModel->setData(modelIndex, QVariant(fontSize), Dtk::UserRole + 2);
+        filterModel->setEditStatus(m_searchTextStatusIsEmpty);
     }
 }
 
@@ -950,6 +979,7 @@ void DFontMgrMainWindow::onLeftSiderBarItemClicked(int index)
     DFontPreviewProxyModel *filterModel = m_fontPreviewListView->getFontPreviewProxyModel();
     filterModel->setFilterKeyColumn(0);
     filterModel->setFilterGroup(filterGroup);
+    filterModel->setEditStatus(m_searchTextStatusIsEmpty);
 
     QString previewText = d->textInputEdit->text();
     onPreviewTextChanged(previewText);
@@ -966,19 +996,48 @@ void DFontMgrMainWindow::onFontUninstallFinished(const QModelIndex &uninstallInd
     m_fontPreviewListView->removeRowAtIndex(uninstallIndex);
 }
 
-void DFontMgrMainWindow::onFontListViewRowCountChanged(bool bShowNoResult)
+
+
+/* 判断FontListView的结果并显示对应状态
+ * dShow = 0 :查找到信息，显示正常
+ * dShow = 1 :未查到信息，显示“无搜索结果”
+ * dShow = 2 :未安装字体，显示“暂无字体”
+ * default   :默认有信息，显示正常
+ */
+void DFontMgrMainWindow::onFontListViewRowCountChanged(unsigned int bShow)
 {
     Q_D(DFontMgrMainWindow);
 
-    if (bShowNoResult) {
-        m_fontPreviewListView->hide();
-        m_noResultListView->show();
-        d->stateBar->hide();
-    }
-    else {
+    switch (bShow) {
+    case 0:
         m_fontPreviewListView->show();
         m_noResultListView->hide();
         d->stateBar->show();
+        if (m_noInstallListView->isVisible()) {
+            m_noInstallListView->hide();
+        }
+        break;
+    case 1:
+        m_fontPreviewListView->hide();
+        m_noResultListView->show();
+        d->stateBar->hide();
+        if (m_noInstallListView->isVisible()) {
+            m_noInstallListView->hide();
+        }
+        break;
+    case 2:
+        m_fontPreviewListView->hide();
+        m_noInstallListView->show();
+        d->stateBar->hide();
+        if (m_noResultListView->isVisible()) {
+            m_noResultListView->hide();
+        }
+        break;
+    default:
+        m_fontPreviewListView->show();
+        m_noResultListView->hide();
+        d->stateBar->show();
+        break;
     }
 }
 

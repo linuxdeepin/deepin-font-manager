@@ -22,6 +22,17 @@
         <source>No search results</source>
         <translation></translation>
     </message>
+    <message>
+        <source>No fonts</source>
+        <translation></translation>
+    </message>
+</context>
+<context>
+    <name>MessageManager</name>
+    <message>
+        <source>deactivated</source>
+        <translation></translation>
+    </message>
 </context>
 <context>
     <name>Menu</name>

@@ -24,12 +24,16 @@ public:
 
     void setFilterFontNamePattern(const QString &pattern);
 
+    void setEditStatus(bool editStatus);
+
+    bool getEditStatus() const;
 signals:
-    void onFilterFinishRowCountChanged(bool bShowNoResult) const;
+    void onFilterFinishRowCountChangedInt(unsigned int bShow) const;
 
 private:
     int m_filterGroup;
     bool m_useSystemFilter;
+    bool m_editStatus;
     QString m_fontNamePattern;
 };
 
