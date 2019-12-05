@@ -16,7 +16,7 @@
 #define FTM_SPLIT_LINE_INDEX    6
 
 DNoFocusDelegate::DNoFocusDelegate(QAbstractItemView *parent)
-    :DStyledItemDelegate(parent)
+    : DStyledItemDelegate(parent)
     , m_parentView(parent)
 {
 }
@@ -42,13 +42,12 @@ void DNoFocusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
 
         if (strTitle.startsWith(FTM_SPLIT_TOP_SPACE_TAG)) {
             //用于ListView顶部空白
-        }
-        else if (strTitle.startsWith(FTM_SPLIT_TOP_SPLIT_TAG)) {
+        } else if (strTitle.startsWith(FTM_SPLIT_TOP_SPLIT_TAG)) {
 
             QRect lineRect;
-            lineRect.setX(option.rect.x()+10);
-            lineRect.setY(option.rect.y()+option.rect.height()-2);
-            lineRect.setWidth(option.rect.width()-20);
+            lineRect.setX(option.rect.x() + 10);
+            lineRect.setY(option.rect.y() + option.rect.height() - 2);
+            lineRect.setWidth(option.rect.width() - 20);
             lineRect.setHeight(2);
 
             //绘制分割线
@@ -56,8 +55,7 @@ void DNoFocusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
             DStyleHelper styleHelper;
             QColor fillColor = styleHelper.getColor(static_cast<const QStyleOption *>(&option), pa, DPalette::ItemBackground);
             painter->fillRect(lineRect, fillColor);
-        }
-        else {
+        } else {
 
             QRect rect;
             rect.setX(option.rect.x());
@@ -65,7 +63,7 @@ void DNoFocusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
             rect.setWidth(option.rect.width());
             rect.setHeight(option.rect.height());
 
-            QRect paintRect = QRect(rect.left()+10, rect.top(), rect.width()-20, rect.height());
+            QRect paintRect = QRect(rect.left() + 10, rect.top(), rect.width() - 20, rect.height());
 
             QPainterPath path;
             const int radius = 8;
@@ -87,7 +85,7 @@ void DNoFocusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
             }
 
             //绘制标题
-            QRect fontNameRect = QRect(rect.left()+20, rect.top()+(rect.height()-20)/2, rect.width()-20, 20);
+            QRect fontNameRect = QRect(rect.left() + 20, rect.top() + (rect.height() - 20) / 2, rect.width() - 20, 20);
 
             QString fontFamilyName = Utils::loadFontFamilyFromFiles(":/images/SourceHanSansCN-Medium.ttf");
             QFont nameFont(fontFamilyName);
@@ -98,8 +96,7 @@ void DNoFocusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
             if (option.state & QStyle::State_Selected) {
                 painter->setPen(QPen(option.palette.color(DPalette::HighlightedText)));
                 painter->drawText(fontNameRect, Qt::AlignLeft | Qt::AlignVCenter, strTitle);
-            }
-            else {
+            } else {
                 painter->setPen(QPen(option.palette.color(DPalette::Text)));
                 painter->drawText(fontNameRect, Qt::AlignLeft | Qt::AlignVCenter, strTitle);
             }
@@ -112,18 +109,16 @@ void DNoFocusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
 }
 
 QSize DNoFocusDelegate::sizeHint(const QStyleOptionViewItem &option,
-                                         const QModelIndex &index) const
+                                 const QModelIndex &index) const
 {
     Q_UNUSED(index)
 
     int rowIndex = index.row();
     if (0 == rowIndex) {
         return QSize(option.rect.width(), 10);
-    }
-    else if (FTM_SPLIT_LINE_INDEX == rowIndex) {
+    } else if (FTM_SPLIT_LINE_INDEX == rowIndex) {
         return QSize(option.rect.width(), 24);
-    }
-    else {
+    } else {
         return QSize(option.rect.width(), 36);
     }
 }
@@ -151,8 +146,7 @@ void DSplitListWidget::initListData()
                       << DApplication::translate("Category", "Chinese")
                       << DApplication::translate("Category", "Monospaced");
 
-    for(int i=0; i<m_titleStringList.size(); i++)
-    {
+    for (int i = 0; i < m_titleStringList.size(); i++) {
         QString titleString = m_titleStringList.at(i);
         m_titleStringIndexMap.insert(titleString, i);
     }
@@ -160,17 +154,15 @@ void DSplitListWidget::initListData()
     m_categoryItemModell = new QStandardItemModel;
 
     int iTitleIndex = 0;
-    for (int i = 0; i < m_titleStringList.size()+2; i++) {
+    for (int i = 0; i < m_titleStringList.size() + 2; i++) {
         QStandardItem *item = new QStandardItem;
         if (0 == i) {
             item->setFlags(item->flags() & ~Qt::ItemIsSelectable & ~Qt::ItemIsEnabled);
             item->setData(QVariant::fromValue(QString(FTM_SPLIT_TOP_SPACE_TAG)), Qt::DisplayRole);
-        }
-        else if (FTM_SPLIT_LINE_INDEX == i) {
+        } else if (FTM_SPLIT_LINE_INDEX == i) {
             item->setFlags(item->flags() & ~Qt::ItemIsSelectable & ~Qt::ItemIsEnabled);
             item->setData(QVariant::fromValue(QString(FTM_SPLIT_TOP_SPLIT_TAG)), Qt::DisplayRole);
-        }
-        else {
+        } else {
             QString titleString = m_titleStringList.at(iTitleIndex++);
             item->setData(QVariant::fromValue(titleString), Qt::DisplayRole);
         }
@@ -185,19 +177,13 @@ void DSplitListWidget::initListData()
     selectionModel()->select(index, QItemSelectionModel::Select);
 }
 
-void DSplitListWidget::mouseReleaseEvent(QMouseEvent *event)
+void DSplitListWidget::currentChanged(const QModelIndex &current, const QModelIndex &previous)
 {
-    DListView::mouseReleaseEvent(event);
-
-    QPoint selectionPoint = event->pos();
-
-    QModelIndex modelIndex = indexAt(selectionPoint);
-
-    if (modelIndex.row() <=0 || FTM_SPLIT_LINE_INDEX == modelIndex.row()){
+    if (current.row() <= 0 || FTM_SPLIT_LINE_INDEX == current.row()) {
         return;
     }
 
-    QStandardItem *item = m_categoryItemModell->item(modelIndex.row());
+    QStandardItem *item = m_categoryItemModell->item(current.row());
     QVariant varUserData = item->data(Qt::DisplayRole).value<QVariant>();
     qDebug() << "varUserData" << varUserData << endl;
     int realIndex = m_titleStringIndexMap.value(varUserData.toString());

@@ -42,10 +42,10 @@ public:
 
     void initListData();
 
-    void mouseReleaseEvent(QMouseEvent *event) override;
+    void currentChanged(const QModelIndex &current, const QModelIndex &previous) override;
 
     QStringList m_titleStringList;
-    QMap<QString,int> m_titleStringIndexMap;
+    QMap<QString, int> m_titleStringIndexMap;
     QStandardItemModel *m_categoryItemModell;
 
 
