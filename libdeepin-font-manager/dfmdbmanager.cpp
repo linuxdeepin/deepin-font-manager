@@ -180,11 +180,9 @@ bool DFMDBManager::deleteFontInfo(const QString &strKey, const QString &strValue
     return m_sqlUtil->delRecord(where);
 }
 
-bool DFMDBManager::deleteFontInfoByFontId(const QString &strFontId)
+bool DFMDBManager::deleteFontInfoByFontMap(const QMap<QString, QString> &fontDelMap)
 {
-    QMap<QString, QString> where;
-    where.insert("fontId", strFontId);
-    return m_sqlUtil->delRecord(where);
+    return m_sqlUtil->delRecord(fontDelMap);
 }
 
 bool DFMDBManager::updateFontInfo(const QMap<QString, QString> &whereMap, const QMap<QString, QString> &dataMap)

@@ -21,7 +21,7 @@ public:
 
     bool addFontInfo(DFontPreviewItemData itemData);
     bool deleteFontInfo(const QString &strKey, const QString &strValue);
-    bool deleteFontInfoByFontId(const QString &strFontId);
+    bool deleteFontInfoByFontMap(const QMap<QString, QString> &fontDelMap);
     bool updateFontInfo(const QMap<QString, QString> &whereMap, const QMap<QString, QString> &dataMap);
     bool updateFontInfoByFontId(const QString &strFontId, const QMap<QString, QString> &dataMap);
     bool updateFontInfoByFontId(const QString &strFontId, const QString &strKey, const QString &strValue);

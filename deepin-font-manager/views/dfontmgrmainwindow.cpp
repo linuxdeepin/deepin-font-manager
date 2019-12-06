@@ -130,13 +130,15 @@ void DFontMgrMainWindow::initConnections()
                      &DFontMgrMainWindow::handleAddFontEvent);
 
     QObject::connect(this, &DFontMgrMainWindow::fileSelected, this,
-                     [this](const QStringList &files) { this->installFont(files); });
+    [this](const QStringList & files) {
+        this->installFont(files);
+    });
     // Menu event
     QObject::connect(d->toolBarMenu, &QMenu::triggered, this, &DFontMgrMainWindow::handleMenuEvent);
 
     //Theme change event
     QObject::connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::paletteTypeChanged,
-                     [this] (DGuiApplicationHelper::ColorType type) {
+    [this] (DGuiApplicationHelper::ColorType type) {
         qDebug() << "Update Theme type:" << type;
         //Save theme value
         d_func()->settingsQsPtr->setValue(FTM_THEME_KEY, type);
@@ -146,7 +148,7 @@ void DFontMgrMainWindow::initConnections()
     QObject::connect(d->rightKeyMenu, &QMenu::triggered, this,
                      &DFontMgrMainWindow::handleMenuEvent);
     // Initialize rigth menu it state
-    QObject::connect(d->rightKeyMenu, &QMenu::aboutToShow, this, [=]() {
+    QObject::connect(d->rightKeyMenu, &QMenu::aboutToShow, this, [ = ]() {
         DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
 
         DFontMenuManager::getInstance()->onRightKeyMenuPopup(currItemData);
@@ -204,8 +206,9 @@ void DFontMgrMainWindow::initShortcuts()
         m_scZoomIn->setContext(Qt::ApplicationShortcut);
         m_scZoomIn->setAutoRepeat(false);
 
-        connect(m_scZoomIn, &QShortcut::activated, this, [this, d]{
-            if (m_previewFontSize < MAX_FONT_SIZE) {
+        connect(m_scZoomIn, &QShortcut::activated, this, [this, d] {
+            if (m_previewFontSize < MAX_FONT_SIZE)
+            {
                 ++m_previewFontSize;
             }
             d->fontScaleSlider->setValue(m_previewFontSize);
@@ -219,8 +222,9 @@ void DFontMgrMainWindow::initShortcuts()
         m_scZoomOut->setContext(Qt::ApplicationShortcut);
         m_scZoomOut->setAutoRepeat(false);
 
-        connect(m_scZoomOut, &QShortcut::activated, this, [this, d]{
-            if (m_previewFontSize > MIN_FONT_SIZE) {
+        connect(m_scZoomOut, &QShortcut::activated, this, [this, d] {
+            if (m_previewFontSize > MIN_FONT_SIZE)
+            {
                 --m_previewFontSize;
             }
             d->fontScaleSlider->setValue(m_previewFontSize);
@@ -234,7 +238,7 @@ void DFontMgrMainWindow::initShortcuts()
         m_scDefaultSize->setContext(Qt::ApplicationShortcut);
         m_scDefaultSize->setAutoRepeat(false);
 
-        connect(m_scDefaultSize, &QShortcut::activated, this, [this, d]{
+        connect(m_scDefaultSize, &QShortcut::activated, this, [this, d] {
             m_previewFontSize = DEFAULT_FONT_SIZE;
             d->fontScaleSlider->setValue(DEFAULT_FONT_SIZE);
         });
@@ -247,7 +251,7 @@ void DFontMgrMainWindow::initShortcuts()
         m_scShowAllSC->setContext(Qt::ApplicationShortcut);
         m_scShowAllSC->setAutoRepeat(false);
 
-        connect(m_scShowAllSC, &QShortcut::activated, this, [this]{
+        connect(m_scShowAllSC, &QShortcut::activated, this, [this] {
             this->showAllShortcut();
         });
     }
@@ -259,15 +263,16 @@ void DFontMgrMainWindow::initShortcuts()
         m_scPageUp->setContext(Qt::ApplicationShortcut);
         m_scPageUp->setAutoRepeat(false);
 
-        connect(m_scPageUp, &QShortcut::activated, this, [this]{;
-            //For: PageUP
-            //Scrolling first visible item to bottom
-            QModelIndex firstVisibleItem = this->m_fontPreviewListView->indexAt(QPoint(3,3));
+        connect(m_scPageUp, &QShortcut::activated, this, [this] {;
+                                                                 //For: PageUP
+                                                                 //Scrolling first visible item to bottom
+                                                                 QModelIndex firstVisibleItem = this->m_fontPreviewListView->indexAt(QPoint(3, 3));
 
-            if (firstVisibleItem.isValid()) {
-                m_fontPreviewListView->scrollTo(firstVisibleItem, QAbstractItemView::PositionAtBottom);
-            }
-        });
+                                                                 if (firstVisibleItem.isValid())
+    {
+        m_fontPreviewListView->scrollTo(firstVisibleItem, QAbstractItemView::PositionAtBottom);
+        }
+                                                                });
     }
 
     //Show next page --> PageDown
@@ -277,13 +282,14 @@ void DFontMgrMainWindow::initShortcuts()
         m_scDefaultSize->setContext(Qt::ApplicationShortcut);
         m_scDefaultSize->setAutoRepeat(false);
 
-        connect(m_scDefaultSize, &QShortcut::activated, this, [this]{
+        connect(m_scDefaultSize, &QShortcut::activated, this, [this] {
             //For: PageDown
             //Scrolling last visible item to top
             QRect visibleRect = m_fontPreviewListView->geometry();
 
-            QModelIndex lastVisibleItem = this->m_fontPreviewListView->indexAt(QPoint(3,visibleRect.height()-3));
-            if (lastVisibleItem.isValid()) {
+            QModelIndex lastVisibleItem = this->m_fontPreviewListView->indexAt(QPoint(3, visibleRect.height() - 3));
+            if (lastVisibleItem.isValid())
+            {
                 m_fontPreviewListView->scrollTo(lastVisibleItem, QAbstractItemView::PositionAtTop);
             }
         });
@@ -296,10 +302,12 @@ void DFontMgrMainWindow::initShortcuts()
         m_scWndReize->setContext(Qt::ApplicationShortcut);
         m_scWndReize->setAutoRepeat(false);
 
-        connect(m_scWndReize, &QShortcut::activated, this, [this]{
-            if (this->windowState() & Qt::WindowMaximized) {
+        connect(m_scWndReize, &QShortcut::activated, this, [this] {
+            if (this->windowState() & Qt::WindowMaximized)
+            {
                 this->showNormal();
-            } else if (this->windowState() == Qt::WindowNoState){
+            } else if (this->windowState() == Qt::WindowNoState)
+            {
                 this->showMaximized();
             }
         });
@@ -312,7 +320,7 @@ void DFontMgrMainWindow::initShortcuts()
         m_scFindFont->setContext(Qt::ApplicationShortcut);
         m_scFindFont->setAutoRepeat(false);
 
-        connect(m_scFindFont, &QShortcut::activated, this, [d]{
+        connect(m_scFindFont, &QShortcut::activated, this, [d] {
             d->searchFontEdit->lineEdit()->setFocus(Qt::MouseFocusReason);
         });
     }
@@ -324,11 +332,12 @@ void DFontMgrMainWindow::initShortcuts()
         m_scDeleteFont->setContext(Qt::ApplicationShortcut);
         m_scDeleteFont->setAutoRepeat(false);
 
-        connect(m_scDeleteFont, &QShortcut::activated, this, [this]{
+        connect(m_scDeleteFont, &QShortcut::activated, this, [this] {
             DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
 
             //Only can't delete user font
-            if (!currItemData.fontInfo.isSystemFont) {
+            if (!currItemData.fontInfo.isSystemFont)
+            {
                 delCurrentFont();
             }
         });
@@ -341,7 +350,7 @@ void DFontMgrMainWindow::initShortcuts()
         m_scAddNewFont->setContext(Qt::ApplicationShortcut);
         m_scAddNewFont->setAutoRepeat(false);
 
-        connect(m_scAddNewFont, &QShortcut::activated, this, [d]{
+        connect(m_scAddNewFont, &QShortcut::activated, this, [d] {
             d->addFontButton->click();
         });
     }
@@ -353,12 +362,13 @@ void DFontMgrMainWindow::initShortcuts()
         m_scAddFavFont->setContext(Qt::ApplicationShortcut);
         m_scAddFavFont->setAutoRepeat(false);
 
-        connect(m_scAddFavFont, &QShortcut::activated, this, [this]{
+        connect(m_scAddFavFont, &QShortcut::activated, this, [this] {
             DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
 
-            if (!currItemData.isCollected) {
+            if (!currItemData.isCollected)
+            {
                 QAction *faveriteAction = DFontMenuManager::getInstance()->getActionByMenuAction(
-                            DFontMenuManager::M_Faverator, DFontMenuManager::MenuType::RightKeyMenu);
+                    DFontMenuManager::M_Faverator, DFontMenuManager::MenuType::RightKeyMenu);
                 faveriteAction->trigger();
             }
         });
@@ -371,12 +381,13 @@ void DFontMgrMainWindow::initShortcuts()
         m_scCancelFavFont->setContext(Qt::ApplicationShortcut);
         m_scCancelFavFont->setAutoRepeat(false);
 
-        connect(m_scCancelFavFont, &QShortcut::activated, this, [this]{
+        connect(m_scCancelFavFont, &QShortcut::activated, this, [this] {
             DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
 
-            if (currItemData.isCollected) {
+            if (currItemData.isCollected)
+            {
                 QAction *faveriteAction = DFontMenuManager::getInstance()->getActionByMenuAction(
-                            DFontMenuManager::M_Faverator, DFontMenuManager::MenuType::RightKeyMenu);
+                    DFontMenuManager::M_Faverator, DFontMenuManager::MenuType::RightKeyMenu);
                 faveriteAction->trigger();
             }
         });
@@ -389,12 +400,13 @@ void DFontMgrMainWindow::initShortcuts()
         m_scFontInfo->setContext(Qt::ApplicationShortcut);
         m_scFontInfo->setAutoRepeat(false);
 
-        connect(m_scFontInfo, &QShortcut::activated, this, [this]{
+        connect(m_scFontInfo, &QShortcut::activated, this, [this] {
             DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
 
-            if (!currItemData.fontInfo.filePath.isEmpty()) {
+            if (!currItemData.fontInfo.filePath.isEmpty())
+            {
                 QAction *fontInfoAction = DFontMenuManager::getInstance()->getActionByMenuAction(
-                            DFontMenuManager::M_FontInfo, DFontMenuManager::MenuType::RightKeyMenu);
+                    DFontMenuManager::M_FontInfo, DFontMenuManager::MenuType::RightKeyMenu);
                 fontInfoAction->trigger();
             }
         });
@@ -429,11 +441,11 @@ void DFontMgrMainWindow::initTileFrame()
 
     //Action area add a extra space
     d->titleActionArea = new QWidget(this);
-    d->titleActionArea->setFixedSize(QSize(58,FTM_TITLE_FIXED_HEIGHT));
+    d->titleActionArea->setFixedSize(QSize(58, FTM_TITLE_FIXED_HEIGHT));
 
-    QHBoxLayout* titleActionAreaLayout = new QHBoxLayout(d->titleActionArea);
+    QHBoxLayout *titleActionAreaLayout = new QHBoxLayout(d->titleActionArea);
     titleActionAreaLayout->setSpacing(0);
-    titleActionAreaLayout->setContentsMargins(0,0,0,0);
+    titleActionAreaLayout->setContentsMargins(0, 0, 0, 0);
 
     // Add Font
     d->addFontButton = new DIconButton(DStyle::StandardPixmap::SP_IncreaseElement, this);
@@ -452,7 +464,7 @@ void DFontMgrMainWindow::initTileFrame()
     //d->searchFontEdit->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     d->searchFontEdit->setPlaceHolder(DApplication::translate("SearchBar", "Search"));
 
-    titlebar()->addWidget(d->titleActionArea, Qt::AlignLeft|Qt::AlignVCenter);
+    titlebar()->addWidget(d->titleActionArea, Qt::AlignLeft | Qt::AlignVCenter);
     titlebar()->addWidget(d->searchFontEdit, Qt::AlignCenter);
 
     // Debug layout code
@@ -633,7 +645,6 @@ void DFontMgrMainWindow::initFontPreviewListView(QWidget *parent)
     listViewVBoxLayout->addWidget(m_noInstallListView);
 
     m_noInstallListView->hide();
-
 }
 
 void DFontMgrMainWindow::initStateBar()
@@ -746,12 +757,14 @@ void DFontMgrMainWindow::handleMenuEvent(QAction *action)
             switch (actionId) {
             case DFontMenuManager::MenuAction::M_AddFont: {
                 handleAddFontEvent();
-            } break;
+            }
+            break;
             case DFontMenuManager::MenuAction::M_FontInfo: {
                 DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
                 DFontInfoDialog fontInfoDlg(&currItemData);
                 fontInfoDlg.exec();
-            } break;
+            }
+            break;
             case DFontMenuManager::MenuAction::M_DeleteFont: {
                 DFDeleteDialog confirmDelDlg;
                 connect(&confirmDelDlg, &DFDeleteDialog::accepted, this, [this]() {
@@ -769,15 +782,18 @@ void DFontMgrMainWindow::handleMenuEvent(QAction *action)
 
                 confirmDelDlg.exec();
 
-            } break;
+            }
+            break;
             case DFontMenuManager::MenuAction::M_EnableOrDisable: {
                 QModelIndex modelIndex = m_fontPreviewListView->currModelIndex();
                 emit m_fontPreviewListView->onClickEnableButton(modelIndex);
-            } break;
+            }
+            break;
             case DFontMenuManager::MenuAction::M_Faverator: {
                 QModelIndex modelIndex = m_fontPreviewListView->currModelIndex();
                 emit m_fontPreviewListView->onClickCollectionButton(modelIndex);
-            } break;
+            }
+            break;
             case DFontMenuManager::MenuAction::M_ShowFontPostion:
                 showFontFilePostion();
                 break;
@@ -851,9 +867,11 @@ void DFontMgrMainWindow::InitQuickWindowIfNeeded()
 
         // Quick install mode handle
         QObject::connect(this, &DFontMgrMainWindow::quickModeInstall, this,
-                         [this](const QStringList &files) {
+        [this](const QStringList & files) {
             connect(m_quickInstallWnd.get(), &DFQuickInstallWindow::quickInstall, this,
-                    [this, files]() { this->installFont(files); });
+            [this, files]() {
+                this->installFont(files);
+            });
             m_quickInstallWnd.get()->setWindowModality(Qt::WindowModal);
             m_quickInstallWnd->onFileSelected(files);
             m_quickInstallWnd->show();
@@ -1027,11 +1045,13 @@ void DFontMgrMainWindow::onFontListViewRowCountChanged(unsigned int bShow)
         break;
     case 2:
         m_fontPreviewListView->hide();
-        m_noInstallListView->show();
+        //m_noInstallListView->show();
         d->stateBar->hide();
         if (m_noResultListView->isVisible()) {
             m_noResultListView->hide();
         }
+        d->leftSiderBar->setFocus();
+        m_noInstallListView->show();
         break;
     default:
         m_fontPreviewListView->show();
@@ -1068,7 +1088,7 @@ void DFontMgrMainWindow::dragEnterEvent(QDragEnterEvent *event)
         QList<QUrl> dragFiles = event->mimeData()->urls();
 
         qDebug() << dragFiles;
-        if(dragFiles.size() == 1) {
+        if (dragFiles.size() == 1) {
             //For one-drag check MIME,ignore non-font file
             if (Utils::isFontMimeType(dragFiles[0].path())) {
                 event->accept();
@@ -1094,8 +1114,8 @@ void DFontMgrMainWindow::dropEvent(QDropEvent *event)
 
         QList<QUrl> dragFiles = event->mimeData()->urls();
 
-        if(dragFiles.size() > 1) {
-            foreach(auto it, event->mimeData()->urls()) {
+        if (dragFiles.size() > 1) {
+            foreach (auto it, event->mimeData()->urls()) {
                 if (Utils::isFontMimeType(it.path())) {
                     installFileList.append(it.path());
                 }
@@ -1127,7 +1147,7 @@ void DFontMgrMainWindow::showAllShortcut()
     QJsonObject shortcutObj;
     QJsonArray jsonGroups;
 
-    QMap<QString,QString> shortcutKeymap = {
+    QMap<QString, QString> shortcutKeymap = {
         {"Help",               "F1"},
 //        {"Zoom in",            "Ctrl+-"},
 //        {"Zoom out",           "Ctrl++"},
@@ -1146,13 +1166,13 @@ void DFontMgrMainWindow::showAllShortcut()
     };
 
     QJsonObject fontMgrJsonGroup;
-    fontMgrJsonGroup.insert("groupName", DApplication::translate("Main","Font Manager"));
+    fontMgrJsonGroup.insert("groupName", DApplication::translate("Main", "Font Manager"));
     QJsonArray fontJsonItems;
 
-    for (QMap<QString,QString>::iterator it=shortcutKeymap.begin();
-         it != shortcutKeymap.end(); it++) {
+    for (QMap<QString, QString>::iterator it = shortcutKeymap.begin();
+            it != shortcutKeymap.end(); it++) {
         QJsonObject jsonItem;
-        jsonItem.insert("name", DApplication::translate("Shortcuts",it.key().toUtf8()));
+        jsonItem.insert("name", DApplication::translate("Shortcuts", it.key().toUtf8()));
         jsonItem.insert("value", it.value().replace("Meta", "Super"));
         fontJsonItems.append(jsonItem);
     }
@@ -1169,7 +1189,7 @@ void DFontMgrMainWindow::showAllShortcut()
     QString param2 = "-p=" + QString::number(pos.x()) + "," + QString::number(pos.y());
     shortcutString << param1 << param2;
 
-    QProcess* shortcutViewProcess = new QProcess();
+    QProcess *shortcutViewProcess = new QProcess();
     shortcutViewProcess->startDetached("deepin-shortcut-viewer", shortcutString);
 
     connect(shortcutViewProcess, SIGNAL(finished(int)), shortcutViewProcess, SLOT(deleteLater()));

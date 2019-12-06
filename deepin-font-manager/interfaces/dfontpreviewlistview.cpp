@@ -131,8 +131,8 @@ void DFontPreviewListView::initConnections()
 
 QRect DFontPreviewListView::getCollectionIconRect(QRect visualRect)
 {
-    int collectIconSize = 22+10;
-    return QRect(visualRect.right() - 10 - 33, visualRect.top()+10-5, collectIconSize, collectIconSize);
+    int collectIconSize = 22 + 10;
+    return QRect(visualRect.right() - 10 - 33, visualRect.top() + 10 - 5, collectIconSize, collectIconSize);
 }
 
 void DFontPreviewListView::mouseMoveEvent(QMouseEvent *event)
@@ -159,8 +159,7 @@ void DFontPreviewListView::mouseMoveEvent(QMouseEvent *event)
 
     if (collectIconRect.contains(clickPoint)) {
         itemData.collectIconStatus = IconHover;
-    }
-    else {
+    } else {
         itemData.collectIconStatus = IconNormal;
     }
     m_fontPreviewProxyModel->setData(modelIndex, QVariant::fromValue(itemData), Qt::DisplayRole);
@@ -192,8 +191,7 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
 
     if (collectIconRect.contains(clickPoint)) {
         itemData.collectIconStatus = IconPress;
-    }
-    else {
+    } else {
         itemData.collectIconStatus = IconNormal;
     }
     m_fontPreviewProxyModel->setData(modelIndex, QVariant::fromValue(itemData), Qt::DisplayRole);
@@ -220,8 +218,8 @@ void DFontPreviewListView::mouseReleaseEvent(QMouseEvent *event)
 
     QRect rect = visualRect(modelIndex);
 
-    int checkBoxSize = 20+10;
-    QRect checkboxRealRect = QRect(rect.left() + 25, rect.top()+10-5, checkBoxSize, checkBoxSize);
+    int checkBoxSize = 20 + 10;
+    QRect checkboxRealRect = QRect(rect.left() + 25, rect.top() + 10 - 5, checkBoxSize, checkBoxSize);
     QRect collectIconRect = getCollectionIconRect(rect);
 
     if (checkboxRealRect.contains(clickPoint)) {
@@ -298,7 +296,7 @@ void DFontPreviewListView::onListViewItemEnableBtnClicked(QModelIndex index)
         qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(index));
     itemData.isEnabled = !itemData.isEnabled;
 
-    qDebug()<< "familyName" << itemData.fontInfo.familyName << endl;
+    qDebug() << "familyName" << itemData.fontInfo.familyName << endl;
 
     QString deactivatedMessage =
         QString("%1 %2").arg(itemData.strFontName).arg(DApplication::translate("MessageManager", "deactivated"));
@@ -369,7 +367,12 @@ void DFontPreviewListView::removeRowAtIndex(QModelIndex modelIndex)
 
     //删除字体之前启用字体，防止下次重新安装后就被禁用
     enableFont(itemData);
-    DFMDBManager::instance()->deleteFontInfoByFontId(itemData.strFontId);
+    QMap<QString, QString> deleteInfo;
+    deleteInfo.insert("filePath", itemData.fontInfo.filePath);
+    deleteInfo.insert("familyName", itemData.fontInfo.familyName);
+    deleteInfo.insert("styleName", itemData.fontInfo.styleName);
+    //DFMDBManager::instance()->deleteFontInfoByFontId(itemData.strFontId);
+    DFMDBManager::instance()->deleteFontInfoByFontMap(deleteInfo);
 
     m_fontPreviewProxyModel->removeRow(modelIndex.row(), modelIndex.parent());
 

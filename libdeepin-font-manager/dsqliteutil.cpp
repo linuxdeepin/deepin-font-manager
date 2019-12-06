@@ -137,7 +137,9 @@ bool DSqliteUtil::delRecord(QMap<QString, QString> where, QString table_name)
          it++) {
         sql += it.key() + "=";
         sql += "'" + it.value() + "'";
+        sql += " and ";
     }
+    sql.chop(5);
     qDebug() << sql;
     m_query->prepare(sql);
 
