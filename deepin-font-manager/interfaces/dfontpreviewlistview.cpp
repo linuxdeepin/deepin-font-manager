@@ -371,7 +371,7 @@ void DFontPreviewListView::removeRowAtIndex(QModelIndex modelIndex)
     deleteInfo.insert("filePath", itemData.fontInfo.filePath);
     deleteInfo.insert("familyName", itemData.fontInfo.familyName);
     deleteInfo.insert("styleName", itemData.fontInfo.styleName);
-    //DFMDBManager::instance()->deleteFontInfoByFontId(itemData.strFontId);
+    // DFMDBManager::instance()->deleteFontInfoByFontId(itemData.strFontId);
     DFMDBManager::instance()->deleteFontInfoByFontMap(deleteInfo);
 
     m_fontPreviewProxyModel->removeRow(modelIndex.row(), modelIndex.parent());
