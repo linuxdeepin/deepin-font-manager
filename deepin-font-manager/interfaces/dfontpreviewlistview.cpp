@@ -88,7 +88,11 @@ void DFontPreviewListView::onFinishedDataLoad()
         if (!filePathInfo.exists()) {
             //删除字体之前启用字体，防止下次重新安装后就被禁用
             enableFont(itemData);
-            DFMDBManager::instance()->deleteFontInfo("fontId", itemData.strFontId);
+            QMap<QString, QString> delInfo;
+            delInfo.insert("filePath", itemData.fontInfo.filePath);
+            delInfo.insert("familyName", itemData.fontInfo.familyName);
+            delInfo.insert("styleName", itemData.fontInfo.styleName);
+            DFMDBManager::instance()->deleteFontInfoByFontMap(delInfo);
             continue;
         }
 
@@ -371,7 +375,6 @@ void DFontPreviewListView::removeRowAtIndex(QModelIndex modelIndex)
     deleteInfo.insert("filePath", itemData.fontInfo.filePath);
     deleteInfo.insert("familyName", itemData.fontInfo.familyName);
     deleteInfo.insert("styleName", itemData.fontInfo.styleName);
-    // DFMDBManager::instance()->deleteFontInfoByFontId(itemData.strFontId);
     DFMDBManager::instance()->deleteFontInfoByFontMap(deleteInfo);
 
     m_fontPreviewProxyModel->removeRow(modelIndex.row(), modelIndex.parent());

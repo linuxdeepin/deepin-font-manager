@@ -24,7 +24,8 @@ DFontPreviewListDataThread::DFontPreviewListDataThread()
     });
 }
 
-DFontPreviewListDataThread::~DFontPreviewListDataThread() {
+DFontPreviewListDataThread::~DFontPreviewListDataThread()
+{
 }
 
 void DFontPreviewListDataThread::doWork()
@@ -138,8 +139,7 @@ void DFontPreviewListDataThread::refreshFontListData(bool isStartup)
 
         if (isStartup) {
             m_fontModelList.append(itemData);
-        }
-        else {
+        } else {
             QString filePath = itemData.fontInfo.filePath;
             QFileInfo filePathInfo(filePath);
             dbFilePathSet.insert(filePath);
@@ -174,7 +174,7 @@ void DFontPreviewListDataThread::removeFontData(DFontPreviewItemData removeItemD
     m_diffFontModelList.clear();
 
     int removeIndex = -1;
-    for(int i=0; i<m_fontModelList.size(); i++) {
+    for (int i = 0; i < m_fontModelList.size(); i++) {
         DFontPreviewItemData itemData = m_fontModelList.at(i);
         if (itemData.strFontId == removeItemData.strFontId) {
             removeIndex = i;
@@ -194,7 +194,7 @@ void DFontPreviewListDataThread::syncFontEnableDisableStatusData(QStringList dis
     }
 
     QMap<QString, bool> disableFontMap;
-    for(int i=0; i<disableFontPathList.size(); i++) {
+    for (int i = 0; i < disableFontPathList.size(); i++) {
         QString disableFontPath = disableFontPathList.at(i);
         disableFontMap.insert(disableFontPath, true);
     }
@@ -204,7 +204,7 @@ void DFontPreviewListDataThread::syncFontEnableDisableStatusData(QStringList dis
 
     QList<DFontPreviewItemData> fontInfoList = m_dbManager->getAllFontInfo();
 
-    for(int i=0; i<fontInfoList.size(); i++) {
+    for (int i = 0; i < fontInfoList.size(); i++) {
         DFontPreviewItemData fontItemData = fontInfoList.at(i);
         QString keyFilePath = fontItemData.fontInfo.filePath;
 
@@ -212,8 +212,7 @@ void DFontPreviewListDataThread::syncFontEnableDisableStatusData(QStringList dis
         if (disableFontMap.value(keyFilePath)) {
             fontItemData.isEnabled = false;
             fontItemData.isPreviewEnabled = false;
-        }
-        else {
+        } else {
             fontItemData.isEnabled = true;
             fontItemData.isPreviewEnabled = true;
         }

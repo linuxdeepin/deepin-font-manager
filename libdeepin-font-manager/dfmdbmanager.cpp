@@ -173,13 +173,6 @@ bool DFMDBManager::addFontInfo(DFontPreviewItemData itemData)
     return m_sqlUtil->addRecord(mapItemData(itemData));
 }
 
-bool DFMDBManager::deleteFontInfo(const QString &strKey, const QString &strValue)
-{
-    QMap<QString, QString> where;
-    where.insert(strKey, strValue);
-    return m_sqlUtil->delRecord(where);
-}
-
 bool DFMDBManager::deleteFontInfoByFontMap(const QMap<QString, QString> &fontDelMap)
 {
     return m_sqlUtil->delRecord(fontDelMap);
