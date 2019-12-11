@@ -466,6 +466,7 @@ void DFontMgrMainWindow::initTileFrame()
 void DFontMgrMainWindow::initMainVeiws()
 {
     D_D(DFontMgrMainWindow);
+    setWindowIcon(QIcon::fromTheme(DEEPIN_FONT_MANAGER));
 
     d->mainWndSpliter = new DSplitter(Qt::Horizontal, this);
     // For Debug
