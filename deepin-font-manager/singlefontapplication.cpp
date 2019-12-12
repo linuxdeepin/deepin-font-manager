@@ -77,11 +77,14 @@ void SingleFontApplication::activateWindow() {
 
         QMetaObject::invokeMethod(m_qspQuickWnd.get(), "fileSelected", Qt::QueuedConnection,
                                   Q_ARG(QStringList, m_selectedFiles));
+
+        Dtk::Widget::moveToCenter(m_qspQuickWnd.get());
+
         m_qspQuickWnd->show();
         m_qspQuickWnd->raise();
         m_qspQuickWnd->activateWindow(); // Reactive main window
 
-        Dtk::Widget::moveToCenter(m_qspQuickWnd.get());
+
 
     } else {
         qDebug() << "Active normal install window.";
@@ -97,11 +100,11 @@ void SingleFontApplication::activateWindow() {
             m_qspMainWnd->setMinimumSize(DEFAULT_WINDOWS_WIDTH, DEFAULT_WINDOWS_HEIGHT);
         }
 
+        Dtk::Widget::moveToCenter(m_qspMainWnd.get());
+
         m_qspMainWnd->show();
         m_qspMainWnd->raise();
         m_qspMainWnd->activateWindow(); // Reactive main window
-
-        Dtk::Widget::moveToCenter(m_qspMainWnd.get());
 
         m_qspMainWnd->resize(DEFAULT_WINDOWS_WIDTH, DEFAULT_WINDOWS_HEIGHT);
 
