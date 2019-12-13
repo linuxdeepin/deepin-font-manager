@@ -38,7 +38,7 @@ void SingleFontApplication::setMainWindow(DMainWindow *mainWindow)
     m_qspMainWnd->setWindowIcon(QIcon::fromTheme(DEEPIN_FONT_MANAGER));
 }
 
-void SingleFontApplication::parseCmdLine(){
+bool SingleFontApplication::parseCmdLine(){
     QCommandLineParser parser;
     parser.setApplicationDescription("Deepin Font Manager.");
     parser.addHelpOption();
@@ -51,9 +51,20 @@ void SingleFontApplication::parseCmdLine(){
         m_selectedFiles.clear();
     }
 
-    m_selectedFiles = parser.positionalArguments();
+    QStringList paraList = parser.positionalArguments();
+    for (auto it : paraList) {
+        if (Utils::isFontMimeType(it)) {
+            m_selectedFiles.append(it);
+        }
+    }
+
+    if (paraList.size() > 0 && m_selectedFiles.size() == 0) {
+        qDebug() << __FUNCTION__ << "invalid :" << paraList;
+        return false;
+    }
 
     qDebug() << __FUNCTION__ << m_selectedFiles;
+    return true;
 }
 
 void SingleFontApplication::activateWindow() {
@@ -83,8 +94,6 @@ void SingleFontApplication::activateWindow() {
         m_qspQuickWnd->show();
         m_qspQuickWnd->raise();
         m_qspQuickWnd->activateWindow(); // Reactive main window
-
-
 
     } else {
         qDebug() << "Active normal install window.";

@@ -17,7 +17,7 @@ public:
 
     void activateWindow();
     void setMainWindow(DMainWindow *mainWindow);
-    void parseCmdLine();
+    bool parseCmdLine();
 
 private slots:
     void onNewProcessInstance(qint64 pid, const QStringList &arguments);

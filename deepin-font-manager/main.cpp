@@ -63,7 +63,9 @@ int main(int argc, char *argv[])
     DLogManager::registerConsoleAppender();
     DLogManager::registerFileAppender();
 
-    app.parseCmdLine();
+    if (!app.parseCmdLine()) {
+        return 0;
+    }
     app.activateWindow();
 
     return app.exec();
