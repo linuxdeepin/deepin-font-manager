@@ -84,16 +84,16 @@ void SingleFontApplication::activateWindow() {
         //Init quick window at first time
         if (nullptr == m_qspQuickWnd.get()) {
             m_qspQuickWnd.reset(new DFQuickInstallWindow());
+            Dtk::Widget::moveToCenter(m_qspQuickWnd.get());
+
+            m_qspQuickWnd->show();
+        } else {
+            m_qspQuickWnd->setWindowState(Qt::WindowActive);
+            m_qspQuickWnd->activateWindow(); // Reactive main window
         }
 
         QMetaObject::invokeMethod(m_qspQuickWnd.get(), "fileSelected", Qt::QueuedConnection,
                                   Q_ARG(QStringList, m_selectedFiles));
-
-        Dtk::Widget::moveToCenter(m_qspQuickWnd.get());
-
-        m_qspQuickWnd->show();
-        m_qspQuickWnd->raise();
-        m_qspQuickWnd->activateWindow(); // Reactive main window
 
     } else {
         qDebug() << "Active normal install window.";
@@ -111,8 +111,8 @@ void SingleFontApplication::activateWindow() {
             Dtk::Widget::moveToCenter(m_qspMainWnd.get());
 
             m_qspMainWnd->show();
-            m_qspMainWnd->raise();
         } else {
+            m_qspMainWnd->setWindowState(Qt::WindowActive);
             m_qspMainWnd->activateWindow(); // Reactive main window
             //m_qspMainWnd->resize(DEFAULT_WINDOWS_WIDTH, DEFAULT_WINDOWS_HEIGHT);
         }
