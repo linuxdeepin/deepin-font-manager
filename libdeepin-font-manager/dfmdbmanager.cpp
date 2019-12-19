@@ -9,7 +9,7 @@ static DFMDBManager *INSTANCE = nullptr;
 
 DFMDBManager::DFMDBManager(QObject *parent)
     : QObject(parent)
-    , m_sqlUtil(new DSqliteUtil(QDir::homePath() + "/.deepin-font-manager/.font_manager.db"))
+    , m_sqlUtil(new DSqliteUtil(QDir::homePath() + "/.local/share/deepin/deepin-font-manager/.font_manager.db"))
 {
 }
 
@@ -29,7 +29,7 @@ DFMDBManager *DFMDBManager::instance()
 
 inline bool DFMDBManager::isSystemFont(QString filePath)
 {
-    return filePath.contains("/usr/share/fonts/deepin-font-install") ? false : true;
+    return filePath.contains("/.local/share/fonts") ? false : true;
 }
 
 DFontPreviewItemData DFMDBManager::parseRecordToItemData(const QMap<QString, QString> &record)

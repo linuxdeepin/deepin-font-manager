@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
     std::cout << 0 << std::endl;
 
     QDir userFontDir("/usr/share/fonts/");
-    QDir systemFontDir("/usr/share/fonts/deepin-font-install");
+    QDir systemFontDir(QDir::homePath() + "/.local/share/fonts");
 
     for (QString file : fileList) {
         QFileInfo openFile(file);

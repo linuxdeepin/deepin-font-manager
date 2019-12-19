@@ -42,7 +42,7 @@ static DFontInfoManager *INSTANCE = 0;
 
 inline bool isSystemFont(QString filePath)
 {
-    return filePath.contains("/usr/share/fonts/deepin-font-install") ? false : true;
+    return filePath.contains("/.local/share/fonts") ? false : true;
 }
 
 QString convertToUtf8(char *content, int len)

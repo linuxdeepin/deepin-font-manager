@@ -32,7 +32,7 @@
 
 inline void checkDirectory()
 {
-    const QString path("/usr/share/fonts/deepin-font-install");
+    const QString path(QDir::homePath() + "/.local/share/fonts");
     if (!QDir(path).exists()) {
         QDir dir(path);
         dir.mkpath(".");
@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
     parser.process(app);
     checkDirectory();
 
-    const QString sysDir = "/usr/share/fonts/deepin-font-install";
+    const QString sysDir = QDir::homePath() + "/.local/share/fonts";
     const QStringList fileList = parser.positionalArguments();
 
     QProcess *process = new QProcess;

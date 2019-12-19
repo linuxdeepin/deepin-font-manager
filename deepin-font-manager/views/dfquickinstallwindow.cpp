@@ -291,7 +291,7 @@ void DFQuickInstallWindow::onFontInstallFinished()
 
         m_dbManager->beginTransaction();
 
-        const QString sysDir = "/usr/share/fonts/deepin-font-install";
+        const QString sysDir = QDir::homePath() + "/.local/share/fonts";
         QString dirName = itemData.fontInfo.familyName;
         QString target = QObject::tr("%1/%2/%3").arg(sysDir).arg(dirName).arg(filePathInfo.fileName());
 

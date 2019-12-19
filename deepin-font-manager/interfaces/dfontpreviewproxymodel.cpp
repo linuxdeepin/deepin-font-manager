@@ -74,7 +74,7 @@ bool DFontPreviewProxyModel::isCustomFilterAcceptsRow(const QModelIndex &modelIn
     case DSplitListWidget::SysFont: {
         QString fontFilePath = itemData.fontInfo.filePath;
         if (fontFilePath.startsWith("/usr/share/fonts/") &&
-            !fontFilePath.contains("deepin-font-install") &&
+            !fontFilePath.contains("/.local/share/fonts/") &&
             isFontNameContainsPattern(fontName)) {
             return true;
         }
@@ -82,7 +82,7 @@ bool DFontPreviewProxyModel::isCustomFilterAcceptsRow(const QModelIndex &modelIn
     //只显示用户字体
     case DSplitListWidget::UserFont: {
         QString fontFilePath = itemData.fontInfo.filePath;
-        if (fontFilePath.contains("deepin-font-install") &&
+        if (fontFilePath.contains("/.local/share/fonts/") &&
             isFontNameContainsPattern(fontName)) {
             return true;
         }
