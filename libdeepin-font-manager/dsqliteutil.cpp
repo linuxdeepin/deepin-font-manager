@@ -13,10 +13,10 @@ DSqliteUtil::DSqliteUtil(const QString &strDatabase)
     : m_strDatabase(strDatabase)
     , m_query(nullptr)
 {
-    QDir dbdir(QDir::homePath() + "/.deepin-font-manager/");
+    QDir dbdir(QDir::homePath() + "/.local/share/deepin/deepin-font-manager/");
     if (!dbdir.exists()) {
-        dbdir.mkdir(QDir::homePath() + "/.deepin-font-manager/");
-        qDebug() << __FUNCTION__ << QDir::homePath() + "/.deepin-font-manager/";
+        dbdir.mkdir(QDir::homePath() + "/.local/share/deepin/deepin-font-manager/");
+        qDebug() << __FUNCTION__ << QDir::homePath() + "/.local/share/deepin/deepin-font-manager/";
     }
 
     createConnection(m_strDatabase);
