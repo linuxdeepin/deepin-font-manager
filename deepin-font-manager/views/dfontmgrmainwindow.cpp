@@ -181,22 +181,6 @@ void DFontMgrMainWindow::initShortcuts()
 {
     D_D(DFontMgrMainWindow);
 
-    //设置最大化快捷键
-//    if (!m_scFullScreen) {
-//        m_scFullScreen = new QShortcut(QKeySequence(Qt::Key_F11), this);
-//        m_scFullScreen->setContext(Qt::ApplicationShortcut);
-//        m_scFullScreen->setAutoRepeat(false);
-
-//        connect(m_scFullScreen, &QShortcut::activated, this, [this]{
-//            if (this->isFullScreen()) {
-//                this->showNormal();
-//            }
-//            else {
-//                this->showFullScreen();
-//            }
-//        });
-//    }
-
     //设置字体放大快捷键
     if (!m_scZoomIn) {
         m_scZoomIn = new QShortcut(this);
