@@ -142,16 +142,10 @@ int DFontPreviewProxyModel::rowCount(const QModelIndex &parent) const
 
     unsigned int bShow = 0;
     if (0 == filterRowCount) {
-        bShow = 1;
-
-        if (getEditStatus()) {
+        if (getEditStatus()) {          
             bShow = 2;
-        }
-
-        DFontPreviewListDataThread *dataThread = DFontPreviewListDataThread::instance();
-        //结果为空时安装单个字体后filterRowCount不会变成１，这时需要自己判断处理下
-        if (1 == dataThread->getDiffFontModelList().size()) {
-            bShow = 0;
+        } else {
+            bShow = 1;
         }
     } else {
         bShow = 0;
