@@ -3,6 +3,7 @@
 
 #include "dfontpreviewlistview.h"
 #include "dfontmanager.h"
+#include "views/dfontspinnerwidget.h"
 
 #include <QShortcut>
 
@@ -72,6 +73,7 @@ protected:
     DFontPreviewListView *m_fontPreviewListView;
     DListView *m_noResultListView;
     DListView *m_noInstallListView;
+    DFontSpinnerWidget *m_fontLoadingSpinner = nullptr;
 signals:
     void fileSelected(const QStringList files) const;
 
@@ -89,6 +91,8 @@ public slots:
     void onFontUninstallFinished(const QModelIndex &uninstallIndex);
 
     void onFontListViewRowCountChanged(unsigned int bShow);
+
+    void onLoadStatus(int type);
 
 protected:
     // For quick install mode

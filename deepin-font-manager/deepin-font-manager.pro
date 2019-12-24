@@ -36,7 +36,8 @@ HEADERS += utils.h \
     singlefontapplication.h \
     interfaces/dfontpreviewer.h \
     interfaces/dfontpreviewlistdatathread.h \
-    interfaces/dfontbasedialog.h
+    interfaces/dfontbasedialog.h \
+    views/dfontspinnerwidget.h
 
 SOURCES += main.cpp \
 	   utils.cpp \
@@ -56,7 +57,8 @@ SOURCES += main.cpp \
     singlefontapplication.cpp \
     interfaces/dfontpreviewer.cpp \
     interfaces/dfontpreviewlistdatathread.cpp \
-    interfaces/dfontbasedialog.cpp
+    interfaces/dfontbasedialog.cpp \
+    views/dfontspinnerwidget.cpp
 
 RESOURCES += deepin-font-manager.qrc
 TRANSLATIONS += translations/deepin-font-manager.ts

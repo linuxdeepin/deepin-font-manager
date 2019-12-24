@@ -39,6 +39,7 @@ DFontPreviewListView::~DFontPreviewListView()
 
 void DFontPreviewListView::initFontListData()
 {
+    emit onLoadFontsStatus(0);
     //qDebug() << "main thread id = " << QThread::currentThreadId();
     connect(m_dataThread, SIGNAL(resultReady()), this, SLOT(onFinishedDataLoad()));
 }
@@ -105,6 +106,7 @@ void DFontPreviewListView::onFinishedDataLoad()
     initConnections();
 
     m_bLoadDataFinish = true;
+    emit onLoadFontsStatus(1);
 }
 
 void DFontPreviewListView::initDelegate()

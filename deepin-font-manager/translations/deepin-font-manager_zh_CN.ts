@@ -11,6 +11,10 @@
         <source>Font Manager helps users install and manage fonts.</source>
         <translation>字体管理器是一款帮助用户安装和管理字体的工具。</translation>
     </message>
+    <message>
+        <source>Loading fonts, please wait...</source>
+        <translation>正在载入字体列表...</translation>
+    </message>
 </context>
 <context>
     <name>SearchBar</name>
