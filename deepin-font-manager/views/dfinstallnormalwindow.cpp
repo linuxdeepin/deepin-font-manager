@@ -333,8 +333,6 @@ void DFInstallNormalWindow::showInstallErrDlg()
             &DFInstallNormalWindow::onCancelInstall);
     connect(m_pexceptionDlg, &DFInstallErrorDialog::onContinueInstall, this,
             &DFInstallNormalWindow::onContinueInstall);
-//    connect(m_pexceptionDlg, &DFInstallErrorDialog::closed, this,
-//            &DFInstallNormalWindow::onCancelInstall);
 
     m_pexceptionDlg->exec();
 }
