@@ -125,6 +125,10 @@ void DFontMgrMainWindow::initConnections()
 {
     D_D(DFontMgrMainWindow);
 
+    // Loading Font List Signal
+    QObject::connect(m_fontPreviewListView, SIGNAL(onLoadFontsStatus(int)),
+                     this, SLOT(onLoadStatus(int)));
+
     // Add Font button event
     QObject::connect(d->addFontButton, &DIconButton::clicked, this,
                      &DFontMgrMainWindow::handleAddFontEvent);
@@ -453,6 +457,7 @@ void DFontMgrMainWindow::initMainVeiws()
     setWindowIcon(QIcon::fromTheme(DEEPIN_FONT_MANAGER));
 
     d->mainWndSpliter = new DSplitter(Qt::Horizontal, this);
+    m_fontLoadingSpinner = new DFontSpinnerWidget(this);
     // For Debug
     // d->mainWndSpliter->setStyleSheet("QSplitter::handle { background-color: red }");
 
@@ -515,6 +520,9 @@ void DFontMgrMainWindow::initRightFontView()
 {
     Q_D(DFontMgrMainWindow);
 
+    // initialize state bar
+    initStateBar();
+
     d->rightViewHolder = new QWidget(d->mainWndSpliter);
     d->rightViewHolder->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     d->rightViewHolder->setObjectName("rightMainLayoutHolder");
@@ -535,9 +543,6 @@ void DFontMgrMainWindow::initRightFontView()
     d->sbarShadowLine = new DHorizontalLine(this);
     d->sbarShadowLine->setFixedHeight(1);
     d->sbarShadowLine->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-
-    // initialize state bar
-    initStateBar();
 
     rightMainLayout->addWidget(d->fontShowArea);
     rightMainLayout->addWidget(d->sbarShadowLine);
@@ -574,6 +579,23 @@ void DFontMgrMainWindow::initFontPreviewListView(QWidget *parent)
     m_fontPreviewListView->setRightContextMenu(d->rightKeyMenu);
 
     listViewVBoxLayout->addWidget(m_fontPreviewListView);
+
+    // 加载图标
+    DLabel *onLoadingSpinner = new DLabel(m_fontLoadingSpinner);
+    onLoadingSpinner->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    onLoadingSpinner->setFixedHeight(30);
+    onLoadingSpinner->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
+
+    QVBoxLayout *lblLayoutLoad = new QVBoxLayout;
+    lblLayoutLoad->addWidget(onLoadingSpinner);
+
+    m_fontLoadingSpinner->setLayout(lblLayoutLoad);
+    listViewVBoxLayout->addWidget(m_fontLoadingSpinner);
+
+    m_fontLoadingSpinner->spinnerStart();
+    m_fontPreviewListView->hide();
+    d->stateBar->hide();
+    m_fontLoadingSpinner->show();
 
     // 未搜索到结果view
     m_noResultListView = new DListView;
@@ -1033,6 +1055,32 @@ void DFontMgrMainWindow::onFontListViewRowCountChanged(unsigned int bShow)
         m_noResultListView->hide();
         d->stateBar->show();
         break;
+    }
+}
+
+// 0 正在加载
+// 1 完成加载
+void DFontMgrMainWindow::onLoadStatus(int type)
+{
+    if (0 == type || 1 == type) {
+        switch (type) {
+        case 0:
+            m_fontPreviewListView->hide();
+            if (m_noResultListView->isVisible()) {
+                m_noResultListView->hide();
+            }
+            m_fontLoadingSpinner->spinnerStop();
+            m_fontLoadingSpinner->spinnerStart();
+            m_fontLoadingSpinner->show();
+            break;
+        case 1:
+            m_fontLoadingSpinner->hide();
+            m_fontLoadingSpinner->spinnerStop();
+            m_fontPreviewListView->show();
+            break;
+        default:
+            break;
+        }
     }
 }
 

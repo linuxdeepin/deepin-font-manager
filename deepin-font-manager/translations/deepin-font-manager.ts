@@ -11,6 +11,10 @@
         <source>Font Manager helps users install and manage fonts.</source>
         <translation></translation>
     </message>
+    <message>
+        <source>Loading fonts, please wait...</source>
+        <translation></translation>
+    </message>
 </context>
 <context>
     <name>SearchBar</name>

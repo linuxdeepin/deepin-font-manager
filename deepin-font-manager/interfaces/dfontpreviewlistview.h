@@ -77,6 +77,9 @@ signals:
     //右键菜单
     void onContextMenu(QModelIndex index);
 
+    //字体列表加载状态
+    void onLoadFontsStatus(int type);
+
 private slots:
 
     void onListViewItemEnableBtnClicked(QModelIndex index);
