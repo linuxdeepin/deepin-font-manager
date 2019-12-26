@@ -935,8 +935,6 @@ void DFontMgrMainWindow::onPreviewTextChanged(const QString &currStr)
         filterModel->setData(modelIndex, QVariant(iFontSize), Dtk::UserRole + 2);
         filterModel->setEditStatus(m_searchTextStatusIsEmpty);
     }
-
-    m_fontPreviewListView->scrollToTop();
 }
 
 void DFontMgrMainWindow::onFontSizeChanged(int fontSize)
