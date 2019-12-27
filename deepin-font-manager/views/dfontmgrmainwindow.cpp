@@ -87,7 +87,9 @@ DFontMgrMainWindow::DFontMgrMainWindow(bool isQuickMode, QWidget *parent)
     initShortcuts();
 }
 
-DFontMgrMainWindow::~DFontMgrMainWindow() {}
+DFontMgrMainWindow::~DFontMgrMainWindow() {
+    d_func()->settingsQsPtr->setValue(FTM_MWSIZE_KEY, geometry());
+}
 
 void DFontMgrMainWindow::initData()
 {
@@ -105,6 +107,9 @@ void DFontMgrMainWindow::initData()
     if (ok) {
         colorType = static_cast<DGuiApplicationHelper::ColorType>(color);
     }
+
+    m_winHight = d->settingsQsPtr->value(FTM_MWSIZE_KEY).toRect().height();
+    m_winWidth = d->settingsQsPtr->value(FTM_MWSIZE_KEY).toRect().width();
 
     qDebug() << __FUNCTION__ << "init theme = " << colorType;
 
@@ -908,6 +913,7 @@ void DFontMgrMainWindow::onSearchTextChanged(const QString &currStr)
 
     QString previewText = d->textInputEdit->text();
     onPreviewTextChanged(previewText);
+    m_fontPreviewListView->scrollToTop();
 }
 
 void DFontMgrMainWindow::onPreviewTextChanged(const QString &currStr)

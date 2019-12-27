@@ -44,6 +44,9 @@ public:
     void InitQuickWindowIfNeeded();
     void forceNoramlInstalltionQuitIfNeeded();
 
+    //Main window Size
+    int m_winHight;
+    int m_winWidth;
 protected:
     void initData();
     void initUI();
@@ -73,7 +76,7 @@ protected:
     DFontPreviewListView *m_fontPreviewListView;
     DListView *m_noResultListView;
     DListView *m_noInstallListView;
-    DFontSpinnerWidget *m_fontLoadingSpinner = nullptr;
+    DFontSpinnerWidget *m_fontLoadingSpinner = nullptr;    
 signals:
     void fileSelected(const QStringList files) const;
 

@@ -40,6 +40,9 @@
 //Font Manager Theme Key
 #define FTM_THEME_KEY "FontManagerTheme"
 
+//Font Manager MainWindow Size
+#define FTM_MWSIZE_KEY "FontManagerSize"
+
 //Deepin manaul binary name
 #define DEEPIN_MANUAL_NAME "dman"
 

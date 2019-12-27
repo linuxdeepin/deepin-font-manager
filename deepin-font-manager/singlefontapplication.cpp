@@ -106,7 +106,16 @@ void SingleFontApplication::activateWindow() {
         //Init Normal window at first time
         if (nullptr == m_qspMainWnd.get()) {
             m_qspMainWnd.reset(new DFontMgrMainWindow());
-            m_qspMainWnd->setMinimumSize(DEFAULT_WINDOWS_WIDTH, DEFAULT_WINDOWS_HEIGHT);
+            int windowWidth = reinterpret_cast<DFontMgrMainWindow*>(
+                        m_qspMainWnd.get())->m_winWidth;
+            int windowHeight = reinterpret_cast<DFontMgrMainWindow*>(
+                        m_qspMainWnd.get())->m_winHight;
+                    //.toInt(&hWinDataStatus);
+            if (0 == windowWidth && 0 == windowHeight) {
+                m_qspMainWnd->setMinimumSize(DEFAULT_WINDOWS_WIDTH, DEFAULT_WINDOWS_HEIGHT);
+            } else {
+                m_qspMainWnd->resize(windowWidth, windowHeight);
+            }
 
             Dtk::Widget::moveToCenter(m_qspMainWnd.get());
 
