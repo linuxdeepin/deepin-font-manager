@@ -111,9 +111,8 @@ void SingleFontApplication::activateWindow() {
             int windowHeight = reinterpret_cast<DFontMgrMainWindow*>(
                         m_qspMainWnd.get())->m_winHight;
                     //.toInt(&hWinDataStatus);
-            if (0 == windowWidth && 0 == windowHeight) {
-                m_qspMainWnd->setMinimumSize(DEFAULT_WINDOWS_WIDTH, DEFAULT_WINDOWS_HEIGHT);
-            } else {
+            m_qspMainWnd->setMinimumSize(DEFAULT_WINDOWS_WIDTH, DEFAULT_WINDOWS_HEIGHT);
+            if (DEFAULT_WINDOWS_WIDTH <= windowWidth && DEFAULT_WINDOWS_HEIGHT <= windowHeight) {
                 m_qspMainWnd->resize(windowWidth, windowHeight);
             }
 
