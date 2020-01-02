@@ -76,7 +76,7 @@ protected:
     DFontPreviewListView *m_fontPreviewListView;
     DListView *m_noResultListView;
     DListView *m_noInstallListView;
-    DFontSpinnerWidget *m_fontLoadingSpinner = nullptr;    
+    DFontSpinnerWidget *m_fontLoadingSpinner {nullptr};
 signals:
     void fileSelected(const QStringList files) const;
 

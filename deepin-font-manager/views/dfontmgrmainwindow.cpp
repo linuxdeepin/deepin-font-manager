@@ -1,4 +1,3 @@
-
 #include "views/dfontmgrmainwindow.h"
 #include "dfinstallnormalwindow.h"
 #include "dsplitlistwidget.h"
@@ -25,6 +24,7 @@
 #include <DSplitter>
 #include <DTitlebar>
 #include <DWidgetUtil>
+#include <DDesktopServices>
 
 class DFontMgrMainWindowPrivate
 {
@@ -964,17 +964,7 @@ void DFontMgrMainWindow::showFontFilePostion()
     DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
 
     if (-1 != currItemData.strFontId && currItemData.fontInfo.filePath.length() > 0) {
-
-        QUrl url = QUrl::fromLocalFile(QFileInfo(currItemData.fontInfo.filePath).dir().absolutePath());
-
-        qDebug() << QUrl::fromLocalFile(currItemData.fontInfo.filePath).toString();
-
-        QUrlQuery query;
-        query.addQueryItem("selectUrl",
-                           QUrl::fromLocalFile(currItemData.fontInfo.filePath).toString());
-        url.setQuery(query);
-
-        QProcess::startDetached(DEEPIN_FILE_MANAGE_NAME, QStringList(url.toString()));
+        DDesktopServices::showFileItem(currItemData.fontInfo.filePath);
     }
 }
 
