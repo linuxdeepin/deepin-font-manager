@@ -127,9 +127,6 @@ void DFInstallNormalWindow::initConnections()
     connect(m_fontManager, &DFontManager::batchInstall, this,
             &DFInstallNormalWindow::onProgressChanged);
 
-    connect(m_fontManager, &DFontManager::batchInstall, this,
-            &DFInstallNormalWindow::onProgressChanged);
-
     connect(m_fontManager, &DFontManager::installFinished, this, [=](int state) {
         // ToDo:
         //   May send signal to mainwindow refresh new installed font
@@ -176,6 +173,7 @@ void DFInstallNormalWindow::verifyFontFiles()
     m_damagedFiles.clear();
     m_installedFiles.clear();
     m_newInstallFiles.clear();
+    m_deleteFiles.clear();
 
     m_installErrorFontModelList.clear();
     foreach (auto it, m_installFiles) {
@@ -188,6 +186,14 @@ void DFInstallNormalWindow::verifyFontFiles()
 #endif
         } else if (fontInfo.isInstalled) {
             m_installedFiles.append(it);
+
+            //判断出有重复名字的字体 如果有重复为true 不执行
+            bool have = m_fontInfoManager->checkDBFontSameName(fontInfo);
+            if (have) {
+                m_deleteFiles.append(it);
+            } else {
+                continue;
+            }
 
 #ifdef QT_QML_DEBUG
             qDebug() << __FUNCTION__ << " (" << it << " :Installed file)";
@@ -233,8 +239,6 @@ bool DFInstallNormalWindow::ifNeedShowExceptionWindow() const
 void DFInstallNormalWindow::resizeEvent(QResizeEvent *event)
 {
     DFontBaseDialog::resizeEvent(event);
-
-    //m_mainFrame->resize(event->size().width(), event->size().height());
 }
 
 void DFInstallNormalWindow::batchInstall()
@@ -267,6 +271,11 @@ void DFInstallNormalWindow::batchInstall()
             foreach (auto it, m_installedFiles) {
                 installList.append(it);
             }
+            if(m_deleteFiles.size() > 0) {
+                foreach (auto it, m_deleteFiles) {
+                    installList.removeOne(it);
+                }
+            }
         }
 
         m_installedFiles.clear();
@@ -280,9 +289,9 @@ void DFInstallNormalWindow::batchInstall()
         DFontInfo fontInfo = m_fontInfoManager->getFontInfo(it);
         QString familyName = fontInfo.familyName;
 
-         installListWithFamliyName.append(it+"|"+familyName);
+         installListWithFamliyName.append(it + "|" + familyName);
 
-         qDebug() << " Prepare install file: " << it+"|"+familyName;
+         qDebug() << " Prepare install file: " << it + "|" + familyName;
     }
 
     m_fontManager->setType(DFontManager::Install);

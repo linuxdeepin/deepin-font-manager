@@ -58,6 +58,8 @@ public:
     QString getFontType(const QString &filePath);
     DFontInfo getFontInfo(const QString &filePath);
     bool isFontInstalled(DFontInfo data);
+    bool checkDBFontSameName(const DFontInfo &info);
+    QStringList getAllFontName() const;
 };
 
 #endif

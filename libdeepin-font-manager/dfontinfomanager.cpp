@@ -307,3 +307,45 @@ bool DFontInfoManager::isFontInstalled(DFontInfo data)
 
     return false;
 }
+
+//检查数据库中是否装有 相同名不同后缀大小写 的文件
+bool DFontInfoManager::checkDBFontSameName(const DFontInfo &info)
+{
+    QFileInfo fileInfo = QFileInfo(info.filePath);
+    QString fileName = fileInfo.fileName();
+    int nPoint = fileName.indexOf(".");
+    QString fileNameNoSuffix = fileName.left(nPoint);    
+
+    //从数据库获取所有字体文件名
+    QStringList allFontName = getAllFontName();
+
+    const QString fileSuffixUp = fileInfo.suffix().toUpper();
+    const QString fileSuffixLow = fileInfo.suffix().toLower();
+
+    if (fileSuffixLow == fileInfo.suffix()) {
+        if (allFontName.contains(fileNameNoSuffix + "." + fileSuffixUp)) {
+            return true;
+        }
+    } else if (fileSuffixUp == fileInfo.suffix()) {
+        if (allFontName.contains(fileNameNoSuffix + "." + fileSuffixLow)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+// 从数据库获取所有字体文件名，并返回一个 QStringList
+QStringList DFontInfoManager::getAllFontName() const
+{
+    QStringList allFileNameList;
+    QFileInfo fileInfo;
+    DFMDBManager *dbManager = DFMDBManager::instance();
+    QList<DFontPreviewItemData> allFontInfo = dbManager->getAllFontInfo();
+
+    for (int var = 0; var < allFontInfo.count(); ++var) {
+        fileInfo = QFileInfo(allFontInfo[var].fontInfo.filePath);
+        QString fileName = fileInfo.fileName();
+        allFileNameList << fileName;
+    }
+    return allFileNameList;
+}
