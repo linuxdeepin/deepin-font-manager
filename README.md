@@ -15,7 +15,7 @@ Deepin Font Manager is used to install and uninstall font file for users with bu
 
 ## Usage
 
-* ./deepin-font-Manager
+* ./deepin-font-manager
 
 ## Getting help
 
@@ -35,4 +35,4 @@ We encourage you to report issues and contribute changes
 
 ## License
 
-Deepin Font Installer is licensed under [GPLv3](LICENSE).
+Deepin Font Manager is licensed under [GPLv3](LICENSE).
