@@ -995,9 +995,7 @@ void DFontMgrMainWindow::onFontInstallFinished()
     Q_D(DFontMgrMainWindow);
 
     m_fontPreviewListView->refreshFontListData();
-    if (0 != d->textInputEdit->text().size()) {
-        d->textInputEdit->textChanged(d->textInputEdit->text());
-    }
+    d->textInputEdit->textChanged(d->textInputEdit->text());
 
     DFontPreviewListDataThread *dataThread = DFontPreviewListDataThread::instance();
     //结果为空时安装单个字体后filterRowCount不会变成１，这时需要自己判断处理下
