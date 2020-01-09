@@ -13,6 +13,7 @@
 
 #include <DApplication>
 #include <DApplicationHelper>
+#include <DFontSizeManager>
 #include <DFileDialog>
 #include <DIconButton>
 #include <DLabel>
@@ -438,11 +439,8 @@ void DFontMgrMainWindow::initTileFrame()
 
     // Search font
     d->searchFontEdit = new DSearchEdit(this);
-    QFont searchFont;
-    searchFont.setPixelSize(14);
-    d->searchFontEdit->setFont(searchFont);
+    DFontSizeManager::instance()->bind(d->searchFontEdit, DFontSizeManager::T5);
     d->searchFontEdit->setFixedSize(QSize(FTM_SEARCH_BAR_W, FTM_SEARCH_BAR_H));
-    //d->searchFontEdit->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     d->searchFontEdit->setPlaceHolder(DApplication::translate("SearchBar", "Search"));
 
     titlebar()->addWidget(d->titleActionArea, Qt::AlignLeft|Qt::AlignVCenter);
@@ -612,9 +610,9 @@ void DFontMgrMainWindow::initFontPreviewListView(QWidget *parent)
     QString fontFamilyName = Utils::loadFontFamilyFromFiles(":/images/SourceHanSansCN-Normal.ttf");
     QFont labelFont(fontFamilyName);
     labelFont.setWeight(QFont::ExtraLight);
-    labelFont.setPixelSize(20);
     noResultLabel->setFont(labelFont);
     noResultLabel->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
+    DFontSizeManager::instance()->bind(noResultLabel,DFontSizeManager::T4);
 
     QVBoxLayout *lblLayout = new QVBoxLayout;
     lblLayout->addWidget(noResultLabel);
@@ -634,9 +632,9 @@ void DFontMgrMainWindow::initFontPreviewListView(QWidget *parent)
     QString fontFamilyNameNoInstall = Utils::loadFontFamilyFromFiles(":/images/SourceHanSansCN-Normal.ttf");
     QFont labelFontNoInstall(fontFamilyNameNoInstall);
     labelFontNoInstall.setWeight(QFont::ExtraLight);
-    labelFontNoInstall.setPixelSize(20);
     noInstallLabel->setFont(labelFontNoInstall);
     noInstallLabel->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
+    DFontSizeManager::instance()->bind(noInstallLabel,DFontSizeManager::T4);
 
     QVBoxLayout *lblLayoutNoInstall = new QVBoxLayout;
     lblLayoutNoInstall->addWidget(noInstallLabel);

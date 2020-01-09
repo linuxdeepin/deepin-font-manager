@@ -123,7 +123,7 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
 
         QString nameFontFamily = Utils::loadFontFamilyFromFiles(":/images/SourceHanSansCN-Medium.ttf");
         QFont nameFont(nameFontFamily);
-        nameFont.setPixelSize(14);
+        nameFont.setPixelSize(DFontSizeManager::instance()->fontPixelSize(DFontSizeManager::T5));
         painter->setFont(nameFont);
         DStyleHelper styleHelper;
         DPalette pa = DApplicationHelper::instance()->palette(m_parentView);
