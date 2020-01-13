@@ -9,6 +9,7 @@
 
 #include <DFrame>
 #include <DMainWindow>
+#include <QResizeEvent>
 
 DWIDGET_USE_NAMESPACE
 
@@ -77,6 +78,8 @@ protected:
     DListView *m_noResultListView;
     DListView *m_noInstallListView;
     DFontSpinnerWidget *m_fontLoadingSpinner {nullptr};
+
+    void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
 signals:
     void fileSelected(const QStringList files) const;
 

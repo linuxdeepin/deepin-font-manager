@@ -89,7 +89,8 @@ DFontMgrMainWindow::DFontMgrMainWindow(bool isQuickMode, QWidget *parent)
 }
 
 DFontMgrMainWindow::~DFontMgrMainWindow() {
-    d_func()->settingsQsPtr->setValue(FTM_MWSIZE_KEY, geometry());
+    d_func()->settingsQsPtr->setValue(FTM_MWSIZE_H_KEY, m_winHight);
+    d_func()->settingsQsPtr->setValue(FTM_MWSIZE_W_KEY, m_winWidth);
 }
 
 void DFontMgrMainWindow::initData()
@@ -109,8 +110,8 @@ void DFontMgrMainWindow::initData()
         colorType = static_cast<DGuiApplicationHelper::ColorType>(color);
     }
 
-    m_winHight = d->settingsQsPtr->value(FTM_MWSIZE_KEY).toRect().height();
-    m_winWidth = d->settingsQsPtr->value(FTM_MWSIZE_KEY).toRect().width();
+    m_winHight = d->settingsQsPtr->value(FTM_MWSIZE_H_KEY).toInt();
+    m_winWidth = d->settingsQsPtr->value(FTM_MWSIZE_W_KEY).toInt();
 
     qDebug() << __FUNCTION__ << "init theme = " << colorType;
 
@@ -439,7 +440,7 @@ void DFontMgrMainWindow::initTileFrame()
 
     // Search font
     d->searchFontEdit = new DSearchEdit(this);
-    DFontSizeManager::instance()->bind(d->searchFontEdit, DFontSizeManager::T5);
+    DFontSizeManager::instance()->bind(d->searchFontEdit, DFontSizeManager::T6);
     d->searchFontEdit->setFixedSize(QSize(FTM_SEARCH_BAR_W, FTM_SEARCH_BAR_H));
     d->searchFontEdit->setPlaceHolder(DApplication::translate("SearchBar", "Search"));
 
@@ -1154,6 +1155,14 @@ void DFontMgrMainWindow::dropEvent(QDropEvent *event)
         }
     } else {
         event->ignore();
+    }
+}
+
+void DFontMgrMainWindow::resizeEvent(QResizeEvent *event)
+{
+    if (0 == int(QWidget::windowState())) {
+       m_winHight = geometry().height();
+       m_winWidth = geometry().width();
     }
 }
 
