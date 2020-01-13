@@ -293,7 +293,7 @@ void DFQuickInstallWindow::onFontInstallFinished()
 
         const QString sysDir = QDir::homePath() + "/.local/share/fonts";
         QString dirName = itemData.fontInfo.familyName;
-        QString target = QObject::tr("%1/%2/%3").arg(sysDir).arg(dirName).arg(filePathInfo.fileName());
+        QString target = QString("%1/%2/%3").arg(sysDir).arg(dirName).arg(filePathInfo.fileName());
 
         itemData.fontInfo.filePath = target;
 
