@@ -169,6 +169,7 @@ void DFInstallNormalWindow::verifyFontFiles()
 {
     // debug
     DFontInfo fontInfo;
+    QList<DFontInfo> fontInfos;
 
     m_damagedFiles.clear();
     m_installedFiles.clear();
@@ -198,7 +199,8 @@ void DFInstallNormalWindow::verifyFontFiles()
 #ifdef QT_QML_DEBUG
             qDebug() << __FUNCTION__ << " (" << it << " :Installed file)";
 #endif
-        } else {
+        } else if (!fontInfos.contains(fontInfo)){
+            fontInfos.append(fontInfo);
             m_newInstallFiles.append(it);
 
 #ifdef QT_QML_DEBUG
