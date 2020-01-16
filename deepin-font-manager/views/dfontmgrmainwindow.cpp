@@ -995,12 +995,6 @@ void DFontMgrMainWindow::onFontInstallFinished()
 
     m_fontPreviewListView->refreshFontListData();
     d->textInputEdit->textChanged(d->textInputEdit->text());
-
-    DFontPreviewListDataThread *dataThread = DFontPreviewListDataThread::instance();
-    //结果为空时安装单个字体后filterRowCount不会变成１，这时需要自己判断处理下
-    if (1 == dataThread->getDiffFontModelList().size()) {
-        onFontListViewRowCountChanged(0);
-    }
 }
 
 void DFontMgrMainWindow::onFontUninstallFinished(const QModelIndex &uninstallIndex)
