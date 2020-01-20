@@ -168,6 +168,7 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
 
         QRect fontPreviewRect = QRect(fontNameRect.left(), bgRect.top() + 26, bgRect.width() - 50 - collectIconSize - 15,
                                 bgRect.height() - 26);
+
         if (data.isPreviewEnabled) {
 
             QFont preivewFont(data.fontInfo.familyName);
@@ -249,4 +250,11 @@ QSize DFontPreviewItemDelegate::sizeHint(const QStyleOptionViewItem &option,
         itemHeight += static_cast<int>(((iFontSize-30)+1)*1.5);
     }
     return QSize(option.rect.width(), itemHeight);
+}
+
+bool DFontPreviewItemDelegate::eventFilter(QObject *object, QEvent *event)
+{
+    Q_UNUSED(object)
+    Q_UNUSED(event)
+    return false;
 }

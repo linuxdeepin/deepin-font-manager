@@ -197,6 +197,7 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
 
     if (collectIconRect.contains(clickPoint)) {
         itemData.collectIconStatus = IconPress;
+        m_pressModelIndex = modelIndex;
     } else {
         itemData.collectIconStatus = IconNormal;
     }
@@ -336,6 +337,9 @@ void DFontPreviewListView::onListViewShowContextMenu(QModelIndex index)
     DMenu *rightMenu = m_rightMenu;
 
     //在当前鼠标位置显示
+    connect(rightMenu, &QMenu::aboutToHide, this, [=] {
+        clearPressState();
+    });
     rightMenu->exec(QCursor::pos());
 }
 
@@ -382,4 +386,17 @@ void DFontPreviewListView::removeRowAtIndex(QModelIndex modelIndex)
     m_fontPreviewProxyModel->removeRow(modelIndex.row(), modelIndex.parent());
 
     m_dataThread->removeFontData(itemData);
+}
+
+void DFontPreviewListView::clearPressState()
+{
+    if (!m_pressModelIndex.isValid())
+        return;
+
+    DFontPreviewItemData pressData =
+            qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(m_pressModelIndex));
+    qDebug() << " restore press item " << pressData.strFontName;
+    pressData.collectIconStatus = IconNormal;
+    m_fontPreviewProxyModel->setData(m_pressModelIndex, QVariant::fromValue(pressData), Qt::DisplayRole);
+    m_pressModelIndex = QModelIndex();
 }

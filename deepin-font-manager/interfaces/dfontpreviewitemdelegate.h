@@ -22,6 +22,9 @@ public:
 
     QRect m_checkboxRect;
 
+protected:
+    bool eventFilter(QObject *object, QEvent *event) override;
+
 private:
     QAbstractItemView *m_parentView;
 };

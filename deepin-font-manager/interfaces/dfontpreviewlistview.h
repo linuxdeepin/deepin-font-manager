@@ -45,6 +45,7 @@ public:
     DFontPreviewItemData currModelData();
     DFontPreviewProxyModel *getFontPreviewProxyModel();
     void removeRowAtIndex(QModelIndex modelIndex);
+    void clearPressState();
 
 private:
     void initConnections();
@@ -67,6 +68,7 @@ private:
     DFontPreviewProxyModel *m_fontPreviewProxyModel {nullptr};
 
     DFontPreviewListDataThread *m_dataThread;
+    QModelIndex m_pressModelIndex;
 
 signals:
     //用于DFontPreviewListView内部使用的信号
