@@ -1,4 +1,5 @@
 ﻿#include "dfontpreviewitemdelegate.h"
+#include "dfontpreviewlistview.h"
 #include "globaldef.h"
 #include "utils.h"
 
@@ -255,6 +256,10 @@ QSize DFontPreviewItemDelegate::sizeHint(const QStyleOptionViewItem &option,
 bool DFontPreviewItemDelegate::eventFilter(QObject *object, QEvent *event)
 {
     Q_UNUSED(object)
-    Q_UNUSED(event)
+    if (event->type() == QEvent::HoverLeave) {
+        DFontPreviewListView *listview = qobject_cast<DFontPreviewListView *>(parent());
+        listview->clearHoverState();
+    }
+
     return false;
 }
