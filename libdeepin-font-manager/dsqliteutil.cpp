@@ -135,11 +135,15 @@ bool DSqliteUtil::delRecord(QMap<QString, QString> where, QString table_name)
     sql += " where ";
     for (QMap<QString, QString>::const_iterator it = where.constBegin(); it != where.constEnd();
          it++) {
+        //转义字符 ' -> ''
+        QString value = it.value();
+        value = value.replace( "'", "''");
         sql += it.key() + "=";
-        sql += "'" + it.value() + "'";
+        sql += "'" + value + "'";
         sql += " and ";
     }
     sql.chop(5);
+
     qDebug() << sql;
     m_query->prepare(sql);
 
