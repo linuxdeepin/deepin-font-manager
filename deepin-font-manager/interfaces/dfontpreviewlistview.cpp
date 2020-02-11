@@ -414,3 +414,13 @@ void DFontPreviewListView::clearHoverState()
     m_fontPreviewProxyModel->setData(m_hoverModelIndex, QVariant::fromValue(itemData), Qt::DisplayRole);
     m_hoverModelIndex = QModelIndex();
 }
+
+void DFontPreviewListView::selectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
+{
+    if (selected.indexes().isEmpty())
+        return;
+
+    if (m_currModelIndex != selected.indexes().first()) {
+        m_currModelIndex = selected.indexes().first();
+    }
+}

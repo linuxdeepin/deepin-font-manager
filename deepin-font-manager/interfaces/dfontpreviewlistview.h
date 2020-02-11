@@ -48,6 +48,9 @@ public:
     void clearPressState();
     void clearHoverState();
 
+protected slots:
+    void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
+
 private:
     void initConnections();
 
