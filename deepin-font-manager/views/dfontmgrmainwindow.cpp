@@ -972,8 +972,12 @@ void DFontMgrMainWindow::onLeftSiderBarItemClicked(int index)
     Q_D(DFontMgrMainWindow);
 
     if (!m_fontPreviewListView->isListDataLoadFinished()) {
+        //save index to update
+        m_leftIndex = index;
         return;
     }
+
+    m_leftIndex = 0;
 
     qDebug() << __FUNCTION__ << index << endl;
     DSplitListWidget::FontGroup filterGroup = qvariant_cast<DSplitListWidget::FontGroup>(index);
@@ -1065,6 +1069,9 @@ void DFontMgrMainWindow::onLoadStatus(int type)
             m_fontLoadingSpinner->show();
             break;
         case 1:
+            if (m_leftIndex > 0) {
+                onLeftSiderBarItemClicked(m_leftIndex);
+            }
             m_fontLoadingSpinner->hide();
             m_fontLoadingSpinner->spinnerStop();
             m_fontPreviewListView->show();
