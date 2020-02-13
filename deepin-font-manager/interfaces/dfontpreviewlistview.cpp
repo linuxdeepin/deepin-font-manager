@@ -351,12 +351,15 @@ void DFontPreviewListView::setRightContextMenu(QMenu *rightMenu)
 
 QModelIndex DFontPreviewListView::currModelIndex()
 {
+    if (!selectedIndexes().isEmpty() && m_currModelIndex != selectedIndexes().first())
+        m_currModelIndex = selectedIndexes().first();
+
     return m_currModelIndex;
 }
 
 DFontPreviewItemData DFontPreviewListView::currModelData()
 {
-    QVariant varModel = m_fontPreviewProxyModel->data(m_currModelIndex, Qt::DisplayRole);
+    QVariant varModel = m_fontPreviewProxyModel->data(currModelIndex(), Qt::DisplayRole);
     DFontPreviewItemData itemData = varModel.value<DFontPreviewItemData>();
 
     return itemData;
@@ -413,14 +416,4 @@ void DFontPreviewListView::clearHoverState()
     itemData.collectIconStatus = IconNormal;
     m_fontPreviewProxyModel->setData(m_hoverModelIndex, QVariant::fromValue(itemData), Qt::DisplayRole);
     m_hoverModelIndex = QModelIndex();
-}
-
-void DFontPreviewListView::selectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
-{
-    if (selected.indexes().isEmpty())
-        return;
-
-    if (m_currModelIndex != selected.indexes().first()) {
-        m_currModelIndex = selected.indexes().first();
-    }
 }
