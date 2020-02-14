@@ -1,20 +1,41 @@
 #include "dfdeletedialog.h"
 #include "utils.h"
 #include "globaldef.h"
+#include "dfontmgrmainwindow.h"
 
 #include <QHBoxLayout>
 #include <QVBoxLayout>
+#include <QDebug>
 
 #include <DApplication>
 #include <DApplicationHelper>
 #include <DFrame>
 #include <DFontSizeManager>
 
-DFDeleteDialog::DFDeleteDialog(QWidget *parent)
+DFDeleteDialog::DFDeleteDialog(DFontMgrMainWindow *win, QWidget *parent)
     : DFontBaseDialog(parent)
+    , m_mainWindow(nullptr)
 {
     initUI();
+    setMainwindow(win);
     initConnections();
+}
+
+DFDeleteDialog::~DFDeleteDialog()
+{
+}
+
+void DFDeleteDialog::setMainwindow(DFontMgrMainWindow *win)
+{
+    if (m_mainWindow != win && win != nullptr) {
+        m_mainWindow = win;
+        quitConn = connect(m_mainWindow, &DFontMgrMainWindow::requestDeleted, [=]() {
+            if (isVisible()) {
+                accept();
+                close();
+            }
+        });
+    }
 }
 
 void DFDeleteDialog::initUI()
@@ -101,6 +122,14 @@ void DFDeleteDialog::initUI()
 
 void DFDeleteDialog::initConnections()
 {
-    connect(m_cancelBtn, &DPushButton::clicked, this, [=]() { this->reject(); });
-    connect(m_confirmBtn, &DPushButton::clicked, this, [=]() { this->accept(); });
+    connect(m_cancelBtn, &DPushButton::clicked, this, [=]() {
+        reject();
+        close();
+    });
+    connect(m_confirmBtn, &DPushButton::clicked, this, [=]() { Q_EMIT requestDelete(); });
+    connect(this, &DFDeleteDialog::closed, this, [=]() {
+        disconnect(quitConn);
+        if (m_mainWindow != nullptr)
+            m_mainWindow->setDeleteFinish();
+    });
 }

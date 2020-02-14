@@ -44,6 +44,7 @@ public:
     void hideQucikInstallWindow();
     void InitQuickWindowIfNeeded();
     void forceNoramlInstalltionQuitIfNeeded();
+    void setDeleteFinish();
 
     //Main window Size
     int m_winHight;
@@ -82,6 +83,7 @@ protected:
     void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
 signals:
     void fileSelected(const QStringList files) const;
+    void requestDeleted();
 
     // Only use when user double click font file
     void quickModeInstall(const QStringList files) const;
@@ -129,6 +131,9 @@ protected:
     //is in installing font flow
     //Avoid start multi-NormalInstalltion window
     bool                    m_fIsInstalling {false};
+    //is it in uninstalling font flow
+    //Avoid start multi delete confirm dialog
+    volatile bool m_fIsDeleting {false};
     DFInstallNormalWindow  *m_dfNormalInstalldlg {nullptr};
 
     QScopedPointer<DFQuickInstallWindow> m_quickInstallWnd;

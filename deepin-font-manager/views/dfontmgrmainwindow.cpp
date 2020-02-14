@@ -320,10 +320,13 @@ void DFontMgrMainWindow::initShortcuts()
         m_scDeleteFont->setAutoRepeat(false);
 
         connect(m_scDeleteFont, &QShortcut::activated, this, [this] {
+            if (m_fIsDeleting)
+                return;
             DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
 
             //Only can't delete user font
             if (!currItemData.fontInfo.isSystemFont) {
+                m_fIsDeleting = true;
                 delCurrentFont();
             }
         });
@@ -765,22 +768,8 @@ void DFontMgrMainWindow::handleMenuEvent(QAction *action)
             }
             break;
             case DFontMenuManager::MenuAction::M_DeleteFont: {
-                DFDeleteDialog confirmDelDlg;
-                connect(&confirmDelDlg, &DFDeleteDialog::accepted, this, [this]() {
-                    // Add Delete font code Here
-                    DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
-                    qDebug() << "Confirm delete:" << currItemData.fontInfo.filePath
-                             << " is system font:" << currItemData.fontInfo.isSystemFont;
-
-                    QModelIndex currModelIndex = m_fontPreviewListView->currModelIndex();
-                    QString uninstallFilePath = currItemData.fontInfo.filePath;
-                    m_fontManager->setType(DFontManager::UnInstall);
-                    m_fontManager->setUnInstallFile(uninstallFilePath, currModelIndex);
-                    m_fontManager->start();
-                });
-
-                confirmDelDlg.exec();
-
+                if (!m_fIsDeleting)
+                    delCurrentFont();
             }
             break;
             case DFontMenuManager::MenuAction::M_EnableOrDisable: {
@@ -886,6 +875,11 @@ void DFontMgrMainWindow::forceNoramlInstalltionQuitIfNeeded()
         qDebug() << "In normal installtion flow, force quit!";
         m_dfNormalInstalldlg->breakInstalltion();
     }
+}
+
+void DFontMgrMainWindow::setDeleteFinish()
+{
+    m_fIsDeleting = false;
 }
 
 void DFontMgrMainWindow::onSearchTextChanged(const QString &currStr)
@@ -1005,6 +999,7 @@ void DFontMgrMainWindow::onFontUninstallFinished(const QModelIndex &uninstallInd
 {
     qDebug() << "finished remove row:" << uninstallIndex.row() << endl;
     m_fontPreviewListView->removeRowAtIndex(uninstallIndex);
+    Q_EMIT requestDeleted();
 }
 
 
@@ -1084,8 +1079,8 @@ void DFontMgrMainWindow::onLoadStatus(int type)
 
 void DFontMgrMainWindow::delCurrentFont()
 {
-    DFDeleteDialog confirmDelDlg;
-    connect(&confirmDelDlg, &DFDeleteDialog::accepted, this, [this]() {
+    DFDeleteDialog confirmDelDlg(this);
+    connect(&confirmDelDlg, &DFDeleteDialog::requestDelete, this, [this]() {
         // Add Delete font code Here
         DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
         qDebug() << "Confirm delete:" << currItemData.fontInfo.filePath
