@@ -187,7 +187,7 @@ QString DFontInfoManager::getFontType(const QString &filePath)
     } else if (suffix == "otf") {
         return "OpenType";
     } else {
-        return "UnKnown";
+        return "Unknown";
     }
 }
 
