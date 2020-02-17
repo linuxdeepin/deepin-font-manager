@@ -1185,7 +1185,7 @@ void DFontMgrMainWindow::showAllShortcut()
         {"Delete",             "Delete"},
         {"Add font",           "Ctrl+O"},
         {"Favorite",           "Ctrl+K"},
-        {"UnFavorite",         "Ctrl+Shift+K"},
+        {"Unfavorite",         "Ctrl+Shift+K"},
         {"Font info",          "Alt+Enter"},
     };
 
