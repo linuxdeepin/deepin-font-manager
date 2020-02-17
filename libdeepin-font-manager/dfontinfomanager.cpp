@@ -31,6 +31,10 @@
 #include <ft2build.h>
 #include <iconv.h>
 
+#include <DApplication>
+
+DWIDGET_USE_NAMESPACE
+
 #include FT_FREETYPE_H
 #include FT_TYPE1_TABLES_H
 #include FT_SFNT_NAMES_H
@@ -187,7 +191,7 @@ QString DFontInfoManager::getFontType(const QString &filePath)
     } else if (suffix == "otf") {
         return "OpenType";
     } else {
-        return "Unknown";
+        return DApplication::translate("FontDetailDailog", "Unknown");
     }
 }
 
