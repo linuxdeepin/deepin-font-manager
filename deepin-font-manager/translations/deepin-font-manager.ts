@@ -45,26 +45,6 @@
         <translation></translation>
     </message>
     <message>
-        <source>Theme</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>Light Theme</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>Dark Theme</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>System Theme</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>Help</source>
-        <translation></translation>
-    </message>
-    <message>
         <source>Enable</source>
         <translation></translation>
     </message>
@@ -107,7 +87,7 @@
 <context>
     <name>QuickInstallWindow</name>
     <message>
-        <source>UnKnown</source>
+        <source>Unknown</source>
         <translation></translation>
     </message>
     <message>
@@ -192,7 +172,7 @@
         <translation></translation>
     </message>
     <message>
-        <source>UnKnown</source>
+        <source>Unknown</source>
         <translation></translation>
     </message>
 </context>
@@ -241,22 +221,6 @@
         <translation></translation>
     </message>
     <message>
-        <source>Zoom in</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>Zoom out</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>Reset font</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>Close window</source>
-        <translation></translation>
-    </message>
-    <message>
         <source>Display shortcuts</source>
         <translation></translation>
     </message>
@@ -266,14 +230,9 @@
     </message>
     <message>
         <source>Page down</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>Resize window</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>Find</source>
+
+
+
         <translation></translation>
     </message>
     <message>
@@ -289,7 +248,7 @@
         <translation></translation>
     </message>
     <message>
-        <source>UnFavorite</source>
+        <source>Unfavorite</source>
         <translation></translation>
     </message>
     <message>

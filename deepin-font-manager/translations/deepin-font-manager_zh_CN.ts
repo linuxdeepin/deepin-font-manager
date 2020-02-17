@@ -45,26 +45,6 @@
         <translation>添加字体</translation>
     </message>
     <message>
-        <source>Theme</source>
-        <translation>主题</translation>
-    </message>
-    <message>
-        <source>Light Theme</source>
-        <translation>浅色主题</translation>
-    </message>
-    <message>
-        <source>Dark Theme</source>
-        <translation>深色主题</translation>
-    </message>
-    <message>
-        <source>System Theme</source>
-        <translation>跟随系统</translation>
-    </message>
-    <message>
-        <source>Help</source>
-        <translation>帮助</translation>
-    </message>
-    <message>
         <source>Enable</source>
         <translation>启用字体</translation>
     </message>
@@ -107,7 +87,7 @@
 <context>
     <name>QuickInstallWindow</name>
     <message>
-        <source>UnKnown</source>
+        <source>Unknown</source>
         <translation>未知</translation>
     </message>
     <message>
@@ -196,7 +176,7 @@
         <translation>描述</translation>
     </message>
     <message>
-        <source>UnKnown</source>
+        <source>Unknown</source>
         <translation>未知</translation>
     </message>
 </context>
@@ -245,22 +225,6 @@
         <translation>帮助</translation>
     </message>
     <message>
-        <source>Zoom in</source>
-        <translation>缩小字体</translation>
-    </message>
-    <message>
-        <source>Zoom out</source>
-        <translation>放大字体</translation>
-    </message>
-    <message>
-        <source>Reset font</source>
-        <translation>恢复默认</translation>
-    </message>
-    <message>
-        <source>Close window</source>
-        <translation>关闭应用</translation>
-    </message>
-    <message>
         <source>Display shortcuts</source>
         <translation>显示快捷键预览</translation>
     </message>
@@ -271,14 +235,6 @@
     <message>
         <source>Page down</source>
         <translation>下一页</translation>
-    </message>
-    <message>
-        <source>Resize window</source>
-        <translation>窗口切换</translation>
-    </message>
-    <message>
-        <source>Find</source>
-        <translation>搜索</translation>
     </message>
     <message>
         <source>Delete</source>
@@ -293,7 +249,7 @@
         <translation>收藏</translation>
     </message>
     <message>
-        <source>UnFavorite</source>
+        <source>Unfavorite</source>
         <translation>取消收藏</translation>
     </message>
     <message>
