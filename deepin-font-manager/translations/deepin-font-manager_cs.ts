@@ -1,140 +1,257 @@
 <?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.1">
 <context>
-    <name>HomePage</name>
+    <name>Main</name>
     <message>
-        <source>Drag font file here</source>
-        <translation>Přetáhněte soubor písem zde</translation>
+        <source>Font Manager</source>
+        <translation>Správce písem</translation>
     </message>
     <message>
-        <source>Select file</source>
-        <translation>Vybrat soubor</translation>
+        <source>Font Manager helps users install and manage fonts.</source>
+        <translation>Správce písem uživatelům pomáhá nainstalovat a spravovat písma.</translation>
+    </message>
+    <message>
+        <source>Loading fonts, please wait...</source>
+        <translation>Nahrávají se písma. Počkejte, prosím...</translation>
     </message>
 </context>
 <context>
-    <name>ListItem</name>
+    <name>SearchBar</name>
+    <message>
+        <source>Search</source>
+        <translation>Hledat</translation>
+    </message>
+    <message>
+        <source>No search results</source>
+        <translation>Žádné výsledky hledání</translation>
+    </message>
+    <message>
+        <source>No fonts</source>
+        <translation>Žádná písma</translation>
+    </message>
+</context>
+<context>
+    <name>MessageManager</name>
+    <message>
+        <source>deactivated</source>
+        <translation>vypnuto</translation>
+    </message>
+</context>
+<context>
+    <name>Menu</name>
+    <message>
+        <source>Add font</source>
+        <translation>Přidat písmo</translation>
+    </message>
+    <message>
+        <source>Enable</source>
+        <translation>Povolit</translation>
+    </message>
+    <message>
+        <source>Disable</source>
+        <translation>Zakázat</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>Smazat</translation>
+    </message>
+    <message>
+        <source>Favorite</source>
+        <translation>Přidat do oblíbených</translation>
+    </message>
+    <message>
+        <source>Unfavorite</source>
+        <translation>Odstranit z oblíbených</translation>
+    </message>
+    <message>
+        <source>Details</source>
+        <translation>Podrobnosti</translation>
+    </message>
+    <message>
+        <source>Display in file manager</source>
+        <translation>Zobrazit ve správci souborů</translation>
+    </message>
+</context>
+<context>
+    <name>NormalInstallWindow</name>
+    <message>
+        <source>Install Font</source>
+        <translation>Instalovat písmo</translation>
+    </message>
+    <message>
+        <source>Verifying...</source>
+        <translation>Ověřuje se...</translation>
+    </message>
+</context>
+<context>
+    <name>QuickInstallWindow</name>
+    <message>
+        <source>Unknown</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Broken file</source>
+        <translation>Poškozený soubor</translation>
+    </message>
     <message>
         <source>Installed</source>
         <translation>Nainstalováno</translation>
     </message>
     <message>
-        <source>Other version installed: %1</source>
-        <translation>Je nainstalována jiná verze: %1</translation>
+        <source>Not Installed</source>
+        <translation>Nenainstalováno</translation>
     </message>
     <message>
-        <source>Installing</source>
-        <translation>Instalace</translation>
+        <source>Install Font</source>
+        <translation>Instalovat písmo</translation>
+    </message>
+</context>
+<context>
+    <name>ExceptionWindow</name>
+    <message>
+        <source>Font Verification</source>
+        <translation>Ověření písma</translation>
+    </message>
+    <message>
+        <source>Broken file</source>
+        <translation>Poškozený soubor</translation>
     </message>
     <message>
         <source>Same version installed</source>
-        <translation>Stejná verze je již nainstalována</translation>
+        <translation>Nainstalována stejná verze</translation>
+    </message>
+    <message>
+        <source>Exit</source>
+        <translation>Opustit</translation>
+    </message>
+    <message>
+        <source>Continue</source>
+        <translation>Pokračovat</translation>
     </message>
 </context>
 <context>
-    <name>Main</name>
+    <name>DeleteConfirmDailog</name>
     <message>
-        <source>Deepin Font Installer</source>
-        <translation>Instalátor písem</translation>
+        <source>Are you sure you want to delete this font?</source>
+        <translation>Opravdu chcete smazat toto písmo?</translation>
     </message>
     <message>
-        <source>Deepin Font Installer is used to install and uninstall font file for users with bulk install function.</source>
-        <translation>Instalátor písem Deepinu se používá k nainstalování a odinstalování souborů s písmy pro uživatele s hromadnou instalací.</translation>
-    </message>
-</context>
-<context>
-    <name>MainWindow</name>
-    <message>
-        <source>Deepin Font Installer</source>
-        <translation>Instalátor písem</translation>
+        <source>This font will not be available to applications</source>
+        <translation>Toto písmo nebude dostupné programům</translation>
     </message>
     <message>
-        <source>Bulk Install</source>
-        <translation>Hromadná instalace</translation>
+        <source>Cancel</source>
+        <translation>Zrušit</translation>
     </message>
     <message>
-        <source>Dark theme</source>
-        <translation>Tmavý vzhled</translation>
+        <source>Confirm</source>
+        <translation>Potvrdit</translation>
     </message>
 </context>
 <context>
-    <name>MultiFilePage</name>
+    <name>FontDetailDailog</name>
     <message>
-        <source>Install</source>
-        <translation>Instalovat</translation>
+        <source>Basic info</source>
+        <translation>Základní údaje</translation>
     </message>
     <message>
-        <source>Installed successfully</source>
-        <translation>Nainstalováno úspěšně</translation>
+        <source>Style</source>
+        <translation>Styl</translation>
     </message>
     <message>
-        <source>View font directory</source>
-        <translation>Zobrazit adresář s písmy</translation>
+        <source>Type</source>
+        <translation>Typ</translation>
     </message>
     <message>
-        <source>Refreshing font cache, please wait...</source>
-        <translation>Obnovuje se vyrovnávací paměť písem, počkejte, prosím...</translation>
+        <source>Version</source>
+        <translation>Verze</translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation>Popis</translation>
     </message>
     <message>
         <source>Unknown</source>
-        <translation>Neznámý</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
-    <name>SingleFilePage</name>
+    <name>Category</name>
     <message>
-        <source>Install</source>
-        <translation>Instalovat</translation>
+        <source>All Fonts</source>
+        <translation>Všechna písma</translation>
     </message>
     <message>
-        <source>Remove</source>
-        <translation>Odstranit</translation>
+        <source>System</source>
+        <translation>Systém</translation>
     </message>
     <message>
-        <source>Reinstall</source>
-        <translation>Reinstalovat</translation>
+        <source>User</source>
+        <translation>Uživatel</translation>
     </message>
     <message>
-        <source>View font directory</source>
-        <translation>Zobrazit adresář s písmy</translation>
+        <source>Favorites</source>
+        <translation>Oblíbené</translation>
     </message>
     <message>
-        <source>Style: </source>
-        <translation>Styl: </translation>
+        <source>Active</source>
+        <translation>Činný</translation>
     </message>
     <message>
-        <source>Type: </source>
-        <translation>Typ: </translation>
+        <source>Chinese</source>
+        <translation>Čínština</translation>
     </message>
     <message>
-        <source>Version: </source>
-        <translation>Verze:</translation>
+        <source>Monospaced</source>
+        <translation>Strojové</translation>
+    </message>
+</context>
+<context>
+    <name>StateBar</name>
+    <message>
+        <source>Input preview text</source>
+        <translation>Zadejte náhledový text</translation>
+    </message>
+</context>
+<context>
+    <name>Shortcuts</name>
+    <message>
+        <source>Help</source>
+        <translation>Nápověda</translation>
     </message>
     <message>
-        <source>Copyright: </source>
-        <translation>Autorské právo:</translation>
+        <source>Display shortcuts</source>
+        <translation>Zobrazit klávesové zkratky</translation>
     </message>
     <message>
-        <source>Description: </source>
-        <translation>Popis:</translation>
+        <source>Page up</source>
+        <translation>O stranu nahoru</translation>
     </message>
     <message>
-        <source>Same version installed</source>
-        <translation>Stejná verze je již nainstalována</translation>
+        <source>Page down</source>
+
+
+
+        <translation>O stranu dolů</translation>
     </message>
     <message>
-        <source>Installed successfully</source>
-        <translation>Nainstalováno úspěšně</translation>
+        <source>Delete</source>
+        <translation>Smazat</translation>
     </message>
     <message>
-        <source>Removed successfully</source>
-        <translation>Odstraněno úspěšně</translation>
+        <source>Add font</source>
+        <translation>Přidat písmo</translation>
     </message>
     <message>
-        <source>Other version installed: %1</source>
-        <translation>Je nainstalována jiná verze: %1</translation>
+        <source>Favorite</source>
+        <translation>Přidat do oblíbených</translation>
     </message>
     <message>
-        <source>Done</source>
-        <translation>Hotovo</translation>
+        <source>Unfavorite</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Font info</source>
+        <translation>Údaje o písmu</translation>
     </message>
 </context>
 </TS>

@@ -1,140 +1,257 @@
 <?xml version="1.0" ?><!DOCTYPE TS><TS language="hr" version="2.1">
 <context>
-    <name>HomePage</name>
+    <name>Main</name>
     <message>
-        <source>Drag font file here</source>
-        <translation>Povucite datoteku fonta ovdje</translation>
+        <source>Font Manager</source>
+        <translation>Upravitelj fontovima</translation>
     </message>
     <message>
-        <source>Select file</source>
-        <translation>Odaberite datoteku</translation>
+        <source>Font Manager helps users install and manage fonts.</source>
+        <translation>Upravitelj fontovima pomaže korisnicima pri instalaciji i upravljanju fontovima.</translation>
+    </message>
+    <message>
+        <source>Loading fonts, please wait...</source>
+        <translation>Učitavam fontove, molim pričekajte...</translation>
     </message>
 </context>
 <context>
-    <name>ListItem</name>
+    <name>SearchBar</name>
+    <message>
+        <source>Search</source>
+        <translation>Traži</translation>
+    </message>
+    <message>
+        <source>No search results</source>
+        <translation>Nema rezultata pretrage</translation>
+    </message>
+    <message>
+        <source>No fonts</source>
+        <translation>Nema fontova</translation>
+    </message>
+</context>
+<context>
+    <name>MessageManager</name>
+    <message>
+        <source>deactivated</source>
+        <translation>deaktivirano</translation>
+    </message>
+</context>
+<context>
+    <name>Menu</name>
+    <message>
+        <source>Add font</source>
+        <translation>Dodaj font</translation>
+    </message>
+    <message>
+        <source>Enable</source>
+        <translation>Omogući</translation>
+    </message>
+    <message>
+        <source>Disable</source>
+        <translation>Onemogući</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>Izbriši</translation>
+    </message>
+    <message>
+        <source>Favorite</source>
+        <translation>Omiljeni</translation>
+    </message>
+    <message>
+        <source>Unfavorite</source>
+        <translation>Neomiljeni</translation>
+    </message>
+    <message>
+        <source>Details</source>
+        <translation>Pojedinosti</translation>
+    </message>
+    <message>
+        <source>Display in file manager</source>
+        <translation>Prikaži u upravitelju datotekama</translation>
+    </message>
+</context>
+<context>
+    <name>NormalInstallWindow</name>
+    <message>
+        <source>Install Font</source>
+        <translation>Instaliraj font</translation>
+    </message>
+    <message>
+        <source>Verifying...</source>
+        <translation>Provjeravam...</translation>
+    </message>
+</context>
+<context>
+    <name>QuickInstallWindow</name>
+    <message>
+        <source>Unknown</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Broken file</source>
+        <translation>Slomljena datoteka</translation>
+    </message>
     <message>
         <source>Installed</source>
-        <translation>Instalirano</translation>
+        <translation>Instalrano</translation>
     </message>
     <message>
-        <source>Other version installed: %1</source>
-        <translation>Druga verzija je instalirana: %1</translation>
+        <source>Not Installed</source>
+        <translation>Nije instelirano</translation>
     </message>
     <message>
-        <source>Installing</source>
-        <translation>Instaliram</translation>
+        <source>Install Font</source>
+        <translation>Instaliraj font</translation>
+    </message>
+</context>
+<context>
+    <name>ExceptionWindow</name>
+    <message>
+        <source>Font Verification</source>
+        <translation>Ovjera fonta</translation>
+    </message>
+    <message>
+        <source>Broken file</source>
+        <translation>Slomljena datoteka</translation>
     </message>
     <message>
         <source>Same version installed</source>
-        <translation>Instalirana je ista inačica</translation>
+        <translation>Ista inačica je instalirana</translation>
+    </message>
+    <message>
+        <source>Exit</source>
+        <translation>Izađi</translation>
+    </message>
+    <message>
+        <source>Continue</source>
+        <translation>Nastavi</translation>
     </message>
 </context>
 <context>
-    <name>Main</name>
+    <name>DeleteConfirmDailog</name>
     <message>
-        <source>Deepin Font Installer</source>
-        <translation>Deepin instaler fontova</translation>
+        <source>Are you sure you want to delete this font?</source>
+        <translation>Jeste li sigurni da želite izbrisati ovaj font?</translation>
     </message>
     <message>
-        <source>Deepin Font Installer is used to install and uninstall font file for users with bulk install function.</source>
-        <translation type="unfinished"/>
-    </message>
-</context>
-<context>
-    <name>MainWindow</name>
-    <message>
-        <source>Deepin Font Installer</source>
-        <translation>Deepin instaler fontova</translation>
+        <source>This font will not be available to applications</source>
+        <translation>Ovaj font neće biti dostupan aplikacijama</translation>
     </message>
     <message>
-        <source>Bulk Install</source>
-        <translation type="unfinished"/>
+        <source>Cancel</source>
+        <translation>Otkaži</translation>
     </message>
     <message>
-        <source>Dark theme</source>
-        <translation>Tamna tema</translation>
+        <source>Confirm</source>
+        <translation>Potvrdi</translation>
     </message>
 </context>
 <context>
-    <name>MultiFilePage</name>
+    <name>FontDetailDailog</name>
     <message>
-        <source>Install</source>
-        <translation>Instaliraj</translation>
+        <source>Basic info</source>
+        <translation>Osnovne informacije</translation>
     </message>
     <message>
-        <source>Installed successfully</source>
-        <translation>Uspješno instalirano</translation>
+        <source>Style</source>
+        <translation>Stil</translation>
     </message>
     <message>
-        <source>View font directory</source>
-        <translation>Pogledaj direktorij fonta</translation>
+        <source>Type</source>
+        <translation>Vrsta</translation>
     </message>
     <message>
-        <source>Refreshing font cache, please wait...</source>
-        <translation type="unfinished"/>
+        <source>Version</source>
+        <translation>Inačica</translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation>Opis</translation>
     </message>
     <message>
         <source>Unknown</source>
-        <translation>Nepoznato</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
-    <name>SingleFilePage</name>
+    <name>Category</name>
     <message>
-        <source>Install</source>
-        <translation>Instaliraj</translation>
+        <source>All Fonts</source>
+        <translation>Svi fontovi</translation>
     </message>
     <message>
-        <source>Remove</source>
-        <translation>Ukloni</translation>
+        <source>System</source>
+        <translation>Sustav</translation>
     </message>
     <message>
-        <source>Reinstall</source>
-        <translation>Ponovno instaliraj</translation>
+        <source>User</source>
+        <translation>Korisnik</translation>
     </message>
     <message>
-        <source>View font directory</source>
-        <translation>Pogledaj direktorij fonta</translation>
+        <source>Favorites</source>
+        <translation>Omiljeni</translation>
     </message>
     <message>
-        <source>Style: </source>
-        <translation>Stil:</translation>
+        <source>Active</source>
+        <translation>Aktivni</translation>
     </message>
     <message>
-        <source>Type: </source>
-        <translation>Vrsta:</translation>
+        <source>Chinese</source>
+        <translation>Kineski</translation>
     </message>
     <message>
-        <source>Version: </source>
-        <translation>Verzija:</translation>
+        <source>Monospaced</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>StateBar</name>
+    <message>
+        <source>Input preview text</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>Shortcuts</name>
+    <message>
+        <source>Help</source>
+        <translation>Pomoć</translation>
     </message>
     <message>
-        <source>Copyright: </source>
-        <translation>Autorsko pravo:</translation>
+        <source>Display shortcuts</source>
+        <translation>Prikaži prečace</translation>
     </message>
     <message>
-        <source>Description: </source>
-        <translation>Opis:</translation>
+        <source>Page up</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <source>Same version installed</source>
-        <translation>Ista verzija je instalirana</translation>
+        <source>Page down</source>
+
+
+
+        <translation type="unfinished"/>
     </message>
     <message>
-        <source>Installed successfully</source>
-        <translation>Uspješno instalirano</translation>
+        <source>Delete</source>
+        <translation>Izbriši</translation>
     </message>
     <message>
-        <source>Removed successfully</source>
-        <translation>Uspješno uklonjeno</translation>
+        <source>Add font</source>
+        <translation>Dodaj font</translation>
     </message>
     <message>
-        <source>Other version installed: %1</source>
-        <translation>Druga verzija je instalirana: %1</translation>
+        <source>Favorite</source>
+        <translation>Omiljeni</translation>
     </message>
     <message>
-        <source>Done</source>
-        <translation>Učinjeno</translation>
+        <source>Unfavorite</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Font info</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 </TS>

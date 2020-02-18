@@ -1,77 +1,173 @@
 <?xml version="1.0" ?><!DOCTYPE TS><TS language="sr" version="2.1">
 <context>
-    <name>HomePage</name>
+    <name>Main</name>
     <message>
-        <source>Drag font file here</source>
-        <translation>Превуци датотеку фонта овде</translation>
+        <source>Font Manager</source>
+        <translation>Управник фонтова</translation>
     </message>
     <message>
-        <source>Select file</source>
-        <translation>Изабери датотеку</translation>
+        <source>Font Manager helps users install and manage fonts.</source>
+        <translation>Управник Фонтова помаже корисницима да инсталирају и управљају са фонтовима.</translation>
+    </message>
+    <message>
+        <source>Loading fonts, please wait...</source>
+        <translation>Учитавање фонтова, сачекајте...</translation>
     </message>
 </context>
 <context>
-    <name>ListItem</name>
+    <name>SearchBar</name>
+    <message>
+        <source>Search</source>
+        <translation>Претражи</translation>
+    </message>
+    <message>
+        <source>No search results</source>
+        <translation>Нема резутата претраге</translation>
+    </message>
+    <message>
+        <source>No fonts</source>
+        <translation>Нема фонта</translation>
+    </message>
+</context>
+<context>
+    <name>MessageManager</name>
+    <message>
+        <source>deactivated</source>
+        <translation>деактивиран</translation>
+    </message>
+</context>
+<context>
+    <name>Menu</name>
+    <message>
+        <source>Add font</source>
+        <translation>Додај фонт</translation>
+    </message>
+    <message>
+        <source>Enable</source>
+        <translation>Омогући</translation>
+    </message>
+    <message>
+        <source>Disable</source>
+        <translation>Онемогући</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>Обриши</translation>
+    </message>
+    <message>
+        <source>Favorite</source>
+        <translation>Омиљено</translation>
+    </message>
+    <message>
+        <source>Unfavorite</source>
+        <translation>Уклони из омиљеног</translation>
+    </message>
+    <message>
+        <source>Details</source>
+        <translation>Детаљи</translation>
+    </message>
+    <message>
+        <source>Display in file manager</source>
+        <translation>Прикажи у управнику података</translation>
+    </message>
+</context>
+<context>
+    <name>NormalInstallWindow</name>
+    <message>
+        <source>Install Font</source>
+        <translation>Инсталирај фонт</translation>
+    </message>
+    <message>
+        <source>Verifying...</source>
+        <translation>Проверавање...</translation>
+    </message>
+</context>
+<context>
+    <name>QuickInstallWindow</name>
+    <message>
+        <source>Unknown</source>
+        <translation>Непознато</translation>
+    </message>
+    <message>
+        <source>Broken file</source>
+        <translation>Оштећена датотека</translation>
+    </message>
     <message>
         <source>Installed</source>
-        <translation>Инсталирано</translation>
+        <translation>Инсталиран</translation>
     </message>
     <message>
-        <source>Other version installed: %1</source>
-        <translation>Друга верзија је инсталирана: %1</translation>
+        <source>Not Installed</source>
+        <translation>Није инсталиран</translation>
     </message>
     <message>
-        <source>Installing</source>
-        <translation>Инсталирање</translation>
+        <source>Install Font</source>
+        <translation>Инсталирај фонт</translation>
+    </message>
+</context>
+<context>
+    <name>ExceptionWindow</name>
+    <message>
+        <source>Font Verification</source>
+        <translation>Провера фонта</translation>
+    </message>
+    <message>
+        <source>Broken file</source>
+        <translation>Оштећена датотека</translation>
     </message>
     <message>
         <source>Same version installed</source>
         <translation>Иста верзија је инсталирана</translation>
     </message>
-</context>
-<context>
-    <name>Main</name>
     <message>
-        <source>Deepin Font Installer</source>
-        <translation>Дипин Инсталатер Фонта</translation>
+        <source>Exit</source>
+        <translation>Изађи</translation>
     </message>
     <message>
-        <source>Deepin Font Installer is used to install and uninstall font file for users with bulk install function.</source>
-        <translation>Дипин Инсталатер Фонта се користи за корисничко инсталирање и уклањање фонт датотека. Подржава функцију групног инсталирања. </translation>
+        <source>Continue</source>
+        <translation>Настави</translation>
     </message>
 </context>
 <context>
-    <name>MainWindow</name>
+    <name>DeleteConfirmDailog</name>
     <message>
-        <source>Deepin Font Installer</source>
-        <translation>Дипин Инсталатер Фонта</translation>
+        <source>Are you sure you want to delete this font?</source>
+        <translation>Заиста желите да обришете овај фонт?</translation>
     </message>
     <message>
-        <source>Bulk Install</source>
-        <translation>Групно инсталирање</translation>
+        <source>This font will not be available to applications</source>
+        <translation>Овај фонт неће бити доступан програмима</translation>
     </message>
     <message>
-        <source>Dark theme</source>
-        <translation>Тамна тема</translation>
+        <source>Cancel</source>
+        <translation>Откажи</translation>
+    </message>
+    <message>
+        <source>Confirm</source>
+        <translation>Потврди</translation>
     </message>
 </context>
 <context>
-    <name>MultiFilePage</name>
+    <name>FontDetailDailog</name>
     <message>
-        <source>Install</source>
-        <translation>Инсталирај</translation>
+        <source>Basic info</source>
+        <translation>Основни подаци</translation>
     </message>
     <message>
-        <source>Installed successfully</source>
-        <translation>Успешно инсталиран</translation>
+        <source>Style</source>
+        <translation>Стил</translation>
     </message>
     <message>
-        <source>View font directory</source>
-        <translation>Прикажи директоријум фонта</translation>
+        <source>Type</source>
+        <translation>Тип</translation>
     </message>
     <message>
-        <source>Refreshing font cache, please wait...</source>
-        <translation>Освежавање кеша фонтова, молимо сачекајте...</translation>
+        <source>Version</source>
+        <translation>Верзија</translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation>Опис</translation>
     </message>
     <message>
         <source>Unknown</source>
@@ -79,62 +175,83 @@
     </message>
 </context>
 <context>
-    <name>SingleFilePage</name>
+    <name>Category</name>
     <message>
-        <source>Install</source>
-        <translation>Инсталирај</translation>
+        <source>All Fonts</source>
+        <translation>Сви фонтови</translation>
     </message>
     <message>
-        <source>Remove</source>
-        <translation>Уклони</translation>
+        <source>System</source>
+        <translation>Систем</translation>
     </message>
     <message>
-        <source>Reinstall</source>
-        <translation>Поново инсталирај</translation>
+        <source>User</source>
+        <translation>Корисник</translation>
     </message>
     <message>
-        <source>View font directory</source>
-        <translation>Прикажи директоријум фонта</translation>
+        <source>Favorites</source>
+        <translation>Омиљено</translation>
     </message>
     <message>
-        <source>Style: </source>
-        <translation>Стил: </translation>
+        <source>Active</source>
+        <translation>Активно</translation>
     </message>
     <message>
-        <source>Type: </source>
-        <translation>Тип:</translation>
+        <source>Chinese</source>
+        <translation>Кинаски</translation>
     </message>
     <message>
-        <source>Version: </source>
-        <translation>Верзија:</translation>
+        <source>Monospaced</source>
+        <translation>Истог размака</translation>
+    </message>
+</context>
+<context>
+    <name>StateBar</name>
+    <message>
+        <source>Input preview text</source>
+        <translation>Унеси текст за преглед</translation>
+    </message>
+</context>
+<context>
+    <name>Shortcuts</name>
+    <message>
+        <source>Help</source>
+        <translation>Помоћ</translation>
     </message>
     <message>
-        <source>Copyright: </source>
-        <translation>Ауторско право:</translation>
+        <source>Display shortcuts</source>
+        <translation>Прикажи пречице</translation>
     </message>
     <message>
-        <source>Description: </source>
-        <translation>Опис:</translation>
+        <source>Page up</source>
+        <translation>Страница нагоре</translation>
     </message>
     <message>
-        <source>Same version installed</source>
-        <translation>Иста верзија је инсталирана</translation>
+        <source>Page down</source>
+
+
+
+        <translation> Страница надоле</translation>
     </message>
     <message>
-        <source>Installed successfully</source>
-        <translation>Успешно инсталиран</translation>
+        <source>Delete</source>
+        <translation>Обриши</translation>
     </message>
     <message>
-        <source>Removed successfully</source>
-        <translation>Успешно уклоњен</translation>
+        <source>Add font</source>
+        <translation>Додај фонт</translation>
     </message>
     <message>
-        <source>Other version installed: %1</source>
-        <translation>Друга верзија је инсталирана: %1</translation>
+        <source>Favorite</source>
+        <translation>Омиљено</translation>
     </message>
     <message>
-        <source>Done</source>
-        <translation>Готово</translation>
+        <source>Unfavorite</source>
+        <translation>Уклони из омиљеног</translation>
+    </message>
+    <message>
+        <source>Font info</source>
+        <translation>Подаци фонта</translation>
     </message>
 </context>
 </TS>

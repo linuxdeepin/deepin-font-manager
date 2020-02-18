@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="zh_CN">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="zh_CN" version="2.1">
 <context>
     <name>Main</name>
     <message>
@@ -13,7 +11,7 @@
     </message>
     <message>
         <source>Loading fonts, please wait...</source>
-        <translation>正在载入字体列表...</translation>
+        <translation>正在加载字体，请稍候...</translation>
     </message>
 </context>
 <context>
@@ -35,7 +33,7 @@
     <name>MessageManager</name>
     <message>
         <source>deactivated</source>
-        <translation>字体已停用</translation>
+        <translation>已禁用</translation>
     </message>
 </context>
 <context>
@@ -146,11 +144,7 @@
     </message>
     <message>
         <source>Confirm</source>
-        <translation>确认</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation>删除</translation>
+        <translation>确定</translation>
     </message>
 </context>
 <context>
@@ -226,7 +220,7 @@
     </message>
     <message>
         <source>Display shortcuts</source>
-        <translation>显示快捷键预览</translation>
+        <translation>显示快捷键</translation>
     </message>
     <message>
         <source>Page up</source>
@@ -234,6 +228,9 @@
     </message>
     <message>
         <source>Page down</source>
+
+
+
         <translation>下一页</translation>
     </message>
     <message>

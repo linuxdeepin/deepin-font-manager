@@ -1,140 +1,257 @@
 <?xml version="1.0" ?><!DOCTYPE TS><TS language="uk" version="2.1">
 <context>
-    <name>HomePage</name>
+    <name>Main</name>
     <message>
-        <source>Drag font file here</source>
-        <translation>Перетягніть файл шрифту сюди</translation>
+        <source>Font Manager</source>
+        <translation>Керування шрифтами</translation>
     </message>
     <message>
-        <source>Select file</source>
-        <translation>Виберіть файл</translation>
+        <source>Font Manager helps users install and manage fonts.</source>
+        <translation>Засіб керування шрифтами допомагає користувачам встановлювати і вилучати шрифти.</translation>
+    </message>
+    <message>
+        <source>Loading fonts, please wait...</source>
+        <translation>Завантажуємо список шрифтів. Будь ласка, зачекайте…</translation>
     </message>
 </context>
 <context>
-    <name>ListItem</name>
+    <name>SearchBar</name>
+    <message>
+        <source>Search</source>
+        <translation>Шукати</translation>
+    </message>
+    <message>
+        <source>No search results</source>
+        <translation>Нічого не знайдено</translation>
+    </message>
+    <message>
+        <source>No fonts</source>
+        <translation>Немає шрифтів</translation>
+    </message>
+</context>
+<context>
+    <name>MessageManager</name>
+    <message>
+        <source>deactivated</source>
+        <translation>вимкнено</translation>
+    </message>
+</context>
+<context>
+    <name>Menu</name>
+    <message>
+        <source>Add font</source>
+        <translation>Додати шрифт</translation>
+    </message>
+    <message>
+        <source>Enable</source>
+        <translation>Увімкнути</translation>
+    </message>
+    <message>
+        <source>Disable</source>
+        <translation>Вимкнути</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>Вилучити</translation>
+    </message>
+    <message>
+        <source>Favorite</source>
+        <translation>Додати до вибраних</translation>
+    </message>
+    <message>
+        <source>Unfavorite</source>
+        <translation>Вилучити із вибраних</translation>
+    </message>
+    <message>
+        <source>Details</source>
+        <translation>Подробиці</translation>
+    </message>
+    <message>
+        <source>Display in file manager</source>
+        <translation>Показати у менеджері файлів</translation>
+    </message>
+</context>
+<context>
+    <name>NormalInstallWindow</name>
+    <message>
+        <source>Install Font</source>
+        <translation>Встановити шрифт</translation>
+    </message>
+    <message>
+        <source>Verifying...</source>
+        <translation>Перевіряємо…</translation>
+    </message>
+</context>
+<context>
+    <name>QuickInstallWindow</name>
+    <message>
+        <source>Unknown</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Broken file</source>
+        <translation>Пошкоджений файл</translation>
+    </message>
     <message>
         <source>Installed</source>
         <translation>Встановлено</translation>
     </message>
     <message>
-        <source>Other version installed: %1</source>
-        <translation>Інша версія встановлена: %1</translation>
+        <source>Not Installed</source>
+        <translation>Не встановлено</translation>
     </message>
     <message>
-        <source>Installing</source>
-        <translation>Встановлення</translation>
+        <source>Install Font</source>
+        <translation>Встановити шрифт</translation>
+    </message>
+</context>
+<context>
+    <name>ExceptionWindow</name>
+    <message>
+        <source>Font Verification</source>
+        <translation>Перевірка шрифту</translation>
+    </message>
+    <message>
+        <source>Broken file</source>
+        <translation>Пошкоджений файл</translation>
     </message>
     <message>
         <source>Same version installed</source>
-        <translation>Встановлено ту саму версію</translation>
+        <translation>Уже встановлено ту саму версію</translation>
+    </message>
+    <message>
+        <source>Exit</source>
+        <translation>Вийти</translation>
+    </message>
+    <message>
+        <source>Continue</source>
+        <translation>Продовжити</translation>
     </message>
 </context>
 <context>
-    <name>Main</name>
+    <name>DeleteConfirmDailog</name>
     <message>
-        <source>Deepin Font Installer</source>
-        <translation>Засіб встановлення шрифтів Deepin</translation>
+        <source>Are you sure you want to delete this font?</source>
+        <translation>Ви справді хочете вилучити цей шрифт?</translation>
     </message>
     <message>
-        <source>Deepin Font Installer is used to install and uninstall font file for users with bulk install function.</source>
-        <translation>Засіб встановлення шрифтів Deepin використовується для встановлення і вилучення файлів шрифтів користувачів. Передбачено можливість пакетного встановлення.</translation>
-    </message>
-</context>
-<context>
-    <name>MainWindow</name>
-    <message>
-        <source>Deepin Font Installer</source>
-        <translation>Засіб встановлення шрифтів Deepin</translation>
+        <source>This font will not be available to applications</source>
+        <translation>Цим шрифтом не можна буде скористатися у інших програмах</translation>
     </message>
     <message>
-        <source>Bulk Install</source>
-        <translation>Пакетне встановлення</translation>
+        <source>Cancel</source>
+        <translation>Скасувати</translation>
     </message>
     <message>
-        <source>Dark theme</source>
-        <translation>Темна тема</translation>
+        <source>Confirm</source>
+        <translation>Підтвердити</translation>
     </message>
 </context>
 <context>
-    <name>MultiFilePage</name>
+    <name>FontDetailDailog</name>
     <message>
-        <source>Install</source>
-        <translation>Встановити</translation>
+        <source>Basic info</source>
+        <translation>Базові відомості</translation>
     </message>
     <message>
-        <source>Installed successfully</source>
-        <translation>Успішно встановлено</translation>
+        <source>Style</source>
+        <translation>Стиль</translation>
     </message>
     <message>
-        <source>View font directory</source>
-        <translation>Переглянути каталог шрифтів</translation>
+        <source>Type</source>
+        <translation>Тип</translation>
     </message>
     <message>
-        <source>Refreshing font cache, please wait...</source>
-        <translation>Оновлення кешу шрифтів, зачекайте...</translation>
+        <source>Version</source>
+        <translation>Версія</translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation>Опис</translation>
     </message>
     <message>
         <source>Unknown</source>
-        <translation>Невідомий</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
-    <name>SingleFilePage</name>
+    <name>Category</name>
     <message>
-        <source>Install</source>
-        <translation>Встановити</translation>
+        <source>All Fonts</source>
+        <translation>Всі шрифти</translation>
     </message>
     <message>
-        <source>Remove</source>
+        <source>System</source>
+        <translation>Системні</translation>
+    </message>
+    <message>
+        <source>User</source>
+        <translation>Користувач</translation>
+    </message>
+    <message>
+        <source>Favorites</source>
+        <translation>Вибрані</translation>
+    </message>
+    <message>
+        <source>Active</source>
+        <translation>Активний</translation>
+    </message>
+    <message>
+        <source>Chinese</source>
+        <translation>китайська</translation>
+    </message>
+    <message>
+        <source>Monospaced</source>
+        <translation>Моноширинний</translation>
+    </message>
+</context>
+<context>
+    <name>StateBar</name>
+    <message>
+        <source>Input preview text</source>
+        <translation>Введіть текст для попереднього перегляду</translation>
+    </message>
+</context>
+<context>
+    <name>Shortcuts</name>
+    <message>
+        <source>Help</source>
+        <translation>Довідка</translation>
+    </message>
+    <message>
+        <source>Display shortcuts</source>
+        <translation>Показати клавіатурні скорочення</translation>
+    </message>
+    <message>
+        <source>Page up</source>
+        <translation>На сторінку вище</translation>
+    </message>
+    <message>
+        <source>Page down</source>
+
+
+
+        <translation>На сторінку нижче</translation>
+    </message>
+    <message>
+        <source>Delete</source>
         <translation>Вилучити</translation>
     </message>
     <message>
-        <source>Reinstall</source>
-        <translation>Перевстановити</translation>
+        <source>Add font</source>
+        <translation>Додати шрифт</translation>
     </message>
     <message>
-        <source>View font directory</source>
-        <translation>Переглянути каталог шрифтів</translation>
+        <source>Favorite</source>
+        <translation>Додати до вибраних</translation>
     </message>
     <message>
-        <source>Style: </source>
-        <translation>Стиль:</translation>
+        <source>Unfavorite</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <source>Type: </source>
-        <translation>Тип:</translation>
-    </message>
-    <message>
-        <source>Version: </source>
-        <translation>Версія:</translation>
-    </message>
-    <message>
-        <source>Copyright: </source>
-        <translation>Ліцензування:</translation>
-    </message>
-    <message>
-        <source>Description: </source>
-        <translation>Опис:</translation>
-    </message>
-    <message>
-        <source>Same version installed</source>
-        <translation>Встановлено ту саму версію</translation>
-    </message>
-    <message>
-        <source>Installed successfully</source>
-        <translation>Успішно встановлено</translation>
-    </message>
-    <message>
-        <source>Removed successfully</source>
-        <translation>Успішно вилучено</translation>
-    </message>
-    <message>
-        <source>Other version installed: %1</source>
-        <translation>Інша версія встановлена: %1</translation>
-    </message>
-    <message>
-        <source>Done</source>
-        <translation>Готово</translation>
+        <source>Font info</source>
+        <translation>Дані щодо шрифту</translation>
     </message>
 </context>
 </TS>

@@ -1,77 +1,173 @@
 <?xml version="1.0" ?><!DOCTYPE TS><TS language="nl" version="2.1">
 <context>
-    <name>HomePage</name>
+    <name>Main</name>
     <message>
-        <source>Drag font file here</source>
-        <translation>Versleep lettertypebestand hierheen</translation>
+        <source>Font Manager</source>
+        <translation>Lettertypebeheer</translation>
     </message>
     <message>
-        <source>Select file</source>
-        <translation>Selecteer bestand</translation>
+        <source>Font Manager helps users install and manage fonts.</source>
+        <translation>Met Lettertypebeheer kun je lettertypen installeren en beheren.</translation>
+    </message>
+    <message>
+        <source>Loading fonts, please wait...</source>
+        <translation>Bezig met laden van lettertypen...</translation>
     </message>
 </context>
 <context>
-    <name>ListItem</name>
+    <name>SearchBar</name>
+    <message>
+        <source>Search</source>
+        <translation>Zoeken</translation>
+    </message>
+    <message>
+        <source>No search results</source>
+        <translation>Geen zoekresultaten</translation>
+    </message>
+    <message>
+        <source>No fonts</source>
+        <translation>Geen lettertypen</translation>
+    </message>
+</context>
+<context>
+    <name>MessageManager</name>
+    <message>
+        <source>deactivated</source>
+        <translation>uitgeschakeld</translation>
+    </message>
+</context>
+<context>
+    <name>Menu</name>
+    <message>
+        <source>Add font</source>
+        <translation>Lettertype toevoegen</translation>
+    </message>
+    <message>
+        <source>Enable</source>
+        <translation>Inschakelen</translation>
+    </message>
+    <message>
+        <source>Disable</source>
+        <translation>Uitschakelen</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>Verwijderen</translation>
+    </message>
+    <message>
+        <source>Favorite</source>
+        <translation>Toev. aan favorieten</translation>
+    </message>
+    <message>
+        <source>Unfavorite</source>
+        <translation>Verw. uit favorieten</translation>
+    </message>
+    <message>
+        <source>Details</source>
+        <translation>Eigenschappen</translation>
+    </message>
+    <message>
+        <source>Display in file manager</source>
+        <translation>Tonen in bestandsbeheerder</translation>
+    </message>
+</context>
+<context>
+    <name>NormalInstallWindow</name>
+    <message>
+        <source>Install Font</source>
+        <translation>Lettertype installeren</translation>
+    </message>
+    <message>
+        <source>Verifying...</source>
+        <translation>Bezig met verifiëren...</translation>
+    </message>
+</context>
+<context>
+    <name>QuickInstallWindow</name>
+    <message>
+        <source>Unknown</source>
+        <translation>Onbekend</translation>
+    </message>
+    <message>
+        <source>Broken file</source>
+        <translation>Beschadigd bestand</translation>
+    </message>
     <message>
         <source>Installed</source>
         <translation>Geïnstalleerd</translation>
     </message>
     <message>
-        <source>Other version installed: %1</source>
-        <translation>Andere versie geïnstalleerd: %1</translation>
+        <source>Not Installed</source>
+        <translation>Niet geïnstalleerd</translation>
     </message>
     <message>
-        <source>Installing</source>
-        <translation>Bezig met installeren</translation>
+        <source>Install Font</source>
+        <translation>Lettertype installeren</translation>
+    </message>
+</context>
+<context>
+    <name>ExceptionWindow</name>
+    <message>
+        <source>Font Verification</source>
+        <translation>Lettertypeverificatie</translation>
+    </message>
+    <message>
+        <source>Broken file</source>
+        <translation>Beschadigd bestand</translation>
     </message>
     <message>
         <source>Same version installed</source>
-        <translation>Dezelfde versie geïnstalleerd</translation>
+        <translation>Deze versie is al geïnstalleerd</translation>
+    </message>
+    <message>
+        <source>Exit</source>
+        <translation>Afsluiten</translation>
+    </message>
+    <message>
+        <source>Continue</source>
+        <translation>Doorgaan</translation>
     </message>
 </context>
 <context>
-    <name>Main</name>
+    <name>DeleteConfirmDailog</name>
     <message>
-        <source>Deepin Font Installer</source>
-        <translation>Deepin Lettertype-installatie</translation>
+        <source>Are you sure you want to delete this font?</source>
+        <translation>Weet je zeker dat je dit lettertype wilt verwijderen?</translation>
     </message>
     <message>
-        <source>Deepin Font Installer is used to install and uninstall font file for users with bulk install function.</source>
-        <translation>Deepin Lettertype-installatie wordt gebruikt om lettertypebestanden te installeren en deïnstalleren voor gebruikers via de massa-installatiefunctie.</translation>
-    </message>
-</context>
-<context>
-    <name>MainWindow</name>
-    <message>
-        <source>Deepin Font Installer</source>
-        <translation>Deepin Lettertype-installatie</translation>
+        <source>This font will not be available to applications</source>
+        <translation>Dit lettertype wordt niet beschikbaar gesteld aan programma&apos;s</translation>
     </message>
     <message>
-        <source>Bulk Install</source>
-        <translation>Massa-installatie</translation>
+        <source>Cancel</source>
+        <translation>Annuleren</translation>
     </message>
     <message>
-        <source>Dark theme</source>
-        <translation>Donker thema</translation>
+        <source>Confirm</source>
+        <translation>Bevestigen</translation>
     </message>
 </context>
 <context>
-    <name>MultiFilePage</name>
+    <name>FontDetailDailog</name>
     <message>
-        <source>Install</source>
-        <translation>Installeren</translation>
+        <source>Basic info</source>
+        <translation>Bestandsinformatie</translation>
     </message>
     <message>
-        <source>Installed successfully</source>
-        <translation>Geïnstalleerd</translation>
+        <source>Style</source>
+        <translation>Stijl</translation>
     </message>
     <message>
-        <source>View font directory</source>
-        <translation>Lettertypemap tonen</translation>
+        <source>Type</source>
+        <translation>Type</translation>
     </message>
     <message>
-        <source>Refreshing font cache, please wait...</source>
-        <translation>Bezig met verversen van lettertypecache; even geduld...</translation>
+        <source>Version</source>
+        <translation>Versie</translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation>Beschrijving</translation>
     </message>
     <message>
         <source>Unknown</source>
@@ -79,62 +175,83 @@
     </message>
 </context>
 <context>
-    <name>SingleFilePage</name>
+    <name>Category</name>
     <message>
-        <source>Install</source>
-        <translation>Installeren</translation>
+        <source>All Fonts</source>
+        <translation>Alle lettertypen</translation>
     </message>
     <message>
-        <source>Remove</source>
+        <source>System</source>
+        <translation>Systeemlettertypen</translation>
+    </message>
+    <message>
+        <source>User</source>
+        <translation>Mijn lettertypen</translation>
+    </message>
+    <message>
+        <source>Favorites</source>
+        <translation>Favorieten</translation>
+    </message>
+    <message>
+        <source>Active</source>
+        <translation>Ingeschakeld</translation>
+    </message>
+    <message>
+        <source>Chinese</source>
+        <translation>Chinees</translation>
+    </message>
+    <message>
+        <source>Monospaced</source>
+        <translation>Vaste breedte</translation>
+    </message>
+</context>
+<context>
+    <name>StateBar</name>
+    <message>
+        <source>Input preview text</source>
+        <translation>Typ een voorbeeldzin</translation>
+    </message>
+</context>
+<context>
+    <name>Shortcuts</name>
+    <message>
+        <source>Help</source>
+        <translation>Hulp</translation>
+    </message>
+    <message>
+        <source>Display shortcuts</source>
+        <translation>Sneltoetsen tonen</translation>
+    </message>
+    <message>
+        <source>Page up</source>
+        <translation>Pagina omhoog</translation>
+    </message>
+    <message>
+        <source>Page down</source>
+
+
+
+        <translation>Pagina omlaag</translation>
+    </message>
+    <message>
+        <source>Delete</source>
         <translation>Verwijderen</translation>
     </message>
     <message>
-        <source>Reinstall</source>
-        <translation>Herinstalleren</translation>
+        <source>Add font</source>
+        <translation>Lettertype toevoegen</translation>
     </message>
     <message>
-        <source>View font directory</source>
-        <translation>Lettertypemap tonen</translation>
+        <source>Favorite</source>
+        <translation>Toev. aan favorieten</translation>
     </message>
     <message>
-        <source>Style: </source>
-        <translation>Stijl:</translation>
+        <source>Unfavorite</source>
+        <translation>Verw. uit favorieten</translation>
     </message>
     <message>
-        <source>Type: </source>
-        <translation>Type:</translation>
-    </message>
-    <message>
-        <source>Version: </source>
-        <translation>Versie:</translation>
-    </message>
-    <message>
-        <source>Copyright: </source>
-        <translation>Auteursrecht:</translation>
-    </message>
-    <message>
-        <source>Description: </source>
-        <translation>Omschrijving:</translation>
-    </message>
-    <message>
-        <source>Same version installed</source>
-        <translation>Dezelfde versie geïnstalleerd</translation>
-    </message>
-    <message>
-        <source>Installed successfully</source>
-        <translation>Geïnstalleerd</translation>
-    </message>
-    <message>
-        <source>Removed successfully</source>
-        <translation>Verwijderd</translation>
-    </message>
-    <message>
-        <source>Other version installed: %1</source>
-        <translation>Andere versie geïnstalleerd: %1</translation>
-    </message>
-    <message>
-        <source>Done</source>
-        <translation>Klaar</translation>
+        <source>Font info</source>
+        <translation>Eigenschappen</translation>
     </message>
 </context>
 </TS>

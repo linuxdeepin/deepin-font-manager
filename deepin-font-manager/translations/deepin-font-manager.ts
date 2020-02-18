@@ -1,259 +1,257 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="zh_CN">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="en" version="2.1">
 <context>
     <name>Main</name>
     <message>
         <source>Font Manager</source>
-        <translation></translation>
+        <translation>Font Manager</translation>
     </message>
     <message>
         <source>Font Manager helps users install and manage fonts.</source>
-        <translation></translation>
+        <translation>Font Manager helps users install and manage fonts.</translation>
     </message>
     <message>
         <source>Loading fonts, please wait...</source>
-        <translation></translation>
+        <translation>Loading fonts, please wait...</translation>
     </message>
 </context>
 <context>
     <name>SearchBar</name>
     <message>
         <source>Search</source>
-        <translation></translation>
+        <translation>Search</translation>
     </message>
     <message>
         <source>No search results</source>
-        <translation></translation>
+        <translation>No search results</translation>
     </message>
     <message>
         <source>No fonts</source>
-        <translation></translation>
+        <translation>No fonts</translation>
     </message>
 </context>
 <context>
     <name>MessageManager</name>
     <message>
         <source>deactivated</source>
-        <translation></translation>
+        <translation>deactivated</translation>
     </message>
 </context>
 <context>
     <name>Menu</name>
     <message>
         <source>Add font</source>
-        <translation></translation>
+        <translation>Add font</translation>
     </message>
     <message>
         <source>Enable</source>
-        <translation></translation>
+        <translation>Enable</translation>
     </message>
     <message>
         <source>Disable</source>
-        <translation></translation>
+        <translation>Disable</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation></translation>
+        <translation>Delete</translation>
     </message>
     <message>
         <source>Favorite</source>
-        <translation></translation>
+        <translation>Favorite</translation>
     </message>
     <message>
         <source>Unfavorite</source>
-        <translation></translation>
+        <translation>Unfavorite</translation>
     </message>
     <message>
         <source>Details</source>
-        <translation></translation>
+        <translation>Details</translation>
     </message>
     <message>
         <source>Display in file manager</source>
-        <translation></translation>
+        <translation>Display in file manager</translation>
     </message>
 </context>
 <context>
     <name>NormalInstallWindow</name>
     <message>
         <source>Install Font</source>
-        <translation></translation>
+        <translation>Install Font</translation>
     </message>
     <message>
         <source>Verifying...</source>
-        <translation></translation>
+        <translation>Verifying...</translation>
     </message>
 </context>
 <context>
     <name>QuickInstallWindow</name>
     <message>
         <source>Unknown</source>
-        <translation></translation>
+        <translation>Unknown</translation>
     </message>
     <message>
         <source>Broken file</source>
-        <translation></translation>
+        <translation>Broken file</translation>
     </message>
     <message>
         <source>Installed</source>
-        <translation></translation>
+        <translation>Installed</translation>
     </message>
     <message>
         <source>Not Installed</source>
-        <translation></translation>
+        <translation>Not Installed</translation>
     </message>
     <message>
         <source>Install Font</source>
-        <translation></translation>
+        <translation>Install Font</translation>
     </message>
 </context>
 <context>
     <name>ExceptionWindow</name>
     <message>
         <source>Font Verification</source>
-        <translation></translation>
+        <translation>Font Verification</translation>
     </message>
     <message>
         <source>Broken file</source>
-        <translation></translation>
+        <translation>Broken file</translation>
     </message>
     <message>
         <source>Same version installed</source>
-        <translation></translation>
+        <translation>Same version installed</translation>
     </message>
     <message>
         <source>Exit</source>
-        <translation></translation>
+        <translation>Exit</translation>
     </message>
     <message>
         <source>Continue</source>
-        <translation></translation>
+        <translation>Continue</translation>
     </message>
 </context>
 <context>
     <name>DeleteConfirmDailog</name>
     <message>
         <source>Are you sure you want to delete this font?</source>
-        <translation></translation>
+        <translation>Are you sure you want to delete this font?</translation>
     </message>
     <message>
         <source>This font will not be available to applications</source>
-        <translation></translation>
+        <translation>This font will not be available to applications</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation></translation>
+        <translation>Cancel</translation>
     </message>
     <message>
         <source>Confirm</source>
-        <translation></translation>
+        <translation>Confirm</translation>
     </message>
 </context>
 <context>
     <name>FontDetailDailog</name>
     <message>
         <source>Basic info</source>
-        <translation></translation>
+        <translation>Basic info</translation>
     </message>
     <message>
         <source>Style</source>
-        <translation></translation>
+        <translation>Style</translation>
     </message>
     <message>
         <source>Type</source>
-        <translation></translation>
+        <translation>Type</translation>
     </message>
     <message>
         <source>Version</source>
-        <translation></translation>
+        <translation>Version</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation></translation>
+        <translation>Description</translation>
     </message>
     <message>
         <source>Unknown</source>
-        <translation></translation>
+        <translation>Unknown</translation>
     </message>
 </context>
 <context>
     <name>Category</name>
     <message>
         <source>All Fonts</source>
-        <translation></translation>
+        <translation>All Fonts</translation>
     </message>
     <message>
         <source>System</source>
-        <translation></translation>
+        <translation>System</translation>
     </message>
     <message>
         <source>User</source>
-        <translation></translation>
+        <translation>User</translation>
     </message>
     <message>
         <source>Favorites</source>
-        <translation></translation>
+        <translation>Favorites</translation>
     </message>
     <message>
         <source>Active</source>
-        <translation></translation>
+        <translation>Active</translation>
     </message>
     <message>
         <source>Chinese</source>
-        <translation></translation>
+        <translation>Chinese</translation>
     </message>
     <message>
         <source>Monospaced</source>
-        <translation></translation>
+        <translation>Monospaced</translation>
     </message>
 </context>
 <context>
     <name>StateBar</name>
     <message>
         <source>Input preview text</source>
-        <translation></translation>
+        <translation>Input preview text</translation>
     </message>
 </context>
 <context>
     <name>Shortcuts</name>
     <message>
         <source>Help</source>
-        <translation></translation>
+        <translation>Help</translation>
     </message>
     <message>
         <source>Display shortcuts</source>
-        <translation></translation>
+        <translation>Display shortcuts</translation>
     </message>
     <message>
         <source>Page up</source>
-        <translation></translation>
+        <translation>Page up</translation>
     </message>
     <message>
         <source>Page down</source>
 
 
 
-        <translation></translation>
+        <translation>Page down</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation></translation>
+        <translation>Delete</translation>
     </message>
     <message>
         <source>Add font</source>
-        <translation></translation>
+        <translation>Add font</translation>
     </message>
     <message>
         <source>Favorite</source>
-        <translation></translation>
+        <translation>Favorite</translation>
     </message>
     <message>
         <source>Unfavorite</source>
-        <translation></translation>
+        <translation>Unfavorite</translation>
     </message>
     <message>
         <source>Font info</source>
-        <translation></translation>
+        <translation>Font info</translation>
     </message>
 </context>
 </TS>

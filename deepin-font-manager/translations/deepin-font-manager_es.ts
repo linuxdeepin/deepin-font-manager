@@ -1,77 +1,173 @@
 <?xml version="1.0" ?><!DOCTYPE TS><TS language="es" version="2.1">
 <context>
-    <name>HomePage</name>
+    <name>Main</name>
     <message>
-        <source>Drag font file here</source>
-        <translation>Arrastra el archivo de la fuente aquí</translation>
+        <source>Font Manager</source>
+        <translation>Administrador de Fuentes</translation>
     </message>
     <message>
-        <source>Select file</source>
-        <translation>Seleccionar archivo</translation>
+        <source>Font Manager helps users install and manage fonts.</source>
+        <translation>El Administrador de fuentes ayuda a los usuarios a instalar y administrar fuentes.</translation>
+    </message>
+    <message>
+        <source>Loading fonts, please wait...</source>
+        <translation>Cargando fuentes, por favor espere...</translation>
     </message>
 </context>
 <context>
-    <name>ListItem</name>
+    <name>SearchBar</name>
+    <message>
+        <source>Search</source>
+        <translation>Buscar</translation>
+    </message>
+    <message>
+        <source>No search results</source>
+        <translation>No hay resultados de la búsqueda</translation>
+    </message>
+    <message>
+        <source>No fonts</source>
+        <translation>Sin fuentes</translation>
+    </message>
+</context>
+<context>
+    <name>MessageManager</name>
+    <message>
+        <source>deactivated</source>
+        <translation>desactivado</translation>
+    </message>
+</context>
+<context>
+    <name>Menu</name>
+    <message>
+        <source>Add font</source>
+        <translation>Añadir fuente</translation>
+    </message>
+    <message>
+        <source>Enable</source>
+        <translation>Habilitar</translation>
+    </message>
+    <message>
+        <source>Disable</source>
+        <translation>Deshabilitar</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>Eliminar</translation>
+    </message>
+    <message>
+        <source>Favorite</source>
+        <translation>Favorito</translation>
+    </message>
+    <message>
+        <source>Unfavorite</source>
+        <translation>Quitar favorito</translation>
+    </message>
+    <message>
+        <source>Details</source>
+        <translation>Detalle</translation>
+    </message>
+    <message>
+        <source>Display in file manager</source>
+        <translation>Visualizar en el gestor de archivos</translation>
+    </message>
+</context>
+<context>
+    <name>NormalInstallWindow</name>
+    <message>
+        <source>Install Font</source>
+        <translation>Instalar la fuente</translation>
+    </message>
+    <message>
+        <source>Verifying...</source>
+        <translation>Verificando...</translation>
+    </message>
+</context>
+<context>
+    <name>QuickInstallWindow</name>
+    <message>
+        <source>Unknown</source>
+        <translation>Desconocido</translation>
+    </message>
+    <message>
+        <source>Broken file</source>
+        <translation>Archivo roto</translation>
+    </message>
     <message>
         <source>Installed</source>
-        <translation>Instalada</translation>
+        <translation>Instalado</translation>
     </message>
     <message>
-        <source>Other version installed: %1</source>
-        <translation>Otra versión instalada: %1</translation>
+        <source>Not Installed</source>
+        <translation>No Instalado</translation>
     </message>
     <message>
-        <source>Installing</source>
-        <translation>Instalando</translation>
+        <source>Install Font</source>
+        <translation>Instalar la Fuente</translation>
+    </message>
+</context>
+<context>
+    <name>ExceptionWindow</name>
+    <message>
+        <source>Font Verification</source>
+        <translation>Verificación de la Fuente</translation>
+    </message>
+    <message>
+        <source>Broken file</source>
+        <translation>Archivo roto</translation>
     </message>
     <message>
         <source>Same version installed</source>
         <translation>La misma versión instalada</translation>
     </message>
-</context>
-<context>
-    <name>Main</name>
     <message>
-        <source>Deepin Font Installer</source>
-        <translation>Instalador de Fuentes Deepin</translation>
+        <source>Exit</source>
+        <translation>Salir</translation>
     </message>
     <message>
-        <source>Deepin Font Installer is used to install and uninstall font file for users with bulk install function.</source>
-        <translation>El Instalador de Fuentes Deepin se usa para instalar y desinstalar archivos de fuentes brindando a los usuarios la función de instalación masiva de estas.</translation>
+        <source>Continue</source>
+        <translation>Continuar</translation>
     </message>
 </context>
 <context>
-    <name>MainWindow</name>
+    <name>DeleteConfirmDailog</name>
     <message>
-        <source>Deepin Font Installer</source>
-        <translation>Instalador de Fuentes Deepin</translation>
+        <source>Are you sure you want to delete this font?</source>
+        <translation>¿Estás seguro de que quieres borrar esta fuente?</translation>
     </message>
     <message>
-        <source>Bulk Install</source>
-        <translation>Instalación en lote</translation>
+        <source>This font will not be available to applications</source>
+        <translation>Esta fuente no estará disponible para las aplicaciones</translation>
     </message>
     <message>
-        <source>Dark theme</source>
-        <translation>Tema oscuro</translation>
+        <source>Cancel</source>
+        <translation>Cancelar</translation>
+    </message>
+    <message>
+        <source>Confirm</source>
+        <translation>Confirme</translation>
     </message>
 </context>
 <context>
-    <name>MultiFilePage</name>
+    <name>FontDetailDailog</name>
     <message>
-        <source>Install</source>
-        <translation>Instalar</translation>
+        <source>Basic info</source>
+        <translation>Información básica</translation>
     </message>
     <message>
-        <source>Installed successfully</source>
-        <translation>Instalado correctamente</translation>
+        <source>Style</source>
+        <translation>Estilo</translation>
     </message>
     <message>
-        <source>View font directory</source>
-        <translation>Ver el directorio de fuentes</translation>
+        <source>Type</source>
+        <translation>Tipo</translation>
     </message>
     <message>
-        <source>Refreshing font cache, please wait...</source>
-        <translation>Actualizando el caché de fuentes, espere ...</translation>
+        <source>Version</source>
+        <translation>Versión</translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation>Descripción</translation>
     </message>
     <message>
         <source>Unknown</source>
@@ -79,62 +175,83 @@
     </message>
 </context>
 <context>
-    <name>SingleFilePage</name>
+    <name>Category</name>
     <message>
-        <source>Install</source>
-        <translation>Instalar</translation>
+        <source>All Fonts</source>
+        <translation>Todas las Fuentes</translation>
     </message>
     <message>
-        <source>Remove</source>
+        <source>System</source>
+        <translation>Sistema</translation>
+    </message>
+    <message>
+        <source>User</source>
+        <translation>Usuario</translation>
+    </message>
+    <message>
+        <source>Favorites</source>
+        <translation>Favoritos</translation>
+    </message>
+    <message>
+        <source>Active</source>
+        <translation>Activo</translation>
+    </message>
+    <message>
+        <source>Chinese</source>
+        <translation>Chino</translation>
+    </message>
+    <message>
+        <source>Monospaced</source>
+        <translation>Monoespaciado</translation>
+    </message>
+</context>
+<context>
+    <name>StateBar</name>
+    <message>
+        <source>Input preview text</source>
+        <translation>Introducir el texto de la vista previa</translation>
+    </message>
+</context>
+<context>
+    <name>Shortcuts</name>
+    <message>
+        <source>Help</source>
+        <translation>Ayuda</translation>
+    </message>
+    <message>
+        <source>Display shortcuts</source>
+        <translation>Visualizar accesos directos</translation>
+    </message>
+    <message>
+        <source>Page up</source>
+        <translation>Página anterior</translation>
+    </message>
+    <message>
+        <source>Page down</source>
+
+
+
+        <translation>Siguiente página</translation>
+    </message>
+    <message>
+        <source>Delete</source>
         <translation>Eliminar</translation>
     </message>
     <message>
-        <source>Reinstall</source>
-        <translation>Volver a instalar</translation>
+        <source>Add font</source>
+        <translation>Añadir fuente</translation>
     </message>
     <message>
-        <source>View font directory</source>
-        <translation>Ver directorio fuentes</translation>
+        <source>Favorite</source>
+        <translation>Favorito</translation>
     </message>
     <message>
-        <source>Style: </source>
-        <translation>Estilo:</translation>
+        <source>Unfavorite</source>
+        <translation>Quitar favorito</translation>
     </message>
     <message>
-        <source>Type: </source>
-        <translation>Tipo:</translation>
-    </message>
-    <message>
-        <source>Version: </source>
-        <translation>Versión:</translation>
-    </message>
-    <message>
-        <source>Copyright: </source>
-        <translation>Derechos de autor:</translation>
-    </message>
-    <message>
-        <source>Description: </source>
-        <translation>Descripción:</translation>
-    </message>
-    <message>
-        <source>Same version installed</source>
-        <translation>Esta versión ya está instalada</translation>
-    </message>
-    <message>
-        <source>Installed successfully</source>
-        <translation>Instalada con éxito</translation>
-    </message>
-    <message>
-        <source>Removed successfully</source>
-        <translation>Borrada con éxito</translation>
-    </message>
-    <message>
-        <source>Other version installed: %1</source>
-        <translation>Otra versión está instalada: %1</translation>
-    </message>
-    <message>
-        <source>Done</source>
-        <translation>Hecho</translation>
+        <source>Font info</source>
+        <translation>Información de la fuente</translation>
     </message>
 </context>
 </TS>

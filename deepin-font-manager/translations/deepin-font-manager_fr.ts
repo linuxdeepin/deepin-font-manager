@@ -1,140 +1,257 @@
 <?xml version="1.0" ?><!DOCTYPE TS><TS language="fr" version="2.1">
 <context>
-    <name>HomePage</name>
+    <name>Main</name>
     <message>
-        <source>Drag font file here</source>
-        <translation>Glissez la police d&apos;écriture ici</translation>
+        <source>Font Manager</source>
+        <translation>Gestionnaire de polices</translation>
     </message>
     <message>
-        <source>Select file</source>
-        <translation>Sélectionnez le fichier</translation>
+        <source>Font Manager helps users install and manage fonts.</source>
+        <translation>Font Manager aide les utilisateurs à installer et à gérer les polices.</translation>
+    </message>
+    <message>
+        <source>Loading fonts, please wait...</source>
+        <translation>Chargement des polices, veuillez patienter...</translation>
     </message>
 </context>
 <context>
-    <name>ListItem</name>
+    <name>SearchBar</name>
+    <message>
+        <source>Search</source>
+        <translation>Rechercher</translation>
+    </message>
+    <message>
+        <source>No search results</source>
+        <translation>Aucun résultat de recherche</translation>
+    </message>
+    <message>
+        <source>No fonts</source>
+        <translation>Aucune police</translation>
+    </message>
+</context>
+<context>
+    <name>MessageManager</name>
+    <message>
+        <source>deactivated</source>
+        <translation>désactivé</translation>
+    </message>
+</context>
+<context>
+    <name>Menu</name>
+    <message>
+        <source>Add font</source>
+        <translation>Ajouter une police</translation>
+    </message>
+    <message>
+        <source>Enable</source>
+        <translation>Activer</translation>
+    </message>
+    <message>
+        <source>Disable</source>
+        <translation>Désactiver</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>Supprimer</translation>
+    </message>
+    <message>
+        <source>Favorite</source>
+        <translation>Favoris</translation>
+    </message>
+    <message>
+        <source>Unfavorite</source>
+        <translation>Ne pas aimer</translation>
+    </message>
+    <message>
+        <source>Details</source>
+        <translation>Détails</translation>
+    </message>
+    <message>
+        <source>Display in file manager</source>
+        <translation>Afficher dans le gestionnaire de fichiers</translation>
+    </message>
+</context>
+<context>
+    <name>NormalInstallWindow</name>
+    <message>
+        <source>Install Font</source>
+        <translation>Installer la police</translation>
+    </message>
+    <message>
+        <source>Verifying...</source>
+        <translation>Vérification...</translation>
+    </message>
+</context>
+<context>
+    <name>QuickInstallWindow</name>
+    <message>
+        <source>Unknown</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Broken file</source>
+        <translation>Fichier cassé</translation>
+    </message>
     <message>
         <source>Installed</source>
         <translation>Installé</translation>
     </message>
     <message>
-        <source>Other version installed: %1</source>
-        <translation>Autre version installée : %1</translation>
+        <source>Not Installed</source>
+        <translation>Non installé</translation>
     </message>
     <message>
-        <source>Installing</source>
-        <translation>Installation</translation>
+        <source>Install Font</source>
+        <translation>Installer la police</translation>
+    </message>
+</context>
+<context>
+    <name>ExceptionWindow</name>
+    <message>
+        <source>Font Verification</source>
+        <translation>Vérification des polices</translation>
+    </message>
+    <message>
+        <source>Broken file</source>
+        <translation>Fichier cassé</translation>
     </message>
     <message>
         <source>Same version installed</source>
-        <translation>Version identique installée</translation>
+        <translation>Même version installée</translation>
+    </message>
+    <message>
+        <source>Exit</source>
+        <translation>Quitter</translation>
+    </message>
+    <message>
+        <source>Continue</source>
+        <translation>Continuer</translation>
     </message>
 </context>
 <context>
-    <name>Main</name>
+    <name>DeleteConfirmDailog</name>
     <message>
-        <source>Deepin Font Installer</source>
-        <translation>Installateur de polices Deepin</translation>
+        <source>Are you sure you want to delete this font?</source>
+        <translation>Voulez-vous vraiment supprimer cette police ?</translation>
     </message>
     <message>
-        <source>Deepin Font Installer is used to install and uninstall font file for users with bulk install function.</source>
-        <translation>Deepin Font Installer est utilisé pour permettre à l&apos;utilisateur d&apos;installer et désinstaller une ou plusieurs polices à partir de fichiers.</translation>
-    </message>
-</context>
-<context>
-    <name>MainWindow</name>
-    <message>
-        <source>Deepin Font Installer</source>
-        <translation>Installateur de polices Deepin</translation>
+        <source>This font will not be available to applications</source>
+        <translation>Cette police ne sera pas disponible pour les applications</translation>
     </message>
     <message>
-        <source>Bulk Install</source>
-        <translation>Installation en vrac</translation>
+        <source>Cancel</source>
+        <translation>Annuler</translation>
     </message>
     <message>
-        <source>Dark theme</source>
-        <translation>Thème sombre</translation>
+        <source>Confirm</source>
+        <translation>Confirmer</translation>
     </message>
 </context>
 <context>
-    <name>MultiFilePage</name>
+    <name>FontDetailDailog</name>
     <message>
-        <source>Install</source>
-        <translation>Installer</translation>
+        <source>Basic info</source>
+        <translation>Informations de base</translation>
     </message>
     <message>
-        <source>Installed successfully</source>
-        <translation>Installée avec succès</translation>
+        <source>Style</source>
+        <translation>Style</translation>
     </message>
     <message>
-        <source>View font directory</source>
-        <translation>Afficher le répertoire des polices</translation>
+        <source>Type</source>
+        <translation>Type</translation>
     </message>
     <message>
-        <source>Refreshing font cache, please wait...</source>
-        <translation>Rafraîchissement du cache des polices, veuillez patienter…</translation>
+        <source>Version</source>
+        <translation>Version</translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation>Description</translation>
     </message>
     <message>
         <source>Unknown</source>
-        <translation>Inconnu</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
-    <name>SingleFilePage</name>
+    <name>Category</name>
     <message>
-        <source>Install</source>
-        <translation>Installer</translation>
+        <source>All Fonts</source>
+        <translation>Toutes les polices</translation>
     </message>
     <message>
-        <source>Remove</source>
+        <source>System</source>
+        <translation>Système</translation>
+    </message>
+    <message>
+        <source>User</source>
+        <translation>Utilisateur</translation>
+    </message>
+    <message>
+        <source>Favorites</source>
+        <translation>Favoris</translation>
+    </message>
+    <message>
+        <source>Active</source>
+        <translation>Actif</translation>
+    </message>
+    <message>
+        <source>Chinese</source>
+        <translation>Chinois</translation>
+    </message>
+    <message>
+        <source>Monospaced</source>
+        <translation>Espacement fixe</translation>
+    </message>
+</context>
+<context>
+    <name>StateBar</name>
+    <message>
+        <source>Input preview text</source>
+        <translation>Saisir un texte d&apos;aperçu</translation>
+    </message>
+</context>
+<context>
+    <name>Shortcuts</name>
+    <message>
+        <source>Help</source>
+        <translation>Aide</translation>
+    </message>
+    <message>
+        <source>Display shortcuts</source>
+        <translation>Afficher les raccourcis</translation>
+    </message>
+    <message>
+        <source>Page up</source>
+        <translation>Page précédente</translation>
+    </message>
+    <message>
+        <source>Page down</source>
+
+
+
+        <translation>Page suivante</translation>
+    </message>
+    <message>
+        <source>Delete</source>
         <translation>Supprimer</translation>
     </message>
     <message>
-        <source>Reinstall</source>
-        <translation>Réinstaller</translation>
+        <source>Add font</source>
+        <translation>Ajouter une police</translation>
     </message>
     <message>
-        <source>View font directory</source>
-        <translation>Voir le dictionnaire des polices</translation>
+        <source>Favorite</source>
+        <translation>Favoris</translation>
     </message>
     <message>
-        <source>Style: </source>
-        <translation>Style :</translation>
+        <source>Unfavorite</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <source>Type: </source>
-        <translation>Type :</translation>
-    </message>
-    <message>
-        <source>Version: </source>
-        <translation>Version :</translation>
-    </message>
-    <message>
-        <source>Copyright: </source>
-        <translation>Droits d&apos;auteur :</translation>
-    </message>
-    <message>
-        <source>Description: </source>
-        <translation>Description : </translation>
-    </message>
-    <message>
-        <source>Same version installed</source>
-        <translation>La même version est installée</translation>
-    </message>
-    <message>
-        <source>Installed successfully</source>
-        <translation>Installée avec succès</translation>
-    </message>
-    <message>
-        <source>Removed successfully</source>
-        <translation>Supprimée avec succès</translation>
-    </message>
-    <message>
-        <source>Other version installed: %1</source>
-        <translation>Autre version installée : %1</translation>
-    </message>
-    <message>
-        <source>Done</source>
-        <translation>Terminé</translation>
+        <source>Font info</source>
+        <translation>Informations sur la police</translation>
     </message>
 </context>
 </TS>

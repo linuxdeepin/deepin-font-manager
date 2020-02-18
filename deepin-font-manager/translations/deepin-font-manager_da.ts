@@ -1,140 +1,257 @@
 <?xml version="1.0" ?><!DOCTYPE TS><TS language="da" version="2.1">
 <context>
-    <name>HomePage</name>
+    <name>Main</name>
     <message>
-        <source>Drag font file here</source>
-        <translation>Træk skrifttypefiler her</translation>
+        <source>Font Manager</source>
+        <translation>Skrifttypehåndtering</translation>
     </message>
     <message>
-        <source>Select file</source>
-        <translation>Vælg fil</translation>
+        <source>Font Manager helps users install and manage fonts.</source>
+        <translation>Skrifttypehåndtering hjælper brugere med at installere og håndtere skrifttyper.</translation>
+    </message>
+    <message>
+        <source>Loading fonts, please wait...</source>
+        <translation>Indlæser skrifttyper, vent venligst...</translation>
     </message>
 </context>
 <context>
-    <name>ListItem</name>
+    <name>SearchBar</name>
+    <message>
+        <source>Search</source>
+        <translation>Søg</translation>
+    </message>
+    <message>
+        <source>No search results</source>
+        <translation>Ingen søgeresultater</translation>
+    </message>
+    <message>
+        <source>No fonts</source>
+        <translation>Ingen skrifttyper</translation>
+    </message>
+</context>
+<context>
+    <name>MessageManager</name>
+    <message>
+        <source>deactivated</source>
+        <translation>deaktiveret</translation>
+    </message>
+</context>
+<context>
+    <name>Menu</name>
+    <message>
+        <source>Add font</source>
+        <translation>Tilføj skrifttype</translation>
+    </message>
+    <message>
+        <source>Enable</source>
+        <translation>Aktivér</translation>
+    </message>
+    <message>
+        <source>Disable</source>
+        <translation>Deaktivér</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>Slet</translation>
+    </message>
+    <message>
+        <source>Favorite</source>
+        <translation>Favorit til</translation>
+    </message>
+    <message>
+        <source>Unfavorite</source>
+        <translation>Favorit fra</translation>
+    </message>
+    <message>
+        <source>Details</source>
+        <translation>Detaljer</translation>
+    </message>
+    <message>
+        <source>Display in file manager</source>
+        <translation>Vis i filhåndtering</translation>
+    </message>
+</context>
+<context>
+    <name>NormalInstallWindow</name>
+    <message>
+        <source>Install Font</source>
+        <translation>Installer skrifttype</translation>
+    </message>
+    <message>
+        <source>Verifying...</source>
+        <translation>Verificerer...</translation>
+    </message>
+</context>
+<context>
+    <name>QuickInstallWindow</name>
+    <message>
+        <source>Unknown</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Broken file</source>
+        <translation>Beskadiget fil</translation>
+    </message>
     <message>
         <source>Installed</source>
         <translation>Installeret</translation>
     </message>
     <message>
-        <source>Other version installed: %1</source>
-        <translation>Anden version installeret: %1</translation>
+        <source>Not Installed</source>
+        <translation>Ikke installeret</translation>
     </message>
     <message>
-        <source>Installing</source>
-        <translation>Installerer</translation>
+        <source>Install Font</source>
+        <translation>Installer skrifttype</translation>
+    </message>
+</context>
+<context>
+    <name>ExceptionWindow</name>
+    <message>
+        <source>Font Verification</source>
+        <translation>Verificering af skrifttype</translation>
+    </message>
+    <message>
+        <source>Broken file</source>
+        <translation>Beskadiget fil</translation>
     </message>
     <message>
         <source>Same version installed</source>
-        <translation>Samme version installeret</translation>
+        <translation>Samme version er installeret</translation>
+    </message>
+    <message>
+        <source>Exit</source>
+        <translation>Afslut</translation>
+    </message>
+    <message>
+        <source>Continue</source>
+        <translation>Fortsæt</translation>
     </message>
 </context>
 <context>
-    <name>Main</name>
+    <name>DeleteConfirmDailog</name>
     <message>
-        <source>Deepin Font Installer</source>
-        <translation>Deepin skrifttypeinstallation</translation>
+        <source>Are you sure you want to delete this font?</source>
+        <translation>Er du sikker på, at du vil slette skrifttypen?</translation>
     </message>
     <message>
-        <source>Deepin Font Installer is used to install and uninstall font file for users with bulk install function.</source>
-        <translation>Deepin skrifttypeinstallation bruges til at installere og afinstallere skrifttypefiler for brugere med funktion til masseinstallation.</translation>
-    </message>
-</context>
-<context>
-    <name>MainWindow</name>
-    <message>
-        <source>Deepin Font Installer</source>
-        <translation>Deepin skrifttypeinstallation</translation>
+        <source>This font will not be available to applications</source>
+        <translation>Skrifttypen vil ikke være tilgængelig for programmer</translation>
     </message>
     <message>
-        <source>Bulk Install</source>
-        <translation>Masseinstallation</translation>
+        <source>Cancel</source>
+        <translation>Annuller</translation>
     </message>
     <message>
-        <source>Dark theme</source>
-        <translation>Mørkt tema</translation>
+        <source>Confirm</source>
+        <translation>Bekræft</translation>
     </message>
 </context>
 <context>
-    <name>MultiFilePage</name>
+    <name>FontDetailDailog</name>
     <message>
-        <source>Install</source>
-        <translation>Installer</translation>
+        <source>Basic info</source>
+        <translation>Grundlæggende information</translation>
     </message>
     <message>
-        <source>Installed successfully</source>
-        <translation>Installation lykkedes</translation>
+        <source>Style</source>
+        <translation>Stil</translation>
     </message>
     <message>
-        <source>View font directory</source>
-        <translation>Vis skrifttypemappe</translation>
+        <source>Type</source>
+        <translation>Type</translation>
     </message>
     <message>
-        <source>Refreshing font cache, please wait...</source>
-        <translation>Genopfrisker skrifttype-cache, vent venligst...</translation>
+        <source>Version</source>
+        <translation>Version</translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation>Beskrivelse</translation>
     </message>
     <message>
         <source>Unknown</source>
-        <translation>Ukendt</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
-    <name>SingleFilePage</name>
+    <name>Category</name>
     <message>
-        <source>Install</source>
-        <translation>Installer</translation>
+        <source>All Fonts</source>
+        <translation>Alle skrifttyper</translation>
     </message>
     <message>
-        <source>Remove</source>
-        <translation>Fjern</translation>
+        <source>System</source>
+        <translation>System</translation>
     </message>
     <message>
-        <source>Reinstall</source>
-        <translation>Geninstaller</translation>
+        <source>User</source>
+        <translation>Bruger</translation>
     </message>
     <message>
-        <source>View font directory</source>
-        <translation>Vis skrifttypemappe</translation>
+        <source>Favorites</source>
+        <translation>Favoritter</translation>
     </message>
     <message>
-        <source>Style: </source>
-        <translation>Stil:</translation>
+        <source>Active</source>
+        <translation>Aktiv</translation>
     </message>
     <message>
-        <source>Type: </source>
-        <translation>Type:</translation>
+        <source>Chinese</source>
+        <translation>Kinesisk</translation>
     </message>
     <message>
-        <source>Version: </source>
-        <translation>Version: </translation>
+        <source>Monospaced</source>
+        <translation>Med fast bredde</translation>
+    </message>
+</context>
+<context>
+    <name>StateBar</name>
+    <message>
+        <source>Input preview text</source>
+        <translation>Indtast tekst til forhåndsvisning</translation>
+    </message>
+</context>
+<context>
+    <name>Shortcuts</name>
+    <message>
+        <source>Help</source>
+        <translation>Hjælp</translation>
     </message>
     <message>
-        <source>Copyright: </source>
-        <translation>Ophavsret:</translation>
+        <source>Display shortcuts</source>
+        <translation>Vis genveje</translation>
     </message>
     <message>
-        <source>Description: </source>
-        <translation>Beskrivelse:</translation>
+        <source>Page up</source>
+        <translation>Side op</translation>
     </message>
     <message>
-        <source>Same version installed</source>
-        <translation>Samme version installeret</translation>
+        <source>Page down</source>
+
+
+
+        <translation>Side ned</translation>
     </message>
     <message>
-        <source>Installed successfully</source>
-        <translation>Installation lykkedes</translation>
+        <source>Delete</source>
+        <translation>Slet</translation>
     </message>
     <message>
-        <source>Removed successfully</source>
-        <translation>Fjernelse lykkedes</translation>
+        <source>Add font</source>
+        <translation>Tilføj skrifttype</translation>
     </message>
     <message>
-        <source>Other version installed: %1</source>
-        <translation>Anden version installeret: %1</translation>
+        <source>Favorite</source>
+        <translation>Favorit til</translation>
     </message>
     <message>
-        <source>Done</source>
-        <translation>Færdig</translation>
+        <source>Unfavorite</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Font info</source>
+        <translation>Skrifttypeinformation</translation>
     </message>
 </context>
 </TS>

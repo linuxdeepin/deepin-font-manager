@@ -9,7 +9,7 @@ source_file = deepin-font-manager/translations/deepin-font-manager.ts
 source_lang = en
 type = QT
 
-[deepin-font-installer.deepin-font-installer-desktop]
+[deepin-font-manager.deepin-font-manager-desktop]
 file_filter = deepin-font-manager/translations/desktop/desktop_<lang>.ts
 source_file = deepin-font-manager/translations/desktop/desktop.ts
 source_lang = en
@@ -26,3 +26,4 @@ file_filter = deepin-font-manager/policy-uninstall-translation/policy_<lang>.ts
 source_file = deepin-font-manager/policy-uninstall-translation/policy.ts
 source_lang = en
 type = QT
+
