@@ -10,6 +10,7 @@
 
 #include <QHBoxLayout>
 #include <QShortcut>
+#include <QFileSystemWatcher>
 
 #include <DApplication>
 #include <DApplicationHelper>
@@ -69,6 +70,7 @@ public:
 
 DFontMgrMainWindow::DFontMgrMainWindow(bool isQuickMode, QWidget *parent)
     : DMainWindow(parent)
+    , m_fsWatcher(nullptr)
     , m_isQuickMode(isQuickMode)
     , m_fontManager(DFontManager::instance())
     , m_scFullScreen(nullptr)
@@ -82,6 +84,7 @@ DFontMgrMainWindow::DFontMgrMainWindow(bool isQuickMode, QWidget *parent)
     // setWindowOpacity(0.5); //Debug
     // setWindowFlags(windowFlags() | (Qt::FramelessWindowHint | Qt::WindowMaximizeButtonHint));
 
+    initFileSystemWatcher();
     initData();
     initUI();
     initConnections();
@@ -397,6 +400,28 @@ void DFontMgrMainWindow::initShortcuts()
             }
         });
     }
+}
+
+void DFontMgrMainWindow::initFileSystemWatcher()
+{
+    QString path = QDir::homePath() + "/.local/share/fonts";
+    if (m_fsWatcher == nullptr)
+        m_fsWatcher = new QFileSystemWatcher(this);
+    QDir dir(path);
+    if (!dir.exists())
+        dir.mkpath(path);
+
+    m_fsWatcher->addPath(path);
+    m_fsWatcher->addPath(QDir::homePath() + "/.local/share/");
+    connect(m_fsWatcher, &QFileSystemWatcher::fileChanged,
+            this, [=](const QString &path){
+        m_fontPreviewListView->updateChangedFile(path);
+    });
+
+    connect(m_fsWatcher, &QFileSystemWatcher::directoryChanged,
+            this, [=](const QString &path){
+        m_fontPreviewListView->updateChangedDir(path);
+    });
 }
 
 void DFontMgrMainWindow::initTileBar()
@@ -880,6 +905,27 @@ void DFontMgrMainWindow::forceNoramlInstalltionQuitIfNeeded()
 void DFontMgrMainWindow::setDeleteFinish()
 {
     m_fIsDeleting = false;
+}
+
+void DFontMgrMainWindow::addPathWatcher(const QString &path)
+{
+    if (m_fsWatcher == nullptr)
+        return;
+
+    if (!m_fsWatcher->directories().contains(QDir::homePath() + "/.local/share/fonts"))
+        m_fsWatcher->addPath(QDir::homePath() + "/.local/share/fonts");
+
+    if (!m_fsWatcher->directories().contains(QDir::homePath() + "/.local/share/"))
+        m_fsWatcher->addPath(QDir::homePath() + "/.local/share/");
+
+    m_fsWatcher->addPath(path);
+}
+
+void DFontMgrMainWindow::removePathWatcher(const QString &path)
+{
+    if (m_fsWatcher == nullptr)
+        return;
+    m_fsWatcher->removePath(path);
 }
 
 void DFontMgrMainWindow::onSearchTextChanged(const QString &currStr)

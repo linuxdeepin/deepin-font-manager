@@ -47,6 +47,10 @@ public:
     void removeRowAtIndex(QModelIndex modelIndex);
     void clearPressState();
     void clearHoverState();
+    void updateChangedFile(const QString &path);
+    void updateChangedDir(const QString &path);
+    void deleteFontFiles();
+    void deleteFontFile(const QString &path);
 
 private:
     void initConnections();
@@ -55,6 +59,8 @@ private:
     bool disableFont(DFontPreviewItemData itemData);
 
     inline QRect getCollectionIconRect(QRect visualRect);
+
+    void deleteFontModelIndex(DFontInfo fontInfo);
 
     bool m_bLoadDataFinish;
     bool m_bLeftMouse;
@@ -71,6 +77,7 @@ private:
     DFontPreviewListDataThread *m_dataThread;
     QModelIndex m_pressModelIndex;
     QModelIndex m_hoverModelIndex;
+    QStringList m_deletedFiles;
 
 signals:
     //用于DFontPreviewListView内部使用的信号

@@ -3,6 +3,7 @@
 #include "dfontpreviewitemdelegate.h"
 #include "globaldef.h"
 #include "dfmxmlwrapper.h"
+#include "views/dfontmgrmainwindow.h"
 
 #include <DLog>
 #include <DMenu>
@@ -72,6 +73,9 @@ void DFontPreviewListView::refreshFontListData()
         QStandardItem *item = new QStandardItem;
         item->setData(QVariant::fromValue(itemData), Qt::DisplayRole);
         sourceModel->appendRow(item);
+        DFontMgrMainWindow *mw = qobject_cast<DFontMgrMainWindow *>(m_parentWidget);
+        if (mw)
+            mw->addPathWatcher(filePath);
     }
 }
 
@@ -95,6 +99,11 @@ void DFontPreviewListView::onFinishedDataLoad()
             delInfo.insert("styleName", itemData.fontInfo.styleName);
             DFMDBManager::instance()->deleteFontInfoByFontMap(delInfo);
             continue;
+        } else {
+            //add it to file system watcher
+            DFontMgrMainWindow *mw = qobject_cast<DFontMgrMainWindow *>(m_parentWidget);
+            if (mw)
+                mw->addPathWatcher(filePath);
         }
 
         QStandardItem *item = new QStandardItem;
@@ -106,6 +115,7 @@ void DFontPreviewListView::onFinishedDataLoad()
     initConnections();
 
     m_bLoadDataFinish = true;
+    deleteFontFiles();
     emit onLoadFontsStatus(1);
 }
 
@@ -139,6 +149,24 @@ QRect DFontPreviewListView::getCollectionIconRect(QRect visualRect)
 {
     int collectIconSize = 22 + 10;
     return QRect(visualRect.right() - 10 - 33, visualRect.top() + 10 - 5, collectIconSize, collectIconSize);
+}
+
+void DFontPreviewListView::deleteFontModelIndex(DFontInfo fontInfo)
+{
+    if (m_fontPreviewItemModel && m_fontPreviewItemModel->rowCount() == 0) {
+        return;
+    }
+
+    for (int i = 0; i < m_fontPreviewProxyModel->rowCount(); i++) {
+        QModelIndex modelIndex = m_fontPreviewProxyModel->index(i, 0);
+        QVariant varModel = m_fontPreviewProxyModel->data(modelIndex, Qt::DisplayRole);
+        DFontPreviewItemData itemData = varModel.value<DFontPreviewItemData>();
+
+        if (itemData.fontInfo.filePath == fontInfo.filePath) {
+            m_fontPreviewProxyModel->removeRow(modelIndex.row(), modelIndex.parent());
+            break;
+        }
+    }
 }
 
 void DFontPreviewListView::mouseMoveEvent(QMouseEvent *event)
@@ -416,4 +444,78 @@ void DFontPreviewListView::clearHoverState()
     itemData.collectIconStatus = IconNormal;
     m_fontPreviewProxyModel->setData(m_hoverModelIndex, QVariant::fromValue(itemData), Qt::DisplayRole);
     m_hoverModelIndex = QModelIndex();
+}
+
+void DFontPreviewListView::updateChangedFile(const QString &path)
+{
+    QFileInfo fi(path);
+    QString filePath = !fi.exists() ? path  : "";
+
+    if (m_deletedFiles.isEmpty() && filePath.isEmpty()) {
+        return;
+    } else if (filePath.isEmpty()) {
+        filePath = m_deletedFiles.takeFirst();
+    }
+
+    if (!m_bLoadDataFinish && !m_deletedFiles.contains(path)) {
+        m_deletedFiles.append(path);
+        return;
+    }
+    deleteFontFile(path);
+}
+
+void DFontPreviewListView::updateChangedDir(const QString &path)
+{
+    if (!m_bLoadDataFinish && !m_deletedFiles.contains(path)) {
+        m_deletedFiles.append(path);
+        return;
+    }
+    deleteFontFile(path);
+}
+
+void DFontPreviewListView::deleteFontFiles()
+{
+    while (!m_deletedFiles.isEmpty()) {
+        QString filePath = m_deletedFiles.takeFirst();
+        deleteFontFile(filePath);
+    }
+}
+
+void DFontPreviewListView::deleteFontFile(const QString &path)
+{
+    QFileInfo fi(path);
+    bool isDir = fi.isDir();
+    DFontMgrMainWindow *mw = qobject_cast<DFontMgrMainWindow *>(m_parentWidget);
+    QList<DFontPreviewItemData> fontInfoList = m_dataThread->getFontModelList();
+    //qDebug() << fontInfoList.size();
+    for (int i = 0; i < fontInfoList.size(); ++i) {
+        DFontPreviewItemData itemData = fontInfoList.at(i);
+        QString filePath = itemData.fontInfo.filePath;
+        QFileInfo filePathInfo(filePath);
+        //如果字体文件已经不存在，则从t_manager表中删除
+        if ((!isDir && (filePath == path)) || (isDir && filePath.startsWith(path) && !filePathInfo.exists())) {
+            //删除字体之前启用字体，防止下次重新安装后就被禁用
+            enableFont(itemData);
+            QMap<QString, QString> delInfo;
+            delInfo.insert("filePath", itemData.fontInfo.filePath);
+            delInfo.insert("familyName", itemData.fontInfo.familyName);
+            delInfo.insert("styleName", itemData.fontInfo.styleName);
+            DFMDBManager::instance()->deleteFontInfoByFontMap(delInfo);
+            deleteFontModelIndex(itemData.fontInfo);
+            m_dataThread->removeFontData(itemData);
+            if (mw)
+                mw->removePathWatcher(filePath);
+            if (!isDir)
+                break;
+        }
+    }
+
+
+    if (mw && isDir) {
+        if (!QFileInfo(QDir::homePath() + "/.local/share/fonts").exists()) {
+            mw->removePathWatcher(QDir::homePath() + "/.local/share/fonts");
+        } else if (!QFileInfo(QDir::homePath() + "/.local/share/").exists()) {
+            mw->removePathWatcher(QDir::homePath() + "/.local/share/");
+        }
+    }
 }
