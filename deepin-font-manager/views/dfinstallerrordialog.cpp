@@ -277,8 +277,8 @@ void DFInstallErrorDialog::onControlButtonClicked(int btnIndex)
         QStringList continueInstallFontFileList;
 
         //根据用户勾选情况添加到继续安装列表中
-        for (int i = 0; i < m_installErrorFontModelList.size(); i++) {
-            DFInstallErrorItemModel itemModel = m_installErrorFontModelList.at(i);
+        for (int i = 0; i < m_installErrorListView->model()->rowCount(); i++) {
+            DFInstallErrorItemModel itemModel = qvariant_cast<DFInstallErrorItemModel>(m_installErrorListView->model()->data(m_installErrorListView->model()->index(i, 0)));
             if (itemModel.bChecked) {
                 continueInstallFontFileList.push_back(itemModel.strFontFilePath);
             }
