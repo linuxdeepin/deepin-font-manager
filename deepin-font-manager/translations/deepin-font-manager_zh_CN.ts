@@ -146,6 +146,10 @@
         <source>Confirm</source>
         <translation>确定</translation>
     </message>
+    <message>
+        <source>Delete</source>
+        <translation>删除</translation>
+    </message>
 </context>
 <context>
     <name>FontDetailDailog</name>
@@ -228,9 +232,6 @@
     </message>
     <message>
         <source>Page down</source>
-
-
-
         <translation>下一页</translation>
     </message>
     <message>

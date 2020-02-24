@@ -146,6 +146,10 @@
         <source>Confirm</source>
         <translation>Confirm</translation>
     </message>
+    <message>
+        <source>Delete</source>
+        <translation>Delete</translation>
+    </message>
 </context>
 <context>
     <name>FontDetailDailog</name>
@@ -228,9 +232,6 @@
     </message>
     <message>
         <source>Page down</source>
-
-
-
         <translation>Page down</translation>
     </message>
     <message>
