@@ -42,6 +42,8 @@ void DFontMenuManager::initMenuData()
     m_fontRightMenuData.push_back(
         new FMenuItem(DApplication::translate("Menu", "Delete"), MenuAction::M_DeleteFont));
     m_fontRightMenuData.push_back(
+        new FMenuItem(tr("Export"), MenuAction::M_ExportFont));
+    m_fontRightMenuData.push_back(
         new FMenuItem(DApplication::translate("Menu", "Favorite"), MenuAction::M_Faverator));
     m_fontRightMenuData.push_back(new FMenuItem("", MenuAction::M_Separator));
     m_fontRightMenuData.push_back(
@@ -160,6 +162,9 @@ void DFontMenuManager::onRightKeyMenuPopup(DFontPreviewItemData fontData)
     QAction *delAction = DFontMenuManager::getInstance()->getActionByMenuAction(
         DFontMenuManager::M_DeleteFont, DFontMenuManager::MenuType::RightKeyMenu);
 
+    QAction *exportAction = DFontMenuManager::getInstance()->getActionByMenuAction(
+        DFontMenuManager::M_ExportFont, DFontMenuManager::MenuType::RightKeyMenu);
+
     QAction *faveriteAction = DFontMenuManager::getInstance()->getActionByMenuAction(
         DFontMenuManager::M_Faverator, DFontMenuManager::MenuType::RightKeyMenu);
 
@@ -171,6 +176,13 @@ void DFontMenuManager::onRightKeyMenuPopup(DFontPreviewItemData fontData)
         delAction->setDisabled(true);
     } else {
         delAction->setDisabled(false);
+    }
+
+    // Export menu on system font
+    if (nullptr != exportAction && fontData.fontInfo.isSystemFont) {
+        exportAction->setDisabled(true);
+    } else {
+        exportAction->setDisabled(false);
     }
 
     // Favarite font Menu

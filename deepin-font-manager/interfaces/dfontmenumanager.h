@@ -31,6 +31,7 @@ public:
         M_AddFont,
         M_EnableOrDisable,
         M_DeleteFont,
+        M_ExportFont,
         M_Faverator,
         M_FontInfo,
         M_ShowFontPostion,

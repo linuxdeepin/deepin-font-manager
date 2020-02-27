@@ -73,6 +73,7 @@ protected:
     void installFont(const QStringList &files);
     void showFontFilePostion();
     void delCurrentFont();
+    void exportFont();
     void showAllShortcut();
 
     //Add drag install
@@ -91,6 +92,9 @@ signals:
 
     // Only use when user double click font file
     void quickModeInstall(const QStringList files) const;
+
+    void requestHide();
+
 public slots:
     void handleMenuEvent(QAction *);
 

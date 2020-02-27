@@ -765,6 +765,10 @@ void DFontMgrMainWindow::handleMenuEvent(QAction *action)
                     delCurrentFont();
             }
             break;
+            case DFontMenuManager::MenuAction::M_ExportFont: {
+                    exportFont();
+            }
+            break;
             case DFontMenuManager::MenuAction::M_EnableOrDisable: {
                 QModelIndex modelIndex = m_fontPreviewListView->currModelIndex();
                 emit m_fontPreviewListView->onClickEnableButton(modelIndex);
@@ -1096,6 +1100,35 @@ void DFontMgrMainWindow::delCurrentFont()
     });
 
     confirmDelDlg.exec();
+}
+
+void DFontMgrMainWindow::exportFont()
+{
+    int cnt = 0;
+    int systemCnt = 0;
+    QStringList files = m_fontPreviewListView->selectedFonts(&cnt, &systemCnt);
+    if (cnt < 1)
+        return;
+    QString destDir = QDir::homePath();
+    for (QString file : files) {
+        QFile::copy(file, destDir + "/" + QFileInfo(file).fileName());
+    }
+    QString title;
+    if (cnt <= 1) {
+        title = tr("The font exported to your desktop");
+    } else {
+        title = tr("%1 fonts exported to your desktop").arg(cnt);
+    }
+    QString message;
+//    if (systemCnt > 0)
+//        message = tr("");
+    DDialog dlg(title, message);
+    dlg.setModal(true);
+    QTimer::singleShot(2000, this, [this]() {
+        Q_EMIT requestHide();
+    });
+    connect(this, &DFontMgrMainWindow::requestHide, &dlg, &DDialog::close);
+    dlg.exec();
 }
 
 void DFontMgrMainWindow::dragEnterEvent(QDragEnterEvent *event)
