@@ -70,7 +70,6 @@ public:
 
 DFontMgrMainWindow::DFontMgrMainWindow(bool isQuickMode, QWidget *parent)
     : DMainWindow(parent)
-    , m_fsWatcher(nullptr)
     , m_isQuickMode(isQuickMode)
     , m_fontManager(DFontManager::instance())
     , m_scFullScreen(nullptr)
@@ -84,7 +83,6 @@ DFontMgrMainWindow::DFontMgrMainWindow(bool isQuickMode, QWidget *parent)
     // setWindowOpacity(0.5); //Debug
     // setWindowFlags(windowFlags() | (Qt::FramelessWindowHint | Qt::WindowMaximizeButtonHint));
 
-    initFileSystemWatcher();
     initData();
     initUI();
     initConnections();
@@ -187,8 +185,8 @@ void DFontMgrMainWindow::initConnections()
     QObject::connect(d->leftSiderBar, SIGNAL(onListWidgetItemClicked(int)), this,
                      SLOT(onLeftSiderBarItemClicked(int)));
 
-    QObject::connect(m_fontManager, SIGNAL(uninstallFontFinished(const QModelIndex &)), this,
-                     SLOT(onFontUninstallFinished(const QModelIndex &)));
+    QObject::connect(m_fontManager, SIGNAL(uninstallFontFinished(const QStringList &)), this,
+                     SLOT(onFontUninstallFinished(const QStringList &)));
 }
 
 void DFontMgrMainWindow::initShortcuts()
@@ -323,15 +321,8 @@ void DFontMgrMainWindow::initShortcuts()
         m_scDeleteFont->setAutoRepeat(false);
 
         connect(m_scDeleteFont, &QShortcut::activated, this, [this] {
-            if (m_fIsDeleting)
-                return;
-            DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
-
             //Only can't delete user font
-            if (!currItemData.fontInfo.isSystemFont) {
-                m_fIsDeleting = true;
-                delCurrentFont();
-            }
+            delCurrentFont();
         });
     }
 
@@ -400,28 +391,6 @@ void DFontMgrMainWindow::initShortcuts()
             }
         });
     }
-}
-
-void DFontMgrMainWindow::initFileSystemWatcher()
-{
-    QString path = QDir::homePath() + "/.local/share/fonts";
-    if (m_fsWatcher == nullptr)
-        m_fsWatcher = new QFileSystemWatcher(this);
-    QDir dir(path);
-    if (!dir.exists())
-        dir.mkpath(path);
-
-    m_fsWatcher->addPath(path);
-    m_fsWatcher->addPath(QDir::homePath() + "/.local/share/");
-    connect(m_fsWatcher, &QFileSystemWatcher::fileChanged,
-            this, [=](const QString &path){
-        m_fontPreviewListView->updateChangedFile(path);
-    });
-
-    connect(m_fsWatcher, &QFileSystemWatcher::directoryChanged,
-            this, [=](const QString &path){
-        m_fontPreviewListView->updateChangedDir(path);
-    });
 }
 
 void DFontMgrMainWindow::initTileBar()
@@ -793,7 +762,6 @@ void DFontMgrMainWindow::handleMenuEvent(QAction *action)
             }
             break;
             case DFontMenuManager::MenuAction::M_DeleteFont: {
-                if (!m_fIsDeleting)
                     delCurrentFont();
             }
             break;
@@ -905,27 +873,6 @@ void DFontMgrMainWindow::forceNoramlInstalltionQuitIfNeeded()
 void DFontMgrMainWindow::setDeleteFinish()
 {
     m_fIsDeleting = false;
-}
-
-void DFontMgrMainWindow::addPathWatcher(const QString &path)
-{
-    if (m_fsWatcher == nullptr)
-        return;
-
-    if (!m_fsWatcher->directories().contains(QDir::homePath() + "/.local/share/fonts"))
-        m_fsWatcher->addPath(QDir::homePath() + "/.local/share/fonts");
-
-    if (!m_fsWatcher->directories().contains(QDir::homePath() + "/.local/share/"))
-        m_fsWatcher->addPath(QDir::homePath() + "/.local/share/");
-
-    m_fsWatcher->addPath(path);
-}
-
-void DFontMgrMainWindow::removePathWatcher(const QString &path)
-{
-    if (m_fsWatcher == nullptr)
-        return;
-    m_fsWatcher->removePath(path);
 }
 
 void DFontMgrMainWindow::onSearchTextChanged(const QString &currStr)
@@ -1041,11 +988,13 @@ void DFontMgrMainWindow::onFontInstallFinished()
     d->textInputEdit->textChanged(d->textInputEdit->text());
 }
 
-void DFontMgrMainWindow::onFontUninstallFinished(const QModelIndex &uninstallIndex)
+void DFontMgrMainWindow::onFontUninstallFinished(const QStringList &uninstallIndex)
 {
-    qDebug() << "finished remove row:" << uninstallIndex.row() << endl;
-    m_fontPreviewListView->removeRowAtIndex(uninstallIndex);
-    Q_EMIT requestDeleted();
+    qDebug() << "finished remove fonts:" << uninstallIndex << endl;
+    for (QString filePath : uninstallIndex) {
+        m_fontPreviewListView->deleteFontModelIndex(filePath);
+    }
+    Q_EMIT requestDeleted(uninstallIndex);
 }
 
 
@@ -1125,17 +1074,24 @@ void DFontMgrMainWindow::onLoadStatus(int type)
 
 void DFontMgrMainWindow::delCurrentFont()
 {
-    DFDeleteDialog confirmDelDlg(this);
+    if (m_fIsDeleting)
+        return;
+    int deleteCnt = 0;
+    int systemCnt = 0;
+    QStringList uninstallFilePath = m_fontPreviewListView->selectedFonts(&deleteCnt, &systemCnt);
+    if (deleteCnt < 1)
+        return;
+    m_fIsDeleting = true;
+    DFDeleteDialog confirmDelDlg(this, deleteCnt, systemCnt);
     connect(&confirmDelDlg, &DFDeleteDialog::requestDelete, this, [this]() {
         // Add Delete font code Here
+        QStringList uninstallFilePath = m_fontPreviewListView->selectedFonts(nullptr, nullptr);
         DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
         qDebug() << "Confirm delete:" << currItemData.fontInfo.filePath
                  << " is system font:" << currItemData.fontInfo.isSystemFont;
 
-        QModelIndex currModelIndex = m_fontPreviewListView->currModelIndex();
-        QString uninstallFilePath = currItemData.fontInfo.filePath;
         m_fontManager->setType(DFontManager::UnInstall);
-        m_fontManager->setUnInstallFile(uninstallFilePath, currModelIndex);
+        m_fontManager->setUnInstallFile(uninstallFilePath);
         m_fontManager->start();
     });
 

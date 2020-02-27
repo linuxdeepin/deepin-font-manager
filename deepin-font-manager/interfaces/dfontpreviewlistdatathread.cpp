@@ -1,18 +1,21 @@
 #include "dfontpreviewlistdatathread.h"
 #include "dfmxmlwrapper.h"
+#include "dfontpreviewlistview.h"
 
 static DFontPreviewListDataThread *INSTANCE = nullptr;
 
-DFontPreviewListDataThread *DFontPreviewListDataThread::instance()
+DFontPreviewListDataThread *DFontPreviewListDataThread::instance(DFontPreviewListView *view)
 {
     if (!INSTANCE) {
-        INSTANCE = new DFontPreviewListDataThread;
+        INSTANCE = new DFontPreviewListDataThread(view);
     }
 
     return INSTANCE;
 }
 
-DFontPreviewListDataThread::DFontPreviewListDataThread()
+DFontPreviewListDataThread::DFontPreviewListDataThread(DFontPreviewListView *view)
+    : m_view(view)
+    , m_fsWatcher(nullptr)
 {
     QTimer::singleShot(50, this, [this]() {
         m_dbManager = DFMDBManager::instance();
@@ -20,6 +23,7 @@ DFontPreviewListDataThread::DFontPreviewListDataThread()
         moveToThread(mThread);
         QObject::connect(mThread, SIGNAL(started()), this, SLOT(doWork()));
         connect(mThread, SIGNAL(finished()), mThread, SLOT(deleteLater()));
+        connect(m_view, &DFontPreviewListView::requestDeleted, this, &DFontPreviewListDataThread::onFileChanged);
         mThread->start();
     });
 }
@@ -30,6 +34,7 @@ DFontPreviewListDataThread::~DFontPreviewListDataThread()
 
 void DFontPreviewListDataThread::doWork()
 {
+    initFileSystemWatcher();
     m_fontModelList.clear();
 
     qDebug() << "doWork thread id = " << QThread::currentThreadId();
@@ -50,8 +55,7 @@ void DFontPreviewListDataThread::doWork()
 
         refreshFontListData(true);
 
-        emit resultReady();
-
+        m_view->onFinishedDataLoad();
         return;
     }
 
@@ -71,7 +75,72 @@ void DFontPreviewListDataThread::doWork()
 
     m_dbManager->endTransaction();
 
-    emit resultReady();
+    m_view->onFinishedDataLoad();
+}
+
+void DFontPreviewListDataThread::initFileSystemWatcher()
+{
+    QString path = QDir::homePath() + "/.local/share/fonts";
+    if (m_fsWatcher == nullptr)
+        m_fsWatcher = new QFileSystemWatcher(this);
+    QDir dir(path);
+    if (!dir.exists())
+        dir.mkpath(path);
+
+    m_fsWatcher->addPath(path);
+    m_fsWatcher->addPath(QDir::homePath() + "/.local/share/");
+    connect(m_fsWatcher, &QFileSystemWatcher::fileChanged,
+            this, [=](const QString &path){
+        qDebug() << "fileChanged" << path;
+        updateChangedFile(path);
+    });
+
+    connect(m_fsWatcher, &QFileSystemWatcher::directoryChanged,
+            this, [=](const QString &path){
+        qDebug() << "directoryChanged" << path;
+        updateChangedDir(path);
+    });
+}
+
+void DFontPreviewListDataThread::updateChangedFile(const QString &path)
+{
+    m_view->updateChangedFile(path);
+}
+
+void DFontPreviewListDataThread::updateChangedDir(const QString &path)
+{
+    m_view->updateChangedDir(path);
+}
+
+void DFontPreviewListDataThread::addPathWatcher(const QString &path)
+{
+    if (m_fsWatcher == nullptr)
+        return;
+
+    if (!m_fsWatcher->directories().contains(QDir::homePath() + "/.local/share/fonts"))
+        m_fsWatcher->addPath(QDir::homePath() + "/.local/share/fonts");
+
+    if (!m_fsWatcher->directories().contains(QDir::homePath() + "/.local/share/"))
+        m_fsWatcher->addPath(QDir::homePath() + "/.local/share/");
+
+    m_fsWatcher->addPath(path);
+}
+
+void DFontPreviewListDataThread::removePathWatcher(const QString &path)
+{
+    if (m_fsWatcher == nullptr)
+        return;
+    m_fsWatcher->removePath(path);
+}
+
+void DFontPreviewListDataThread::deleteFontModelIndex(const QString &filePath)
+{
+    m_view->deleteFontModelIndex(filePath);
+}
+
+void DFontPreviewListDataThread::onFileChanged(const QStringList files)
+{
+    m_view->deleteFontFiles(files);
 }
 
 QList<DFontPreviewItemData> DFontPreviewListDataThread::getFontModelList() const
@@ -169,15 +238,15 @@ void DFontPreviewListDataThread::refreshFontListData(bool isStartup)
     }
 }
 
-void DFontPreviewListDataThread::removeFontData(DFontPreviewItemData removeItemData)
+void DFontPreviewListDataThread::removeFontData(const DFontPreviewItemData &removeItemData)
 {
     m_diffFontModelList.clear();
 
     int removeIndex = -1;
     for (int i = 0; i < m_fontModelList.size(); i++) {
-        DFontPreviewItemData itemData = m_fontModelList.at(i);
-        if (itemData.strFontId == removeItemData.strFontId) {
+        if (m_fontModelList.at(i).fontInfo.filePath == removeItemData.fontInfo.filePath) {
             removeIndex = i;
+            break;
         }
     }
 

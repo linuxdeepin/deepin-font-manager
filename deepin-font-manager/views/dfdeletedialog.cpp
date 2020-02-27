@@ -11,10 +11,13 @@
 #include <DApplicationHelper>
 #include <DFrame>
 #include <DFontSizeManager>
+#include <DTipLabel>
 
-DFDeleteDialog::DFDeleteDialog(DFontMgrMainWindow *win, QWidget *parent)
+DFDeleteDialog::DFDeleteDialog(DFontMgrMainWindow *win, int deleteCnt, int systemCnt, QWidget *parent)
     : DFontBaseDialog(parent)
     , m_mainWindow(nullptr)
+    , m_deleteCnt(deleteCnt)
+    , m_systemCnt(systemCnt)
 {
     initUI();
     setMainwindow(win);
@@ -40,7 +43,11 @@ void DFDeleteDialog::setMainwindow(DFontMgrMainWindow *win)
 
 void DFDeleteDialog::initUI()
 {
-    setFixedSize(QSize(DEFAULT_WINDOW_W, DEFAULT_WINDOW_H));
+    if (m_systemCnt <= 0) {
+        setFixedSize(QSize(DEFAULT_WINDOW_W, DEFAULT_WINDOW_H));
+    } else {
+        setFixedSize(QSize(DEFAULT_WINDOW_W, DEFAULT_WINDOW_H + 40));
+    }
     //setWindowOpacity(0.5);
 
     QVBoxLayout *mainLayout = new QVBoxLayout();
@@ -50,34 +57,34 @@ void DFDeleteDialog::initUI()
     QWidget *mainFrame = new QWidget(this);
     mainFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-    QString msgFontFamily = Utils::loadFontFamilyFromFiles(":/images/SourceHanSansCN-Medium.ttf");
-    QString msgBFontFamily = Utils::loadFontFamilyFromFiles(":/images/SourceHanSansCN-Bold.ttf");
-
     m_messageA = new DLabel(this);
-    m_messageA->setText(
-        DApplication::translate("DeleteConfirmDailog", "Are you sure you want to delete this font?"));
+    if (m_deleteCnt <= 1) {
+        m_messageA->setText(tr("Are you sure you want to delete this font?"));
+
+    } else {
+        m_messageA->setText(tr("Are you sure you want to delete %1 fonts").arg(m_deleteCnt));
+    }
     m_messageA->setFixedHeight(20);
     m_messageA->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    QFont msgAFont(msgFontFamily);
-    m_messageA->setFont(msgAFont);
+
     DFontSizeManager::instance()->bind(m_messageA, DFontSizeManager::T6);
 
     m_messageB = new DLabel(this);
-    m_messageB->setText(DApplication::translate(
-        "DeleteConfirmDailog", "This font will not be available to applications"));
+    if (m_deleteCnt <= 1) {
+        m_messageB->setText(tr("This font will not be available to applications"));
+    } else {
+        m_messageB->setText(tr("These fonts will not be available to applications"));
+    }
     m_messageB->setFixedHeight(20);
     m_messageB->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    QFont msgBFont(msgBFontFamily);
-    msgBFont.setWeight(QFont::Bold);
-    m_messageB->setFont(msgBFont);
+    QFont bfont = m_messageB->font();
+    bfont.setWeight(QFont::Bold);
+    m_messageB->setFont(bfont);
     DFontSizeManager::instance()->bind(m_messageB, DFontSizeManager::T6);
     //Set MessageB color to TextTips
     DPalette paMsgB = DApplicationHelper::instance()->palette(m_messageB);
     paMsgB.setBrush(DPalette::WindowText, paMsgB.color(DPalette::TextTips));
     m_messageB->setPalette(paMsgB);
-
-    QString fontFamilyName = Utils::loadFontFamilyFromFiles(":/images/SourceHanSansCN-Medium.ttf");
-    QFont btnFont(fontFamilyName);
 
     QHBoxLayout *actionBarLayout = new QHBoxLayout();
     actionBarLayout->setSpacing(0);
@@ -87,13 +94,11 @@ void DFDeleteDialog::initUI()
     m_cancelBtn->setFixedHeight(38);
     m_cancelBtn->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
     m_cancelBtn->setText(DApplication::translate("DeleteConfirmDailog", "Cancel"));
-    m_cancelBtn->setFont(btnFont);
 
     m_confirmBtn = new DWarningButton(this);
     m_confirmBtn->setFixedHeight(38);
     m_confirmBtn->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
     m_confirmBtn->setText(DApplication::translate("DeleteConfirmDailog", "Delete"));
-    m_confirmBtn->setFont(btnFont);
 
     DVerticalLine *verticalSplite = new DVerticalLine(this);
     DPalette pa = DApplicationHelper::instance()->palette(verticalSplite);
@@ -113,6 +118,14 @@ void DFDeleteDialog::initUI()
     mainLayout->addWidget(m_messageA, 0, Qt::AlignCenter);
     mainLayout->addSpacing(8);
     mainLayout->addWidget(m_messageB, 0, Qt::AlignCenter);
+    if (m_systemCnt > 0) {
+        DTipLabel *messageC = new DTipLabel;
+        messageC->setFont(bfont);
+        messageC->setText(tr("The other %2 system fonts cannot be deleted").arg(m_systemCnt));
+        DFontSizeManager::instance()->bind(messageC, DFontSizeManager::T6);
+        mainLayout->addSpacing(8);
+        mainLayout->addWidget(messageC, 0, Qt::AlignCenter);
+    }
     mainLayout->addStretch();
     mainLayout->addLayout(actionBarLayout);
     mainFrame->setLayout(mainLayout);

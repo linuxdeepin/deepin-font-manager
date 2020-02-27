@@ -49,18 +49,22 @@ public:
     void clearHoverState();
     void updateChangedFile(const QString &path);
     void updateChangedDir(const QString &path);
-    void deleteFontFiles();
-    void deleteFontFile(const QString &path);
+    void deleteFontFiles(const QStringList files);
+    void deleteFontFile(const QString &path, bool self = false);
+    QStringList selectedFonts(int *deleteCnt, int *systemCnt);
+    QList<DFontPreviewItemData> selectedFontData();
+    void deleteFontModelIndex(const QString &filePath);
+    inline bool isDeleting();
 
 private:
     void initConnections();
 
-    bool enableFont(DFontPreviewItemData itemData);
-    bool disableFont(DFontPreviewItemData itemData);
+    bool enableFont(const DFontPreviewItemData &itemData);
+    bool disableFont(const DFontPreviewItemData &itemData);
 
     inline QRect getCollectionIconRect(QRect visualRect);
 
-    void deleteFontModelIndex(DFontInfo fontInfo);
+    void deleteFontModelIndex(const DFontInfo &fontInfo);
 
     bool m_bLoadDataFinish;
     bool m_bLeftMouse;
@@ -91,7 +95,9 @@ signals:
     //字体列表加载状态
     void onLoadFontsStatus(int type);
 
-private slots:
+    void requestDeleted(const QStringList files);
+
+public slots:
 
     void onListViewItemEnableBtnClicked(QModelIndex index);
     void onListViewItemCollectionBtnClicked(QModelIndex index);

@@ -37,8 +37,7 @@ public:
     void setType(Type type);
     void setInstallFileList(const QStringList &list);
     void setReInstallFile(const QString &reinstFile, const QString &sysFile);
-    void setUnInstallFile(const QString &filePath);
-    void setUnInstallFile(const QString &filePath, const QModelIndex &uninstallIndex);
+    void setUnInstallFile(const QStringList &filePath);
 
 private slots:
     void handleInstallOutput();
@@ -54,7 +53,7 @@ signals:
     void installFinished(int state);
     void reinstallFinished();
     void uninstallFinished();
-    void uninstallFontFinished(const QModelIndex &uninstallIndex);
+    void uninstallFontFinished(const QStringList &uninstallIndex);
 
 protected:
     void run();
@@ -67,10 +66,9 @@ private:
 
 private:
     QStringList m_instFileList;
-    QString m_uninstFile;
+    QStringList m_uninstFile;
     QString m_reinstFile;
     QString m_sysFile;
-    QModelIndex m_uninstModelIndex;
     Type m_type;
 };
 

@@ -61,15 +61,9 @@ void DFontManager::setReInstallFile(const QString &reinstFile, const QString &sy
     m_sysFile = sysFile;
 }
 
-void DFontManager::setUnInstallFile(const QString &filePath)
+void DFontManager::setUnInstallFile(const QStringList &filePath)
 {
     m_uninstFile = filePath;
-}
-
-void DFontManager::setUnInstallFile(const QString &filePath, const QModelIndex &uninstallIndex)
-{
-    m_uninstFile = filePath;
-    m_uninstModelIndex = uninstallIndex;
 }
 
 void DFontManager::handleInstallOutput()
@@ -188,7 +182,7 @@ void DFontManager::handleUnInstall()
     if (doCmd("dfont-uninstall", QStringList() << m_uninstFile)) {
         emit uninstallFinished();
 
-        emit uninstallFontFinished(m_uninstModelIndex);
+        emit uninstallFontFinished(m_uninstFile);
     }
 
 }

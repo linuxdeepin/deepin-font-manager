@@ -11,7 +11,7 @@
 #include <DMainWindow>
 #include <QResizeEvent>
 
-class QFileSystemWatcher;
+
 
 DWIDGET_USE_NAMESPACE
 
@@ -47,9 +47,8 @@ public:
     void InitQuickWindowIfNeeded();
     void forceNoramlInstalltionQuitIfNeeded();
     void setDeleteFinish();
-    void addPathWatcher(const QString &path);
-    void removePathWatcher(const QString &path);
     inline DFontManager *getFontManager()  { return m_fontManager;}
+    inline bool isDeleting() { return m_fIsDeleting;}
 
     //Main window Size
     int m_winHight;
@@ -59,7 +58,6 @@ protected:
     void initUI();
     void initConnections();
     void initShortcuts();
-    void initFileSystemWatcher();
 
     void initTileBar();
     void initTileFrame();
@@ -85,12 +83,11 @@ protected:
     DListView *m_noResultListView;
     DListView *m_noInstallListView;
     DFontSpinnerWidget *m_fontLoadingSpinner {nullptr};
-    QFileSystemWatcher *m_fsWatcher;
 
     void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
 signals:
     void fileSelected(const QStringList files) const;
-    void requestDeleted();
+    void requestDeleted(const QStringList files);
 
     // Only use when user double click font file
     void quickModeInstall(const QStringList files) const;
@@ -103,7 +100,7 @@ public slots:
 
     void onLeftSiderBarItemClicked(int index);
     void onFontInstallFinished();
-    void onFontUninstallFinished(const QModelIndex &uninstallIndex);
+    void onFontUninstallFinished(const QStringList &uninstallIndex);
 
     void onFontListViewRowCountChanged(unsigned int bShow);
 

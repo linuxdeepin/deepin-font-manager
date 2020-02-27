@@ -15,7 +15,7 @@ class DFDeleteDialog : public DFontBaseDialog
 {
     Q_OBJECT
 public:
-    explicit DFDeleteDialog(DFontMgrMainWindow *win, QWidget* parent = nullptr);
+    explicit DFDeleteDialog(DFontMgrMainWindow *win, int deleteCnt = 0, int systemCnt = 0, QWidget* parent = nullptr);
     ~DFDeleteDialog();
     void setMainwindow(DFontMgrMainWindow *win);
 
@@ -39,6 +39,8 @@ private:
     DWarningButton* m_confirmBtn;
     DFontMgrMainWindow *m_mainWindow;
     QMetaObject::Connection quitConn;
+    int m_deleteCnt;
+    int m_systemCnt;
 };
 
 #endif  // DFDELETEDIALOG_H

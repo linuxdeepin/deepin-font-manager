@@ -21,7 +21,7 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
     , m_bLoadDataFinish(false)
     , m_parentWidget(parent)
     , m_fontPreviewItemModel(new QStandardItemModel)
-    , m_dataThread(DFontPreviewListDataThread::instance())
+    , m_dataThread(DFontPreviewListDataThread::instance(this))
 {
     QWidget *topSpaceWidget = new QWidget;
     topSpaceWidget->setFixedSize(this->width(), 10);
@@ -30,7 +30,14 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
     setAutoScroll(true);
     setMouseTracking(true);
     setUpdatesEnabled(true);
+    setSelectionMode(QAbstractItemView::MultiSelection);
 
+    DFontMgrMainWindow *mw = qobject_cast<DFontMgrMainWindow *>(m_parentWidget);
+    if (mw)
+        connect(mw, &DFontMgrMainWindow::requestDeleted, this, [=](const QStringList files) {
+//            deleteFontFiles(files);
+            Q_EMIT requestDeleted(files);
+        });
     initFontListData();
 }
 
@@ -42,7 +49,7 @@ void DFontPreviewListView::initFontListData()
 {
     emit onLoadFontsStatus(0);
     //qDebug() << "main thread id = " << QThread::currentThreadId();
-    connect(m_dataThread, SIGNAL(resultReady()), this, SLOT(onFinishedDataLoad()));
+//    connect(m_dataThread, SIGNAL(resultReady()), this, SLOT(onFinishedDataLoad()));
 }
 
 int DFontPreviewListView::getListDataCount()
@@ -73,15 +80,13 @@ void DFontPreviewListView::refreshFontListData()
         QStandardItem *item = new QStandardItem;
         item->setData(QVariant::fromValue(itemData), Qt::DisplayRole);
         sourceModel->appendRow(item);
-        DFontMgrMainWindow *mw = qobject_cast<DFontMgrMainWindow *>(m_parentWidget);
-        if (mw)
-            mw->addPathWatcher(filePath);
+        m_dataThread->addPathWatcher(filePath);
     }
 }
 
 void DFontPreviewListView::onFinishedDataLoad()
 {
-    //qDebug() << "onFinishedDataLoad thread id = " << QThread::currentThreadId();
+    qDebug() << "onFinishedDataLoad thread id = " << QThread::currentThreadId();
     QList<DFontPreviewItemData> fontInfoList = m_dataThread->getFontModelList();
     //qDebug() << fontInfoList.size();
     for (int i = 0; i < fontInfoList.size(); ++i) {
@@ -101,9 +106,7 @@ void DFontPreviewListView::onFinishedDataLoad()
             continue;
         } else {
             //add it to file system watcher
-            DFontMgrMainWindow *mw = qobject_cast<DFontMgrMainWindow *>(m_parentWidget);
-            if (mw)
-                mw->addPathWatcher(filePath);
+            m_dataThread->addPathWatcher(filePath);
         }
 
         QStandardItem *item = new QStandardItem;
@@ -115,7 +118,6 @@ void DFontPreviewListView::onFinishedDataLoad()
     initConnections();
 
     m_bLoadDataFinish = true;
-    deleteFontFiles();
     emit onLoadFontsStatus(1);
 }
 
@@ -151,7 +153,21 @@ QRect DFontPreviewListView::getCollectionIconRect(QRect visualRect)
     return QRect(visualRect.right() - 10 - 33, visualRect.top() + 10 - 5, collectIconSize, collectIconSize);
 }
 
-void DFontPreviewListView::deleteFontModelIndex(DFontInfo fontInfo)
+void DFontPreviewListView::deleteFontModelIndex(const DFontInfo &fontInfo)
+{
+    for (int i = 0; i < m_fontPreviewProxyModel->rowCount(); i++) {
+        QModelIndex modelIndex = m_fontPreviewProxyModel->index(i, 0);
+        QVariant varModel = m_fontPreviewProxyModel->data(modelIndex, Qt::DisplayRole);
+        DFontPreviewItemData itemData = varModel.value<DFontPreviewItemData>();
+
+        if (itemData.fontInfo.filePath == fontInfo.filePath) {
+            m_fontPreviewProxyModel->removeRow(i, modelIndex.parent());
+            break;
+        }
+    }
+}
+
+void DFontPreviewListView::deleteFontModelIndex(const QString &filePath)
 {
     if (m_fontPreviewItemModel && m_fontPreviewItemModel->rowCount() == 0) {
         return;
@@ -162,11 +178,19 @@ void DFontPreviewListView::deleteFontModelIndex(DFontInfo fontInfo)
         QVariant varModel = m_fontPreviewProxyModel->data(modelIndex, Qt::DisplayRole);
         DFontPreviewItemData itemData = varModel.value<DFontPreviewItemData>();
 
-        if (itemData.fontInfo.filePath == fontInfo.filePath) {
-            m_fontPreviewProxyModel->removeRow(modelIndex.row(), modelIndex.parent());
+        if (itemData.fontInfo.filePath == filePath) {
+            m_fontPreviewProxyModel->removeRow(i, modelIndex.parent());
             break;
         }
     }
+}
+
+bool DFontPreviewListView::isDeleting()
+{
+    DFontMgrMainWindow *mw = qobject_cast<DFontMgrMainWindow *>(m_parentWidget);
+    if (mw)
+        return mw->isDeleting();
+    return false;
 }
 
 void DFontPreviewListView::mouseMoveEvent(QMouseEvent *event)
@@ -287,7 +311,7 @@ void DFontPreviewListView::setModel(QAbstractItemModel *model)
     DListView::setModel(model);
 }
 
-bool DFontPreviewListView::enableFont(DFontPreviewItemData itemData)
+bool DFontPreviewListView::enableFont(const DFontPreviewItemData &itemData)
 {
     QString fontConfigPath = DFMXmlWrapper::m_fontConfigFilePath;
     bool isCreateSuccess = DFMXmlWrapper::createFontConfigFile(fontConfigPath);
@@ -307,7 +331,7 @@ bool DFontPreviewListView::enableFont(DFontPreviewItemData itemData)
     return false;
 }
 
-bool DFontPreviewListView::disableFont(DFontPreviewItemData itemData)
+bool DFontPreviewListView::disableFont(const DFontPreviewItemData &itemData)
 {
     QString fontConfigPath = DFMXmlWrapper::m_fontConfigFilePath;
     bool isCreateSuccess = DFMXmlWrapper::createFontConfigFile(fontConfigPath);
@@ -457,7 +481,7 @@ void DFontPreviewListView::updateChangedFile(const QString &path)
         filePath = m_deletedFiles.takeFirst();
     }
 
-    if (!m_bLoadDataFinish && !m_deletedFiles.contains(path)) {
+    if ((isDeleting() || !m_bLoadDataFinish) && !m_deletedFiles.contains(path)) {
         m_deletedFiles.append(path);
         return;
     }
@@ -466,28 +490,26 @@ void DFontPreviewListView::updateChangedFile(const QString &path)
 
 void DFontPreviewListView::updateChangedDir(const QString &path)
 {
-    if (!m_bLoadDataFinish && !m_deletedFiles.contains(path)) {
+    if ((isDeleting() || !m_bLoadDataFinish) && !m_deletedFiles.contains(path)) {
         m_deletedFiles.append(path);
         return;
     }
     deleteFontFile(path);
 }
 
-void DFontPreviewListView::deleteFontFiles()
+void DFontPreviewListView::deleteFontFiles(const QStringList files)
 {
-    while (!m_deletedFiles.isEmpty()) {
-        QString filePath = m_deletedFiles.takeFirst();
+    for(QString filePath : files) {
         deleteFontFile(filePath);
     }
 }
 
-void DFontPreviewListView::deleteFontFile(const QString &path)
+void DFontPreviewListView::deleteFontFile(const QString &path, bool self)
 {
     QFileInfo fi(path);
     bool isDir = fi.isDir();
-    DFontMgrMainWindow *mw = qobject_cast<DFontMgrMainWindow *>(m_parentWidget);
     QList<DFontPreviewItemData> fontInfoList = m_dataThread->getFontModelList();
-    //qDebug() << fontInfoList.size();
+    qDebug() << fontInfoList.size();
     for (int i = 0; i < fontInfoList.size(); ++i) {
         DFontPreviewItemData itemData = fontInfoList.at(i);
         QString filePath = itemData.fontInfo.filePath;
@@ -503,19 +525,73 @@ void DFontPreviewListView::deleteFontFile(const QString &path)
             DFMDBManager::instance()->deleteFontInfoByFontMap(delInfo);
             deleteFontModelIndex(itemData.fontInfo);
             m_dataThread->removeFontData(itemData);
-            if (mw)
-                mw->removePathWatcher(filePath);
+            m_dataThread->removePathWatcher(filePath);
             if (!isDir)
                 break;
         }
     }
 
 
-    if (mw && isDir) {
+    if (isDir) {
         if (!QFileInfo(QDir::homePath() + "/.local/share/fonts").exists()) {
-            mw->removePathWatcher(QDir::homePath() + "/.local/share/fonts");
+            m_dataThread->removePathWatcher(QDir::homePath() + "/.local/share/fonts");
         } else if (!QFileInfo(QDir::homePath() + "/.local/share/").exists()) {
-            mw->removePathWatcher(QDir::homePath() + "/.local/share/");
+            m_dataThread->removePathWatcher(QDir::homePath() + "/.local/share/");
         }
     }
+}
+
+QStringList DFontPreviewListView::selectedFonts(int * deleteCnt, int * systemCnt)
+{
+    QModelIndexList list = selectedIndexes(); //SelectedIndices();//selectionModel()->
+    QStringList ret;
+    int deleteNum = 0;
+    int systemNum = 0;
+    for (QModelIndex index : list) {
+        QVariant varModel = m_fontPreviewProxyModel->data(index, Qt::DisplayRole);
+        DFontPreviewItemData itemData = varModel.value<DFontPreviewItemData>();
+        if (!itemData.fontInfo.filePath.isEmpty()) {
+            if (itemData.fontInfo.isSystemFont) {
+                systemNum++;
+            } else {
+                deleteNum++;
+                ret << itemData.fontInfo.filePath;
+            }
+        }
+    }
+
+    if (ret.isEmpty()) {
+        DFontPreviewItemData itemData = currModelData();
+        if (!itemData.fontInfo.filePath.isEmpty()) {
+            if (itemData.fontInfo.isSystemFont) {
+                systemNum++;
+            } else {
+                deleteNum++;
+                ret << itemData.fontInfo.filePath;
+            }
+        }
+    }
+    if (systemCnt)
+        *systemCnt = systemNum;
+    if (deleteCnt)
+        *deleteCnt = deleteNum;
+
+    qDebug() << __FUNCTION__ << ret;
+    return ret;
+}
+
+QList<DFontPreviewItemData> DFontPreviewListView::selectedFontData()
+{
+    QModelIndexList list = selectedIndexes();
+    QList<DFontPreviewItemData> ret;
+    for (QModelIndex index : list) {
+        QVariant varModel = m_fontPreviewProxyModel->data(index, Qt::DisplayRole);
+        DFontPreviewItemData itemData = varModel.value<DFontPreviewItemData>();
+        if (!itemData.fontInfo.filePath.isEmpty())
+            ret << itemData;
+    }
+    if (ret.isEmpty())
+        ret << currModelData();
+    qDebug() << __FUNCTION__ << ret.size();
+    return ret;
 }
