@@ -1109,9 +1109,9 @@ void DFontMgrMainWindow::exportFont()
     QStringList files = m_fontPreviewListView->selectedFonts(&cnt, &systemCnt);
     if (cnt < 1)
         return;
-    QString destDir = QDir::homePath();
+    QString desktopPath = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation) + "/";
     for (QString file : files) {
-        QFile::copy(file, destDir + "/" + QFileInfo(file).fileName());
+        QFile::copy(file, desktopPath + QFileInfo(file).fileName());
     }
     QString title;
     if (cnt <= 1) {
