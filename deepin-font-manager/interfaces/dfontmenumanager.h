@@ -76,7 +76,7 @@ private:
 signals:
 
 public slots:
-    void onRightKeyMenuPopup(DFontPreviewItemData fontData);
+    void onRightKeyMenuPopup(DFontPreviewItemData fontData, bool hasUser);
 };
 
 #endif  // DFONTMENUMANAGER_H

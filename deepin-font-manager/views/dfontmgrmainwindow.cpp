@@ -161,8 +161,11 @@ void DFontMgrMainWindow::initConnections()
     // Initialize rigth menu it state
     QObject::connect(d->rightKeyMenu, &QMenu::aboutToShow, this, [ = ]() {
         DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
+        int cnt = 0;
+        int systemCnt = 0;
+        m_fontPreviewListView->selectedFonts(&cnt, &systemCnt);
 
-        DFontMenuManager::getInstance()->onRightKeyMenuPopup(currItemData);
+        DFontMenuManager::getInstance()->onRightKeyMenuPopup(currItemData, (cnt > 0));
     });
 
     // State bar event

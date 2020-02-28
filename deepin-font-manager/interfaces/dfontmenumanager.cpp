@@ -156,7 +156,7 @@ QAction *DFontMenuManager::getActionByMenuAction(MenuAction maction, MenuType me
     return action;
 }
 
-void DFontMenuManager::onRightKeyMenuPopup(DFontPreviewItemData fontData)
+void DFontMenuManager::onRightKeyMenuPopup(DFontPreviewItemData fontData, bool hasUser)
 {
     // Disable delete menu for system font
     QAction *delAction = DFontMenuManager::getInstance()->getActionByMenuAction(
@@ -172,14 +172,14 @@ void DFontMenuManager::onRightKeyMenuPopup(DFontPreviewItemData fontData)
         DFontMenuManager::M_EnableOrDisable, DFontMenuManager::MenuType::RightKeyMenu);
 
     // Disable delete menu on system font
-    if (nullptr != delAction && fontData.fontInfo.isSystemFont) {
+    if (nullptr != delAction && hasUser) {
         delAction->setDisabled(true);
     } else {
         delAction->setDisabled(false);
     }
 
     // Export menu on system font
-    if (nullptr != exportAction && fontData.fontInfo.isSystemFont) {
+    if (nullptr != exportAction && hasUser) {
         exportAction->setDisabled(true);
     } else {
         exportAction->setDisabled(false);
