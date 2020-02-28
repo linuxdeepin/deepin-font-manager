@@ -172,14 +172,14 @@ void DFontMenuManager::onRightKeyMenuPopup(DFontPreviewItemData fontData, bool h
         DFontMenuManager::M_EnableOrDisable, DFontMenuManager::MenuType::RightKeyMenu);
 
     // Disable delete menu on system font
-    if (nullptr != delAction && hasUser) {
+    if (nullptr != delAction && !hasUser) {
         delAction->setDisabled(true);
     } else {
         delAction->setDisabled(false);
     }
 
     // Export menu on system font
-    if (nullptr != exportAction && hasUser) {
+    if (nullptr != exportAction && !hasUser) {
         exportAction->setDisabled(true);
     } else {
         exportAction->setDisabled(false);
