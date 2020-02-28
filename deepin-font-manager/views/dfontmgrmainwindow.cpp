@@ -27,6 +27,7 @@
 #include <DTitlebar>
 #include <DWidgetUtil>
 #include <DDesktopServices>
+#include <DMessageManager>
 
 class DFontMgrMainWindowPrivate
 {
@@ -1109,26 +1110,21 @@ void DFontMgrMainWindow::exportFont()
     QStringList files = m_fontPreviewListView->selectedFonts(&cnt, &systemCnt);
     if (cnt < 1)
         return;
-    QString desktopPath = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation) + "/";
+    QString desktopPath = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation) + "/" + tr("Fonts") +"/";
+    QDir dir(desktopPath);
+    if (!dir.exists())
+        dir.mkpath(desktopPath);
     for (QString file : files) {
         QFile::copy(file, desktopPath + QFileInfo(file).fileName());
     }
-    QString title;
-    if (cnt <= 1) {
-        title = tr("The font exported to your desktop");
-    } else {
-        title = tr("%1 fonts exported to your desktop").arg(cnt);
-    }
     QString message;
-//    if (systemCnt > 0)
-//        message = tr("");
-    DDialog dlg(title, message);
-    dlg.setModal(true);
-    QTimer::singleShot(2000, this, [this]() {
-        Q_EMIT requestHide();
-    });
-    connect(this, &DFontMgrMainWindow::requestHide, &dlg, &DDialog::close);
-    dlg.exec();
+    if (cnt <= 1) {
+        message = tr("The font exported to your desktop");
+    } else {
+        message = tr("%1 fonts exported to your desktop").arg(cnt);
+    }
+
+    DMessageManager::instance()->sendMessage(this, QIcon(":/images/ok.svg"), message);
 }
 
 void DFontMgrMainWindow::dragEnterEvent(QDragEnterEvent *event)
