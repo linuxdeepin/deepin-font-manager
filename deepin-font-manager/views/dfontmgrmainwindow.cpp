@@ -774,8 +774,9 @@ void DFontMgrMainWindow::handleMenuEvent(QAction *action)
             }
             break;
             case DFontMenuManager::MenuAction::M_EnableOrDisable: {
-                QModelIndex modelIndex = m_fontPreviewListView->currModelIndex();
-                emit m_fontPreviewListView->onClickEnableButton(modelIndex);
+                DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
+                QModelIndexList itemIndexes = m_fontPreviewListView->selectedIndex(nullptr, nullptr);
+                emit m_fontPreviewListView->onClickEnableButton(itemIndexes, !currItemData.isEnabled);
             }
             break;
             case DFontMenuManager::MenuAction::M_Faverator: {
@@ -1127,7 +1128,7 @@ void DFontMgrMainWindow::exportFont()
         message = tr("%1 fonts exported to your desktop").arg(cnt);
     }
 
-    DMessageManager::instance()->sendMessage(this, QIcon(":/images/ok.svg"), message);
+    DMessageManager::instance()->sendMessage(m_fontPreviewListView, QIcon(":/images/ok.svg"), message);
 }
 
 void DFontMgrMainWindow::dragEnterEvent(QDragEnterEvent *event)

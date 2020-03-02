@@ -44,7 +44,6 @@ public slots:
     void updateChangedDir(const QString &path);
     void addPathWatcher(const QString &path);
     void removePathWatcher(const QString &path);
-    void deleteFontModelIndex(const QString &filePath);
     void onFileChanged(const QStringList files);
 
 protected:

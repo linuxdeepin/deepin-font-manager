@@ -44,7 +44,6 @@ public:
     QModelIndex currModelIndex();
     DFontPreviewItemData currModelData();
     DFontPreviewProxyModel *getFontPreviewProxyModel();
-    void removeRowAtIndex(QModelIndex modelIndex);
     void clearPressState();
     void clearHoverState();
     void updateChangedFile(const QString &path);
@@ -52,7 +51,8 @@ public:
     void deleteFontFiles(const QStringList files);
     void deleteFontFile(const QString &path, bool self = false);
     QStringList selectedFonts(int *deleteCnt, int *systemCnt);
-    QList<DFontPreviewItemData> selectedFontData();
+    QList<DFontPreviewItemData> selectedFontData(int *deleteCnt, int *systemCnt);
+    QModelIndexList selectedIndex(int *deleteCnt, int *systemCnt);
     void deleteFontModelIndex(const QString &filePath);
     inline bool isDeleting();
 
@@ -85,7 +85,7 @@ private:
 
 signals:
     //用于DFontPreviewListView内部使用的信号
-    void onClickEnableButton(QModelIndex index);
+    void onClickEnableButton(QModelIndexList index, bool setValue);
     void onClickCollectionButton(QModelIndex index);
     void onShowContextMenu(QModelIndex index);
 
@@ -96,13 +96,18 @@ signals:
     void onLoadFontsStatus(int type);
 
     void requestDeleted(const QStringList files);
+    void itemAdded(const DFontPreviewItemData &data);
+    void itemRemoved(const DFontPreviewItemData &data);
+
 
 public slots:
 
-    void onListViewItemEnableBtnClicked(QModelIndex index);
+    void onListViewItemEnableBtnClicked(QModelIndexList itemIndexes, bool setValue);
     void onListViewItemCollectionBtnClicked(QModelIndex index);
     void onListViewShowContextMenu(QModelIndex index);
     void onFinishedDataLoad();
+    void onItemAdded(const DFontPreviewItemData &itemData);
+    void onItemRemoved(const DFontPreviewItemData &itemData);
 };
 
 #endif  // DFONTPREVIEWLISTVIEW_H

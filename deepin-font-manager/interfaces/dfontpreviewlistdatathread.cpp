@@ -31,7 +31,6 @@ DFontPreviewListDataThread::DFontPreviewListDataThread(DFontPreviewListView *vie
 DFontPreviewListDataThread::~DFontPreviewListDataThread()
 {
 }
-
 void DFontPreviewListDataThread::doWork()
 {
     initFileSystemWatcher();
@@ -131,11 +130,6 @@ void DFontPreviewListDataThread::removePathWatcher(const QString &path)
     if (m_fsWatcher == nullptr)
         return;
     m_fsWatcher->removePath(path);
-}
-
-void DFontPreviewListDataThread::deleteFontModelIndex(const QString &filePath)
-{
-    m_view->deleteFontModelIndex(filePath);
 }
 
 void DFontPreviewListDataThread::onFileChanged(const QStringList files)
