@@ -361,7 +361,7 @@ bool DFontPreviewListView::disableFont(const DFontPreviewItemData &itemData)
 
 void DFontPreviewListView::onListViewItemEnableBtnClicked(QModelIndexList itemIndexes, bool setValue)
 {
-    DFontMgrMainWindow *mw = qobject_cast<DFontMgrMainWindow *>(m_parentWidget);
+    QString fontName;
     for (QModelIndex index : itemIndexes) {
         DFontPreviewItemData itemData =
                 qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(index));
@@ -369,18 +369,27 @@ void DFontPreviewListView::onListViewItemEnableBtnClicked(QModelIndexList itemIn
 
         qDebug() << __FUNCTION__ << "familyName" << itemData.fontInfo.familyName << endl;
 
-        QString deactivatedMessage =
-                QString("%1 %2").arg(itemData.strFontName).arg(DApplication::translate("MessageManager", "deactivated"));
         if (itemData.isEnabled) {
             enableFont(itemData);
         } else {
+            if (index == itemIndexes[0])
+                fontName = itemData.strFontName;
             disableFont(itemData);
-            DMessageManager::instance()->sendMessage(this, QIcon(":/images/ok.svg"), deactivatedMessage);
         }
 
         DFMDBManager::instance()->updateFontInfoByFontId(itemData.strFontId, "isEnabled", QString::number(itemData.isEnabled));
 
         m_fontPreviewProxyModel->setData(index, QVariant::fromValue(itemData), Qt::DisplayRole);
+    }
+
+    if (!setValue) {
+        QString message;
+        if (itemIndexes.size() == 1) {
+                message = QString("%1 %2").arg(fontName).arg(DApplication::translate("MessageManager", "deactivated"));
+        } else if (itemIndexes.size() > 1) {
+            message = tr("The fonts have been deactivated");
+        }
+        DMessageManager::instance()->sendMessage(this, QIcon(":/images/ok.svg"), message);
     }
 }
 
