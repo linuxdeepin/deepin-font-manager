@@ -73,6 +73,4 @@ void FontIconText::paintEvent(QPaintEvent *event)
     QRect txtRect = picRect.adjusted((picRect.width() - width) / 2, (picRect.height() - height) / 2, 0, 0);
     painter.setFont(m_font);
     painter.drawText(txtRect, m_text);
-
-
 }
