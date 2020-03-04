@@ -11,6 +11,7 @@
 DWIDGET_USE_NAMESPACE
 
 struct DFontPreviewItemData;
+class FontIconText;
 class DFontInfoDialog : public DFontBaseDialog
 {
     Q_OBJECT
@@ -33,7 +34,7 @@ public slots:
 private:
     QWidget* m_mainFrame {nullptr};
 
-    DLabel* m_fontLogo {nullptr};
+    FontIconText *m_fontLogo {nullptr};
     DLabel* m_fontFileName {nullptr};
 
     DFrame* m_basicInfoFrame {nullptr};

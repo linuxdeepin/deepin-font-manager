@@ -385,7 +385,7 @@ void DFontPreviewListView::onListViewItemEnableBtnClicked(QModelIndexList itemIn
     if (!setValue) {
         QString message;
         if (itemIndexes.size() == 1) {
-                message = QString("%1 %2").arg(fontName).arg(DApplication::translate("MessageManager", "deactivated"));
+            message = QString("%1 %2").arg(fontName).arg(DApplication::translate("MessageManager", "deactivated"));
         } else if (itemIndexes.size() > 1) {
             message = tr("The fonts have been deactivated");
         }

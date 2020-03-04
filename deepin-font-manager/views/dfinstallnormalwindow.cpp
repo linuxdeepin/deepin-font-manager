@@ -40,14 +40,12 @@ void DFInstallNormalWindow::initUI()
     mainLayout->setSpacing(0);
     mainLayout->setContentsMargins(10, 0, 0, 0);
 
-    QString fontFamily = Utils::loadFontFamilyFromFiles(":/images/SourceHanSansCN-Medium.ttf");
-
     QVBoxLayout *contentLayout = new QVBoxLayout();
     contentLayout->setSpacing(0);
     contentLayout->setContentsMargins(10, 0, 0, 0);
 
     m_progressStepLabel = new DLabel(this);
-    QFont pslFont(fontFamily);
+    QFont pslFont = m_progressStepLabel->font();
     pslFont.setWeight(QFont::Medium);
     //pslFont.setPixelSize(14);
     m_progressStepLabel->setFont(pslFont);
