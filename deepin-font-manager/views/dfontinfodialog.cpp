@@ -39,6 +39,7 @@ void DFontInfoDialog::initUI()
 
     // Font logo
     m_fontLogo = new FontIconText(":/images/font-info-logo.svg", this);
+    DFontSizeManager::instance()->bind(m_fontLogo, DFontSizeManager::T4);
     m_fontLogo->setFontName(m_fontInfo->fontInfo.familyName, m_fontInfo->fontInfo.styleName);
 
     // Font file name
