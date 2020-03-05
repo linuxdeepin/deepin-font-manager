@@ -297,7 +297,6 @@ void DFQuickInstallWindow::onFontInstallFinished()
 
         itemData.fontInfo.filePath = target;
 
-
         if (itemData.fontInfo.styleName.length() > 0) {
             itemData.strFontName =
                     QString("%1-%2").arg(itemData.fontInfo.familyName).arg(itemData.fontInfo.styleName);
@@ -322,4 +321,8 @@ void DFQuickInstallWindow::onFontInstallFinished()
 
         m_dbManager->endTransaction();
     }
+
+    QStringList list;
+    list << m_installFiles[0];
+    Q_EMIT requestShowMainWindow(list);
 }

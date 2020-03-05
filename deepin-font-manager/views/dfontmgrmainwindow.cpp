@@ -609,8 +609,8 @@ void DFontMgrMainWindow::initFontPreviewListView(QWidget *parent)
     noResultLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     noResultLabel->setFixedHeight(30);
     noResultLabel->setText(DApplication::translate("SearchBar", "No search results"));
-    QString fontFamilyName = Utils::loadFontFamilyFromFiles(":/images/SourceHanSansCN-Normal.ttf");
-    QFont labelFont(fontFamilyName);
+
+    QFont labelFont = noResultLabel->font();
     labelFont.setWeight(QFont::ExtraLight);
     noResultLabel->setFont(labelFont);
     noResultLabel->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
@@ -631,8 +631,8 @@ void DFontMgrMainWindow::initFontPreviewListView(QWidget *parent)
     noInstallLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     noInstallLabel->setFixedHeight(30);
     noInstallLabel->setText(DApplication::translate("SearchBar", "No fonts"));
-    QString fontFamilyNameNoInstall = Utils::loadFontFamilyFromFiles(":/images/SourceHanSansCN-Normal.ttf");
-    QFont labelFontNoInstall(fontFamilyNameNoInstall);
+
+    QFont labelFontNoInstall = noInstallLabel->font();
     labelFontNoInstall.setWeight(QFont::ExtraLight);
     noInstallLabel->setFont(labelFontNoInstall);
     noInstallLabel->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
@@ -989,12 +989,15 @@ void DFontMgrMainWindow::onLeftSiderBarItemClicked(int index)
     onPreviewTextChanged(previewText);
 }
 
-void DFontMgrMainWindow::onFontInstallFinished()
+void DFontMgrMainWindow::onFontInstallFinished(QStringList fileList)
 {
     Q_D(DFontMgrMainWindow);
 
     m_fontPreviewListView->refreshFontListData();
     d->textInputEdit->textChanged(d->textInputEdit->text());
+    if (!fileList.isEmpty()) {
+        showInstalledFiles(fileList);
+    }
 }
 
 void DFontMgrMainWindow::onFontUninstallFinished(const QStringList &uninstallIndex)
@@ -1078,6 +1081,9 @@ void DFontMgrMainWindow::onLoadStatus(int type)
         default:
             break;
         }
+    }
+    if (type == 1 && !m_fileList.isEmpty()) {
+        showInstalledFiles(m_fileList);
     }
 }
 
@@ -1252,4 +1258,13 @@ void DFontMgrMainWindow::showAllShortcut()
     shortcutViewProcess->startDetached("deepin-shortcut-viewer", shortcutString);
 
     connect(shortcutViewProcess, SIGNAL(finished(int)), shortcutViewProcess, SLOT(deleteLater()));
+}
+
+void DFontMgrMainWindow::showInstalledFiles(QStringList fileList)
+{
+    D_D(DFontMgrMainWindow);
+
+    d->leftSiderBar->setCurrentIndex(d->leftSiderBar->model()->index(DSplitListWidget::UserFont + 1, 0));
+    onLeftSiderBarItemClicked(DSplitListWidget::UserFont);
+    m_fontPreviewListView->selectFonts(fileList);
 }

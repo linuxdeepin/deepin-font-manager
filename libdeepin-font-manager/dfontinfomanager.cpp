@@ -181,6 +181,22 @@ QString DFontInfoManager::getInstalledFontPath(const DFontInfo &info)
     return filePath;
 }
 
+QString DFontInfoManager::getInstalledFontPath(const QString &filePath)
+{
+    const QList<DFontInfo> famList = dataList;
+    QStringList list = getFamilyStyleName(filePath);
+    if (list.isEmpty() || list.size() < 2)
+        return QString();
+
+    for (const auto &famItem : famList) {
+        if (list[0] == famItem.familyName && list[1] == famItem.styleName) {
+            return famItem.filePath;
+        }
+    }
+
+    return QString();
+}
+
 QString DFontInfoManager::getFontType(const QString &filePath)
 {
     const QFileInfo fileInfo(filePath);
@@ -193,6 +209,39 @@ QString DFontInfoManager::getFontType(const QString &filePath)
     } else {
         return DApplication::translate("FontDetailDailog", "Unknown");
     }
+}
+
+QStringList DFontInfoManager::getFamilyStyleName(const QString &filePath)
+{
+    QStringList ret;
+    int appFontId = QFontDatabase::addApplicationFont(filePath);
+    QStringList fontFamilyList = QFontDatabase::applicationFontFamilies(appFontId);
+    QString fontFamily;
+    QString styleName;
+    if (fontFamilyList.size() > 0) {
+        fontFamily = QString(fontFamilyList.first().toLocal8Bit()).trimmed();
+    }
+
+    FT_Library m_library = nullptr;
+    FT_Face m_face = nullptr;
+
+    FT_Init_FreeType(&m_library);
+    FT_Error error = FT_New_Face(m_library, filePath.toUtf8().constData(), 0, &m_face);
+
+    if (error != 0) {
+        return ret;
+    }
+
+    fontFamily = QString::fromUtf8(DFreeTypeUtil::getFontFamilyName(m_face)).trimmed();
+
+    if (fontFamily.isEmpty())
+        fontFamily = QString::fromLatin1(m_face->family_name).trimmed();
+
+    styleName = QString::fromLatin1(m_face->style_name);
+
+    ret << fontFamily << styleName;
+
+    return ret;
 }
 
 DFontInfo DFontInfoManager::getFontInfo(const QString &filePath)

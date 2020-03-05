@@ -55,7 +55,9 @@ public:
     QStringList getAllChineseFontPath() const;
     QStringList getAllMonoSpaceFontPath() const;
     QString getInstalledFontPath(const DFontInfo &info);
+    QString getInstalledFontPath(const QString &filePath);
     QString getFontType(const QString &filePath);
+    QStringList getFamilyStyleName(const QString &filePath);
     DFontInfo getFontInfo(const QString &filePath);
     bool isFontInstalled(DFontInfo data);
     bool checkDBFontSameName(const DFontInfo &info);

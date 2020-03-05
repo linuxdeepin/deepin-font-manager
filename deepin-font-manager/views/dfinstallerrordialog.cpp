@@ -185,8 +185,7 @@ void DFInstallErrorDialog::initInstallErrorFontViews()
     QButtonGroup *btnGroup = new QButtonGroup(this);
     btnGroup->setExclusive(true);
 
-    QString fontFamilyName = Utils::loadFontFamilyFromFiles(":/images/SourceHanSansCN-Medium.ttf");
-    QFont btnFont(fontFamilyName);
+    QFont btnFont = font();
     //btnFont.setPixelSize(14);
 
     m_quitInstallBtn = new DPushButton;

@@ -122,8 +122,7 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
         DApplication::style()->drawPrimitive(QStyle::PE_IndicatorCheckBox, &checkBoxOption, painter,
                                              &checkBox);
 
-        QString nameFontFamily = Utils::loadFontFamilyFromFiles(":/images/SourceHanSansCN-Medium.ttf");
-        QFont nameFont(nameFontFamily);
+        QFont nameFont = painter->font();
         nameFont.setPixelSize(DFontSizeManager::instance()->fontPixelSize(DFontSizeManager::T6));
         painter->setFont(nameFont);
         DStyleHelper styleHelper;

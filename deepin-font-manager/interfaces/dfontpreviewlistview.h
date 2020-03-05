@@ -55,6 +55,7 @@ public:
     QModelIndexList selectedIndex(int *deleteCnt, int *systemCnt);
     void deleteFontModelIndex(const QString &filePath);
     inline bool isDeleting();
+    void selectFonts(QStringList fileList);
 
 private:
     void initConnections();

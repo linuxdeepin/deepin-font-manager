@@ -100,8 +100,7 @@ void DFInstallErrorListDelegate::paint(QPainter *painter, const QStyleOptionView
                                        bgRect.width()-fontNameLeft-statusLabelMaxWidth,
                                        checkboxRect.height()+10);
 
-        QString fontFamilyName = Utils::loadFontFamilyFromFiles(":/images/SourceHanSansCN-Medium.ttf");
-        QFont nameFont(fontFamilyName);
+        QFont nameFont = painter->font();
         nameFont.setPixelSize(DFontSizeManager::instance()->fontPixelSize(DFontSizeManager::T6));
         painter->setFont(nameFont);
 
@@ -125,7 +124,7 @@ void DFInstallErrorListDelegate::paint(QPainter *painter, const QStyleOptionView
                                         statusLabelMaxWidth,
                                         bgRect.height());
 
-        QFont installStatusFont(fontFamilyName);
+        QFont installStatusFont = painter->font();
         installStatusFont.setPixelSize(DFontSizeManager::instance()->fontPixelSize(DFontSizeManager::T9));
         painter->setFont(installStatusFont);
 

@@ -50,7 +50,7 @@ signals:
     void installPositionChanged(const QString &instPath);
     void reinstalling();
     void uninstalling();
-    void installFinished(int state);
+    void installFinished(int state, QStringList fileList);
     void reinstallFinished();
     void uninstallFinished();
     void uninstallFontFinished(const QStringList &uninstallIndex);

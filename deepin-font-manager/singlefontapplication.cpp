@@ -86,6 +86,35 @@ void SingleFontApplication::activateWindow() {
             m_qspQuickWnd.reset(new DFQuickInstallWindow());
             Dtk::Widget::moveToCenter(m_qspQuickWnd.get());
 
+            DFQuickInstallWindow *qw = qobject_cast<DFQuickInstallWindow *>(m_qspQuickWnd.get());
+
+            connect(qw, &DFQuickInstallWindow::requestShowMainWindow, this, [=](QStringList fileList){
+                qDebug() << "requestShowMainWindow " << fileList;
+                if (nullptr == m_qspMainWnd.get()) {
+                    m_qspMainWnd.reset(new
+                                       DFontMgrMainWindow());
+                    int windowWidth = reinterpret_cast<DFontMgrMainWindow*>(
+                                m_qspMainWnd.get())->m_winWidth;
+                    int windowHeight = reinterpret_cast<DFontMgrMainWindow*>(
+                                m_qspMainWnd.get())->m_winHight;
+
+                    m_qspMainWnd->setMinimumSize(DEFAULT_WINDOWS_WIDTH, DEFAULT_WINDOWS_HEIGHT);
+                    if (DEFAULT_WINDOWS_WIDTH <= windowWidth && DEFAULT_WINDOWS_HEIGHT <= windowHeight) {
+                        m_qspMainWnd->resize(windowWidth, windowHeight);
+                    }
+
+                    Dtk::Widget::moveToCenter(m_qspMainWnd.get());
+
+                    m_qspMainWnd->show();
+                    DFontMgrMainWindow *mw = qobject_cast<DFontMgrMainWindow *>(m_qspMainWnd.get());
+                    mw->setFileList(fileList);
+                } else {
+                    m_qspMainWnd->setWindowState(Qt::WindowActive);
+                    m_qspMainWnd->activateWindow(); // Reactive main window
+                    //m_qspMainWnd->resize(DEFAULT_WINDOWS_WIDTH, DEFAULT_WINDOWS_HEIGHT);
+                }
+            });
+
             m_qspQuickWnd->show();
         } else {
             m_qspQuickWnd->setWindowState(Qt::WindowActive);

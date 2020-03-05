@@ -49,6 +49,7 @@ public:
     void setDeleteFinish();
     inline DFontManager *getFontManager()  { return m_fontManager;}
     inline bool isDeleting() { return m_fIsDeleting;}
+    inline void setFileList(QStringList list) { m_fileList = list; }
 
     //Main window Size
     int m_winHight;
@@ -75,6 +76,7 @@ protected:
     void delCurrentFont();
     void exportFont();
     void showAllShortcut();
+    void showInstalledFiles(QStringList fileList);
 
     //Add drag install
     void dragEnterEvent(QDragEnterEvent *event) override;
@@ -103,7 +105,7 @@ public slots:
     void onFontSizeChanged(int fontSize);
 
     void onLeftSiderBarItemClicked(int index);
-    void onFontInstallFinished();
+    void onFontInstallFinished(QStringList fileList);
     void onFontUninstallFinished(const QStringList &uninstallIndex);
 
     void onFontListViewRowCountChanged(unsigned int bShow);
@@ -142,6 +144,7 @@ protected:
     //is it in uninstalling font flow
     //Avoid start multi delete confirm dialog
     volatile bool m_fIsDeleting {false};
+    QStringList m_fileList;
     DFInstallNormalWindow  *m_dfNormalInstalldlg {nullptr};
 
     QScopedPointer<DFQuickInstallWindow> m_quickInstallWnd;

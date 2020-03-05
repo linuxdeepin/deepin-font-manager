@@ -24,9 +24,6 @@
         <file>images/dark_collection_hover.svg</file>
         <file>images/dark_uncollection_hover.svg</file>
         <file>images/dark_uncollection_normal.svg</file>
-        <file>images/SourceHanSansCN-Medium.ttf</file>
-        <file>images/SourceHanSansCN-Normal.ttf</file>
-        <file>images/SourceHanSansCN-Bold.ttf</file>
         <file>images/ok.svg</file>
     </qresource>
 </RCC>

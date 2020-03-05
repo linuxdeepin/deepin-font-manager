@@ -51,7 +51,7 @@ protected slots:
     void showInstallErrDlg();
 signals:
     void batchReinstall(QStringList reinstallFiles);
-    void finishFontInstall();
+    void finishFontInstall(QStringList fileList);
 
 private:
     enum InstallState { Install, reinstall, damaged };

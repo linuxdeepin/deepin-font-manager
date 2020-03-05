@@ -125,7 +125,7 @@ void DFInstallNormalWindow::initConnections()
     connect(m_fontManager, &DFontManager::batchInstall, this,
             &DFInstallNormalWindow::onProgressChanged);
 
-    connect(m_fontManager, &DFontManager::installFinished, this, [=](int state) {
+    connect(m_fontManager, &DFontManager::installFinished, this, [=](int state, QStringList fileList) {
         // ToDo:
         //   May send signal to mainwindow refresh new installed font
         // QMIT notfiyRefresh;
@@ -146,7 +146,15 @@ void DFInstallNormalWindow::initConnections()
             //TODO:
             //   Notify UI refresh after installtion.
             // (need to refresh everytime???)
-            emit finishFontInstall();
+            QStringList outfileList;
+            for (QString file : fileList) {
+                outfileList << file.split("|")[0];
+            }
+            for (QString file : m_deleteFiles) {
+                if (!outfileList.contains(file))
+                    outfileList << file;
+            }
+            emit finishFontInstall(outfileList);
 
             if (ifNeedShowExceptionWindow()) {
                 showInstallErrDlg();
@@ -286,9 +294,10 @@ void DFInstallNormalWindow::batchInstall()
     //dfont-install don't need query database anymore
     QStringList installListWithFamliyName;
     foreach(auto it, installList) {
-        DFontInfo fontInfo = m_fontInfoManager->getFontInfo(it);
-        QString familyName = fontInfo.familyName;
-
+        QString familyName;
+        QStringList familyStyleList = m_fontInfoManager->getFamilyStyleName(it);
+        if (familyStyleList.size() == 2)
+            familyName = familyStyleList[0];
          installListWithFamliyName.append(it + "|" + familyName);
 
          qDebug() << " Prepare install file: " << it + "|" + familyName;

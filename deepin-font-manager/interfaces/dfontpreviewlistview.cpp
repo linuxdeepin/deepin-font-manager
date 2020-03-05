@@ -200,6 +200,36 @@ bool DFontPreviewListView::isDeleting()
     return false;
 }
 
+void DFontPreviewListView::selectFonts(QStringList fileList)
+{
+    QModelIndexList indexes;
+    QItemSelectionModel* selection_model = selectionModel();
+    selection_model->reset();
+    QItemSelection selection;
+
+    QStringList outlist;
+    for (QString file : fileList) {
+        QString target = DFontInfoManager::instance()->getInstalledFontPath(file);
+        if (!target.isEmpty())
+            outlist << target;
+    }
+
+    for (int i = 0; i < getFontPreviewProxyModel()->rowCount(); ++i) {
+        QModelIndex index = getFontPreviewProxyModel()->index(i, 0);
+        DFontPreviewItemData itemData =
+            qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(index));
+
+        if (outlist.contains(itemData.fontInfo.filePath)) {
+            QModelIndex left = m_fontPreviewProxyModel->index(index.row(), 0);
+            QModelIndex right = m_fontPreviewProxyModel->index(index.row(), m_fontPreviewProxyModel->columnCount() - 1);
+            QItemSelection sel(left, right);
+            selection.merge(sel, QItemSelectionModel::Select);
+        }
+    }
+    qDebug() << " selection size " << selection.size();
+    selection_model->select(selection, QItemSelectionModel::Select);
+}
+
 void DFontPreviewListView::mouseMoveEvent(QMouseEvent *event)
 {
     DListView::mouseMoveEvent(event);

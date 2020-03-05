@@ -87,8 +87,7 @@ void DNoFocusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
             //绘制标题
             QRect fontNameRect = QRect(rect.left() + 20, rect.top() + (rect.height() - 20) / 2, rect.width() - 20, 20);
 
-            QString fontFamilyName = Utils::loadFontFamilyFromFiles(":/images/SourceHanSansCN-Medium.ttf");
-            QFont nameFont(fontFamilyName);
+            QFont nameFont = painter->font();
             nameFont.setWeight(QFont::Medium);
             nameFont.setPixelSize(DFontSizeManager::instance()->fontPixelSize(DFontSizeManager::T6));
             painter->setFont(nameFont);

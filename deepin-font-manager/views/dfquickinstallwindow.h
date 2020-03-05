@@ -37,6 +37,7 @@ protected:
 signals:
     void fileSelected(QStringList fileList);
     void quickInstall();
+    void requestShowMainWindow(QStringList fileList);
 
 public slots:
     void onFileSelected(QStringList fileList);

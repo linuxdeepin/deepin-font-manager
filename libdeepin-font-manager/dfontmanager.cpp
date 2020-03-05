@@ -169,10 +169,10 @@ void DFontManager::handleInstall()
         if (m_instFileList.count() == 1) {
             // emit installFinished();
         }
-        Q_EMIT installFinished(0);
+        Q_EMIT installFinished(0, m_instFileList);
     } else {
         // For:unathorized exit
-        Q_EMIT installFinished(127);
+        Q_EMIT installFinished(127, QStringList());
     }
 }
 
