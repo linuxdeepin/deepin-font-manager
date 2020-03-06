@@ -69,7 +69,7 @@ bool SingleFontApplication::parseCmdLine(){
 
 void SingleFontApplication::activateWindow() {
     //If quick install mode
-    if (m_selectedFiles.size() == 1) {
+    if (m_selectedFiles.size() < 0) {
         qDebug() << "Active quick install window to install file:" << m_selectedFiles;
 
         //Hide normal window in quick mode

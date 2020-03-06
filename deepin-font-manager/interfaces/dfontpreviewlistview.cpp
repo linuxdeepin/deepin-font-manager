@@ -206,9 +206,40 @@ void DFontPreviewListView::selectFonts(QStringList fileList)
     QItemSelectionModel* selection_model = selectionModel();
     selection_model->reset();
     QItemSelection selection;
-    QStringList outlist = DFontInfoManager::instance()->getInstalledFontPath(fileList);
+
+    DFMDBManager *dbManager = DFMDBManager::instance();
+    QList<DFontPreviewItemData> allFontInfo = dbManager->getAllFontInfo();
+    for (auto font : allFontInfo) {
+        qDebug() << "db " << __FUNCTION__ << font.fontInfo.familyName << font.fontInfo.styleName << font.fontInfo.filePath;
+    }
+
+    QStringList outlist;
+    for (QString filePath : fileList) {
+        QStringList list;
+        DFontInfo info = DFontInfoManager::instance()->getFontInfo(filePath);
+        list << info.familyName << info.styleName;
+//        qDebug() << __FUNCTION__ << filePath << list;
+
+        if (list.isEmpty() || list.size() < 2)
+            continue;
+
+        bool found = false;
+        for (const auto &famItem : allFontInfo) {
+//            qDebug() <<  __FUNCTION__ << famItem.fontInfo.familyName << " , " << famItem.fontInfo.styleName;
+            if (list[0].startsWith(famItem.fontInfo.familyName) && list[1] == famItem.fontInfo.styleName) {
+//                qDebug() << "FOUND" << list << famItem.fontInfo.filePath;
+                outlist << famItem.fontInfo.filePath;
+                found = true;
+                break;
+            }
+        }
+        if (!found)
+            qDebug() << __FUNCTION__ << " not found " << list << filePath;
+    }
+
     qDebug() << __FUNCTION__ << "files " << fileList << " installed " << outlist;
 
+    bool isFirst = true;
     for (int i = 0; i < getFontPreviewProxyModel()->rowCount(); ++i) {
         QModelIndex index = getFontPreviewProxyModel()->index(i, 0);
         DFontPreviewItemData itemData =
@@ -219,6 +250,10 @@ void DFontPreviewListView::selectFonts(QStringList fileList)
             QModelIndex right = m_fontPreviewProxyModel->index(index.row(), m_fontPreviewProxyModel->columnCount() - 1);
             QItemSelection sel(left, right);
             selection.merge(sel, QItemSelectionModel::Select);
+            if (isFirst) {
+                isFirst = false;
+                setCurrentIndex(index);
+            }
         }
     }
     qDebug() << " selection size " << selection.size();
