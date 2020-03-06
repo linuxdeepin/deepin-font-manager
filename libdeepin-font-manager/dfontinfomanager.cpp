@@ -181,20 +181,26 @@ QString DFontInfoManager::getInstalledFontPath(const DFontInfo &info)
     return filePath;
 }
 
-QString DFontInfoManager::getInstalledFontPath(const QString &filePath)
+QStringList DFontInfoManager::getInstalledFontPath(const QStringList &fileList)
 {
-    const QList<DFontInfo> famList = dataList;
-    QStringList list = getFamilyStyleName(filePath);
-    if (list.isEmpty() || list.size() < 2)
-        return QString();
+    DFMDBManager *dbManager = DFMDBManager::instance();
+    QList<DFontPreviewItemData> allFontInfo = dbManager->getAllFontInfo();
+    QStringList outlist;
 
-    for (const auto &famItem : famList) {
-        if (list[0] == famItem.familyName && list[1] == famItem.styleName) {
-            return famItem.filePath;
+    for (QString filePath : fileList) {
+        QStringList list = getFamilyStyleName(filePath);
+        if (list.isEmpty() || list.size() < 2)
+            continue;
+
+        for (const auto &famItem : allFontInfo) {
+            if (list[0].startsWith(famItem.fontInfo.familyName) && list[1] == famItem.fontInfo.styleName) {
+                outlist << famItem.fontInfo.filePath;
+                break;
+            }
         }
     }
 
-    return QString();
+    return outlist;
 }
 
 QString DFontInfoManager::getFontType(const QString &filePath)
@@ -256,6 +262,7 @@ DFontInfo DFontInfoManager::getFontInfo(const QString &filePath)
     FT_Error error = FT_New_Face(m_library, filePath.toUtf8().constData(), 0, &m_face);
 
     if (error != 0) {
+        qDebug() << __FUNCTION__ << " error " << error;
         fontInfo.isError = true;
         FT_Done_Face(m_face);
         FT_Done_FreeType(m_library);

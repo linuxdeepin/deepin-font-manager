@@ -20,7 +20,7 @@ DFInstallNormalWindow::DFInstallNormalWindow(const QStringList &files, QWidget *
     , m_verifyTimer(new QTimer(this))
 {
 //    setWindowOpacity(0.5);
-
+    qDebug() << __FUNCTION__ << "install files " << files;
     initUI();
     initConnections();
 }
@@ -129,7 +129,7 @@ void DFInstallNormalWindow::initConnections()
         // ToDo:
         //   May send signal to mainwindow refresh new installed font
         // QMIT notfiyRefresh;
-
+        qDebug() << __FUNCTION__ << " installed file list " << fileList;
         if (0 == state) {
             m_installFiles.clear();
             m_installState = InstallState::reinstall;
@@ -148,12 +148,18 @@ void DFInstallNormalWindow::initConnections()
             // (need to refresh everytime???)
             QStringList outfileList;
             for (QString file : fileList) {
-                outfileList << file.split("|")[0];
+                int index = file.indexOf("|");
+                if (index >= 0) {
+                    file = file.left(index);
+                }
+
+                outfileList << file;
             }
             for (QString file : m_deleteFiles) {
                 if (!outfileList.contains(file))
                     outfileList << file;
             }
+            qDebug() << __FUNCTION__ << "finishFontInstall outlist " << outfileList;
             emit finishFontInstall(outfileList);
 
             if (ifNeedShowExceptionWindow()) {

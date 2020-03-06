@@ -206,13 +206,8 @@ void DFontPreviewListView::selectFonts(QStringList fileList)
     QItemSelectionModel* selection_model = selectionModel();
     selection_model->reset();
     QItemSelection selection;
-
-    QStringList outlist;
-    for (QString file : fileList) {
-        QString target = DFontInfoManager::instance()->getInstalledFontPath(file);
-        if (!target.isEmpty())
-            outlist << target;
-    }
+    QStringList outlist = DFontInfoManager::instance()->getInstalledFontPath(fileList);
+    qDebug() << __FUNCTION__ << "files " << fileList << " installed " << outlist;
 
     for (int i = 0; i < getFontPreviewProxyModel()->rowCount(); ++i) {
         QModelIndex index = getFontPreviewProxyModel()->index(i, 0);

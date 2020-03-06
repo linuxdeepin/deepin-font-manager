@@ -55,7 +55,7 @@ public:
     QStringList getAllChineseFontPath() const;
     QStringList getAllMonoSpaceFontPath() const;
     QString getInstalledFontPath(const DFontInfo &info);
-    QString getInstalledFontPath(const QString &filePath);
+    QStringList getInstalledFontPath(const QStringList &fileList);
     QString getFontType(const QString &filePath);
     QStringList getFamilyStyleName(const QString &filePath);
     DFontInfo getFontInfo(const QString &filePath);

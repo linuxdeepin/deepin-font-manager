@@ -6,7 +6,7 @@
 #include <QMetaType>
 #include <QString>
 
-#define FTM_DEFAULT_PREVIEW_TEXT QString("Don't let your dreams be dreams")
+#define FTM_DEFAULT_PREVIEW_TEXT QString(tr("Don't let your dreams be dreams"))
 #define FTM_DEFAULT_PREVIEW_FONTSIZE 30
 #define FTM_PREVIEW_ITEM_HEIGHT (72+2)
 
