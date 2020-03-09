@@ -212,7 +212,6 @@ void DFontPreviewListView::selectFonts(QStringList fileList)
     for (auto font : allFontInfo) {
         qDebug() << "db " << __FUNCTION__ << font.fontInfo.familyName << font.fontInfo.styleName << font.fontInfo.filePath;
     }
-
     QStringList outlist;
     for (QString filePath : fileList) {
         QStringList list = DFontInfoManager::instance()->getFamilyStyleName(filePath);
@@ -238,8 +237,20 @@ void DFontPreviewListView::selectFonts(QStringList fileList)
     }
 
     qDebug() << __FUNCTION__ << "files " << fileList << " installed " << outlist;
+    if (outlist.size() == 1) {
+        for (int i = 0; i < getFontPreviewProxyModel()->rowCount(); ++i) {
+            QModelIndex index = getFontPreviewProxyModel()->index(i, 0);
+            DFontPreviewItemData itemData =
+                qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(index));
 
-    bool isFirst = true;
+            if (outlist.contains(itemData.fontInfo.filePath)) {
+                setCurrentIndex(index);
+                break;
+            }
+        }
+        return;
+    }
+
     for (int i = 0; i < getFontPreviewProxyModel()->rowCount(); ++i) {
         QModelIndex index = getFontPreviewProxyModel()->index(i, 0);
         DFontPreviewItemData itemData =
@@ -250,10 +261,6 @@ void DFontPreviewListView::selectFonts(QStringList fileList)
             QModelIndex right = m_fontPreviewProxyModel->index(index.row(), m_fontPreviewProxyModel->columnCount() - 1);
             QItemSelection sel(left, right);
             selection.merge(sel, QItemSelectionModel::Select);
-            if (isFirst) {
-                isFirst = false;
-                setCurrentIndex(index);
-            }
         }
     }
     qDebug() << " selection size " << selection.size();
