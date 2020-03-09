@@ -34,10 +34,10 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
 
     DFontMgrMainWindow *mw = qobject_cast<DFontMgrMainWindow *>(m_parentWidget);
     if (mw)
-        connect(mw, &DFontMgrMainWindow::requestDeleted, this, [=](const QStringList files) {
+        connect(mw, &DFontMgrMainWindow::requestDeleted, this, [ = ](const QStringList files) {
 //            deleteFontFiles(files);
-            Q_EMIT requestDeleted(files);
-        });
+        Q_EMIT requestDeleted(files);
+    });
     initFontListData();
     connect(this, &DFontPreviewListView::itemAdded, this, &DFontPreviewListView::onItemAdded);
     connect(this, &DFontPreviewListView::itemRemoved, this, &DFontPreviewListView::onItemRemoved);
@@ -165,7 +165,7 @@ void DFontPreviewListView::initConnections()
     QObject::connect(m_fontPreviewProxyModel,
                      SIGNAL(onFilterFinishRowCountChangedInt(unsigned int)),
                      m_parentWidget,
-                     SLOT(onFontListViewRowCountChanged(unsigned int)));
+                     SLOT(onFontListViewRowCountChanged(unsigned int)), Qt::QueuedConnection);
 }
 
 QRect DFontPreviewListView::getCollectionIconRect(QRect visualRect)
@@ -203,7 +203,7 @@ bool DFontPreviewListView::isDeleting()
 void DFontPreviewListView::selectFonts(QStringList fileList)
 {
     QModelIndexList indexes;
-    QItemSelectionModel* selection_model = selectionModel();
+    QItemSelectionModel *selection_model = selectionModel();
     selection_model->reset();
     QItemSelection selection;
 
@@ -431,7 +431,7 @@ void DFontPreviewListView::onListViewItemEnableBtnClicked(QModelIndexList itemIn
     QString fontName;
     for (QModelIndex index : itemIndexes) {
         DFontPreviewItemData itemData =
-                qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(index));
+            qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(index));
         itemData.isEnabled = setValue;
 
         qDebug() << __FUNCTION__ << "familyName" << itemData.fontInfo.familyName << endl;
@@ -478,7 +478,7 @@ void DFontPreviewListView::onListViewShowContextMenu(QModelIndex index)
     DMenu *rightMenu = m_rightMenu;
 
     //在当前鼠标位置显示
-    connect(rightMenu, &QMenu::aboutToHide, this, [=] {
+    connect(rightMenu, &QMenu::aboutToHide, this, [ = ] {
         clearPressState();
     });
     rightMenu->exec(QCursor::pos());
@@ -516,7 +516,7 @@ void DFontPreviewListView::clearPressState()
         return;
 
     DFontPreviewItemData pressData =
-            qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(m_pressModelIndex));
+        qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(m_pressModelIndex));
     qDebug() << " restore press item " << pressData.strFontName;
     pressData.collectIconStatus = IconNormal;
     m_fontPreviewProxyModel->setData(m_pressModelIndex, QVariant::fromValue(pressData), Qt::DisplayRole);
@@ -529,7 +529,7 @@ void DFontPreviewListView::clearHoverState()
         return;
 
     DFontPreviewItemData itemData =
-            qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(m_hoverModelIndex));
+        qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(m_hoverModelIndex));
     qDebug() << " restore hover item " << itemData.strFontName;
     itemData.collectIconStatus = IconNormal;
     m_fontPreviewProxyModel->setData(m_hoverModelIndex, QVariant::fromValue(itemData), Qt::DisplayRole);
@@ -565,7 +565,7 @@ void DFontPreviewListView::updateChangedDir(const QString &path)
 
 void DFontPreviewListView::deleteFontFiles(const QStringList files)
 {
-    for(QString filePath : files) {
+    for (QString filePath : files) {
         deleteFontFile(filePath);
     }
 }
@@ -608,7 +608,7 @@ void DFontPreviewListView::deleteFontFile(const QString &path, bool self)
     }
 }
 
-QStringList DFontPreviewListView::selectedFonts(int * deleteCnt, int * systemCnt)
+QStringList DFontPreviewListView::selectedFonts(int *deleteCnt, int *systemCnt)
 {
     QModelIndexList list = selectedIndexes();
     QStringList ret;
