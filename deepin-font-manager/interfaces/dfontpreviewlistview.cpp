@@ -215,18 +215,18 @@ void DFontPreviewListView::selectFonts(QStringList fileList)
 
     QStringList outlist;
     for (QString filePath : fileList) {
-        QStringList list;
-        DFontInfo info = DFontInfoManager::instance()->getFontInfo(filePath);
-        list << info.familyName << info.styleName;
+        QStringList list = DFontInfoManager::instance()->getFamilyStyleName(filePath);
 //        qDebug() << __FUNCTION__ << filePath << list;
 
-        if (list.isEmpty() || list.size() < 2)
+        if (list.isEmpty() || list.size() < 2) {
+            qDebug() << __FUNCTION__ << "continue";
             continue;
+        }
 
         bool found = false;
         for (const auto &famItem : allFontInfo) {
 //            qDebug() <<  __FUNCTION__ << famItem.fontInfo.familyName << " , " << famItem.fontInfo.styleName;
-            if (list[0].startsWith(famItem.fontInfo.familyName) && list[1] == famItem.fontInfo.styleName) {
+            if (list[0] == famItem.fontInfo.familyName && list[1] == famItem.fontInfo.styleName) {
 //                qDebug() << "FOUND" << list << famItem.fontInfo.filePath;
                 outlist << famItem.fontInfo.filePath;
                 found = true;

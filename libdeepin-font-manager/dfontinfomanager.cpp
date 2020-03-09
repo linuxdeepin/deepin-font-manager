@@ -238,7 +238,8 @@ QStringList DFontInfoManager::getFamilyStyleName(const QString &filePath)
         return ret;
     }
 
-    fontFamily = QString::fromUtf8(DFreeTypeUtil::getFontFamilyName(m_face)).trimmed();
+    if (fontFamily.isEmpty())
+        fontFamily = QString::fromUtf8(DFreeTypeUtil::getFontFamilyName(m_face)).trimmed();
 
     if (fontFamily.isEmpty())
         fontFamily = QString::fromLatin1(m_face->family_name).trimmed();
