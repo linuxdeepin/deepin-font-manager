@@ -8,6 +8,8 @@
 #include <DLabel>
 #include <QTextEdit>
 
+class QHBoxLayout;
+
 DWIDGET_USE_NAMESPACE
 
 struct DFontPreviewItemData;
@@ -19,12 +21,12 @@ public:
     explicit DFontInfoDialog(DFontPreviewItemData* fontInfo, QWidget* parent = nullptr);
 
     static constexpr int DEFAULT_WINDOW_W = 300;
-    static constexpr int DEFAULT_WINDOW_H = 446;
+    static constexpr int DEFAULT_WINDOW_H = 640;
 
 protected:
     void initUI();
     void initConnections();
-    void updateFontInfo();
+    void addLabelContent(const QString &title, const QString &content);
 
     void resizeEvent(QResizeEvent* event) override;
 signals:
@@ -38,10 +40,7 @@ private:
     DLabel* m_fontFileName {nullptr};
 
     DFrame* m_basicInfoFrame {nullptr};
-    DLabel* m_fontSytleName {nullptr};
-    DLabel* m_fontTypeName {nullptr};
-    DLabel* m_fontVersion {nullptr};
-    DLabel* m_fontDescription {nullptr};
+    QVBoxLayout *m_baseicInfoLayout;
 
     DFontPreviewItemData* m_fontInfo;
 };

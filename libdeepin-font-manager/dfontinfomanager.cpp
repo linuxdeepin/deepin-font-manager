@@ -301,9 +301,7 @@ DFontInfo DFontInfoManager::getFontInfo(const QString &filePath)
             }
 
             // only handle the unicode names for US langid.
-            if (!(sname.platform_id == TT_PLATFORM_MICROSOFT
-                  && sname.encoding_id == TT_MS_ID_UNICODE_CS
-                  && sname.language_id == TT_MS_LANGID_ENGLISH_UNITED_STATES)) {
+            if (sname.language_id == 0) {
                 continue;
             }
 
@@ -315,8 +313,7 @@ DFontInfo DFontInfoManager::getFontInfo(const QString &filePath)
 
             switch (sname.name_id) {
             case TT_NAME_ID_COPYRIGHT:
-                fontInfo.copyright = convertToUtf8((char *)sname.string, sname.string_len);
-                fontInfo.copyright = fontInfo.copyright.simplified();
+                fontInfo.copyright = convertToUtf8((char *)sname.string, sname.string_len).simplified();
                 break;
 
             case TT_NAME_ID_VERSION_STRING:
@@ -325,9 +322,21 @@ DFontInfo DFontInfoManager::getFontInfo(const QString &filePath)
                 break;
 
             case TT_NAME_ID_DESCRIPTION:
-                fontInfo.description = convertToUtf8((char *)sname.string, sname.string_len);
-                fontInfo.description = fontInfo.description.simplified();
+                fontInfo.description = convertToUtf8((char *)sname.string, sname.string_len).simplified();
                 break;
+
+            case TT_NAME_ID_FULL_NAME:
+                fontInfo.fullname = convertToUtf8((char *)sname.string, sname.string_len).simplified();
+                break;
+
+            case TT_NAME_ID_TRADEMARK:
+                fontInfo.trademark = convertToUtf8((char *)sname.string, sname.string_len).simplified();
+                break;
+
+            case TT_NAME_ID_PS_NAME:
+                fontInfo.psname = convertToUtf8((char *)sname.string, sname.string_len).simplified();
+                break;
+
             default:
                 break;
             }

@@ -86,6 +86,9 @@ description TEXT,\
 sysVersion TEXT, \
 isInstalled TINYINT,\
 isError TINYINT,\
+fullname TEXT, \
+psname TEXT, \
+trademark TEXT, \
 isChineseFont TINYINT,\
 isMonoSpace TINYINT)";
 

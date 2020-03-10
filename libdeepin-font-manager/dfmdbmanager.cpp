@@ -69,6 +69,10 @@ DFontInfo DFMDBManager::getDFontInfo(const QMap<QString, QString> &record)
     fontInfo.isInstalled = record.value("isInstalled").toInt();
     fontInfo.isError = record.value("isError").toInt();
     fontInfo.isSystemFont = isSystemFont(fontInfo.filePath);
+    //add
+    fontInfo.fullname = record.value("fullname");
+    fontInfo.psname = record.value("psname");
+    fontInfo.trademark = record.value("trademark");
 
     return fontInfo;
 }
@@ -91,6 +95,10 @@ void DFMDBManager::appendAllKeys(QList<QString> &keyList)
     keyList.append("isError");
     keyList.append("isChineseFont");
     keyList.append("isMonoSpace");
+    //add
+    keyList.append("fullname");
+    keyList.append("psname");
+    keyList.append("trademark");
 }
 
 QList<DFontPreviewItemData> DFMDBManager::getAllFontInfo()
@@ -164,6 +172,10 @@ QMap<QString, QString> DFMDBManager::mapItemData(DFontPreviewItemData itemData)
     mapData.insert("sysVersion", itemData.fontInfo.sysVersion);
     mapData.insert("isInstalled", QString::number(itemData.fontInfo.isInstalled));
     mapData.insert("isError", QString::number(itemData.fontInfo.isError));
+    //add
+    mapData.insert("fullname", itemData.fontInfo.fullname);
+    mapData.insert("psname", itemData.fontInfo.psname);
+    mapData.insert("trademark", itemData.fontInfo.trademark);
 
     return mapData;
 }

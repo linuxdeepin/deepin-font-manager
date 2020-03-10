@@ -31,6 +31,12 @@ struct DFontInfo {
     QString copyright;
     QString description;
     QString sysVersion;
+    //new font info
+    QString fullname;
+    QString psname;
+    QString trademark;
+
+
     bool isInstalled {false};
     bool isError {false};;
     bool isSystemFont {true};  // Default is system font
@@ -38,6 +44,11 @@ struct DFontInfo {
     bool operator==(const DFontInfo &info)
     {
         return info.familyName == familyName && info.styleName == styleName;
+    }
+
+    QString toString() {
+        return "FontInfo : " + familyName + ", " + styleName + ", psname = " + psname + ", trademark = " + trademark
+                + ", fullname = " + fullname;
     }
 };
 
