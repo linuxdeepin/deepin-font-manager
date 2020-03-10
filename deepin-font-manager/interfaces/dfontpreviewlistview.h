@@ -33,6 +33,7 @@ public:
     void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 
     void mouseReleaseEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+    void mouseDoubleClickEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 
     void setSelection(const QRect &rect,
                       QItemSelectionModel::SelectionFlags command) Q_DECL_OVERRIDE;

@@ -32,7 +32,7 @@ void DFDeleteDialog::setMainwindow(DFontMgrMainWindow *win)
 {
     if (m_mainWindow != win && win != nullptr) {
         m_mainWindow = win;
-        quitConn = connect(m_mainWindow, &DFontMgrMainWindow::requestDeleted, [=]() {
+        quitConn = connect(m_mainWindow, &DFontMgrMainWindow::requestDeleted, [ = ]() {
             if (isVisible()) {
                 accept();
                 close();
@@ -59,10 +59,10 @@ void DFDeleteDialog::initUI()
 
     m_messageA = new DLabel(this);
     if (m_deleteCnt <= 1) {
-        m_messageA->setText(tr("Are you sure you want to delete this font?"));
-
+        m_messageA->setText(DApplication::translate("DeleteConfirmDailog", "Are you sure you want to delete this font?"));
     } else {
-        m_messageA->setText(tr("Are you sure you want to delete %1 fonts").arg(m_deleteCnt));
+        m_messageA->setText(DApplication::translate("DeleteConfirmDailog", "Are you sure you want to delete %1 fonts").arg(m_deleteCnt));
+//        m_messageA->setText(tr("Are you sure you want to delete %1 fonts").arg(m_deleteCnt));
     }
     m_messageA->setFixedHeight(20);
     m_messageA->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
@@ -71,9 +71,10 @@ void DFDeleteDialog::initUI()
 
     m_messageB = new DLabel(this);
     if (m_deleteCnt <= 1) {
-        m_messageB->setText(tr("This font will not be available to applications"));
+        m_messageB->setText(DApplication::translate("DeleteConfirmDailog", "This font will not be available to applications"));
     } else {
-        m_messageB->setText(tr("These fonts will not be available to applications"));
+        m_messageB->setText(DApplication::translate("DeleteConfirmDailog", "These fonts will not be available to applications"));
+//        m_messageB->setText(tr("These fonts will not be available to applications"));
     }
     m_messageB->setFixedHeight(20);
     m_messageB->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
@@ -107,7 +108,7 @@ void DFDeleteDialog::initUI()
     verticalSplite->setPalette(pa);
     verticalSplite->setBackgroundRole(QPalette::Background);
     verticalSplite->setAutoFillBackground(true);
-    verticalSplite->setFixedSize(3,28);
+    verticalSplite->setFixedSize(3, 28);
 
     actionBarLayout->addWidget(m_cancelBtn);
     actionBarLayout->addSpacing(8);
@@ -135,12 +136,12 @@ void DFDeleteDialog::initUI()
 
 void DFDeleteDialog::initConnections()
 {
-    connect(m_cancelBtn, &DPushButton::clicked, this, [=]() {
+    connect(m_cancelBtn, &DPushButton::clicked, this, [ = ]() {
         reject();
         close();
     });
-    connect(m_confirmBtn, &DPushButton::clicked, this, [=]() { Q_EMIT requestDelete(); });
-    connect(this, &DFDeleteDialog::closed, this, [=]() {
+    connect(m_confirmBtn, &DPushButton::clicked, this, [ = ]() { Q_EMIT requestDelete(); });
+    connect(this, &DFDeleteDialog::closed, this, [ = ]() {
         disconnect(quitConn);
         if (m_mainWindow != nullptr)
             m_mainWindow->setDeleteFinish();

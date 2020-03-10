@@ -89,13 +89,13 @@ void DFontPreviewListDataThread::initFileSystemWatcher()
     m_fsWatcher->addPath(path);
     m_fsWatcher->addPath(QDir::homePath() + "/.local/share/");
     connect(m_fsWatcher, &QFileSystemWatcher::fileChanged,
-            this, [=](const QString &path){
+    this, [ = ](const QString & path) {
         qDebug() << "fileChanged" << path;
         updateChangedFile(path);
     });
 
     connect(m_fsWatcher, &QFileSystemWatcher::directoryChanged,
-            this, [=](const QString &path){
+    this, [ = ](const QString & path) {
         qDebug() << "directoryChanged" << path;
         updateChangedDir(path);
     });
@@ -167,7 +167,7 @@ void DFontPreviewListDataThread::insertFontItemData(QString filePath,
 
     itemData.strFontId = QString::number(index);
     itemData.strFontFileName = filePathInfo.baseName();
-    itemData.strFontPreview = FTM_DEFAULT_PREVIEW_TEXT;
+    itemData.strFontPreview = QString(DApplication::translate("Font", "Don't let your dreams be dreams"));
     itemData.iFontSize = FTM_DEFAULT_PREVIEW_FONTSIZE;
     itemData.isEnabled = true;
     itemData.isPreviewEnabled = true;

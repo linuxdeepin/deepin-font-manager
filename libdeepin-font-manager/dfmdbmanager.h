@@ -3,6 +3,9 @@
 
 #include "dsqliteutil.h"
 #include "dfontpreviewitemdef.h"
+#include <DApplication>
+
+DWIDGET_USE_NAMESPACE
 
 class DFMDBManager: public QObject
 {
