@@ -367,6 +367,11 @@ void DFontPreviewListView::mouseReleaseEvent(QMouseEvent *event)
     }
 }
 
+void DFontPreviewListView::mouseDoubleClickEvent(QMouseEvent *event)
+{
+    Q_UNUSED(event)
+}
+
 void DFontPreviewListView::setSelection(const QRect &rect,
                                         QItemSelectionModel::SelectionFlags command)
 {
