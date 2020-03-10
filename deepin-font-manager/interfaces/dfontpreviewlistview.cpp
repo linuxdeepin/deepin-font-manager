@@ -434,6 +434,8 @@ bool DFontPreviewListView::disableFont(const DFontPreviewItemData &itemData)
 void DFontPreviewListView::onListViewItemEnableBtnClicked(QModelIndexList itemIndexes, bool setValue)
 {
     QString fontName;
+
+    DFMDBManager::instance()->beginTransaction();   //开启事务
     for (QModelIndex index : itemIndexes) {
         DFontPreviewItemData itemData =
             qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(index));
@@ -453,6 +455,7 @@ void DFontPreviewListView::onListViewItemEnableBtnClicked(QModelIndexList itemIn
 
         m_fontPreviewProxyModel->setData(index, QVariant::fromValue(itemData), Qt::DisplayRole);
     }
+    DFMDBManager::instance()->endTransaction(); //提交事务
 
     if (!setValue) {
         QString message;
