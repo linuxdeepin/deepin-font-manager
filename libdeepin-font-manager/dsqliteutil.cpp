@@ -4,10 +4,10 @@
 
 #include <DLog>
 
-#ifdef qDebug
-#undef qDebug
-#define qDebug while(false) QMessageLogger().noDebug
-#endif
+//#ifdef qDebug
+//#undef qDebug
+//#define qDebug while(false) QMessageLogger().noDebug
+//#endif
 
 DSqliteUtil::DSqliteUtil(const QString &strDatabase)
     : m_strDatabase(strDatabase)
@@ -104,7 +104,7 @@ bool DSqliteUtil::addRecord(QMap<QString, QString> data, QString table_name)
     QString sql = "insert into " + table_name + "(";
     QString values = " values(";
     for (QMap<QString, QString>::const_iterator it = data.constBegin(); it != data.constEnd();
-         it++) {
+            it++) {
         sql += it.key() + ", ";
         QString escapeValue = it.value();
         escapeValue = escapeValue.replace("'", "''");
@@ -134,10 +134,10 @@ bool DSqliteUtil::delRecord(QMap<QString, QString> where, QString table_name)
     sql += table_name;
     sql += " where ";
     for (QMap<QString, QString>::const_iterator it = where.constBegin(); it != where.constEnd();
-         it++) {
+            it++) {
         //转义字符 ' -> ''
         QString value = it.value();
-        value = value.replace( "'", "''");
+        value = value.replace("'", "''");
         sql += it.key() + "=";
         sql += "'" + value + "'";
         sql += " and ";
@@ -162,14 +162,14 @@ bool DSqliteUtil::updateRecord(QMap<QString, QString> where, QMap<QString, QStri
 {
     QString sql = "update " + table_name + " set ";
     for (QMap<QString, QString>::const_iterator it = data.constBegin(); it != data.constEnd();
-         it++) {
+            it++) {
         sql += it.key() + "=";
         sql += "'" + it.value() + "',";
     }
     sql.chop(1);
     sql += " where ";
     for (QMap<QString, QString>::const_iterator it = where.constBegin(); it != where.constEnd();
-         it++) {
+            it++) {
         sql += it.key() + "=";
         sql += "'" + it.value() + "'";
     }
@@ -229,7 +229,7 @@ bool DSqliteUtil::findRecords(QList<QString> key, QMap<QString, QString> where,
     sql += " from " + table_name;
     sql += " where ";
     for (QMap<QString, QString>::const_iterator it = where.constBegin(); it != where.constEnd();
-         it++) {
+            it++) {
         sql += it.key() + "='" + it.value() + "' and ";
     }
     sql.chop(5);

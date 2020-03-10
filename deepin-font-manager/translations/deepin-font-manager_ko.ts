@@ -1,77 +1,194 @@
 <?xml version="1.0" ?><!DOCTYPE TS><TS language="ko" version="2.1">
 <context>
-    <name>HomePage</name>
+    <name>Category</name>
     <message>
-        <source>Drag font file here</source>
-        <translation>글꼴 파일을 여기로 드래그하세요</translation>
+        <source>All Fonts</source>
+        <translation>모든 글꼴</translation>
     </message>
     <message>
-        <source>Select file</source>
-        <translation>파일 선택</translation>
+        <source>System</source>
+        <translation>시스템</translation>
+    </message>
+    <message>
+        <source>User</source>
+        <translation>사용자</translation>
+    </message>
+    <message>
+        <source>Favorites</source>
+        <translation>즐겨찾기</translation>
+    </message>
+    <message>
+        <source>Active</source>
+        <translation>활성</translation>
+    </message>
+    <message>
+        <source>Chinese</source>
+        <translation>중국어</translation>
+    </message>
+    <message>
+        <source>Monospaced</source>
+        <translation>고정폭</translation>
     </message>
 </context>
 <context>
-    <name>ListItem</name>
+    <name>DFDeleteDialog</name>
     <message>
-        <source>Installed</source>
-        <translation>설치함</translation>
+        <source>The other %2 system fonts cannot be deleted</source>
+        <translation>다른 %2 시스템 글꼴을 삭제할 수 없습니다</translation>
+    </message>
+</context>
+<context>
+    <name>DFontMenuManager</name>
+    <message>
+        <source>Export</source>
+        <translation>내보내기</translation>
+    </message>
+</context>
+<context>
+    <name>DFontMgrMainWindow</name>
+    <message>
+        <source>Ctrl+Shift+/</source>
+        <translation>Ctrl+Shift+/</translation>
     </message>
     <message>
-        <source>Other version installed: %1</source>
-        <translation>설치된 다른 버전: %1</translation>
+        <source>PgUp</source>
+        <translation>페이지 위로</translation>
     </message>
     <message>
-        <source>Installing</source>
-        <translation>설치중</translation>
+        <source>PgDown</source>
+        <translation>페이지 아래로</translation>
+    </message>
+    <message>
+        <source>Ctrl+Alt+F</source>
+        <translation>Ctrl+Alt+F</translation>
+    </message>
+    <message>
+        <source>Ctrl+F</source>
+        <translation>Ctrl+F</translation>
+    </message>
+    <message>
+        <source>Ctrl+O</source>
+        <translation>Ctrl+O</translation>
+    </message>
+    <message>
+        <source>Ctrl+K</source>
+        <translation>Ctrl+K</translation>
+    </message>
+    <message>
+        <source>Ctrl+Shift+K</source>
+        <translation>Ctrl+Shift+K</translation>
+    </message>
+    <message>
+        <source>Alt+Return</source>
+        <translation>Alt+Return</translation>
+    </message>
+    <message>
+        <source>Fonts</source>
+        <translation>글꼴</translation>
+    </message>
+    <message>
+        <source>The font exported to your desktop</source>
+        <translation>바탕화면으로 내보낸 글꼴</translation>
+    </message>
+    <message>
+        <source>%1 fonts exported to your desktop</source>
+        <translation>바탕화면으로 내보낸 글꼴 %1개</translation>
+    </message>
+    <message>
+        <source>Ctrl+=</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Ctrl+-</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Ctrl+0</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>DFontPreviewListView</name>
+    <message>
+        <source>The fonts have been deactivated</source>
+        <translation>글꼴이 비활성화됨</translation>
+    </message>
+</context>
+<context>
+    <name>DeleteConfirmDailog</name>
+    <message>
+        <source>Are you sure you want to delete this font?</source>
+        <translation>이 글꼴을 삭제하시겠습니까?</translation>
+    </message>
+    <message>
+        <source>This font will not be available to applications</source>
+        <translation>이 글꼴은 응용프로그램에서 사용할 수 없습니다</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>취소</translation>
+    </message>
+    <message>
+        <source>Confirm</source>
+        <translation type="vanished">확인</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>삭제</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete %1 fonts</source>
+        <translation>%1 글꼴을 삭제하시겠습니까?</translation>
+    </message>
+    <message>
+        <source>These fonts will not be available to applications</source>
+        <translation>이러한 글꼴은 응용프로그램에서 사용할 수 없습니다</translation>
+    </message>
+</context>
+<context>
+    <name>ExceptionWindow</name>
+    <message>
+        <source>Font Verification</source>
+        <translation>글꼴 확인</translation>
+    </message>
+    <message>
+        <source>Broken file</source>
+        <translation>깨진 파일</translation>
     </message>
     <message>
         <source>Same version installed</source>
         <translation>동일한 버전 설치됨</translation>
     </message>
-</context>
-<context>
-    <name>Main</name>
     <message>
-        <source>Deepin Font Installer</source>
-        <translation>Deepin 글꼴 설치 도구</translation>
+        <source>Exit</source>
+        <translation>종료</translation>
     </message>
     <message>
-        <source>Deepin Font Installer is used to install and uninstall font file for users with bulk install function.</source>
-        <translation>Deepin 글꼴 설치 도구는 일괄 설치 기능이 있는 사용자의 글꼴 파일 설치 및 제거에 사용됩니다.</translation>
+        <source>Continue</source>
+        <translation>계속</translation>
     </message>
 </context>
 <context>
-    <name>MainWindow</name>
+    <name>FontDetailDailog</name>
     <message>
-        <source>Deepin Font Installer</source>
-        <translation>Deepin 글꼴 설치 도구</translation>
+        <source>Basic info</source>
+        <translation>기본 정보</translation>
     </message>
     <message>
-        <source>Bulk Install</source>
-        <translation>일괄 설치</translation>
+        <source>Style</source>
+        <translation>스타일</translation>
     </message>
     <message>
-        <source>Dark theme</source>
-        <translation>어두운 테마</translation>
-    </message>
-</context>
-<context>
-    <name>MultiFilePage</name>
-    <message>
-        <source>Install</source>
-        <translation>설치</translation>
+        <source>Type</source>
+        <translation>유형</translation>
     </message>
     <message>
-        <source>Installed successfully</source>
-        <translation>성공적으로 설치됨</translation>
+        <source>Version</source>
+        <translation>버전</translation>
     </message>
     <message>
-        <source>View font directory</source>
-        <translation>글꼴 디렉토리 보기</translation>
-    </message>
-    <message>
-        <source>Refreshing font cache, please wait...</source>
-        <translation>글꼴 캐시를 새로 고치면. 잠시 기다려 주십시오...</translation>
+        <source>Description</source>
+        <translation>설명</translation>
     </message>
     <message>
         <source>Unknown</source>
@@ -79,62 +196,155 @@
     </message>
 </context>
 <context>
-    <name>SingleFilePage</name>
+    <name>Main</name>
     <message>
-        <source>Install</source>
-        <translation>설치</translation>
+        <source>Font Manager</source>
+        <translation>글꼴 관리자</translation>
     </message>
     <message>
-        <source>Remove</source>
-        <translation>제거</translation>
+        <source>Font Manager helps users install and manage fonts.</source>
+        <translation>글꼴 관리자는 사용자가 글꼴을 설치하고 관리하는 데 도움이 됩니다.</translation>
     </message>
     <message>
-        <source>Reinstall</source>
-        <translation>재설치</translation>
+        <source>Loading fonts, please wait...</source>
+        <translation>글꼴 불러오는 중, 기다려 주십시오...</translation>
+    </message>
+</context>
+<context>
+    <name>Menu</name>
+    <message>
+        <source>Add font</source>
+        <translation>글꼴 추가</translation>
     </message>
     <message>
-        <source>View font directory</source>
-        <translation>글꼴 디렉토리 보기</translation>
+        <source>Enable</source>
+        <translation>사용가능</translation>
     </message>
     <message>
-        <source>Style: </source>
-        <translation>방식:</translation>
+        <source>Disable</source>
+        <translation>사용안함</translation>
     </message>
     <message>
-        <source>Type: </source>
-        <translation>형식:</translation>
+        <source>Delete</source>
+        <translation>삭제</translation>
     </message>
     <message>
-        <source>Version: </source>
-        <translation>버전:</translation>
+        <source>Favorite</source>
+        <translation>즐겨찾기</translation>
     </message>
     <message>
-        <source>Copyright: </source>
-        <translation>저작권:</translation>
+        <source>Unfavorite</source>
+        <translation>즐겨찾기 해제</translation>
     </message>
     <message>
-        <source>Description: </source>
-        <translation>설명:</translation>
+        <source>Details</source>
+        <translation>상세 정보</translation>
     </message>
     <message>
-        <source>Same version installed</source>
-        <translation>동일한 버전 설치됨</translation>
+        <source>Display in file manager</source>
+        <translation>파일 관리자에 표시</translation>
+    </message>
+</context>
+<context>
+    <name>MessageManager</name>
+    <message>
+        <source>deactivated</source>
+        <translation>비활성화됨</translation>
+    </message>
+</context>
+<context>
+    <name>NormalInstallWindow</name>
+    <message>
+        <source>Install Font</source>
+        <translation>글꼴 설치</translation>
     </message>
     <message>
-        <source>Installed successfully</source>
-        <translation>성공적으로 설치됨</translation>
+        <source>Verifying...</source>
+        <translation>확인중...</translation>
+    </message>
+</context>
+<context>
+    <name>QuickInstallWindow</name>
+    <message>
+        <source>Unknown</source>
+        <translation>알 수 없음</translation>
     </message>
     <message>
-        <source>Removed successfully</source>
-        <translation>성공적으로 제거됨</translation>
+        <source>Broken file</source>
+        <translation>깨진 파일</translation>
     </message>
     <message>
-        <source>Other version installed: %1</source>
-        <translation>다른 버전 설치됨: %1</translation>
+        <source>Installed</source>
+        <translation>설치됨</translation>
     </message>
     <message>
-        <source>Done</source>
-        <translation>완료</translation>
+        <source>Not Installed</source>
+        <translation>설치되지 않음</translation>
+    </message>
+    <message>
+        <source>Install Font</source>
+        <translation>글꼴 설치</translation>
+    </message>
+</context>
+<context>
+    <name>SearchBar</name>
+    <message>
+        <source>Search</source>
+        <translation>검색</translation>
+    </message>
+    <message>
+        <source>No search results</source>
+        <translation>검색 결과 없음</translation>
+    </message>
+    <message>
+        <source>No fonts</source>
+        <translation>글꼴 없음</translation>
+    </message>
+</context>
+<context>
+    <name>Shortcuts</name>
+    <message>
+        <source>Help</source>
+        <translation type="vanished">도움말</translation>
+    </message>
+    <message>
+        <source>Display shortcuts</source>
+        <translation type="vanished">단축키 표시</translation>
+    </message>
+    <message>
+        <source>Page up</source>
+        <translation type="vanished">페이지 위로</translation>
+    </message>
+    <message>
+        <source>Page down</source>
+        <translation type="vanished">페이지 아래로</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="vanished">삭제</translation>
+    </message>
+    <message>
+        <source>Add font</source>
+        <translation type="vanished">글꼴 추가</translation>
+    </message>
+    <message>
+        <source>Favorite</source>
+        <translation type="vanished">즐겨찾기</translation>
+    </message>
+    <message>
+        <source>Unfavorite</source>
+        <translation type="vanished">즐겨찾기 해제</translation>
+    </message>
+    <message>
+        <source>Font info</source>
+        <translation type="vanished">글꼴 정보</translation>
+    </message>
+</context>
+<context>
+    <name>StateBar</name>
+    <message>
+        <source>Input preview text</source>
+        <translation>미리보기 텍스트 입력</translation>
     </message>
 </context>
 </TS>
