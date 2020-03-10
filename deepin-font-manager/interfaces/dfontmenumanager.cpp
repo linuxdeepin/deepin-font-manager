@@ -1,5 +1,5 @@
 #include "interfaces/dfontmenumanager.h"
-
+#include <DApplicationHelper>
 #include <DApplication>
 #include <DLog>
 
@@ -42,7 +42,7 @@ void DFontMenuManager::initMenuData()
     m_fontRightMenuData.push_back(
         new FMenuItem(DApplication::translate("Menu", "Delete"), MenuAction::M_DeleteFont));
     m_fontRightMenuData.push_back(
-        new FMenuItem(tr("Export"), MenuAction::M_ExportFont));
+        new FMenuItem(DApplication::translate("Menu", "Export"), MenuAction::M_ExportFont));
     m_fontRightMenuData.push_back(
         new FMenuItem(DApplication::translate("Menu", "Favorite"), MenuAction::M_Faverator));
     m_fontRightMenuData.push_back(new FMenuItem("", MenuAction::M_Separator));
@@ -160,16 +160,16 @@ void DFontMenuManager::onRightKeyMenuPopup(DFontPreviewItemData fontData, bool h
 {
     // Disable delete menu for system font
     QAction *delAction = DFontMenuManager::getInstance()->getActionByMenuAction(
-        DFontMenuManager::M_DeleteFont, DFontMenuManager::MenuType::RightKeyMenu);
+                             DFontMenuManager::M_DeleteFont, DFontMenuManager::MenuType::RightKeyMenu);
 
     QAction *exportAction = DFontMenuManager::getInstance()->getActionByMenuAction(
-        DFontMenuManager::M_ExportFont, DFontMenuManager::MenuType::RightKeyMenu);
+                                DFontMenuManager::M_ExportFont, DFontMenuManager::MenuType::RightKeyMenu);
 
     QAction *faveriteAction = DFontMenuManager::getInstance()->getActionByMenuAction(
-        DFontMenuManager::M_Faverator, DFontMenuManager::MenuType::RightKeyMenu);
+                                  DFontMenuManager::M_Faverator, DFontMenuManager::MenuType::RightKeyMenu);
 
     QAction *enableOrDisableAction = DFontMenuManager::getInstance()->getActionByMenuAction(
-        DFontMenuManager::M_EnableOrDisable, DFontMenuManager::MenuType::RightKeyMenu);
+                                         DFontMenuManager::M_EnableOrDisable, DFontMenuManager::MenuType::RightKeyMenu);
 
     // Disable delete menu on system font
     if (nullptr != delAction && !hasUser) {

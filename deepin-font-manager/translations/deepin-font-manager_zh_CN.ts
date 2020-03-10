@@ -38,13 +38,6 @@
     </message>
 </context>
 <context>
-    <name>DFontMenuManager</name>
-    <message>
-        <source>Export</source>
-        <translation>导出字体</translation>
-    </message>
-</context>
-<context>
     <name>DFontMgrMainWindow</name>
     <message>
         <source>Ctrl+Shift+/</source>
@@ -87,14 +80,6 @@
         <translation>字体</translation>
     </message>
     <message>
-        <source>The font exported to your desktop</source>
-        <translation>该字体已导出到桌面</translation>
-    </message>
-    <message>
-        <source>%1 fonts exported to your desktop</source>
-        <translation>%1个字体已导出到桌面</translation>
-    </message>
-    <message>
         <source>Ctrl+=</source>
         <translation>Ctrl+=</translation>
     </message>
@@ -108,13 +93,6 @@
     </message>
 </context>
 <context>
-    <name>DFontPreviewListView</name>
-    <message>
-        <source>The fonts have been deactivated</source>
-        <translation>字体已被禁用</translation>
-    </message>
-</context>
-<context>
     <name>DeleteConfirmDailog</name>
     <message>
         <source>Are you sure you want to delete this font?</source>
@@ -123,6 +101,10 @@
     <message>
         <source>This font will not be available to applications</source>
         <translation>删除后该字体将不可用于其他应用程序</translation>
+    </message>
+    <message>
+        <source>These fonts will not be available to applications</source>
+        <translation>删除后这些字体将不可用于其他应用程序</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -139,10 +121,6 @@
     <message>
         <source>Are you sure you want to delete %1 fonts</source>
         <translation>您确定要删除这%1个字体吗？</translation>
-    </message>
-    <message>
-        <source>These fonts will not be available to applications</source>
-        <translation>删除后这些字体将不可用于其他应用程序</translation>
     </message>
 </context>
 <context>
@@ -166,6 +144,13 @@
     <message>
         <source>Continue</source>
         <translation>继续</translation>
+    </message>
+</context>
+<context>
+    <name>Font</name>
+    <message>
+        <source>Don&apos;t let your dreams be dreams</source>
+        <translation>因理想而出生，为责任而成长</translation>
     </message>
 </context>
 <context>
@@ -209,6 +194,14 @@
         <source>Loading fonts, please wait...</source>
         <translation>正在加载字体，请稍候...</translation>
     </message>
+    <message>
+        <source>The font exported to your desktop</source>
+        <translation>该字体已导出到桌面</translation>
+    </message>
+    <message>
+        <source>%1 fonts exported to your desktop</source>
+        <translation>%1个字体已导出到桌面</translation>
+    </message>
 </context>
 <context>
     <name>Menu</name>
@@ -244,12 +237,20 @@
         <source>Display in file manager</source>
         <translation>在文件管理器中显示</translation>
     </message>
+    <message>
+        <source>Export</source>
+        <translation>导出字体</translation>
+    </message>
 </context>
 <context>
     <name>MessageManager</name>
     <message>
         <source>deactivated</source>
         <translation>已禁用</translation>
+    </message>
+    <message>
+        <source>The fonts have been deactivated</source>
+        <translation>字体已被禁用</translation>
     </message>
 </context>
 <context>

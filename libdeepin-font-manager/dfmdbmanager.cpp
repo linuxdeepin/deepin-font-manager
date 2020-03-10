@@ -1,8 +1,8 @@
 #include "dfmdbmanager.h"
 #include "dfontinfomanager.h"
 
-#include <QDir>
 
+#include <QDir>
 #include <DLog>
 
 static DFMDBManager *INSTANCE = nullptr;
@@ -41,7 +41,7 @@ DFontPreviewItemData DFMDBManager::parseRecordToItemData(const QMap<QString, QSt
     itemData.strFontName = record.value("fontName");
     QFileInfo filePathInfo(filePath);
     itemData.strFontFileName = filePathInfo.baseName();
-    itemData.strFontPreview = FTM_DEFAULT_PREVIEW_TEXT;
+    itemData.strFontPreview = QString(DApplication::translate("Font", "Don't let your dreams be dreams"));
     itemData.iFontSize = FTM_DEFAULT_PREVIEW_FONTSIZE;
     itemData.isEnabled = record.value("isEnabled").toInt();
     itemData.isPreviewEnabled = itemData.isEnabled;

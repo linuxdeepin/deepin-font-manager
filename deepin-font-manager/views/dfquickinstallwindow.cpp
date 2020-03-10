@@ -59,7 +59,7 @@ void DFQuickInstallWindow::initUI()
     m_titleLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     m_titleLabel->setText(DApplication::translate("QuickInstallWindow", "Unknown"));
 
-    titlebar()->addWidget(m_titleLabel, Qt::AlignBottom|Qt::AlignHCenter);
+    titlebar()->addWidget(m_titleLabel, Qt::AlignBottom | Qt::AlignHCenter);
 
     QVBoxLayout *mainLayout = new QVBoxLayout();
     mainLayout->setContentsMargins(20, 0, 20, 20);
@@ -260,7 +260,8 @@ void DFQuickInstallWindow::InitPreviewFont(DFontInfo fontInfo)
     }
 }
 
-void DFQuickInstallWindow::installFont(const QStringList &files){
+void DFQuickInstallWindow::installFont(const QStringList &files)
+{
     qDebug() << __FUNCTION__ << files;
     DFInstallNormalWindow dfNormalInstalldlg(files, nullptr);
 
@@ -299,14 +300,14 @@ void DFQuickInstallWindow::onFontInstallFinished()
 
         if (itemData.fontInfo.styleName.length() > 0) {
             itemData.strFontName =
-                    QString("%1-%2").arg(itemData.fontInfo.familyName).arg(itemData.fontInfo.styleName);
+                QString("%1-%2").arg(itemData.fontInfo.familyName).arg(itemData.fontInfo.styleName);
         } else {
             itemData.strFontName = itemData.fontInfo.familyName;
         }
 
         //itemData.strFontId = QString::number(m_dbManager->getRecordCount()+1);
         itemData.strFontFileName = filePathInfo.baseName();
-        itemData.strFontPreview = FTM_DEFAULT_PREVIEW_TEXT;
+        itemData.strFontPreview = QString(DApplication::translate("Font", "Don't let your dreams be dreams"));
         itemData.iFontSize = FTM_DEFAULT_PREVIEW_FONTSIZE;
         itemData.isEnabled = true;
         itemData.isPreviewEnabled = true;

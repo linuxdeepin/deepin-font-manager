@@ -931,7 +931,7 @@ void DFontMgrMainWindow::onPreviewTextChanged(const QString &currStr)
 
     QString previewText = currStr;
     if (0 == currStr.length()) {
-        previewText = FTM_DEFAULT_PREVIEW_TEXT;
+        previewText = QString(DApplication::translate("Font", "Don't let your dreams be dreams"));
     }
 
     QString strFontSize = d->fontSizeLabel->text();
@@ -1139,9 +1139,11 @@ void DFontMgrMainWindow::exportFont()
     }
     QString message;
     if (cnt <= 1) {
-        message = tr("The font exported to your desktop");
+//        message = tr("The font exported to your desktop");
+        message = DApplication::translate("Main", "The font exported to your desktop");
     } else {
-        message = tr("%1 fonts exported to your desktop").arg(cnt);
+//        message = tr("%1 fonts exported to your desktop").arg(cnt);
+        message = DApplication::translate("Main", "%1 fonts exported to your desktop").arg(cnt);
     }
 
     DMessageManager::instance()->sendMessage(m_fontPreviewListView, QIcon(":/images/ok.svg"), message);

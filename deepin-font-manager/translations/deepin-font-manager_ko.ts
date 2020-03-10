@@ -38,13 +38,6 @@
     </message>
 </context>
 <context>
-    <name>DFontMenuManager</name>
-    <message>
-        <source>Export</source>
-        <translation>내보내기</translation>
-    </message>
-</context>
-<context>
     <name>DFontMgrMainWindow</name>
     <message>
         <source>Ctrl+Shift+/</source>
@@ -87,14 +80,6 @@
         <translation>글꼴</translation>
     </message>
     <message>
-        <source>The font exported to your desktop</source>
-        <translation>바탕화면으로 내보낸 글꼴</translation>
-    </message>
-    <message>
-        <source>%1 fonts exported to your desktop</source>
-        <translation>바탕화면으로 내보낸 글꼴 %1개</translation>
-    </message>
-    <message>
         <source>Ctrl+=</source>
         <translation type="unfinished"/>
     </message>
@@ -108,13 +93,6 @@
     </message>
 </context>
 <context>
-    <name>DFontPreviewListView</name>
-    <message>
-        <source>The fonts have been deactivated</source>
-        <translation>글꼴이 비활성화됨</translation>
-    </message>
-</context>
-<context>
     <name>DeleteConfirmDailog</name>
     <message>
         <source>Are you sure you want to delete this font?</source>
@@ -123,6 +101,10 @@
     <message>
         <source>This font will not be available to applications</source>
         <translation>이 글꼴은 응용프로그램에서 사용할 수 없습니다</translation>
+    </message>
+    <message>
+        <source>These fonts will not be available to applications</source>
+        <translation>이러한 글꼴은 응용프로그램에서 사용할 수 없습니다</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -139,10 +121,6 @@
     <message>
         <source>Are you sure you want to delete %1 fonts</source>
         <translation>%1 글꼴을 삭제하시겠습니까?</translation>
-    </message>
-    <message>
-        <source>These fonts will not be available to applications</source>
-        <translation>이러한 글꼴은 응용프로그램에서 사용할 수 없습니다</translation>
     </message>
 </context>
 <context>
@@ -166,6 +144,13 @@
     <message>
         <source>Continue</source>
         <translation>계속</translation>
+    </message>
+</context>
+<context>
+    <name>Font</name>
+    <message>
+        <source>Don&apos;t let your dreams be dreams</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -209,6 +194,14 @@
         <source>Loading fonts, please wait...</source>
         <translation>글꼴 불러오는 중, 기다려 주십시오...</translation>
     </message>
+    <message>
+        <source>The font exported to your desktop</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>%1 fonts exported to your desktop</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>Menu</name>
@@ -244,12 +237,20 @@
         <source>Display in file manager</source>
         <translation>파일 관리자에 표시</translation>
     </message>
+    <message>
+        <source>Export</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>MessageManager</name>
     <message>
         <source>deactivated</source>
         <translation>비활성화됨</translation>
+    </message>
+    <message>
+        <source>The fonts have been deactivated</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="en">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="en" version="2.1">
 <context>
     <name>Category</name>
     <message>
@@ -36,88 +34,62 @@
     <name>DFDeleteDialog</name>
     <message>
         <source>The other %2 system fonts cannot be deleted</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete %1 fonts</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>DFontMenuManager</name>
-    <message>
-        <source>Export</source>
-        <translation type="unfinished"></translation>
+        <translation>The other %2 system fonts cannot be deleted</translation>
     </message>
 </context>
 <context>
     <name>DFontMgrMainWindow</name>
     <message>
         <source>Ctrl+Shift+/</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+/</translation>
     </message>
     <message>
         <source>PgUp</source>
-        <translation type="unfinished"></translation>
+        <translation>PgUp</translation>
     </message>
     <message>
         <source>PgDown</source>
-        <translation type="unfinished"></translation>
+        <translation>PgDown</translation>
     </message>
     <message>
         <source>Ctrl+Alt+F</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Alt+F</translation>
     </message>
     <message>
         <source>Ctrl+F</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+F</translation>
     </message>
     <message>
         <source>Ctrl+O</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+O</translation>
     </message>
     <message>
         <source>Ctrl+K</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+K</translation>
     </message>
     <message>
         <source>Ctrl+Shift+K</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+K</translation>
     </message>
     <message>
         <source>Alt+Return</source>
-        <translation type="unfinished"></translation>
+        <translation>Alt+Return</translation>
     </message>
     <message>
         <source>Fonts</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The font exported to your desktop</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>%1 fonts exported to your desktop</source>
-        <translation type="unfinished"></translation>
+        <translation>Fonts</translation>
     </message>
     <message>
         <source>Ctrl+=</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+=</translation>
     </message>
     <message>
         <source>Ctrl+-</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+-</translation>
     </message>
     <message>
         <source>Ctrl+0</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>DFontPreviewListView</name>
-    <message>
-        <source>The fonts have been deactivated</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+0</translation>
     </message>
 </context>
 <context>
@@ -132,7 +104,7 @@
     </message>
     <message>
         <source>These fonts will not be available to applications</source>
-        <translation type="unfinished"></translation>
+        <translation>These fonts will not be available to applications</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -145,6 +117,10 @@
     <message>
         <source>Delete</source>
         <translation>Delete</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete %1 fonts</source>
+        <translation>Are you sure you want to delete %1 fonts</translation>
     </message>
 </context>
 <context>
@@ -168,6 +144,13 @@
     <message>
         <source>Continue</source>
         <translation>Continue</translation>
+    </message>
+</context>
+<context>
+    <name>Font</name>
+    <message>
+        <source>Don&apos;t let your dreams be dreams</source>
+        <translation>Don&apos;t let your dreams be dreams</translation>
     </message>
 </context>
 <context>
@@ -211,6 +194,14 @@
         <source>Loading fonts, please wait...</source>
         <translation>Loading fonts, please wait...</translation>
     </message>
+    <message>
+        <source>The font exported to your desktop</source>
+        <translation>The font exported to your desktop</translation>
+    </message>
+    <message>
+        <source>%1 fonts exported to your desktop</source>
+        <translation>%1 fonts exported to your desktop</translation>
+    </message>
 </context>
 <context>
     <name>Menu</name>
@@ -246,12 +237,20 @@
         <source>Display in file manager</source>
         <translation>Display in file manager</translation>
     </message>
+    <message>
+        <source>Export</source>
+        <translation>Export</translation>
+    </message>
 </context>
 <context>
     <name>MessageManager</name>
     <message>
         <source>deactivated</source>
         <translation>deactivated</translation>
+    </message>
+    <message>
+        <source>The fonts have been deactivated</source>
+        <translation>The fonts have been deactivated</translation>
     </message>
 </context>
 <context>
