@@ -9,7 +9,6 @@
 #include <QTextEdit>
 
 class QHBoxLayout;
-
 DWIDGET_USE_NAMESPACE
 
 struct DFontPreviewItemData;
@@ -39,7 +38,7 @@ private:
     FontIconText *m_fontLogo {nullptr};
     DLabel* m_fontFileName {nullptr};
 
-    DFrame* m_basicInfoFrame {nullptr};
+    QFrame* m_basicInfoFrame {nullptr};
     QVBoxLayout *m_baseicInfoLayout;
 
     DFontPreviewItemData* m_fontInfo;

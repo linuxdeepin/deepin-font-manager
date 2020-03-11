@@ -15,6 +15,30 @@
 #include <DFontSizeManager>
 #include <DTipLabel>
 
+QString SpliteText(const QString &text, const QFont &font, int nLabelSize)
+{
+    QFontMetrics fm(font);
+    int nTextSize = fm.width(text);
+    if (nTextSize > nLabelSize) {
+        int nPos = 0;
+        long nOffset = 0;
+        for (int i = 0; i < text.size(); i++) {
+            nOffset += fm.width(text.at(i));
+            if (nOffset >= nLabelSize) {
+                nPos = i;
+                break;
+            }
+        }
+
+        nPos = (nPos - 1 < 0) ? 0 : nPos - 1;
+
+        QString qstrLeftData = text.left(nPos);
+        QString qstrMidData = text.mid(nPos);
+        return qstrLeftData + "\n" + SpliteText(qstrMidData, font, nLabelSize);
+    }
+    return text;
+}
+
 DFontInfoDialog::DFontInfoDialog(DFontPreviewItemData *fontInfo, QWidget *parent)
     : DFontBaseDialog(parent)
     , m_fontInfo(fontInfo)
@@ -51,7 +75,6 @@ void DFontInfoDialog::initUI()
     m_fontFileName = new DLabel(this);
     m_fontFileName->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     m_fontFileName->setAlignment(Qt::AlignVCenter | Qt::AlignHCenter);
-
     m_fontFileName->setMinimumHeight(m_fontFileName->fontMetrics().height());
 //    m_fontFileName->setFixedHeight(18);
 //    QFont fileNameFont;
@@ -104,7 +127,7 @@ void DFontInfoDialog::initUI()
     content = m_fontInfo->fontInfo.version;
     if (content.isEmpty())
         content = "Copyright 2014~2015 Adobe Syste-ms Incorporated (http://www.adob.com/), with Reserved "
-                  "Font Name cc Source.";
+              "Font Name cc Source.";
     addLabelContent(DApplication::translate("FontDetailDailog", "Version"), content);
     m_baseicInfoLayout->addSpacing(6);
 
@@ -124,7 +147,7 @@ void DFontInfoDialog::initUI()
     m_baseicInfoLayout->addSpacing(6);
 
     //trademark
-    addLabelContent(tr("Trademark  "), m_fontInfo->fontInfo.trademark);
+    addLabelContent(tr("Trademark"), m_fontInfo->fontInfo.trademark);
 
     m_basicInfoFrame->setLayout(m_baseicInfoLayout);
 
@@ -179,29 +202,36 @@ void DFontInfoDialog::addLabelContent(const QString &title, const QString &conte
         return;
 //    qDebug() << __FUNCTION__ << title << " : " << content << ", font = " << m_fontInfo->fontInfo.toString();
 
+    const int TITLE_MAXWIDTH = 72 + 36;
+    int m_maxFieldWidth = width() - TITLE_MAXWIDTH - 20*2 - 10*2;
     QHBoxLayout *lyout = new QHBoxLayout;
 
-    DTipLabel *titleLabel = new DTipLabel(title);
+    QLabel *detail = new QLabel();
+//    detail->setMinimumHeight(18);
+//    detail->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    detail->setWordWrap(true);
+    DFontSizeManager::instance()->bind(detail, DFontSizeManager::T8);
+    DPalette pa1 = DApplicationHelper::instance()->palette(detail);
+    pa1.setBrush(DPalette::Text, pa1.color(DPalette::TextTitle));
+    detail->setPalette(pa1);
+    detail->setAlignment(Qt::AlignLeft | Qt::AlignTop);
+    QString outtxt = SpliteText(content, detail->font(), m_maxFieldWidth);
+    detail->setText(outtxt);
+
+    QLabel *titleLabel = new QLabel(title);
     titleLabel->setAlignment(Qt::AlignLeft | Qt::AlignTop);
-    titleLabel->setMinimumHeight(46);
-    titleLabel->setMargin(0);
-    titleLabel->setFixedWidth(95);
-    titleLabel->adjustSize();
+    titleLabel->setMinimumHeight(detail->minimumHeight());
     titleLabel->setWordWrap(true);
     DFontSizeManager::instance()->bind(titleLabel, DFontSizeManager::T8);
-
-    DTipLabel *detail = new DTipLabel(content);
-    detail->setFixedWidth(190);
-    detail->setMinimumHeight(46);
-    detail->adjustSize();
-    //    detail->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    detail->setWordWrap(true);
-//    DFontSizeManager::instance()->bind(detail, DFontSizeManager::T8);
-    detail->setAlignment(Qt::AlignLeft | Qt::AlignTop);
+    DPalette pa2= DApplicationHelper::instance()->palette(titleLabel);
+    pa2.setBrush(DPalette::Text, pa2.color(DPalette::TextTitle));
+    titleLabel->setPalette(pa2);
+    titleLabel->setText(SpliteText(title, titleLabel->font(), TITLE_MAXWIDTH));
+//    titleLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    titleLabel->setFixedWidth(TITLE_MAXWIDTH);
 
     lyout->addWidget(titleLabel);
     lyout->addWidget(detail);
 
     m_baseicInfoLayout->addLayout(lyout);
-    m_baseicInfoLayout->addStretch();
 }
