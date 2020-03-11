@@ -112,6 +112,8 @@ bool DFontPreviewProxyModel::isCustomFilterAcceptsRow(const QModelIndex &modelIn
         }
 
     } break;
+    default:
+        break;
     }
 
     return false;
