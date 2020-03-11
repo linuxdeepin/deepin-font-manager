@@ -158,6 +158,11 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
         break;
         }
 
+        //fix bug-14120 -> clear hover state, if mouse leaved
+        if (!(option.state & QStyle::State_MouseOver)) {
+            strStatus = QString("normal");
+        }
+
         QPixmap pixmap;
         if (data.isCollected) {
             QString strImageSrc = QString(":/images/%1collection_%2.svg").arg(strImgPrefix).arg(strStatus);
