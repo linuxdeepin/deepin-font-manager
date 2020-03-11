@@ -30,6 +30,7 @@ signals:
     void requestDelete();
 
 public slots:
+    void onFontChanged(const QFont &font);
 
 private:
     DLabel* m_fontLogo;
@@ -41,6 +42,11 @@ private:
     QMetaObject::Connection quitConn;
     int m_deleteCnt;
     int m_systemCnt;
+    int m_old_width {0};
+    int m_old_height {0};
+    int m_w_wd {0};
+    int m_w_ht {0};
+    int m_count {0};
 };
 
 #endif  // DFDELETEDIALOG_H
