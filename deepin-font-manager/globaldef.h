@@ -10,7 +10,7 @@
 #define FTM_SEARCH_BAR_H 44
 
 // Left navigation bar
-#define FTM_LEFT_SIDE_BAR_WIDTH 145
+#define FTM_LEFT_SIDE_BAR_WIDTH 160
 
 // State bar
 #define FTM_SBAR_HEIGHT 56
