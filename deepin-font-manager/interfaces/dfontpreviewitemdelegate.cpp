@@ -37,12 +37,17 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
         QString strFontPreview = data.strFontPreview;
         int iFontSize = data.iFontSize;
 
+
         if (!varFontPreviewText.isNull()) {
             strFontPreview = varFontPreviewText.toString();
         }
 
         if (!varFontSize.isNull()) {
             iFontSize = varFontSize.toInt();
+        }
+
+        if ("" == strFontPreview || 0 == iFontSize) {
+            return;
         }
 
         QStyleOptionViewItem viewOption(option);  //用来在视图中画一个item
@@ -54,15 +59,14 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
         }
 
         QRect bgRect;
-        bgRect.setX(option.rect.x()+10);
+        bgRect.setX(option.rect.x() + 10);
         bgRect.setY(option.rect.y());
-        bgRect.setWidth(option.rect.width()-20);
+        bgRect.setWidth(option.rect.width() - 20);
         bgRect.setHeight(option.rect.height());
 
         QPainterPath path;
 
-        if (0 == index.row())
-        {
+        if (0 == index.row()) {
             int radius = 8;
             path.moveTo(bgRect.bottomRight() - QPointF(0, radius));
             path.lineTo(bgRect.topRight() + QPointF(0, radius));
@@ -74,8 +78,7 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
             path.quadTo(bgRect.bottomLeft(), bgRect.bottomLeft());
             path.lineTo(bgRect.bottomRight());
             path.quadTo(bgRect.bottomRight(), bgRect.bottomRight());
-        }
-        else {
+        } else {
             path.moveTo(bgRect.topRight());
             path.lineTo(bgRect.topLeft());
             path.quadTo(bgRect.topLeft(), bgRect.topLeft());
@@ -93,8 +96,7 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
             fillColor.setAlphaF(0.2);
             painter->setBrush(QBrush(fillColor));
             painter->fillPath(path, fillColor);
-        }
-        else {
+        } else {
             DPalette pa = DApplicationHelper::instance()->palette(m_parentView);
             DStyleHelper styleHelper;
             QColor fillColor = styleHelper.getColor(static_cast<const QStyleOption *>(&option), pa, DPalette::ItemBackground);
@@ -117,7 +119,7 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
             checkBoxOption.state |= QStyle::State_Off;
         }
 
-        QRect checkboxRealRect = QRect(bgRect.left() + 15, bgRect.top() + 10, checkBoxSize-4, checkBoxSize-4);
+        QRect checkboxRealRect = QRect(bgRect.left() + 15, bgRect.top() + 10, checkBoxSize - 4, checkBoxSize - 4);
         checkBoxOption.rect = checkboxRealRect;
         DApplication::style()->drawPrimitive(QStyle::PE_IndicatorCheckBox, &checkBoxOption, painter,
                                              &checkBox);
@@ -130,7 +132,7 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
         QColor fillColor = styleHelper.getColor(static_cast<const QStyleOption *>(&option), pa, DPalette::TextTips);
         painter->setPen(QPen(fillColor));
 
-        QRect fontNameRect = QRect(bgRect.left() + 50 - 2, checkboxRealRect.top()-5, bgRect.width() - 15 - 50, checkboxRealRect.height()+10);
+        QRect fontNameRect = QRect(bgRect.left() + 50 - 2, checkboxRealRect.top() - 5, bgRect.width() - 15 - 50, checkboxRealRect.height() + 10);
         painter->drawText(fontNameRect, Qt::AlignLeft | Qt::AlignVCenter, data.strFontName);
 
         QString strImgPrefix = "";
@@ -143,14 +145,17 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
         switch (data.collectIconStatus) {
         case IconHover: {
             strStatus = QString("hover");
-        } break;
+        }
+        break;
         case IconPress: {
             strStatus = QString("press");
             strImgPrefix = "";
-        } break;
+        }
+        break;
         default: {
             strStatus = QString("normal");
-        } break;
+        }
+        break;
         }
 
         QPixmap pixmap;
@@ -167,7 +172,7 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
         painter->drawPixmap(collectIconRealRect, pixmap);
 
         QRect fontPreviewRect = QRect(fontNameRect.left(), bgRect.top() + 26, bgRect.width() - 50 - collectIconSize - 15,
-                                bgRect.height() - 26);
+                                      bgRect.height() - 26);
 
         if (data.isPreviewEnabled) {
 
@@ -209,8 +214,7 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
             painter->setPen(QPen(option.palette.color(DPalette::Text)));
             painter->setFont(preivewFont);
             painter->drawText(fontPreviewRect, Qt::AlignLeft | Qt::AlignVCenter, elidedText);
-        }
-        else {
+        } else {
 
             //禁用字体时使用系统默认字体显示
             QFont preivewFont;
@@ -247,7 +251,7 @@ QSize DFontPreviewItemDelegate::sizeHint(const QStyleOptionViewItem &option,
 
     int itemHeight = FTM_PREVIEW_ITEM_HEIGHT;
     if (iFontSize > 30) {
-        itemHeight += static_cast<int>(((iFontSize-30)+1)*1.5);
+        itemHeight += static_cast<int>(((iFontSize - 30) + 1) * 1.5);
     }
     return QSize(option.rect.width(), itemHeight);
 }
