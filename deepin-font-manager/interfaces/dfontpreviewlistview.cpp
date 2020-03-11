@@ -131,12 +131,15 @@ void DFontPreviewListView::onItemRemoved(const DFontPreviewItemData &itemData)
         return;
 
     qDebug() << __FUNCTION__ << " threadid = " << QThread::currentThreadId() << ", path " << itemData.fontInfo.filePath;
-    for (int i = 0; i < m_fontPreviewProxyModel->rowCount(); i++) {
-        QModelIndex modelIndex = m_fontPreviewProxyModel->index(i, 0);
-        QVariant varModel = m_fontPreviewProxyModel->data(modelIndex, Qt::DisplayRole);
+
+    for (int i = 0; i < m_fontPreviewProxyModel->sourceModel()->rowCount(); i++) {
+        QModelIndex modelIndex = m_fontPreviewProxyModel->sourceModel()->index(i, 0);
+        QVariant varModel = m_fontPreviewProxyModel->sourceModel()->data(modelIndex, Qt::DisplayRole);
         DFontPreviewItemData item = varModel.value<DFontPreviewItemData>();
+        //qDebug() << __FUNCTION__ << item.fontInfo.filePath << endl;
+        //qDebug() << __FUNCTION__ << itemData.fontInfo.filePath << endl;
         if (item.fontInfo.filePath == itemData.fontInfo.filePath) {
-            m_fontPreviewProxyModel->removeRow(i, modelIndex.parent());
+            m_fontPreviewProxyModel->sourceModel()->removeRow(i, modelIndex.parent());
             return;
         }
     }
@@ -269,8 +272,6 @@ void DFontPreviewListView::selectFonts(QStringList fileList)
 
 void DFontPreviewListView::mouseMoveEvent(QMouseEvent *event)
 {
-    DListView::mouseMoveEvent(event);
-
     if (m_fontPreviewItemModel && m_fontPreviewItemModel->rowCount() == 0) {
         return;
     }
@@ -296,6 +297,8 @@ void DFontPreviewListView::mouseMoveEvent(QMouseEvent *event)
         itemData.collectIconStatus = IconNormal;
     }
     m_fontPreviewProxyModel->setData(modelIndex, QVariant::fromValue(itemData), Qt::DisplayRole);
+
+    DListView::mouseMoveEvent(event);
 }
 
 void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
@@ -305,8 +308,6 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
     } else {
         m_bLeftMouse = false;
     }
-
-    DListView::mousePressEvent(event);
 
     if (m_fontPreviewItemModel && m_fontPreviewItemModel->rowCount() == 0) {
         return;
@@ -318,6 +319,14 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
     QRect rect = visualRect(modelIndex);
 
     QRect collectIconRect = getCollectionIconRect(rect);
+    int checkBoxSize = 20 + 10;
+    QRect checkboxRealRect = QRect(rect.left() + 25, rect.top() + 10 - 5, checkBoxSize, checkBoxSize);
+
+    if (collectIconRect.contains(clickPoint) || checkboxRealRect.contains(clickPoint)) {
+        m_bClickCollectionOrEnable = true;
+    } else {
+        m_bClickCollectionOrEnable = false;
+    }
 
     DFontPreviewItemData itemData =
         qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(modelIndex));
@@ -329,6 +338,12 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
         itemData.collectIconStatus = IconNormal;
     }
     m_fontPreviewProxyModel->setData(modelIndex, QVariant::fromValue(itemData), Qt::DisplayRole);
+
+
+    if (m_bClickCollectionOrEnable) {
+        return;
+    }
+    DListView::mousePressEvent(event);
 }
 
 void DFontPreviewListView::mouseReleaseEvent(QMouseEvent *event)
@@ -360,11 +375,16 @@ void DFontPreviewListView::mouseReleaseEvent(QMouseEvent *event)
 
     if (checkboxRealRect.contains(clickPoint)) {
         //触发启用/禁用字体
-        emit onClickEnableButton(indexList, !itemData.isEnabled);
+//        emit onClickEnableButton(indexList, !itemData.isEnabled);
+        onListViewItemEnableBtnClicked(indexList, !itemData.isEnabled);
     } else if (collectIconRect.contains(clickPoint)) {
         //触发收藏/取消收藏
-        emit onClickCollectionButton(modelIndex);
+//        emit onClickCollectionButton(modelIndex);
+        onListViewItemCollectionBtnClicked(modelIndex);
+        return;
     }
+
+    m_bClickCollectionOrEnable = false;
 }
 
 void DFontPreviewListView::mouseDoubleClickEvent(QMouseEvent *event)
@@ -375,8 +395,6 @@ void DFontPreviewListView::mouseDoubleClickEvent(QMouseEvent *event)
 void DFontPreviewListView::setSelection(const QRect &rect,
                                         QItemSelectionModel::SelectionFlags command)
 {
-    DListView::setSelection(rect, command);
-
     QPoint clickPoint(rect.x(), rect.y());
     QModelIndex modelIndex = indexAt(clickPoint);
     m_currModelIndex = modelIndex;
@@ -384,6 +402,11 @@ void DFontPreviewListView::setSelection(const QRect &rect,
     if (!m_bLeftMouse) {
         emit onShowContextMenu(modelIndex);
     }
+
+    if (m_bClickCollectionOrEnable) {
+        return;
+    }
+    DListView::setSelection(rect, command);
 }
 
 void DFontPreviewListView::setModel(QAbstractItemModel *model)
@@ -438,7 +461,7 @@ void DFontPreviewListView::onListViewItemEnableBtnClicked(QModelIndexList itemIn
     DFMDBManager::instance()->beginTransaction();   //开启事务
     for (QModelIndex index : itemIndexes) {
         DFontPreviewItemData itemData =
-            qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(index));
+            qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(itemIndexes[0]));
         itemData.isEnabled = setValue;
 
         qDebug() << __FUNCTION__ << "familyName" << itemData.fontInfo.familyName << endl;
@@ -454,6 +477,7 @@ void DFontPreviewListView::onListViewItemEnableBtnClicked(QModelIndexList itemIn
         DFMDBManager::instance()->updateFontInfoByFontId(itemData.strFontId, "isEnabled", QString::number(itemData.isEnabled));
 
         m_fontPreviewProxyModel->setData(index, QVariant::fromValue(itemData), Qt::DisplayRole);
+        m_fontPreviewProxyModel->setData(itemIndexes[0], QVariant::fromValue(itemData), Qt::DisplayRole);
     }
     DFMDBManager::instance()->endTransaction(); //提交事务
 

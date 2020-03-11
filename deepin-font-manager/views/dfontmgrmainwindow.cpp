@@ -598,7 +598,7 @@ void DFontMgrMainWindow::initFontPreviewListView(QWidget *parent)
     // 加载图标
     DLabel *onLoadingSpinner = new DLabel(m_fontLoadingSpinner);
     onLoadingSpinner->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    onLoadingSpinner->setFixedHeight(30);
+    onLoadingSpinner->setFixedHeight(onLoadingSpinner->fontMetrics().height());
     onLoadingSpinner->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
 
     QVBoxLayout *lblLayoutLoad = new QVBoxLayout;
@@ -617,7 +617,7 @@ void DFontMgrMainWindow::initFontPreviewListView(QWidget *parent)
 
     DLabel *noResultLabel = new DLabel(m_noResultListView);
     noResultLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    noResultLabel->setFixedHeight(30);
+    noResultLabel->setFixedHeight(noResultLabel->fontMetrics().height());
     noResultLabel->setText(DApplication::translate("SearchBar", "No search results"));
 
     QFont labelFont = noResultLabel->font();
@@ -639,7 +639,7 @@ void DFontMgrMainWindow::initFontPreviewListView(QWidget *parent)
 
     DLabel *noInstallLabel = new DLabel(m_noInstallListView);
     noInstallLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    noInstallLabel->setFixedHeight(30);
+    noInstallLabel->setFixedHeight(noInstallLabel->fontMetrics().height());
     noInstallLabel->setText(DApplication::translate("SearchBar", "No fonts"));
 
     QFont labelFontNoInstall = noInstallLabel->font();

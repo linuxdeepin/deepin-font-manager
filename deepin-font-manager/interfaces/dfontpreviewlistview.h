@@ -68,8 +68,9 @@ private:
 
     void deleteFontModelIndex(const DFontInfo &fontInfo);
 
-    bool m_bLoadDataFinish;
-    bool m_bLeftMouse;
+    bool m_bLoadDataFinish = false;
+    bool m_bLeftMouse = true;
+    bool m_bClickCollectionOrEnable = false;
     QWidget *m_parentWidget;
     QStandardItemModel *m_fontPreviewItemModel {nullptr};
     QList<DFontPreviewItemData> m_fontPreviewItemDataList;
