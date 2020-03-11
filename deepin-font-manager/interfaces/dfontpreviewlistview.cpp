@@ -269,8 +269,6 @@ void DFontPreviewListView::selectFonts(QStringList fileList)
 
 void DFontPreviewListView::mouseMoveEvent(QMouseEvent *event)
 {
-    DListView::mouseMoveEvent(event);
-
     if (m_fontPreviewItemModel && m_fontPreviewItemModel->rowCount() == 0) {
         return;
     }
@@ -296,6 +294,8 @@ void DFontPreviewListView::mouseMoveEvent(QMouseEvent *event)
         itemData.collectIconStatus = IconNormal;
     }
     m_fontPreviewProxyModel->setData(modelIndex, QVariant::fromValue(itemData), Qt::DisplayRole);
+
+    DListView::mouseMoveEvent(event);
 }
 
 void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
@@ -305,8 +305,6 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
     } else {
         m_bLeftMouse = false;
     }
-
-    DListView::mousePressEvent(event);
 
     if (m_fontPreviewItemModel && m_fontPreviewItemModel->rowCount() == 0) {
         return;
@@ -318,6 +316,14 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
     QRect rect = visualRect(modelIndex);
 
     QRect collectIconRect = getCollectionIconRect(rect);
+    int checkBoxSize = 20 + 10;
+    QRect checkboxRealRect = QRect(rect.left() + 25, rect.top() + 10 - 5, checkBoxSize, checkBoxSize);
+
+    if (collectIconRect.contains(clickPoint) || checkboxRealRect.contains(clickPoint)) {
+        m_bClickCollectionOrEnable = true;
+    } else {
+        m_bClickCollectionOrEnable = false;
+    }
 
     DFontPreviewItemData itemData =
         qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(modelIndex));
@@ -329,6 +335,12 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
         itemData.collectIconStatus = IconNormal;
     }
     m_fontPreviewProxyModel->setData(modelIndex, QVariant::fromValue(itemData), Qt::DisplayRole);
+
+
+    if (m_bClickCollectionOrEnable) {
+        return;
+    }
+    DListView::mousePressEvent(event);
 }
 
 void DFontPreviewListView::mouseReleaseEvent(QMouseEvent *event)
@@ -360,11 +372,16 @@ void DFontPreviewListView::mouseReleaseEvent(QMouseEvent *event)
 
     if (checkboxRealRect.contains(clickPoint)) {
         //触发启用/禁用字体
-        emit onClickEnableButton(indexList, !itemData.isEnabled);
+//        emit onClickEnableButton(indexList, !itemData.isEnabled);
+        onListViewItemEnableBtnClicked(indexList, !itemData.isEnabled);
     } else if (collectIconRect.contains(clickPoint)) {
         //触发收藏/取消收藏
-        emit onClickCollectionButton(modelIndex);
+//        emit onClickCollectionButton(modelIndex);
+        onListViewItemCollectionBtnClicked(modelIndex);
+        return;
     }
+
+    m_bClickCollectionOrEnable = false;
 }
 
 void DFontPreviewListView::mouseDoubleClickEvent(QMouseEvent *event)
@@ -375,8 +392,6 @@ void DFontPreviewListView::mouseDoubleClickEvent(QMouseEvent *event)
 void DFontPreviewListView::setSelection(const QRect &rect,
                                         QItemSelectionModel::SelectionFlags command)
 {
-    DListView::setSelection(rect, command);
-
     QPoint clickPoint(rect.x(), rect.y());
     QModelIndex modelIndex = indexAt(clickPoint);
     m_currModelIndex = modelIndex;
@@ -384,6 +399,11 @@ void DFontPreviewListView::setSelection(const QRect &rect,
     if (!m_bLeftMouse) {
         emit onShowContextMenu(modelIndex);
     }
+
+    if (m_bClickCollectionOrEnable) {
+        return;
+    }
+    DListView::setSelection(rect, command);
 }
 
 void DFontPreviewListView::setModel(QAbstractItemModel *model)
