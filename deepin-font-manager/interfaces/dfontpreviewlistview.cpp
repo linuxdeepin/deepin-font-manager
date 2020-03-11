@@ -461,7 +461,7 @@ void DFontPreviewListView::onListViewItemEnableBtnClicked(QModelIndexList itemIn
     DFMDBManager::instance()->beginTransaction();   //开启事务
     for (QModelIndex index : itemIndexes) {
         DFontPreviewItemData itemData =
-            qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(index));
+            qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(itemIndexes[0]));
         itemData.isEnabled = setValue;
 
         qDebug() << __FUNCTION__ << "familyName" << itemData.fontInfo.familyName << endl;
@@ -477,6 +477,7 @@ void DFontPreviewListView::onListViewItemEnableBtnClicked(QModelIndexList itemIn
         DFMDBManager::instance()->updateFontInfoByFontId(itemData.strFontId, "isEnabled", QString::number(itemData.isEnabled));
 
         m_fontPreviewProxyModel->setData(index, QVariant::fromValue(itemData), Qt::DisplayRole);
+        m_fontPreviewProxyModel->setData(itemIndexes[0], QVariant::fromValue(itemData), Qt::DisplayRole);
     }
     DFMDBManager::instance()->endTransaction(); //提交事务
 

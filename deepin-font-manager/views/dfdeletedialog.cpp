@@ -44,9 +44,9 @@ void DFDeleteDialog::setMainwindow(DFontMgrMainWindow *win)
 void DFDeleteDialog::initUI()
 {
     if (m_systemCnt <= 0) {
-        setFixedSize(QSize(DEFAULT_WINDOW_W, DEFAULT_WINDOW_H));
+        resize(QSize(DEFAULT_WINDOW_W, DEFAULT_WINDOW_H));
     } else {
-        setFixedSize(QSize(DEFAULT_WINDOW_W, DEFAULT_WINDOW_H + 40));
+        resize(QSize(DEFAULT_WINDOW_W, DEFAULT_WINDOW_H + 40));
     }
     //setWindowOpacity(0.5);
 
@@ -64,7 +64,7 @@ void DFDeleteDialog::initUI()
         m_messageA->setText(DApplication::translate("DeleteConfirmDailog", "Are you sure you want to delete %1 fonts").arg(m_deleteCnt));
 //        m_messageA->setText(tr("Are you sure you want to delete %1 fonts").arg(m_deleteCnt));
     }
-    m_messageA->setFixedHeight(20);
+//    m_messageA->setFixedHeight(20);
     m_messageA->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
     DFontSizeManager::instance()->bind(m_messageA, DFontSizeManager::T6);
@@ -76,7 +76,7 @@ void DFDeleteDialog::initUI()
         m_messageB->setText(DApplication::translate("DeleteConfirmDailog", "These fonts will not be available to applications"));
 //        m_messageB->setText(tr("These fonts will not be available to applications"));
     }
-    m_messageB->setFixedHeight(20);
+//    m_messageB->setFixedHeight(20);
     m_messageB->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     QFont bfont = m_messageB->font();
     bfont.setWeight(QFont::Bold);
@@ -86,6 +86,19 @@ void DFDeleteDialog::initUI()
     DPalette paMsgB = DApplicationHelper::instance()->palette(m_messageB);
     paMsgB.setBrush(DPalette::WindowText, paMsgB.color(DPalette::TextTips));
     m_messageB->setPalette(paMsgB);
+
+    QFontMetrics fm(DFontSizeManager::instance()->t6());
+    m_messageA->setFixedHeight(fm.height());
+    m_messageB->setFixedHeight(fm.height() + 10);
+    if (fm.width(m_messageA->text()) > fm.width(m_messageB->text()))
+    {
+        m_old_width = fm.width(m_messageA->text());
+    } else {
+        m_old_width = fm.width(m_messageB->text());
+    }
+    m_old_height = fm.height();
+    m_w_wd = this->width();
+    m_w_ht = this->height();
 
     QHBoxLayout *actionBarLayout = new QHBoxLayout();
     actionBarLayout->setSpacing(0);
@@ -146,4 +159,40 @@ void DFDeleteDialog::initConnections()
         if (m_mainWindow != nullptr)
             m_mainWindow->setDeleteFinish();
     });
+    connect(qApp, &DApplication::fontChanged, this, &DFDeleteDialog::onFontChanged);
+}
+
+void DFDeleteDialog::onFontChanged(const QFont &font)
+{
+    if (m_count == 0) {
+
+        QFontMetrics fm(font);
+        QFontInfo fontInfo(font);
+        qDebug() << fontInfo.family() << fontInfo.pixelSize();
+
+        m_messageA->setFixedHeight(fm.height());
+        m_messageB->setFixedHeight(fm.height() + 10);
+
+        auto wd = 0;
+        if (fm.width(m_messageA->text()) > fm.width(m_messageB->text()))
+        {
+            wd = fm.width(m_messageA->text());
+        } else {
+            wd = fm.width(m_messageB->text());
+        }
+
+        auto w_wd = static_cast<int>((static_cast<double>(m_w_wd) / static_cast<double>(m_old_width)) * wd);
+        auto w_ht = static_cast<int>((static_cast<double>(m_w_ht) / static_cast<double>(m_old_height)) * fm.height());
+        m_w_wd = w_wd;
+        m_w_ht = w_ht;
+
+        resize(w_wd, w_ht);
+
+        m_old_width = wd;
+        m_old_height = fm.height();
+    } else {
+        m_count = 0;
+        return;
+    }
+    ++m_count;
 }
