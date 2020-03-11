@@ -52,7 +52,8 @@ void DFontInfoDialog::initUI()
     m_fontFileName->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     m_fontFileName->setAlignment(Qt::AlignVCenter | Qt::AlignHCenter);
     m_fontFileName->setMinimumHeight(24);
-//    m_fontFileName->setFixedHeight(18);
+    m_fontFileName->adjustSize();
+ //    m_fontFileName->setFixedHeight(18);
 //    QFont fileNameFont;
 //    fileNameFont.setPixelSize(12);
 //    m_fontFileName->setFont(fileNameFont);
@@ -123,7 +124,7 @@ void DFontInfoDialog::initUI()
     m_baseicInfoLayout->addSpacing(6);
 
     //trademark
-    addLabelContent(tr("Trademark"), m_fontInfo->fontInfo.trademark);
+    addLabelContent(tr("Trademark  "), m_fontInfo->fontInfo.trademark);
 
     m_basicInfoFrame->setLayout(m_baseicInfoLayout);
 
@@ -182,15 +183,18 @@ void DFontInfoDialog::addLabelContent(const QString &title, const QString &conte
 
     DTipLabel *titleLabel = new DTipLabel(title);
     titleLabel->setAlignment(Qt::AlignLeft | Qt::AlignTop);
-    titleLabel->setMinimumHeight(18);
+    titleLabel->setMinimumHeight(46);
     titleLabel->setMargin(0);
-    titleLabel->setFixedWidth(60);
+    titleLabel->setFixedWidth(95);
+    titleLabel->adjustSize();
+    titleLabel->setWordWrap(true);
     DFontSizeManager::instance()->bind(titleLabel, DFontSizeManager::T8);
 
     DTipLabel *detail = new DTipLabel(content);
     detail->setFixedWidth(190);
-//    detail->setMinimumHeight(18);
-//    detail->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    detail->setMinimumHeight(46);
+    detail->adjustSize();
+    //    detail->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     detail->setWordWrap(true);
 //    DFontSizeManager::instance()->bind(detail, DFontSizeManager::T8);
     detail->setAlignment(Qt::AlignLeft | Qt::AlignTop);
