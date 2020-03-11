@@ -51,7 +51,7 @@ void DFontInfoDialog::initUI()
     m_fontFileName = new DLabel(this);
     m_fontFileName->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     m_fontFileName->setAlignment(Qt::AlignVCenter | Qt::AlignHCenter);
-    m_fontFileName->setMinimumHeight(24);
+    m_fontFileName->setMinimumHeight(m_fontFileName->fontMetrics().height());
 //    m_fontFileName->setFixedHeight(18);
 //    QFont fileNameFont;
 //    fileNameFont.setPixelSize(12);
@@ -76,7 +76,7 @@ void DFontInfoDialog::initUI()
     m_baseicInfoLayout->setSpacing(0);
 
     DLabel *panelName = new DLabel(this);
-    panelName->setFixedHeight(20);
+    panelName->setFixedHeight(panelName->fontMetrics().height());
 //    QFont panelNameFont;
 //    // panelNameFont.setBold(true);
 //    panelNameFont.setPixelSize(14);
@@ -103,7 +103,7 @@ void DFontInfoDialog::initUI()
     content = m_fontInfo->fontInfo.version;
     if (content.isEmpty())
         content = "Copyright 2014~2015 Adobe Syste-ms Incorporated (http://www.adob.com/), with Reserved "
-              "Font Name cc Source.";
+                  "Font Name cc Source.";
     addLabelContent(DApplication::translate("FontDetailDailog", "Version"), content);
     m_baseicInfoLayout->addSpacing(6);
 
@@ -129,8 +129,8 @@ void DFontInfoDialog::initUI()
 
     /**************************Basic info panel****END*******************************/
 
-     QScrollArea *scrollArea = new QScrollArea;
-     scrollArea->setWidget(m_basicInfoFrame);
+    QScrollArea *scrollArea = new QScrollArea;
+    scrollArea->setWidget(m_basicInfoFrame);
 
     // Add childs to main layout
     //mainLayout->addSpacing(50);

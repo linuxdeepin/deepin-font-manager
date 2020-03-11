@@ -88,7 +88,7 @@ void DFQuickInstallWindow::initUI()
     //    actionFont.setPixelSize(14);
 
     m_stateLabel = new DLabel(this);
-    m_stateLabel->setFixedHeight(36);
+    m_stateLabel->setFixedHeight(m_stateLabel->fontMetrics().height());
     m_stateLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     // m_stateLabel->setFont(actionFont);
     DPalette pa = DApplicationHelper::instance()->palette(m_stateLabel);
