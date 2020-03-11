@@ -30,7 +30,7 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
     setAutoScroll(true);
     setMouseTracking(true);
     setUpdatesEnabled(true);
-    setSelectionMode(QAbstractItemView::ExtendedSelection);
+//    setSelectionMode(QAbstractItemView::ExtendedSelection);
 
     DFontMgrMainWindow *mw = qobject_cast<DFontMgrMainWindow *>(m_parentWidget);
     if (mw)
@@ -184,6 +184,7 @@ void DFontPreviewListView::deleteFontModelIndex(const QString &filePath)
     }
 
     for (int i = 0; i < m_fontPreviewProxyModel->rowCount(); i++) {
+
         QModelIndex modelIndex = m_fontPreviewProxyModel->index(i, 0);
         QVariant varModel = m_fontPreviewProxyModel->data(modelIndex, Qt::DisplayRole);
         DFontPreviewItemData itemData = varModel.value<DFontPreviewItemData>();
@@ -203,7 +204,7 @@ bool DFontPreviewListView::isDeleting()
     return false;
 }
 
-void DFontPreviewListView::selectFonts(QStringList fileList)
+void DFontPreviewListView::selectFonts(const QStringList &fileList)
 {
     QModelIndexList indexes;
     QItemSelectionModel *selection_model = selectionModel();
@@ -481,16 +482,17 @@ void DFontPreviewListView::onListViewItemEnableBtnClicked(QModelIndexList itemIn
     }
     DFMDBManager::instance()->endTransaction(); //提交事务
 
-    if (!setValue) {
-        QString message;
-        if (itemIndexes.size() == 1) {
-            message = QString("%1 %2").arg(fontName).arg(DApplication::translate("MessageManager", "deactivated"));
-        } else if (itemIndexes.size() > 1) {
-//            message = tr("The fonts have been deactivated");
-            message = DApplication::translate("MessageManager", "The fonts have been deactivated");
-        }
-        DMessageManager::instance()->sendMessage(this, QIcon(":/images/ok.svg"), message);
+    if (setValue)
+        return;
+
+    QString message;
+    if (itemIndexes.size() == 1) {
+        message = QString("%1 %2").arg(fontName).arg(DApplication::translate("MessageManager", "deactivated"));
+    } else if (itemIndexes.size() > 1) {
+        //            message = tr("The fonts have been deactivated");
+        message = DApplication::translate("MessageManager", "The fonts have been deactivated");
     }
+    DMessageManager::instance()->sendMessage(this, QIcon(":/images/ok.svg"), message);
 }
 
 void DFontPreviewListView::onListViewItemCollectionBtnClicked(QModelIndex index)
