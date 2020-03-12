@@ -787,6 +787,7 @@ void DFontMgrMainWindow::handleMenuEvent(QAction *action)
                 DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
                 QModelIndexList itemIndexes = m_fontPreviewListView->selectedIndex(nullptr, nullptr);
                 emit m_fontPreviewListView->onClickEnableButton(itemIndexes, !currItemData.isEnabled);
+//                  emit m_fontPreviewListView->onClickEnableButton(currItemData, !currItemData.isEnabled);
             }
             break;
             case DFontMenuManager::MenuAction::M_Faverator: {
@@ -799,6 +800,7 @@ void DFontMgrMainWindow::handleMenuEvent(QAction *action)
                 break;
             default:
                 qDebug() << "handleMenuEvent->(id=" << actionId << ")";
+                break;
             }
         }
     }
@@ -902,7 +904,8 @@ void DFontMgrMainWindow::onSearchTextChanged(const QString &currStr)
         return;
     }
 
-    QString strSearchFontName = currStr;
+//    QString strSearchFontName = currStr;
+    const QString strSearchFontName = currStr;
     qDebug() << strSearchFontName << endl;
 
     m_searchTextStatusIsEmpty = d->searchFontEdit->text().isEmpty();
@@ -916,7 +919,8 @@ void DFontMgrMainWindow::onSearchTextChanged(const QString &currStr)
 
     qDebug() << __FUNCTION__ << "filter Count:" << filterModel->rowCount() << endl;
 
-    QString previewText = d->textInputEdit->text();
+//    QString previewText = d->textInputEdit->text();
+    const QString previewText = d->textInputEdit->text();
     onPreviewTextChanged(previewText);
     m_fontPreviewListView->scrollToTop();
 }

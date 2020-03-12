@@ -150,6 +150,8 @@ bool DFontManager::doCmd(const QString &program, const QStringList &arguments)
         connect(process, SIGNAL(readyReadStandardOutput()), this,
             SLOT(handleUnInstallOutput()));
         break;
+    default:
+        break;
     }
 
     connect(process, SIGNAL(finished(int)), this, SLOT(handleProcessFinished(int)));
