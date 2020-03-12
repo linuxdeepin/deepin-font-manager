@@ -40,6 +40,8 @@ public:
 
     void setModel(QAbstractItemModel *model) Q_DECL_OVERRIDE;
 
+    void rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end) Q_DECL_OVERRIDE;
+
     void setRightContextMenu(QMenu *rightMenu);
 
     QModelIndex currModelIndex();

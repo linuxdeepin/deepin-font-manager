@@ -382,7 +382,6 @@ void DFontPreviewListView::mouseReleaseEvent(QMouseEvent *event)
         //触发收藏/取消收藏
 //        emit onClickCollectionButton(modelIndex);
         onListViewItemCollectionBtnClicked(modelIndex);
-        return;
     }
 
     m_bClickCollectionOrEnable = false;
@@ -414,6 +413,12 @@ void DFontPreviewListView::setModel(QAbstractItemModel *model)
 {
     m_fontPreviewItemModel = qobject_cast<QStandardItemModel *>(model);
     DListView::setModel(model);
+}
+
+void DFontPreviewListView::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end)
+{
+    selectionModel()->setCurrentIndex(parent, QItemSelectionModel::NoUpdate);
+    DListView::rowsAboutToBeRemoved(parent, start, end);
 }
 
 bool DFontPreviewListView::enableFont(const DFontPreviewItemData &itemData)
