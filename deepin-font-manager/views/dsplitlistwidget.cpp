@@ -165,7 +165,7 @@ void DSplitListWidget::initListData()
             QString titleString = m_titleStringList.at(iTitleIndex++);
             item->setData(QVariant::fromValue(titleString), Qt::DisplayRole);
         }
-
+        item->setSizeHint(QSize(100,100));
         m_categoryItemModell->appendRow(item);
     }
 
