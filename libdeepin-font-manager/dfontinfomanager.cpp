@@ -274,12 +274,12 @@ DFontInfo DFontInfoManager::getFontInfo(const QString &filePath)
     fontInfo.isError = false;
     fontInfo.filePath = filePath;
 
-    int appFontId = QFontDatabase::addApplicationFont(filePath);
-    QStringList fontFamilyList = QFontDatabase::applicationFontFamilies(appFontId);
-    if (fontFamilyList.size() > 0) {
-        QString fontFamily = QString(fontFamilyList.first().toLocal8Bit());
-        fontInfo.familyName = fontFamily;
-    }
+//    int appFontId = QFontDatabase::addApplicationFont(filePath);
+//    QStringList fontFamilyList = QFontDatabase::applicationFontFamilies(appFontId);
+//    if (fontFamilyList.size() > 0) {
+//        QString fontFamily = QString(fontFamilyList.first().toLocal8Bit());
+//        fontInfo.familyName = fontFamily;
+//    }
 
     if (fontInfo.familyName.trimmed().length() < 1) {
         fontInfo.familyName = QString::fromUtf8(DFreeTypeUtil::getFontFamilyName(m_face));
@@ -341,6 +341,11 @@ DFontInfo DFontInfoManager::getFontInfo(const QString &filePath)
                 break;
             }
         }
+    }
+
+    if(!fontInfo.fullname.isEmpty()){
+        QStringList fontFamilyList = fontInfo.fullname.split(" ");
+        fontInfo.familyName = fontFamilyList[0];
     }
 
     DFMDBManager *dbManager = DFMDBManager::instance();
