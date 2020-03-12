@@ -34,14 +34,29 @@
     <name>DFDeleteDialog</name>
     <message>
         <source>The other %2 system fonts cannot be deleted</source>
-        <translation>Las otras %2 fuentes del sistema no pueden ser eliminadas</translation>
+        <translation type="vanished">Las otras %2 fuentes del sistema no pueden ser borradas</translation>
+    </message>
+</context>
+<context>
+    <name>DFontInfoDialog</name>
+    <message>
+        <source>Full name</source>
+        <translation>Nombre completo</translation>
+    </message>
+    <message>
+        <source>Ps name</source>
+        <translation>Nombre Ps</translation>
+    </message>
+    <message>
+        <source>Trademark</source>
+        <translation>Marca comercial</translation>
     </message>
 </context>
 <context>
     <name>DFontMgrMainWindow</name>
     <message>
         <source>Ctrl+Shift+/</source>
-        <translation>Ctrl+Shift+/</translation>
+        <translation>Ctrl + Mayús + /</translation>
     </message>
     <message>
         <source>PgUp</source>
@@ -53,27 +68,27 @@
     </message>
     <message>
         <source>Ctrl+Alt+F</source>
-        <translation>Ctrl+Alt+F</translation>
+        <translation>Ctrl + Alt + F</translation>
     </message>
     <message>
         <source>Ctrl+F</source>
-        <translation>Ctrl+F</translation>
+        <translation>Ctrl + F</translation>
     </message>
     <message>
         <source>Ctrl+O</source>
-        <translation>Ctrl+O</translation>
+        <translation>Ctrl + O</translation>
     </message>
     <message>
         <source>Ctrl+K</source>
-        <translation>Ctrl+K</translation>
+        <translation>Ctrl + K</translation>
     </message>
     <message>
         <source>Ctrl+Shift+K</source>
-        <translation>Ctrl+Shift+K</translation>
+        <translation>Ctrl + Mayús + K</translation>
     </message>
     <message>
         <source>Alt+Return</source>
-        <translation>Alt+Enter</translation>
+        <translation>Alt + Enter</translation>
     </message>
     <message>
         <source>Fonts</source>
@@ -81,15 +96,15 @@
     </message>
     <message>
         <source>Ctrl+=</source>
-        <translation>Ctrl+=</translation>
+        <translation>Ctrl + =</translation>
     </message>
     <message>
         <source>Ctrl+-</source>
-        <translation>Ctrl+-</translation>
+        <translation>Ctrl + -</translation>
     </message>
     <message>
         <source>Ctrl+0</source>
-        <translation>Ctrl+0</translation>
+        <translation>Ctrl + 0</translation>
     </message>
 </context>
 <context>
@@ -116,11 +131,15 @@
     </message>
     <message>
         <source>Delete</source>
-        <translation>Eliminar</translation>
+        <translation>Borrar</translation>
     </message>
     <message>
         <source>Are you sure you want to delete %1 fonts</source>
-        <translation>¿Está seguro que desea eliminar %1 fuentes?</translation>
+        <translation>¿Está seguro que desea borrar %1 fuentes?</translation>
+    </message>
+    <message>
+        <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -150,7 +169,7 @@
     <name>Font</name>
     <message>
         <source>Don&apos;t let your dreams be dreams</source>
-        <translation type="unfinished"/>
+        <translation>No dejes que tus sueños sean sueños</translation>
     </message>
 </context>
 <context>
@@ -196,11 +215,11 @@
     </message>
     <message>
         <source>The font exported to your desktop</source>
-        <translation type="unfinished"/>
+        <translation>Fuente exportada al escritorio</translation>
     </message>
     <message>
         <source>%1 fonts exported to your desktop</source>
-        <translation type="unfinished"/>
+        <translation>%1 fuentes exportadas al escritorio</translation>
     </message>
 </context>
 <context>
@@ -239,7 +258,7 @@
     </message>
     <message>
         <source>Export</source>
-        <translation type="unfinished"/>
+        <translation>Exportar</translation>
     </message>
 </context>
 <context>
@@ -250,7 +269,7 @@
     </message>
     <message>
         <source>The fonts have been deactivated</source>
-        <translation type="unfinished"/>
+        <translation>Las fuentes han sido desactivadas</translation>
     </message>
 </context>
 <context>

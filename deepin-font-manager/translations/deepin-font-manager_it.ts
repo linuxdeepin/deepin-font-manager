@@ -34,7 +34,22 @@
     <name>DFDeleteDialog</name>
     <message>
         <source>The other %2 system fonts cannot be deleted</source>
-        <translation>Gli altri %2 font di sistema non possono essere eliminati</translation>
+        <translation type="vanished">Gli altri %2 font di sistema non possono essere eliminati</translation>
+    </message>
+</context>
+<context>
+    <name>DFontInfoDialog</name>
+    <message>
+        <source>Full name</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Ps name</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Trademark</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -122,6 +137,10 @@
         <source>Are you sure you want to delete %1 fonts</source>
         <translation>Sicuro di voler eliminare %1 font?</translation>
     </message>
+    <message>
+        <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>ExceptionWindow</name>
@@ -150,7 +169,7 @@
     <name>Font</name>
     <message>
         <source>Don&apos;t let your dreams be dreams</source>
-        <translation type="unfinished"/>
+        <translation>No lasciare che i tuoi desideri restino solo sogni</translation>
     </message>
 </context>
 <context>
@@ -197,11 +216,11 @@ Localizzazione italiana a cura di Massimo A. Carofano.</translation>
     </message>
     <message>
         <source>The font exported to your desktop</source>
-        <translation type="unfinished"/>
+        <translation>Font esportato sul desktop</translation>
     </message>
     <message>
         <source>%1 fonts exported to your desktop</source>
-        <translation type="unfinished"/>
+        <translation>%1 font esportati sul desktop</translation>
     </message>
 </context>
 <context>
@@ -240,7 +259,7 @@ Localizzazione italiana a cura di Massimo A. Carofano.</translation>
     </message>
     <message>
         <source>Export</source>
-        <translation type="unfinished"/>
+        <translation>Esporta</translation>
     </message>
 </context>
 <context>
@@ -251,7 +270,7 @@ Localizzazione italiana a cura di Massimo A. Carofano.</translation>
     </message>
     <message>
         <source>The fonts have been deactivated</source>
-        <translation type="unfinished"/>
+        <translation>I font sono stati disattivati</translation>
     </message>
 </context>
 <context>

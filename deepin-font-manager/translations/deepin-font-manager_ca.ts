@@ -34,7 +34,22 @@
     <name>DFDeleteDialog</name>
     <message>
         <source>The other %2 system fonts cannot be deleted</source>
-        <translation>Les altres %2 lletres del sistema no es poden eliminar.</translation>
+        <translation type="vanished">Les altres %2 lletres del sistema no es poden eliminar.</translation>
+    </message>
+</context>
+<context>
+    <name>DFontInfoDialog</name>
+    <message>
+        <source>Full name</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Ps name</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Trademark</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -121,6 +136,10 @@
     <message>
         <source>Are you sure you want to delete %1 fonts</source>
         <translation>Segur que voleu eliminar %1 lletres?</translation>
+    </message>
+    <message>
+        <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

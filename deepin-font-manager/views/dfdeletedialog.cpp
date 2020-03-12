@@ -89,7 +89,7 @@ void DFDeleteDialog::initUI()
         if (m_systemCnt == 0) {
             m_messageB->setText(DApplication::translate("DeleteConfirmDailog", "These fonts will not be available to applications"));
         } else {
-            m_messageB->setText(DApplication::translate("DeleteConfirmDailog", "These fonts will not be available to applications,The other %2 system fonts cannot be deleted").arg(m_systemCnt));
+            m_messageB->setText(DApplication::translate("DeleteConfirmDailog", "These fonts will not be available to applications, and the other %1 system fonts cannot be deleted").arg(m_systemCnt));
         }
 //        m_messageB->setText(tr("These fonts will not be available to applications"));
     }

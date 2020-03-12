@@ -34,7 +34,22 @@
     <name>DFDeleteDialog</name>
     <message>
         <source>The other %2 system fonts cannot be deleted</source>
-        <translation>其他%2个系统字体不可删除</translation>
+        <translation type="vanished">其他%2个系统字体不可删除</translation>
+    </message>
+</context>
+<context>
+    <name>DFontInfoDialog</name>
+    <message>
+        <source>Full name</source>
+        <translation>全名</translation>
+    </message>
+    <message>
+        <source>Ps name</source>
+        <translation>PS名称</translation>
+    </message>
+    <message>
+        <source>Trademark</source>
+        <translation>商标</translation>
     </message>
 </context>
 <context>
@@ -121,6 +136,10 @@
     <message>
         <source>Are you sure you want to delete %1 fonts</source>
         <translation>您确定要删除这%1个字体吗？</translation>
+    </message>
+    <message>
+        <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
+        <translation>删除后这些字体将不可用于其他应用程序，无法删除其他%1个系统字体</translation>
     </message>
 </context>
 <context>

@@ -1,5 +1,205 @@
 <?xml version="1.0" ?><!DOCTYPE TS><TS language="tr" version="2.1">
 <context>
+    <name>Category</name>
+    <message>
+        <source>All Fonts</source>
+        <translation>Tüm Yazı Tipleri</translation>
+    </message>
+    <message>
+        <source>System</source>
+        <translation>Sistem</translation>
+    </message>
+    <message>
+        <source>User</source>
+        <translation>Kullanıcı</translation>
+    </message>
+    <message>
+        <source>Favorites</source>
+        <translation>Sık kullanılanlar</translation>
+    </message>
+    <message>
+        <source>Active</source>
+        <translation>Aktif</translation>
+    </message>
+    <message>
+        <source>Chinese</source>
+        <translation>Çince</translation>
+    </message>
+    <message>
+        <source>Monospaced</source>
+        <translation>Eşit aralıklı</translation>
+    </message>
+</context>
+<context>
+    <name>DFDeleteDialog</name>
+    <message>
+        <source>The other %2 system fonts cannot be deleted</source>
+        <translation type="vanished">Diğer %2 sistem yazı tipleri silinemez</translation>
+    </message>
+</context>
+<context>
+    <name>DFontInfoDialog</name>
+    <message>
+        <source>Full name</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Ps name</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Trademark</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>DFontMgrMainWindow</name>
+    <message>
+        <source>Ctrl+Shift+/</source>
+        <translation>Ctrl+Shift+/</translation>
+    </message>
+    <message>
+        <source>PgUp</source>
+        <translation>PgUp</translation>
+    </message>
+    <message>
+        <source>PgDown</source>
+        <translation>PgDown</translation>
+    </message>
+    <message>
+        <source>Ctrl+Alt+F</source>
+        <translation>Ctrl+Alt+F</translation>
+    </message>
+    <message>
+        <source>Ctrl+F</source>
+        <translation>Ctrl+F</translation>
+    </message>
+    <message>
+        <source>Ctrl+O</source>
+        <translation>Ctrl+O</translation>
+    </message>
+    <message>
+        <source>Ctrl+K</source>
+        <translation>Ctrl+K</translation>
+    </message>
+    <message>
+        <source>Ctrl+Shift+K</source>
+        <translation>Ctrl+Shift+K</translation>
+    </message>
+    <message>
+        <source>Alt+Return</source>
+        <translation>Alt+Return</translation>
+    </message>
+    <message>
+        <source>Fonts</source>
+        <translation>Yazı tipleri</translation>
+    </message>
+    <message>
+        <source>Ctrl+=</source>
+        <translation>Ctrl+=</translation>
+    </message>
+    <message>
+        <source>Ctrl+-</source>
+        <translation>Ctrl+-</translation>
+    </message>
+    <message>
+        <source>Ctrl+0</source>
+        <translation>Ctrl+0</translation>
+    </message>
+</context>
+<context>
+    <name>DeleteConfirmDailog</name>
+    <message>
+        <source>Are you sure you want to delete this font?</source>
+        <translation>Bu yazı tipini silmek istediğinizden emin misiniz?</translation>
+    </message>
+    <message>
+        <source>This font will not be available to applications</source>
+        <translation>Bu yazı tipi uygulamalar tarafından kullanılamayacak</translation>
+    </message>
+    <message>
+        <source>These fonts will not be available to applications</source>
+        <translation>Bu yazı tipleri uygulamalar tarafından kullanılamaz</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>İptal</translation>
+    </message>
+    <message>
+        <source>Confirm</source>
+        <translation type="vanished">Onayla</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>Sil</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete %1 fonts</source>
+        <translation>%1 yazı tipini silmek istediğinizden emin misiniz?</translation>
+    </message>
+    <message>
+        <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>ExceptionWindow</name>
+    <message>
+        <source>Font Verification</source>
+        <translation>Yazı Tipi Doğrulaması</translation>
+    </message>
+    <message>
+        <source>Broken file</source>
+        <translation>Bozuk dosya</translation>
+    </message>
+    <message>
+        <source>Same version installed</source>
+        <translation>Aynı sürüm kurulu</translation>
+    </message>
+    <message>
+        <source>Exit</source>
+        <translation>Çıkış</translation>
+    </message>
+    <message>
+        <source>Continue</source>
+        <translation>Devam</translation>
+    </message>
+</context>
+<context>
+    <name>Font</name>
+    <message>
+        <source>Don&apos;t let your dreams be dreams</source>
+        <translation>Hayallerinin rüya olmasına izin verme</translation>
+    </message>
+</context>
+<context>
+    <name>FontDetailDailog</name>
+    <message>
+        <source>Basic info</source>
+        <translation>Temel bilgi</translation>
+    </message>
+    <message>
+        <source>Style</source>
+        <translation>Tip</translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation>Tür</translation>
+    </message>
+    <message>
+        <source>Version</source>
+        <translation>Sürüm</translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation>Açıklama</translation>
+    </message>
+    <message>
+        <source>Unknown</source>
+        <translation>Bilinmeyen</translation>
+    </message>
+</context>
+<context>
     <name>Main</name>
     <message>
         <source>Font Manager</source>
@@ -13,27 +213,13 @@
         <source>Loading fonts, please wait...</source>
         <translation>Yazı tipleri yükleniyor, lütfen bekleyin...</translation>
     </message>
-</context>
-<context>
-    <name>SearchBar</name>
     <message>
-        <source>Search</source>
-        <translation>Ara</translation>
+        <source>The font exported to your desktop</source>
+        <translation>Masaüstünüze dışa aktarılan yazı tipi</translation>
     </message>
     <message>
-        <source>No search results</source>
-        <translation>Arama sonucu bulunamadı</translation>
-    </message>
-    <message>
-        <source>No fonts</source>
-        <translation>Yazı tipi yok</translation>
-    </message>
-</context>
-<context>
-    <name>MessageManager</name>
-    <message>
-        <source>deactivated</source>
-        <translation>devre dışı</translation>
+        <source>%1 fonts exported to your desktop</source>
+        <translation>%1 yazı tipi masaüstünüze dışa aktarıldı</translation>
     </message>
 </context>
 <context>
@@ -69,6 +255,21 @@
     <message>
         <source>Display in file manager</source>
         <translation>Dosya yöneticisinde görüntüle</translation>
+    </message>
+    <message>
+        <source>Export</source>
+        <translation>Dışarı aktar</translation>
+    </message>
+</context>
+<context>
+    <name>MessageManager</name>
+    <message>
+        <source>deactivated</source>
+        <translation>devre dışı</translation>
+    </message>
+    <message>
+        <source>The fonts have been deactivated</source>
+        <translation>Yazı tipleri devre dışı bırakıldı</translation>
     </message>
 </context>
 <context>
@@ -106,103 +307,57 @@
     </message>
 </context>
 <context>
-    <name>ExceptionWindow</name>
+    <name>SearchBar</name>
     <message>
-        <source>Font Verification</source>
-        <translation>Yazı Tipi Doğrulaması</translation>
+        <source>Search</source>
+        <translation>Ara</translation>
     </message>
     <message>
-        <source>Broken file</source>
-        <translation>Bozuk dosya</translation>
+        <source>No search results</source>
+        <translation>Arama sonucu bulunamadı</translation>
     </message>
     <message>
-        <source>Same version installed</source>
-        <translation>Aynı sürüm kurulu</translation>
-    </message>
-    <message>
-        <source>Exit</source>
-        <translation>Çıkış</translation>
-    </message>
-    <message>
-        <source>Continue</source>
-        <translation>Devam</translation>
+        <source>No fonts</source>
+        <translation>Yazı tipi yok</translation>
     </message>
 </context>
 <context>
-    <name>DeleteConfirmDailog</name>
+    <name>Shortcuts</name>
     <message>
-        <source>Are you sure you want to delete this font?</source>
-        <translation>Bu yazı tipini silmek istediğinizden emin misiniz?</translation>
+        <source>Help</source>
+        <translation type="vanished">Yardım</translation>
     </message>
     <message>
-        <source>This font will not be available to applications</source>
-        <translation>Bu yazı tipi uygulamalar tarafından kullanılamayacak</translation>
+        <source>Display shortcuts</source>
+        <translation type="vanished">Kısayolları görüntüle</translation>
     </message>
     <message>
-        <source>Cancel</source>
-        <translation>İptal</translation>
+        <source>Page up</source>
+        <translation type="vanished">Yukarı</translation>
     </message>
     <message>
-        <source>Confirm</source>
-        <translation>Onayla</translation>
-    </message>
-</context>
-<context>
-    <name>FontDetailDailog</name>
-    <message>
-        <source>Basic info</source>
-        <translation>Temel bilgi</translation>
+        <source>Page down</source>
+        <translation type="vanished">Aşağı</translation>
     </message>
     <message>
-        <source>Style</source>
-        <translation>Tip</translation>
+        <source>Delete</source>
+        <translation type="vanished">Sil</translation>
     </message>
     <message>
-        <source>Type</source>
-        <translation>Tür</translation>
+        <source>Add font</source>
+        <translation type="vanished">Yazı tipi ekle</translation>
     </message>
     <message>
-        <source>Version</source>
-        <translation>Sürüm</translation>
+        <source>Favorite</source>
+        <translation type="vanished">Sık kullanılan</translation>
     </message>
     <message>
-        <source>Description</source>
-        <translation>Açıklama</translation>
+        <source>Unfavorite</source>
+        <translation type="vanished">Sık kullanılandan çıkar</translation>
     </message>
     <message>
-        <source>Unknown</source>
-        <translation>Bilinmeyen</translation>
-    </message>
-</context>
-<context>
-    <name>Category</name>
-    <message>
-        <source>All Fonts</source>
-        <translation>Tüm Yazı Tipleri</translation>
-    </message>
-    <message>
-        <source>System</source>
-        <translation>Sistem</translation>
-    </message>
-    <message>
-        <source>User</source>
-        <translation>Kullanıcı</translation>
-    </message>
-    <message>
-        <source>Favorites</source>
-        <translation>Sık kullanılanlar</translation>
-    </message>
-    <message>
-        <source>Active</source>
-        <translation>Aktif</translation>
-    </message>
-    <message>
-        <source>Chinese</source>
-        <translation>Çince</translation>
-    </message>
-    <message>
-        <source>Monospaced</source>
-        <translation>Eşit aralıklı</translation>
+        <source>Font info</source>
+        <translation type="vanished">Yazı tipi bilgisi</translation>
     </message>
 </context>
 <context>
@@ -210,48 +365,6 @@
     <message>
         <source>Input preview text</source>
         <translation>Önizleme metni gir</translation>
-    </message>
-</context>
-<context>
-    <name>Shortcuts</name>
-    <message>
-        <source>Help</source>
-        <translation>Yardım</translation>
-    </message>
-    <message>
-        <source>Display shortcuts</source>
-        <translation>Kısayolları görüntüle</translation>
-    </message>
-    <message>
-        <source>Page up</source>
-        <translation>Yukarı</translation>
-    </message>
-    <message>
-        <source>Page down</source>
-
-
-
-        <translation>Aşağı</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation>Sil</translation>
-    </message>
-    <message>
-        <source>Add font</source>
-        <translation>Yazı tipi ekle</translation>
-    </message>
-    <message>
-        <source>Favorite</source>
-        <translation>Sık kullanılan</translation>
-    </message>
-    <message>
-        <source>Unfavorite</source>
-        <translation>Sık kullanılandan çıkar</translation>
-    </message>
-    <message>
-        <source>Font info</source>
-        <translation>Yazı tipi bilgisi</translation>
     </message>
 </context>
 </TS>
