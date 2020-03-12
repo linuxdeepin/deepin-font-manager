@@ -38,21 +38,6 @@
     </message>
 </context>
 <context>
-    <name>DFontInfoDialog</name>
-    <message>
-        <source>Full name</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Ps name</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Trademark</source>
-        <translation type="unfinished"/>
-    </message>
-</context>
-<context>
     <name>DFontMgrMainWindow</name>
     <message>
         <source>Ctrl+Shift+/</source>
@@ -119,7 +104,7 @@
     </message>
     <message>
         <source>These fonts will not be available to applications</source>
-        <translation>Оваи фонтови неће бити доступан програмима</translation>
+        <translation>Ови фонтови неће бити доступни програмима</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -139,7 +124,7 @@
     </message>
     <message>
         <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
-        <translation type="unfinished"/>
+        <translation>Ови фонтови неће бити доступни програмима, а осталих %1 системских фонтова се не могу уклонити</translation>
     </message>
 </context>
 <context>
@@ -197,6 +182,18 @@
     <message>
         <source>Unknown</source>
         <translation>Непознато</translation>
+    </message>
+    <message>
+        <source>Full name</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Ps name</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Trademark</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

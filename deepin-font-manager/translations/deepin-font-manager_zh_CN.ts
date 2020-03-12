@@ -38,21 +38,6 @@
     </message>
 </context>
 <context>
-    <name>DFontInfoDialog</name>
-    <message>
-        <source>Full name</source>
-        <translation>全名</translation>
-    </message>
-    <message>
-        <source>Ps name</source>
-        <translation>PS名称</translation>
-    </message>
-    <message>
-        <source>Trademark</source>
-        <translation>商标</translation>
-    </message>
-</context>
-<context>
     <name>DFontMgrMainWindow</name>
     <message>
         <source>Ctrl+Shift+/</source>
@@ -197,6 +182,18 @@
     <message>
         <source>Unknown</source>
         <translation>未知</translation>
+    </message>
+    <message>
+        <source>Full name</source>
+        <translation>全名</translation>
+    </message>
+    <message>
+        <source>Ps name</source>
+        <translation>PS名称</translation>
+    </message>
+    <message>
+        <source>Trademark</source>
+        <translation>商标</translation>
     </message>
 </context>
 <context>

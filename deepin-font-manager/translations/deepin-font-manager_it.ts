@@ -38,21 +38,6 @@
     </message>
 </context>
 <context>
-    <name>DFontInfoDialog</name>
-    <message>
-        <source>Full name</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Ps name</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Trademark</source>
-        <translation type="unfinished"/>
-    </message>
-</context>
-<context>
     <name>DFontMgrMainWindow</name>
     <message>
         <source>Ctrl+Shift+/</source>
@@ -139,7 +124,7 @@
     </message>
     <message>
         <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
-        <translation type="unfinished"/>
+        <translation>Questi font non saranno disponibili per le App, ed inoltre i font di Sistema %1 non possono essere eliminati</translation>
     </message>
 </context>
 <context>
@@ -197,6 +182,18 @@
     <message>
         <source>Unknown</source>
         <translation>Sconosciuto</translation>
+    </message>
+    <message>
+        <source>Full name</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Ps name</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Trademark</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
