@@ -40,21 +40,6 @@
     </message>
 </context>
 <context>
-    <name>DFontInfoDialog</name>
-    <message>
-        <source>Full name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ps name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Trademark</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>DFontMgrMainWindow</name>
     <message>
         <source>Ctrl+Shift+/</source>
@@ -199,6 +184,18 @@
     <message>
         <source>Unknown</source>
         <translation>Unknown</translation>
+    </message>
+    <message>
+        <source>Full name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ps name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Trademark</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

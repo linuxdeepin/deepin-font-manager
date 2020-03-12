@@ -16,13 +16,13 @@ DFontBaseDialog::DFontBaseDialog(QWidget *parent)
 
 void DFontBaseDialog::initUI()
 {
-    QVBoxLayout* mainLayout = new QVBoxLayout();
+    QVBoxLayout *mainLayout = new QVBoxLayout();
     mainLayout->setSpacing(0);
-    mainLayout->setContentsMargins(0,0,0,0);
+    mainLayout->setContentsMargins(0, 0, 0, 0);
 
-    QHBoxLayout* titleLayout = new QHBoxLayout();
+    QHBoxLayout *titleLayout = new QHBoxLayout();
     titleLayout->setSpacing(0);
-    titleLayout->setContentsMargins(10,0,0,0);
+    titleLayout->setContentsMargins(10, 0, 0, 0);
 
     m_titleBar = new QWidget(this);
     m_titleBar->setFixedHeight(50);
@@ -34,25 +34,25 @@ void DFontBaseDialog::initUI()
     m_logoIcon->setFixedSize(QSize(32, 32));
     m_logoIcon->setFocusPolicy(Qt::NoFocus);
     m_logoIcon->setAttribute(Qt::WA_TransparentForMouseEvents);
-    m_logoIcon->setPixmap(QIcon::fromTheme("deepin-font-manager").pixmap(QSize(32,32)));
+    m_logoIcon->setPixmap(QIcon::fromTheme("deepin-font-manager").pixmap(QSize(32, 32)));
 
     m_closeButton = new DWindowCloseButton(this);
     m_closeButton->setFocusPolicy(Qt::NoFocus);
-    m_closeButton->setIconSize(QSize(50,50));
+    m_closeButton->setIconSize(QSize(50, 50));
 
     m_tileText = new DLabel(this);
     m_tileText->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     m_tileText->setAlignment(Qt::AlignCenter);
     DFontSizeManager::instance()->bind(m_tileText, DFontSizeManager::T6);
 
-    titleLayout->addWidget(m_logoIcon,0,Qt::AlignLeft|Qt::AlignVCenter);
+    titleLayout->addWidget(m_logoIcon, 0, Qt::AlignLeft | Qt::AlignVCenter);
     titleLayout->addWidget(m_tileText);
-    titleLayout->addWidget(m_closeButton,0,Qt::AlignRight|Qt::AlignVCenter);
+    titleLayout->addWidget(m_closeButton, 0, Qt::AlignRight | Qt::AlignVCenter);
 
     //Dialog content
     m_contentLayout = new QVBoxLayout();
     m_contentLayout->setSpacing(0);
-    m_contentLayout->setContentsMargins(0,0,0,0);
+    m_contentLayout->setContentsMargins(0, 0, 0, 0);
 
     m_content = new QWidget(this);
     m_content->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -65,7 +65,7 @@ void DFontBaseDialog::initUI()
 
 void DFontBaseDialog::InitConnections()
 {
-    connect(m_closeButton, &DWindowCloseButton::clicked, this,[this](){
+    connect(m_closeButton, &DWindowCloseButton::clicked, this, [this]() {
         this->close();
     });
 }
@@ -77,19 +77,19 @@ void DFontBaseDialog::setLogoVisable(bool visible)
     }
 }
 
-void DFontBaseDialog::setTitle(const QString& title)
+void DFontBaseDialog::setTitle(const QString &title)
 {
-    if(nullptr != m_tileText) {
+    if (nullptr != m_tileText) {
         m_tileText->setText(title);
     }
 }
 
-QLayout* DFontBaseDialog::getContentLayout()
+QLayout *DFontBaseDialog::getContentLayout()
 {
     return m_contentLayout;
 }
 
-void DFontBaseDialog::addContent(QWidget* content)
+void DFontBaseDialog::addContent(QWidget *content)
 {
     Q_ASSERT(nullptr != getContentLayout());
 
@@ -110,4 +110,9 @@ void DFontBaseDialog::closeEvent(QCloseEvent *event)
     done(-1);
 
     Q_EMIT closed();
+}
+
+QWidget *DFontBaseDialog::getContent() const
+{
+    return m_content;
 }

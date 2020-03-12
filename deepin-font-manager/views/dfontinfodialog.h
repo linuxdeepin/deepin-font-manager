@@ -7,6 +7,7 @@
 #include <DFrame>
 #include <DLabel>
 #include <QTextEdit>
+#include <DWidget>
 
 class QHBoxLayout;
 DWIDGET_USE_NAMESPACE
@@ -17,7 +18,7 @@ class DFontInfoDialog : public DFontBaseDialog
 {
     Q_OBJECT
 public:
-    explicit DFontInfoDialog(DFontPreviewItemData* fontInfo, QWidget* parent = nullptr);
+    explicit DFontInfoDialog(DFontPreviewItemData *fontInfo, QWidget *parent = nullptr);
 
     static constexpr int DEFAULT_WINDOW_W = 300;
     static constexpr int DEFAULT_WINDOW_H = 640;
@@ -27,21 +28,21 @@ protected:
     void initConnections();
     void addLabelContent(const QString &title, const QString &content);
 
-    void resizeEvent(QResizeEvent* event) override;
+    void resizeEvent(QResizeEvent *event) override;
 signals:
 
 public slots:
 
 private:
-    QWidget* m_mainFrame {nullptr};
+    QWidget *m_mainFrame {nullptr};
 
     FontIconText *m_fontLogo {nullptr};
-    DLabel* m_fontFileName {nullptr};
+    DLabel *m_fontFileName {nullptr};
 
-    QFrame* m_basicInfoFrame {nullptr};
+    QFrame *m_basicInfoFrame {nullptr};
     QVBoxLayout *m_baseicInfoLayout;
 
-    DFontPreviewItemData* m_fontInfo;
+    DFontPreviewItemData *m_fontInfo;
 };
 
 #endif  // DFONTINFODIALOG_H

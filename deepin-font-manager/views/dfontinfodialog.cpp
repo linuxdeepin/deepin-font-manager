@@ -63,6 +63,16 @@ void DFontInfoDialog::initUI()
     //m_mainFrame->setFrameShape(DFrame::Shape::NoFrame);
     m_mainFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
+    DPalette pa1 = DApplicationHelper::instance()->palette(m_mainFrame);
+    //pa1 = m_messageA->palette();
+    QColor color = pa1.textLively().color();
+    color.setAlphaF(0.7);
+    pa1.setColor(DPalette::WindowText, color);
+    //pa1.setColor(DPalette::WindowText, "#000000");
+    DApplicationHelper::instance()->setPalette(m_mainFrame, pa1);
+
+
+
     // Font logo
     m_fontLogo = new FontIconText(":/images/font-info-logo.svg", this);
     QFileInfo fileInfo(m_fontInfo->fontInfo.filePath);
@@ -127,7 +137,7 @@ void DFontInfoDialog::initUI()
     content = m_fontInfo->fontInfo.version;
     if (content.isEmpty())
         content = "Copyright 2014~2015 Adobe Syste-ms Incorporated (http://www.adob.com/), with Reserved "
-              "Font Name cc Source.";
+                  "Font Name cc Source.";
     addLabelContent(DApplication::translate("FontDetailDailog", "Version"), content);
     m_baseicInfoLayout->addSpacing(6);
 
@@ -139,22 +149,26 @@ void DFontInfoDialog::initUI()
     m_baseicInfoLayout->addSpacing(6);
 
     //full name
-    addLabelContent(tr("Full name"), m_fontInfo->fontInfo.fullname);
+    addLabelContent(DApplication::translate("FontDetailDailog", "Full name"), m_fontInfo->fontInfo.fullname);
     m_baseicInfoLayout->addSpacing(6);
 
     //ps name
-    addLabelContent(tr("Ps name"), m_fontInfo->fontInfo.psname);
+    addLabelContent(DApplication::translate("FontDetailDailog", "Ps name"), m_fontInfo->fontInfo.psname);
     m_baseicInfoLayout->addSpacing(6);
 
     //trademark
-    addLabelContent(tr("Trademark"), m_fontInfo->fontInfo.trademark);
+    addLabelContent(DApplication::translate("FontDetailDailog", "Trademark"), m_fontInfo->fontInfo.trademark);
 
     m_basicInfoFrame->setLayout(m_baseicInfoLayout);
 
     /**************************Basic info panel****END*******************************/
 
     QScrollArea *scrollArea = new QScrollArea;
+    scrollArea->setFrameShape(QFrame::Shape::NoFrame);
     scrollArea->setWidget(m_basicInfoFrame);
+
+    scrollArea->setWidgetResizable(true);
+    scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAlwaysOff);
 
     // Add childs to main layout
     //mainLayout->addSpacing(50);
@@ -203,12 +217,13 @@ void DFontInfoDialog::addLabelContent(const QString &title, const QString &conte
 //    qDebug() << __FUNCTION__ << title << " : " << content << ", font = " << m_fontInfo->fontInfo.toString();
 
     const int TITLE_MAXWIDTH = 72 + 36;
-    int m_maxFieldWidth = width() - TITLE_MAXWIDTH - 20*2 - 10*2;
+    int m_maxFieldWidth = width() - 10;
     QHBoxLayout *lyout = new QHBoxLayout;
 
     QLabel *detail = new QLabel();
-//    detail->setMinimumHeight(18);
-//    detail->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    detail->setFixedHeight(50);
+//    detail->setFixedHeight(detail->fontMetrics().height() * 3);
+    detail->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     detail->setWordWrap(true);
     DFontSizeManager::instance()->bind(detail, DFontSizeManager::T8);
     DPalette pa1 = DApplicationHelper::instance()->palette(detail);
@@ -223,7 +238,7 @@ void DFontInfoDialog::addLabelContent(const QString &title, const QString &conte
     titleLabel->setMinimumHeight(detail->minimumHeight());
     titleLabel->setWordWrap(true);
     DFontSizeManager::instance()->bind(titleLabel, DFontSizeManager::T8);
-    DPalette pa2= DApplicationHelper::instance()->palette(titleLabel);
+    DPalette pa2 = DApplicationHelper::instance()->palette(titleLabel);
     pa2.setBrush(DPalette::Text, pa2.color(DPalette::TextTitle));
     titleLabel->setPalette(pa2);
     titleLabel->setText(SpliteText(title, titleLabel->font(), TITLE_MAXWIDTH));
