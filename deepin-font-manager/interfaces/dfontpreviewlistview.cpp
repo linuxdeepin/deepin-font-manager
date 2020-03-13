@@ -219,7 +219,9 @@ void DFontPreviewListView::selectFonts(const QStringList &fileList)
     }
     QStringList outlist;
     for (QString filePath : fileList) {
-        QStringList list = DFontInfoManager::instance()->getFamilyStyleName(filePath);
+        DFontInfo fi = DFontInfoManager::instance()->getFontInfo(filePath);
+        QStringList list;
+        list << fi.familyName << fi.styleName;
 //        qDebug() << __FUNCTION__ << filePath << list;
 
         if (list.isEmpty() || list.size() < 2) {
