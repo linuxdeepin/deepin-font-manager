@@ -617,7 +617,7 @@ void DFontMgrMainWindow::initFontPreviewListView(QWidget *parent)
 
     DLabel *noResultLabel = new DLabel(m_noResultListView);
     noResultLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    noResultLabel->setFixedHeight(noResultLabel->fontMetrics().height() + 5);
+    noResultLabel->setFixedHeight(noResultLabel->fontMetrics().height() + 30);
     noResultLabel->setText(DApplication::translate("SearchBar", "No search results"));
 
     QFont labelFont = noResultLabel->font();
@@ -639,7 +639,7 @@ void DFontMgrMainWindow::initFontPreviewListView(QWidget *parent)
 
     DLabel *noInstallLabel = new DLabel(m_noInstallListView);
     noInstallLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    noInstallLabel->setFixedHeight(noInstallLabel->fontMetrics().height() + 10);
+    noInstallLabel->setFixedHeight(noInstallLabel->fontMetrics().height() + 30);
     noInstallLabel->setText(DApplication::translate("SearchBar", "No fonts"));
 
     QFont labelFontNoInstall = noInstallLabel->font();

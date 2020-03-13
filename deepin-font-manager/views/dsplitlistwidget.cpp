@@ -46,7 +46,7 @@ void DNoFocusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
 
             QRect lineRect;
             lineRect.setX(option.rect.x() + 10);
-            lineRect.setY(option.rect.y() + option.rect.height() - 2);
+            lineRect.setY(option.rect.y() + option.rect.height()-2);
             lineRect.setWidth(option.rect.width() - 20);
             lineRect.setHeight(2);
 
