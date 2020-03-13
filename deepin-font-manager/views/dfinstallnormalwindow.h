@@ -40,6 +40,7 @@ protected:
     bool ifNeedShowExceptionWindow() const;
 
     void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
+    void closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;
 
 protected slots:
     void batchInstall();

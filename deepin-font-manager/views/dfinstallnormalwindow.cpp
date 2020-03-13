@@ -256,6 +256,24 @@ void DFInstallNormalWindow::resizeEvent(QResizeEvent *event)
     DFontBaseDialog::resizeEvent(event);
 }
 
+void DFInstallNormalWindow::closeEvent(QCloseEvent *event)
+{
+    static bool flag = true;
+    if (flag) {
+        event->accept();
+        // TODO: close dfontmanager thread and emit signal to update font show.
+        if (m_fontManager) {
+            m_fontManager->requestInterruption();
+            m_fontManager->quit();
+            m_fontManager->wait();
+            m_fontManager = nullptr;
+            delete m_fontManager;
+        }
+    } else {
+        event->ignore();
+    }
+}
+
 void DFInstallNormalWindow::batchInstall()
 {
     // Check&Sort uninstalled ,installed & damaged font file here
@@ -348,6 +366,8 @@ void DFInstallNormalWindow::onProgressChanged(const QString &filePath, const dou
     m_currentFontLabel->setText(fontInfo.familyName);
     m_progressBar->setValue(static_cast<int>(percent));
     m_progressBar->setTextVisible(false);
+
+    qDebug() << QString("font install progress: %1%").arg(percent);
 }
 
 void DFInstallNormalWindow::showInstallErrDlg()
