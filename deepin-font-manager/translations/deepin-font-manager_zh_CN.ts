@@ -322,39 +322,39 @@
     <name>Shortcuts</name>
     <message>
         <source>Help</source>
-        <translation type="vanished">帮助</translation>
+        <translation>帮助</translation>
     </message>
     <message>
         <source>Display shortcuts</source>
-        <translation type="vanished">显示快捷键</translation>
+        <translation>显示快捷键</translation>
     </message>
     <message>
         <source>Page up</source>
-        <translation type="vanished">上一页</translation>
+        <translation>上一页</translation>
     </message>
     <message>
         <source>Page down</source>
-        <translation type="vanished">下一页</translation>
+        <translation>下一页</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="vanished">删除</translation>
+        <translation>删除</translation>
     </message>
     <message>
         <source>Add font</source>
-        <translation type="vanished">添加字体</translation>
+        <translation>添加字体</translation>
     </message>
     <message>
         <source>Favorite</source>
-        <translation type="vanished">收藏</translation>
+        <translation>收藏</translation>
     </message>
     <message>
         <source>Unfavorite</source>
-        <translation type="vanished">取消收藏</translation>
+        <translation>取消收藏</translation>
     </message>
     <message>
         <source>Font info</source>
-        <translation type="vanished">字体信息</translation>
+        <translation>字体信息</translation>
     </message>
 </context>
 <context>
