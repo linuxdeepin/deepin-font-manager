@@ -41,6 +41,7 @@ private:
     inline void appendAllKeys(QList<QString> &keyList);
 
     DSqliteUtil *m_sqlUtil;
+
 };
 
 #endif // DFMDBMANAGER_H

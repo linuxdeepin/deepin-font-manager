@@ -106,6 +106,7 @@ bool DSqliteUtil::addRecord(QMap<QString, QString> data, QString table_name)
 {
     QString sql = "insert into " + table_name + "(";
     QString values = " values(";
+    QMutexLocker m_locker(&mutex);
     for (QMap<QString, QString>::const_iterator it = data.constBegin(); it != data.constEnd();
             it++) {
         sql += it.key() + ", ";
@@ -136,6 +137,7 @@ bool DSqliteUtil::delRecord(QMap<QString, QString> where, QString table_name)
     QString sql = "delete from ";
     sql += table_name;
     sql += " where ";
+    QMutexLocker m_locker(&mutex);
     for (QMap<QString, QString>::const_iterator it = where.constBegin(); it != where.constEnd();
             it++) {
         //转义字符 ' -> ''
@@ -164,6 +166,7 @@ bool DSqliteUtil::updateRecord(QMap<QString, QString> where, QMap<QString, QStri
                                QString table_name)
 {
     QString sql = "update " + table_name + " set ";
+    QMutexLocker m_locker(&mutex);
     for (QMap<QString, QString>::const_iterator it = data.constBegin(); it != data.constEnd();
             it++) {
         sql += it.key() + "=";
@@ -194,6 +197,7 @@ bool DSqliteUtil::findRecords(QList<QString> key, QList<QMap<QString, QString>> 
 {
     QString sql = "select ";
     int columnLen = key.size();
+    QMutexLocker m_locker(&mutex);
     for (int i = 0; i < columnLen; i++) {
         sql += key.at(i);
         sql += ",";
@@ -224,6 +228,7 @@ bool DSqliteUtil::findRecords(QList<QString> key, QMap<QString, QString> where,
 {
     QString sql = "select ";
     int columnLen = key.size();
+    QMutexLocker m_locker(&mutex);
     for (int i = 0; i < columnLen; i++) {
         sql += key.at(i);
         sql += ",";
@@ -258,6 +263,7 @@ int DSqliteUtil::getRecordCount(QString table_name)
 {
     QString sql = "select count(1) from " + table_name;
     qDebug() << sql;
+    QMutexLocker m_locker(&mutex);
     m_query->prepare(sql);
 
     int resultCount = 0;
@@ -274,6 +280,7 @@ int DSqliteUtil::getMaxFontId(QString table_name)
 {
     QString sql = "select max(fontId) from " + table_name;
     qDebug() << sql;
+    QMutexLocker m_locker(&mutex);
     m_query->prepare(sql);
 
     int maxFontId = 0;
@@ -290,6 +297,7 @@ bool DSqliteUtil::delAllRecords(QString table_name)
 {
     QString sql = "delete from " + table_name;
     qDebug() << sql;
+    QMutexLocker m_locker(&mutex);
     m_query->prepare(sql);
 
     if (!m_query->exec()) {

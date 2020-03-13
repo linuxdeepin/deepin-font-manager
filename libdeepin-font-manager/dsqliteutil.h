@@ -7,6 +7,7 @@
 #include <QSqlError>
 #include <QSqlQuery>
 #include <QVariant>
+#include <QMutexLocker>
 
 class DSqliteUtil
 {
@@ -51,6 +52,7 @@ private:
     QString m_strDatabase;
 
     QSqlQuery *m_query;
+    mutable QMutex mutex;
 };
 
 #endif  // DSQLITEUTIL_H
