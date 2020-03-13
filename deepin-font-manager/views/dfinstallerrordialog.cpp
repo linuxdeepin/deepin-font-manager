@@ -145,10 +145,10 @@ int DFInstallErrorDialog::getErrorFontCheckedCount()
 {
     int checkedCount = 0;
     QStandardItemModel *sourceModel = m_installErrorListView->getErrorListSourceModel();
-    for(int i=0; i<sourceModel->rowCount(); i++) {
+    for (int i = 0; i < sourceModel->rowCount(); i++) {
         QModelIndex index = sourceModel->index(i, 0);
         DFInstallErrorItemModel itemModel = qvariant_cast<DFInstallErrorItemModel>(
-                    sourceModel->data(index));
+                                                sourceModel->data(index));
         if (itemModel.bChecked) {
             ++checkedCount;
         }
@@ -179,10 +179,11 @@ void DFInstallErrorDialog::initInstallErrorFontViews()
     int btnHeight = 38;
     QWidget *btnFrame = new QWidget;
     btnFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    btnFrame->setFixedHeight(btnHeight+15);
+    btnFrame->setFixedHeight(btnHeight + 15);
     btnFrame->setLayout(buttonLayout);
 
     QButtonGroup *btnGroup = new QButtonGroup(this);
+
     btnGroup->setExclusive(true);
 
     QFont btnFont = font();
@@ -191,12 +192,16 @@ void DFInstallErrorDialog::initInstallErrorFontViews()
     m_quitInstallBtn = new DPushButton;
     m_quitInstallBtn->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     m_quitInstallBtn->setFont(btnFont);
-    m_quitInstallBtn->setFixedSize(204, btnHeight);
+//    m_quitInstallBtn->setFixedSize(204, btnHeight);
+    m_quitInstallBtn->setMinimumSize(204, btnHeight);
+    m_quitInstallBtn->setMaximumSize(204, btnHeight + 5);
     m_quitInstallBtn->setText(DApplication::translate("ExceptionWindow", "Exit"));
 
     m_continueInstallBtn = new DSuggestButton;
     m_continueInstallBtn->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    m_continueInstallBtn->setFixedSize(204, btnHeight);
+//    m_continueInstallBtn->setFixedSize(204, btnHeight);
+    m_continueInstallBtn->setMinimumSize(204, btnHeight);
+    m_continueInstallBtn->setMaximumSize(204, btnHeight + 5);
     m_continueInstallBtn->setFont(btnFont);
     m_continueInstallBtn->setText(DApplication::translate("ExceptionWindow", "Continue"));
 
@@ -228,6 +233,7 @@ void DFInstallErrorDialog::initInstallErrorFontViews()
     listViewLayout->addWidget(m_installErrorListView);
     contentLayout->addLayout(listViewLayout);
     contentLayout->addWidget(btnFrame);
+    contentLayout->addStretch();
 
     contentFrame->setLayout(contentLayout);
 
@@ -249,8 +255,7 @@ void DFInstallErrorDialog::resetContinueInstallBtnStatus()
     if (0 == getErrorFontCheckedCount()) {
         m_continueInstallBtn->setEnabled(false);
         m_continueInstallBtn->setAttribute(Qt::WA_TransparentForMouseEvents, true);
-    }
-    else {
+    } else {
         m_continueInstallBtn->setEnabled(true);
         m_continueInstallBtn->setAttribute(Qt::WA_TransparentForMouseEvents, false);
     }
