@@ -58,9 +58,20 @@ bool DFontPreviewProxyModel::isFontNameContainsPattern(QString fontName) const
 bool DFontPreviewProxyModel::isCustomFilterAcceptsRow(const QModelIndex &modelIndex) const
 {
     QVariant varModel = sourceModel()->data(modelIndex, Qt::DisplayRole);
+    if(varModel.isValid() == false )
+    {
+        return false;
+    }
+
+    //zhangya 20200313  fix varModel is not DFontPreviewItemData crash
+    if(varModel.canConvert<DFontPreviewItemData>() == false)
+    {
+        return false;
+    }
+
     DFontPreviewItemData itemData = varModel.value<DFontPreviewItemData>();
 
-    QString fontName = itemData.strFontName;
+    const QString& fontName = itemData.strFontName;
 
     switch (m_filterGroup) {
     //显示所有字体
@@ -127,6 +138,11 @@ bool DFontPreviewProxyModel::filterAcceptsRow(int source_row,
     }
 
     QModelIndex modelIndex = sourceModel()->index(source_row, 0, source_parent);
+
+    if(modelIndex.isValid() ==false)
+    {
+        return false;
+    }
 
     if (isCustomFilterAcceptsRow(modelIndex)) {
         return true;
