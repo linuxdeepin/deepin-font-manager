@@ -5,6 +5,8 @@
 #include "dfontinfomanager.h"
 
 #include <QThread>
+#include <QMutex>
+#include <QMutexLocker>
 
 class QFileSystemWatcher;
 class DFontPreviewListView;
@@ -29,7 +31,7 @@ public:
                             QStringList monoSpaceFontPathList,
                             bool isStartup = false);
 
-    QList<DFontPreviewItemData> getFontModelList() const;
+    QList<DFontPreviewItemData> getFontModelList();
     QList<DFontPreviewItemData> getDiffFontModelList() const;
 
 signals:
@@ -55,6 +57,7 @@ protected:
     QList<DFontPreviewItemData> m_diffFontModelList;
     DFontPreviewListView *m_view;
     QFileSystemWatcher *m_fsWatcher;
+    QMutex  m_mutex;
 };
 
 #endif // DFONTPREVIEWLISTDATATHREAD_H

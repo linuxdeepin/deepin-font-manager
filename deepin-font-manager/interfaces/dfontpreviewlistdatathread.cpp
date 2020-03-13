@@ -26,15 +26,19 @@ DFontPreviewListDataThread::DFontPreviewListDataThread(DFontPreviewListView *vie
         connect(m_view, &DFontPreviewListView::requestDeleted, this, &DFontPreviewListDataThread::onFileChanged);
         mThread->start();
     });
+    initFileSystemWatcher();
 }
 
 DFontPreviewListDataThread::~DFontPreviewListDataThread()
 {
 }
+
 void DFontPreviewListDataThread::doWork()
 {
-    initFileSystemWatcher();
-    m_fontModelList.clear();
+    {
+        QMutexLocker locker(&m_mutex);
+        m_fontModelList.clear();
+    }
 
     qDebug() << "doWork thread id = " << QThread::currentThreadId();
     QStringList fontNameList;
@@ -79,14 +83,14 @@ void DFontPreviewListDataThread::doWork()
 
 void DFontPreviewListDataThread::initFileSystemWatcher()
 {
-    QString path = QDir::homePath() + "/.local/share/fonts";
+    QString fontsPath = QDir::homePath() + "/.local/share/fonts/";
     if (m_fsWatcher == nullptr)
         m_fsWatcher = new QFileSystemWatcher(this);
-    QDir dir(path);
+    QDir dir(fontsPath);
     if (!dir.exists())
-        dir.mkpath(path);
+        dir.mkpath(fontsPath);
 
-    m_fsWatcher->addPath(path);
+    m_fsWatcher->addPath(fontsPath);
     m_fsWatcher->addPath(QDir::homePath() + "/.local/share/");
     connect(m_fsWatcher, &QFileSystemWatcher::fileChanged,
     this, [ = ](const QString & path) {
@@ -98,6 +102,10 @@ void DFontPreviewListDataThread::initFileSystemWatcher()
     this, [ = ](const QString & path) {
         qDebug() << "directoryChanged" << path;
         updateChangedDir(path);
+
+        if (!dir.exists()) {
+            m_fsWatcher->removePath(fontsPath);
+        }
     });
 }
 
@@ -116,8 +124,8 @@ void DFontPreviewListDataThread::addPathWatcher(const QString &path)
     if (m_fsWatcher == nullptr)
         return;
 
-    if (!m_fsWatcher->directories().contains(QDir::homePath() + "/.local/share/fonts"))
-        m_fsWatcher->addPath(QDir::homePath() + "/.local/share/fonts");
+    if (!m_fsWatcher->directories().contains(QDir::homePath() + "/.local/share/fonts/"))
+        m_fsWatcher->addPath(QDir::homePath() + "/.local/share/fonts/");
 
     if (!m_fsWatcher->directories().contains(QDir::homePath() + "/.local/share/"))
         m_fsWatcher->addPath(QDir::homePath() + "/.local/share/");
@@ -137,8 +145,9 @@ void DFontPreviewListDataThread::onFileChanged(const QStringList files)
     m_view->deleteFontFiles(files);
 }
 
-QList<DFontPreviewItemData> DFontPreviewListDataThread::getFontModelList() const
+QList<DFontPreviewItemData> DFontPreviewListDataThread::getFontModelList()
 {
+    QMutexLocker locker(&m_mutex);
     return m_fontModelList;
 }
 
@@ -183,6 +192,7 @@ void DFontPreviewListDataThread::insertFontItemData(QString filePath,
         m_diffFontModelList.append(itemData);
     }
 
+    QMutexLocker locker(&m_mutex);
     m_fontModelList.append(itemData);
 }
 
@@ -201,6 +211,7 @@ void DFontPreviewListDataThread::refreshFontListData(bool isStartup)
         DFontPreviewItemData itemData = fontInfoList.at(i);
 
         if (isStartup) {
+            QMutexLocker locker(&m_mutex);
             m_fontModelList.append(itemData);
         } else {
             QString filePath = itemData.fontInfo.filePath;
@@ -235,6 +246,8 @@ void DFontPreviewListDataThread::refreshFontListData(bool isStartup)
 void DFontPreviewListDataThread::removeFontData(const DFontPreviewItemData &removeItemData)
 {
     m_diffFontModelList.clear();
+
+    QMutexLocker locker(&m_mutex);
 
     int removeIndex = -1;
     for (int i = 0; i < m_fontModelList.size(); i++) {
