@@ -589,9 +589,7 @@ void DFontPreviewListView::clearHoverState()
 
 void DFontPreviewListView::updateChangedFile(const QString &path)
 {
-    if (QFileInfo::exists(path)) {
-        deleteFontFile(path);
-    }
+    deleteFontFile(path);
 }
 
 void DFontPreviewListView::updateChangedDir(const QString &path)
