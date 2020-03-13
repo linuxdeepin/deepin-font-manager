@@ -344,8 +344,7 @@ DFontInfo DFontInfoManager::getFontInfo(const QString &filePath)
     }
 
     if(!fontInfo.fullname.isEmpty()){
-        QStringList fontFamilyList = fontInfo.fullname.split(" ");
-        fontInfo.familyName = fontFamilyList[0];
+        fontInfo.familyName = fontInfo.fullname.replace(QRegExp(QString(" " + fontInfo.styleName+"$")), "");
     }
 
     DFMDBManager *dbManager = DFMDBManager::instance();
