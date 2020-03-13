@@ -5,7 +5,6 @@
 
 #include <QMetaType>
 #include <DStyledItemDelegate>
-
 DWIDGET_USE_NAMESPACE
 
 class DNoFocusDelegate : public DStyledItemDelegate

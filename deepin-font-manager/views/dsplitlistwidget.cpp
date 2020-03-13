@@ -1,7 +1,6 @@
 #include "dsplitlistwidget.h"
 #include "globaldef.h"
 #include "utils.h"
-
 #include <QPainter>
 #include <QMouseEvent>
 
@@ -19,6 +18,7 @@ DNoFocusDelegate::DNoFocusDelegate(QAbstractItemView *parent)
     : DStyledItemDelegate(parent)
     , m_parentView(parent)
 {
+
 }
 
 //用于去除选中项的边框
@@ -49,8 +49,7 @@ void DNoFocusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
             lineRect.setY(option.rect.y() + option.rect.height()-2);
             lineRect.setWidth(option.rect.width() - 20);
             lineRect.setHeight(2);
-
-            //绘制分割线
+           //绘制分割线
             DPalette pa = DApplicationHelper::instance()->palette(m_parentView);
             DStyleHelper styleHelper;
             QColor fillColor = styleHelper.getColor(static_cast<const QStyleOption *>(&option), pa, DPalette::ItemBackground);
@@ -85,7 +84,7 @@ void DNoFocusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
             }
 
             //绘制标题
-            QRect fontNameRect = QRect(rect.left() + 20, rect.top() + (rect.height() - 20) / 2, rect.width() - 20, 20);
+            QRect fontNameRect = QRect(rect.left() + 20, rect.top() + (rect.height()-80)/8 , rect.width() - 20, 50);
 
             QFont nameFont = painter->font();
             nameFont.setWeight(QFont::Medium);
@@ -144,7 +143,6 @@ void DSplitListWidget::initListData()
                       << DApplication::translate("Category", "Active")
                       << DApplication::translate("Category", "Chinese")
                       << DApplication::translate("Category", "Monospaced");
-
     for (int i = 0; i < m_titleStringList.size(); i++) {
         QString titleString = m_titleStringList.at(i);
         m_titleStringIndexMap.insert(titleString, i);
@@ -165,7 +163,6 @@ void DSplitListWidget::initListData()
             QString titleString = m_titleStringList.at(iTitleIndex++);
             item->setData(QVariant::fromValue(titleString), Qt::DisplayRole);
         }
-        item->setSizeHint(QSize(100,100));
         m_categoryItemModell->appendRow(item);
     }
 
