@@ -137,16 +137,6 @@ void DFontPreviewListDataThread::addPathWatcher(const QString &path)
     }
 }
 
-void DFontPreviewListDataThread::addWatchers(const QStringList &paths)
-{
-    if (m_fsWatcher == nullptr)
-        return;
-
-    for (QString path : paths) {
-        addPathWatcher(path);
-    }
-}
-
 void DFontPreviewListDataThread::removePathWatcher(const QString &path)
 {
     if (m_fsWatcher == nullptr)
@@ -154,29 +144,10 @@ void DFontPreviewListDataThread::removePathWatcher(const QString &path)
     m_fsWatcher->removePath(path);
 }
 
-void DFontPreviewListDataThread::removeAllWatcher()
-{
-    QMutexLocker locker(&m_mutex);
-    if (m_fsWatcher == nullptr)
-        return;
-    m_fsWatcher->removePaths(m_fsWatcher->files());
-    m_fsWatcher->removePaths(m_fsWatcher->directories());
-//    qDebug() << __FUNCTION__ << m_fsWatcher->files();
-}
-
 void DFontPreviewListDataThread::onFileChanged(const QStringList &files)
 {
-    qDebug() << __FUNCTION__ << files << QThread::currentThreadId();
+//    qDebug() << __FUNCTION__ << files;
     m_view->deleteFontFiles(files);
-}
-
-QStringList DFontPreviewListDataThread::getFiles()
-{
-    QMutexLocker locker(&m_mutex);
-    if (m_fsWatcher != nullptr)
-        return m_fsWatcher->files();
-
-    return QStringList();
 }
 
 QList<DFontPreviewItemData> DFontPreviewListDataThread::getFontModelList()
