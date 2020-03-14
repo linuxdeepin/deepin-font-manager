@@ -7,6 +7,7 @@
 #include "views/dfdeletedialog.h"
 #include "views/dfontinfodialog.h"
 #include "views/dfquickinstallwindow.h"
+#include "dfontpreviewlistdatathread.h"
 
 #include <QHBoxLayout>
 #include <QShortcut>
@@ -1118,6 +1119,10 @@ void DFontMgrMainWindow::delCurrentFont()
         DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
         qDebug() << "Confirm delete:" << currItemData.fontInfo.filePath
                  << " is system font:" << currItemData.fontInfo.isSystemFont;
+        const QStringList files = DFontPreviewListDataThread::instance(m_fontPreviewListView)->getFiles();
+//        qDebug() << " remove watched files " << files;
+        m_fontPreviewListView->setWatchedFiles(files);
+        DFontPreviewListDataThread::instance(m_fontPreviewListView)->removeAllWatcher();
 
         m_fontManager->setType(DFontManager::UnInstall);
         m_fontManager->setUnInstallFile(uninstallFilePath);

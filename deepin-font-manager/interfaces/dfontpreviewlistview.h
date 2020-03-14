@@ -52,13 +52,14 @@ public:
     void updateChangedFile(const QString &path);
     void updateChangedDir(const QString &path);
     void deleteFontFiles(const QStringList files);
-    void deleteFontFile(const QString &path, bool self = false);
+    void deleteFontFile(const QString &path);
     QStringList selectedFonts(int *deleteCnt, int *systemCnt);
     QList<DFontPreviewItemData> selectedFontData(int *deleteCnt, int *systemCnt);
     QModelIndexList selectedIndex(int *deleteCnt, int *systemCnt);
     void deleteFontModelIndex(const QString &filePath);
     inline bool isDeleting();
     void selectFonts(const QStringList &fileList);
+    inline void setWatchedFiles(const QStringList &paths) { m_watchFiles = paths; }
 
 private:
     void initConnections();
@@ -87,6 +88,7 @@ private:
     QModelIndex m_pressModelIndex;
     QModelIndex m_hoverModelIndex;
     QStringList m_deletedFiles;
+    QStringList m_watchFiles;
 
 signals:
     //用于DFontPreviewListView内部使用的信号

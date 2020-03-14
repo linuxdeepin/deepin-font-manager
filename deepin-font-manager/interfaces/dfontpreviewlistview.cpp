@@ -130,7 +130,7 @@ void DFontPreviewListView::onItemRemoved(const DFontPreviewItemData &itemData)
     if (m_fontPreviewProxyModel == nullptr)
         return;
 
-    qDebug() << __FUNCTION__ << " threadid = " << QThread::currentThreadId() << ", path " << itemData.fontInfo.filePath;
+    qDebug() << __FUNCTION__ << ", path " << itemData.fontInfo.filePath;
 
     for (int i = 0; i < m_fontPreviewProxyModel->rowCount(); i++) {
         QModelIndex modelIndex = m_fontPreviewProxyModel->index(i, 0);
@@ -191,6 +191,10 @@ void DFontPreviewListView::deleteFontModelIndex(const QString &filePath)
 
         if (itemData.fontInfo.filePath == filePath) {
             qDebug() << __FUNCTION__ << filePath << " font remove row " << i;
+            QModelIndex nextIndex = modelIndex.siblingAtRow(i + 1);
+            if (!nextIndex.isValid())
+                nextIndex = modelIndex.siblingAtRow(i - 1);
+            setCurrentIndex(nextIndex);
             m_fontPreviewProxyModel->removeRow(i, modelIndex.parent());
             break;
         }
@@ -215,7 +219,7 @@ void DFontPreviewListView::selectFonts(const QStringList &fileList)
     DFMDBManager *dbManager = DFMDBManager::instance();
     QList<DFontPreviewItemData> allFontInfo = dbManager->getAllFontInfo();
     for (auto font : allFontInfo) {
-        qDebug() << "db " << __FUNCTION__ << font.fontInfo.familyName << font.fontInfo.styleName << font.fontInfo.filePath;
+//        qDebug() << "db " << __FUNCTION__ << font.fontInfo.familyName << font.fontInfo.styleName << font.fontInfo.filePath;
     }
     QStringList outlist;
     for (QString filePath : fileList) {
@@ -428,8 +432,9 @@ void DFontPreviewListView::setModel(QAbstractItemModel *model)
 
 void DFontPreviewListView::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end)
 {
-    selectionModel()->setCurrentIndex(parent, QItemSelectionModel::NoUpdate);
-    DListView::rowsAboutToBeRemoved(parent, start, end);
+    Q_UNUSED(parent)
+    Q_UNUSED(start)
+    Q_UNUSED(end)
 }
 
 bool DFontPreviewListView::enableFont(const DFontPreviewItemData &itemData)
@@ -627,9 +632,13 @@ void DFontPreviewListView::deleteFontFiles(const QStringList files)
     for (QString filePath : files) {
         deleteFontFile(filePath);
     }
+
+//    qDebug() << "after delete font readd watched files " << m_watchFiles;
+    m_dataThread->addWatchers(m_watchFiles);
+    m_watchFiles.clear();
 }
 
-void DFontPreviewListView::deleteFontFile(const QString &path, bool self)
+void DFontPreviewListView::deleteFontFile(const QString &path)
 {
     QFileInfo fi(path);
     bool isDir = fi.isDir();

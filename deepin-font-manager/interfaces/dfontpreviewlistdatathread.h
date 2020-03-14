@@ -33,6 +33,7 @@ public:
 
     QList<DFontPreviewItemData> getFontModelList();
     QList<DFontPreviewItemData> getDiffFontModelList() const;
+    QStringList getFiles();
 
 signals:
     void resultReady();
@@ -45,8 +46,11 @@ public slots:
     void updateChangedFile(const QString &path);
     void updateChangedDir(const QString &path);
     void addPathWatcher(const QString &path);
+    void addWatchers(const QStringList &paths);
     void removePathWatcher(const QString &path);
-    void onFileChanged(const QStringList files);
+    void removeAllWatcher();
+    void onFileChanged(const QStringList &files);
+
 
 protected:
     QThread *mThread {nullptr};
@@ -57,7 +61,7 @@ protected:
     QList<DFontPreviewItemData> m_diffFontModelList;
     DFontPreviewListView *m_view;
     QFileSystemWatcher *m_fsWatcher;
-    QMutex  m_mutex;
+    QMutex m_mutex;
 };
 
 #endif // DFONTPREVIEWLISTDATATHREAD_H
