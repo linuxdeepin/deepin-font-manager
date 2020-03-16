@@ -132,15 +132,18 @@ void DFontPreviewListView::onItemRemoved(const DFontPreviewItemData &itemData)
 
     qDebug() << __FUNCTION__ << ", path " << itemData.fontInfo.filePath;
 
-    for (int i = 0; i < m_fontPreviewProxyModel->rowCount(); i++) {
-        QModelIndex modelIndex = m_fontPreviewProxyModel->index(i, 0);
-        QVariant varModel = m_fontPreviewProxyModel->data(modelIndex, Qt::DisplayRole);
+//    for (int i = 0; i < m_fontPreviewProxyModel->rowCount(); i++) {
+//        QModelIndex modelIndex = m_fontPreviewProxyModel->index(i, 0);
+//        QVariant varModel = m_fontPreviewProxyModel->data(modelIndex, Qt::DisplayRole);
+    for (int i = 0; i < m_fontPreviewProxyModel->sourceModel()->rowCount(); i++) {
+        QModelIndex modelIndex = m_fontPreviewProxyModel->sourceModel()->index(i, 0);
+        QVariant varModel = m_fontPreviewProxyModel->sourceModel()->data(modelIndex, Qt::DisplayRole);
         DFontPreviewItemData item = varModel.value<DFontPreviewItemData>();
         //qDebug() << __FUNCTION__ << item.fontInfo.filePath << endl;
         //qDebug() << __FUNCTION__ << itemData.fontInfo.filePath << endl;
         if (item.fontInfo.filePath == itemData.fontInfo.filePath) {
             qDebug() << __FUNCTION__ << item.fontInfo.filePath << " font remove row " << i;
-            m_fontPreviewProxyModel->removeRow(i, modelIndex.parent());
+            m_fontPreviewProxyModel->sourceModel()->removeRow(i, modelIndex.parent());
             return;
         }
     }
