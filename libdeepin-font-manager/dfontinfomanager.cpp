@@ -220,13 +220,14 @@ QString DFontInfoManager::getFontType(const QString &filePath)
 QStringList DFontInfoManager::getFamilyStyleName(const QString &filePath)
 {
     QStringList ret;
-    int appFontId = QFontDatabase::addApplicationFont(filePath);
-    QStringList fontFamilyList = QFontDatabase::applicationFontFamilies(appFontId);
+//    int appFontId = QFontDatabase::addApplicationFont(filePath);
+//    QStringList fontFamilyList = QFontDatabase::applicationFontFamilies(appFontId);
     QString fontFamily;
     QString styleName;
-    if (fontFamilyList.size() > 0) {
-        fontFamily = QString(fontFamilyList.first().toLocal8Bit()).trimmed();
-    }
+//    if (fontFamilyList.size() > 0) {
+//        fontFamily = QString(fontFamilyList.first().toLocal8Bit()).trimmed();
+//    }
+    fontFamily = getFontInfo(filePath).familyName;
 
     FT_Library m_library = nullptr;
     FT_Face m_face = nullptr;
@@ -281,12 +282,12 @@ DFontInfo DFontInfoManager::getFontInfo(const QString &filePath)
 //        fontInfo.familyName = fontFamily;
 //    }
 
-    if (fontInfo.familyName.trimmed().length() < 1) {
-        fontInfo.familyName = QString::fromUtf8(DFreeTypeUtil::getFontFamilyName(m_face));
-    }
-    if (fontInfo.familyName.trimmed().length() < 1) {
-        fontInfo.familyName = QString::fromLatin1(m_face->family_name);
-    }
+//    if (fontInfo.familyName.trimmed().length() < 1) {
+//        fontInfo.familyName = QString::fromUtf8(DFreeTypeUtil::getFontFamilyName(m_face));
+//    }
+//    if (fontInfo.familyName.trimmed().length() < 1) {
+//        fontInfo.familyName = QString::fromLatin1(m_face->family_name);
+//    }
 
     fontInfo.styleName = QString::fromLatin1(m_face->style_name);
     fontInfo.type = getFontType(filePath);
@@ -345,6 +346,12 @@ DFontInfo DFontInfoManager::getFontInfo(const QString &filePath)
 
     if(!fontInfo.fullname.isEmpty()){
         fontInfo.familyName = fontInfo.fullname.replace(QRegExp(QString(" " + fontInfo.styleName+"$")), "");
+    }
+    if (fontInfo.familyName.trimmed().length() < 1) {
+        fontInfo.familyName = QString::fromUtf8(DFreeTypeUtil::getFontFamilyName(m_face));
+    }
+    if (fontInfo.familyName.trimmed().length() < 1) {
+        fontInfo.familyName = QString::fromLatin1(m_face->family_name);
     }
 
     DFMDBManager *dbManager = DFMDBManager::instance();
