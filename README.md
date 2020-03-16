@@ -36,3 +36,4 @@ We encourage you to report issues and contribute changes
 ## License
 
 Deepin Font Manager is licensed under [GPLv3](LICENSE).
+
