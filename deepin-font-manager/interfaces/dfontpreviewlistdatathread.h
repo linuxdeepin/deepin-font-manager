@@ -8,6 +8,8 @@
 #include <QMutex>
 #include <QMutexLocker>
 
+#include <QMetaType>
+
 class QFileSystemWatcher;
 class DFontPreviewListView;
 class DFontPreviewListDataThread : public QObject
@@ -33,6 +35,7 @@ public:
 
     QList<DFontPreviewItemData> getFontModelList();
     QList<DFontPreviewItemData> getDiffFontModelList() const;
+    void setMutex(QMutex *mutex);
 
 signals:
     void resultReady();
@@ -57,7 +60,7 @@ protected:
     QList<DFontPreviewItemData> m_diffFontModelList;
     DFontPreviewListView *m_view;
     QFileSystemWatcher *m_fsWatcher;
-    QMutex m_mutex;
+    QMutex *m_mutex;
 };
 
 #endif // DFONTPREVIEWLISTDATATHREAD_H

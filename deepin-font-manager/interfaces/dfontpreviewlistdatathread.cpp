@@ -18,17 +18,20 @@ DFontPreviewListDataThread *DFontPreviewListDataThread::instance(DFontPreviewLis
 DFontPreviewListDataThread::DFontPreviewListDataThread(DFontPreviewListView *view)
     : m_view(view)
     , m_fsWatcher(nullptr)
+    , m_mutex(nullptr)
 {
-    QTimer::singleShot(50, this, [this]() {
+//    QTimer::singleShot(50, this, [this]() {
         m_dbManager = DFMDBManager::instance();
         mThread = new QThread();
         moveToThread(mThread);
         QObject::connect(mThread, SIGNAL(started()), this, SLOT(doWork()));
         connect(mThread, SIGNAL(finished()), mThread, SLOT(deleteLater()));
-        connect(m_view, &DFontPreviewListView::requestDeleted, this, &DFontPreviewListDataThread::onFileChanged);
+        connect(m_view, &DFontPreviewListView::requestDeleted, this, &DFontPreviewListDataThread::onFileChanged, Qt::QueuedConnection);
         mThread->start();
-    });
+//    });
+
     initFileSystemWatcher();
+    qRegisterMetaType<QItemSelection>("QItemSelection");
 }
 
 DFontPreviewListDataThread::~DFontPreviewListDataThread()
@@ -38,7 +41,6 @@ DFontPreviewListDataThread::~DFontPreviewListDataThread()
 void DFontPreviewListDataThread::doWork()
 {
     {
-        QMutexLocker locker(&m_mutex);
         m_fontModelList.clear();
     }
 
@@ -146,19 +148,26 @@ void DFontPreviewListDataThread::removePathWatcher(const QString &path)
 
 void DFontPreviewListDataThread::onFileChanged(const QStringList &files)
 {
-//    qDebug() << __FUNCTION__ << files;
+    qDebug() << __FUNCTION__ << files << m_mutex;
+    if (m_mutex != nullptr)
+        QMutexLocker locker(m_mutex);
     m_view->deleteFontFiles(files);
+    qDebug() << __FUNCTION__ << files << " end ";
 }
 
 QList<DFontPreviewItemData> DFontPreviewListDataThread::getFontModelList()
 {
-    QMutexLocker locker(&m_mutex);
     return m_fontModelList;
 }
 
 QList<DFontPreviewItemData> DFontPreviewListDataThread::getDiffFontModelList() const
 {
     return m_diffFontModelList;
+}
+
+void DFontPreviewListDataThread::setMutex(QMutex *mutex)
+{
+    m_mutex = mutex;
 }
 
 void DFontPreviewListDataThread::insertFontItemData(QString filePath,
@@ -197,7 +206,6 @@ void DFontPreviewListDataThread::insertFontItemData(QString filePath,
         m_diffFontModelList.append(itemData);
     }
 
-    QMutexLocker locker(&m_mutex);
     m_fontModelList.append(itemData);
 }
 
@@ -216,7 +224,6 @@ void DFontPreviewListDataThread::refreshFontListData(bool isStartup)
         DFontPreviewItemData itemData = fontInfoList.at(i);
 
         if (isStartup) {
-            QMutexLocker locker(&m_mutex);
             m_fontModelList.append(itemData);
         } else {
             QString filePath = itemData.fontInfo.filePath;
@@ -251,8 +258,6 @@ void DFontPreviewListDataThread::refreshFontListData(bool isStartup)
 void DFontPreviewListDataThread::removeFontData(const DFontPreviewItemData &removeItemData)
 {
     m_diffFontModelList.clear();
-
-    QMutexLocker locker(&m_mutex);
 
     int removeIndex = -1;
     for (int i = 0; i < m_fontModelList.size(); i++) {

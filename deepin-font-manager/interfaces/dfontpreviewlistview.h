@@ -60,8 +60,12 @@ public:
     inline bool isDeleting();
     void selectFonts(const QStringList &fileList);
 
+protected:
+    void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected) override;
+
 private:
     void initConnections();
+    void setSelectState(int currIndex);
 
     bool enableFont(const DFontPreviewItemData &itemData);
     bool disableFont(const DFontPreviewItemData &itemData);
@@ -87,6 +91,7 @@ private:
     QModelIndex m_pressModelIndex;
     QModelIndex m_hoverModelIndex;
     QStringList m_deletedFiles;
+    QMutex m_mutex;
 
 signals:
     //用于DFontPreviewListView内部使用的信号
