@@ -288,6 +288,8 @@ void DFInstallErrorDialog::onControlButtonClicked(int btnIndex)
             }
         }
 
+
+
         emit onContinueInstall(continueInstallFontFileList);
     }
 

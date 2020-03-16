@@ -351,9 +351,29 @@ void DFInstallNormalWindow::onContinueInstall(QStringList continueInstallFontFil
     qDebug() << __FUNCTION__ << " called:" << continueInstallFontFileList;
 #endif
 
-    m_installState = InstallState::reinstall;
+    m_installState = InstallState::Install;
 
-    Q_EMIT batchReinstall(continueInstallFontFileList);
+    QStringList installList;
+    bool isInstalled = false;
+
+
+    foreach (auto it, continueInstallFontFileList) {
+        foreach (auto it2, m_installedFiles) {
+            if (!it.compare(it2)) {
+                isInstalled = true;
+                break;
+            }
+        }
+        if (isInstalled != true) {
+            installList.append(it);
+            isInstalled = false;
+        } else {
+            isInstalled = false;
+        }
+    }
+
+//    Q_EMIT batchReinstall(continueInstallFontFileList);
+    Q_EMIT batchReinstall(installList);
 }
 
 void DFInstallNormalWindow::onProgressChanged(const QString &filePath, const double &percent)
