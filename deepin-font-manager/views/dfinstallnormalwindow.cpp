@@ -74,7 +74,7 @@ void DFInstallNormalWindow::initUI()
     contentLayout->addWidget(m_progressStepLabel);
     contentLayout->addSpacing(7);
     contentLayout->addWidget(m_currentFontLabel);
-    contentLayout->addSpacing(7);
+    contentLayout->addSpacing(10);
     contentLayout->addWidget(m_progressBar);
     contentLayout->addSpacing(20);
 
