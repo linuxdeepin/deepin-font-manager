@@ -72,7 +72,6 @@ void DFontInfoDialog::initUI()
     DApplicationHelper::instance()->setPalette(m_mainFrame, pa1);
 
 
-
     // Font logo
     m_fontLogo = new FontIconText(":/images/font-info-logo.svg", this);
     QFileInfo fileInfo(m_fontInfo->fontInfo.filePath);
@@ -85,7 +84,6 @@ void DFontInfoDialog::initUI()
     DFontSizeManager::instance()->bind(m_fontLogo, DFontSizeManager::T4);
     m_fontLogo->setFontName(m_fontInfo->fontInfo.familyName, m_fontInfo->fontInfo.styleName);
 
-    // Font file name
     m_fontFileName = new DLabel(this);
     m_fontFileName->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     m_fontFileName->setAlignment(Qt::AlignVCenter | Qt::AlignHCenter);
@@ -97,23 +95,20 @@ void DFontInfoDialog::initUI()
     DFontSizeManager::instance()->bind(m_fontFileName, DFontSizeManager::T8);
     m_fontFileName->setText(QFileInfo(m_fontInfo->fontInfo.filePath).fileName());
     // Set color
-
     DPalette pa = DApplicationHelper::instance()->palette(m_fontFileName);
     pa.setBrush(DPalette::WindowText, pa.color(DPalette::ToolTipText));
     m_fontFileName->setPalette(pa);
-//    m_fontFileName->setAlignment(Qt::AlignLeft);
-    m_fontFileName->setWordWrap(true);
 
     /**************************Basic info panel****BEGIN*******************************/
     m_basicInfoFrame = new DFrame(this);
     //m_basicInfoFrame->setBackgroundRole(DPalette::Base);
-    //m_basicInfoFrame->setFrameShape(DFrame::Shape::NoFrame);
-    m_basicInfoFrame->setFixedWidth(380);
+    m_basicInfoFrame->setFrameShape(DFrame::Shape::NoFrame);
+    m_basicInfoFrame->setFixedWidth(280);
     m_basicInfoFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     m_baseicInfoLayout = new QVBoxLayout();
     m_baseicInfoLayout->setAlignment(Qt::AlignTop /*| Qt::AlignVCenter*/);
-    m_baseicInfoLayout->setContentsMargins(10, 5, 0, 30);
+    m_baseicInfoLayout->setContentsMargins(10, 0, 0, 30);
     m_baseicInfoLayout->setSpacing(0);
 
     DLabel *panelName = new DLabel(this);
@@ -171,7 +166,9 @@ void DFontInfoDialog::initUI()
     /**************************Basic info panel****END*******************************/
 
     QScrollArea *scrollArea = new QScrollArea;
+    DFrame *infoFrame = new DFrame;
     scrollArea->setFrameShape(QFrame::Shape::NoFrame);
+    QVBoxLayout *infoLayout = new QVBoxLayout;
     scrollArea->setWidget(m_basicInfoFrame);
 
     scrollArea->setWidgetResizable(true);
@@ -183,8 +180,11 @@ void DFontInfoDialog::initUI()
     mainLayout->addSpacing(6);
     mainLayout->addWidget(m_fontFileName);
     mainLayout->addSpacing(42);
-    mainLayout->addWidget(scrollArea);
 
+    infoLayout->addWidget(scrollArea);
+    infoLayout->setContentsMargins(0, 10, 10, 10);
+    infoFrame->setLayout(infoLayout);
+    mainLayout->addWidget(infoFrame);
     m_mainFrame->setLayout(mainLayout);
 
     addContent(m_mainFrame);
@@ -232,10 +232,9 @@ void DFontInfoDialog::addLabelContent(const QString &title, const QString &conte
 //    detail->setFixedHeight(detail->fontMetrics().height() * 3);
     detail->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     detail->setWordWrap(true);
-
     DFontSizeManager::instance()->bind(detail, DFontSizeManager::T8);
     DPalette pa1 = DApplicationHelper::instance()->palette(detail);
-    pa1.setBrush(DPalette::WindowText, pa1.color(DPalette::TextTitle));
+    pa1.setBrush(DPalette::Text, pa1.color(DPalette::TextTitle));
     detail->setPalette(pa1);
     detail->setAlignment(Qt::AlignLeft | Qt::AlignTop);
     QString outtxt = SpliteText(content, detail->font(), m_maxFieldWidth);
@@ -247,7 +246,7 @@ void DFontInfoDialog::addLabelContent(const QString &title, const QString &conte
     titleLabel->setWordWrap(true);
     DFontSizeManager::instance()->bind(titleLabel, DFontSizeManager::T8);
     DPalette pa2 = DApplicationHelper::instance()->palette(titleLabel);
-    pa2.setBrush(DPalette::WindowText, pa2.color(DPalette::TextTitle));
+    pa2.setBrush(DPalette::Text, pa2.color(DPalette::TextTitle));
     titleLabel->setPalette(pa2);
     titleLabel->setText(SpliteText(title, titleLabel->font(), TITLE_MAXWIDTH));
 //    titleLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
