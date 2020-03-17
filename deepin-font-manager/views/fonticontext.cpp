@@ -70,7 +70,12 @@ void FontIconText::paintEvent(QPaintEvent *event)
     QFontMetrics fm(m_font);
     int width = fm.width(m_text);
     int height = fm.height();
-    QRect txtRect = picRect.adjusted((picRect.width() - width) / 2, (picRect.height() - height) / 2, 0, 0);
+    QRect txtRect = picRect.adjusted((picRect.width() - width - 25), (picRect.height() - height - 5), 0, 0);
     painter.setFont(m_font);
     painter.drawText(txtRect, m_text);
+}
+
+void FontIconText::setText(const QString &text)
+{
+    m_text = text;
 }

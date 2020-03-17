@@ -101,7 +101,7 @@ void DFontInfoDialog::initUI()
     m_basicInfoFrame = new DFrame(this);
     //m_basicInfoFrame->setBackgroundRole(DPalette::Base);
     //m_basicInfoFrame->setFrameShape(DFrame::Shape::NoFrame);
-    m_basicInfoFrame->setFixedWidth(280);
+    m_basicInfoFrame->setFixedWidth(380);
     m_basicInfoFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     m_baseicInfoLayout = new QVBoxLayout();
