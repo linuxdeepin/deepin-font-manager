@@ -357,7 +357,7 @@ DFontInfo DFontInfoManager::getFontInfo(const QString &filePath)
     DFMDBManager *dbManager = DFMDBManager::instance();
     if (dbManager->getRecordCount() > 0) {
         fontInfo.sysVersion = fontInfo.version;
-        if (!dbManager->isFontInfoExist(fontInfo)) {
+        if (dbManager->isFontInfoExist(fontInfo).isEmpty()) {
             fontInfo.isInstalled = false;
         } else {
             fontInfo.isInstalled = true;

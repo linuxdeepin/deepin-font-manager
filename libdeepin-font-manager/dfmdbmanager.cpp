@@ -132,7 +132,7 @@ int DFMDBManager::getCurrMaxFontId()
     return m_sqlUtil->getMaxFontId();
 }
 
-bool DFMDBManager::isFontInfoExist(const DFontInfo &newFileFontInfo)
+QString DFMDBManager::isFontInfoExist(const DFontInfo &newFileFontInfo)
 {
     QList<DFontPreviewItemData> fontItemDataList;
 
@@ -147,10 +147,10 @@ bool DFMDBManager::isFontInfoExist(const DFontInfo &newFileFontInfo)
     m_sqlUtil->findRecords(keyList, whereMap, &recordList);
 
     if (recordList.size() > 0) {
-        return true;
+        return recordList.first().value("filePath");
     }
 
-    return false;
+    return QString();
 }
 
 QMap<QString, QString> DFMDBManager::mapItemData(DFontPreviewItemData itemData)

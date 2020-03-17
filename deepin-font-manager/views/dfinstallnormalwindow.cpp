@@ -2,6 +2,7 @@
 #include "dfontmanager.h"
 #include "globaldef.h"
 #include "utils.h"
+#include "dfmdbmanager.h"
 
 #include <QResizeEvent>
 #include <QVBoxLayout>
@@ -303,6 +304,11 @@ void DFInstallNormalWindow::batchInstall()
         if (m_installedFiles.size() > 0) {
             foreach (auto it, m_installedFiles) {
                 installList.append(it);
+                //delete the font file first
+                DFontInfo fi = m_fontInfoManager->getFontInfo(it);
+                QString filePath = DFMDBManager::instance()->isFontInfoExist(fi);
+                qDebug() << __FUNCTION__ << " remove found installed font : " << filePath;
+                QFile::remove(filePath);
             }
             if (m_deleteFiles.size() > 0) {
                 foreach (auto it, m_deleteFiles) {

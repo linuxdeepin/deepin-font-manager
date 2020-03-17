@@ -20,7 +20,7 @@ public:
 
     int getCurrMaxFontId();
 
-    bool isFontInfoExist(const DFontInfo &newFileFontInfo);
+    QString isFontInfoExist(const DFontInfo &newFileFontInfo);
 
     bool addFontInfo(DFontPreviewItemData itemData);
     bool deleteFontInfoByFontMap(const QMap<QString, QString> &fontDelMap);
