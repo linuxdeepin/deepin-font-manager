@@ -77,7 +77,11 @@ void DFontInfoDialog::initUI()
     m_fontLogo = new FontIconText(":/images/font-info-logo.svg", this);
     QFileInfo fileInfo(m_fontInfo->fontInfo.filePath);
     QString suffix = fileInfo.suffix().toLower();
-    m_fontLogo->setText(suffix);
+    if (!suffix.compare("ttf")) {
+        m_fontLogo->setContent(true);
+    } else {
+        m_fontLogo->setContent(false);
+    }
     DFontSizeManager::instance()->bind(m_fontLogo, DFontSizeManager::T4);
     m_fontLogo->setFontName(m_fontInfo->fontInfo.familyName, m_fontInfo->fontInfo.styleName);
 
@@ -93,9 +97,12 @@ void DFontInfoDialog::initUI()
     DFontSizeManager::instance()->bind(m_fontFileName, DFontSizeManager::T8);
     m_fontFileName->setText(QFileInfo(m_fontInfo->fontInfo.filePath).fileName());
     // Set color
+
     DPalette pa = DApplicationHelper::instance()->palette(m_fontFileName);
     pa.setBrush(DPalette::WindowText, pa.color(DPalette::ToolTipText));
     m_fontFileName->setPalette(pa);
+//    m_fontFileName->setAlignment(Qt::AlignLeft);
+    m_fontFileName->setWordWrap(true);
 
     /**************************Basic info panel****BEGIN*******************************/
     m_basicInfoFrame = new DFrame(this);

@@ -11,7 +11,7 @@ public:
     void setFontName(const QString &familyName, const QString &styleName);
 //    inline void setText(const QString &text) { if (!text.isEmpty()) m_text = text; }
 
-    void setText(const QString &text);
+    void setContent(bool isTtf);
 
 protected:
     void paintEvent(QPaintEvent *event);
@@ -23,4 +23,5 @@ private:
     DTK_GUI_NAMESPACE::DSvgRenderer *render;
     QFont m_font;
     QString m_text;
+    bool m_isTtf;
 };
