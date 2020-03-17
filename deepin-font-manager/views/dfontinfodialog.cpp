@@ -232,9 +232,10 @@ void DFontInfoDialog::addLabelContent(const QString &title, const QString &conte
 //    detail->setFixedHeight(detail->fontMetrics().height() * 3);
     detail->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     detail->setWordWrap(true);
+
     DFontSizeManager::instance()->bind(detail, DFontSizeManager::T8);
     DPalette pa1 = DApplicationHelper::instance()->palette(detail);
-    pa1.setBrush(DPalette::Text, pa1.color(DPalette::TextTitle));
+    pa1.setBrush(DPalette::WindowText, pa1.color(DPalette::TextTitle));
     detail->setPalette(pa1);
     detail->setAlignment(Qt::AlignLeft | Qt::AlignTop);
     QString outtxt = SpliteText(content, detail->font(), m_maxFieldWidth);
@@ -246,7 +247,7 @@ void DFontInfoDialog::addLabelContent(const QString &title, const QString &conte
     titleLabel->setWordWrap(true);
     DFontSizeManager::instance()->bind(titleLabel, DFontSizeManager::T8);
     DPalette pa2 = DApplicationHelper::instance()->palette(titleLabel);
-    pa2.setBrush(DPalette::Text, pa2.color(DPalette::TextTitle));
+    pa2.setBrush(DPalette::WindowText, pa2.color(DPalette::TextTitle));
     titleLabel->setPalette(pa2);
     titleLabel->setText(SpliteText(title, titleLabel->font(), TITLE_MAXWIDTH));
 //    titleLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
