@@ -132,7 +132,7 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
         QColor fillColor = styleHelper.getColor(static_cast<const QStyleOption *>(&option), pa, DPalette::TextTips);
         painter->setPen(QPen(fillColor));
 
-        QRect fontNameRect = QRect(bgRect.left() + 50 - 2, checkboxRealRect.top() - 5, bgRect.width() - 15 - 50, checkboxRealRect.height() + 10);
+        QRect fontNameRect = QRect(bgRect.left() + 50 - 2, checkboxRealRect.top() - 5, bgRect.width() - 15 - 50, checkboxRealRect.height() + 20);
         painter->drawText(fontNameRect, Qt::AlignLeft | Qt::AlignVCenter, data.strFontName);
 
         QString strImgPrefix = "";
@@ -176,8 +176,33 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
                                           collectIconSize, collectIconSize);
         painter->drawPixmap(collectIconRealRect, pixmap);
 
-        QRect fontPreviewRect = QRect(fontNameRect.left(), bgRect.top() + 26, bgRect.width() - 50 - collectIconSize - 15,
-                                      bgRect.height() - 26);
+//        if(data.strFontName.contains(""));
+        QRect fontPreviewRect;
+        if (!data.strFontName.compare("Noto Sans Tibetan-Bold")) {
+            qDebug() << data.strFontName << endl;
+            fontPreviewRect = QRect(fontNameRect.left(), bgRect.top() + 35, bgRect.width() - 50 - collectIconSize - 15,
+                                    bgRect.height() - 30);
+
+        } else if (!data.strFontName.compare("Noto Serif Tibetan-Regular")) {
+            fontPreviewRect = QRect(fontNameRect.left(), bgRect.top() + 37, bgRect.width() - 50 - collectIconSize - 15,
+                                    bgRect.height() - 25);
+        } else if (!data.strFontName.compare("Noto Serif Tibetan-Bold")) {
+            fontPreviewRect = QRect(fontNameRect.left(), bgRect.top() + 37, bgRect.width() - 50 - collectIconSize - 15,
+                                    bgRect.height() - 25);
+        } else if (!data.strFontName.compare("Noto Sans Tibetan-Regular")) {
+            fontPreviewRect = QRect(fontNameRect.left(), bgRect.top() + 37, bgRect.width() - 50 - collectIconSize - 15,
+                                    bgRect.height() - 25);
+        } else if (!data.strFontName.compare("Noto Serif Myanmar-Regular")) {
+            fontPreviewRect = QRect(fontNameRect.left(), bgRect.top() + 37, bgRect.width() - 50 - collectIconSize - 15,
+                                    bgRect.height() - 25);
+        } else if (!data.strFontName.compare("Noto Serif Myanmar-Bold")) {
+            fontPreviewRect = QRect(fontNameRect.left(), bgRect.top() + 39, bgRect.width() - 50 - collectIconSize - 15,
+                                    bgRect.height() - 25);
+        } else {
+            fontPreviewRect = QRect(fontNameRect.left(), bgRect.top() + 30, bgRect.width() - 50 - collectIconSize - 15,
+                                    bgRect.height() - 26);
+        }
+
 
         if (data.isPreviewEnabled) {
 

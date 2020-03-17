@@ -9,7 +9,9 @@ class FontIconText : public QWidget
 public:
     explicit FontIconText(const QString picPath, QWidget *parent = nullptr);
     void setFontName(const QString &familyName, const QString &styleName);
-    inline void setText(const QString &text) { if (!text.isEmpty()) m_text = text; }
+//    inline void setText(const QString &text) { if (!text.isEmpty()) m_text = text; }
+
+    void setText(const QString &text);
 
 protected:
     void paintEvent(QPaintEvent *event);
