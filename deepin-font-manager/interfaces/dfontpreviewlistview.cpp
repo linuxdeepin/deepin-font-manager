@@ -289,6 +289,7 @@ void DFontPreviewListView::selectFonts(const QStringList &fileList)
 void DFontPreviewListView::selectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
 {
     qDebug() << __FUNCTION__ << selected << " deselected " << deselected;
+    DListView::selectionChanged(selected, deselected);
 }
 
 void DFontPreviewListView::mouseMoveEvent(QMouseEvent *event)

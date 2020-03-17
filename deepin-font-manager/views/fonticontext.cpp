@@ -60,22 +60,29 @@ void FontIconText::paintEvent(QPaintEvent *event)
     painter.setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
 
     //first draw image
+
     const auto ratio = devicePixelRatioF();
     QSize defaultSize = render->defaultSize() * ratio;
     QImage img = render->toImage(defaultSize);
     QRect picRect = rect();
-    painter.drawImage(picRect, img, img.rect());
+    if (m_isTtf == true) {
+        //then draw text
+        painter.drawImage(picRect, img, img.rect());
+        QFontMetrics fm(m_font);
+        int width = fm.width(m_text);
+        int height = fm.height();
+        QRect txtRect = picRect.adjusted((picRect.width() - width - 25), (picRect.height() - height - 5), 0, 0);
+        painter.setFont(m_font);
+        painter.drawText(txtRect, m_text);
+    } else {
+        QIcon m_fontIcon = QIcon("/usr/share/icons/bloom/mimetypes/256/font-x-generic.svg");// QIcon::fromTheme("deepin-font-manager");
+        QPixmap p = m_fontIcon.pixmap(defaultSize);
+        painter.drawPixmap(picRect, p);
+    }
 
-    //then draw text
-    QFontMetrics fm(m_font);
-    int width = fm.width(m_text);
-    int height = fm.height();
-    QRect txtRect = picRect.adjusted((picRect.width() - width - 25), (picRect.height() - height - 5), 0, 0);
-    painter.setFont(m_font);
-    painter.drawText(txtRect, m_text);
 }
 
-void FontIconText::setText(const QString &text)
+void FontIconText::setContent(bool isTtf)
 {
-    m_text = text;
+    m_isTtf = isTtf;
 }

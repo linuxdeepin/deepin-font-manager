@@ -1021,6 +1021,9 @@ void DFontMgrMainWindow::onFontUninstallFinished(const QStringList &uninstallInd
         m_fontPreviewListView->deleteFontModelIndex(filePath);
     }
     Q_EMIT requestDeleted(uninstallIndex);
+
+    QItemSelectionModel *selection_model = m_fontPreviewListView->selectionModel();
+    selection_model->select(m_fontPreviewListView->currModelIndex(), QItemSelectionModel::Select);
 }
 
 
