@@ -130,7 +130,7 @@ void DFInstallNormalWindow::initConnections()
         // ToDo:
         //   May send signal to mainwindow refresh new installed font
         // QMIT notfiyRefresh;
-        qDebug() << __FUNCTION__ << " installed file list " << fileList;
+        qDebug() << __FUNCTION__ << " installed file list " << fileList << state;
         if (0 == state) {
             m_installFiles.clear();
             m_installState = InstallState::reinstall;
@@ -147,21 +147,23 @@ void DFInstallNormalWindow::initConnections()
             //TODO:
             //   Notify UI refresh after installtion.
             // (need to refresh everytime???)
-            QStringList outfileList;
+
             for (QString file : fileList) {
                 int index = file.indexOf("|");
                 if (index >= 0) {
                     file = file.left(index);
                 }
 
-                outfileList << file;
+                if (!m_outfileList.contains(file))
+                    m_outfileList << file;
             }
+
             for (QString file : m_deleteFiles) {
-                if (!outfileList.contains(file))
-                    outfileList << file;
+                if (!m_outfileList.contains(file))
+                    m_outfileList << file;
             }
-            qDebug() << __FUNCTION__ << "finishFontInstall outlist " << outfileList;
-            emit finishFontInstall(outfileList);
+            qDebug() << __FUNCTION__ << "finishFontInstall outlist " << m_outfileList;
+            emit finishFontInstall(m_outfileList);
 
             if (ifNeedShowExceptionWindow()) {
                 showInstallErrDlg();
@@ -289,15 +291,13 @@ void DFInstallNormalWindow::batchInstall()
 
     QStringList installList;
 
-    if (m_installState == InstallState::Install) {
-        if (m_newInstallFiles.size() > 0) {
-            foreach (auto it, m_newInstallFiles) {
-                installList.append(it);
-            }
+    if (m_newInstallFiles.size() > 0) {
+        foreach (auto it, m_newInstallFiles) {
+            installList.append(it);
         }
-
-        m_newInstallFiles.clear();
     }
+
+    m_newInstallFiles.clear();
 
     if (m_installState == InstallState::reinstall) {
         if (m_installedFiles.size() > 0) {
@@ -319,10 +319,8 @@ void DFInstallNormalWindow::batchInstall()
     //dfont-install don't need query database anymore
     QStringList installListWithFamliyName;
     foreach (auto it, installList) {
-        QString familyName;
-        QStringList familyStyleList = m_fontInfoManager->getFamilyStyleName(it);
-        if (familyStyleList.size() == 2)
-            familyName = familyStyleList[0];
+        DFontInfo fontInfo = m_fontInfoManager->getFontInfo(it);
+        QString familyName = fontInfo.familyName;
         installListWithFamliyName.append(it + "|" + familyName);
 
         qDebug() << " Prepare install file: " << it + "|" + familyName;
@@ -351,29 +349,9 @@ void DFInstallNormalWindow::onContinueInstall(QStringList continueInstallFontFil
     qDebug() << __FUNCTION__ << " called:" << continueInstallFontFileList;
 #endif
 
-    m_installState = InstallState::Install;
+    m_installState = InstallState::reinstall;
 
-    QStringList installList;
-    bool isInstalled = false;
-
-
-    foreach (auto it, continueInstallFontFileList) {
-        foreach (auto it2, m_installedFiles) {
-            if (!it.compare(it2)) {
-                isInstalled = true;
-                break;
-            }
-        }
-        if (isInstalled != true) {
-            installList.append(it);
-            isInstalled = false;
-        } else {
-            isInstalled = false;
-        }
-    }
-
-//    Q_EMIT batchReinstall(continueInstallFontFileList);
-    Q_EMIT batchReinstall(installList);
+    Q_EMIT batchReinstall(continueInstallFontFileList);
 }
 
 void DFInstallNormalWindow::onProgressChanged(const QString &filePath, const double &percent)

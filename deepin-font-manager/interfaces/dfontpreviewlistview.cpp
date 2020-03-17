@@ -612,7 +612,7 @@ void DFontPreviewListView::updateChangedFile(const QString &path)
 {
     qDebug() << __FUNCTION__ << path << " begin ";
     QMutexLocker locker(&m_mutex);
-    deleteFontFile(path);
+    changeFontFile(path);
     qDebug() << __FUNCTION__ << path << " end ";
 }
 
@@ -651,11 +651,11 @@ void DFontPreviewListView::updateChangedDir(const QString &path)
 void DFontPreviewListView::deleteFontFiles(const QStringList files)
 {
     for (QString filePath : files) {
-        deleteFontFile(filePath);
+        changeFontFile(filePath);
     }
 }
 
-void DFontPreviewListView::deleteFontFile(const QString &path)
+void DFontPreviewListView::changeFontFile(const QString &path)
 {
     QFileInfo fi(path);
     bool isDir = fi.isDir();
@@ -666,7 +666,7 @@ void DFontPreviewListView::deleteFontFile(const QString &path)
         QString filePath = itemData.fontInfo.filePath;
         QFileInfo filePathInfo(filePath);
         //如果字体文件已经不存在，则从t_manager表中删除
-        if ((!isDir && (filePath == path)) || (isDir && filePath.startsWith(path) && !filePathInfo.exists())) {
+        if ((!isDir && (filePath == path) && (!filePathInfo.exists())) || (isDir && filePath.startsWith(path) && !filePathInfo.exists())) {
             //删除字体之前启用字体，防止下次重新安装后就被禁用
             enableFont(itemData);
             QMap<QString, QString> delInfo;
@@ -682,7 +682,6 @@ void DFontPreviewListView::deleteFontFile(const QString &path)
                 break;
         }
     }
-
 
     if (isDir) {
         if (!QFileInfo(QDir::homePath() + "/.local/share/fonts").exists()) {

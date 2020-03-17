@@ -211,6 +211,7 @@ void DFontPreviewListDataThread::insertFontItemData(QString filePath,
 
 void DFontPreviewListDataThread::refreshFontListData(bool isStartup)
 {
+    qDebug() << __FUNCTION__ << " begin";
     DFontInfoManager *fontInfoMgr = DFontInfoManager::instance();
     QStringList strAllFontList = fontInfoMgr->getAllFontPath();
 
@@ -253,6 +254,7 @@ void DFontPreviewListDataThread::refreshFontListData(bool isStartup)
         }
         m_dbManager->endTransaction();
     }
+    qDebug() << __FUNCTION__ << " end";
 }
 
 void DFontPreviewListDataThread::removeFontData(const DFontPreviewItemData &removeItemData)

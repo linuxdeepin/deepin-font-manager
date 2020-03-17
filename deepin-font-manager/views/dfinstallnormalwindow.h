@@ -62,6 +62,7 @@ private:
     QStringList m_newInstallFiles;
     QStringList m_damagedFiles;
     QStringList m_deleteFiles;
+    QStringList m_outfileList;
 
     // Skip popup exception dialog if true
     bool m_isNeedSkipException {false};

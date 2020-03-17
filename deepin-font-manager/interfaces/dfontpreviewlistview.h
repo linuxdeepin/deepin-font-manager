@@ -52,7 +52,7 @@ public:
     void updateChangedFile(const QString &path);
     void updateChangedDir(const QString &path);
     void deleteFontFiles(const QStringList files);
-    void deleteFontFile(const QString &path);
+    void changeFontFile(const QString &path);
     QStringList selectedFonts(int *deleteCnt, int *systemCnt);
     QList<DFontPreviewItemData> selectedFontData(int *deleteCnt, int *systemCnt);
     QModelIndexList selectedIndex(int *deleteCnt, int *systemCnt);
