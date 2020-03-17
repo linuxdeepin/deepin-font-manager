@@ -132,7 +132,7 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
         QColor fillColor = styleHelper.getColor(static_cast<const QStyleOption *>(&option), pa, DPalette::TextTips);
         painter->setPen(QPen(fillColor));
 
-        QRect fontNameRect = QRect(bgRect.left() + 50 - 2, checkboxRealRect.top() - 5, bgRect.width() - 15 - 50, checkboxRealRect.height() + 10);
+        QRect fontNameRect = QRect(bgRect.left() + 50 - 2, checkboxRealRect.top() - 5, bgRect.width() - 15 - 50, checkboxRealRect.height() + 20);
         painter->drawText(fontNameRect, Qt::AlignLeft | Qt::AlignVCenter, data.strFontName);
 
         QString strImgPrefix = "";
