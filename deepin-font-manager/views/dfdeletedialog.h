@@ -48,6 +48,7 @@ private:
     int m_w_wd {0};
     int m_w_ht {0};
     int m_count {0};
+    bool m_deleting;
 };
 
 #endif  // DFDELETEDIALOG_H

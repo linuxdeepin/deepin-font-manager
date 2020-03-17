@@ -18,6 +18,7 @@ DFDeleteDialog::DFDeleteDialog(DFontMgrMainWindow *win, int deleteCnt, int syste
     , m_mainWindow(nullptr)
     , m_deleteCnt(deleteCnt)
     , m_systemCnt(systemCnt)
+    , m_deleting(false)
 {
     initUI();
     setMainwindow(win);
@@ -167,7 +168,12 @@ void DFDeleteDialog::initConnections()
         reject();
         close();
     });
-    connect(m_confirmBtn, &DPushButton::clicked, this, [ = ]() { Q_EMIT requestDelete(); });
+    connect(m_confirmBtn, &DPushButton::clicked, this, [ = ]() {
+        if (m_deleting)
+            return;
+        m_deleting = true;
+        Q_EMIT requestDelete();
+    });
     connect(this, &DFDeleteDialog::closed, this, [ = ]() {
         disconnect(quitConn);
         if (m_mainWindow != nullptr)
