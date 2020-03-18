@@ -18,12 +18,12 @@
 DCORE_USE_NAMESPACE
 
 SingleFontApplication::SingleFontApplication(int &argc, char **argv)
-    :DApplication (argc, argv)
-    ,m_qspMainWnd(nullptr)
-    ,m_qspQuickWnd(nullptr)
+    : DApplication(argc, argv)
+    , m_qspMainWnd(nullptr)
+    , m_qspQuickWnd(nullptr)
 {
     connect(DGuiApplicationHelper::instance()
-            , &DGuiApplicationHelper::newProcessInstance,this
+            , &DGuiApplicationHelper::newProcessInstance, this
             , &SingleFontApplication::onNewProcessInstance);
 }
 
@@ -38,7 +38,8 @@ void SingleFontApplication::setMainWindow(DMainWindow *mainWindow)
     m_qspMainWnd->setWindowIcon(QIcon::fromTheme(DEEPIN_FONT_MANAGER));
 }
 
-bool SingleFontApplication::parseCmdLine(){
+bool SingleFontApplication::parseCmdLine()
+{
     QCommandLineParser parser;
     parser.setApplicationDescription("Deepin Font Manager.");
     parser.addHelpOption();
@@ -67,7 +68,8 @@ bool SingleFontApplication::parseCmdLine(){
     return true;
 }
 
-void SingleFontApplication::activateWindow() {
+void SingleFontApplication::activateWindow()
+{
     //If quick install mode
     if (m_selectedFiles.size() < 0) {
         qDebug() << "Active quick install window to install file:" << m_selectedFiles;
@@ -75,8 +77,8 @@ void SingleFontApplication::activateWindow() {
         //Hide normal window in quick mode
         if (nullptr != m_qspMainWnd.get()) {
             //Force quit installtion
-            reinterpret_cast<DFontMgrMainWindow*>(
-                        m_qspMainWnd.get())->forceNoramlInstalltionQuitIfNeeded();
+            reinterpret_cast<DFontMgrMainWindow *>(
+                m_qspMainWnd.get())->forceNoramlInstalltionQuitIfNeeded();
 
             m_qspMainWnd->hide();
         }
@@ -88,15 +90,15 @@ void SingleFontApplication::activateWindow() {
 
             DFQuickInstallWindow *qw = qobject_cast<DFQuickInstallWindow *>(m_qspQuickWnd.get());
 
-            connect(qw, &DFQuickInstallWindow::requestShowMainWindow, this, [=](QStringList fileList){
+            connect(qw, &DFQuickInstallWindow::requestShowMainWindow, this, [ = ](QStringList fileList) {
                 qDebug() << "requestShowMainWindow " << fileList;
                 if (nullptr == m_qspMainWnd.get()) {
                     m_qspMainWnd.reset(new
                                        DFontMgrMainWindow());
-                    int windowWidth = reinterpret_cast<DFontMgrMainWindow*>(
-                                m_qspMainWnd.get())->m_winWidth;
-                    int windowHeight = reinterpret_cast<DFontMgrMainWindow*>(
-                                m_qspMainWnd.get())->m_winHight;
+                    int windowWidth = reinterpret_cast<DFontMgrMainWindow *>(
+                                          m_qspMainWnd.get())->m_winWidth;
+                    int windowHeight = reinterpret_cast<DFontMgrMainWindow *>(
+                                           m_qspMainWnd.get())->m_winHight;
 
                     m_qspMainWnd->setMinimumSize(DEFAULT_WINDOWS_WIDTH, DEFAULT_WINDOWS_HEIGHT);
                     if (DEFAULT_WINDOWS_WIDTH <= windowWidth && DEFAULT_WINDOWS_HEIGHT <= windowHeight) {
@@ -125,8 +127,7 @@ void SingleFontApplication::activateWindow() {
                                   Q_ARG(QStringList, m_selectedFiles));
 
     } else {
-        qDebug() << "Active normal install window.";
-
+        qDebug() << "Active quick install window to install file:" << m_selectedFiles;
         //Hide quick window in normal mode
         if (nullptr != m_qspQuickWnd.get()) {
             m_qspQuickWnd->hide();
@@ -135,11 +136,11 @@ void SingleFontApplication::activateWindow() {
         //Init Normal window at first time
         if (nullptr == m_qspMainWnd.get()) {
             m_qspMainWnd.reset(new DFontMgrMainWindow());
-            int windowWidth = reinterpret_cast<DFontMgrMainWindow*>(
-                        m_qspMainWnd.get())->m_winWidth;
-            int windowHeight = reinterpret_cast<DFontMgrMainWindow*>(
-                        m_qspMainWnd.get())->m_winHight;
-                    //.toInt(&hWinDataStatus);
+            int windowWidth = reinterpret_cast<DFontMgrMainWindow *>(
+                                  m_qspMainWnd.get())->m_winWidth;
+            int windowHeight = reinterpret_cast<DFontMgrMainWindow *>(
+                                   m_qspMainWnd.get())->m_winHight;
+            //.toInt(&hWinDataStatus);
             m_qspMainWnd->setMinimumSize(DEFAULT_WINDOWS_WIDTH, DEFAULT_WINDOWS_HEIGHT);
             if (DEFAULT_WINDOWS_WIDTH <= windowWidth && DEFAULT_WINDOWS_HEIGHT <= windowHeight) {
                 m_qspMainWnd->resize(windowWidth, windowHeight);
@@ -172,11 +173,10 @@ void SingleFontApplication::onNewProcessInstance(qint64 pid, const QStringList &
     //<app_excename> <file list>
     //1.Skip app-exce name p=0
     //2.Check font file MIME,ignore invalid file.
-    for(int p=1; p<arguments.size(); p++) {
+    for (int p = 1; p < arguments.size(); p++) {
         if (Utils::isFontMimeType(arguments[p])) {
             m_selectedFiles.append(arguments[p]);
         }
     }
-
     activateWindow();
 }
