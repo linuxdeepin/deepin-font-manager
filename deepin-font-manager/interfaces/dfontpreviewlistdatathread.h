@@ -17,6 +17,7 @@ class DFontPreviewListDataThread : public QObject
     Q_OBJECT
 public:
     static DFontPreviewListDataThread *instance(DFontPreviewListView *view);
+    static DFontPreviewListDataThread *instance();
 
     DFontPreviewListDataThread(DFontPreviewListView *view);
     virtual ~DFontPreviewListDataThread();
@@ -36,6 +37,7 @@ public:
     QList<DFontPreviewItemData> getFontModelList();
     QList<DFontPreviewItemData> getDiffFontModelList() const;
     void setMutex(QMutex *mutex);
+    void forceDeleteFiles(const QStringList &files);
 
 signals:
     void resultReady();

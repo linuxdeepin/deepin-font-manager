@@ -3,6 +3,7 @@
 #include "globaldef.h"
 #include "utils.h"
 #include "dfmdbmanager.h"
+#include "dfontpreviewlistdatathread.h"
 
 #include <QResizeEvent>
 #include <QVBoxLayout>
@@ -302,6 +303,7 @@ void DFInstallNormalWindow::batchInstall()
 
     if (m_installState == InstallState::reinstall) {
         if (m_installedFiles.size() > 0) {
+            QStringList filesInstalled;
             foreach (auto it, m_installedFiles) {
                 installList.append(it);
                 //delete the font file first
@@ -311,8 +313,13 @@ void DFInstallNormalWindow::batchInstall()
                     qDebug() << __FUNCTION__ << "same file " << it << " will be overrided ";
                     continue;
                 }
-                qDebug() << __FUNCTION__ << " remove found installed font : " << filePath;
-                QFile::remove(filePath);
+                filesInstalled << filePath;
+            }
+            //force delete fonts installed
+            DFontPreviewListDataThread *dataThread = DFontPreviewListDataThread::instance();
+            if (!filesInstalled.empty()) {
+                dataThread->forceDeleteFiles(filesInstalled);
+                qDebug() << __FUNCTION__ << " remove found installed font : " << filesInstalled;
             }
 
             if (m_deleteFiles.size() > 0) {

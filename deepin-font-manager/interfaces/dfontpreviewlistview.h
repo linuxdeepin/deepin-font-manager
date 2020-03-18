@@ -51,8 +51,8 @@ public:
     void clearHoverState();
     void updateChangedFile(const QString &path);
     void updateChangedDir(const QString &path);
-    void deleteFontFiles(const QStringList files);
-    void changeFontFile(const QString &path);
+    void deleteFontFiles(const QStringList &files, bool force = false);
+    void changeFontFile(const QString &path, bool force = false);
     QStringList selectedFonts(int *deleteCnt, int *systemCnt);
     QList<DFontPreviewItemData> selectedFontData(int *deleteCnt, int *systemCnt);
     QModelIndexList selectedIndex(int *deleteCnt, int *systemCnt);

@@ -15,6 +15,11 @@ DFontPreviewListDataThread *DFontPreviewListDataThread::instance(DFontPreviewLis
     return INSTANCE;
 }
 
+DFontPreviewListDataThread *DFontPreviewListDataThread::instance()
+{
+    return INSTANCE;
+}
+
 DFontPreviewListDataThread::DFontPreviewListDataThread(DFontPreviewListView *view)
     : m_view(view)
     , m_fsWatcher(nullptr)
@@ -168,6 +173,15 @@ QList<DFontPreviewItemData> DFontPreviewListDataThread::getDiffFontModelList() c
 void DFontPreviewListDataThread::setMutex(QMutex *mutex)
 {
     m_mutex = mutex;
+}
+
+void DFontPreviewListDataThread::forceDeleteFiles(const QStringList &files)
+{
+    qDebug() << __FUNCTION__ << files << m_mutex;
+    if (m_mutex != nullptr)
+        QMutexLocker locker(m_mutex);
+    m_view->deleteFontFiles(files, true);
+    qDebug() << __FUNCTION__ << files << " end ";
 }
 
 void DFontPreviewListDataThread::insertFontItemData(QString filePath,

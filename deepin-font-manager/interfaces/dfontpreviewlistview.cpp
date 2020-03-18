@@ -650,17 +650,21 @@ void DFontPreviewListView::updateChangedDir(const QString &path)
     qDebug() << __FUNCTION__ << path << " end ";
 }
 
-void DFontPreviewListView::deleteFontFiles(const QStringList files)
+void DFontPreviewListView::deleteFontFiles(const QStringList &files, bool force)
 {
     for (QString filePath : files) {
-        changeFontFile(filePath);
+        changeFontFile(filePath, force);
     }
 }
 
-void DFontPreviewListView::changeFontFile(const QString &path)
+void DFontPreviewListView::changeFontFile(const QString &path, bool force)
 {
     QFileInfo fi(path);
     bool isDir = fi.isDir();
+    if (force) {
+        bool del = QFile::remove(path);
+        qDebug() << __FUNCTION__ << " force delete file " << path << del;
+    }
     QList<DFontPreviewItemData> fontInfoList = m_dataThread->getFontModelList();
     qDebug() << fontInfoList.size() << __FUNCTION__ << path;
     for (int i = 0; i < fontInfoList.size(); ++i) {
