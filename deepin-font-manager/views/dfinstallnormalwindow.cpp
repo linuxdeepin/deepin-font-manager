@@ -160,10 +160,6 @@ void DFInstallNormalWindow::initConnections()
                     m_outfileList << file;
             }
 
-            for (QString file : m_deleteFiles) {
-                if (!m_outfileList.contains(file))
-                    m_outfileList << file;
-            }
             qDebug() << __FUNCTION__ << "finishFontInstall outlist " << m_outfileList;
             emit finishFontInstall(m_outfileList);
 
@@ -191,7 +187,6 @@ void DFInstallNormalWindow::verifyFontFiles()
     m_damagedFiles.clear();
     m_installedFiles.clear();
     m_newInstallFiles.clear();
-    m_deleteFiles.clear();
 
     m_installErrorFontModelList.clear();
     foreach (auto it, m_installFiles) {
@@ -204,14 +199,6 @@ void DFInstallNormalWindow::verifyFontFiles()
 #endif
         } else if (fontInfo.isInstalled) {
             m_installedFiles.append(it);
-
-            //判断出有重复名字的字体 如果有重复为true 不执行
-            bool have = m_fontInfoManager->checkDBFontSameName(fontInfo);
-            if (have) {
-                m_deleteFiles.append(it);
-            } else {
-                continue;
-            }
 
 #ifdef QT_QML_DEBUG
             qDebug() << __FUNCTION__ << " (" << it << " :Installed file)";
@@ -318,12 +305,6 @@ void DFInstallNormalWindow::batchInstall()
             if (!filesInstalled.empty()) {
                 dataThread->forceDeleteFiles(filesInstalled);
                 qDebug() << __FUNCTION__ << " remove found installed font : " << filesInstalled;
-            }
-
-            if (m_deleteFiles.size() > 0) {
-                foreach (auto it, m_deleteFiles) {
-                    installList.removeOne(it);
-                }
             }
         }
 
