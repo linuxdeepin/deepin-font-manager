@@ -8,12 +8,14 @@
 #include <QTextBlock>
 #include <QVBoxLayout>
 #include <QScrollArea>
+#include <QScrollBar>
 
 #include <DApplication>
 #include <DApplicationHelper>
 #include <DLog>
 #include <DFontSizeManager>
 #include <DTipLabel>
+#include <QBitmap>
 
 QString SpliteText(const QString &text, const QFont &font, int nLabelSize)
 {
@@ -56,7 +58,7 @@ void DFontInfoDialog::initUI()
 
     QVBoxLayout *mainLayout = new QVBoxLayout();
     mainLayout->setAlignment(Qt::AlignTop | Qt::AlignHCenter);
-    mainLayout->setContentsMargins(10, 0, 10, 10);
+    mainLayout->setContentsMargins(10, 0, 0, 10);
     mainLayout->setSpacing(0);
 
     m_mainFrame = new QWidget(this);
@@ -103,12 +105,12 @@ void DFontInfoDialog::initUI()
     m_basicInfoFrame = new DFrame(this);
     //m_basicInfoFrame->setBackgroundRole(DPalette::Base);
     m_basicInfoFrame->setFrameShape(DFrame::Shape::NoFrame);
-    m_basicInfoFrame->setFixedWidth(280);
+    m_basicInfoFrame->setFixedWidth(275);
     m_basicInfoFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     m_baseicInfoLayout = new QVBoxLayout();
     m_baseicInfoLayout->setAlignment(Qt::AlignTop /*| Qt::AlignVCenter*/);
-    m_baseicInfoLayout->setContentsMargins(10, 0, 0, 30);
+    m_baseicInfoLayout->setContentsMargins(10, 10, 10, 30);
     m_baseicInfoLayout->setSpacing(0);
 
     DLabel *panelName = new DLabel(this);
@@ -166,9 +168,23 @@ void DFontInfoDialog::initUI()
     /**************************Basic info panel****END*******************************/
 
     QScrollArea *scrollArea = new QScrollArea;
-    DFrame *infoFrame = new DFrame;
+
+    scrollArea = new QScrollArea();
+
+    scrollArea->setLineWidth(120);
+    scrollArea->setFixedSize(QSize(290,375));
+    QBitmap bmp(QSize(280,375));
+    bmp.fill();
+    QPainter p(&bmp);
+//    p.setPen(Qt::NoPen);
+    p.setBrush(Qt::black);
+    p.setRenderHint(QPainter::Antialiasing);
+    p.drawRoundedRect(bmp.rect(),12,12);
+    scrollArea->viewport()->setMask(bmp);
+
+
     scrollArea->setFrameShape(QFrame::Shape::NoFrame);
-    QVBoxLayout *infoLayout = new QVBoxLayout;
+    QHBoxLayout *infoLayout = new QHBoxLayout;
     scrollArea->setWidget(m_basicInfoFrame);
 
     scrollArea->setWidgetResizable(true);
@@ -180,11 +196,9 @@ void DFontInfoDialog::initUI()
     mainLayout->addSpacing(6);
     mainLayout->addWidget(m_fontFileName);
     mainLayout->addSpacing(42);
-
     infoLayout->addWidget(scrollArea);
-    infoLayout->setContentsMargins(0, 10, 10, 10);
-    infoFrame->setLayout(infoLayout);
-    mainLayout->addWidget(infoFrame);
+    infoLayout->setContentsMargins(0, 10, 0, 10);
+    mainLayout->addWidget(scrollArea);//-----------n
     m_mainFrame->setLayout(mainLayout);
 
     addContent(m_mainFrame);

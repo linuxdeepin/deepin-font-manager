@@ -8,7 +8,6 @@
 #include <DLabel>
 #include <QTextEdit>
 #include <DWidget>
-
 class QHBoxLayout;
 DWIDGET_USE_NAMESPACE
 
