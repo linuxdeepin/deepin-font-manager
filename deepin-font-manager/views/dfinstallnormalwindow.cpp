@@ -307,9 +307,14 @@ void DFInstallNormalWindow::batchInstall()
                 //delete the font file first
                 DFontInfo fi = m_fontInfoManager->getFontInfo(it);
                 QString filePath = DFMDBManager::instance()->isFontInfoExist(fi);
+                if (QFileInfo(filePath).fileName() == QFileInfo(it).fileName()) {
+                    qDebug() << __FUNCTION__ << "same file " << it << " will be overrided ";
+                    continue;
+                }
                 qDebug() << __FUNCTION__ << " remove found installed font : " << filePath;
                 QFile::remove(filePath);
             }
+
             if (m_deleteFiles.size() > 0) {
                 foreach (auto it, m_deleteFiles) {
                     installList.removeOne(it);

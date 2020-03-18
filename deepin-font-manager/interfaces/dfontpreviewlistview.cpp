@@ -219,6 +219,7 @@ bool DFontPreviewListView::isDeleting()
 
 void DFontPreviewListView::selectFonts(const QStringList &fileList)
 {
+    QMutexLocker locker(&m_mutex);
     QModelIndexList indexes;
     QItemSelectionModel *selection_model = selectionModel();
     selection_model->reset();
