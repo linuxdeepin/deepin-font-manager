@@ -1017,9 +1017,9 @@ void DFontMgrMainWindow::onFontInstallFinished(QStringList fileList)
 void DFontMgrMainWindow::onFontUninstallFinished(const QStringList &uninstallIndex)
 {
     qDebug() << "finished remove fonts:" << uninstallIndex << endl;
-    for (QString filePath : uninstallIndex) {
-        m_fontPreviewListView->deleteFontModelIndex(filePath);
-    }
+//    for (QString filePath : uninstallIndex) {
+//        m_fontPreviewListView->deleteFontModelIndex(filePath);
+//    }
     Q_EMIT requestDeleted(uninstallIndex);
 
     QItemSelectionModel *selection_model = m_fontPreviewListView->selectionModel();
