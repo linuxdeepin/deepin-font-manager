@@ -270,8 +270,6 @@ void DFInstallNormalWindow::closeEvent(QCloseEvent *event)
             m_fontManager->requestInterruption();
             m_fontManager->quit();
             m_fontManager->wait();
-            m_fontManager = nullptr;
-            delete m_fontManager;
         }
     } else {
         event->ignore();
