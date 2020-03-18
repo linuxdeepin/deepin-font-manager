@@ -67,13 +67,9 @@ void FontIconText::paintEvent(QPaintEvent *event)
     QRect picRect = rect();
     if (m_isTtf == true) {
         //then draw text
-        painter.drawImage(picRect, img, img.rect());
-        QFontMetrics fm(m_font);
-        int width = fm.width(m_text);
-        int height = fm.height();
-        QRect txtRect = picRect.adjusted((picRect.width() - width - 25), (picRect.height() - height - 5), 0, 0);
-        painter.setFont(m_font);
-        painter.drawText(txtRect, m_text);
+        QIcon m_fontIcon = QIcon("/usr/share/icons/bloom/mimetypes/256/font-ttf.svg");// QIcon::fromTheme("deepin-font-manager");
+        QPixmap p = m_fontIcon.pixmap(defaultSize);
+        painter.drawPixmap(picRect, p);
     } else {
         QIcon m_fontIcon = QIcon("/usr/share/icons/bloom/mimetypes/256/font-x-generic.svg");// QIcon::fromTheme("deepin-font-manager");
         QPixmap p = m_fontIcon.pixmap(defaultSize);
