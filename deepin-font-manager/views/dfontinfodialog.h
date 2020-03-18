@@ -39,6 +39,7 @@ private:
     DLabel *m_fontFileName {nullptr};
 
     QFrame *m_basicInfoFrame {nullptr};
+    QString AutoFeed(QString &text);
     QVBoxLayout *m_baseicInfoLayout;
 
     DFontPreviewItemData *m_fontInfo;

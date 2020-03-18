@@ -49,6 +49,23 @@ DFontInfoDialog::DFontInfoDialog(DFontPreviewItemData *fontInfo, QWidget *parent
     initConnections();
 }
 
+QString DFontInfoDialog::AutoFeed(QString &text)
+{
+    QString strText = text;
+    int AntoIndex = 1;
+    if (!strText.isEmpty()) {
+
+        for (int i = 1; i < strText.size() + 1; i++) { //25个字符换一行
+            if (i == 25 * AntoIndex + AntoIndex - 1) {
+                strText.insert(i, "\n");
+                AntoIndex ++;
+            }
+
+        }
+    }
+    return strText;
+}
+
 void DFontInfoDialog::initUI()
 {
     setFixedSize(QSize(DEFAULT_WINDOW_W, DEFAULT_WINDOW_H));
@@ -65,13 +82,13 @@ void DFontInfoDialog::initUI()
     //m_mainFrame->setFrameShape(DFrame::Shape::NoFrame);
     m_mainFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-    DPalette pa1 = DApplicationHelper::instance()->palette(m_mainFrame);
-    //pa1 = m_messageA->palette();
-    QColor color = pa1.textLively().color();
-    color.setAlphaF(0.7);
-    pa1.setColor(DPalette::WindowText, color);
-    //pa1.setColor(DPalette::WindowText, "#000000");
-    DApplicationHelper::instance()->setPalette(m_mainFrame, pa1);
+//    DPalette pa1 = DApplicationHelper::instance()->palette(m_mainFrame);
+//    //pa1 = m_messageA->palette();
+//    QColor color = pa1.textLively().color();
+//    color.setAlphaF(0.7);
+//    pa1.setColor(DPalette::WindowText, color);
+//    //pa1.setColor(DPalette::WindowText, "#000000");
+//    DApplicationHelper::instance()->setPalette(m_mainFrame, pa1);
 
 
     // Font logo
@@ -87,15 +104,23 @@ void DFontInfoDialog::initUI()
     m_fontLogo->setFontName(m_fontInfo->fontInfo.familyName, m_fontInfo->fontInfo.styleName);
 
     m_fontFileName = new DLabel(this);
+    m_fontFileName->adjustSize();
     m_fontFileName->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     m_fontFileName->setAlignment(Qt::AlignVCenter | Qt::AlignHCenter);
     m_fontFileName->setMinimumHeight(m_fontFileName->fontMetrics().height());
+    m_fontFileName->setWordWrap(true);
+
+
+
 //    m_fontFileName->setFixedHeight(18);
 //    QFont fileNameFont;
 //    fileNameFont.setPixelSize(12);
 //    m_fontFileName->setFont(fileNameFont);
     DFontSizeManager::instance()->bind(m_fontFileName, DFontSizeManager::T8);
-    m_fontFileName->setText(QFileInfo(m_fontInfo->fontInfo.filePath).fileName());
+    QString str = QFileInfo(m_fontInfo->fontInfo.filePath).fileName();
+    QString text = AutoFeed(str);
+
+    m_fontFileName->setText(text);
     // Set color
     DPalette pa = DApplicationHelper::instance()->palette(m_fontFileName);
     pa.setBrush(DPalette::WindowText, pa.color(DPalette::ToolTipText));
@@ -170,16 +195,26 @@ void DFontInfoDialog::initUI()
     QScrollArea *scrollArea = new QScrollArea;
 
     scrollArea = new QScrollArea();
+//    DPalette pa2 = scrollArea->palette();
+//    pa2.setBrush(DPalette::Base, Qt::red);
+//    scrollArea->setPalette(pa2);
+
+    //DPalette pa2 = DApplicationHelper::instance()->palette(scrollArea);
+    //pa1 = m_messageA->palette();
+    //QColor color2 = pa2.textLively().color();
+    //color2.setAlphaF(0.95);
+    //pa2.setColor(DPalette::Base, color2);
+    //DApplicationHelper::instance()->setPalette(scrollArea, pa2);
 
     scrollArea->setLineWidth(120);
-    scrollArea->setFixedSize(QSize(290,375));
-    QBitmap bmp(QSize(280,375));
+    scrollArea->setFixedSize(QSize(290, 375));
+    QBitmap bmp(QSize(280, 375));
     bmp.fill();
     QPainter p(&bmp);
 //    p.setPen(Qt::NoPen);
     p.setBrush(Qt::black);
     p.setRenderHint(QPainter::Antialiasing);
-    p.drawRoundedRect(bmp.rect(),12,12);
+    p.drawRoundedRect(bmp.rect(), 12, 12);
     scrollArea->viewport()->setMask(bmp);
 
 
@@ -196,8 +231,8 @@ void DFontInfoDialog::initUI()
     mainLayout->addSpacing(6);
     mainLayout->addWidget(m_fontFileName);
     mainLayout->addSpacing(42);
-    infoLayout->addWidget(scrollArea);
-    infoLayout->setContentsMargins(0, 10, 0, 10);
+//    infoLayout->addWidget(scrollArea);
+//    infoLayout->setContentsMargins(0, 10, 0, 10);
     mainLayout->addWidget(scrollArea);//-----------n
     m_mainFrame->setLayout(mainLayout);
 
