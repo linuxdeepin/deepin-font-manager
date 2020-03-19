@@ -53,15 +53,24 @@ QString DFontInfoDialog::AutoFeed(QString &text)
 {
     QString strText = text;
     int AntoIndex = 1;
+    int count = 0;
     if (!strText.isEmpty()) {
 
         for (int i = 1; i < strText.size() + 1; i++) { //25个字符换一行
             if (i == 25 * AntoIndex + AntoIndex - 1) {
                 strText.insert(i, "\n");
+                count++;
                 AntoIndex ++;
             }
-
+            if (count == 2) {
+                count = 0;
+                break;
+            }
         }
+        QString str = strText.mid(52, 17).append("...").append(strText.right(5));
+        strText = strText.remove(52, strText.size());
+        strText = strText.append(str);
+
     }
     return strText;
 }
