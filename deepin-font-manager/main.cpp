@@ -24,6 +24,7 @@
 
 #include <QCommandLineParser>
 #include <QDebug>
+#include <QDBusConnection>
 
 #include <DApplication>
 #include <DLog>
@@ -68,10 +69,20 @@ int main(int argc, char *argv[])
         return 0;
     }
 
-    app.activateWindow();
+    // Start.
+    QDBusConnection dbus = QDBusConnection::sessionBus();
 
-    return app.exec();
+    // Start deepin-font-manager process if not found any deepin-font-manager use DBus.
+    if (dbus.registerService("com.deepin.font_manager")) {
+        app.activateWindow();
+        return app.exec();
+    }
+    // Just send dbus message to exist editor process.
+    else {
+        qDebug() << "deepin-font-manager already started";
+    }
 
+    return 0;
 }
 
 
