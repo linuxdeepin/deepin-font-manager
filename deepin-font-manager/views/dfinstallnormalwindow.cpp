@@ -177,7 +177,7 @@ void DFInstallNormalWindow::initConnections()
             this->close();
         }
 
-        m_fontManager->emit showFloatingMessage(fileList.size(), count);
+        m_fontManager->emit showFloatingMessage(fileList.size(), systemCount);
 
     });
 
@@ -205,7 +205,7 @@ void DFInstallNormalWindow::verifyFontFiles()
 #ifdef QT_QML_DEBUG
             qDebug() << __FUNCTION__ << " (" << it << " :Damaged file)";
 #endif
-        } else if (fontInfo.isInstalled) {
+        } else if (fontInfo.isInstalled && fontInfo.isSystemFont != true) {
             m_installedFiles.append(it);
 
 #ifdef QT_QML_DEBUG

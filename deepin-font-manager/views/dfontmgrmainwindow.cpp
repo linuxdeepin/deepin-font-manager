@@ -1105,26 +1105,25 @@ void DFontMgrMainWindow::onLoadStatus(int type)
     }
 }
 
-void DFontMgrMainWindow::onShowMessage(int totalCount, int systemFontCount)
+void DFontMgrMainWindow::onShowMessage(int successCount, int systemFontCount)
 {
     QString messageA;
     QString messageB;
 
-    if (totalCount == 1 && systemFontCount != 0) {
-        messageA = DApplication::translate("Font", "%1 font installed").arg(totalCount);
+    if (successCount == 1 && systemFontCount != 0) {
+        messageA = DApplication::translate("Font", "%1 font installed").arg(successCount);
         DMessageManager::instance()->sendMessage(this, QIcon(":/images/ok.svg"), messageA);
         messageB = DApplication::translate("Font", "The other %2 system fonts have already been installed").arg(systemFontCount);
         DMessageManager::instance()->sendMessage(this, QIcon(":/images/exception-logo.svg"), messageB);
     }
-    if (totalCount > 1) {
-        messageA = DApplication::translate("Font", "%1 fonts installed").arg(totalCount);
+    if (successCount != 1) {
+        messageA = DApplication::translate("Font", "%1 fonts installed").arg(successCount);
         DMessageManager::instance()->sendMessage(this, QIcon(":/images/ok.svg"), messageA);
         if (systemFontCount > 0) {
             messageB = DApplication::translate("Font", "The other %2 system fonts have already been installed").arg(systemFontCount);
             DMessageManager::instance()->sendMessage(this, QIcon(":/images/exception-logo.svg"), messageB);
         }
     }
-
 }
 
 void DFontMgrMainWindow::delCurrentFont()

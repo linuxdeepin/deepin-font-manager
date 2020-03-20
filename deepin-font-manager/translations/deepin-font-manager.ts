@@ -151,12 +151,32 @@
         <source>Continue</source>
         <translation>Continue</translation>
     </message>
+    <message>
+        <source>System Font</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No need to install system fonts again</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Font</name>
     <message>
         <source>Don&apos;t let your dreams be dreams</source>
         <translation>Don&apos;t let your dreams be dreams</translation>
+    </message>
+    <message>
+        <source>%1 font installed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The other %2 system fonts have already been installed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 fonts installed</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -214,11 +234,11 @@
     </message>
     <message>
         <source>The font exported to your desktop</source>
-        <translation>The font exported to your desktop</translation>
+        <translation type="vanished">The font exported to your desktop</translation>
     </message>
     <message>
         <source>%1 fonts exported to your desktop</source>
-        <translation>%1 fonts exported to your desktop</translation>
+        <translation type="vanished">%1 fonts exported to your desktop</translation>
     </message>
 </context>
 <context>

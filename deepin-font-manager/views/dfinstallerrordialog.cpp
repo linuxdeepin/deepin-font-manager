@@ -95,7 +95,7 @@ void DFInstallErrorDialog::initData()
         } else if (fontInfoManager->isSysFont(fontInfo.filePath)) {
             QFileInfo fileInfo(it);
             m_SystemFontCount++;
-            itemModel.bSelectable = false;
+            itemModel.bSelectable = true;
             itemModel.bChecked = false;
             itemModel.strFontFileName = fileInfo.fileName();
             itemModel.strFontFilePath = fileInfo.filePath();
