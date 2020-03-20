@@ -9,6 +9,7 @@
 #include <QVBoxLayout>
 #include <QScrollArea>
 #include <QScrollBar>
+#include <DDLabel.h>
 
 #include <DApplication>
 #include <DApplicationHelper>
@@ -17,6 +18,29 @@
 #include <DTipLabel>
 #include <QBitmap>
 
+//QString SpliteText(const QString &text, const QFont &font, int nLabelSize)
+//{
+//    QFontMetrics fm(font);
+//    int nTextSize = fm.width(text);
+//    if (nTextSize > nLabelSize) {
+//        int nPos = 0;
+//        long nOffset = 0;
+//        for (int i = 0; i < text.size(); i++) {
+//            nOffset += fm.width(text.at(i));
+//            if (nOffset >= nLabelSize) {
+//                nPos = i;
+//                break;
+//            }
+//        }
+
+//        nPos = (nPos - 1 < 0) ? 0 : nPos - 1;
+
+//        QString qstrLeftData = text.left(nPos);
+//        QString qstrMidData = text.mid(nPos);
+//        return qstrLeftData + "\n" + SpliteText(qstrMidData, font, nLabelSize);
+//    }
+//    return text;
+//}
 QString SpliteText(const QString &text, const QFont &font, int nLabelSize)
 {
     QFontMetrics fm(font);
@@ -40,7 +64,6 @@ QString SpliteText(const QString &text, const QFont &font, int nLabelSize)
     }
     return text;
 }
-
 DFontInfoDialog::DFontInfoDialog(DFontPreviewItemData *fontInfo, QWidget *parent)
     : DFontBaseDialog(parent)
     , m_fontInfo(fontInfo)
@@ -144,11 +167,11 @@ void DFontInfoDialog::initUI()
 
     m_baseicInfoLayout = new QVBoxLayout();
     m_baseicInfoLayout->setAlignment(Qt::AlignTop /*| Qt::AlignVCenter*/);
-    m_baseicInfoLayout->setContentsMargins(10, 10, 10, 30);
+    m_baseicInfoLayout->setContentsMargins(10, 10, 40, 10);
     m_baseicInfoLayout->setSpacing(0);
 
     DLabel *panelName = new DLabel(this);
-    panelName->setFixedHeight(panelName->fontMetrics().height());
+    panelName->setFixedHeight(panelName->fontMetrics().height()+2);
 //    QFont panelNameFont;
 //    // panelNameFont.setBold(true);
 //    panelNameFont.setPixelSize(14);
@@ -159,44 +182,9 @@ void DFontInfoDialog::initUI()
     m_baseicInfoLayout->addWidget(panelName);
     m_baseicInfoLayout->addSpacing(8);
 
-    // Style Row
-    QString content = m_fontInfo->fontInfo.styleName;
-    addLabelContent(DApplication::translate("FontDetailDailog", "Style"), content);
-    m_baseicInfoLayout->addSpacing(6);
 
-    // Type Row
-    content = m_fontInfo->fontInfo.type;
-    if (content.isEmpty())
-        content = "True Type";
-    addLabelContent(DApplication::translate("FontDetailDailog", "Type"), content);
-    m_baseicInfoLayout->addSpacing(6);
-
-    // Version row
-    content = m_fontInfo->fontInfo.version;
-    if (content.isEmpty())
-        content = "Copyright 2014~2015 Adobe Syste-ms Incorporated (http://www.adob.com/), with Reserved "
-                  "Font Name cc Source.";
-    addLabelContent(DApplication::translate("FontDetailDailog", "Version"), content);
-    m_baseicInfoLayout->addSpacing(6);
-
-    // Description row
-    content = m_fontInfo->fontInfo.description;
-    if (content.isEmpty())
-        content = DApplication::translate("FontDetailDailog", "Unknown");
-    addLabelContent(DApplication::translate("FontDetailDailog", "Description"), content);
-    m_baseicInfoLayout->addSpacing(6);
-
-    //full name
-    addLabelContent(DApplication::translate("FontDetailDailog", "Full name"), m_fontInfo->fontInfo.fullname);
-    m_baseicInfoLayout->addSpacing(6);
-
-    //ps name
-    addLabelContent(DApplication::translate("FontDetailDailog", "Ps name"), m_fontInfo->fontInfo.psname);
-    m_baseicInfoLayout->addSpacing(6);
-
-    //trademark
-    addLabelContent(DApplication::translate("FontDetailDailog", "Trademark"), m_fontInfo->fontInfo.trademark);
-
+    insertContents();
+    m_baseicInfoLayout->addStretch();
     m_basicInfoFrame->setLayout(m_baseicInfoLayout);
 
     /**************************Basic info panel****END*******************************/
@@ -217,18 +205,25 @@ void DFontInfoDialog::initUI()
 
     scrollArea->setLineWidth(120);
     scrollArea->setFixedSize(QSize(290, 375));
-    QBitmap bmp(QSize(280, 375));
+
+    QPixmap bmp(QSize(280, 375));
     bmp.fill();
     QPainter p(&bmp);
-//    p.setPen(Qt::NoPen);
+    bmp.setDevicePixelRatio(0);
     p.setBrush(Qt::black);
     p.setRenderHint(QPainter::Antialiasing);
     p.drawRoundedRect(bmp.rect(), 12, 12);
     scrollArea->viewport()->setMask(bmp);
 
 
+
+    DPalette paFrame = DApplicationHelper::instance()->palette(m_basicInfoFrame);
+    QColor colorFrame = paFrame.textLively().color();
+    colorFrame.setAlphaF(0.2);
+    paFrame.setColor(DPalette::Base, colorFrame);
+    DApplicationHelper::instance()->setPalette(m_basicInfoFrame, paFrame);
+
     scrollArea->setFrameShape(QFrame::Shape::NoFrame);
-    QHBoxLayout *infoLayout = new QHBoxLayout;
     scrollArea->setWidget(m_basicInfoFrame);
 
     scrollArea->setWidgetResizable(true);
@@ -240,9 +235,7 @@ void DFontInfoDialog::initUI()
     mainLayout->addSpacing(6);
     mainLayout->addWidget(m_fontFileName);
     mainLayout->addSpacing(42);
-//    infoLayout->addWidget(scrollArea);
-//    infoLayout->setContentsMargins(0, 10, 0, 10);
-    mainLayout->addWidget(scrollArea);//-----------n
+    mainLayout->addWidget(scrollArea);
     m_mainFrame->setLayout(mainLayout);
 
     addContent(m_mainFrame);
@@ -279,39 +272,148 @@ void DFontInfoDialog::addLabelContent(const QString &title, const QString &conte
 {
     if (content.isEmpty() || title.isEmpty())
         return;
-//    qDebug() << __FUNCTION__ << title << " : " << content << ", font = " << m_fontInfo->fontInfo.toString();
 
-    const int TITLE_MAXWIDTH = 72 + 36;
-    int m_maxFieldWidth = width() - 10;
-    QHBoxLayout *lyout = new QHBoxLayout;
+    const int TITLE_MAXWIDTH = 110;
+//    int m_maxFieldWidth = width() - 40;
 
-    QLabel *detail = new QLabel();
-    detail->setFixedHeight(50);
-//    detail->setFixedHeight(detail->fontMetrics().height() * 3);
-    detail->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    detail->setWordWrap(true);
-    DFontSizeManager::instance()->bind(detail, DFontSizeManager::T8);
-    DPalette pa1 = DApplicationHelper::instance()->palette(detail);
-    pa1.setBrush(DPalette::WindowText, pa1.color(DPalette::TextTitle));
-    detail->setPalette(pa1);
-    detail->setAlignment(Qt::AlignLeft | Qt::AlignTop);
-    QString outtxt = SpliteText(content, detail->font(), m_maxFieldWidth);
-    detail->setText(outtxt);
+    DDLabel *titles= new DDLabel();
+    DDLabel *details = new DDLabel();
 
-    QLabel *titleLabel = new QLabel(title);
-    titleLabel->setAlignment(Qt::AlignLeft | Qt::AlignTop);
-    titleLabel->setMinimumHeight(detail->minimumHeight());
-    titleLabel->setWordWrap(true);
-    DFontSizeManager::instance()->bind(titleLabel, DFontSizeManager::T8);
-    DPalette pa2 = DApplicationHelper::instance()->palette(titleLabel);
-    pa2.setBrush(DPalette::WindowText, pa2.color(DPalette::TextTitle));
-    titleLabel->setPalette(pa2);
-    titleLabel->setText(SpliteText(title, titleLabel->font(), TITLE_MAXWIDTH));
-//    titleLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    titleLabel->setFixedWidth(TITLE_MAXWIDTH);
+    details->setMinimumHeight(0);
+    titles->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    titles->setObjectName("commom");
+    titles->adjustSize();
+    titles->setFixedWidth(TITLE_MAXWIDTH);
+    DFontSizeManager::instance()->bind(titles, DFontSizeManager::T8);
+    DPalette paTitles = DApplicationHelper::instance()->palette(titles);
+    paTitles.setBrush(DPalette::WindowText, paTitles.color(DPalette::TextTitle));
+    titles->setPalette(paTitles);
+    QString title_content = SpliteText(title, titles->font(), TITLE_MAXWIDTH);
+    titles->Settext(title_content);
+    titles->setAlignment(Qt::AlignLeft | Qt::AlignTop);
+//    titles->setWordWrap(true);
 
-    lyout->addWidget(titleLabel);
-    lyout->addWidget(detail);
+    details->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    details->setObjectName("commom");
+    details->adjustSize();
+    details->setFixedWidth(150);
+    DPalette paDetails = DApplicationHelper::instance()->palette(details);
+    paDetails.setBrush(DPalette::WindowText, paDetails.color(DPalette::TextTitle));
+    details->setPalette(paDetails);
+    details->setAlignment(Qt::AlignLeft | Qt::AlignTop);
+    QString details_content = SpliteText(content, details->font(), 220);
 
-    m_baseicInfoLayout->addLayout(lyout);
+
+    details->Settext(details_content);
+    details->setWordWrap(true);
+    DFontSizeManager::instance()->bind(details, DFontSizeManager::T8);
+
+    QHBoxLayout *hlyout = new QHBoxLayout;
+    hlyout->addWidget(titles);
+//       hlyout->addSpacing(30);
+    hlyout->addWidget(details);
+//        hlyout->addSpacing(15);
+        hlyout->addStretch();
+    m_baseicInfoLayout->addLayout(hlyout);
+
 }
+void DFontInfoDialog::addLabelContent_VersionAndDescription(const QString &title, const QString &content)
+{
+
+
+    if (content.isEmpty() || title.isEmpty())
+        return;
+
+//    const int TITLE_MAXWIDTH = 72 + 36;
+    const int TITLE_MAXWIDTH = 110;
+//    int m_maxFieldWidth = width() - 40;
+    DDLabel *titles= new DDLabel();
+    DLabel *details = new DLabel();
+    details->setMinimumHeight(0);
+    titles->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    titles->adjustSize();
+//    titles->setWordWrap(true);
+    titles->setFixedWidth(TITLE_MAXWIDTH);
+    DFontSizeManager::instance()->bind(titles, DFontSizeManager::T8);
+    DPalette paTitles = DApplicationHelper::instance()->palette(titles);
+    paTitles.setBrush(DPalette::WindowText, paTitles.color(DPalette::TextTitle));
+    titles->setPalette(paTitles);
+    titles->Settext(SpliteText(title, titles->font(), TITLE_MAXWIDTH));
+    titles->setAlignment(Qt::AlignLeft | Qt::AlignTop);
+//    titles->setWordWrap(true);
+
+    details->setObjectName("high");
+
+    details->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    details->adjustSize();
+    details->setFixedWidth(150);
+    DPalette paDetails = DApplicationHelper::instance()->palette(details);
+    paDetails.setBrush(DPalette::WindowText, paDetails.color(DPalette::TextTitle));
+    details->setPalette(paDetails);
+    details->setAlignment(Qt::AlignLeft | Qt::AlignTop);
+//    details->Settext(SpliteText(content, details->font(),220));
+    QString detail_content =SpliteText(content, details->font(), 220);
+    details->setText(detail_content);
+    details->setWordWrap(true);
+    DFontSizeManager::instance()->bind(details, DFontSizeManager::T8);
+
+    QHBoxLayout *hlyout = new QHBoxLayout;
+
+    hlyout->addWidget(titles);
+    hlyout->addWidget(details);
+    hlyout->addStretch();
+
+    m_baseicInfoLayout->addLayout(hlyout);
+}
+void DFontInfoDialog::insertContents()
+{
+
+    // Style Row
+    QString content = m_fontInfo->fontInfo.styleName;
+    addLabelContent(DApplication::translate("FontDetailDailog", "Style"), content);
+    m_baseicInfoLayout->addSpacing(6);
+
+    // Type Row
+    content = m_fontInfo->fontInfo.type;
+    if (content.isEmpty())
+        content = "True Type";
+    addLabelContent(DApplication::translate("FontDetailDailog", "Type"), content);
+    m_baseicInfoLayout->addSpacing(6);
+
+    // Version row
+    content = m_fontInfo->fontInfo.version;
+    if (content.isEmpty())
+        content = "Copyright 2014~2015 Adobe Syste-ms Incorporated (http://www.adob.com/), with Reserved "
+                  "Font Name cc Source.";
+    addLabelContent_VersionAndDescription(DApplication::translate("FontDetailDailog", "Version"), content);
+    m_baseicInfoLayout->addSpacing(6);
+
+    // Description row
+    content = m_fontInfo->fontInfo.description;
+    if (content.isEmpty())
+        content = DApplication::translate("FontDetailDailog", "Unknown");
+    addLabelContent_VersionAndDescription(DApplication::translate("FontDetailDailog", "Description"), content);
+    m_baseicInfoLayout->addSpacing(6);
+
+    //full name
+    addLabelContent(DApplication::translate("FontDetailDailog", "Full name"), m_fontInfo->fontInfo.fullname);
+    m_baseicInfoLayout->addSpacing(6);
+
+    //ps name
+    addLabelContent(DApplication::translate("FontDetailDailog", "Ps name"), m_fontInfo->fontInfo.psname);
+    m_baseicInfoLayout->addSpacing(6);
+
+    //trademark
+    addLabelContent(DApplication::translate("FontDetailDailog", "Trademark"), m_fontInfo->fontInfo.trademark);
+}
+//void DFontInfoDialog::paintEvent(QPaintEvent *event)
+//{
+//    QList<DDLabel *> labels = m_basicInfoFrame->findChildren<DDLabel *>();
+//    foreach (DDLabel * label, labels) {
+//       if(label->objectName()=="high"){
+//           label->setFixedHeight(label->fontMetrics().height()*4);
+//       }else if(label->objectName()=="commom"){
+//           label->setFixedHeight(label->fontMetrics().height());
+//       }
+//    }
+//}
