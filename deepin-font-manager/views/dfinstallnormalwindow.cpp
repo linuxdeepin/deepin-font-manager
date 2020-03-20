@@ -123,9 +123,6 @@ void DFInstallNormalWindow::initConnections()
         qDebug() << __FUNCTION__ << " [reinstallFiles=" << m_installFiles << "]";
 #endif
         batchInstall();
-
-
-
     });
 
     connect(m_fontManager, &DFontManager::batchInstall, this,
@@ -181,7 +178,6 @@ void DFInstallNormalWindow::initConnections()
 
     });
 
-
     initVerifyTimer();
 }
 
@@ -190,6 +186,7 @@ void DFInstallNormalWindow::verifyFontFiles()
     // debug
     DFontInfo fontInfo;
     QList<DFontInfo> fontInfos;
+    QList<DFontInfo> instFontInfos;
 
     m_damagedFiles.clear();
     m_installedFiles.clear();
@@ -206,7 +203,10 @@ void DFInstallNormalWindow::verifyFontFiles()
             qDebug() << __FUNCTION__ << " (" << it << " :Damaged file)";
 #endif
         } else if (fontInfo.isInstalled && fontInfo.isSystemFont != true) {
-            m_installedFiles.append(it);
+            if (!instFontInfos.contains(fontInfo)) {
+                instFontInfos.append(fontInfo);
+                m_installedFiles.append(it);
+            }
 
 #ifdef QT_QML_DEBUG
             qDebug() << __FUNCTION__ << " (" << it << " :Installed file)";
@@ -328,8 +328,6 @@ void DFInstallNormalWindow::batchInstall()
 
         m_installedFiles.clear();
     }
-
-
 
     //ToDo:
     //    A temp resolution for installtion.
