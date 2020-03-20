@@ -39,6 +39,8 @@ public:
     void setReInstallFile(const QString &reinstFile, const QString &sysFile);
     void setUnInstallFile(const QStringList &filePath);
 
+    void setSystemFontCount(int systemFontCount);
+
 private slots:
     void handleInstallOutput();
     void handleReInstallOutput();
@@ -50,10 +52,11 @@ signals:
     void installPositionChanged(const QString &instPath);
     void reinstalling();
     void uninstalling();
-    void installFinished(int state, QStringList fileList);
+    void installFinished(int state, QStringList fileList, int systemFontCount);
     void reinstallFinished();
     void uninstallFinished();
     void uninstallFontFinished(const QStringList &uninstallIndex);
+    void showFloatingMessage(int totalCount, int systemFontCount);
 
 protected:
     void run();
@@ -70,6 +73,7 @@ private:
     QString m_reinstFile;
     QString m_sysFile;
     Type m_type;
+    int m_systemFontCount = 0;
 };
 
 #endif

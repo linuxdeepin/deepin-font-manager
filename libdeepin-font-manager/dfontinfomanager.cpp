@@ -46,7 +46,11 @@ static DFontInfoManager *INSTANCE = 0;
 
 inline bool isSystemFont(QString filePath)
 {
-    return filePath.contains("/.local/share/fonts") ? false : true;
+    if (filePath.contains("/usr/share/fonts/")) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 QString convertToUtf8(char *content, int len)
@@ -344,8 +348,8 @@ DFontInfo DFontInfoManager::getFontInfo(const QString &filePath)
         }
     }
 
-    if(!fontInfo.fullname.isEmpty()){
-        fontInfo.familyName = fontInfo.fullname.replace(QRegExp(QString(" " + fontInfo.styleName+"$")), "");
+    if (!fontInfo.fullname.isEmpty()) {
+        fontInfo.familyName = fontInfo.fullname.replace(QRegExp(QString(" " + fontInfo.styleName + "$")), "");
     }
     if (fontInfo.familyName.trimmed().length() < 1) {
         fontInfo.familyName = QString::fromUtf8(DFreeTypeUtil::getFontFamilyName(m_face));
@@ -395,7 +399,7 @@ bool DFontInfoManager::checkDBFontSameName(const DFontInfo &info)
     QFileInfo fileInfo = QFileInfo(info.filePath);
     QString fileName = fileInfo.fileName();
     int nPoint = fileName.indexOf(".");
-    QString fileNameNoSuffix = fileName.left(nPoint);    
+    QString fileNameNoSuffix = fileName.left(nPoint);
 
     //从数据库获取所有字体文件名
     QStringList allFontName = getAllFontName();
@@ -413,6 +417,11 @@ bool DFontInfoManager::checkDBFontSameName(const DFontInfo &info)
         }
     }
     return false;
+}
+
+bool DFontInfoManager::isSysFont(QString &path)
+{
+    return isSystemFont(path);
 }
 
 // 从数据库获取所有字体文件名，并返回一个 QStringList

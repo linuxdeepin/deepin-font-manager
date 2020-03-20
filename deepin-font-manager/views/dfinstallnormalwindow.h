@@ -12,6 +12,7 @@
 #include <DFrame>
 #include <DLabel>
 #include <DProgressBar>
+#include <DMessageManager>
 
 DWIDGET_USE_NAMESPACE
 
@@ -47,12 +48,13 @@ protected slots:
     void onProgressChanged(const QString &filePath, const double &percent);
 
     void onCancelInstall();
-    void onContinueInstall(QStringList continueInstallFontFileList);
+    void onContinueInstall(QStringList continueInstallFontFileList, int m_totalCount);
 
     void showInstallErrDlg();
 signals:
-    void batchReinstall(QStringList reinstallFiles);
+    void batchReinstall(QStringList reinstallFiles, int m_totalCount);
     void finishFontInstall(QStringList fileList);
+
 
 private:
     enum InstallState { Install, reinstall, damaged };
@@ -61,10 +63,12 @@ private:
     QStringList m_installedFiles;
     QStringList m_newInstallFiles;
     QStringList m_damagedFiles;
+    QStringList m_systemFiles;
     QStringList m_outfileList;
 
     // Skip popup exception dialog if true
     bool m_isNeedSkipException {false};
+    int count = 0;
 
     InstallState m_installState {Install};
 
@@ -81,7 +85,7 @@ private:
     DLabel *m_currentFontLabel {nullptr};
     DProgressBar *m_progressBar {nullptr};
 
-    DFInstallErrorDialog* m_pexceptionDlg {nullptr};
+    DFInstallErrorDialog *m_pexceptionDlg {nullptr};
 
     QScopedPointer<QTimer> m_verifyTimer {nullptr};
 };

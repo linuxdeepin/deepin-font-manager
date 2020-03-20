@@ -9,14 +9,14 @@
 #include <DFrame>
 #include <DLabel>
 #include <DPushButton>
-//#include <DSuggestButton>
+#include <DSuggestButton>
 #include <QResizeEvent>
 
 DWIDGET_USE_NAMESPACE
 DCORE_USE_NAMESPACE
 
 class DFMSuggestButton;
-typedef DFMSuggestButton DSuggestButton;
+//typedef DFMSuggestButton DSuggestButton;
 
 class DFMSuggestButton : public QPushButton, public DObject
 {
@@ -69,9 +69,11 @@ private:
     QStringList m_errorInstallFiles;
     QList<DFInstallErrorItemModel> m_installErrorFontModelList;
 
+    int m_SystemFontCount = 0;
+
 signals:
     void onCancelInstall();
-    void onContinueInstall(QStringList continueInstallFontFilelList);
+    void onContinueInstall(QStringList continueInstallFontFilelList, int m_totalCount);
 
 public slots:
     void onListItemClicked(QModelIndex index);

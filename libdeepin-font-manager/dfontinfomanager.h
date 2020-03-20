@@ -46,9 +46,10 @@ struct DFontInfo {
         return info.familyName == familyName && info.styleName == styleName;
     }
 
-    QString toString() {
+    QString toString()
+    {
         return "FontInfo : " + familyName + ", " + styleName + ", psname = " + psname + ", trademark = " + trademark
-                + ", fullname = " + fullname;
+               + ", fullname = " + fullname;
     }
 };
 
@@ -72,6 +73,7 @@ public:
     DFontInfo getFontInfo(const QString &filePath);
     bool isFontInstalled(DFontInfo data);
     bool checkDBFontSameName(const DFontInfo &info);
+    bool isSysFont(QString &path);
     QStringList getAllFontName() const;
 };
 

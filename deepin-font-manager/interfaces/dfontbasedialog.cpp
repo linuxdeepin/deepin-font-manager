@@ -112,6 +112,11 @@ void DFontBaseDialog::closeEvent(QCloseEvent *event)
     Q_EMIT closed();
 }
 
+DWindowCloseButton *DFontBaseDialog::getCloseButton() const
+{
+    return m_closeButton;
+}
+
 QWidget *DFontBaseDialog::getContent() const
 {
     return m_content;

@@ -87,13 +87,12 @@ QString DFontInfoDialog::AutoFeed(QString &text)
             }
             if (count == 2) {
                 count = 0;
+                QString str = strText.mid(52, 17).append("...").append(strText.right(5));
+                strText = strText.remove(52, strText.size());
+                strText = strText.append(str);
                 break;
             }
         }
-        QString str = strText.mid(52, 17).append("...").append(strText.right(5));
-        strText = strText.remove(52, strText.size());
-        strText = strText.append(str);
-
     }
     return strText;
 }

@@ -138,17 +138,17 @@ bool DFontManager::doCmd(const QString &program, const QStringList &arguments)
     switch (m_type) {
     case Install:
         connect(process, SIGNAL(readyReadStandardOutput()), this,
-            SLOT(handleInstallOutput()));
+                SLOT(handleInstallOutput()));
         break;
 
     case ReInstall:
         connect(process, SIGNAL(readyReadStandardOutput()), this,
-            SLOT(handleReInstallOutput()));
+                SLOT(handleReInstallOutput()));
         break;
 
     case UnInstall:
         connect(process, SIGNAL(readyReadStandardOutput()), this,
-            SLOT(handleUnInstallOutput()));
+                SLOT(handleUnInstallOutput()));
         break;
     default:
         break;
@@ -171,10 +171,10 @@ void DFontManager::handleInstall()
         if (m_instFileList.count() == 1) {
             // emit installFinished();
         }
-        Q_EMIT installFinished(0, m_instFileList);
+        Q_EMIT installFinished(0, m_instFileList, m_systemFontCount);
     } else {
         // For:unathorized exit
-        Q_EMIT installFinished(127, QStringList());
+        Q_EMIT installFinished(127, QStringList(), m_systemFontCount);
     }
 }
 
@@ -194,6 +194,11 @@ void DFontManager::handleReInstall()
     if (doCmd("dfont-install", QStringList() << m_reinstFile)) {
         emit reinstallFinished();
     }
+}
+
+void DFontManager::setSystemFontCount(int systemFontCount)
+{
+    m_systemFontCount = systemFontCount;
 }
 
 void DFontManager::handleProcessFinished(int exitCode)

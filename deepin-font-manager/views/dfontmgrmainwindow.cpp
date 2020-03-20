@@ -192,6 +192,7 @@ void DFontMgrMainWindow::initConnections()
 
     QObject::connect(m_fontManager, SIGNAL(uninstallFontFinished(const QStringList &)), this,
                      SLOT(onFontUninstallFinished(const QStringList &)));
+    QObject::connect(m_fontManager, &DFontManager::showFloatingMessage, this, &DFontMgrMainWindow::onShowMessage);
 }
 
 void DFontMgrMainWindow::initShortcuts()
@@ -1104,6 +1105,28 @@ void DFontMgrMainWindow::onLoadStatus(int type)
     }
 }
 
+void DFontMgrMainWindow::onShowMessage(int totalCount, int systemFontCount)
+{
+    QString messageA;
+    QString messageB;
+
+    if (totalCount == 1 && systemFontCount != 0) {
+        messageA = DApplication::translate("Font", "%1 font installed").arg(totalCount);
+        DMessageManager::instance()->sendMessage(this, QIcon(":/images/ok.svg"), messageA);
+        messageB = DApplication::translate("Font", "The other %2 system fonts have already been installed").arg(systemFontCount);
+        DMessageManager::instance()->sendMessage(this, QIcon(":/images/exception-logo.svg"), messageB);
+    }
+    if (totalCount > 1) {
+        messageA = DApplication::translate("Font", "%1 fonts installed").arg(totalCount);
+        DMessageManager::instance()->sendMessage(this, QIcon(":/images/ok.svg"), messageA);
+        if (systemFontCount > 0) {
+            messageB = DApplication::translate("Font", "The other %2 system fonts have already been installed").arg(systemFontCount);
+            DMessageManager::instance()->sendMessage(this, QIcon(":/images/exception-logo.svg"), messageB);
+        }
+    }
+
+}
+
 void DFontMgrMainWindow::delCurrentFont()
 {
     if (m_fIsDeleting)
@@ -1145,15 +1168,7 @@ void DFontMgrMainWindow::exportFont()
         QFile::copy(file, desktopPath + QFileInfo(file).fileName());
     }
     QString message;
-    if (cnt <= 1) {
-//        message = tr("The font exported to your desktop");
-        message = DApplication::translate("Main", "The font exported to your desktop");
-    } else {
-//        message = tr("%1 fonts exported to your desktop").arg(cnt);
-        message = DApplication::translate("Main", "%1 fonts exported to your desktop").arg(cnt);
-    }
 
-    DMessageManager::instance()->sendMessage(m_fontPreviewListView, QIcon(":/images/ok.svg"), message);
 }
 
 void DFontMgrMainWindow::dragEnterEvent(QDragEnterEvent *event)

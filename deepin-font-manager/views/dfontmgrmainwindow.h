@@ -111,6 +111,7 @@ public slots:
     void onFontListViewRowCountChanged(unsigned int bShow);
 
     void onLoadStatus(int type);
+    void onShowMessage(int totalCount, int systemFontCount);
 
 protected:
     // For quick install mode

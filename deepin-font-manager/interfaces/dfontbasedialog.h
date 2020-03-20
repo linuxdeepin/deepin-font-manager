@@ -23,6 +23,8 @@ public:
 
     QWidget *getContent() const;
 
+    DWindowCloseButton *getCloseButton() const;
+
 protected:
     void initUI();
     void InitConnections();
