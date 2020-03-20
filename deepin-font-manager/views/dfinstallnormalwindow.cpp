@@ -118,7 +118,7 @@ void DFInstallNormalWindow::initConnections()
         foreach (auto it, reinstallFiles) {
             m_installFiles.append(it);
         }
-        count = m_totalCount;
+        count = m_systemFiles.size();
 #ifdef QT_QML_DEBUG
         qDebug() << __FUNCTION__ << " [reinstallFiles=" << m_installFiles << "]";
 #endif

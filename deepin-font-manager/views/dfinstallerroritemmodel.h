@@ -9,10 +9,10 @@
 #include <DCheckBox>
 #include <DLabel>
 
-struct DFInstallErrorItemModel
-{
+struct DFInstallErrorItemModel {
     bool bChecked;
     bool bSelectable;
+    bool bSystemFont;
     QString strFontFileName;
     QString strFontFilePath;
     QString strFontInstallStatus;
@@ -21,6 +21,7 @@ struct DFInstallErrorItemModel
     {
         bChecked = false;
         bSelectable = true;
+        bSystemFont = false;
         strFontFileName = "";
         strFontFilePath = "";
         strFontInstallStatus = "";

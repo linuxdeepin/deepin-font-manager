@@ -94,9 +94,10 @@ void DFInstallErrorDialog::initData()
             m_installErrorFontModelList.push_back(itemModel);
         } else if (fontInfoManager->isSysFont(fontInfo.filePath)) {
             QFileInfo fileInfo(it);
-            m_SystemFontCount++;
+//            m_SystemFontCount++;
             itemModel.bSelectable = true;
             itemModel.bChecked = false;
+            itemModel.bSystemFont = true;
             itemModel.strFontFileName = fileInfo.fileName();
             itemModel.strFontFilePath = fileInfo.filePath();
             itemModel.strFontInstallStatus = DApplication::translate("ExceptionWindow", "System Font");
@@ -264,19 +265,21 @@ void DFInstallErrorDialog::initInstallErrorFontViews()
 
 void DFInstallErrorDialog::resetContinueInstallBtnStatus()
 {
+
+    qDebug() << m_SystemFontCount << endl;
     //所有字体都未勾选时，禁止点击"继续安装"
     if (0 == getErrorFontCheckedCount()) {
 //        m_continueInstallBtn->setEnabled(false);
         m_continueInstallBtn->setDisabled(true);
-
-        if (m_SystemFontCount != 0) {
-            m_continueInstallBtn->setToolTip(DApplication::translate("ExceptionWindow", "No need to install system fonts again"));
-        }
 //        m_continueInstallBtn->setDisabled(true);
 //        m_continueInstallBtn->setAttribute(Qt::WA_TransparentForMouseEvents, false);
     } else {
         m_continueInstallBtn->setEnabled(true);
 //        m_continueInstallBtn->setAttribute(Qt::WA_TransparentForMouseEvents, false);
+    }
+    int a = getErrorFontCheckedCount();
+    if (a == m_SystemFontCount) {
+        m_continueInstallBtn->setToolTip(DApplication::translate("ExceptionWindow", "No need to install system fonts again"));
     }
 }
 
@@ -285,6 +288,11 @@ void DFInstallErrorDialog::onListItemClicked(QModelIndex index)
     DFInstallErrorItemModel itemModel =
         qvariant_cast<DFInstallErrorItemModel>(m_installErrorListView->getErrorListSourceModel()->data(index));
     itemModel.bChecked = !itemModel.bChecked;
+    if (itemModel.bSystemFont && itemModel.bChecked) {
+        m_SystemFontCount++;
+    } else if (itemModel.bSystemFont && !itemModel.bChecked) {
+        m_SystemFontCount--;
+    }
     m_installErrorListView->getErrorListSourceModel()->setData(index, QVariant::fromValue(itemModel), Qt::DisplayRole);
 
     resetContinueInstallBtnStatus();
