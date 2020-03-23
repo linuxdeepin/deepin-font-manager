@@ -170,10 +170,9 @@ void DFontInfoDialog::initUI()
     QPainter p(&bmp);
     bmp.setDevicePixelRatio(0);
     p.setBrush(Qt::black);
-    p.setRenderHint(QPainter::Antialiasing);
     p.drawRoundedRect(bmp.rect(), 12, 12);
+    p.setRenderHint(QPainter::Antialiasing);
     scrollArea->viewport()->setMask(bmp);
-
 
 
     DPalette paFrame = DApplicationHelper::instance()->palette(m_basicInfoFrame);
@@ -200,10 +199,16 @@ void DFontInfoDialog::initUI()
     addContent(m_mainFrame);
     if(DApplicationHelper::DarkType == DGuiApplicationHelper::instance()->themeType())
     {
-        qDebug()<<"darkdarkdarkdarkdarkdarkdarkdarkdarkdarkdarkdarkdarkdarkdarkdarkdarkdarkdarkdark";
         DPalette paFrame = DApplicationHelper::instance()->palette(m_basicInfoFrame);
         QColor colorFrame = paFrame.textLively().color();
         colorFrame.setAlphaF(0.05);
+        paFrame.setColor(DPalette::Base, colorFrame);
+        DApplicationHelper::instance()->setPalette(m_basicInfoFrame, paFrame);
+    }else if (DApplicationHelper::LightType == DGuiApplicationHelper::instance()->themeType())
+    {
+        DPalette paFrame = DApplicationHelper::instance()->palette(m_basicInfoFrame);
+        QColor colorFrame = paFrame.textLively().color();
+        colorFrame.setAlphaF(0.70);
         paFrame.setColor(DPalette::Base, colorFrame);
         DApplicationHelper::instance()->setPalette(m_basicInfoFrame, paFrame);
     }

@@ -3,7 +3,7 @@
 #include "dfontbasedialog.h"
 
 #include <QResizeEvent>
-
+#include <QPointF>
 #include <DFrame>
 #include <DLabel>
 #include <QTextEdit>

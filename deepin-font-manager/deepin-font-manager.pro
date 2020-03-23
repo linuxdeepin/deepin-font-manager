@@ -64,7 +64,8 @@ SOURCES += main.cpp \
     views/fonticontext.cpp \
     DDLabel.cpp
 
-RESOURCES += deepin-font-manager.qrc
+RESOURCES += deepin-font-manager.qrc \
+    bmp.qrc
 TRANSLATIONS += translations/deepin-font-manager.ts
 
 !system(deepin-policy-ts-convert policy2ts com.deepin.pkexec.font-install.policy.tmp policy-install-translation): message("Failed policy to ts")
@@ -98,3 +99,5 @@ icon_files.path = /usr/share/icons/hicolor/scalable/apps
 icon_files.files = $$PWD/images/deepin-font-manager.svg
 
 INSTALLS += target desktop policy translations icon_files
+
+DISTFILES +=
