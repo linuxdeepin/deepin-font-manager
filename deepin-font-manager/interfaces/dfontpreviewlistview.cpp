@@ -31,7 +31,7 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
     setAutoScroll(true);
     setMouseTracking(true);
     setUpdatesEnabled(true);
-//    setSelectionMode(QAbstractItemView::ExtendedSelection);
+    setSelectionMode(QAbstractItemView::ExtendedSelection);
 
     DFontMgrMainWindow *mw = qobject_cast<DFontMgrMainWindow *>(m_parentWidget);
     if (mw)

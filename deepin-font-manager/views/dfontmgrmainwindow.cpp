@@ -1185,6 +1185,7 @@ void DFontMgrMainWindow::exportFont()
 {
     int cnt = 0;
     int systemCnt = 0;
+    int count = 0;
     QStringList files = m_fontPreviewListView->selectedFonts(&cnt, &systemCnt);
     if (cnt < 1)
         return;
@@ -1196,7 +1197,13 @@ void DFontMgrMainWindow::exportFont()
         QFile::copy(file, desktopPath + QFileInfo(file).fileName());
     }
     QString message;
-
+    if (files.size() == 1) {
+        message = DApplication::translate("Main", "The font exported to your desktop");
+        DMessageManager::instance()->sendMessage(this, QIcon(":/images/ok.svg"), message);
+    } else {
+        message = DApplication::translate("Main", "%1 fonts exported to your desktop").arg(files.size());
+        DMessageManager::instance()->sendMessage(this, QIcon(":/images/ok.svg"), message);
+    }
 }
 
 void DFontMgrMainWindow::dragEnterEvent(QDragEnterEvent *event)
