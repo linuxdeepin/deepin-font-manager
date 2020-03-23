@@ -25,6 +25,7 @@ DFInstallNormalWindow::DFInstallNormalWindow(const QStringList &files, QWidget *
     qDebug() << __FUNCTION__ << "install files " << files;
     initUI();
     initConnections();
+    GetAllSysfiles();
 }
 
 DFInstallNormalWindow::~DFInstallNormalWindow()
@@ -181,6 +182,20 @@ void DFInstallNormalWindow::initConnections()
     initVerifyTimer();
 }
 
+void DFInstallNormalWindow::GetAllSysfiles()
+{
+    DFMDBManager *dbManager = DFMDBManager::instance();
+    QString systemFile;
+    QList<DFontPreviewItemData> allFontInfo = dbManager->getAllFontInfo();
+    for (auto font : allFontInfo) {
+        if (font.fontInfo.filePath.contains("/usr/share/")) {
+            systemFile.clear();
+            systemFile.append(font.fontInfo.familyName).append(" ").append(font.fontInfo.styleName);
+            m_AllSysFiles.append(systemFile);
+        }
+    }
+}
+
 void DFInstallNormalWindow::verifyFontFiles()
 {
     // debug
@@ -202,7 +217,7 @@ void DFInstallNormalWindow::verifyFontFiles()
 #ifdef QT_QML_DEBUG
             qDebug() << __FUNCTION__ << " (" << it << " :Damaged file)";
 #endif
-        } else if (fontInfo.isInstalled && fontInfo.isSystemFont != true) {
+        } else if (fontInfo.isInstalled && !isSystemFont(fontInfo)) {
             if (!instFontInfos.contains(fontInfo)) {
                 instFontInfos.append(fontInfo);
                 m_installedFiles.append(it);
@@ -211,7 +226,7 @@ void DFInstallNormalWindow::verifyFontFiles()
 #ifdef QT_QML_DEBUG
             qDebug() << __FUNCTION__ << " (" << it << " :Installed file)";
 #endif
-        } else if (fontInfo.isSystemFont) {
+        } else if (isSystemFont(fontInfo)) {
             m_systemFiles.append(it);
 
 #ifdef QT_QML_DEBUG
@@ -257,6 +272,17 @@ bool DFInstallNormalWindow::ifNeedShowExceptionWindow() const
         return true;
     }
 
+    return false;
+}
+
+bool DFInstallNormalWindow::isSystemFont(DFontInfo &f)
+{
+    QString fontFullName = f.fullname + " " + f.styleName;
+    foreach (auto it, m_AllSysFiles) {
+        if (!it.compare(fontFullName)) {
+            return true;
+        }
+    }
     return false;
 }
 
@@ -387,7 +413,7 @@ void DFInstallNormalWindow::onProgressChanged(const QString &filePath, const dou
 
 void DFInstallNormalWindow::showInstallErrDlg()
 {
-    m_pexceptionDlg = new DFInstallErrorDialog(this, m_installFiles);
+    m_pexceptionDlg = new DFInstallErrorDialog(this, m_installFiles, m_AllSysFiles);
 
     connect(m_pexceptionDlg, &DFInstallErrorDialog::onCancelInstall, this,
             &DFInstallNormalWindow::onCancelInstall);

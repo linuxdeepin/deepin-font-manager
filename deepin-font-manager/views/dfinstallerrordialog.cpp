@@ -50,9 +50,11 @@ void DFMSuggestButton::paintEvent(QPaintEvent *event)
     p.drawControl(QStyle::CE_PushButton, option);
 }
 
-DFInstallErrorDialog::DFInstallErrorDialog(QWidget *parent, QStringList errorInstallFontFileList)
+DFInstallErrorDialog::DFInstallErrorDialog(QWidget *parent, QStringList errorInstallFontFileList,
+                                           QStringList systemFontFileList)
     : DFontBaseDialog(parent)
     , m_errorInstallFiles(errorInstallFontFileList)
+    , m_systemFiles(systemFontFileList)
 {
 //    setWindowOpacity(0.3); //Debug
 
@@ -82,7 +84,7 @@ void DFInstallErrorDialog::initData()
             itemModel.strFontInstallStatus = DApplication::translate("ExceptionWindow", "Broken file");
 
             m_installErrorFontModelList.push_back(itemModel);
-        } else if (fontInfo.isInstalled && fontInfoManager->isSysFont(fontInfo.filePath) != 1) {
+        } else if (fontInfo.isInstalled && !isSystemFont(fontInfo)) {
             QFileInfo fileInfo(it);
             itemModel.bSelectable = true;
             //默认勾选已安装字体
@@ -92,7 +94,7 @@ void DFInstallErrorDialog::initData()
             itemModel.strFontInstallStatus = DApplication::translate("ExceptionWindow", "Same version installed");
 
             m_installErrorFontModelList.push_back(itemModel);
-        } else if (fontInfoManager->isSysFont(fontInfo.filePath)) {
+        } else if (isSystemFont(fontInfo)) {
             QFileInfo fileInfo(it);
 //            m_SystemFontCount++;
             itemModel.bSelectable = true;
@@ -164,6 +166,17 @@ int DFInstallErrorDialog::getErrorFontCheckedCount()
         }
     }
     return checkedCount;
+}
+
+bool DFInstallErrorDialog::isSystemFont(DFontInfo &f)
+{
+    QString fontFullName = f.fullname + " " + f.styleName;
+    foreach (auto it, m_systemFiles) {
+        if (!it.compare(fontFullName)) {
+            return true;
+        }
+    }
+    return false;
 }
 
 void DFInstallErrorDialog::initInstallErrorFontViews()

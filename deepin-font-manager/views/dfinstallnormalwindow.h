@@ -2,6 +2,7 @@
 #define DFINSTALLNORMALWINDOW_H
 
 #include "dfontbasedialog.h"
+#include "dfmdbmanager.h"
 #include "dfinstallerrordialog.h"
 #include "dfontinfomanager.h"
 
@@ -35,10 +36,12 @@ protected:
 
     void initUI();
     void initConnections();
+    void GetAllSysfiles();
     void initVerifyTimer();
 
     void verifyFontFiles();
     bool ifNeedShowExceptionWindow() const;
+    bool isSystemFont(DFontInfo &f);
 
     void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
     void closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;
@@ -65,6 +68,7 @@ private:
     QStringList m_damagedFiles;
     QStringList m_systemFiles;
     QStringList m_outfileList;
+    QStringList m_AllSysFiles;
 
     // Skip popup exception dialog if true
     bool m_isNeedSkipException {false};
