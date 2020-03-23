@@ -4,11 +4,11 @@ Dtk::Widget::DDLabel::DDLabel(QWidget *parent, Qt::WindowFlags f) : DLabel(paren
 
 }
 
-void Dtk::Widget::DDLabel::Settext(const QString &text)
+void Dtk::Widget::DDLabel::Settext(const QString &text,const int &width)
 {
         QFontMetrics elideFont(this->font());
         str = text;
-        DLabel::setText(elideFont.elidedText(str, Qt::ElideRight, 140));
+        DLabel::setText(elideFont.elidedText(str, Qt::ElideRight, width));
 }
 
 

@@ -29,7 +29,7 @@ protected:
     void addLabelContent_VersionAndDescription(const QString &title, const QString &content);
     void resizeEvent(QResizeEvent *event) override;
     void insertContents();
-//    void paintEvent(QPaintEvent *event);
+    void paintEvent(QPaintEvent *event);
 signals:
 
 public slots:
@@ -47,6 +47,9 @@ private:
     DFontPreviewItemData *m_fontInfo;
     DLabel *title;
     DLabel *detai;
+
+    int countRow;
+    DLabel *forCountRow;
 };
 
 #endif  // DFONTINFODIALOG_H

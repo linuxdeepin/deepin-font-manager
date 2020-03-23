@@ -17,30 +17,6 @@
 #include <DFontSizeManager>
 #include <DTipLabel>
 #include <QBitmap>
-
-//QString SpliteText(const QString &text, const QFont &font, int nLabelSize)
-//{
-//    QFontMetrics fm(font);
-//    int nTextSize = fm.width(text);
-//    if (nTextSize > nLabelSize) {
-//        int nPos = 0;
-//        long nOffset = 0;
-//        for (int i = 0; i < text.size(); i++) {
-//            nOffset += fm.width(text.at(i));
-//            if (nOffset >= nLabelSize) {
-//                nPos = i;
-//                break;
-//            }
-//        }
-
-//        nPos = (nPos - 1 < 0) ? 0 : nPos - 1;
-
-//        QString qstrLeftData = text.left(nPos);
-//        QString qstrMidData = text.mid(nPos);
-//        return qstrLeftData + "\n" + SpliteText(qstrMidData, font, nLabelSize);
-//    }
-//    return text;
-//}
 QString SpliteText(const QString &text, const QFont &font, int nLabelSize)
 {
     QFontMetrics fm(font);
@@ -99,6 +75,7 @@ QString DFontInfoDialog::AutoFeed(QString &text)
 
 void DFontInfoDialog::initUI()
 {
+
     setFixedSize(QSize(DEFAULT_WINDOW_W, DEFAULT_WINDOW_H));
     setLogoVisable(false);
 
@@ -112,15 +89,6 @@ void DFontInfoDialog::initUI()
     m_mainFrame = new QWidget(this);
     //m_mainFrame->setFrameShape(DFrame::Shape::NoFrame);
     m_mainFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-
-//    DPalette pa1 = DApplicationHelper::instance()->palette(m_mainFrame);
-//    //pa1 = m_messageA->palette();
-//    QColor color = pa1.textLively().color();
-//    color.setAlphaF(0.7);
-//    pa1.setColor(DPalette::WindowText, color);
-//    //pa1.setColor(DPalette::WindowText, "#000000");
-//    DApplicationHelper::instance()->setPalette(m_mainFrame, pa1);
-
 
     // Font logo
     m_fontLogo = new FontIconText(":/images/font-info-logo.svg", this);
@@ -159,7 +127,9 @@ void DFontInfoDialog::initUI()
 
     /**************************Basic info panel****BEGIN*******************************/
     m_basicInfoFrame = new DFrame(this);
-    //m_basicInfoFrame->setBackgroundRole(DPalette::Base);
+    initConnections();//themeChanged
+
+
     m_basicInfoFrame->setFrameShape(DFrame::Shape::NoFrame);
     m_basicInfoFrame->setFixedWidth(275);
     m_basicInfoFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -179,29 +149,19 @@ void DFontInfoDialog::initUI()
     panelName->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     panelName->setText(DApplication::translate("FontDetailDailog", "Basic info"));
     m_baseicInfoLayout->addWidget(panelName);
-    m_baseicInfoLayout->addSpacing(8);
+    m_baseicInfoLayout->addSpacing(4);
 
 
     insertContents();
     m_baseicInfoLayout->addStretch();
     m_basicInfoFrame->setLayout(m_baseicInfoLayout);
 
+
     /**************************Basic info panel****END*******************************/
 
     QScrollArea *scrollArea = new QScrollArea;
 
     scrollArea = new QScrollArea();
-//    DPalette pa2 = scrollArea->palette();
-//    pa2.setBrush(DPalette::Base, Qt::red);
-//    scrollArea->setPalette(pa2);
-
-    //DPalette pa2 = DApplicationHelper::instance()->palette(scrollArea);
-    //pa1 = m_messageA->palette();
-    //QColor color2 = pa2.textLively().color();
-    //color2.setAlphaF(0.95);
-    //pa2.setColor(DPalette::Base, color2);
-    //DApplicationHelper::instance()->setPalette(scrollArea, pa2);
-
     scrollArea->setLineWidth(120);
     scrollArea->setFixedSize(QSize(290, 375));
 
@@ -238,7 +198,15 @@ void DFontInfoDialog::initUI()
     m_mainFrame->setLayout(mainLayout);
 
     addContent(m_mainFrame);
-
+    if(DApplicationHelper::DarkType == DGuiApplicationHelper::instance()->themeType())
+    {
+        qDebug()<<"darkdarkdarkdarkdarkdarkdarkdarkdarkdarkdarkdarkdarkdarkdarkdarkdarkdarkdarkdark";
+        DPalette paFrame = DApplicationHelper::instance()->palette(m_basicInfoFrame);
+        QColor colorFrame = paFrame.textLively().color();
+        colorFrame.setAlphaF(0.05);
+        paFrame.setColor(DPalette::Base, colorFrame);
+        DApplicationHelper::instance()->setPalette(m_basicInfoFrame, paFrame);
+    }
     // Update font info to UI
 //    updateFontInfo();
 #ifdef FTM_DEBUG_LAYOUT_COLOR
@@ -258,15 +226,28 @@ void DFontInfoDialog::initUI()
 #endif
 }
 
-void DFontInfoDialog::initConnections() {}
+void DFontInfoDialog::initConnections()
+{
+    connect(DApplicationHelper::instance(),&DApplicationHelper::themeTypeChanged,this,[=]
+    {
+        DGuiApplicationHelper::ColorType themeType = DGuiApplicationHelper::instance()->themeType();
 
+        if(DApplicationHelper::DarkType==themeType)
+        {
+            DPalette paFrame = DApplicationHelper::instance()->palette(m_basicInfoFrame);
+            QColor colorFrame = paFrame.textLively().color();
+            colorFrame.setAlphaF(0.05);
+            paFrame.setColor(DPalette::Base, colorFrame);
+            DApplicationHelper::instance()->setPalette(m_basicInfoFrame, paFrame);
+        }return ;
+    });
+}
 void DFontInfoDialog::resizeEvent(QResizeEvent *event)
 {
     DFontBaseDialog::resizeEvent(event);
 
     //m_mainFrame->setFixedSize(event->size().width(), event->size().height());
 }
-
 void DFontInfoDialog::addLabelContent(const QString &title, const QString &content)
 {
     if (content.isEmpty() || title.isEmpty())
@@ -277,10 +258,11 @@ void DFontInfoDialog::addLabelContent(const QString &title, const QString &conte
 
     DDLabel *titles= new DDLabel();
     DDLabel *details = new DDLabel();
-
+    titles->setObjectName("commom");
+    details->setObjectName("commom");
     details->setMinimumHeight(0);
     titles->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    titles->setObjectName("commom");
+
     titles->adjustSize();
     titles->setFixedWidth(TITLE_MAXWIDTH);
     DFontSizeManager::instance()->bind(titles, DFontSizeManager::T8);
@@ -288,12 +270,12 @@ void DFontInfoDialog::addLabelContent(const QString &title, const QString &conte
     paTitles.setBrush(DPalette::WindowText, paTitles.color(DPalette::TextTitle));
     titles->setPalette(paTitles);
     QString title_content = SpliteText(title, titles->font(), TITLE_MAXWIDTH);
-    titles->Settext(title_content);
+    titles->Settext(title_content,140);
     titles->setAlignment(Qt::AlignLeft | Qt::AlignTop);
 //    titles->setWordWrap(true);
 
     details->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    details->setObjectName("commom");
+//    details->setObjectName("commom");
     details->adjustSize();
     details->setFixedWidth(150);
     DPalette paDetails = DApplicationHelper::instance()->palette(details);
@@ -303,7 +285,7 @@ void DFontInfoDialog::addLabelContent(const QString &title, const QString &conte
     QString details_content = SpliteText(content, details->font(), 220);
 
 
-    details->Settext(details_content);
+    details->Settext(details_content,140);
     details->setWordWrap(true);
     DFontSizeManager::instance()->bind(details, DFontSizeManager::T8);
 
@@ -312,7 +294,7 @@ void DFontInfoDialog::addLabelContent(const QString &title, const QString &conte
 //       hlyout->addSpacing(30);
     hlyout->addWidget(details);
 //        hlyout->addSpacing(15);
-        hlyout->addStretch();
+//        hlyout->addStretch();
     m_baseicInfoLayout->addLayout(hlyout);
 
 }
@@ -323,36 +305,32 @@ void DFontInfoDialog::addLabelContent_VersionAndDescription(const QString &title
     if (content.isEmpty() || title.isEmpty())
         return;
 
-//    const int TITLE_MAXWIDTH = 72 + 36;
     const int TITLE_MAXWIDTH = 110;
-//    int m_maxFieldWidth = width() - 40;
     DDLabel *titles= new DDLabel();
     DLabel *details = new DLabel();
-    details->setMinimumHeight(0);
+    titles->setObjectName("high");
+    details->setObjectName("high");
+//    details->setMinimumHeight(0);
     titles->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     titles->adjustSize();
-//    titles->setWordWrap(true);
+    titles->setWordWrap(true);
     titles->setFixedWidth(TITLE_MAXWIDTH);
     DFontSizeManager::instance()->bind(titles, DFontSizeManager::T8);
     DPalette paTitles = DApplicationHelper::instance()->palette(titles);
     paTitles.setBrush(DPalette::WindowText, paTitles.color(DPalette::TextTitle));
     titles->setPalette(paTitles);
-    titles->Settext(SpliteText(title, titles->font(), TITLE_MAXWIDTH));
+    titles->Settext(SpliteText(title, titles->font(), TITLE_MAXWIDTH),140);
     titles->setAlignment(Qt::AlignLeft | Qt::AlignTop);
-//    titles->setWordWrap(true);
-
-    details->setObjectName("high");
 
     details->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    details->adjustSize();
     details->setFixedWidth(150);
     DPalette paDetails = DApplicationHelper::instance()->palette(details);
     paDetails.setBrush(DPalette::WindowText, paDetails.color(DPalette::TextTitle));
     details->setPalette(paDetails);
     details->setAlignment(Qt::AlignLeft | Qt::AlignTop);
-//    details->Settext(SpliteText(content, details->font(),220));
     QString detail_content =SpliteText(content, details->font(), 220);
-    details->setText(detail_content);
+//    details->setText(detail_content);
+    details ->setText(detail_content);
     details->setWordWrap(true);
     DFontSizeManager::instance()->bind(details, DFontSizeManager::T8);
 
@@ -360,9 +338,10 @@ void DFontInfoDialog::addLabelContent_VersionAndDescription(const QString &title
 
     hlyout->addWidget(titles);
     hlyout->addWidget(details);
-    hlyout->addStretch();
 
     m_baseicInfoLayout->addLayout(hlyout);
+
+
 }
 void DFontInfoDialog::insertContents()
 {
@@ -404,15 +383,87 @@ void DFontInfoDialog::insertContents()
 
     //trademark
     addLabelContent(DApplication::translate("FontDetailDailog", "Trademark"), m_fontInfo->fontInfo.trademark);
+
+    m_baseicInfoLayout->addStretch();
 }
-//void DFontInfoDialog::paintEvent(QPaintEvent *event)
-//{
-//    QList<DDLabel *> labels = m_basicInfoFrame->findChildren<DDLabel *>();
-//    foreach (DDLabel * label, labels) {
-//       if(label->objectName()=="high"){
-//           label->setFixedHeight(label->fontMetrics().height()*4);
-//       }else if(label->objectName()=="commom"){
-//           label->setFixedHeight(label->fontMetrics().height());
-//       }
-//    }
-//}
+void DFontInfoDialog::paintEvent(QPaintEvent *event)
+{
+    QFont font;
+    QFontInfo fInfo(font);
+    QList<DDLabel *> ddlabels = m_basicInfoFrame->findChildren<DDLabel *>();
+    QList<DLabel *> dlabels = m_basicInfoFrame->findChildren<DLabel *>();
+    foreach (DDLabel *label, ddlabels) {
+        if(label->objectName()=="commom"){
+            label->setFixedHeight(label->fontMetrics().height());
+        }
+    switch(fInfo.pixelSize())
+    {
+        case 11://11
+            foreach(DLabel *label,dlabels){
+                if(label->objectName()=="high"){
+                    label->setFixedHeight(label->fontMetrics().height()*3);
+                    }
+
+            };
+            break;
+        case 12://12
+            foreach(DLabel *label,dlabels){
+                if(label->objectName()=="high"){
+                    label->setFixedHeight(label->fontMetrics().height()*3);
+                    }
+
+            };
+            break;
+        case 13://13
+            foreach(DLabel *label,dlabels){
+                if(label->objectName()=="high"){
+                    label->setFixedHeight(label->fontMetrics().height()*4);
+                    }
+
+            };
+            break;
+        case 14://14
+            foreach(DLabel *label,dlabels){
+                if(label->objectName()=="high"){
+                    label->setFixedHeight(label->fontMetrics().height()*4);
+                    }
+
+            };
+            break;
+        case 15://15
+            foreach(DLabel *label,dlabels){
+                if(label->objectName()=="high"){
+                    label->setFixedHeight(label->fontMetrics().height()*5);
+                    }
+
+            };
+            break;
+        case 16://16
+            foreach(DLabel *label,dlabels){
+                if(label->objectName()=="high"){
+                    label->setFixedHeight(label->fontMetrics().height()*5);
+                    }
+
+            };
+            break;
+        case 18://18
+            foreach(DLabel *label,dlabels){
+                if(label->objectName()=="high"){
+                    label->setFixedHeight(label->fontMetrics().height()*5);
+                    }
+
+            };
+            break;
+        default://20
+            foreach(DLabel *label,dlabels){
+                if(label->objectName()=="high"){
+                    label->setFixedHeight(label->fontMetrics().height()*6);
+                    }
+
+            };
+            break;
+    }
+  }
+}
+
+

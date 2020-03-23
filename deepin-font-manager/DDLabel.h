@@ -12,7 +12,7 @@ class DDLabel : public DLabel
     Q_OBJECT
 public:
     DDLabel(QWidget *parent = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
-    void Settext(const QString &);
+    void Settext(const QString& ,const int &width);
 private:
     void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
 
