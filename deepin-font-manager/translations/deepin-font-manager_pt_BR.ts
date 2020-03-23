@@ -38,6 +38,21 @@
     </message>
 </context>
 <context>
+    <name>DFInstallErrorDialog</name>
+    <message>
+        <source>Broken file</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Same version installed</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>System Font</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>DFontMgrMainWindow</name>
     <message>
         <source>Ctrl+Shift+/</source>
@@ -91,6 +106,22 @@
         <source>Ctrl+0</source>
         <translation>Ctrl + 0</translation>
     </message>
+    <message>
+        <source>%1 font installed</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>The other one system font has already been installed</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>The other %2 system fonts have already been installed</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>%1 fonts installed</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>DeleteConfirmDailog</name>
@@ -135,11 +166,11 @@
     </message>
     <message>
         <source>Broken file</source>
-        <translation>Arquivo corrompido</translation>
+        <translation type="vanished">Arquivo corrompido</translation>
     </message>
     <message>
         <source>Same version installed</source>
-        <translation>Mesma versão instalada</translation>
+        <translation type="vanished">Mesma versão instalada</translation>
     </message>
     <message>
         <source>Exit</source>
@@ -148,6 +179,10 @@
     <message>
         <source>Continue</source>
         <translation>Continuar</translation>
+    </message>
+    <message>
+        <source>No need to install system fonts again</source>
+        <translation>Não há necessidade de instalar as fontes do sistema novamente</translation>
     </message>
 </context>
 <context>
@@ -185,15 +220,15 @@
     </message>
     <message>
         <source>Full name</source>
-        <translation type="unfinished"/>
+        <translation>Nome completo</translation>
     </message>
     <message>
         <source>Ps name</source>
-        <translation type="unfinished"/>
+        <translation>Nome do postscript</translation>
     </message>
     <message>
         <source>Trademark</source>
-        <translation type="unfinished"/>
+        <translation>Marca Comercial</translation>
     </message>
 </context>
 <context>
@@ -212,11 +247,11 @@
     </message>
     <message>
         <source>The font exported to your desktop</source>
-        <translation>A fonte exportada para a área de trabalho</translation>
+        <translation type="vanished">A fonte exportada para a área de trabalho</translation>
     </message>
     <message>
         <source>%1 fonts exported to your desktop</source>
-        <translation>%1 fontes exportadas para a área de trabalho</translation>
+        <translation type="vanished">%1 fontes exportadas para a área de trabalho</translation>
     </message>
 </context>
 <context>

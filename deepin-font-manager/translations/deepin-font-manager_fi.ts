@@ -38,6 +38,21 @@
     </message>
 </context>
 <context>
+    <name>DFInstallErrorDialog</name>
+    <message>
+        <source>Broken file</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Same version installed</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>System Font</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>DFontMgrMainWindow</name>
     <message>
         <source>Ctrl+Shift+/</source>
@@ -91,6 +106,22 @@
         <source>Ctrl+0</source>
         <translation>Ctrl+0</translation>
     </message>
+    <message>
+        <source>%1 font installed</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>The other one system font has already been installed</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>The other %2 system fonts have already been installed</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>%1 fonts installed</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>DeleteConfirmDailog</name>
@@ -124,7 +155,7 @@
     </message>
     <message>
         <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
-        <translation type="unfinished"/>
+        <translation>Nämä fontit eivät ole sovellusten käytettävissä, eikä muita %1 järjestelmäfontteja voi poistaa</translation>
     </message>
 </context>
 <context>
@@ -135,11 +166,11 @@
     </message>
     <message>
         <source>Broken file</source>
-        <translation>Virheellinen tiedosto</translation>
+        <translation type="vanished">Virheellinen tiedosto</translation>
     </message>
     <message>
         <source>Same version installed</source>
-        <translation>Sama versio asennettu</translation>
+        <translation type="vanished">Sama versio asennettu</translation>
     </message>
     <message>
         <source>Exit</source>
@@ -148,6 +179,10 @@
     <message>
         <source>Continue</source>
         <translation>Jatka</translation>
+    </message>
+    <message>
+        <source>No need to install system fonts again</source>
+        <translation>Järjestelmän fontteja ei tarvitse asentaa uudelleen</translation>
     </message>
 </context>
 <context>
@@ -185,15 +220,15 @@
     </message>
     <message>
         <source>Full name</source>
-        <translation type="unfinished"/>
+        <translation>Koko nimi</translation>
     </message>
     <message>
         <source>Ps name</source>
-        <translation type="unfinished"/>
+        <translation>Jälkikirjoitus</translation>
     </message>
     <message>
         <source>Trademark</source>
-        <translation type="unfinished"/>
+        <translation>Tavaramerkki</translation>
     </message>
 </context>
 <context>
@@ -212,11 +247,11 @@
     </message>
     <message>
         <source>The font exported to your desktop</source>
-        <translation>Fontti on viety työpöydällesi</translation>
+        <translation type="vanished">Fontti on viety työpöydällesi</translation>
     </message>
     <message>
         <source>%1 fonts exported to your desktop</source>
-        <translation>%1 fontit on viety työpöydällesi</translation>
+        <translation type="vanished">%1 fontit on viety työpöydällesi</translation>
     </message>
 </context>
 <context>

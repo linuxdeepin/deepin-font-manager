@@ -38,6 +38,21 @@
     </message>
 </context>
 <context>
+    <name>DFInstallErrorDialog</name>
+    <message>
+        <source>Broken file</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Same version installed</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>System Font</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>DFontMgrMainWindow</name>
     <message>
         <source>Ctrl+Shift+/</source>
@@ -91,6 +106,22 @@
         <source>Ctrl+0</source>
         <translation>Ctrl + 0</translation>
     </message>
+    <message>
+        <source>%1 font installed</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>The other one system font has already been installed</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>The other %2 system fonts have already been installed</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>%1 fonts installed</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>DeleteConfirmDailog</name>
@@ -124,7 +155,7 @@
     </message>
     <message>
         <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
-        <translation>Estas fuentes no estarán disponibles para las aplicaciones, y las otras %1 fuentes del sistema no pueden ser eliminadas</translation>
+        <translation>Estas fuentes no estarán disponibles para las aplicaciones, y las otras %1 fuentes del sistema no pueden ser borradas</translation>
     </message>
 </context>
 <context>
@@ -135,11 +166,11 @@
     </message>
     <message>
         <source>Broken file</source>
-        <translation>Archivo roto</translation>
+        <translation type="vanished">Archivo roto</translation>
     </message>
     <message>
         <source>Same version installed</source>
-        <translation>Misma versión instalada</translation>
+        <translation type="vanished">Misma versión instalada</translation>
     </message>
     <message>
         <source>Exit</source>
@@ -148,6 +179,10 @@
     <message>
         <source>Continue</source>
         <translation>Continuar</translation>
+    </message>
+    <message>
+        <source>No need to install system fonts again</source>
+        <translation>Innecesario instalar fuentes del sistema nuevamente</translation>
     </message>
 </context>
 <context>
@@ -185,15 +220,15 @@
     </message>
     <message>
         <source>Full name</source>
-        <translation type="unfinished"/>
+        <translation>Nombre completo</translation>
     </message>
     <message>
         <source>Ps name</source>
-        <translation type="unfinished"/>
+        <translation>Nombre PostScript</translation>
     </message>
     <message>
         <source>Trademark</source>
-        <translation type="unfinished"/>
+        <translation>Marca</translation>
     </message>
 </context>
 <context>
@@ -212,11 +247,11 @@
     </message>
     <message>
         <source>The font exported to your desktop</source>
-        <translation>Fuente exportada al escritorio</translation>
+        <translation type="vanished">Fuente exportada al escritorio</translation>
     </message>
     <message>
         <source>%1 fonts exported to your desktop</source>
-        <translation>%1 fuentes exportadas al escritorio</translation>
+        <translation type="vanished">%1 fuentes exportadas al escritorio</translation>
     </message>
 </context>
 <context>

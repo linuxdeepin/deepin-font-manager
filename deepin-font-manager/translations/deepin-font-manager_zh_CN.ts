@@ -38,6 +38,21 @@
     </message>
 </context>
 <context>
+    <name>DFInstallErrorDialog</name>
+    <message>
+        <source>Broken file</source>
+        <translation>文件已损坏</translation>
+    </message>
+    <message>
+        <source>Same version installed</source>
+        <translation>已安装相同版本</translation>
+    </message>
+    <message>
+        <source>System Font</source>
+        <translation>系统字体</translation>
+    </message>
+</context>
+<context>
     <name>DFontMgrMainWindow</name>
     <message>
         <source>Ctrl+Shift+/</source>
@@ -91,6 +106,22 @@
         <source>Ctrl+0</source>
         <translation>Ctrl+0</translation>
     </message>
+    <message>
+        <source>%1 font installed</source>
+        <translation>已安装%1个字体</translation>
+    </message>
+    <message>
+        <source>The other one system font has already been installed</source>
+        <translation>其它1个为系统字体，无需安装</translation>
+    </message>
+    <message>
+        <source>The other %2 system fonts have already been installed</source>
+        <translation>其它%2个为系统字体，无需安装</translation>
+    </message>
+    <message>
+        <source>%1 fonts installed</source>
+        <translation>已安装%1个字体</translation>
+    </message>
 </context>
 <context>
     <name>DeleteConfirmDailog</name>
@@ -135,11 +166,11 @@
     </message>
     <message>
         <source>Broken file</source>
-        <translation>文件已损坏</translation>
+        <translation type="vanished">文件已损坏</translation>
     </message>
     <message>
         <source>Same version installed</source>
-        <translation>已安装相同版本</translation>
+        <translation type="vanished">已安装相同版本</translation>
     </message>
     <message>
         <source>Exit</source>
@@ -148,6 +179,10 @@
     <message>
         <source>Continue</source>
         <translation>继续</translation>
+    </message>
+    <message>
+        <source>No need to install system fonts again</source>
+        <translation>系统字体无需安装</translation>
     </message>
 </context>
 <context>
@@ -212,11 +247,11 @@
     </message>
     <message>
         <source>The font exported to your desktop</source>
-        <translation>该字体已导出到桌面</translation>
+        <translation type="vanished">该字体已导出到桌面</translation>
     </message>
     <message>
         <source>%1 fonts exported to your desktop</source>
-        <translation>%1个字体已导出到桌面</translation>
+        <translation type="vanished">%1个字体已导出到桌面</translation>
     </message>
 </context>
 <context>
@@ -322,39 +357,39 @@
     <name>Shortcuts</name>
     <message>
         <source>Help</source>
-        <translation>帮助</translation>
+        <translation type="vanished">帮助</translation>
     </message>
     <message>
         <source>Display shortcuts</source>
-        <translation>显示快捷键</translation>
+        <translation type="vanished">显示快捷键</translation>
     </message>
     <message>
         <source>Page up</source>
-        <translation>上一页</translation>
+        <translation type="vanished">上一页</translation>
     </message>
     <message>
         <source>Page down</source>
-        <translation>下一页</translation>
+        <translation type="vanished">下一页</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>删除</translation>
+        <translation type="vanished">删除</translation>
     </message>
     <message>
         <source>Add font</source>
-        <translation>添加字体</translation>
+        <translation type="vanished">添加字体</translation>
     </message>
     <message>
         <source>Favorite</source>
-        <translation>收藏</translation>
+        <translation type="vanished">收藏</translation>
     </message>
     <message>
         <source>Unfavorite</source>
-        <translation>取消收藏</translation>
+        <translation type="vanished">取消收藏</translation>
     </message>
     <message>
         <source>Font info</source>
-        <translation>字体信息</translation>
+        <translation type="vanished">字体信息</translation>
     </message>
 </context>
 <context>

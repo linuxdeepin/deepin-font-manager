@@ -38,6 +38,21 @@
     </message>
 </context>
 <context>
+    <name>DFInstallErrorDialog</name>
+    <message>
+        <source>Broken file</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Same version installed</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>System Font</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>DFontMgrMainWindow</name>
     <message>
         <source>Ctrl+Shift+/</source>
@@ -81,14 +96,30 @@
     </message>
     <message>
         <source>Ctrl+=</source>
-        <translation type="unfinished"/>
+        <translation>Ctrl+=</translation>
     </message>
     <message>
         <source>Ctrl+-</source>
-        <translation type="unfinished"/>
+        <translation>Ctrl+-</translation>
     </message>
     <message>
         <source>Ctrl+0</source>
+        <translation>Ctrl+0</translation>
+    </message>
+    <message>
+        <source>%1 font installed</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>The other one system font has already been installed</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>The other %2 system fonts have already been installed</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>%1 fonts installed</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -124,7 +155,7 @@
     </message>
     <message>
         <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
-        <translation type="unfinished"/>
+        <translation>이러한 글꼴은 응용 프로그램에서 사용할 수 없으며 다른 %1 시스템 글꼴은 삭제할 수 없습니다</translation>
     </message>
 </context>
 <context>
@@ -135,11 +166,11 @@
     </message>
     <message>
         <source>Broken file</source>
-        <translation>깨진 파일</translation>
+        <translation type="vanished">깨진 파일</translation>
     </message>
     <message>
         <source>Same version installed</source>
-        <translation>동일한 버전 설치됨</translation>
+        <translation type="vanished">동일한 버전 설치됨</translation>
     </message>
     <message>
         <source>Exit</source>
@@ -149,12 +180,16 @@
         <source>Continue</source>
         <translation>계속</translation>
     </message>
+    <message>
+        <source>No need to install system fonts again</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>Font</name>
     <message>
         <source>Don&apos;t let your dreams be dreams</source>
-        <translation type="unfinished"/>
+        <translation>당신의 꿈을 꿈으로 만들지 마십시오</translation>
     </message>
 </context>
 <context>
@@ -185,15 +220,15 @@
     </message>
     <message>
         <source>Full name</source>
-        <translation type="unfinished"/>
+        <translation>전체 이름</translation>
     </message>
     <message>
         <source>Ps name</source>
-        <translation type="unfinished"/>
+        <translation>Ps 이름</translation>
     </message>
     <message>
         <source>Trademark</source>
-        <translation type="unfinished"/>
+        <translation>트레이드마크</translation>
     </message>
 </context>
 <context>
@@ -212,11 +247,11 @@
     </message>
     <message>
         <source>The font exported to your desktop</source>
-        <translation type="unfinished"/>
+        <translation type="vanished">바탕화면으로 내보낸 글꼴</translation>
     </message>
     <message>
         <source>%1 fonts exported to your desktop</source>
-        <translation type="unfinished"/>
+        <translation type="vanished">바탕화면으로 내보낸 글꼴 %1개</translation>
     </message>
 </context>
 <context>
@@ -255,7 +290,7 @@
     </message>
     <message>
         <source>Export</source>
-        <translation type="unfinished"/>
+        <translation>내보내기</translation>
     </message>
 </context>
 <context>
@@ -266,7 +301,7 @@
     </message>
     <message>
         <source>The fonts have been deactivated</source>
-        <translation type="unfinished"/>
+        <translation>글꼴이 비활성화됨</translation>
     </message>
 </context>
 <context>

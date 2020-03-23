@@ -1126,30 +1126,30 @@ void DFontMgrMainWindow::onShowMessage(int successCount, int systemFontCount)
 //    }
 
     if (successCount == 0 || successCount == 1) {
-        messageA = DApplication::translate("Font", "%1 font installed").arg(successCount);
+        messageA = DApplication::translate("DFontMgrMainWindow", "%1 font installed").arg(successCount);
         DMessageManager::instance()->sendMessage(this, QIcon(":/images/ok.svg"), messageA);
         if (systemFontCount == 1) {
 
-            messageB = DApplication::translate("Font", "The other one system font has already been installed");
+            messageB = DApplication::translate("DFontMgrMainWindow", "The other one system font has already been installed");
             DMessageManager::instance()->sendMessage(this, QIcon(":/images/exception-logo.svg"), messageB);
 
         }
         if (systemFontCount > 1) {
-            messageB = DApplication::translate("Font", "The other %2 system fonts have already been installed").arg(systemFontCount);
+            messageB = DApplication::translate("DFontMgrMainWindow", "The other %2 system fonts have already been installed").arg(systemFontCount);
             DMessageManager::instance()->sendMessage(this, QIcon(":/images/exception-logo.svg"), messageB);
 
         }
     } else if (successCount > 1) {
-        messageA = DApplication::translate("Font", "%1 font installed").arg(successCount);
+        messageA = DApplication::translate("DFontMgrMainWindow", "%1 fonts installed").arg(successCount);
         DMessageManager::instance()->sendMessage(this, QIcon(":/images/ok.svg"), messageA);
         if (systemFontCount == 1) {
 
-            messageB = DApplication::translate("Font", "The other one system font has already been installed");
+            messageB = DApplication::translate("DFontMgrMainWindow", "The other one system font has already been installed");
             DMessageManager::instance()->sendMessage(this, QIcon(":/images/exception-logo.svg"), messageB);
 
         }
         if (systemFontCount > 1) {
-            messageB = DApplication::translate("Font", "The other %2 system fonts have already been installed").arg(systemFontCount);
+            messageB = DApplication::translate("DFontMgrMainWindow", "The other %2 system fonts have already been installed").arg(systemFontCount);
             DMessageManager::instance()->sendMessage(this, QIcon(":/images/exception-logo.svg"), messageB);
         }
     }

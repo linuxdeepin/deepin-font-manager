@@ -38,6 +38,21 @@
     </message>
 </context>
 <context>
+    <name>DFInstallErrorDialog</name>
+    <message>
+        <source>Broken file</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Same version installed</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>System Font</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>DFontMgrMainWindow</name>
     <message>
         <source>Ctrl+Shift+/</source>
@@ -91,6 +106,22 @@
         <source>Ctrl+0</source>
         <translation>Ctrl + 0</translation>
     </message>
+    <message>
+        <source>%1 font installed</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>The other one system font has already been installed</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>The other %2 system fonts have already been installed</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>%1 fonts installed</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>DeleteConfirmDailog</name>
@@ -124,7 +155,7 @@
     </message>
     <message>
         <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
-        <translation type="unfinished"/>
+        <translation>Aquestes lletres no estaran disponibles a les aplicacions i les altres %1 lletres del sistema no es poden eliminar.</translation>
     </message>
 </context>
 <context>
@@ -135,11 +166,11 @@
     </message>
     <message>
         <source>Broken file</source>
-        <translation>Fitxer trencat</translation>
+        <translation type="vanished">Fitxer trencat</translation>
     </message>
     <message>
         <source>Same version installed</source>
-        <translation>N&apos;hi ha instal·lada la mateixa versió.</translation>
+        <translation type="vanished">N&apos;hi ha instal·lada la mateixa versió.</translation>
     </message>
     <message>
         <source>Exit</source>
@@ -148,6 +179,10 @@
     <message>
         <source>Continue</source>
         <translation>Continua</translation>
+    </message>
+    <message>
+        <source>No need to install system fonts again</source>
+        <translation>No cal tornar a instal·lar les lletres del sistema.</translation>
     </message>
 </context>
 <context>
@@ -185,15 +220,15 @@
     </message>
     <message>
         <source>Full name</source>
-        <translation type="unfinished"/>
+        <translation>Nom complet</translation>
     </message>
     <message>
         <source>Ps name</source>
-        <translation type="unfinished"/>
+        <translation>Nom professional</translation>
     </message>
     <message>
         <source>Trademark</source>
-        <translation type="unfinished"/>
+        <translation>Marca</translation>
     </message>
 </context>
 <context>
@@ -212,11 +247,11 @@
     </message>
     <message>
         <source>The font exported to your desktop</source>
-        <translation>La lletra s&apos;ha exportat a l&apos;escriptori.</translation>
+        <translation type="vanished">La lletra s&apos;ha exportat a l&apos;escriptori.</translation>
     </message>
     <message>
         <source>%1 fonts exported to your desktop</source>
-        <translation>&amp;1 lletres exportades a l&apos;escriptori</translation>
+        <translation type="vanished">&amp;1 lletres exportades a l&apos;escriptori</translation>
     </message>
 </context>
 <context>

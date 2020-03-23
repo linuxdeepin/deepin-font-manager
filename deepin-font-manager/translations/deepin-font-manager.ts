@@ -40,6 +40,21 @@
     </message>
 </context>
 <context>
+    <name>DFInstallErrorDialog</name>
+    <message>
+        <source>Broken file</source>
+        <translation type="unfinished">Broken file</translation>
+    </message>
+    <message>
+        <source>Same version installed</source>
+        <translation type="unfinished">Same version installed</translation>
+    </message>
+    <message>
+        <source>System Font</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>DFontMgrMainWindow</name>
     <message>
         <source>Ctrl+Shift+/</source>
@@ -93,6 +108,22 @@
         <source>Ctrl+0</source>
         <translation>Ctrl+0</translation>
     </message>
+    <message>
+        <source>%1 font installed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The other one system font has already been installed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The other %2 system fonts have already been installed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 fonts installed</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>DeleteConfirmDailog</name>
@@ -137,11 +168,11 @@
     </message>
     <message>
         <source>Broken file</source>
-        <translation>Broken file</translation>
+        <translation type="vanished">Broken file</translation>
     </message>
     <message>
         <source>Same version installed</source>
-        <translation>Same version installed</translation>
+        <translation type="vanished">Same version installed</translation>
     </message>
     <message>
         <source>Exit</source>
@@ -150,10 +181,6 @@
     <message>
         <source>Continue</source>
         <translation>Continue</translation>
-    </message>
-    <message>
-        <source>System Font</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>No need to install system fonts again</source>
@@ -165,18 +192,6 @@
     <message>
         <source>Don&apos;t let your dreams be dreams</source>
         <translation>Don&apos;t let your dreams be dreams</translation>
-    </message>
-    <message>
-        <source>%1 font installed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The other %2 system fonts have already been installed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>%1 fonts installed</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

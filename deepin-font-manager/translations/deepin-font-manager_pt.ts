@@ -27,7 +27,7 @@
     </message>
     <message>
         <source>Monospaced</source>
-        <translation>Monoespaçado</translation>
+        <translation>Mono-espaçado</translation>
     </message>
 </context>
 <context>
@@ -35,6 +35,21 @@
     <message>
         <source>The other %2 system fonts cannot be deleted</source>
         <translation type="vanished">As outras %2 fontes do sistema não podem ser eliminadas</translation>
+    </message>
+</context>
+<context>
+    <name>DFInstallErrorDialog</name>
+    <message>
+        <source>Broken file</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Same version installed</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>System Font</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -91,6 +106,22 @@
         <source>Ctrl+0</source>
         <translation>Ctrl+0</translation>
     </message>
+    <message>
+        <source>%1 font installed</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>The other one system font has already been installed</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>The other %2 system fonts have already been installed</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>%1 fonts installed</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>DeleteConfirmDailog</name>
@@ -124,7 +155,7 @@
     </message>
     <message>
         <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
-        <translation type="unfinished"/>
+        <translation>Estas fontes não estarão disponíveis para as aplicações e as outras %1 fontes do sistema não podem ser eliminadas</translation>
     </message>
 </context>
 <context>
@@ -135,11 +166,11 @@
     </message>
     <message>
         <source>Broken file</source>
-        <translation>Ficheiro corrompido</translation>
+        <translation type="vanished">Ficheiro corrompido</translation>
     </message>
     <message>
         <source>Same version installed</source>
-        <translation>Mesma versão instalada</translation>
+        <translation type="vanished">Mesma versão instalada</translation>
     </message>
     <message>
         <source>Exit</source>
@@ -148,6 +179,10 @@
     <message>
         <source>Continue</source>
         <translation>Continuar</translation>
+    </message>
+    <message>
+        <source>No need to install system fonts again</source>
+        <translation>Não há necessidade de instalar as fontes do sistema novamente</translation>
     </message>
 </context>
 <context>
@@ -185,15 +220,15 @@
     </message>
     <message>
         <source>Full name</source>
-        <translation type="unfinished"/>
+        <translation>Nome completo</translation>
     </message>
     <message>
         <source>Ps name</source>
-        <translation type="unfinished"/>
+        <translation>Nome do postscript</translation>
     </message>
     <message>
         <source>Trademark</source>
-        <translation type="unfinished"/>
+        <translation>Marca registada</translation>
     </message>
 </context>
 <context>
@@ -212,11 +247,11 @@
     </message>
     <message>
         <source>The font exported to your desktop</source>
-        <translation>A fonte exportada para o seu ambiente de trabalho</translation>
+        <translation type="vanished">A fonte exportada para o seu ambiente de trabalho</translation>
     </message>
     <message>
         <source>%1 fonts exported to your desktop</source>
-        <translation>%1 fontes exportadas para o seu ambiente de trabalho</translation>
+        <translation type="vanished">%1 fontes exportadas para o seu ambiente de trabalho</translation>
     </message>
 </context>
 <context>
@@ -273,7 +308,7 @@
     <name>NormalInstallWindow</name>
     <message>
         <source>Install Font</source>
-        <translation>Instalar Fonte</translation>
+        <translation>Instalar fonte</translation>
     </message>
     <message>
         <source>Verifying...</source>
@@ -300,7 +335,7 @@
     </message>
     <message>
         <source>Install Font</source>
-        <translation>Instalar Fonte</translation>
+        <translation>Instalar fonte</translation>
     </message>
 </context>
 <context>

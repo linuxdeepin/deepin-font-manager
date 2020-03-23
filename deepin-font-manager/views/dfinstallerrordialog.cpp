@@ -81,7 +81,7 @@ void DFInstallErrorDialog::initData()
             itemModel.bChecked = false;
             itemModel.strFontFileName = fileInfo.fileName();
             itemModel.strFontFilePath = fileInfo.filePath();
-            itemModel.strFontInstallStatus = DApplication::translate("ExceptionWindow", "Broken file");
+            itemModel.strFontInstallStatus = DApplication::translate("DFInstallErrorDialog", "Broken file");
 
             m_installErrorFontModelList.push_back(itemModel);
         } else if (fontInfo.isInstalled && !isSystemFont(fontInfo)) {
@@ -91,7 +91,7 @@ void DFInstallErrorDialog::initData()
             itemModel.bChecked = true;
             itemModel.strFontFileName = fileInfo.fileName();
             itemModel.strFontFilePath = fileInfo.filePath();
-            itemModel.strFontInstallStatus = DApplication::translate("ExceptionWindow", "Same version installed");
+            itemModel.strFontInstallStatus = DApplication::translate("DFInstallErrorDialog", "Same version installed");
 
             m_installErrorFontModelList.push_back(itemModel);
         } else if (isSystemFont(fontInfo)) {
@@ -102,7 +102,7 @@ void DFInstallErrorDialog::initData()
             itemModel.bSystemFont = true;
             itemModel.strFontFileName = fileInfo.fileName();
             itemModel.strFontFilePath = fileInfo.filePath();
-            itemModel.strFontInstallStatus = DApplication::translate("ExceptionWindow", "System Font");
+            itemModel.strFontInstallStatus = DApplication::translate("DFInstallErrorDialog", "System Font");
             m_installErrorFontModelList.push_back(itemModel);
         } else {
 //            qDebug() << "verifyFontFiles->" << it << " :new file";
