@@ -48,8 +48,7 @@ private:
     DLabel *title;
     DLabel *detai;
 
-    int countRow;
-    DLabel *forCountRow;
+    DScrollArea *scrollArea;
 };
 
 #endif  // DFONTINFODIALOG_H

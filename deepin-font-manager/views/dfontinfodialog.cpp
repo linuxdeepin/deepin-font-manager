@@ -159,7 +159,7 @@ void DFontInfoDialog::initUI()
 
     /**************************Basic info panel****END*******************************/
 
-    QScrollArea *scrollArea = new QScrollArea;
+    scrollArea = new QScrollArea;
 
     scrollArea = new QScrollArea();
     scrollArea->setLineWidth(120);
@@ -180,6 +180,7 @@ void DFontInfoDialog::initUI()
     colorFrame.setAlphaF(0.2);
     paFrame.setColor(DPalette::Base, colorFrame);
     DApplicationHelper::instance()->setPalette(m_basicInfoFrame, paFrame);
+    m_basicInfoFrame->setAttribute(Qt::WA_TranslucentBackground);
 
     scrollArea->setFrameShape(QFrame::Shape::NoFrame);
     scrollArea->setWidget(m_basicInfoFrame);
@@ -197,20 +198,18 @@ void DFontInfoDialog::initUI()
     m_mainFrame->setLayout(mainLayout);
 
     addContent(m_mainFrame);
+
+
+
     if(DApplicationHelper::DarkType == DGuiApplicationHelper::instance()->themeType())
     {
-        DPalette paFrame = DApplicationHelper::instance()->palette(m_basicInfoFrame);
-        QColor colorFrame = paFrame.textLively().color();
-        colorFrame.setAlphaF(0.05);
-        paFrame.setColor(DPalette::Base, colorFrame);
-        DApplicationHelper::instance()->setPalette(m_basicInfoFrame, paFrame);
+        DPalette *noRole  = new DPalette(QColor("#303030"));
+        scrollArea->setPalette(*noRole);
+
     }else if (DApplicationHelper::LightType == DGuiApplicationHelper::instance()->themeType())
     {
-        DPalette paFrame = DApplicationHelper::instance()->palette(m_basicInfoFrame);
-        QColor colorFrame = paFrame.textLively().color();
-        colorFrame.setAlphaF(0.70);
-        paFrame.setColor(DPalette::Base, colorFrame);
-        DApplicationHelper::instance()->setPalette(m_basicInfoFrame, paFrame);
+        DPalette *foreBackground  = new DPalette(QColor("#FDFDFD"));
+        scrollArea->setPalette(*foreBackground);
     }
     // Update font info to UI
 //    updateFontInfo();
@@ -239,12 +238,14 @@ void DFontInfoDialog::initConnections()
 
         if(DApplicationHelper::DarkType==themeType)
         {
-            DPalette paFrame = DApplicationHelper::instance()->palette(m_basicInfoFrame);
-            QColor colorFrame = paFrame.textLively().color();
-            colorFrame.setAlphaF(0.05);
-            paFrame.setColor(DPalette::Base, colorFrame);
-            DApplicationHelper::instance()->setPalette(m_basicInfoFrame, paFrame);
-        }return ;
+            DPalette *noRole  = new DPalette(QColor("#303030"));
+            scrollArea->setPalette(*noRole);
+
+        }else if (DApplicationHelper::LightType==themeType)
+        {
+            DPalette *foreBackground  = new DPalette(QColor("#FDFDFD"));
+            scrollArea->setPalette(*foreBackground);
+        }
     });
 }
 void DFontInfoDialog::resizeEvent(QResizeEvent *event)
@@ -408,7 +409,6 @@ void DFontInfoDialog::paintEvent(QPaintEvent *event)
                 if(label->objectName()=="high"){
                     label->setFixedHeight(label->fontMetrics().height()*3);
                     }
-
             };
             break;
         case 12://12
@@ -416,7 +416,6 @@ void DFontInfoDialog::paintEvent(QPaintEvent *event)
                 if(label->objectName()=="high"){
                     label->setFixedHeight(label->fontMetrics().height()*3);
                     }
-
             };
             break;
         case 13://13
@@ -424,7 +423,6 @@ void DFontInfoDialog::paintEvent(QPaintEvent *event)
                 if(label->objectName()=="high"){
                     label->setFixedHeight(label->fontMetrics().height()*4);
                     }
-
             };
             break;
         case 14://14
@@ -432,7 +430,6 @@ void DFontInfoDialog::paintEvent(QPaintEvent *event)
                 if(label->objectName()=="high"){
                     label->setFixedHeight(label->fontMetrics().height()*4);
                     }
-
             };
             break;
         case 15://15
@@ -440,7 +437,6 @@ void DFontInfoDialog::paintEvent(QPaintEvent *event)
                 if(label->objectName()=="high"){
                     label->setFixedHeight(label->fontMetrics().height()*5);
                     }
-
             };
             break;
         case 16://16
@@ -448,7 +444,6 @@ void DFontInfoDialog::paintEvent(QPaintEvent *event)
                 if(label->objectName()=="high"){
                     label->setFixedHeight(label->fontMetrics().height()*5);
                     }
-
             };
             break;
         case 18://18
@@ -456,7 +451,6 @@ void DFontInfoDialog::paintEvent(QPaintEvent *event)
                 if(label->objectName()=="high"){
                     label->setFixedHeight(label->fontMetrics().height()*5);
                     }
-
             };
             break;
         default://20
@@ -464,7 +458,6 @@ void DFontInfoDialog::paintEvent(QPaintEvent *event)
                 if(label->objectName()=="high"){
                     label->setFixedHeight(label->fontMetrics().height()*6);
                     }
-
             };
             break;
     }
