@@ -73,6 +73,7 @@ private:
     inline QRect getCollectionIconRect(QRect visualRect);
 
     void deleteFontModelIndex(const DFontInfo &fontInfo);
+    void highlightFonts(const QStringList &fileList);
 
     bool m_bLoadDataFinish = false;
     bool m_bLeftMouse = true;

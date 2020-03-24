@@ -22,8 +22,11 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QProcess>
+#include <QFileInfo>
+#include <QDir>
 
-static DFontManager *INSTANCE = 0;
+static DFontManager *INSTANCE = nullptr;
+const QString sysDir = QDir::homePath() + "/.local/share/fonts";
 
 DFontManager *DFontManager::instance()
 {
@@ -131,35 +134,24 @@ void DFontManager::run()
 
 bool DFontManager::doCmd(const QString &program, const QStringList &arguments)
 {
-    QProcess *process = new QProcess;
     int failed = false;
     qDebug() << "QProcess start";
 
     switch (m_type) {
     case Install:
-        connect(process, SIGNAL(readyReadStandardOutput()), this,
-                SLOT(handleInstallOutput()));
+        doInstall(arguments);
         break;
 
     case ReInstall:
-        connect(process, SIGNAL(readyReadStandardOutput()), this,
-                SLOT(handleReInstallOutput()));
+        doInstall(arguments, true);
         break;
 
     case UnInstall:
-        connect(process, SIGNAL(readyReadStandardOutput()), this,
-                SLOT(handleUnInstallOutput()));
+        doUninstall(arguments);
         break;
     default:
         break;
     }
-
-    connect(process, SIGNAL(finished(int)), this, SLOT(handleProcessFinished(int)));
-
-    process->start(program, arguments);
-    process->waitForFinished(-1);
-
-    failed |= process->exitCode();
 
     return !failed;
 }
@@ -171,7 +163,7 @@ void DFontManager::handleInstall()
         if (m_instFileList.count() == 1) {
             // emit installFinished();
         }
-        Q_EMIT installFinished(0, m_instFileList, m_systemFontCount);
+        Q_EMIT installFinished(0, m_installOutList, m_systemFontCount);
     } else {
         // For:unathorized exit
         Q_EMIT installFinished(127, QStringList(), m_systemFontCount);
@@ -199,6 +191,98 @@ void DFontManager::handleReInstall()
 void DFontManager::setSystemFontCount(int systemFontCount)
 {
     m_systemFontCount = systemFontCount;
+}
+
+// install fileList fonts
+void DFontManager::doInstall(const QStringList &fileList, bool reinstall)
+{
+    QString target = "";
+    QString targetDir = "";
+
+    m_installOutList.clear();
+    for ( QString file : fileList) {
+        QStringList fileParamList = file.split("|");
+        QString filePathOrig = fileParamList.at(0);
+        QString familyName = fileParamList.at(1);
+        const QFileInfo info(filePathOrig);
+        QString dirName = familyName;
+
+        if (dirName.isEmpty()) {
+            dirName = info.baseName();
+        }
+
+        target = QString("%1/%2/%3").arg(sysDir).arg(dirName).arg(info.fileName());
+        targetDir = QString("%1/%2").arg(sysDir).arg(dirName);
+
+        QDir dir(targetDir);
+        dir.mkpath(".");
+        QFile::copy(filePathOrig, target);
+        m_installOutList << target;
+
+        const int currentIndex = fileList.indexOf(file);
+        const int count = fileList.count() - 1;
+
+        if (fileList.count() == 1) {
+            qDebug() << __FUNCTION__ << target.toUtf8().data();
+            if (!reinstall)
+                Q_EMIT installPositionChanged(target.toUtf8().data());
+//            QThread::msleep(50);
+        } else {
+            QString filePath = filePathOrig;
+            double percent = currentIndex / double(count) * 100;
+
+            qDebug() << __FUNCTION__ << filePath << ", " << percent;
+            if (!reinstall)
+                Q_EMIT batchInstall(filePath, percent);
+
+            // output too fast will crash.
+//            QThread::msleep(10);
+        }
+    }
+
+    QProcess process;
+    process.start("fc-cache");
+    process.waitForFinished();
+}
+
+void DFontManager::doUninstall(const QStringList &fileList)
+{
+    Q_EMIT uninstalling();
+    for (QString file : fileList) {
+        QFileInfo openFile(file);
+
+        QDir fileDir(openFile.path());
+
+        QDir userFontDir("/usr/share/fonts/");
+        QDir systemFontDir(QDir::homePath() + "/.local/share/fonts");
+        // For security, check the font dir is valid
+        if (userFontDir == fileDir || systemFontDir == fileDir) {
+#ifdef QT_DEBUG
+            qDebug() << "Invalid dir:" << fileDir.path();
+#endif
+            continue;
+        }
+
+        QFile::remove(file);
+
+        //Fonts with same family name, different style may be
+        //installed in same dir, so only delete dir when it's
+        //empty
+        if (fileDir.isEmpty()) {
+            fileDir.removeRecursively();
+        }
+
+#ifdef QT_DEBUG
+        qDebug() << "Delete font ok:" << fileDir.path() << " " << openFile.completeSuffix();
+#endif
+    }
+
+    QProcess process;
+    process.start("fc-cache");
+    process.waitForFinished();
+
+    QThread::msleep(30);
+    Q_EMIT uninstallFinished();
 }
 
 void DFontManager::handleProcessFinished(int exitCode)

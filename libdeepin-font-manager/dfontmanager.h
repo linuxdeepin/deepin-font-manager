@@ -66,9 +66,12 @@ private:
     void handleInstall();
     void handleUnInstall();
     void handleReInstall();
+    void doInstall(const QStringList &fileList, bool reinstall = false);
+    void doUninstall(const QStringList &fileList);
 
 private:
     QStringList m_instFileList;
+    QStringList m_installOutList;
     QStringList m_uninstFile;
     QString m_reinstFile;
     QString m_sysFile;

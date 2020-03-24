@@ -31,7 +31,7 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
     setAutoScroll(true);
     setMouseTracking(true);
     setUpdatesEnabled(true);
-    setSelectionMode(QAbstractItemView::ExtendedSelection);
+    //setSelectionMode(QAbstractItemView::ExtendedSelection);
 
     DFontMgrMainWindow *mw = qobject_cast<DFontMgrMainWindow *>(m_parentWidget);
     if (mw)
@@ -165,28 +165,38 @@ void DFontPreviewListView::initConnections()
 void DFontPreviewListView::setSelectState(int currIndex)
 {
     return;
-    QModelIndex next;
-
-    QAbstractItemModel *model = m_fontPreviewProxyModel->sourceModel();
-    qDebug() << __FUNCTION__ << "total count" << model->rowCount();
-    if (currIndex == model->rowCount() - 1) {
-        next = model->index(currIndex - 1, 0);
-    } else {
-        next = model->index(currIndex + 1, 0);
-    }
-    qDebug() << __FUNCTION__ << next;
-    if (next.isValid()) {
-        QVariant var = model->data(next, Qt::DisplayRole);
-        DFontPreviewItemData nitem = var.value<DFontPreviewItemData>();
-//        nitem.toSelect = true;
-        model->setData(next, QVariant::fromValue(nitem), Qt::DisplayRole);
-    }
 }
 
 QRect DFontPreviewListView::getCollectionIconRect(QRect visualRect)
 {
     int collectIconSize = 22 + 10;
     return QRect(visualRect.right() - 10 - 33, visualRect.top() + 10 - 5, collectIconSize, collectIconSize);
+}
+
+void DFontPreviewListView::highlightFonts(const QStringList &fileList)
+{
+    QItemSelection selection;
+    qDebug() << __FUNCTION__ << " fileList size " << fileList.size() << ", row count " << getFontPreviewProxyModel()->rowCount();
+    for (int i = 0; i < getFontPreviewProxyModel()->rowCount(); ++i) {
+        QModelIndex index = getFontPreviewProxyModel()->index(i, 0);
+        DFontPreviewItemData itemData =
+            qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(index));
+//        qDebug() << __FUNCTION__ << itemData.fontInfo.filePath;
+        if (fileList.contains(itemData.fontInfo.filePath)) {
+            QModelIndex left = m_fontPreviewProxyModel->index(index.row(), 0);
+            QModelIndex right = m_fontPreviewProxyModel->index(index.row(), m_fontPreviewProxyModel->columnCount() - 1);
+            QItemSelection sel(left, right);
+            selection.merge(sel, QItemSelectionModel::Select);
+        }
+    }
+
+    qDebug() << " selection size " << selection.size();
+
+    QItemSelectionModel *selection_model = selectionModel();
+    if (selection.size() > 0)  {
+        selection_model->reset();
+        selection_model->select(selection, QItemSelectionModel::Select);
+    }
 }
 
 void DFontPreviewListView::deleteFontModelIndex(const QString &filePath)
@@ -221,9 +231,6 @@ void DFontPreviewListView::selectFonts(const QStringList &fileList)
 {
     QMutexLocker locker(&m_mutex);
     QModelIndexList indexes;
-    QItemSelectionModel *selection_model = selectionModel();
-    selection_model->reset();
-    QItemSelection selection;
 
     DFMDBManager *dbManager = DFMDBManager::instance();
     QList<DFontPreviewItemData> allFontInfo = dbManager->getAllFontInfo();
@@ -256,7 +263,7 @@ void DFontPreviewListView::selectFonts(const QStringList &fileList)
             qDebug() << __FUNCTION__ << " not found " << list << filePath;
     }
 
-    qDebug() << __FUNCTION__ << "files " << fileList << " installed " << outlist;
+    qDebug() << __FUNCTION__ << "files " << fileList.size() << " installed " << outlist.size();
     if (outlist.size() == 1) {
         for (int i = 0; i < getFontPreviewProxyModel()->rowCount(); ++i) {
             QModelIndex index = getFontPreviewProxyModel()->index(i, 0);
@@ -271,20 +278,7 @@ void DFontPreviewListView::selectFonts(const QStringList &fileList)
         return;
     }
 
-    for (int i = 0; i < getFontPreviewProxyModel()->rowCount(); ++i) {
-        QModelIndex index = getFontPreviewProxyModel()->index(i, 0);
-        DFontPreviewItemData itemData =
-            qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(index));
-
-        if (outlist.contains(itemData.fontInfo.filePath)) {
-            QModelIndex left = m_fontPreviewProxyModel->index(index.row(), 0);
-            QModelIndex right = m_fontPreviewProxyModel->index(index.row(), m_fontPreviewProxyModel->columnCount() - 1);
-            QItemSelection sel(left, right);
-            selection.merge(sel, QItemSelectionModel::Select);
-        }
-    }
-    qDebug() << " selection size " << selection.size();
-    selection_model->select(selection, QItemSelectionModel::Select);
+    highlightFonts(fileList);
 }
 
 void DFontPreviewListView::selectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
