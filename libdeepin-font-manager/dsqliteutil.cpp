@@ -124,9 +124,11 @@ bool DSqliteUtil::addRecord(QMap<QString, QString> data, QString table_name)
 
     if (!m_query->exec()) {
         qDebug() << "add data failed!";
+        m_db.rollback();//回滚
         return false;
     } else {
         qDebug() << "add data success!";
+        m_db.commit();
         return true;
     }
 }
@@ -154,9 +156,11 @@ bool DSqliteUtil::delRecord(QMap<QString, QString> where, QString table_name)
 
     if (!m_query->exec()) {
         qDebug() << "del data failed!";
+        m_db.rollback();//回滚
         return false;
     } else {
         qDebug() << "del data success!";
+        m_db.commit();//提交
         return true;
     }
 }
@@ -184,9 +188,11 @@ bool DSqliteUtil::updateRecord(QMap<QString, QString> where, QMap<QString, QStri
 
     if (!m_query->exec()) {
         qDebug() << "update data failed!";
+        m_db.rollback();
         return false;
     } else {
         qDebug() << "update data success!";
+        m_db.commit();
         return true;
     }
 }
@@ -302,8 +308,10 @@ bool DSqliteUtil::delAllRecords(QString table_name)
 
     if (!m_query->exec()) {
         qDebug() << "delete all records failed!";
+        m_db.rollback();
         return false;
     } else {
+        m_db.commit();
         qDebug() << "delete all records success!";
         return true;
     }
