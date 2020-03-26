@@ -27,16 +27,11 @@ DFontPreviewListDataThread::DFontPreviewListDataThread(DFontPreviewListView *vie
 {
 //    QTimer::singleShot(50, this, [this]() {
         m_dbManager = DFMDBManager::instance();
-        mThread = new QThread();
-        moveToThread(mThread);
-        QObject::connect(mThread, SIGNAL(started()), this, SLOT(doWork()));
-        connect(mThread, SIGNAL(finished()), mThread, SLOT(deleteLater()));
+        moveToThread(&mThread);
+        QObject::connect(&mThread, SIGNAL(started()), this, SLOT(doWork()));
         connect(m_view, &DFontPreviewListView::requestDeleted, this, &DFontPreviewListDataThread::onFileChanged, Qt::QueuedConnection);
-        mThread->start();
+        mThread.start();
 //    });
-
-    initFileSystemWatcher();
-    qRegisterMetaType<QItemSelection>("QItemSelection");
 }
 
 DFontPreviewListDataThread::~DFontPreviewListDataThread()
@@ -45,6 +40,7 @@ DFontPreviewListDataThread::~DFontPreviewListDataThread()
 
 void DFontPreviewListDataThread::doWork()
 {
+    initFileSystemWatcher();
     {
         m_fontModelList.clear();
     }

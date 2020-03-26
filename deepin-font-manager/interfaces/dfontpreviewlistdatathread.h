@@ -54,8 +54,7 @@ public slots:
     void onFileChanged(const QStringList &files);
 
 protected:
-    QThread *mThread {nullptr};
-    DFontPreviewListDataThread *mFunc {nullptr};
+    QThread mThread;
 
     DFMDBManager *m_dbManager {nullptr};
     QList<DFontPreviewItemData> m_fontModelList;

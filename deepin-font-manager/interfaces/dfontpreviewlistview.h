@@ -67,7 +67,6 @@ protected:
 
 private:
     void initConnections();
-    void setSelectState(int currIndex);
 
     bool enableFont(const DFontPreviewItemData &itemData);
     bool disableFont(const DFontPreviewItemData &itemData);
@@ -75,7 +74,6 @@ private:
     inline QRect getCollectionIconRect(QRect visualRect);
 
     void deleteFontModelIndex(const DFontInfo &fontInfo);
-    void highlightFonts(const QStringList &fileList);
 
     bool m_bLoadDataFinish = false;
     bool m_bLeftMouse = true;
@@ -93,7 +91,6 @@ private:
     DFontPreviewListDataThread *m_dataThread;
     QModelIndex m_pressModelIndex;
     QModelIndex m_hoverModelIndex;
-    QStringList m_deletedFiles;
     QMutex m_mutex;
     int delTotalCount = 0;
     int deledCount = 0;
@@ -113,9 +110,6 @@ signals:
     void requestDeleted(const QStringList files);
     void itemAdded(const DFontPreviewItemData &data);
     void itemRemoved(const DFontPreviewItemData &data);
-    void delItem(const DFontPreviewItemData &data);
-
-
 
 public slots:
 
@@ -125,7 +119,6 @@ public slots:
     void onFinishedDataLoad();
     void onItemAdded(const DFontPreviewItemData &itemData);
     void onItemRemoved(const DFontPreviewItemData &itemData);
-    void onItemDel(const DFontPreviewItemData &itemData);
 };
 
 #endif  // DFONTPREVIEWLISTVIEW_H
