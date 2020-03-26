@@ -182,7 +182,11 @@ void DFontMgrMainWindow::initConnections()
     });
 
     QObject::connect(SignalManager::instance(), &SignalManager::popUninstallDialog, this, [ = ] {
-        m_fontUninstallDialog->exec();
+        if (m_needDelCount > 1)
+        {
+            m_fontUninstallDialog->exec();
+        }
+
     });
 //    QObject::connect(SignalManager::instance(), &SignalManager::updateUninstallDialog, this, [ = ](QString & fontName, int index, int totalCount) {
 //        qDebug() << "ASDSADSD" << endl;
@@ -194,6 +198,7 @@ void DFontMgrMainWindow::initConnections()
     QObject::connect(SignalManager::instance(), &SignalManager::closeUninstallDialog, this, [ = ] {
         m_fontUninstallDialog->setValue(" ", 0, 0);
         m_fontUninstallDialog->close();
+        m_needDelCount = 0;
     });
 
     // Search text changed
@@ -1196,6 +1201,7 @@ void DFontMgrMainWindow::delCurrentFont()
     connect(&confirmDelDlg, &DFDeleteDialog::requestDelete, this, [this]() {
         // Add Delete font code Here
         QStringList uninstallFilePath = m_fontPreviewListView->selectedFonts(nullptr, nullptr);
+        m_needDelCount = uninstallFilePath.count();
         DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
         qDebug() << "Confirm delete:" << currItemData.fontInfo.filePath
                  << " is system font:" << currItemData.fontInfo.isSystemFont;
