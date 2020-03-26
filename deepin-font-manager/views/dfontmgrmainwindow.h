@@ -4,6 +4,8 @@
 #include "dfontpreviewlistview.h"
 #include "dfontmanager.h"
 #include "views/dfontspinnerwidget.h"
+#include "dfontuninstalldialog.h"
+#include "signalmanager.h"
 
 #include <QShortcut>
 
@@ -60,6 +62,7 @@ protected:
     void initConnections();
     void initShortcuts();
 
+    void initFontUninstallDialog();
     void initTileBar();
     void initTileFrame();
     void initMainVeiws();
@@ -86,6 +89,7 @@ protected:
     DListView *m_noResultListView;
     DListView *m_noInstallListView;
     DFontSpinnerWidget *m_fontLoadingSpinner {nullptr};
+    DFontuninstalldialog *m_fontUninstallDialog;
 
     void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
 signals:
@@ -112,6 +116,7 @@ public slots:
 
     void onLoadStatus(int type);
     void onShowMessage(int totalCount, int systemFontCount);
+    void upDateUninstallDialog(QString &fontName, int index, int totalCount);
 
 protected:
     // For quick install mode

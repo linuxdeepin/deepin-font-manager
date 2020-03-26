@@ -31,7 +31,7 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
     setAutoScroll(true);
     setMouseTracking(true);
     setUpdatesEnabled(true);
-    //setSelectionMode(QAbstractItemView::ExtendedSelection);
+    setSelectionMode(QAbstractItemView::ExtendedSelection);
 
     DFontMgrMainWindow *mw = qobject_cast<DFontMgrMainWindow *>(m_parentWidget);
     if (mw)
@@ -42,6 +42,8 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
     initFontListData();
     connect(this, &DFontPreviewListView::itemAdded, this, &DFontPreviewListView::onItemAdded);
     connect(this, &DFontPreviewListView::itemRemoved, this, &DFontPreviewListView::onItemRemoved);
+    connect(this, &DFontPreviewListView::delItem, this, &DFontPreviewListView::onItemDel);
+
 }
 
 DFontPreviewListView::~DFontPreviewListView()
@@ -136,6 +138,15 @@ void DFontPreviewListView::onItemRemoved(const DFontPreviewItemData &itemData)
     deleteFontModelIndex(itemData.fontInfo.filePath);
 }
 
+void DFontPreviewListView::onItemDel(const DFontPreviewItemData &itemData)
+{
+    if (m_fontPreviewProxyModel == nullptr)
+        return;
+
+    qDebug() << __FUNCTION__ << ", path " << itemData.fontInfo.filePath << QThread::currentThreadId();
+    deleteFontModelIndex(itemData.fontInfo.filePath);
+}
+
 void DFontPreviewListView::initDelegate()
 {
     m_fontPreviewItemDelegate = new DFontPreviewItemDelegate(this);
@@ -199,6 +210,11 @@ void DFontPreviewListView::highlightFonts(const QStringList &fileList)
     }
 }
 
+void DFontPreviewListView::setDelTotalCount(int value)
+{
+    delTotalCount = value;
+}
+
 void DFontPreviewListView::deleteFontModelIndex(const QString &filePath)
 {
     if (m_fontPreviewItemModel && m_fontPreviewItemModel->rowCount() == 0) {
@@ -214,10 +230,18 @@ void DFontPreviewListView::deleteFontModelIndex(const QString &filePath)
             qDebug() << __FUNCTION__ << filePath << " font remove row " << i << QThread::currentThreadId();
             setSelectState(i);
             m_fontPreviewProxyModel->sourceModel()->removeRow(i, modelIndex.parent());
+            deledCount++;
+            emit　SignalManager::instance()->updateUninstallDialog(itemData.fontInfo.psname, deledCount, delTotalCount);
+            if (deledCount == delTotalCount) {
+                deledCount = 0;
+                delTotalCount = 0;
+                emit SignalManager::instance()->closeUninstallDialog();
+            }
             break;
         }
     }
 }
+
 
 bool DFontPreviewListView::isDeleting()
 {
@@ -489,49 +513,49 @@ bool DFontPreviewListView::disableFont(const DFontPreviewItemData &itemData)
 void DFontPreviewListView::onListViewItemEnableBtnClicked(QModelIndexList itemIndexes, bool setValue)
 {
     QString fontName;
-        QModelIndexList itemIndexesNew;
+    QModelIndexList itemIndexesNew;
 
-        for (int i = 0; i < itemIndexes.count(); i++) {
-            itemIndexesNew.append(itemIndexes[itemIndexes.count() - 1 - i]);
+    for (int i = 0; i < itemIndexes.count(); i++) {
+        itemIndexesNew.append(itemIndexes[itemIndexes.count() - 1 - i]);
+    }
+
+
+    DFMDBManager::instance()->beginTransaction();   //开启事务
+    for (QModelIndex index : itemIndexesNew) {
+        //        DFontPreviewItemData itemData =
+        //            qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(itemIndexes[0]));
+        DFontPreviewItemData itemData =
+            qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(index));
+        itemData.isEnabled = setValue;
+
+        qDebug() << __FUNCTION__ << "familyName" << itemData.fontInfo.familyName << endl;
+
+        if (itemData.isEnabled) {
+            enableFont(itemData);
+        } else {
+            if (index == itemIndexes[0])
+                fontName = itemData.strFontName;
+            disableFont(itemData);
         }
 
+        DFMDBManager::instance()->updateFontInfoByFontId(itemData.strFontId, "isEnabled", QString::number(itemData.isEnabled));
 
-        DFMDBManager::instance()->beginTransaction();   //开启事务
-        for (QModelIndex index : itemIndexesNew) {
-    //        DFontPreviewItemData itemData =
-    //            qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(itemIndexes[0]));
-            DFontPreviewItemData itemData =
-                qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(index));
-            itemData.isEnabled = setValue;
+        m_fontPreviewProxyModel->setData(index, QVariant::fromValue(itemData), Qt::DisplayRole);
+        //        m_fontPreviewProxyModel->setData(itemIndexes[0], QVariant::fromValue(itemData), Qt::DisplayRole);
+    }
+    DFMDBManager::instance()->endTransaction(); //提交事务
 
-            qDebug() << __FUNCTION__ << "familyName" << itemData.fontInfo.familyName << endl;
+    if (setValue)
+        return;
 
-            if (itemData.isEnabled) {
-                enableFont(itemData);
-            } else {
-                if (index == itemIndexes[0])
-                    fontName = itemData.strFontName;
-                disableFont(itemData);
-            }
-
-            DFMDBManager::instance()->updateFontInfoByFontId(itemData.strFontId, "isEnabled", QString::number(itemData.isEnabled));
-
-            m_fontPreviewProxyModel->setData(index, QVariant::fromValue(itemData), Qt::DisplayRole);
-    //        m_fontPreviewProxyModel->setData(itemIndexes[0], QVariant::fromValue(itemData), Qt::DisplayRole);
-        }
-        DFMDBManager::instance()->endTransaction(); //提交事务
-
-        if (setValue)
-            return;
-
-        QString message;
-        if (itemIndexes.size() == 1) {
-            message = QString("%1 %2").arg(fontName).arg(DApplication::translate("MessageManager", "deactivated"));
-        } else if (itemIndexes.size() > 1) {
-            //            message = tr("The fonts have been deactivated");
-            message = DApplication::translate("MessageManager", "The fonts have been deactivated");
-        }
-        DMessageManager::instance()->sendMessage(this, QIcon(":/images/ok.svg"), message);
+    QString message;
+    if (itemIndexes.size() == 1) {
+        message = QString("%1 %2").arg(fontName).arg(DApplication::translate("MessageManager", "deactivated"));
+    } else if (itemIndexes.size() > 1) {
+        //            message = tr("The fonts have been deactivated");
+        message = DApplication::translate("MessageManager", "The fonts have been deactivated");
+    }
+    DMessageManager::instance()->sendMessage(this, QIcon(":/images/ok.svg"), message);
 }
 
 void DFontPreviewListView::onListViewItemCollectionBtnClicked(QModelIndex index)
@@ -681,14 +705,13 @@ void DFontPreviewListView::changeFontFile(const QString &path, bool force)
             delInfo.insert("styleName", itemData.fontInfo.styleName);
             if (!DFMDBManager::instance()->deleteFontInfoByFontMap(delInfo))
                 qDebug() << QThread::currentThreadId() << " delete fontdb failed : " << filePath;
-            Q_EMIT itemRemoved(itemData);
+            Q_EMIT delItem(itemData);
             m_dataThread->removeFontData(itemData);
             m_dataThread->removePathWatcher(filePath);
             if (!isDir)
                 break;
         }
     }
-
     if (isDir) {
         if (!QFileInfo(QDir::homePath() + "/.local/share/fonts").exists()) {
             m_dataThread->removePathWatcher(QDir::homePath() + "/.local/share/fonts");

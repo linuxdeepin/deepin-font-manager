@@ -129,6 +129,7 @@ void DFontMgrMainWindow::initUI()
     initTileBar();
     initRightKeyMenu();
     initMainVeiws();
+    initFontUninstallDialog();
 }
 
 void DFontMgrMainWindow::initConnections()
@@ -178,6 +179,21 @@ void DFontMgrMainWindow::initConnections()
         d->fontSizeLabel->setText(fontSizeText);
 
         onFontSizeChanged(value);
+    });
+
+    QObject::connect(SignalManager::instance(), &SignalManager::popUninstallDialog, this, [ = ] {
+        m_fontUninstallDialog->exec();
+    });
+//    QObject::connect(SignalManager::instance(), &SignalManager::updateUninstallDialog, this, [ = ](QString & fontName, int index, int totalCount) {
+//        qDebug() << "ASDSADSD" << endl;
+//    });
+    QObject::connect(SignalManager::instance(), &SignalManager::updateUninstallDialog, this, [ = ](QString & fontName, int index, int totalCount) {
+        m_fontUninstallDialog->setValue(fontName, index, totalCount);
+    });
+
+    QObject::connect(SignalManager::instance(), &SignalManager::closeUninstallDialog, this, [ = ] {
+        m_fontUninstallDialog->setValue(" ", 0, 0);
+        m_fontUninstallDialog->close();
     });
 
     // Search text changed
@@ -406,6 +422,11 @@ void DFontMgrMainWindow::initShortcuts()
             }
         });
     }
+}
+
+void DFontMgrMainWindow::initFontUninstallDialog()
+{
+    m_fontUninstallDialog = new DFontuninstalldialog;
 }
 
 void DFontMgrMainWindow::initTileBar()
@@ -1155,6 +1176,11 @@ void DFontMgrMainWindow::onShowMessage(int successCount, int systemFontCount)
     }
 }
 
+void DFontMgrMainWindow::upDateUninstallDialog(QString &fontName, int index, int totalCount)
+{
+    m_fontUninstallDialog->setValue(fontName, index, totalCount);
+}
+
 void DFontMgrMainWindow::delCurrentFont()
 {
     if (m_fIsDeleting)
@@ -1162,6 +1188,7 @@ void DFontMgrMainWindow::delCurrentFont()
     int deleteCnt = 0;
     int systemCnt = 0;
     QStringList uninstallFilePath = m_fontPreviewListView->selectedFonts(&deleteCnt, &systemCnt);
+    m_fontPreviewListView->setDelTotalCount(uninstallFilePath.size());
     if (deleteCnt < 1)
         return;
     m_fIsDeleting = true;

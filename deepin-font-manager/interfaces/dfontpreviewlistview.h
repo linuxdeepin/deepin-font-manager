@@ -60,6 +60,8 @@ public:
     inline bool isDeleting();
     void selectFonts(const QStringList &fileList);
 
+    void setDelTotalCount(int value);
+
 protected:
     void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected) override;
 
@@ -93,6 +95,8 @@ private:
     QModelIndex m_hoverModelIndex;
     QStringList m_deletedFiles;
     QMutex m_mutex;
+    int delTotalCount = 0;
+    int deledCount = 0;
 
 signals:
     //用于DFontPreviewListView内部使用的信号
@@ -109,6 +113,8 @@ signals:
     void requestDeleted(const QStringList files);
     void itemAdded(const DFontPreviewItemData &data);
     void itemRemoved(const DFontPreviewItemData &data);
+    void delItem(const DFontPreviewItemData &data);
+
 
 
 public slots:
@@ -119,6 +125,7 @@ public slots:
     void onFinishedDataLoad();
     void onItemAdded(const DFontPreviewItemData &itemData);
     void onItemRemoved(const DFontPreviewItemData &itemData);
+    void onItemDel(const DFontPreviewItemData &itemData);
 };
 
 #endif  // DFONTPREVIEWLISTVIEW_H

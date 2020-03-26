@@ -57,6 +57,7 @@ signals:
     void uninstallFinished();
     void uninstallFontFinished(const QStringList &uninstallIndex);
     void showFloatingMessage(int totalCount, int systemFontCount);
+    void popUninstallDialog();
 
 protected:
     void run();

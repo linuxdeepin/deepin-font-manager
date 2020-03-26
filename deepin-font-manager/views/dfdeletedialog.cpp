@@ -173,6 +173,8 @@ void DFDeleteDialog::initConnections()
             return;
         m_deleting = true;
         Q_EMIT requestDelete();
+        close();
+        emit SignalManager::instance()->popUninstallDialog();
     });
     connect(this, &DFDeleteDialog::closed, this, [ = ]() {
         disconnect(quitConn);
