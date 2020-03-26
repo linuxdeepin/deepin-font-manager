@@ -128,6 +128,7 @@ protected:
     QShortcut *m_scDefaultSize;   //默认⼤⼩字体快捷键Ctrl+0
     int m_previewFontSize;
     int m_leftIndex {0};
+    int m_needDelCount = 0;
 
     bool m_searchTextStatusIsEmpty = true;
 
