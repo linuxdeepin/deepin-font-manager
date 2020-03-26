@@ -119,7 +119,7 @@ void DFInstallNormalWindow::initConnections()
         foreach (auto it, reinstallFiles) {
             m_installFiles.append(it);
         }
-        count = m_systemFiles.size();
+        systemFontCount = m_systemFiles.size();
 #ifdef QT_QML_DEBUG
         qDebug() << __FUNCTION__ << " [reinstallFiles=" << m_installFiles << "]";
 #endif
@@ -316,9 +316,11 @@ void DFInstallNormalWindow::batchInstall()
 #ifdef QT_QML_DEBUG
         qDebug() << "User selected files are installed & damaged!";
 #endif
+
         showInstallErrDlg();
         return;
     }
+    systemFontCount = m_systemFiles.size();
 
     QStringList installList;
 
@@ -369,9 +371,15 @@ void DFInstallNormalWindow::batchInstall()
 
     m_fontManager->setType(DFontManager::Install);
     m_fontManager->setInstallFileList(installListWithFamliyName);
-    m_fontManager->setSystemFontCount(count);
-    this->count = 0;
+    m_fontManager->setSystemFontCount(systemFontCount);
+    this->systemFontCount = 0;
     m_fontManager->start();
+}
+
+
+void DFInstallNormalWindow::batchReInstall()
+{
+
 }
 
 void DFInstallNormalWindow::onCancelInstall()

@@ -48,6 +48,7 @@ protected:
 
 protected slots:
     void batchInstall();
+    void batchReInstall();
     void onProgressChanged(const QString &filePath, const double &percent);
 
     void onCancelInstall();
@@ -72,7 +73,7 @@ private:
 
     // Skip popup exception dialog if true
     bool m_isNeedSkipException {false};
-    int count = 0;
+    int systemFontCount = 0;
 
     InstallState m_installState {Install};
 
