@@ -26,6 +26,7 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
     qRegisterMetaType<DFontPreviewItemData>("DFontPreviewItemData");
     connect(this, &DFontPreviewListView::itemAdded, this, &DFontPreviewListView::onItemAdded);
     connect(this, &DFontPreviewListView::itemRemoved, this, &DFontPreviewListView::onItemRemoved);
+    connect(this, &DFontPreviewListView::itemRemovedFromSys, this, &DFontPreviewListView::onItemRemovedFromSys);
     m_dataThread = DFontPreviewListDataThread::instance(this);
     m_dataThread->setMutex(&m_mutex);
     QWidget *topSpaceWidget = new QWidget;
@@ -142,6 +143,18 @@ void DFontPreviewListView::onItemRemoved(const DFontPreviewItemData &itemData)
     selection_model->select(currModelIndex(), QItemSelectionModel::Select);
 }
 
+void DFontPreviewListView::onItemRemovedFromSys(const DFontPreviewItemData &itemData)
+{
+    if (m_fontPreviewProxyModel == nullptr)
+        return;
+
+    qDebug() << __FUNCTION__ << ", path " << itemData.fontInfo.filePath << QThread::currentThreadId();
+    deleteFontModelIndex(itemData.fontInfo.filePath, true);
+
+    QItemSelectionModel *selection_model = selectionModel();
+    selection_model->select(currModelIndex(), QItemSelectionModel::Select);
+}
+
 void DFontPreviewListView::initDelegate()
 {
     m_fontPreviewItemDelegate = new DFontPreviewItemDelegate(this);
@@ -179,7 +192,7 @@ void DFontPreviewListView::setDelTotalCount(int value)
     delTotalCount = value;
 }
 
-void DFontPreviewListView::deleteFontModelIndex(const QString &filePath)
+void DFontPreviewListView::deleteFontModelIndex(const QString &filePath, bool isFromSys)
 {
     if (m_fontPreviewItemModel && m_fontPreviewItemModel->rowCount() == 0) {
         return;
@@ -193,7 +206,9 @@ void DFontPreviewListView::deleteFontModelIndex(const QString &filePath)
         if (itemData.fontInfo.filePath == filePath) {
             qDebug() << __FUNCTION__ << filePath << " font remove row " << i << QThread::currentThreadId();
             m_fontPreviewProxyModel->sourceModel()->removeRow(i, modelIndex.parent());
-            deledCount++;
+            if (isFromSys == false) {
+                deledCount++;
+            }
             emit SignalManager::instance()->updateUninstallDialog(itemData.fontInfo.psname, deledCount, delTotalCount);
             if (deledCount == delTotalCount) {
                 deledCount = 0;
@@ -615,7 +630,7 @@ void DFontPreviewListView::updateChangedDir(const QString &path)
             delInfo.insert("styleName", itemData.fontInfo.styleName);
             if (!DFMDBManager::instance()->deleteFontInfoByFontMap(delInfo))
                 qDebug() << QThread::currentThreadId() << " delete fontdb failed : " << filePathInfo.filePath();
-            Q_EMIT itemRemoved(itemData);
+            Q_EMIT itemRemovedFromSys(itemData);
             m_dataThread->removeFontData(itemData);
             m_dataThread->removePathWatcher(filePathInfo.filePath());
         }

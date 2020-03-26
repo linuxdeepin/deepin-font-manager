@@ -175,7 +175,7 @@ void DFInstallNormalWindow::initConnections()
             this->close();
         }
 
-        m_fontManager->emit showFloatingMessage(fileList.size(), systemCount);
+        emit  SignalManager::instance()->showFloatingMessage(fileList.size(), systemCount);
 
     });
 
@@ -316,7 +316,6 @@ void DFInstallNormalWindow::batchInstall()
 #ifdef QT_QML_DEBUG
         qDebug() << "User selected files are installed & damaged!";
 #endif
-
         showInstallErrDlg();
         return;
     }

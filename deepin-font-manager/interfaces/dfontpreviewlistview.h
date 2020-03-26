@@ -56,7 +56,7 @@ public:
     QStringList selectedFonts(int *deleteCnt, int *systemCnt);
     QList<DFontPreviewItemData> selectedFontData(int *deleteCnt, int *systemCnt);
     QModelIndexList selectedIndex(int *deleteCnt, int *systemCnt);
-    void deleteFontModelIndex(const QString &filePath);
+    void deleteFontModelIndex(const QString &filePath, bool isFromSys = false);
     inline bool isDeleting();
     void selectFonts(const QStringList &fileList);
 
@@ -110,6 +110,7 @@ signals:
     void requestDeleted(const QStringList files);
     void itemAdded(const DFontPreviewItemData &data);
     void itemRemoved(const DFontPreviewItemData &data);
+    void itemRemovedFromSys(const DFontPreviewItemData &data);
 
 public slots:
 
@@ -119,6 +120,7 @@ public slots:
     void onFinishedDataLoad();
     void onItemAdded(const DFontPreviewItemData &itemData);
     void onItemRemoved(const DFontPreviewItemData &itemData);
+    void onItemRemovedFromSys(const DFontPreviewItemData &itemData);
 };
 
 #endif  // DFONTPREVIEWLISTVIEW_H

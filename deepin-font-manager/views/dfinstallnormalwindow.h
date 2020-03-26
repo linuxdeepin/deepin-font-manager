@@ -5,6 +5,7 @@
 #include "dfmdbmanager.h"
 #include "dfinstallerrordialog.h"
 #include "dfontinfomanager.h"
+#include "signalmanager.h"
 
 #include <QStringList>
 #include <QTimer>

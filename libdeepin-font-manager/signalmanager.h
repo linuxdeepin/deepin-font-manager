@@ -13,6 +13,7 @@ signals:
     void popUninstallDialog();
     void updateUninstallDialog(QString &fontName, int index, int totalCount);
     void closeUninstallDialog();
+    void showFloatingMessage(int totalCount, int systemFontCount);
 
 
 private:
