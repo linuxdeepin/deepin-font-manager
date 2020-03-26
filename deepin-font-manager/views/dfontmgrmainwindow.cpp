@@ -188,9 +188,6 @@ void DFontMgrMainWindow::initConnections()
         }
 
     });
-//    QObject::connect(SignalManager::instance(), &SignalManager::updateUninstallDialog, this, [ = ](QString & fontName, int index, int totalCount) {
-//        qDebug() << "ASDSADSD" << endl;
-//    });
     QObject::connect(SignalManager::instance(), &SignalManager::updateUninstallDialog, this, [ = ](QString & fontName, int index, int totalCount) {
         m_fontUninstallDialog->setValue(fontName, index, totalCount);
     });
