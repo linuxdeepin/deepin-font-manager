@@ -137,6 +137,9 @@ void DFontPreviewListView::onItemRemoved(const DFontPreviewItemData &itemData)
 
     qDebug() << __FUNCTION__ << ", path " << itemData.fontInfo.filePath << QThread::currentThreadId();
     deleteFontModelIndex(itemData.fontInfo.filePath);
+
+    QItemSelectionModel *selection_model = selectionModel();
+    selection_model->select(currModelIndex(), QItemSelectionModel::Select);
 }
 
 void DFontPreviewListView::initDelegate()
