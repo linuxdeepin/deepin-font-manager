@@ -41,15 +41,15 @@
     <name>DFInstallErrorDialog</name>
     <message>
         <source>Broken file</source>
-        <translation type="unfinished"/>
+        <translation>Ficheiro corrompido</translation>
     </message>
     <message>
         <source>Same version installed</source>
-        <translation type="unfinished"/>
+        <translation>Mesma versão instalada</translation>
     </message>
     <message>
         <source>System Font</source>
-        <translation type="unfinished"/>
+        <translation>Fonte do sistema</translation>
     </message>
 </context>
 <context>
@@ -108,19 +108,19 @@
     </message>
     <message>
         <source>%1 font installed</source>
-        <translation type="unfinished"/>
+        <translation>%1 fonte instalada</translation>
     </message>
     <message>
         <source>The other one system font has already been installed</source>
-        <translation type="unfinished"/>
+        <translation>A outra fonte do sistema já foi instalada</translation>
     </message>
     <message>
         <source>The other %2 system fonts have already been installed</source>
-        <translation type="unfinished"/>
+        <translation>As outras %2 fontes do sistema já foram instaladas</translation>
     </message>
     <message>
         <source>%1 fonts installed</source>
-        <translation type="unfinished"/>
+        <translation>%1 fontes instaladas</translation>
     </message>
 </context>
 <context>
@@ -156,6 +156,13 @@
     <message>
         <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
         <translation>Estas fontes não estarão disponíveis para as aplicações e as outras %1 fontes do sistema não podem ser eliminadas</translation>
+    </message>
+</context>
+<context>
+    <name>Dfuninstalldialog</name>
+    <message>
+        <source>Deleting fonts, please wait...</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -247,11 +254,11 @@
     </message>
     <message>
         <source>The font exported to your desktop</source>
-        <translation type="vanished">A fonte exportada para o seu ambiente de trabalho</translation>
+        <translation>A fonte exportada para o seu ambiente de trabalho</translation>
     </message>
     <message>
         <source>%1 fonts exported to your desktop</source>
-        <translation type="vanished">%1 fontes exportadas para o seu ambiente de trabalho</translation>
+        <translation>%1 fontes exportadas para o seu ambiente de trabalho</translation>
     </message>
 </context>
 <context>

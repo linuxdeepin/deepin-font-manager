@@ -41,15 +41,15 @@
     <name>DFInstallErrorDialog</name>
     <message>
         <source>Broken file</source>
-        <translation type="unfinished"/>
+        <translation>Пошкоджений файл</translation>
     </message>
     <message>
         <source>Same version installed</source>
-        <translation type="unfinished"/>
+        <translation>Уже встановлено ту саму версію</translation>
     </message>
     <message>
         <source>System Font</source>
-        <translation type="unfinished"/>
+        <translation>Загальносистемний шрифт</translation>
     </message>
 </context>
 <context>
@@ -108,19 +108,19 @@
     </message>
     <message>
         <source>%1 font installed</source>
-        <translation type="unfinished"/>
+        <translation>Встановлено %1 шрифт</translation>
     </message>
     <message>
         <source>The other one system font has already been installed</source>
-        <translation type="unfinished"/>
+        <translation>Ще один загальносистемний шрифт вже встановлено</translation>
     </message>
     <message>
         <source>The other %2 system fonts have already been installed</source>
-        <translation type="unfinished"/>
+        <translation>%2 інших загальносистемних шрифтів вже встановлено</translation>
     </message>
     <message>
         <source>%1 fonts installed</source>
-        <translation type="unfinished"/>
+        <translation>Встановлено %1 шрифтів</translation>
     </message>
 </context>
 <context>
@@ -156,6 +156,13 @@
     <message>
         <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
         <translation>Ці шрифти будуть недоступними для програм, інші %1 загальносистемних шрифтів не може бути вилучено</translation>
+    </message>
+</context>
+<context>
+    <name>Dfuninstalldialog</name>
+    <message>
+        <source>Deleting fonts, please wait...</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -247,11 +254,11 @@
     </message>
     <message>
         <source>The font exported to your desktop</source>
-        <translation type="vanished">Шрифт експортовано на вашу стільницю</translation>
+        <translation>Шрифт експортовано на вашу стільницю</translation>
     </message>
     <message>
         <source>%1 fonts exported to your desktop</source>
-        <translation type="vanished">%1 шрифтів експортовано на вашу стільницю</translation>
+        <translation>%1 шрифтів експортовано на вашу стільницю</translation>
     </message>
 </context>
 <context>

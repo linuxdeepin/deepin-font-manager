@@ -41,15 +41,15 @@
     <name>DFInstallErrorDialog</name>
     <message>
         <source>Broken file</source>
-        <translation type="unfinished"/>
+        <translation>Fail rosak</translation>
     </message>
     <message>
         <source>Same version installed</source>
-        <translation type="unfinished"/>
+        <translation>Versi serupa telah dipasang</translation>
     </message>
     <message>
         <source>System Font</source>
-        <translation type="unfinished"/>
+        <translation>Fon Sistem</translation>
     </message>
 </context>
 <context>
@@ -108,19 +108,19 @@
     </message>
     <message>
         <source>%1 font installed</source>
-        <translation type="unfinished"/>
+        <translation>Fon %1 telah dipasang</translation>
     </message>
     <message>
         <source>The other one system font has already been installed</source>
-        <translation type="unfinished"/>
+        <translation>Satu fon sistem yang lain telah dipasang</translation>
     </message>
     <message>
         <source>The other %2 system fonts have already been installed</source>
-        <translation type="unfinished"/>
+        <translation>%2 fon sistem yang lain telah dipasang</translation>
     </message>
     <message>
         <source>%1 fonts installed</source>
-        <translation type="unfinished"/>
+        <translation>Fon %1 telah dipasang</translation>
     </message>
 </context>
 <context>
@@ -156,6 +156,13 @@
     <message>
         <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
         <translation>Fon-fon ini tidak akan tersedia untuk kegunaan aplikasi, dan %1 fon sistem yang lain tidak boleh dipadamkan</translation>
+    </message>
+</context>
+<context>
+    <name>Dfuninstalldialog</name>
+    <message>
+        <source>Deleting fonts, please wait...</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -247,11 +254,11 @@
     </message>
     <message>
         <source>The font exported to your desktop</source>
-        <translation type="vanished">Fon telah dieksport ke dalam atas meja anda</translation>
+        <translation>Fon telah dieksport ke dalam atas meja anda</translation>
     </message>
     <message>
         <source>%1 fonts exported to your desktop</source>
-        <translation type="vanished">%1 fon telah dieksport ke dalam atas meja anda</translation>
+        <translation>%1 fon telah dieksport ke dalam atas meja anda</translation>
     </message>
 </context>
 <context>

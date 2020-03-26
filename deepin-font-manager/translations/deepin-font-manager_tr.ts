@@ -41,15 +41,15 @@
     <name>DFInstallErrorDialog</name>
     <message>
         <source>Broken file</source>
-        <translation type="unfinished"/>
+        <translation>Bozuk dosya</translation>
     </message>
     <message>
         <source>Same version installed</source>
-        <translation type="unfinished"/>
+        <translation>Aynı sürüm kurulu</translation>
     </message>
     <message>
         <source>System Font</source>
-        <translation type="unfinished"/>
+        <translation>Sistem Yazı Tipi</translation>
     </message>
 </context>
 <context>
@@ -108,19 +108,19 @@
     </message>
     <message>
         <source>%1 font installed</source>
-        <translation type="unfinished"/>
+        <translation>%1 yazı tipi kurulu</translation>
     </message>
     <message>
         <source>The other one system font has already been installed</source>
-        <translation type="unfinished"/>
+        <translation>Diğer bir sistem yazı tipi zaten kurulu</translation>
     </message>
     <message>
         <source>The other %2 system fonts have already been installed</source>
-        <translation type="unfinished"/>
+        <translation>Diğer %2 sistem yazı tipi zaten kurulu</translation>
     </message>
     <message>
         <source>%1 fonts installed</source>
-        <translation type="unfinished"/>
+        <translation>%1 yazı tipi kurulu</translation>
     </message>
 </context>
 <context>
@@ -156,6 +156,13 @@
     <message>
         <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
         <translation>Bu yazı tipleri uygulamalar tarafından kullanılamaz ve diğer %1 sistem yazı tipleri silinemez</translation>
+    </message>
+</context>
+<context>
+    <name>Dfuninstalldialog</name>
+    <message>
+        <source>Deleting fonts, please wait...</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -247,11 +254,11 @@
     </message>
     <message>
         <source>The font exported to your desktop</source>
-        <translation type="vanished">Masaüstünüze dışa aktarılan yazı tipi</translation>
+        <translation>Masaüstünüze dışa aktarılan yazı tipi</translation>
     </message>
     <message>
         <source>%1 fonts exported to your desktop</source>
-        <translation type="vanished">%1 yazı tipi masaüstünüze dışa aktarıldı</translation>
+        <translation>%1 yazı tipi masaüstünüze dışa aktarıldı</translation>
     </message>
 </context>
 <context>

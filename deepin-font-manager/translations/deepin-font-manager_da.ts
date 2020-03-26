@@ -159,6 +159,13 @@
     </message>
 </context>
 <context>
+    <name>Dfuninstalldialog</name>
+    <message>
+        <source>Deleting fonts, please wait...</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>ExceptionWindow</name>
     <message>
         <source>Font Verification</source>
@@ -247,11 +254,11 @@
     </message>
     <message>
         <source>The font exported to your desktop</source>
-        <translation type="vanished">Skrifttypen blev eksporteret til dit skrivebord</translation>
+        <translation>Skrifttypen blev eksporteret til dit skrivebord</translation>
     </message>
     <message>
         <source>%1 fonts exported to your desktop</source>
-        <translation type="vanished">%1 skrifttyper blev eksporteret til dit skrivebord</translation>
+        <translation>%1 skrifttyper blev eksporteret til dit skrivebord</translation>
     </message>
 </context>
 <context>

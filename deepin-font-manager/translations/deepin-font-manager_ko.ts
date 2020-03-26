@@ -41,15 +41,15 @@
     <name>DFInstallErrorDialog</name>
     <message>
         <source>Broken file</source>
-        <translation type="unfinished"/>
+        <translation>깨진 파일</translation>
     </message>
     <message>
         <source>Same version installed</source>
-        <translation type="unfinished"/>
+        <translation>동일한 버전 설치됨</translation>
     </message>
     <message>
         <source>System Font</source>
-        <translation type="unfinished"/>
+        <translation>시스템 글꼴</translation>
     </message>
 </context>
 <context>
@@ -108,19 +108,19 @@
     </message>
     <message>
         <source>%1 font installed</source>
-        <translation type="unfinished"/>
+        <translation>%1개 글꼴 설치됨</translation>
     </message>
     <message>
         <source>The other one system font has already been installed</source>
-        <translation type="unfinished"/>
+        <translation>다른 하나의 시스템 글꼴이 이미 설치되어 있습니다</translation>
     </message>
     <message>
         <source>The other %2 system fonts have already been installed</source>
-        <translation type="unfinished"/>
+        <translation>다른 %2개의 시스템 글꼴이 이미 설치되어 있습니다</translation>
     </message>
     <message>
         <source>%1 fonts installed</source>
-        <translation type="unfinished"/>
+        <translation>%1개 글꼴 설치됨</translation>
     </message>
 </context>
 <context>
@@ -159,6 +159,13 @@
     </message>
 </context>
 <context>
+    <name>Dfuninstalldialog</name>
+    <message>
+        <source>Deleting fonts, please wait...</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>ExceptionWindow</name>
     <message>
         <source>Font Verification</source>
@@ -182,7 +189,7 @@
     </message>
     <message>
         <source>No need to install system fonts again</source>
-        <translation type="unfinished"/>
+        <translation>시스템 글꼴을 다시 설치할 필요가 없습니다</translation>
     </message>
 </context>
 <context>
@@ -247,11 +254,11 @@
     </message>
     <message>
         <source>The font exported to your desktop</source>
-        <translation type="vanished">바탕화면으로 내보낸 글꼴</translation>
+        <translation>바탕화면으로 내보낸 글꼴</translation>
     </message>
     <message>
         <source>%1 fonts exported to your desktop</source>
-        <translation type="vanished">바탕화면으로 내보낸 글꼴 %1개</translation>
+        <translation>바탕화면으로 내보낸 글꼴 %1개</translation>
     </message>
 </context>
 <context>
