@@ -79,6 +79,9 @@ void DFontPreviewListView::refreshFontListData()
         QString filePath = itemData.fontInfo.filePath;
         Q_EMIT itemAdded(itemData);
         m_dataThread->addPathWatcher(filePath);
+
+        /* Bug#16821 UT000591  添加字体后需要加入到Qt的字体数据库中，否则无法使用*/
+        QFontDatabase::addApplicationFont(filePath);
     }
 }
 
@@ -489,49 +492,49 @@ bool DFontPreviewListView::disableFont(const DFontPreviewItemData &itemData)
 void DFontPreviewListView::onListViewItemEnableBtnClicked(QModelIndexList itemIndexes, bool setValue)
 {
     QString fontName;
-        QModelIndexList itemIndexesNew;
+    QModelIndexList itemIndexesNew;
 
-        for (int i = 0; i < itemIndexes.count(); i++) {
-            itemIndexesNew.append(itemIndexes[itemIndexes.count() - 1 - i]);
+    for (int i = 0; i < itemIndexes.count(); i++) {
+        itemIndexesNew.append(itemIndexes[itemIndexes.count() - 1 - i]);
+    }
+
+
+    DFMDBManager::instance()->beginTransaction();   //开启事务
+    for (QModelIndex index : itemIndexesNew) {
+        //        DFontPreviewItemData itemData =
+        //            qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(itemIndexes[0]));
+        DFontPreviewItemData itemData =
+            qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(index));
+        itemData.isEnabled = setValue;
+
+        qDebug() << __FUNCTION__ << "familyName" << itemData.fontInfo.familyName << endl;
+
+        if (itemData.isEnabled) {
+            enableFont(itemData);
+        } else {
+            if (index == itemIndexes[0])
+                fontName = itemData.strFontName;
+            disableFont(itemData);
         }
 
+        DFMDBManager::instance()->updateFontInfoByFontId(itemData.strFontId, "isEnabled", QString::number(itemData.isEnabled));
 
-        DFMDBManager::instance()->beginTransaction();   //开启事务
-        for (QModelIndex index : itemIndexesNew) {
-    //        DFontPreviewItemData itemData =
-    //            qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(itemIndexes[0]));
-            DFontPreviewItemData itemData =
-                qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(index));
-            itemData.isEnabled = setValue;
+        m_fontPreviewProxyModel->setData(index, QVariant::fromValue(itemData), Qt::DisplayRole);
+        //        m_fontPreviewProxyModel->setData(itemIndexes[0], QVariant::fromValue(itemData), Qt::DisplayRole);
+    }
+    DFMDBManager::instance()->endTransaction(); //提交事务
 
-            qDebug() << __FUNCTION__ << "familyName" << itemData.fontInfo.familyName << endl;
+    if (setValue)
+        return;
 
-            if (itemData.isEnabled) {
-                enableFont(itemData);
-            } else {
-                if (index == itemIndexes[0])
-                    fontName = itemData.strFontName;
-                disableFont(itemData);
-            }
-
-            DFMDBManager::instance()->updateFontInfoByFontId(itemData.strFontId, "isEnabled", QString::number(itemData.isEnabled));
-
-            m_fontPreviewProxyModel->setData(index, QVariant::fromValue(itemData), Qt::DisplayRole);
-    //        m_fontPreviewProxyModel->setData(itemIndexes[0], QVariant::fromValue(itemData), Qt::DisplayRole);
-        }
-        DFMDBManager::instance()->endTransaction(); //提交事务
-
-        if (setValue)
-            return;
-
-        QString message;
-        if (itemIndexes.size() == 1) {
-            message = QString("%1 %2").arg(fontName).arg(DApplication::translate("MessageManager", "deactivated"));
-        } else if (itemIndexes.size() > 1) {
-            //            message = tr("The fonts have been deactivated");
-            message = DApplication::translate("MessageManager", "The fonts have been deactivated");
-        }
-        DMessageManager::instance()->sendMessage(this, QIcon(":/images/ok.svg"), message);
+    QString message;
+    if (itemIndexes.size() == 1) {
+        message = QString("%1 %2").arg(fontName).arg(DApplication::translate("MessageManager", "deactivated"));
+    } else if (itemIndexes.size() > 1) {
+        //            message = tr("The fonts have been deactivated");
+        message = DApplication::translate("MessageManager", "The fonts have been deactivated");
+    }
+    DMessageManager::instance()->sendMessage(this, QIcon(":/images/ok.svg"), message);
 }
 
 void DFontPreviewListView::onListViewItemCollectionBtnClicked(QModelIndex index)
