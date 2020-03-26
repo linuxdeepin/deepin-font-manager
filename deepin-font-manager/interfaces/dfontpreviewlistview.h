@@ -60,12 +60,13 @@ public:
     inline bool isDeleting();
     void selectFonts(const QStringList &fileList);
 
+    void setDelTotalCount(int value);
+
 protected:
     void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected) override;
 
 private:
     void initConnections();
-    void setSelectState(int currIndex);
 
     bool enableFont(const DFontPreviewItemData &itemData);
     bool disableFont(const DFontPreviewItemData &itemData);
@@ -73,7 +74,6 @@ private:
     inline QRect getCollectionIconRect(QRect visualRect);
 
     void deleteFontModelIndex(const DFontInfo &fontInfo);
-    void highlightFonts(const QStringList &fileList);
 
     bool m_bLoadDataFinish = false;
     bool m_bLeftMouse = true;
@@ -91,8 +91,9 @@ private:
     DFontPreviewListDataThread *m_dataThread;
     QModelIndex m_pressModelIndex;
     QModelIndex m_hoverModelIndex;
-    QStringList m_deletedFiles;
     QMutex m_mutex;
+    int delTotalCount = 0;
+    int deledCount = 0;
 
 signals:
     //用于DFontPreviewListView内部使用的信号
@@ -109,7 +110,6 @@ signals:
     void requestDeleted(const QStringList files);
     void itemAdded(const DFontPreviewItemData &data);
     void itemRemoved(const DFontPreviewItemData &data);
-
 
 public slots:
 

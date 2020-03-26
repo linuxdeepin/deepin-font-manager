@@ -1,4 +1,4 @@
-#include "DDLabel.h"
+#include "ddlabel.h"
 Dtk::Widget::DDLabel::DDLabel(QWidget *parent, Qt::WindowFlags f) : DLabel(parent, f)
 {
 

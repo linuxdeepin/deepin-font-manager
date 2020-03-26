@@ -161,6 +161,13 @@
     </message>
 </context>
 <context>
+    <name>Dfuninstalldialog</name>
+    <message>
+        <source>Deleting fonts, please wait...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>ExceptionWindow</name>
     <message>
         <source>Font Verification</source>
@@ -249,11 +256,11 @@
     </message>
     <message>
         <source>The font exported to your desktop</source>
-        <translation type="vanished">The font exported to your desktop</translation>
+        <translation>The font exported to your desktop</translation>
     </message>
     <message>
         <source>%1 fonts exported to your desktop</source>
-        <translation type="vanished">%1 fonts exported to your desktop</translation>
+        <translation>%1 fonts exported to your desktop</translation>
     </message>
 </context>
 <context>

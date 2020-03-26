@@ -2,6 +2,8 @@
 #define DFDELETEDIALOG_H
 
 #include "dfontbasedialog.h"
+#include "signalmanager.h"
+
 
 #include <DLabel>
 #include <DPushButton>

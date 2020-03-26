@@ -9,7 +9,7 @@
 #include <QVBoxLayout>
 #include <QScrollArea>
 #include <QScrollBar>
-#include <DDLabel.h>
+#include <ddlabel.h>
 
 #include <DApplication>
 #include <DApplicationHelper>
