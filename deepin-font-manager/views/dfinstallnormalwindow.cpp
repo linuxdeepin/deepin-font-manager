@@ -111,15 +111,14 @@ void DFInstallNormalWindow::initConnections()
     });
 
     // Handle reinstall signal
-    connect(this, &DFInstallNormalWindow::batchReinstall, this, [ = ](QStringList reinstallFiles, int m_totalCount) {
+    connect(this, &DFInstallNormalWindow::batchReinstall, this, [ = ](QStringList reinstallFiles, int m_sysFontCount) {
         // Reinstall the user selected files
         m_installFiles.clear();
         m_installState = InstallState::reinstall;
-
+        systemFontCount = m_sysFontCount;
         foreach (auto it, reinstallFiles) {
             m_installFiles.append(it);
         }
-        systemFontCount = m_systemFiles.size();
 #ifdef QT_QML_DEBUG
         qDebug() << __FUNCTION__ << " [reinstallFiles=" << m_installFiles << "]";
 #endif
@@ -312,14 +311,14 @@ void DFInstallNormalWindow::batchInstall()
     // Check&Sort uninstalled ,installed & damaged font file here
     verifyFontFiles();
 
-    if (InstallState::Install == m_installState && ifNeedShowExceptionWindow()) {
-#ifdef QT_QML_DEBUG
-        qDebug() << "User selected files are installed & damaged!";
-#endif
-        showInstallErrDlg();
-        return;
+    if (InstallState::Install == m_installState) {
+        systemFontCount = m_systemFiles.size();
+        if (ifNeedShowExceptionWindow()) {
+            showInstallErrDlg();
+            return;
+        }
     }
-    systemFontCount = m_systemFiles.size();
+
 
     QStringList installList;
 
@@ -393,7 +392,7 @@ void DFInstallNormalWindow::onCancelInstall()
     this->accept();
 }
 
-void DFInstallNormalWindow::onContinueInstall(QStringList continueInstallFontFileList, int m_totalCount)
+void DFInstallNormalWindow::onContinueInstall(QStringList continueInstallFontFileList, int m_sysFontCount)
 {
 #ifdef QT_QML_DEBUG
     qDebug() << __FUNCTION__ << " called:" << continueInstallFontFileList;
@@ -401,7 +400,7 @@ void DFInstallNormalWindow::onContinueInstall(QStringList continueInstallFontFil
 
     m_installState = InstallState::reinstall;
 
-    Q_EMIT batchReinstall(continueInstallFontFileList, m_totalCount);
+    Q_EMIT batchReinstall(continueInstallFontFileList, m_sysFontCount);
 }
 
 void DFInstallNormalWindow::onProgressChanged(const QString &filePath, const double &percent)

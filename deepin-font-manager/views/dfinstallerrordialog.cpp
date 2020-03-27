@@ -313,7 +313,7 @@ void DFInstallErrorDialog::onListItemClicked(QModelIndex index)
 
 void DFInstallErrorDialog::onControlButtonClicked(int btnIndex)
 {
-    int m_totalCount = m_errorInstallFiles.size();
+    int sysFontCount = 0;
     if (0 == btnIndex) {
         //退出安装
         emit onCancelInstall();
@@ -325,14 +325,16 @@ void DFInstallErrorDialog::onControlButtonClicked(int btnIndex)
         //根据用户勾选情况添加到继续安装列表中
         for (int i = 0; i < m_installErrorListView->model()->rowCount(); i++) {
             DFInstallErrorItemModel itemModel = qvariant_cast<DFInstallErrorItemModel>(m_installErrorListView->model()->data(m_installErrorListView->model()->index(i, 0)));
-            if (itemModel.bChecked) {
+            if (itemModel.bChecked)
                 continueInstallFontFileList.push_back(itemModel.strFontFilePath);
-            }
+            if (itemModel.bSystemFont && itemModel.bChecked)
+                sysFontCount++;
+
         }
 
         m_SystemFontCount = 0;
 
-        emit onContinueInstall(continueInstallFontFileList, m_totalCount);
+        emit onContinueInstall(continueInstallFontFileList, sysFontCount);
     }
 
     this->accept();
