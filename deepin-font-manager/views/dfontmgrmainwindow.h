@@ -80,6 +80,7 @@ protected:
     void exportFont();
     void showAllShortcut();
     void showInstalledFiles(QStringList fileList);
+    void checkCloseUninstallDialog();
 
     //Add drag install
     void dragEnterEvent(QDragEnterEvent *event) override;
@@ -129,6 +130,7 @@ protected:
     int m_previewFontSize;
     int m_leftIndex {0};
     int m_needDelCount = 0;
+    int m_deledCount = 0;
 
     bool m_searchTextStatusIsEmpty = true;
 
@@ -152,6 +154,7 @@ protected:
     //Avoid start multi delete confirm dialog
     volatile bool m_fIsDeleting {false};
     QStringList m_fileList;
+    QStringList m_uninstallFilePath;
     DFInstallNormalWindow  *m_dfNormalInstalldlg {nullptr};
 
     QScopedPointer<DFQuickInstallWindow> m_quickInstallWnd;

@@ -187,10 +187,6 @@ QRect DFontPreviewListView::getCollectionIconRect(QRect visualRect)
     return QRect(visualRect.right() - 10 - 33, visualRect.top() + 10 - 5, collectIconSize, collectIconSize);
 }
 
-void DFontPreviewListView::setDelTotalCount(int value)
-{
-    delTotalCount = value;
-}
 
 void DFontPreviewListView::deleteFontModelIndex(const QString &filePath, bool isFromSys)
 {
@@ -206,15 +202,8 @@ void DFontPreviewListView::deleteFontModelIndex(const QString &filePath, bool is
         if (itemData.fontInfo.filePath == filePath) {
             qDebug() << __FUNCTION__ << filePath << " font remove row " << i << QThread::currentThreadId();
             m_fontPreviewProxyModel->sourceModel()->removeRow(i, modelIndex.parent());
-            if (isFromSys == false) {
-                deledCount++;
-            }
-            emit SignalManager::instance()->updateUninstallDialog(itemData.fontInfo.psname, deledCount, delTotalCount);
-            if (deledCount == delTotalCount) {
-                deledCount = 0;
-                delTotalCount = 0;
-                emit SignalManager::instance()->closeUninstallDialog();
-            }
+            emit SignalManager::instance()->deledFont(itemData.fontInfo.filePath);
+            //            emit SignalManager::instance()->updateUninstallDialog(itemData.fontInfo.psname, deledCount, delTotalCount);
             break;
         }
     }

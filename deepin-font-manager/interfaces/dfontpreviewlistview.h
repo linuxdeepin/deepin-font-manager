@@ -60,7 +60,6 @@ public:
     inline bool isDeleting();
     void selectFonts(const QStringList &fileList);
 
-    void setDelTotalCount(int value);
 
 protected:
     void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected) override;
@@ -92,8 +91,7 @@ private:
     QModelIndex m_pressModelIndex;
     QModelIndex m_hoverModelIndex;
     QMutex m_mutex;
-    int delTotalCount = 0;
-    int deledCount = 0;
+
 
 signals:
     //用于DFontPreviewListView内部使用的信号

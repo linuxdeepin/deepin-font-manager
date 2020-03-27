@@ -198,6 +198,19 @@ void DFontMgrMainWindow::initConnections()
         m_needDelCount = 0;
     });
 
+    QObject::connect(SignalManager::instance(), &SignalManager::deledFont, this, [ = ](QString & fontPath) {
+        if (m_uninstallFilePath.count() == 0)
+            return;
+        foreach (auto it, m_uninstallFilePath) {
+            if (it == fontPath) {
+                m_deledCount++;
+                emit SignalManager::instance()->updateUninstallDialog(it.split("/").last(), m_deledCount, m_needDelCount);
+                m_uninstallFilePath.removeOne(it);
+                break;
+            }
+        }
+        checkCloseUninstallDialog();
+    });
     // Search text changed
     QObject::connect(d->searchFontEdit, SIGNAL(textChanged(const QString &)), this,
                      SLOT(onSearchTextChanged(const QString &)));
@@ -1187,21 +1200,21 @@ void DFontMgrMainWindow::delCurrentFont()
     int deleteCnt = 0;
     int systemCnt = 0;
     QStringList uninstallFilePath = m_fontPreviewListView->selectedFonts(&deleteCnt, &systemCnt);
-    m_fontPreviewListView->setDelTotalCount(uninstallFilePath.size());
     if (deleteCnt < 1)
         return;
     m_fIsDeleting = true;
     DFDeleteDialog confirmDelDlg(this, deleteCnt, systemCnt);
     connect(&confirmDelDlg, &DFDeleteDialog::requestDelete, this, [this]() {
         // Add Delete font code Here
-        QStringList uninstallFilePath = m_fontPreviewListView->selectedFonts(nullptr, nullptr);
-        m_needDelCount = uninstallFilePath.count();
+        m_uninstallFilePath.clear();
+        m_uninstallFilePath = m_fontPreviewListView->selectedFonts(nullptr, nullptr);
+        qDebug() << m_uninstallFilePath << endl;
+        m_needDelCount = m_uninstallFilePath.count();
         DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
         qDebug() << "Confirm delete:" << currItemData.fontInfo.filePath
                  << " is system font:" << currItemData.fontInfo.isSystemFont;
-
         m_fontManager->setType(DFontManager::UnInstall);
-        m_fontManager->setUnInstallFile(uninstallFilePath);
+        m_fontManager->setUnInstallFile(m_uninstallFilePath);
         m_fontManager->start();
     });
 
@@ -1363,4 +1376,13 @@ void DFontMgrMainWindow::showInstalledFiles(QStringList fileList)
     d->leftSiderBar->setCurrentIndex(d->leftSiderBar->model()->index(DSplitListWidget::UserFont + 1, 0));
     onLeftSiderBarItemClicked(DSplitListWidget::UserFont);
     m_fontPreviewListView->selectFonts(fileList);
+}
+
+void DFontMgrMainWindow::checkCloseUninstallDialog()
+{
+    if (m_deledCount == m_needDelCount) {
+        m_deledCount = 0;
+        m_needDelCount = 0;
+        emit SignalManager::instance()->closeUninstallDialog();
+    }
 }

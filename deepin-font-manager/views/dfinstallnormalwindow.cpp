@@ -375,11 +375,6 @@ void DFInstallNormalWindow::batchInstall()
 }
 
 
-void DFInstallNormalWindow::batchReInstall()
-{
-
-}
-
 void DFInstallNormalWindow::onCancelInstall()
 {
 #ifdef QT_QML_DEBUG
