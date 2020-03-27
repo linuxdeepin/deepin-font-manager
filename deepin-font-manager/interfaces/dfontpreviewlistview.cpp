@@ -520,7 +520,8 @@ void DFontPreviewListView::onListViewItemEnableBtnClicked(QModelIndexList itemIn
         //            message = tr("The fonts have been deactivated");
         message = DApplication::translate("MessageManager", "The fonts have been deactivated");
     }
-    DMessageManager::instance()->sendMessage(this, QIcon(":/images/ok.svg"), message);
+    /* Bug#18083 UT000591 禁用提示与导出提示位置相同 */
+    DMessageManager::instance()->sendMessage(this->m_parentWidget, QIcon(":/images/ok.svg"), message);
 }
 
 void DFontPreviewListView::onListViewItemCollectionBtnClicked(QModelIndex index)
