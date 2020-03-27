@@ -1,6 +1,7 @@
 #ifndef DFONTINFODIALOG_H
 #define DFONTINFODIALOG_H
 #include "dfontbasedialog.h"
+#include "dfontinfoscrollarea.h"
 
 #include <QResizeEvent>
 #include <QPointF>
@@ -25,11 +26,8 @@ public:
 protected:
     void initUI();
     void initConnections();
-    void addLabelContent(const QString &title, const QString &content);
-    void addLabelContent_VersionAndDescription(const QString &title, const QString &content);
     void resizeEvent(QResizeEvent *event) override;
     void insertContents();
-    void paintEvent(QPaintEvent *event);
 signals:
 
 public slots:
@@ -45,8 +43,8 @@ private:
     QVBoxLayout *m_baseicInfoLayout;
 
     DFontPreviewItemData *m_fontInfo;
-    DLabel *title;
-    DLabel *detai;
+
+    dfontinfoscrollarea *fontinfoArea;
 
     DScrollArea *scrollArea;
 };

@@ -40,7 +40,7 @@ HEADERS += utils.h \
     views/dfontspinnerwidget.h \
     views/fonticontext.h \
     views/dfontuninstalldialog.h \
-    ddlabel.h
+    views/dfontinfoscrollarea.h
 
 SOURCES += main.cpp \
 	   utils.cpp \
@@ -64,7 +64,7 @@ SOURCES += main.cpp \
     views/dfontspinnerwidget.cpp \
     views/fonticontext.cpp \
     views/dfontuninstalldialog.cpp \
-    ddlabel.cpp
+    views/dfontinfoscrollarea.cpp
 
 RESOURCES += deepin-font-manager.qrc \
     bmp.qrc
