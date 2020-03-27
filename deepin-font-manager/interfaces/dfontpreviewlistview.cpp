@@ -191,7 +191,7 @@ void DFontPreviewListView::deleteFontModelIndex(const QString &filePath)
             qDebug() << __FUNCTION__ << filePath << " font remove row " << i << QThread::currentThreadId();
             m_fontPreviewProxyModel->sourceModel()->removeRow(i, modelIndex.parent());
             deledCount++;
-            emit　SignalManager::instance()->updateUninstallDialog(itemData.fontInfo.psname, deledCount, delTotalCount);
+            emit SignalManager::instance()->updateUninstallDialog(itemData.fontInfo.psname, deledCount, delTotalCount);
             if (deledCount == delTotalCount) {
                 deledCount = 0;
                 delTotalCount = 0;
@@ -201,7 +201,6 @@ void DFontPreviewListView::deleteFontModelIndex(const QString &filePath)
         }
     }
 }
-
 
 bool DFontPreviewListView::isDeleting()
 {
@@ -233,7 +232,7 @@ void DFontPreviewListView::selectFonts(const QStringList &fileList)
     for (int i = 0; i < getFontPreviewProxyModel()->rowCount(); ++i) {
         QModelIndex index = getFontPreviewProxyModel()->index(i, 0);
         DFontPreviewItemData itemData =
-                qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(index));
+            qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(index));
         //        qDebug() << __FUNCTION__ << itemData.fontInfo.filePath;
         if (fileList.contains(itemData.fontInfo.filePath)) {
             QModelIndex left = m_fontPreviewProxyModel->index(index.row(), 0);
