@@ -16,7 +16,20 @@
 DWIDGET_USE_NAMESPACE
 
 const int CHECKBOX_SIZE = 20;
-const int COLLECT_ICON_SIZE = 25;
+
+const int COLLECT_ICON_SIZE = 24;
+const int COLLECT_ICON_RIGHT_MARGIN = 15;
+const int COLLECT_ICON_TOP_MARGIN = 10;
+
+const int FONT_NAME_HEIGHT = 20;
+const int FONT_NAME_LEFT_MARGIN = 50;
+const int FONT_NAME_TOP_MARGIN = 7;
+
+const int FONT_PREVIEW_LEFT_MARGIN = 50;
+const int FONT_PREVIEW_RIGHT_MARGIN = COLLECT_ICON_SIZE + COLLECT_ICON_RIGHT_MARGIN;
+const int FONT_PREVIEW_TOP_MARGIN = 27;
+const int FONT_PREVIEW_BOTTOM_MARGIN = 10;
+
 
 DFontPreviewItemDelegate::DFontPreviewItemDelegate(QAbstractItemView *parent)
     : DStyledItemDelegate(parent)
@@ -52,7 +65,8 @@ void DFontPreviewItemDelegate::paintForegroundFontName(QPainter *painter, const 
     painter->setPen(QPen(fillColor));
 
     DFontPreviewItemData itemData = index.data(Qt::DisplayRole).value<DFontPreviewItemData>();
-    QRect fontNameRect = QRect(option.rect.x() + 50, option.rect.y() + 5, option.rect.width() - 20, 20);
+    QRect fontNameRect = QRect(option.rect.x() + FONT_NAME_LEFT_MARGIN, option.rect.y() + FONT_NAME_TOP_MARGIN,
+                               option.rect.width() - 20, FONT_NAME_HEIGHT);
     painter->drawText(fontNameRect, Qt::AlignLeft | Qt::AlignVCenter, itemData.strFontName);
 }
 
@@ -84,33 +98,36 @@ void DFontPreviewItemDelegate::paintForegroundCollectIcon(QPainter *painter, con
         pixmap = Utils::renderSVG(strImageSrc, QSize(COLLECT_ICON_SIZE, COLLECT_ICON_SIZE));
     }
 
-    QRect collectIconRealRect = QRect(option.rect.right() - 35 + 2, option.rect.top() + 10 - 3, COLLECT_ICON_SIZE, COLLECT_ICON_SIZE);
+    QRect collectIconRealRect = QRect(option.rect.right() - COLLECT_ICON_SIZE - COLLECT_ICON_RIGHT_MARGIN,
+                                      option.rect.top() + COLLECT_ICON_TOP_MARGIN,
+                                      COLLECT_ICON_SIZE, COLLECT_ICON_SIZE);
     painter->drawPixmap(collectIconRealRect, pixmap);
 }
 
-QRect DFontPreviewItemDelegate::adjustPreviewRect(const QString &fontName, const bool &isEnable, const QRect bgRect) const
+QRect DFontPreviewItemDelegate::adjustPreviewRect(const QRect bgRect) const
 {
     QRect fontPreviewRect;
-    if (!fontName.compare("Noto Sans Tibetan-Bold") && isEnable == true) {
-        fontPreviewRect = QRect(bgRect.x() + 50, bgRect.y() + 37, bgRect.width() - 50 - COLLECT_ICON_SIZE - 15, bgRect.height() - 27);
-    } else if (!fontName.compare("Noto Serif Tibetan-Regular") && isEnable == true) {
-        fontPreviewRect = QRect(bgRect.x() + 50, bgRect.y() + 37, bgRect.width() - 50 - COLLECT_ICON_SIZE - 15, bgRect.height() - 25);
-    } else if (!fontName.compare("Noto Serif Tibetan-Bold") && isEnable == true) {
-        fontPreviewRect = QRect(bgRect.x() + 50, bgRect.y() + 37, bgRect.width() - 50 - COLLECT_ICON_SIZE - 15, bgRect.height() - 21);
-    } else if (!fontName.compare("Noto Sans Tibetan-Regular") && isEnable == true) {
-        fontPreviewRect = QRect(bgRect.x() + 50, bgRect.y() + 37, bgRect.width() - 50 - COLLECT_ICON_SIZE - 15, bgRect.height() - 25);
-    } else if (!fontName.compare("Noto Serif Myanmar-Regular") && isEnable == true) {
-        fontPreviewRect = QRect(bgRect.x() + 50, bgRect.y() + 37, bgRect.width() - 50 - COLLECT_ICON_SIZE - 15, bgRect.height() - 25);
-    } else if (!fontName.compare("Noto Serif Myanmar-Bold") && isEnable == true) {
-        fontPreviewRect = QRect(bgRect.x() + 50, bgRect.y() + 40, bgRect.width() - 50 - COLLECT_ICON_SIZE - 15, bgRect.height() - 20);
-    } else if (!fontName.compare("Noto Nastaliq Urdu-Bold") && isEnable == true) {
-        fontPreviewRect = QRect(bgRect.x() + 50, bgRect.y() + 20, bgRect.width() - 50 - COLLECT_ICON_SIZE - 15, bgRect.height() - 20);
-    } else if (!fontName.compare("Noto Nastaliq Urdu-Regular") && isEnable == true) {
-        fontPreviewRect = QRect(bgRect.x() + 50, bgRect.y() + 20, bgRect.width() - 50 - COLLECT_ICON_SIZE - 15, bgRect.height() - 20);
-    } else {
-        fontPreviewRect = QRect(bgRect.x() + 50, bgRect.y() + 30, bgRect.width() - 50 - COLLECT_ICON_SIZE - 15, bgRect.height() - 26);
-    }
+    int fontRectWidth = bgRect.width() - FONT_PREVIEW_LEFT_MARGIN - FONT_PREVIEW_RIGHT_MARGIN;
+    fontPreviewRect = QRect(bgRect.x() + FONT_PREVIEW_LEFT_MARGIN, bgRect.y() + FONT_PREVIEW_TOP_MARGIN,
+                            fontRectWidth, bgRect.height() - FONT_PREVIEW_TOP_MARGIN - FONT_PREVIEW_BOTTOM_MARGIN);
     return fontPreviewRect;
+}
+
+QPoint DFontPreviewItemDelegate::adjustPreviewFontBaseLinePoint(const QRect &fontPreviewRect, const QFontMetrics &previewFontMetrics) const
+{
+    Q_UNUSED(previewFontMetrics);
+    /* 部分不规则的字体无法获取到有效QFontMetrics::height(),即 QFontMetrics::ascent(), QFontMetrics::descent()无效. */
+//    int baseLineY = 0;
+//    if (previewFontMetrics.ascent() == previewFontMetrics.descent()) {
+//        baseLineY = fontPreviewRect.bottom() - fontPreviewRect.height() / 2;
+//    } else {
+//        baseLineY = fontPreviewRect.bottom() - (fontPreviewRect.height() - previewFontMetrics.height()) / 2;
+//    }
+    /* 目前测试发现所有字体的descent值为9都可以较好的预览出来 UT000591 */
+    int commonFontDescent = 9;
+    int baseLineX = fontPreviewRect.x();
+    int baseLineY = fontPreviewRect.bottom() - commonFontDescent;
+    return QPoint(baseLineX, baseLineY);
 }
 
 QFont DFontPreviewItemDelegate::adjustPreviewFont(const QString &fontFamilyName, const QString &fontStyleName, const int &fontSize) const
@@ -141,33 +158,33 @@ QFont DFontPreviewItemDelegate::adjustPreviewFont(const QString &fontFamilyName,
     return font;
 }
 
+void DFontPreviewItemDelegate::paintForegroundPreviewContent(QPainter *painter, const QString &content, const QRect &fontPreviewRect, const QFont &previewFont) const
+{
+    QFontMetrics fontMetric(previewFont);
+    QString elidedText = fontMetric.elidedText(content, Qt::ElideRight, fontPreviewRect.width(), Qt::TextShowMnemonic);
+    QPoint baseLinePoint = adjustPreviewFontBaseLinePoint(fontPreviewRect, fontMetric);
+    /* 使用baseline规则绘制预览文字，这样不用考虑特殊字体 UT000591 */
+    //    painter->drawText(fontPreviewRect, Qt::AlignLeft | Qt::AlignVCenter, elidedText);
+    painter->drawText(baseLinePoint.x(), baseLinePoint.y(), elidedText);
+}
+
 void DFontPreviewItemDelegate::paintForegroundPreviewFont(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     DFontPreviewItemData itemData = index.data(Qt::DisplayRole).value<DFontPreviewItemData>();
-    QRect fontPreviewRect = adjustPreviewRect(itemData.strFontName, itemData.isEnabled, option.rect);
-
+    QRect fontPreviewRect = adjustPreviewRect(option.rect);
     QString fontPreviewContent = index.data(Dtk::UserRole + 1).isNull() ? itemData.strFontPreview : index.data(Dtk::UserRole + 1).toString();
     int fontPixelSize = (index.data(Dtk::UserRole + 2).isNull()) ? itemData.iFontSize : index.data(Dtk::UserRole + 2).toInt();
 
+    painter->setPen(QPen(option.palette.color(DPalette::Text)));
     if (itemData.isPreviewEnabled) {
         QFont previewFont = adjustPreviewFont(itemData.fontInfo.familyName, itemData.fontInfo.styleName, fontPixelSize);
-        QFontMetrics fontMetric(previewFont);
-        QString previewText = Utils::convertToPreviewString(itemData.fontInfo.filePath, fontPreviewContent);
-        QString elidedText = fontMetric.elidedText(previewText, Qt::ElideRight, option.rect.width() - 50 - COLLECT_ICON_SIZE - 15, Qt::TextShowMnemonic);
-        //绘制预览字体
-        painter->setPen(QPen(option.palette.color(DPalette::Text)));
         painter->setFont(previewFont);
-        painter->drawText(fontPreviewRect, Qt::AlignLeft | Qt::AlignVCenter, elidedText);
+        paintForegroundPreviewContent(painter, fontPreviewContent, fontPreviewRect, previewFont);
     } else {
-        //禁用字体时使用系统默认字体显示
         QFont previewFont;
         previewFont.setPixelSize(fontPixelSize);
-        QFontMetrics fontMetric(previewFont);
-        QString elidedText = fontMetric.elidedText(fontPreviewContent, Qt::ElideRight, option.rect.width() - 50 - COLLECT_ICON_SIZE - 15, Qt::TextShowMnemonic);
-        //绘制预览字体
-        painter->setPen(QPen(option.palette.color(DPalette::Text)));
         painter->setFont(previewFont);
-        painter->drawText(fontPreviewRect, Qt::AlignLeft | Qt::AlignVCenter, elidedText);
+        paintForegroundPreviewContent(painter, fontPreviewContent, fontPreviewRect, previewFont);
     }
 }
 
@@ -186,27 +203,8 @@ void DFontPreviewItemDelegate::paintBackground(QPainter *painter, const QStyleOp
         int radius = 8;
         path.addRoundedRect(bgRect, radius, radius);
         path.addRect(QRect(bgRect.x(), bgRect.y() + bgRect.height() / 2, bgRect.width(), bgRect.height() / 2));
-//        path.moveTo(bgRect.bottomRight() - QPointF(0, radius));
-//        path.lineTo(bgRect.topRight() + QPointF(0, radius));
-//        path.arcTo(QRectF(QPointF(bgRect.topRight() - QPointF(radius * 2, 0)), QSize(radius * 2, radius * 2)), 0, 90);
-//        path.lineTo(bgRect.topLeft() + QPointF(radius, 0));
-//        path.arcTo(QRectF(QPointF(bgRect.topLeft()), QSize(radius * 2, radius * 2)), 90, 90);
-
-//        path.lineTo(bgRect.bottomLeft());
-//        path.quadTo(bgRect.bottomLeft(), bgRect.bottomLeft());
-//        path.lineTo(bgRect.bottomRight());
-//        path.quadTo(bgRect.bottomRight(), bgRect.bottomRight());
     } else {
         path.addRect(bgRect);
-//        path.moveTo(bgRect.topRight());
-//        path.lineTo(bgRect.topLeft());
-//        path.quadTo(bgRect.topLeft(), bgRect.topLeft());
-//        path.lineTo(bgRect.bottomLeft());
-//        path.quadTo(bgRect.bottomLeft(), bgRect.bottomLeft());
-//        path.lineTo(bgRect.bottomRight());
-//        path.quadTo(bgRect.bottomRight(), bgRect.bottomRight());
-//        path.lineTo(bgRect.topRight());
-//        path.quadTo(bgRect.topRight(), bgRect.topRight());
     }
 
     if (option.state.testFlag(QStyle::State_Selected)) {
@@ -250,22 +248,14 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
     }
 }
 
-QSize DFontPreviewItemDelegate::sizeHint(const QStyleOptionViewItem &option,
-                                         const QModelIndex &index) const
+QSize DFontPreviewItemDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-    QVariant varDisplay = index.data(Qt::DisplayRole);
-
-    DFontPreviewItemData data = varDisplay.value<DFontPreviewItemData>();
-    int iFontSize = data.iFontSize;
-
-    QVariant varFontSize = index.data(Dtk::UserRole + 2);
-    if (!varFontSize.isNull()) {
-        iFontSize = varFontSize.toInt();
-    }
+    DFontPreviewItemData data = index.data(Qt::DisplayRole).value<DFontPreviewItemData>();
+    int fontSize = (false == index.data(Dtk::UserRole + 2).isNull()) ? index.data(Dtk::UserRole + 2).toInt() : data.iFontSize;
 
     int itemHeight = FTM_PREVIEW_ITEM_HEIGHT;
-    if (iFontSize > 30) {
-        itemHeight += static_cast<int>(((iFontSize - 30) + 1) * 1.5);
+    if (fontSize > 30) {
+        itemHeight += static_cast<int>(((fontSize - 30) + 1) * 1.5);
     }
     return QSize(option.rect.width(), itemHeight);
 }

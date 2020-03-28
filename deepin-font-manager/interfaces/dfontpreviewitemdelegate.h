@@ -21,13 +21,15 @@ protected:
     bool eventFilter(QObject *object, QEvent *event) override;
 
 private:
-    QRect adjustPreviewRect(const QString &fontName, const bool &isEnable, const QRect bgRect) const;
+    QRect adjustPreviewRect(const QRect bgRect) const;
     QFont adjustPreviewFont(const QString &fontFamilyName, const QString &fontStyleName, const int &fontSize) const;
+    QPoint adjustPreviewFontBaseLinePoint(const QRect &fontPreviewRect, const QFontMetrics &previewFontMetrics) const;
 
     void paintForegroundCheckBox(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
     void paintForegroundFontName(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
     void paintForegroundCollectIcon(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
     void paintForegroundPreviewFont(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
+    void paintForegroundPreviewContent(QPainter *painter, const QString &content, const QRect &fontPreviewRect, const QFont &previewFont) const;
     void paintBackground(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
     QAbstractItemView *m_parentView;
