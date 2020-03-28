@@ -209,7 +209,6 @@ void DFontPreviewListView::deleteFontModelIndex(const QString &filePath, bool is
     }
 }
 
-
 bool DFontPreviewListView::isDeleting()
 {
     DFontMgrMainWindow *mw = qobject_cast<DFontMgrMainWindow *>(m_parentWidget);
