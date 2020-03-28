@@ -28,7 +28,6 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
     connect(this, &DFontPreviewListView::itemRemoved, this, &DFontPreviewListView::onItemRemoved);
     connect(this, &DFontPreviewListView::itemRemovedFromSys, this, &DFontPreviewListView::onItemRemovedFromSys);
     m_dataThread = DFontPreviewListDataThread::instance(this);
-    m_dataThread->setMutex(&m_mutex);
     QWidget *topSpaceWidget = new QWidget;
     topSpaceWidget->setFixedSize(this->width(), 10);
     this->addHeaderWidget(topSpaceWidget);
@@ -97,7 +96,6 @@ void DFontPreviewListView::onFinishedDataLoad()
     QList<DFontPreviewItemData> fontInfoList = m_dataThread->getFontModelList();
     //qDebug() << fontInfoList.size();
     for (int i = 0; i < fontInfoList.size(); ++i) {
-
         DFontPreviewItemData itemData = fontInfoList.at(i);
         QString filePath = itemData.fontInfo.filePath;
         QFileInfo filePathInfo(filePath);
@@ -106,7 +104,7 @@ void DFontPreviewListView::onFinishedDataLoad()
             //删除字体之前启用字体，防止下次重新安装后就被禁用
             enableFont(itemData);
             QMap<QString, QString> delInfo;
-            delInfo.insert("filePath", itemData.fontInfo.filePath);
+//            delInfo.insert("filePath", itemData.fontInfo.filePath);
             delInfo.insert("familyName", itemData.fontInfo.familyName);
             delInfo.insert("styleName", itemData.fontInfo.styleName);
             DFMDBManager::instance()->deleteFontInfoByFontMap(delInfo);
@@ -256,6 +254,11 @@ void DFontPreviewListView::selectFonts(const QStringList &fileList)
         selection_model->reset();
         selection_model->select(selection, QItemSelectionModel::Select);
     }
+}
+
+QMutex *DFontPreviewListView::getMutex()
+{
+     return &m_mutex;
 }
 
 void DFontPreviewListView::selectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
@@ -614,7 +617,7 @@ void DFontPreviewListView::updateChangedDir(const QString &path)
             //删除字体之前启用字体，防止下次重新安装后就被禁用
             enableFont(itemData);
             QMap<QString, QString> delInfo;
-            delInfo.insert("filePath", itemData.fontInfo.filePath);
+//            delInfo.insert("filePath", itemData.fontInfo.filePath);
             delInfo.insert("familyName", itemData.fontInfo.familyName);
             delInfo.insert("styleName", itemData.fontInfo.styleName);
             if (!DFMDBManager::instance()->deleteFontInfoByFontMap(delInfo))
@@ -654,7 +657,7 @@ void DFontPreviewListView::changeFontFile(const QString &path, bool force)
             //删除字体之前启用字体，防止下次重新安装后就被禁用
             enableFont(itemData);
             QMap<QString, QString> delInfo;
-            delInfo.insert("filePath", itemData.fontInfo.filePath);
+//            delInfo.insert("filePath", itemData.fontInfo.filePath);
             delInfo.insert("familyName", itemData.fontInfo.familyName);
             delInfo.insert("styleName", itemData.fontInfo.styleName);
             if (!DFMDBManager::instance()->deleteFontInfoByFontMap(delInfo))

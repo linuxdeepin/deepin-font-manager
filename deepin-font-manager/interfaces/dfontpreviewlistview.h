@@ -59,16 +59,15 @@ public:
     void deleteFontModelIndex(const QString &filePath, bool isFromSys = false);
     inline bool isDeleting();
     void selectFonts(const QStringList &fileList);
-
+    QMutex *getMutex();
+    bool enableFont(const DFontPreviewItemData &itemData);
+    bool disableFont(const DFontPreviewItemData &itemData);
 
 protected:
     void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected) override;
 
 private:
     void initConnections();
-
-    bool enableFont(const DFontPreviewItemData &itemData);
-    bool disableFont(const DFontPreviewItemData &itemData);
 
     inline QRect getCollectionIconRect(QRect visualRect);
 

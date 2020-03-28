@@ -25,6 +25,9 @@ DFontPreviewListDataThread::DFontPreviewListDataThread(DFontPreviewListView *vie
     , m_fsWatcher(nullptr)
     , m_mutex(nullptr)
 {
+    if (view != nullptr)
+        m_mutex = view->getMutex();
+
 //    QTimer::singleShot(50, this, [this]() {
         m_dbManager = DFMDBManager::instance();
         moveToThread(&mThread);
@@ -40,10 +43,9 @@ DFontPreviewListDataThread::~DFontPreviewListDataThread()
 
 void DFontPreviewListDataThread::doWork()
 {
+    QMutexLocker locker(m_mutex);
     initFileSystemWatcher();
-    {
-        m_fontModelList.clear();
-    }
+    m_fontModelList.clear();
 
     qDebug() << "doWork thread id = " << QThread::currentThreadId();
     QStringList fontNameList;
@@ -231,11 +233,26 @@ void DFontPreviewListDataThread::refreshFontListData(bool isStartup)
 
     QSet<QString> dbFilePathSet;
     for (int i = 0; i < fontInfoList.size(); ++i) {
-
         DFontPreviewItemData itemData = fontInfoList.at(i);
 
         if (isStartup) {
-            m_fontModelList.append(itemData);
+            QString filePath = itemData.fontInfo.filePath.trimmed();
+            QFileInfo filePathInfo(filePath);
+
+            if (filePathInfo.exists()) {
+                m_fontModelList.append(itemData);
+            } else {
+                //如果字体文件已经不存在，则从t_manager表中删除
+                if (!filePathInfo.exists()) {
+                    //删除字体之前启用字体，防止下次重新安装后就被禁用
+                    m_view->enableFont(itemData);
+                    QMap<QString, QString> delInfo;
+//                    delInfo.insert("filePath", itemData.fontInfo.filePath);
+                    delInfo.insert("familyName", itemData.fontInfo.familyName);
+                    delInfo.insert("styleName", itemData.fontInfo.styleName);
+                    DFMDBManager::instance()->deleteFontInfoByFontMap(delInfo);
+                }
+            }
         } else {
             QString filePath = itemData.fontInfo.filePath;
             QFileInfo filePathInfo(filePath);

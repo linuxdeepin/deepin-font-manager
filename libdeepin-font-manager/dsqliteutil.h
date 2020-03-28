@@ -21,6 +21,9 @@ public:
     //创建数据库表
     bool createTable();
 
+    //创建索引
+    bool createIndex();
+
     //增加数据
     bool addRecord(QMap<QString, QString> data, QString table_name = "t_fontmanager");
 

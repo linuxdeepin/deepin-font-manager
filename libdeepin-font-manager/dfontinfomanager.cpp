@@ -358,6 +358,10 @@ DFontInfo DFontInfoManager::getFontInfo(const QString &filePath)
         fontInfo.familyName = QString::fromLatin1(m_face->family_name);
     }
 
+    // destroy object.
+    FT_Done_Face(m_face);
+    FT_Done_FreeType(m_library);
+
     DFMDBManager *dbManager = DFMDBManager::instance();
     if (dbManager->getRecordCount() > 0) {
         fontInfo.sysVersion = fontInfo.version;
@@ -369,10 +373,6 @@ DFontInfo DFontInfoManager::getFontInfo(const QString &filePath)
     } else {
         fontInfo.isInstalled = isFontInstalled(fontInfo);
     }
-
-    // destroy object.
-    FT_Done_Face(m_face);
-    FT_Done_FreeType(m_library);
 
     return fontInfo;
 }

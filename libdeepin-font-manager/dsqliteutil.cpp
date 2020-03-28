@@ -21,6 +21,7 @@ DSqliteUtil::DSqliteUtil(const QString &strDatabase)
 
     createConnection(m_strDatabase);
     createTable();
+    createIndex();
 }
 
 DSqliteUtil::~DSqliteUtil()
@@ -101,6 +102,24 @@ isMonoSpace TINYINT)";
     }
 }
 
+bool DSqliteUtil::createIndex()
+{
+    if (!m_db.isOpen()) {
+        createConnection(m_strDatabase);
+    }
+
+    m_query = new QSqlQuery(m_db);
+
+    QString createIndexSql = "CREATE INDEX idx_familyStyle ON t_fontmanager(familyName, styleName)";
+    if (!m_query->exec(createIndexSql)) {
+        qDebug() << "create index failed!";
+        return false;
+    } else {
+        qDebug() << "create index sucess!";
+        return true;
+    }
+}
+
 //向数据库中增加数据
 bool DSqliteUtil::addRecord(QMap<QString, QString> data, QString table_name)
 {
@@ -124,11 +143,9 @@ bool DSqliteUtil::addRecord(QMap<QString, QString> data, QString table_name)
 
     if (!m_query->exec()) {
         qDebug() << "add data failed!";
-        m_db.rollback();//回滚
         return false;
     } else {
         qDebug() << "add data success!";
-        m_db.commit();
         return true;
     }
 }
@@ -156,11 +173,9 @@ bool DSqliteUtil::delRecord(QMap<QString, QString> where, QString table_name)
 
     if (!m_query->exec()) {
         qDebug() << "del data failed!";
-        m_db.rollback();//回滚
         return false;
     } else {
         qDebug() << "del data success!";
-        m_db.commit();//提交
         return true;
     }
 }
@@ -188,11 +203,9 @@ bool DSqliteUtil::updateRecord(QMap<QString, QString> where, QMap<QString, QStri
 
     if (!m_query->exec()) {
         qDebug() << "update data failed!";
-        m_db.rollback();
         return false;
     } else {
         qDebug() << "update data success!";
-        m_db.commit();
         return true;
     }
 }
@@ -308,10 +321,8 @@ bool DSqliteUtil::delAllRecords(QString table_name)
 
     if (!m_query->exec()) {
         qDebug() << "delete all records failed!";
-        m_db.rollback();
         return false;
     } else {
-        m_db.commit();
         qDebug() << "delete all records success!";
         return true;
     }
