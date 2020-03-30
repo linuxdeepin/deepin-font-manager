@@ -43,12 +43,14 @@ protected:
     void verifyFontFiles();
     bool ifNeedShowExceptionWindow() const;
     bool isSystemFont(DFontInfo &f);
+    void checkShowMessage();
 
     void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
     void closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;
 
 protected slots:
     void batchInstall();
+    void batchReInstall();
     void onProgressChanged(const QString &filePath, const double &percent);
 
     void onCancelInstall();
@@ -69,7 +71,13 @@ private:
     QStringList m_damagedFiles;
     QStringList m_systemFiles;
     QStringList m_outfileList;
+    QStringList m_errorList;
     QStringList m_AllSysFiles;
+
+    int totalInstallFont = 0;
+    int totalSysFontCount = 0;
+    bool getInstallMessage = false;
+    bool getReInstallMessage = false;
 
     // Skip popup exception dialog if true
     bool m_isNeedSkipException {false};
@@ -80,6 +88,7 @@ private:
     QList<DFInstallErrorItemModel *> m_installErrorFontModelList;
     DFontInfoManager *m_fontInfoManager;
     DFontManager *m_fontManager;
+    SignalManager *m_signalManager = SignalManager::instance();
 
     DLabel *m_logoLabel {nullptr};
     DLabel *m_titleLabel {nullptr};

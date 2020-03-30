@@ -183,8 +183,15 @@ void DFontManager::handleUnInstall()
 
 void DFontManager::handleReInstall()
 {
-    if (doCmd("dfont-install", QStringList() << m_reinstFile)) {
-        emit reinstallFinished();
+    if (doCmd("dfont-install", QStringList() << m_instFileList)) {
+        if (m_instFileList.count() == 1) {
+            // emit installFinished();
+        }
+        emit reInstallFinished(0, m_installOutList, m_systemFontCount);
+
+    } else {
+        // For:unathorized exit
+        Q_EMIT reInstallFinished(127, QStringList(), m_systemFontCount);
     }
 }
 
@@ -200,7 +207,7 @@ void DFontManager::doInstall(const QStringList &fileList, bool reinstall)
     QString targetDir = "";
 
     m_installOutList.clear();
-    for ( QString file : fileList) {
+    for (QString file : fileList) {
         QStringList fileParamList = file.split("|");
         QString filePathOrig = fileParamList.at(0);
         QString familyName = fileParamList.at(1);

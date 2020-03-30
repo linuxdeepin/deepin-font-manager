@@ -20,6 +20,8 @@
 #ifndef DFONTMANAGER_H
 #define DFONTMANAGER_H
 
+#include "signalmanager.h"
+
 #include <QThread>
 #include <QModelIndex>
 
@@ -53,6 +55,7 @@ signals:
     void reinstalling();
     void uninstalling();
     void installFinished(int state, QStringList fileList, int systemFontCount);
+    void reInstallFinished(int state, QStringList fileList, int systemFontCount);
     void reinstallFinished();
     void uninstallFinished();
     void uninstallFontFinished(const QStringList &uninstallIndex);
@@ -67,7 +70,8 @@ private:
     void handleInstall();
     void handleUnInstall();
     void handleReInstall();
-    void doInstall(const QStringList &fileList, bool reinstall = false);
+    void doInstall(const QStringList &fileList, bool reinstal = false);
+    void doReInstall(const QStringList &fileList);
     void doUninstall(const QStringList &fileList);
 
 private:
