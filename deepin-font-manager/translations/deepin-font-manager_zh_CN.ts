@@ -361,6 +361,45 @@
     </message>
 </context>
 <context>
+    <name>Shortcut</name>
+    <message>
+        <source>Help</source>
+        <translation>帮助</translation>
+    </message>
+    <message>
+        <source>Display shortcuts</source>
+        <translation>显示快捷键</translation>
+    </message>
+    <message>
+        <source>Page up</source>
+        <translation>上一页</translation>
+    </message>
+    <message>
+        <source>Page down</source>
+        <translation>下一页</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>删除</translation>
+    </message>
+    <message>
+        <source>Add font</source>
+        <translation>添加字体</translation>
+    </message>
+    <message>
+        <source>Favorite</source>
+        <translation>收藏</translation>
+    </message>
+    <message>
+        <source>Unfavorite</source>
+        <translation>取消收藏</translation>
+    </message>
+    <message>
+        <source>Font info</source>
+        <translation>字体信息</translation>
+    </message>
+</context>
+<context>
     <name>Shortcuts</name>
     <message>
         <source>Help</source>

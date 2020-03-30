@@ -361,6 +361,45 @@
     </message>
 </context>
 <context>
+    <name>Shortcut</name>
+    <message>
+        <source>Help</source>
+        <translation>مساعدة</translation>
+    </message>
+    <message>
+        <source>Display shortcuts</source>
+        <translation>عرض الإختصارات</translation>
+    </message>
+    <message>
+        <source>Page up</source>
+        <translation>أعلى الصفحة</translation>
+    </message>
+    <message>
+        <source>Page down</source>
+        <translation>أسفل الصفحة</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>حذف</translation>
+    </message>
+    <message>
+        <source>Add font</source>
+        <translation>إضافة خط</translation>
+    </message>
+    <message>
+        <source>Favorite</source>
+        <translation>المفضلة</translation>
+    </message>
+    <message>
+        <source>Unfavorite</source>
+        <translation>غير المفضلة</translation>
+    </message>
+    <message>
+        <source>Font info</source>
+        <translation>معلومات الخط</translation>
+    </message>
+</context>
+<context>
     <name>Shortcuts</name>
     <message>
         <source>Help</source>

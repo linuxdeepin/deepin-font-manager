@@ -361,6 +361,45 @@
     </message>
 </context>
 <context>
+    <name>Shortcut</name>
+    <message>
+        <source>Help</source>
+        <translation>Bantuan</translation>
+    </message>
+    <message>
+        <source>Display shortcuts</source>
+        <translation>Papar pintasan</translation>
+    </message>
+    <message>
+        <source>Page up</source>
+        <translation>Halaman ke atas</translation>
+    </message>
+    <message>
+        <source>Page down</source>
+        <translation>Halaman ke bawah</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>Padam</translation>
+    </message>
+    <message>
+        <source>Add font</source>
+        <translation>Tambah fon</translation>
+    </message>
+    <message>
+        <source>Favorite</source>
+        <translation>Kegemaran</translation>
+    </message>
+    <message>
+        <source>Unfavorite</source>
+        <translation>Nyahgemar</translation>
+    </message>
+    <message>
+        <source>Font info</source>
+        <translation>Maklumat fon</translation>
+    </message>
+</context>
+<context>
     <name>Shortcuts</name>
     <message>
         <source>Help</source>

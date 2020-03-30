@@ -1088,8 +1088,7 @@ void DFontMgrMainWindow::onFontUninstallFinished(const QStringList &uninstallInd
 void DFontMgrMainWindow::onFontListViewRowCountChanged(unsigned int bShow)
 {
     Q_D(DFontMgrMainWindow);
-    if(m_fontLoadingSpinner->isHidden())
-    {
+    if (m_fontLoadingSpinner->isHidden()) {
         switch (bShow) {
         case 0:
             m_fontPreviewListView->show();
@@ -1343,21 +1342,21 @@ void DFontMgrMainWindow::showAllShortcut()
     QJsonArray jsonGroups;
 
     QMap<QString, QString> shortcutKeymap = {
-        {"Help",               "F1"},
+        {DApplication::translate("Shortcut", "Help"), "F1"},
 //        {"Zoom in",            "Ctrl+-"},
 //        {"Zoom out",           "Ctrl++"},
 //        {"Reset font",         "Ctrl+0"},
 //        {"Close window",       "Alt+F4"},
-        {"Display shortcuts",  "Ctrl+Shift+?"},
-        {"Page up",            "PageUp"},
-        {"Page down",          "PageDown"},
+        {DApplication::translate("Shortcut", "Display shortcuts"),  "Ctrl+Shift+?"},
+        {DApplication::translate("Shortcut", "Page up"), "PageUp"},
+        {DApplication::translate("Shortcut", "Page down"), "PageDown"},
 //        {"Resize window",      "Ctrl+Alt+F"},
 //        {"Find",               "Ctrl+F"},
-        {"Delete",             "Delete"},
-        {"Add font",           "Ctrl+O"},
-        {"Favorite",           "Ctrl+K"},
-        {"Unfavorite",         "Ctrl+Shift+K"},
-        {"Font info",          "Alt+Enter"},
+        {DApplication::translate("Shortcut", "Delete"), "Delete"},
+        {DApplication::translate("Shortcut", "Add font"), "Ctrl+O"},
+        {DApplication::translate("Shortcut", "Favorite"), "Ctrl+K"},
+        {DApplication::translate("Shortcut", "Unfavorite"), "Ctrl+Shift+K"},
+        {DApplication::translate("Shortcut", "Font info"), "Alt+Enter"},
     };
 
     QJsonObject fontMgrJsonGroup;

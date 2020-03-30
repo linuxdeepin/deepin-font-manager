@@ -162,7 +162,7 @@
     <name>Dfuninstalldialog</name>
     <message>
         <source>Deleting fonts, please wait...</source>
-        <translation type="unfinished"/>
+        <translation>Lösche Schriftarten, bitte warten...</translation>
     </message>
 </context>
 <context>
@@ -358,6 +358,45 @@
     <message>
         <source>No fonts</source>
         <translation>Keine Schriftarten</translation>
+    </message>
+</context>
+<context>
+    <name>Shortcut</name>
+    <message>
+        <source>Help</source>
+        <translation>Hilfe</translation>
+    </message>
+    <message>
+        <source>Display shortcuts</source>
+        <translation>Verknüpfungen anzeigen</translation>
+    </message>
+    <message>
+        <source>Page up</source>
+        <translation>Bild auf</translation>
+    </message>
+    <message>
+        <source>Page down</source>
+        <translation>Bild ab</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>Löschen</translation>
+    </message>
+    <message>
+        <source>Add font</source>
+        <translation>Schriftart hinzufügen</translation>
+    </message>
+    <message>
+        <source>Favorite</source>
+        <translation>Favorit</translation>
+    </message>
+    <message>
+        <source>Unfavorite</source>
+        <translation>Kein Favorit</translation>
+    </message>
+    <message>
+        <source>Font info</source>
+        <translation>Schriftartinformationen</translation>
     </message>
 </context>
 <context>

@@ -162,7 +162,7 @@
     <name>Dfuninstalldialog</name>
     <message>
         <source>Deleting fonts, please wait...</source>
-        <translation type="unfinished"/>
+        <translation>Eliiminazione font, attendere...</translation>
     </message>
 </context>
 <context>
@@ -359,6 +359,45 @@ Localizzazione italiana a cura di Massimo A. Carofano.</translation>
     <message>
         <source>No fonts</source>
         <translation>Nessun font</translation>
+    </message>
+</context>
+<context>
+    <name>Shortcut</name>
+    <message>
+        <source>Help</source>
+        <translation>Aiuto</translation>
+    </message>
+    <message>
+        <source>Display shortcuts</source>
+        <translation>Visualizza scorciatoie</translation>
+    </message>
+    <message>
+        <source>Page up</source>
+        <translation>Pagina su</translation>
+    </message>
+    <message>
+        <source>Page down</source>
+        <translation>Pagina giù</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>Elimina</translation>
+    </message>
+    <message>
+        <source>Add font</source>
+        <translation>Aggiungi font</translation>
+    </message>
+    <message>
+        <source>Favorite</source>
+        <translation>Preferito</translation>
+    </message>
+    <message>
+        <source>Unfavorite</source>
+        <translation>Non più preferito</translation>
+    </message>
+    <message>
+        <source>Font info</source>
+        <translation>Info font</translation>
     </message>
 </context>
 <context>

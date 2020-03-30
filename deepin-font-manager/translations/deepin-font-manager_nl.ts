@@ -41,15 +41,15 @@
     <name>DFInstallErrorDialog</name>
     <message>
         <source>Broken file</source>
-        <translation type="unfinished"/>
+        <translation>Beschadigd bestand</translation>
     </message>
     <message>
         <source>Same version installed</source>
-        <translation type="unfinished"/>
+        <translation>Deze versie is al geïnstalleerd</translation>
     </message>
     <message>
         <source>System Font</source>
-        <translation type="unfinished"/>
+        <translation>Systeemlettertype</translation>
     </message>
 </context>
 <context>
@@ -108,19 +108,19 @@
     </message>
     <message>
         <source>%1 font installed</source>
-        <translation type="unfinished"/>
+        <translation>Er is %1 lettertype geïnstalleerd</translation>
     </message>
     <message>
         <source>The other one system font has already been installed</source>
-        <translation type="unfinished"/>
+        <translation>Het andere systeemlettertype is al geïnstalleerd</translation>
     </message>
     <message>
         <source>The other %2 system fonts have already been installed</source>
-        <translation type="unfinished"/>
+        <translation>De andere %2 systeemlettertypen zijn al geïnstalleerd</translation>
     </message>
     <message>
         <source>%1 fonts installed</source>
-        <translation type="unfinished"/>
+        <translation>Er zijn %1 lettertypen geïnstalleerd</translation>
     </message>
 </context>
 <context>
@@ -162,7 +162,7 @@
     <name>Dfuninstalldialog</name>
     <message>
         <source>Deleting fonts, please wait...</source>
-        <translation type="unfinished"/>
+        <translation>Bezig met verwijderen...</translation>
     </message>
 </context>
 <context>
@@ -189,7 +189,7 @@
     </message>
     <message>
         <source>No need to install system fonts again</source>
-        <translation type="unfinished"/>
+        <translation>Je hoeft de systeemlettertypen niet nogmaals te installeren</translation>
     </message>
 </context>
 <context>
@@ -358,6 +358,45 @@
     <message>
         <source>No fonts</source>
         <translation>Geen lettertypen</translation>
+    </message>
+</context>
+<context>
+    <name>Shortcut</name>
+    <message>
+        <source>Help</source>
+        <translation>Hulp</translation>
+    </message>
+    <message>
+        <source>Display shortcuts</source>
+        <translation>Sneltoetsen tonen</translation>
+    </message>
+    <message>
+        <source>Page up</source>
+        <translation>Pagina omhoog</translation>
+    </message>
+    <message>
+        <source>Page down</source>
+        <translation>Pagina omlaag</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>Verwijderen</translation>
+    </message>
+    <message>
+        <source>Add font</source>
+        <translation>Lettertype toevoegen</translation>
+    </message>
+    <message>
+        <source>Favorite</source>
+        <translation>Toev. aan favorieten</translation>
+    </message>
+    <message>
+        <source>Unfavorite</source>
+        <translation>Verw. uit favorieten</translation>
+    </message>
+    <message>
+        <source>Font info</source>
+        <translation>Eigenschappen</translation>
     </message>
 </context>
 <context>

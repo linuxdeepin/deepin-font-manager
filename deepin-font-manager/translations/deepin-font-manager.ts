@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="en">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="en" version="2.1">
 <context>
     <name>Category</name>
     <message>
@@ -43,15 +41,15 @@
     <name>DFInstallErrorDialog</name>
     <message>
         <source>Broken file</source>
-        <translation type="unfinished">Broken file</translation>
+        <translation>Broken file</translation>
     </message>
     <message>
         <source>Same version installed</source>
-        <translation type="unfinished">Same version installed</translation>
+        <translation>Same version installed</translation>
     </message>
     <message>
         <source>System Font</source>
-        <translation type="unfinished"></translation>
+        <translation>System Font</translation>
     </message>
 </context>
 <context>
@@ -110,19 +108,19 @@
     </message>
     <message>
         <source>%1 font installed</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 font installed</translation>
     </message>
     <message>
         <source>The other one system font has already been installed</source>
-        <translation type="unfinished"></translation>
+        <translation>The other one system font has already been installed</translation>
     </message>
     <message>
         <source>The other %2 system fonts have already been installed</source>
-        <translation type="unfinished"></translation>
+        <translation>The other %2 system fonts have already been installed</translation>
     </message>
     <message>
         <source>%1 fonts installed</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 fonts installed</translation>
     </message>
 </context>
 <context>
@@ -157,14 +155,14 @@
     </message>
     <message>
         <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
-        <translation type="unfinished"></translation>
+        <translation>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</translation>
     </message>
 </context>
 <context>
     <name>Dfuninstalldialog</name>
     <message>
         <source>Deleting fonts, please wait...</source>
-        <translation type="unfinished"></translation>
+        <translation>Deleting fonts, please wait...</translation>
     </message>
 </context>
 <context>
@@ -191,7 +189,7 @@
     </message>
     <message>
         <source>No need to install system fonts again</source>
-        <translation type="unfinished"></translation>
+        <translation>No need to install system fonts again</translation>
     </message>
 </context>
 <context>
@@ -229,15 +227,15 @@
     </message>
     <message>
         <source>Full name</source>
-        <translation type="unfinished"></translation>
+        <translation>Full name</translation>
     </message>
     <message>
         <source>Ps name</source>
-        <translation type="unfinished"></translation>
+        <translation>Ps name</translation>
     </message>
     <message>
         <source>Trademark</source>
-        <translation type="unfinished"></translation>
+        <translation>Trademark</translation>
     </message>
 </context>
 <context>
@@ -360,6 +358,45 @@
     <message>
         <source>No fonts</source>
         <translation>No fonts</translation>
+    </message>
+</context>
+<context>
+    <name>Shortcut</name>
+    <message>
+        <source>Help</source>
+        <translation>Help</translation>
+    </message>
+    <message>
+        <source>Display shortcuts</source>
+        <translation>Display shortcuts</translation>
+    </message>
+    <message>
+        <source>Page up</source>
+        <translation>Page up</translation>
+    </message>
+    <message>
+        <source>Page down</source>
+        <translation>Page down</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>Delete</translation>
+    </message>
+    <message>
+        <source>Add font</source>
+        <translation>Add font</translation>
+    </message>
+    <message>
+        <source>Favorite</source>
+        <translation>Favorite</translation>
+    </message>
+    <message>
+        <source>Unfavorite</source>
+        <translation>Unfavorite</translation>
+    </message>
+    <message>
+        <source>Font info</source>
+        <translation>Font info</translation>
     </message>
 </context>
 <context>

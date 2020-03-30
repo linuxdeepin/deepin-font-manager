@@ -361,6 +361,45 @@
     </message>
 </context>
 <context>
+    <name>Shortcut</name>
+    <message>
+        <source>Help</source>
+        <translation>Ayuda</translation>
+    </message>
+    <message>
+        <source>Display shortcuts</source>
+        <translation>Visualizar accesos directos</translation>
+    </message>
+    <message>
+        <source>Page up</source>
+        <translation>Página anterior</translation>
+    </message>
+    <message>
+        <source>Page down</source>
+        <translation>Siguiente página</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>Borrar</translation>
+    </message>
+    <message>
+        <source>Add font</source>
+        <translation>Añadir fuente</translation>
+    </message>
+    <message>
+        <source>Favorite</source>
+        <translation>Favorito</translation>
+    </message>
+    <message>
+        <source>Unfavorite</source>
+        <translation>Quitar favorito</translation>
+    </message>
+    <message>
+        <source>Font info</source>
+        <translation>Información de la fuente</translation>
+    </message>
+</context>
+<context>
     <name>Shortcuts</name>
     <message>
         <source>Help</source>

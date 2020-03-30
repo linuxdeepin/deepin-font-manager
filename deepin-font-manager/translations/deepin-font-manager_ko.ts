@@ -361,6 +361,45 @@
     </message>
 </context>
 <context>
+    <name>Shortcut</name>
+    <message>
+        <source>Help</source>
+        <translation>도움말</translation>
+    </message>
+    <message>
+        <source>Display shortcuts</source>
+        <translation>단축키 표시</translation>
+    </message>
+    <message>
+        <source>Page up</source>
+        <translation>페이지 위로</translation>
+    </message>
+    <message>
+        <source>Page down</source>
+        <translation>페이지 아래로</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>삭제</translation>
+    </message>
+    <message>
+        <source>Add font</source>
+        <translation>글꼴 추가</translation>
+    </message>
+    <message>
+        <source>Favorite</source>
+        <translation>즐겨찾기</translation>
+    </message>
+    <message>
+        <source>Unfavorite</source>
+        <translation>즐겨찾기 해제</translation>
+    </message>
+    <message>
+        <source>Font info</source>
+        <translation>글꼴 정보</translation>
+    </message>
+</context>
+<context>
     <name>Shortcuts</name>
     <message>
         <source>Help</source>

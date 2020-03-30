@@ -162,7 +162,7 @@
     <name>Dfuninstalldialog</name>
     <message>
         <source>Deleting fonts, please wait...</source>
-        <translation type="unfinished"/>
+        <translation>Yazı tipleri siliniyor, lütfen bekleyin...</translation>
     </message>
 </context>
 <context>
@@ -358,6 +358,45 @@
     <message>
         <source>No fonts</source>
         <translation>Yazı tipi yok</translation>
+    </message>
+</context>
+<context>
+    <name>Shortcut</name>
+    <message>
+        <source>Help</source>
+        <translation>Yardım</translation>
+    </message>
+    <message>
+        <source>Display shortcuts</source>
+        <translation>Kısayolları görüntüle</translation>
+    </message>
+    <message>
+        <source>Page up</source>
+        <translation>Yukarı</translation>
+    </message>
+    <message>
+        <source>Page down</source>
+        <translation>Aşağı</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>Sil</translation>
+    </message>
+    <message>
+        <source>Add font</source>
+        <translation>Yazı tipi ekle</translation>
+    </message>
+    <message>
+        <source>Favorite</source>
+        <translation>Sık kullanılan</translation>
+    </message>
+    <message>
+        <source>Unfavorite</source>
+        <translation>Sık kullanılandan çıkar</translation>
+    </message>
+    <message>
+        <source>Font info</source>
+        <translation>Yazı tipi bilgisi</translation>
     </message>
 </context>
 <context>

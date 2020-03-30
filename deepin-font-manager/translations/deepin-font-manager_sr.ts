@@ -162,7 +162,7 @@
     <name>Dfuninstalldialog</name>
     <message>
         <source>Deleting fonts, please wait...</source>
-        <translation type="unfinished"/>
+        <translation>Уклањање фонтова, сачекајте...</translation>
     </message>
 </context>
 <context>
@@ -358,6 +358,45 @@
     <message>
         <source>No fonts</source>
         <translation>Нема фонта</translation>
+    </message>
+</context>
+<context>
+    <name>Shortcut</name>
+    <message>
+        <source>Help</source>
+        <translation>Помоћ</translation>
+    </message>
+    <message>
+        <source>Display shortcuts</source>
+        <translation>Прикажи пречице</translation>
+    </message>
+    <message>
+        <source>Page up</source>
+        <translation>Страница нагоре</translation>
+    </message>
+    <message>
+        <source>Page down</source>
+        <translation> Страница надоле</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>Обриши</translation>
+    </message>
+    <message>
+        <source>Add font</source>
+        <translation>Додај фонт</translation>
+    </message>
+    <message>
+        <source>Favorite</source>
+        <translation>Омиљено</translation>
+    </message>
+    <message>
+        <source>Unfavorite</source>
+        <translation>Уклони из омиљеног</translation>
+    </message>
+    <message>
+        <source>Font info</source>
+        <translation>Подаци фонта</translation>
     </message>
 </context>
 <context>

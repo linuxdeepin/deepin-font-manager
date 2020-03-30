@@ -162,7 +162,7 @@
     <name>Dfuninstalldialog</name>
     <message>
         <source>Deleting fonts, please wait...</source>
-        <translation type="unfinished"/>
+        <translation>Poistetaan fontteja, odota...</translation>
     </message>
 </context>
 <context>
@@ -358,6 +358,45 @@
     <message>
         <source>No fonts</source>
         <translation>Ei fontteja</translation>
+    </message>
+</context>
+<context>
+    <name>Shortcut</name>
+    <message>
+        <source>Help</source>
+        <translation>Apua</translation>
+    </message>
+    <message>
+        <source>Display shortcuts</source>
+        <translation>Näytä kuvakkeet</translation>
+    </message>
+    <message>
+        <source>Page up</source>
+        <translation>Sivu ylös</translation>
+    </message>
+    <message>
+        <source>Page down</source>
+        <translation>Sivu alas</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>Poista</translation>
+    </message>
+    <message>
+        <source>Add font</source>
+        <translation>Lisää fontti</translation>
+    </message>
+    <message>
+        <source>Favorite</source>
+        <translation>Suosikki</translation>
+    </message>
+    <message>
+        <source>Unfavorite</source>
+        <translation>Inhokki</translation>
+    </message>
+    <message>
+        <source>Font info</source>
+        <translation>Fonttitiedot</translation>
     </message>
 </context>
 <context>

@@ -41,15 +41,15 @@
     <name>DFInstallErrorDialog</name>
     <message>
         <source>Broken file</source>
-        <translation type="unfinished"/>
+        <translation>Beskadiget fil</translation>
     </message>
     <message>
         <source>Same version installed</source>
-        <translation type="unfinished"/>
+        <translation>Samme version er installeret</translation>
     </message>
     <message>
         <source>System Font</source>
-        <translation type="unfinished"/>
+        <translation>Systemets skrifttype</translation>
     </message>
 </context>
 <context>
@@ -108,19 +108,19 @@
     </message>
     <message>
         <source>%1 font installed</source>
-        <translation type="unfinished"/>
+        <translation>%1 skrifttype installeret</translation>
     </message>
     <message>
         <source>The other one system font has already been installed</source>
-        <translation type="unfinished"/>
+        <translation>Den anden systemskrifttype er allerede blevet installeret</translation>
     </message>
     <message>
         <source>The other %2 system fonts have already been installed</source>
-        <translation type="unfinished"/>
+        <translation>De andre %2 systemskrifttyper er allerede blevet installeret</translation>
     </message>
     <message>
         <source>%1 fonts installed</source>
-        <translation type="unfinished"/>
+        <translation>%1 skrifttyper installeret</translation>
     </message>
 </context>
 <context>
@@ -162,7 +162,7 @@
     <name>Dfuninstalldialog</name>
     <message>
         <source>Deleting fonts, please wait...</source>
-        <translation type="unfinished"/>
+        <translation>Sletter skrifttyper, vent venligst...</translation>
     </message>
 </context>
 <context>
@@ -189,7 +189,7 @@
     </message>
     <message>
         <source>No need to install system fonts again</source>
-        <translation type="unfinished"/>
+        <translation>Det er ikke nødvendigt at installere systemets skrifttyper igen</translation>
     </message>
 </context>
 <context>
@@ -358,6 +358,45 @@
     <message>
         <source>No fonts</source>
         <translation>Ingen skrifttyper</translation>
+    </message>
+</context>
+<context>
+    <name>Shortcut</name>
+    <message>
+        <source>Help</source>
+        <translation>Hjælp</translation>
+    </message>
+    <message>
+        <source>Display shortcuts</source>
+        <translation>Vis genveje</translation>
+    </message>
+    <message>
+        <source>Page up</source>
+        <translation>Side op</translation>
+    </message>
+    <message>
+        <source>Page down</source>
+        <translation>Side ned</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>Slet</translation>
+    </message>
+    <message>
+        <source>Add font</source>
+        <translation>Tilføj skrifttype</translation>
+    </message>
+    <message>
+        <source>Favorite</source>
+        <translation>Favorit til</translation>
+    </message>
+    <message>
+        <source>Unfavorite</source>
+        <translation>Favorit fra</translation>
+    </message>
+    <message>
+        <source>Font info</source>
+        <translation>Skrifttypeinformation</translation>
     </message>
 </context>
 <context>

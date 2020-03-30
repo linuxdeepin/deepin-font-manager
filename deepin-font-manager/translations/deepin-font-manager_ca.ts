@@ -162,7 +162,7 @@
     <name>Dfuninstalldialog</name>
     <message>
         <source>Deleting fonts, please wait...</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;eliminen lletres. Espereu, si us plau...</translation>
     </message>
 </context>
 <context>
@@ -358,6 +358,45 @@
     <message>
         <source>No fonts</source>
         <translation>No hi ha lletres.</translation>
+    </message>
+</context>
+<context>
+    <name>Shortcut</name>
+    <message>
+        <source>Help</source>
+        <translation>Ajuda</translation>
+    </message>
+    <message>
+        <source>Display shortcuts</source>
+        <translation>Mostra les dreceres</translation>
+    </message>
+    <message>
+        <source>Page up</source>
+        <translation>Pàgina amunt</translation>
+    </message>
+    <message>
+        <source>Page down</source>
+        <translation>Pàgina avall</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>Elimina</translation>
+    </message>
+    <message>
+        <source>Add font</source>
+        <translation>Afegeix una lletra</translation>
+    </message>
+    <message>
+        <source>Favorite</source>
+        <translation>Prefereix</translation>
+    </message>
+    <message>
+        <source>Unfavorite</source>
+        <translation>Sense preferència</translation>
+    </message>
+    <message>
+        <source>Font info</source>
+        <translation>Informació de la lletra</translation>
     </message>
 </context>
 <context>

@@ -361,6 +361,45 @@
     </message>
 </context>
 <context>
+    <name>Shortcut</name>
+    <message>
+        <source>Help</source>
+        <translation>Aide</translation>
+    </message>
+    <message>
+        <source>Display shortcuts</source>
+        <translation>Afficher les raccourcis</translation>
+    </message>
+    <message>
+        <source>Page up</source>
+        <translation>Page précédente</translation>
+    </message>
+    <message>
+        <source>Page down</source>
+        <translation>Page suivante</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>Supprimer</translation>
+    </message>
+    <message>
+        <source>Add font</source>
+        <translation>Ajouter une police</translation>
+    </message>
+    <message>
+        <source>Favorite</source>
+        <translation>Favoris</translation>
+    </message>
+    <message>
+        <source>Unfavorite</source>
+        <translation>Ne pas aimer</translation>
+    </message>
+    <message>
+        <source>Font info</source>
+        <translation>Information sur la police de caractères</translation>
+    </message>
+</context>
+<context>
     <name>Shortcuts</name>
     <message>
         <source>Help</source>
