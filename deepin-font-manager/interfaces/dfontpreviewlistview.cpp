@@ -468,6 +468,7 @@ bool DFontPreviewListView::disableFont(const DFontPreviewItemData &itemData)
 
 void DFontPreviewListView::onListViewItemEnableBtnClicked(QModelIndexList itemIndexes, bool setValue)
 {
+    QMutexLocker locker(&m_mutex);
     QString fontName;
     QModelIndexList itemIndexesNew;
 
@@ -482,6 +483,9 @@ void DFontPreviewListView::onListViewItemEnableBtnClicked(QModelIndexList itemIn
         //            qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(itemIndexes[0]));
         DFontPreviewItemData itemData =
             qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(index));
+        QFileInfo fi(itemData.fontInfo.filePath);
+        if (!fi.exists())
+            continue;
         itemData.isEnabled = setValue;
 
         qDebug() << __FUNCTION__ << "familyName" << itemData.fontInfo.familyName << endl;
