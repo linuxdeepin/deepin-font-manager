@@ -1071,39 +1071,42 @@ void DFontMgrMainWindow::onFontUninstallFinished(const QStringList &uninstallInd
 void DFontMgrMainWindow::onFontListViewRowCountChanged(unsigned int bShow)
 {
     Q_D(DFontMgrMainWindow);
-
-    switch (bShow) {
-    case 0:
-        m_fontPreviewListView->show();
-        m_noResultListView->hide();
-        d->stateBar->show();
-        if (m_noInstallListView->isVisible()) {
-            m_noInstallListView->hide();
-        }
-        break;
-    case 1:
-        m_fontPreviewListView->hide();
-        m_noResultListView->show();
-        d->stateBar->hide();
-        if (m_noInstallListView->isVisible()) {
-            m_noInstallListView->hide();
-        }
-        break;
-    case 2:
-        m_fontPreviewListView->hide();
-        d->stateBar->hide();
-        if (m_noResultListView->isVisible()) {
+    if(m_fontLoadingSpinner->isHidden())
+    {
+        switch (bShow) {
+        case 0:
+            m_fontPreviewListView->show();
             m_noResultListView->hide();
+            d->stateBar->show();
+            if (m_noInstallListView->isVisible()) {
+                m_noInstallListView->hide();
+            }
+            break;
+        case 1:
+            m_fontPreviewListView->hide();
+            m_noResultListView->show();
+            d->stateBar->hide();
+            if (m_noInstallListView->isVisible()) {
+                m_noInstallListView->hide();
+            }
+            break;
+        case 2:
+            m_fontPreviewListView->hide();
+            d->stateBar->hide();
+            if (m_noResultListView->isVisible()) {
+                m_noResultListView->hide();
+            }
+            d->leftSiderBar->setFocus();
+            m_noInstallListView->show();
+            break;
+        default:
+            m_fontPreviewListView->show();
+            m_noResultListView->hide();
+            d->stateBar->show();
+            break;
         }
-        d->leftSiderBar->setFocus();
-        m_noInstallListView->show();
-        break;
-    default:
-        m_fontPreviewListView->show();
-        m_noResultListView->hide();
-        d->stateBar->show();
-        break;
     }
+    return ;
 }
 
 // 0 正在加载
