@@ -356,6 +356,7 @@ void DFInstallNormalWindow::checkShowMessage()
         totalSysFontCount = 0;
         getInstallMessage = false;
         getReInstallMessage = false;
+        this->close();
     }
 }
 
