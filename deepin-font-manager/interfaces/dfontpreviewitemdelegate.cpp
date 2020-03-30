@@ -21,9 +21,9 @@ const int COLLECT_ICON_SIZE = 24;
 const int COLLECT_ICON_RIGHT_MARGIN = 15;
 const int COLLECT_ICON_TOP_MARGIN = 10;
 
-const int FONT_NAME_HEIGHT = 20;
+const int FONT_NAME_HEIGHT = 25;
 const int FONT_NAME_LEFT_MARGIN = 50;
-const int FONT_NAME_TOP_MARGIN = 7;
+const int FONT_NAME_TOP_MARGIN = 3;
 
 const int FONT_PREVIEW_LEFT_MARGIN = 50;
 const int FONT_PREVIEW_RIGHT_MARGIN = COLLECT_ICON_SIZE + COLLECT_ICON_RIGHT_MARGIN;
@@ -123,8 +123,8 @@ QPoint DFontPreviewItemDelegate::adjustPreviewFontBaseLinePoint(const QRect &fon
 //    } else {
 //        baseLineY = fontPreviewRect.bottom() - (fontPreviewRect.height() - previewFontMetrics.height()) / 2;
 //    }
-    /* 目前测试发现所有字体的descent值为9都可以较好的预览出来 UT000591 */
-    int commonFontDescent = 9;
+    /* 调整descent值，用来调整预览效果 UT000591 */
+    int commonFontDescent = 4;
     int baseLineX = fontPreviewRect.x();
     int baseLineY = fontPreviewRect.bottom() - commonFontDescent;
     return QPoint(baseLineX, baseLineY);
