@@ -146,6 +146,9 @@ void DFontMgrMainWindow::initConnections()
 
     QObject::connect(this, &DFontMgrMainWindow::fileSelected, this,
     [this](const QStringList & files) { this->installFont(files); });
+
+    QObject::connect(this, &DFontMgrMainWindow::fileSelectedInSys, this,
+    [this](const QStringList & files) { this->installFont(files, true); });
     // Menu event
     QObject::connect(d->toolBarMenu, &QMenu::triggered, this, &DFontMgrMainWindow::handleMenuEvent);
 
@@ -196,6 +199,12 @@ void DFontMgrMainWindow::initConnections()
         m_fontUninstallDialog->setValue(" ", 0, 0);
         m_fontUninstallDialog->close();
         m_needDelCount = 0;
+        if (m_isDeleting && m_isFromSys)
+        {
+            emit m_signalManager->startToInsert();
+            m_isFromSys = false;
+        }
+        m_isDeleting = false;
     });
 
     QObject::connect(SignalManager::instance(), &SignalManager::deledFont, this, [ = ](QString & fontPath) {
@@ -843,7 +852,7 @@ void DFontMgrMainWindow::handleMenuEvent(QAction *action)
     }
 }
 
-void DFontMgrMainWindow::installFont(const QStringList &files)
+void DFontMgrMainWindow::installFont(const QStringList &files, bool isFromSys)
 {
     qDebug() << __FUNCTION__ << files;
 
@@ -851,6 +860,14 @@ void DFontMgrMainWindow::installFont(const QStringList &files)
         qDebug() << "Already exist a installtion flow";
         return;
     }
+
+    m_isFromSys = isFromSys;
+    if (m_isDeleting) {
+        qDebug() << "Is deleting ,quit";
+        waitForInsert(files);
+        return;
+    }
+
 
     m_dfNormalInstalldlg = new DFInstallNormalWindow(files, this);
     if (m_isQuickMode) {
@@ -1206,6 +1223,7 @@ void DFontMgrMainWindow::delCurrentFont()
     if (deleteCnt < 1)
         return;
     m_fIsDeleting = true;
+    m_isDeleting = true;
     DFDeleteDialog confirmDelDlg(this, deleteCnt, systemCnt);
     connect(&confirmDelDlg, &DFDeleteDialog::requestDelete, this, [this]() {
         // Add Delete font code Here
@@ -1388,4 +1406,35 @@ void DFontMgrMainWindow::checkCloseUninstallDialog()
         m_needDelCount = 0;
         emit SignalManager::instance()->closeUninstallDialog();
     }
+}
+
+void DFontMgrMainWindow::waitForInsert(const QStringList path)
+{
+
+    connect(m_signalManager, &SignalManager::startToInsert, this, [ = ] {
+        m_dfNormalInstalldlg = new DFInstallNormalWindow(path, this);
+        if (m_isQuickMode)
+        {
+            m_dfNormalInstalldlg->setSkipException(true);
+        }
+
+        //安装结束后刷新字体列表
+        connect(m_dfNormalInstalldlg, &DFInstallNormalWindow::finishFontInstall, this,
+                &DFontMgrMainWindow::onFontInstallFinished);
+
+        //Set installtion flag
+        /*
+         * Add font from + ,menu, drag file to main view
+         * to task bar can start a installtion flow, so must
+         * to set flag avoid
+         */
+        m_fIsInstalling = true;
+
+        Dtk::Widget::moveToCenter(m_dfNormalInstalldlg);
+        m_dfNormalInstalldlg->exec();
+        m_dfNormalInstalldlg->deleteLater();
+
+        //Clear installtion flag when NormalInstalltion window is closed
+        m_fIsInstalling = false;
+    });
 }

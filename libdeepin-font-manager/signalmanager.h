@@ -17,6 +17,7 @@ signals:
     void showFloatingMessage(int totalCount, int systemFontCount);
     void sendInstallMessage(int totalCount, int systemFontCount);
     void sendReInstallMessage(int totalCount, int systemFontCount);
+    void startToInsert();
 
 
 private:

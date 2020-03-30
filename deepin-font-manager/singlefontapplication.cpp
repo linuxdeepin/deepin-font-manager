@@ -157,7 +157,7 @@ void SingleFontApplication::activateWindow()
         //For: Drag files on task bar app icon
         //need start installtion flow
         if (m_selectedFiles.size() > 0) {
-            QMetaObject::invokeMethod(m_qspMainWnd.get(), "fileSelected", Qt::QueuedConnection,
+            QMetaObject::invokeMethod(m_qspMainWnd.get(), "fileSelectedInSys", Qt::QueuedConnection,
                                       Q_ARG(QStringList, m_selectedFiles));
         }
     }

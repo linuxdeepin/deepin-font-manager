@@ -74,13 +74,14 @@ protected:
     void initFontPreviewItemsData();
 
     void handleAddFontEvent();
-    void installFont(const QStringList &files);
+    void installFont(const QStringList &files, bool isFromSys = false);
     void showFontFilePostion();
     void delCurrentFont();
     void exportFont();
     void showAllShortcut();
     void showInstalledFiles(QStringList fileList);
     void checkCloseUninstallDialog();
+    void waitForInsert(const QStringList path);
 
     //Add drag install
     void dragEnterEvent(QDragEnterEvent *event) override;
@@ -95,6 +96,7 @@ protected:
     void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
 signals:
     void fileSelected(const QStringList files) const;
+    void fileSelectedInSys(const QStringList files) const;
     void requestDeleted(const QStringList files);
 
     // Only use when user double click font file
@@ -123,6 +125,7 @@ protected:
     // For quick install mode
     bool m_isQuickMode = {false};
     DFontManager *m_fontManager;
+    SignalManager *m_signalManager = SignalManager::instance();
     QShortcut *m_scFullScreen;  //全屏快捷键F11
     QShortcut *m_scZoomIn;        //放大字体快捷键Ctrl+=
     QShortcut *m_scZoomOut;       //放大字体快捷键Ctrl+-
@@ -133,6 +136,8 @@ protected:
     int m_deledCount = 0;
 
     bool m_searchTextStatusIsEmpty = true;
+    bool m_isDeleting = false;
+    bool m_isFromSys = false;
 
     //Stand shortcut
     //Implement by DTK                       //Close window       --> Alt+F4
