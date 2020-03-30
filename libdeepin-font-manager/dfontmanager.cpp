@@ -188,7 +188,7 @@ void DFontManager::handleReInstall()
             // emit installFinished();
         }
         emit reInstallFinished(0, m_installOutList, m_systemFontCount);
-
+        qDebug() << "ASDASDasd" << endl;
     } else {
         // For:unathorized exit
         Q_EMIT reInstallFinished(127, QStringList(), m_systemFontCount);

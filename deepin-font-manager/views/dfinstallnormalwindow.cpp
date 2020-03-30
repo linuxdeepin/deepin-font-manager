@@ -166,14 +166,6 @@ void DFInstallNormalWindow::initConnections()
             qDebug() << __FUNCTION__ << "finishFontInstall outlist " << m_outfileList;
             emit finishFontInstall(m_outfileList);
 
-            if (ifNeedShowExceptionWindow()) {
-//                showInstallErrDlg();
-            } else {
-                this->close();
-            }
-        } else {
-            // User cancel in athorisze window
-            this->close();
         }
 
         emit  m_signalManager->sendInstallMessage(fileList.size(), systemCount);
