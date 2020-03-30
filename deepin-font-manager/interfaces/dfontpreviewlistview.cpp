@@ -468,6 +468,7 @@ bool DFontPreviewListView::disableFont(const DFontPreviewItemData &itemData)
 
 void DFontPreviewListView::onListViewItemEnableBtnClicked(QModelIndexList itemIndexes, bool setValue)
 {
+    QMutexLocker locker(&m_mutex);
     QString fontName;
     QModelIndexList itemIndexesNew;
 
