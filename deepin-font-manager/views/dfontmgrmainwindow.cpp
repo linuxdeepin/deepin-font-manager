@@ -1103,22 +1103,27 @@ void DFontMgrMainWindow::onFontListViewRowCountChanged(unsigned int bShow)
             break;
         } return;
     case 1:
-        m_fontPreviewListView->hide();
-        m_noResultListView->show();
-        d->stateBar->hide();
-        if (m_noInstallListView->isVisible()) {
-            m_noInstallListView->hide();
-        }
-        break;
+        while(isSpinnerHidden){
+            m_fontPreviewListView->hide();
+            m_noResultListView->show();
+            d->stateBar->hide();
+            if (m_noInstallListView->isVisible()) {
+                m_noInstallListView->hide();
+            }
+            break;
+        }return;
     case 2:
-        m_fontPreviewListView->hide();
-        d->stateBar->hide();
-        if (m_noResultListView->isVisible()) {
-            m_noResultListView->hide();
-        }
-        d->leftSiderBar->setFocus();
-        m_noInstallListView->show();
-        break;
+        while(isSpinnerHidden)
+        {
+            m_fontPreviewListView->hide();
+            d->stateBar->hide();
+            if (m_noResultListView->isVisible()) {
+                m_noResultListView->hide();
+            }
+            d->leftSiderBar->setFocus();
+            m_noInstallListView->show();
+            break;
+        }return;
     default:
         m_fontPreviewListView->show();
         m_noResultListView->hide();

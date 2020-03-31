@@ -36,6 +36,14 @@
         <source>The other %2 system fonts cannot be deleted</source>
         <translation type="vanished">خطوط النظام الـ %2  لا يمكن حذفها</translation>
     </message>
+    <message>
+        <source>Cancel</source>
+        <translation>إلغاء</translation>
+    </message>
+    <message>
+        <source>Confirm</source>
+        <translation>تأكيد</translation>
+    </message>
 </context>
 <context>
     <name>DFInstallErrorDialog</name>
@@ -139,7 +147,7 @@
     </message>
     <message>
         <source>Cancel</source>
-        <translation>إلغاء</translation>
+        <translation type="vanished">إلغاء</translation>
     </message>
     <message>
         <source>Confirm</source>
@@ -147,7 +155,7 @@
     </message>
     <message>
         <source>Delete</source>
-        <translation>حذف</translation>
+        <translation type="vanished">حذف</translation>
     </message>
     <message>
         <source>Are you sure you want to delete %1 fonts</source>

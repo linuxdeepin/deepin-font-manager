@@ -36,6 +36,14 @@
         <source>The other %2 system fonts cannot be deleted</source>
         <translation type="unfinished"/>
     </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Zrušit</translation>
+    </message>
+    <message>
+        <source>Confirm</source>
+        <translation>Potvrdit</translation>
+    </message>
 </context>
 <context>
     <name>DFInstallErrorDialog</name>
@@ -139,7 +147,7 @@
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Zrušit</translation>
+        <translation type="vanished">Zrušit</translation>
     </message>
     <message>
         <source>Confirm</source>
@@ -147,7 +155,7 @@
     </message>
     <message>
         <source>Delete</source>
-        <translation>Smazat</translation>
+        <translation type="vanished">Smazat</translation>
     </message>
     <message>
         <source>Are you sure you want to delete %1 fonts</source>

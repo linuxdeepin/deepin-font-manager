@@ -36,6 +36,14 @@
         <source>The other %2 system fonts cannot be deleted</source>
         <translation type="vanished">Diğer %2 sistem yazı tipleri silinemez</translation>
     </message>
+    <message>
+        <source>Cancel</source>
+        <translation>İptal</translation>
+    </message>
+    <message>
+        <source>Confirm</source>
+        <translation>Onayla</translation>
+    </message>
 </context>
 <context>
     <name>DFInstallErrorDialog</name>
@@ -139,7 +147,7 @@
     </message>
     <message>
         <source>Cancel</source>
-        <translation>İptal</translation>
+        <translation type="vanished">İptal</translation>
     </message>
     <message>
         <source>Confirm</source>
@@ -147,7 +155,7 @@
     </message>
     <message>
         <source>Delete</source>
-        <translation>Sil</translation>
+        <translation type="vanished">Sil</translation>
     </message>
     <message>
         <source>Are you sure you want to delete %1 fonts</source>

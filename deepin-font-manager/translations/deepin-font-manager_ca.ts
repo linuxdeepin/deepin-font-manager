@@ -36,6 +36,14 @@
         <source>The other %2 system fonts cannot be deleted</source>
         <translation type="vanished">Les altres %2 lletres del sistema no es poden eliminar.</translation>
     </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Cancel·la</translation>
+    </message>
+    <message>
+        <source>Confirm</source>
+        <translation>Confirmeu-ho</translation>
+    </message>
 </context>
 <context>
     <name>DFInstallErrorDialog</name>
@@ -139,7 +147,7 @@
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Cancel·la</translation>
+        <translation type="vanished">Cancel·la</translation>
     </message>
     <message>
         <source>Confirm</source>
@@ -147,7 +155,7 @@
     </message>
     <message>
         <source>Delete</source>
-        <translation>Elimina</translation>
+        <translation type="vanished">Elimina</translation>
     </message>
     <message>
         <source>Are you sure you want to delete %1 fonts</source>

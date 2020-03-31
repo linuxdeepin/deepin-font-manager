@@ -36,6 +36,14 @@
         <source>The other %2 system fonts cannot be deleted</source>
         <translation type="vanished">Las otras %2 fuentes del sistema no pueden ser borradas</translation>
     </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Cancelar</translation>
+    </message>
+    <message>
+        <source>Confirm</source>
+        <translation>Confirme</translation>
+    </message>
 </context>
 <context>
     <name>DFInstallErrorDialog</name>
@@ -139,7 +147,7 @@
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Cancelar</translation>
+        <translation type="vanished">Cancelar</translation>
     </message>
     <message>
         <source>Confirm</source>
@@ -147,7 +155,7 @@
     </message>
     <message>
         <source>Delete</source>
-        <translation>Borrar</translation>
+        <translation type="vanished">Borrar</translation>
     </message>
     <message>
         <source>Are you sure you want to delete %1 fonts</source>
@@ -293,7 +301,7 @@
     </message>
     <message>
         <source>Display in file manager</source>
-        <translation>Visualizar en el gestor de archivos</translation>
+        <translation>Mostrar en el gestor de archivos</translation>
     </message>
     <message>
         <source>Export</source>
@@ -368,15 +376,15 @@
     </message>
     <message>
         <source>Display shortcuts</source>
-        <translation>Visualizar accesos directos</translation>
+        <translation>Mostrar atajos</translation>
     </message>
     <message>
         <source>Page up</source>
-        <translation>Página anterior</translation>
+        <translation>Página arriba</translation>
     </message>
     <message>
         <source>Page down</source>
-        <translation>Siguiente página</translation>
+        <translation>Página abajo</translation>
     </message>
     <message>
         <source>Delete</source>
@@ -407,15 +415,15 @@
     </message>
     <message>
         <source>Display shortcuts</source>
-        <translation type="vanished">Visualizar accesos directos</translation>
+        <translation type="vanished">Mostrar atajos</translation>
     </message>
     <message>
         <source>Page up</source>
-        <translation type="vanished">Página anterior</translation>
+        <translation type="vanished">Página arriba</translation>
     </message>
     <message>
         <source>Page down</source>
-        <translation type="vanished">Siguiente página</translation>
+        <translation type="vanished">Página abajo</translation>
     </message>
     <message>
         <source>Delete</source>

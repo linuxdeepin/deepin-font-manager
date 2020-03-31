@@ -36,6 +36,14 @@
         <source>The other %2 system fonts cannot be deleted</source>
         <translation type="vanished">As outras %2 fontes do sistema não podem ser eliminadas</translation>
     </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Cancelar</translation>
+    </message>
+    <message>
+        <source>Confirm</source>
+        <translation>Confirmar</translation>
+    </message>
 </context>
 <context>
     <name>DFInstallErrorDialog</name>
@@ -139,7 +147,7 @@
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Cancelar</translation>
+        <translation type="vanished">Cancelar</translation>
     </message>
     <message>
         <source>Confirm</source>
@@ -147,7 +155,7 @@
     </message>
     <message>
         <source>Delete</source>
-        <translation>Eliminar</translation>
+        <translation type="vanished">Eliminar</translation>
     </message>
     <message>
         <source>Are you sure you want to delete %1 fonts</source>
@@ -338,7 +346,7 @@
     </message>
     <message>
         <source>Not Installed</source>
-        <translation>Não Instalada</translation>
+        <translation>Não instalada</translation>
     </message>
     <message>
         <source>Install Font</source>
@@ -372,11 +380,11 @@
     </message>
     <message>
         <source>Page up</source>
-        <translation>Página para acima</translation>
+        <translation>Página para cima</translation>
     </message>
     <message>
         <source>Page down</source>
-        <translation>Página para abaixo</translation>
+        <translation>Página para baixo</translation>
     </message>
     <message>
         <source>Delete</source>
@@ -411,11 +419,11 @@
     </message>
     <message>
         <source>Page up</source>
-        <translation type="vanished">Página para acima</translation>
+        <translation type="vanished">Página para cima</translation>
     </message>
     <message>
         <source>Page down</source>
-        <translation type="vanished">Página para abaixo</translation>
+        <translation type="vanished">Página para baixo</translation>
     </message>
     <message>
         <source>Delete</source>

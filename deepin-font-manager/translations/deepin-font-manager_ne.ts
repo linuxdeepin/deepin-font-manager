@@ -36,6 +36,14 @@
         <source>The other %2 system fonts cannot be deleted</source>
         <translation type="vanished">अन्य% 2 प्रणाली फन्टहरू मेटाउन सकिदैन</translation>
     </message>
+    <message>
+        <source>Cancel</source>
+        <translation>रद्द गर्नुहोस्</translation>
+    </message>
+    <message>
+        <source>Confirm</source>
+        <translation>पुष्टि गर्नुहोस्</translation>
+    </message>
 </context>
 <context>
     <name>DFInstallErrorDialog</name>
@@ -139,7 +147,7 @@
     </message>
     <message>
         <source>Cancel</source>
-        <translation>रद्द गर्नुहोस्</translation>
+        <translation type="vanished">रद्द गर्नुहोस्</translation>
     </message>
     <message>
         <source>Confirm</source>
@@ -147,7 +155,7 @@
     </message>
     <message>
         <source>Delete</source>
-        <translation>हटाउनुहोस्</translation>
+        <translation type="vanished">हटाउनुहोस्</translation>
     </message>
     <message>
         <source>Are you sure you want to delete %1 fonts</source>

@@ -130,12 +130,12 @@ void DFDeleteDialog::initUI()
     m_cancelBtn = new DPushButton(this);
     m_cancelBtn->setFixedHeight(38);
     m_cancelBtn->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
-    m_cancelBtn->setText(DApplication::translate("DeleteConfirmDailog", "Cancel"));
+    m_cancelBtn->setText(DApplication::translate("DFDeleteDialog", "Cancel"));
 
     m_confirmBtn = new DWarningButton(this);
     m_confirmBtn->setFixedHeight(38);
     m_confirmBtn->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
-    m_confirmBtn->setText(DApplication::translate("DeleteConfirmDailog", "Delete"));
+    m_confirmBtn->setText(DApplication::translate("DFDeleteDialog", "Confirm"));
 
     DVerticalLine *verticalSplite = new DVerticalLine(this);
     DPalette pa = DApplicationHelper::instance()->palette(verticalSplite);
