@@ -199,6 +199,8 @@ void DFontMgrMainWindow::initConnections()
         m_fontUninstallDialog->setValue(" ", 0, 0);
         m_fontUninstallDialog->close();
         m_needDelCount = 0;
+        bool a = m_isDeleting;
+        bool b = m_isFromSys;
         if (m_isDeleting && m_isFromSys)
         {
             emit m_signalManager->startToInsert();
@@ -852,7 +854,7 @@ void DFontMgrMainWindow::handleMenuEvent(QAction *action)
     }
 }
 
-void DFontMgrMainWindow::installFont(const QStringList &files, bool isFromSys)
+void DFontMgrMainWindow::installFont(const QStringList &files, bool m_isFromSys)
 {
     qDebug() << __FUNCTION__ << files;
 
@@ -860,16 +862,10 @@ void DFontMgrMainWindow::installFont(const QStringList &files, bool isFromSys)
         qDebug() << "Already exist a installtion flow";
         return;
     }
+    this->m_isFromSys = m_isFromSys;
 
-    m_isFromSys = isFromSys;
-    if (m_isDeleting) {
-        qDebug() << "Is deleting ,quit";
-        waitForInsert(files);
-        return;
-    }
+    m_dfNormalInstalldlg = new DFInstallNormalWindow(files, this, m_isFromSys, m_isDeleting);
 
-
-    m_dfNormalInstalldlg = new DFInstallNormalWindow(files, this);
     if (m_isQuickMode) {
         m_dfNormalInstalldlg->setSkipException(true);
     }
@@ -1091,8 +1087,7 @@ void DFontMgrMainWindow::onFontListViewRowCountChanged(unsigned int bShow)
     bool isSpinnerHidden = m_fontLoadingSpinner->isHidden();
     switch (bShow) {
     case 0:
-        while(isSpinnerHidden)
-        {
+        while (isSpinnerHidden) {
             m_fontPreviewListView->show();
             m_noResultListView->hide();
             d->stateBar->show();
@@ -1100,7 +1095,7 @@ void DFontMgrMainWindow::onFontListViewRowCountChanged(unsigned int bShow)
                 m_noInstallListView->hide();
             }
             break;
-        }return;
+        } return;
     case 1:
         m_fontPreviewListView->hide();
         m_noResultListView->show();
@@ -1408,33 +1403,4 @@ void DFontMgrMainWindow::checkCloseUninstallDialog()
     }
 }
 
-void DFontMgrMainWindow::waitForInsert(const QStringList path)
-{
 
-    connect(m_signalManager, &SignalManager::startToInsert, this, [ = ] {
-        m_dfNormalInstalldlg = new DFInstallNormalWindow(path, this);
-        if (m_isQuickMode)
-        {
-            m_dfNormalInstalldlg->setSkipException(true);
-        }
-
-        //安装结束后刷新字体列表
-        connect(m_dfNormalInstalldlg, &DFInstallNormalWindow::finishFontInstall, this,
-                &DFontMgrMainWindow::onFontInstallFinished);
-
-        //Set installtion flag
-        /*
-         * Add font from + ,menu, drag file to main view
-         * to task bar can start a installtion flow, so must
-         * to set flag avoid
-         */
-        m_fIsInstalling = true;
-
-        Dtk::Widget::moveToCenter(m_dfNormalInstalldlg);
-        m_dfNormalInstalldlg->exec();
-        m_dfNormalInstalldlg->deleteLater();
-
-        //Clear installtion flag when NormalInstalltion window is closed
-        m_fIsInstalling = false;
-    });
-}

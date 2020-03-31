@@ -43,6 +43,10 @@ public:
 
     void setSystemFontCount(int systemFontCount);
 
+    void setIsWaiting(bool value);
+
+    bool getIsWaiting() const;
+
 private slots:
     void handleInstallOutput();
     void handleReInstallOutput();
@@ -82,6 +86,7 @@ private:
     QString m_sysFile;
     Type m_type;
     int m_systemFontCount = 0;
+    bool isWaiting = false;
 };
 
 #endif

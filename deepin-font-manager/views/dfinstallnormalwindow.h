@@ -26,7 +26,7 @@ class DFInstallNormalWindow : public DFontBaseDialog
 {
     Q_OBJECT
 public:
-    DFInstallNormalWindow(const QStringList &files = QStringList(), QWidget *parent = nullptr);
+    DFInstallNormalWindow(const QStringList &files = QStringList(), QWidget *parent = nullptr, bool isFromSys = false, bool isDeleting = false);
     ~DFInstallNormalWindow() override;
 
     void setSkipException(bool skip);
@@ -73,6 +73,8 @@ private:
     QStringList m_outfileList;
     QStringList m_errorList;
     QStringList m_AllSysFiles;
+    QStringList m_waitForinstall;
+
 
     int totalInstallFont = 0;
     int totalSysFontCount = 0;
@@ -81,6 +83,8 @@ private:
 
     // Skip popup exception dialog if true
     bool m_isNeedSkipException {false};
+    bool m_isDeleting = false;
+    bool m_isFromSys = false;
     int systemFontCount = 0;
 
     InstallState m_installState {Install};

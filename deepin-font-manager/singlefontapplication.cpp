@@ -123,7 +123,7 @@ void SingleFontApplication::activateWindow()
             m_qspQuickWnd->activateWindow(); // Reactive main window
         }
 
-        QMetaObject::invokeMethod(m_qspQuickWnd.get(), "fileSelected", Qt::QueuedConnection,
+        QMetaObject::invokeMethod(m_qspQuickWnd.get(), "fileSelectedInSys", Qt::QueuedConnection,
                                   Q_ARG(QStringList, m_selectedFiles));
 
     } else {

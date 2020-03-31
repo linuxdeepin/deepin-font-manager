@@ -292,6 +292,16 @@ void DFontManager::doUninstall(const QStringList &fileList)
     Q_EMIT uninstallFinished();
 }
 
+bool DFontManager::getIsWaiting() const
+{
+    return isWaiting;
+}
+
+void DFontManager::setIsWaiting(bool value)
+{
+    isWaiting = value;
+}
+
 void DFontManager::handleProcessFinished(int exitCode)
 {
     QProcess *process = dynamic_cast<QProcess *>(sender());
