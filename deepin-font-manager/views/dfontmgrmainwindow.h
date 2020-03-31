@@ -49,9 +49,18 @@ public:
     void InitQuickWindowIfNeeded();
     void forceNoramlInstalltionQuitIfNeeded();
     void setDeleteFinish();
-    inline DFontManager *getFontManager()  { return m_fontManager;}
-    inline bool isDeleting() { return m_fIsDeleting;}
-    inline void setFileList(QStringList list) { m_fileList = list; }
+    inline DFontManager *getFontManager()
+    {
+        return m_fontManager;
+    }
+    inline bool isDeleting()
+    {
+        return m_fIsDeleting;
+    }
+    inline void setFileList(QStringList list)
+    {
+        m_fileList = list;
+    }
 
     //Main window Size
     int m_winHight;
@@ -165,7 +174,11 @@ protected:
     QScopedPointer<DFQuickInstallWindow> m_quickInstallWnd;
 
     QScopedPointer<DFontMgrMainWindowPrivate> d_ptr;
+
     Q_DECLARE_PRIVATE_D(qGetPtrHelper(d_ptr), DFontMgrMainWindow)
+
+public:
+    DSpinner    *waitForInstallSpinner = nullptr;
 };
 
 #endif  // DFONTMGRMAINWINDOW_H
