@@ -81,6 +81,7 @@ protected:
     void showAllShortcut();
     void showInstalledFiles(QStringList fileList);
     void checkCloseUninstallDialog();
+    void waitForInsert(const QStringList path);
 
     //Add drag install
     void dragEnterEvent(QDragEnterEvent *event) override;
