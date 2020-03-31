@@ -46,7 +46,7 @@ struct DFontInfo {
         return info.familyName == familyName && info.styleName == styleName;
     }
 
-    QString toString()
+    QString toString() const
     {
         return "FontInfo : " + familyName + ", " + styleName + ", psname = " + psname + ", trademark = " + trademark
                + ", fullname = " + fullname;

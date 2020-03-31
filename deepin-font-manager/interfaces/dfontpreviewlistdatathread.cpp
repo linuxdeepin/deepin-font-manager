@@ -69,9 +69,6 @@ void DFontPreviewListDataThread::doWork()
         return;
     }
 
-    //开启事务
-    m_dbManager->beginTransaction();
-
     QStringList chineseFontPathList = fontInfoMgr->getAllChineseFontPath();
     QStringList monoSpaceFontPathList = fontInfoMgr->getAllMonoSpaceFontPath();
     QStringList strAllFontList = fontInfoMgr->getAllFontPath();
@@ -83,7 +80,7 @@ void DFontPreviewListDataThread::doWork()
         }
     }
 
-    m_dbManager->endTransaction();
+    m_dbManager->commitAddFontInfo();
 
     m_view->onFinishedDataLoad();
 }
@@ -250,7 +247,7 @@ void DFontPreviewListDataThread::refreshFontListData(bool isStartup)
 //                    delInfo.insert("filePath", itemData.fontInfo.filePath);
                     delInfo.insert("familyName", itemData.fontInfo.familyName);
                     delInfo.insert("styleName", itemData.fontInfo.styleName);
-                    DFMDBManager::instance()->deleteFontInfoByFontMap(delInfo);
+                    DFMDBManager::instance()->deleteFontInfo(itemData);
                 }
             }
         } else {
@@ -260,10 +257,10 @@ void DFontPreviewListDataThread::refreshFontListData(bool isStartup)
         }
     }
 
+    DFMDBManager::instance()->commitDeleteFontInfo();
+
     m_diffFontModelList.clear();
     if (!isStartup) {
-        //开启事务
-        m_dbManager->beginTransaction();
 
         //根据文件路径比较出不同的字体文件
         QSet<QString> allFontListSet = strAllFontList.toSet();
@@ -279,7 +276,7 @@ void DFontPreviewListDataThread::refreshFontListData(bool isStartup)
                 }
             }
         }
-        m_dbManager->endTransaction();
+        m_dbManager->commitAddFontInfo();
     }
     qDebug() << __FUNCTION__ << " end";
 }
@@ -314,9 +311,6 @@ void DFontPreviewListDataThread::syncFontEnableDisableStatusData(QStringList dis
         disableFontMap.insert(disableFontPath, true);
     }
 
-    //开启事务
-    m_dbManager->beginTransaction();
-
     QList<DFontPreviewItemData> fontInfoList = m_dbManager->getAllFontInfo();
 
     for (int i = 0; i < fontInfoList.size(); i++) {
@@ -332,8 +326,8 @@ void DFontPreviewListDataThread::syncFontEnableDisableStatusData(QStringList dis
             fontItemData.isPreviewEnabled = true;
         }
 
-        m_dbManager->updateFontInfoByFontFilePath(keyFilePath, "isEnabled", QString::number(fontItemData.isEnabled));
+        m_dbManager->updateFontInfo(fontItemData, "isEnabled");
     }
 
-    m_dbManager->endTransaction();
+    m_dbManager->commitUpdateFontInfo();
 }

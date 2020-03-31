@@ -54,7 +54,7 @@ protected slots:
     void onProgressChanged(const QString &filePath, const double &percent);
 
     void onCancelInstall();
-    void onContinueInstall(QStringList continueInstallFontFileList, int m_sysFontCount);
+    void onContinueInstall(const QStringList &continueInstallFontFileList, int m_sysFontCount);
 
     void showInstallErrDlg();
 signals:

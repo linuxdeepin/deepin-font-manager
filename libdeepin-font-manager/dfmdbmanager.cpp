@@ -180,9 +180,13 @@ QMap<QString, QString> DFMDBManager::mapItemData(DFontPreviewItemData itemData)
     return mapData;
 }
 
-bool DFMDBManager::addFontInfo(DFontPreviewItemData itemData)
+bool DFMDBManager::addFontInfo(const DFontPreviewItemData &itemData)
 {
-    return m_sqlUtil->addRecord(mapItemData(itemData));
+    qDebug() << __FUNCTION__ << itemData.fontInfo.toString();
+    if (!m_addFontList.contains(itemData))
+        m_addFontList << itemData;
+    return true;
+//    return m_sqlUtil->addRecord(mapItemData(itemData));
 }
 
 bool DFMDBManager::deleteFontInfoByFontMap(const QMap<QString, QString> &fontDelMap)
@@ -223,6 +227,70 @@ bool DFMDBManager::updateFontInfoByFontFilePath(const QString &strFontFilePath, 
     dataMap.insert(strKey, strValue);
 
     return m_sqlUtil->updateRecord(where, dataMap);
+}
+
+void DFMDBManager::commitAddFontInfo()
+{
+    if (m_addFontList.isEmpty())
+        return;
+
+//    QMutexLocker locker(&m_mutex);
+    beginTransaction();
+    addFontInfo(m_addFontList);
+    endTransaction();
+    m_addFontList.clear();
+}
+
+void DFMDBManager::addFontInfo(const QList<DFontPreviewItemData> &fontList)
+{
+    return m_sqlUtil->addFontInfo(fontList);
+}
+
+void DFMDBManager::deleteFontInfo(const DFontPreviewItemData &itemData)
+{
+    if (!m_delFontList.contains(itemData))
+        m_delFontList << itemData;
+}
+
+void DFMDBManager::deleteFontInfo(const QList<DFontPreviewItemData> &fontList)
+{
+    m_sqlUtil->deleteFontInfo(fontList);
+}
+
+void DFMDBManager::commitDeleteFontInfo()
+{
+    if (m_delFontList.isEmpty())
+        return;
+
+    beginTransaction();
+    m_sqlUtil->deleteFontInfo(m_delFontList);
+    endTransaction();
+    m_delFontList.clear();
+}
+
+void DFMDBManager::updateFontInfo(const DFontPreviewItemData &itemData, const QString &strKey)
+{
+    if (!m_updateFontList.contains(itemData)) {
+        m_updateFontList << itemData;
+        if (m_strKey != strKey)
+            m_strKey = strKey;
+    }
+}
+
+void DFMDBManager::updateFontInfo(const QList<DFontPreviewItemData> &fontList, const QString &strKey)
+{
+    return m_sqlUtil->updateFontInfo(fontList, strKey);
+}
+
+void DFMDBManager::commitUpdateFontInfo()
+{
+    if (m_updateFontList.isEmpty())
+        return;
+
+    beginTransaction();
+    m_sqlUtil->updateFontInfo(m_updateFontList, m_strKey);
+    endTransaction();
+    m_updateFontList.clear();
 }
 
 void DFMDBManager::beginTransaction()

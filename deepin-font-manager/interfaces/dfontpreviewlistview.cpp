@@ -107,7 +107,7 @@ void DFontPreviewListView::onFinishedDataLoad()
 //            delInfo.insert("filePath", itemData.fontInfo.filePath);
             delInfo.insert("familyName", itemData.fontInfo.familyName);
             delInfo.insert("styleName", itemData.fontInfo.styleName);
-            DFMDBManager::instance()->deleteFontInfoByFontMap(delInfo);
+            DFMDBManager::instance()->deleteFontInfo(itemData);
             continue;
         } else {
             //add it to file system watcher
@@ -116,6 +116,7 @@ void DFontPreviewListView::onFinishedDataLoad()
 
         Q_EMIT itemAdded(itemData);
     }
+    DFMDBManager::instance()->commitDeleteFontInfo();
 
     m_bLoadDataFinish = true;
     emit onLoadFontsStatus(1);
@@ -476,8 +477,6 @@ void DFontPreviewListView::onListViewItemEnableBtnClicked(QModelIndexList itemIn
         itemIndexesNew.append(itemIndexes[itemIndexes.count() - 1 - i]);
     }
 
-
-    DFMDBManager::instance()->beginTransaction();   //开启事务
     for (QModelIndex index : itemIndexesNew) {
         //        DFontPreviewItemData itemData =
         //            qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(itemIndexes[0]));
@@ -498,12 +497,13 @@ void DFontPreviewListView::onListViewItemEnableBtnClicked(QModelIndexList itemIn
             disableFont(itemData);
         }
 
-        DFMDBManager::instance()->updateFontInfoByFontId(itemData.strFontId, "isEnabled", QString::number(itemData.isEnabled));
+        DFMDBManager::instance()->updateFontInfo(itemData, "isEnabled");
 
         m_fontPreviewProxyModel->setData(index, QVariant::fromValue(itemData), Qt::DisplayRole);
         //        m_fontPreviewProxyModel->setData(itemIndexes[0], QVariant::fromValue(itemData), Qt::DisplayRole);
     }
-    DFMDBManager::instance()->endTransaction(); //提交事务
+
+    DFMDBManager::instance()->commitUpdateFontInfo();
 
     if (setValue)
         return;
@@ -611,7 +611,6 @@ void DFontPreviewListView::updateChangedDir(const QString &path)
     QList<DFontPreviewItemData> fontInfoList = m_dataThread->getFontModelList();
     qDebug() << fontInfoList.size();
 
-    DFMDBManager::instance()->beginTransaction();
     for (int i = 0; i < fontInfoList.size(); ++i) {
         DFontPreviewItemData itemData = fontInfoList.at(i);
         QFileInfo filePathInfo(itemData.fontInfo.filePath);
@@ -624,14 +623,13 @@ void DFontPreviewListView::updateChangedDir(const QString &path)
 //            delInfo.insert("filePath", itemData.fontInfo.filePath);
             delInfo.insert("familyName", itemData.fontInfo.familyName);
             delInfo.insert("styleName", itemData.fontInfo.styleName);
-            if (!DFMDBManager::instance()->deleteFontInfoByFontMap(delInfo))
-                qDebug() << QThread::currentThreadId() << " delete fontdb failed : " << filePathInfo.filePath();
+            DFMDBManager::instance()->deleteFontInfo(itemData);
             Q_EMIT itemRemovedFromSys(itemData);
             m_dataThread->removeFontData(itemData);
             m_dataThread->removePathWatcher(filePathInfo.filePath());
         }
     }
-    DFMDBManager::instance()->endTransaction();
+    DFMDBManager::instance()->commitDeleteFontInfo();
     qDebug() << __FUNCTION__ << path << " end ";
 }
 
@@ -664,8 +662,7 @@ void DFontPreviewListView::changeFontFile(const QString &path, bool force)
 //            delInfo.insert("filePath", itemData.fontInfo.filePath);
             delInfo.insert("familyName", itemData.fontInfo.familyName);
             delInfo.insert("styleName", itemData.fontInfo.styleName);
-            if (!DFMDBManager::instance()->deleteFontInfoByFontMap(delInfo))
-                qDebug() << QThread::currentThreadId() << " delete fontdb failed : " << filePath;
+            DFMDBManager::instance()->deleteFontInfo(itemData);
             Q_EMIT itemRemoved(itemData);
             m_dataThread->removeFontData(itemData);
             m_dataThread->removePathWatcher(filePath);
@@ -673,6 +670,8 @@ void DFontPreviewListView::changeFontFile(const QString &path, bool force)
                 break;
         }
     }
+    DFMDBManager::instance()->commitDeleteFontInfo();
+
     if (isDir) {
         if (!QFileInfo(QDir::homePath() + "/.local/share/fonts").exists()) {
             m_dataThread->removePathWatcher(QDir::homePath() + "/.local/share/fonts");

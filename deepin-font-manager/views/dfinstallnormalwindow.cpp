@@ -508,7 +508,7 @@ void DFInstallNormalWindow::onCancelInstall()
     this->accept();
 }
 
-void DFInstallNormalWindow::onContinueInstall(QStringList continueInstallFontFileList, int m_sysFontCount)
+void DFInstallNormalWindow::onContinueInstall(const QStringList &continueInstallFontFileList, int m_sysFontCount)
 {
 #ifdef QT_QML_DEBUG
     qDebug() << __FUNCTION__ << " called:" << continueInstallFontFileList;

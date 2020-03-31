@@ -62,6 +62,38 @@ struct DFontPreviewItemData {
 
         collectIconStatus = IconNormal;
     }
+
+    DFontPreviewItemData(const DFontPreviewItemData &other) {
+        fontInfo.filePath = other.fontInfo.filePath;
+        fontInfo.familyName = other.fontInfo.familyName;
+        fontInfo.styleName = other.fontInfo.styleName;
+        fontInfo.type = other.fontInfo.type;
+        fontInfo.version = other.fontInfo.version;
+        fontInfo.copyright = other.fontInfo.copyright;
+        fontInfo.description = other.fontInfo.description;
+        fontInfo.sysVersion = other.fontInfo.sysVersion;
+        fontInfo.isInstalled = other.fontInfo.isInstalled;
+        fontInfo.isError = other.fontInfo.isError;
+        fontInfo.isSystemFont = other.fontInfo.isSystemFont;
+
+        strFontName = other.strFontName;
+        strFontFileName = other.strFontFileName;
+        iFontSize = other.iFontSize;
+        strFontPreview = other.strFontPreview;
+        isEnabled = other.isEnabled;
+        isPreviewEnabled = other.isPreviewEnabled;
+        isCollected = other.isCollected;
+        strFontId = other.strFontId;
+
+        isChineseFont = other.isChineseFont;
+        isMonoSpace = other.isMonoSpace;
+
+        collectIconStatus = other.collectIconStatus;
+    }
+
+    bool operator==(const DFontPreviewItemData &info) {
+        return (fontInfo == info.fontInfo);
+    }
 };
 
 Q_DECLARE_METATYPE(DFontPreviewItemData)

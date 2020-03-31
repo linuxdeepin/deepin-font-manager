@@ -1,6 +1,8 @@
 #ifndef DSQLITEUTIL_H
 #define DSQLITEUTIL_H
 
+#include "dfontpreviewitemdef.h"
+
 #include <QList>
 #include <QMap>
 #include <QSqlDatabase>
@@ -25,29 +27,35 @@ public:
     bool createIndex();
 
     //增加数据
-    bool addRecord(QMap<QString, QString> data, QString table_name = "t_fontmanager");
+    bool addRecord(QMap<QString, QString> data, const QString &table_name = "t_fontmanager");
 
     //删除一条记录
-    bool delRecord(QMap<QString, QString> where, QString table_name = "t_fontmanager");
+    bool delRecord(QMap<QString, QString> where, const QString &table_name = "t_fontmanager");
 
     //删除所有记录
-    bool delAllRecords(QString table_name = "t_fontmanager");
+    bool delAllRecords(const QString &table_name = "t_fontmanager");
 
     //更新数据
     bool updateRecord(QMap<QString, QString> where, QMap<QString, QString> data,
-                      QString table_name = "t_fontmanager");
+                      const QString &table_name = "t_fontmanager");
 
     //查找所有记录
     bool findRecords(QList<QString> key, QList<QMap<QString, QString>> *row,
-                     QString table_name = "t_fontmanager");
+                     const QString &table_name = "t_fontmanager");
 
     //按条件查找
     bool findRecords(QList<QString> key, QMap<QString, QString> where, QList<QMap<QString, QString>> *row,
-                     QString table_name = "t_fontmanager");
+                     const QString &table_name = "t_fontmanager");
 
-    int getRecordCount(QString table_name = "t_fontmanager");
+    int getRecordCount(const QString &table_name = "t_fontmanager");
 
-    int getMaxFontId(QString table_name = "t_fontmanager");
+    int getMaxFontId(const QString &table_name = "t_fontmanager");
+
+    // batch operation
+    void addFontInfo(const QList<DFontPreviewItemData> &fontList, const QString &table_name = "t_fontmanager");
+    void deleteFontInfo(const QList<DFontPreviewItemData> &fontList, const QString &table_name = "t_fontmanager");
+    void updateFontInfo(const QList<DFontPreviewItemData> &fontList, const QString &key, const QString &table_name = "t_fontmanager");
+    QString escapeString(const QString &str);
 
     QSqlDatabase m_db;
 

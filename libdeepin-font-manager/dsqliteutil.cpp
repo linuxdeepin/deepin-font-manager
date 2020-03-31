@@ -21,7 +21,6 @@ DSqliteUtil::DSqliteUtil(const QString &strDatabase)
 
     createConnection(m_strDatabase);
     createTable();
-    createIndex();
 }
 
 DSqliteUtil::~DSqliteUtil()
@@ -121,7 +120,7 @@ bool DSqliteUtil::createIndex()
 }
 
 //向数据库中增加数据
-bool DSqliteUtil::addRecord(QMap<QString, QString> data, QString table_name)
+bool DSqliteUtil::addRecord(QMap<QString, QString> data, const QString &table_name)
 {
     QString sql = "insert into " + table_name + "(";
     QString values = " values(";
@@ -151,7 +150,7 @@ bool DSqliteUtil::addRecord(QMap<QString, QString> data, QString table_name)
 }
 
 //删除记录
-bool DSqliteUtil::delRecord(QMap<QString, QString> where, QString table_name)
+bool DSqliteUtil::delRecord(QMap<QString, QString> where, const QString &table_name)
 {
     QString sql = "delete from ";
     sql += table_name;
@@ -182,7 +181,7 @@ bool DSqliteUtil::delRecord(QMap<QString, QString> where, QString table_name)
 
 //修改数据库记录
 bool DSqliteUtil::updateRecord(QMap<QString, QString> where, QMap<QString, QString> data,
-                               QString table_name)
+                               const QString &table_name)
 {
     QString sql = "update " + table_name + " set ";
     QMutexLocker m_locker(&mutex);
@@ -212,7 +211,7 @@ bool DSqliteUtil::updateRecord(QMap<QString, QString> where, QMap<QString, QStri
 
 //查找所有记录
 bool DSqliteUtil::findRecords(QList<QString> key, QList<QMap<QString, QString>> *row,
-                              QString table_name)
+                              const QString &table_name)
 {
     QString sql = "select ";
     int columnLen = key.size();
@@ -243,7 +242,7 @@ bool DSqliteUtil::findRecords(QList<QString> key, QList<QMap<QString, QString>> 
 
 //按条件查找
 bool DSqliteUtil::findRecords(QList<QString> key, QMap<QString, QString> where,
-                              QList<QMap<QString, QString>> *row, QString table_name)
+                              QList<QMap<QString, QString>> *row, const QString &table_name)
 {
     QString sql = "select ";
     int columnLen = key.size();
@@ -278,7 +277,7 @@ bool DSqliteUtil::findRecords(QList<QString> key, QMap<QString, QString> where,
     }
 }
 
-int DSqliteUtil::getRecordCount(QString table_name)
+int DSqliteUtil::getRecordCount(const QString &table_name)
 {
     QString sql = "select count(1) from " + table_name;
     qDebug() << sql;
@@ -295,7 +294,7 @@ int DSqliteUtil::getRecordCount(QString table_name)
     return resultCount;
 }
 
-int DSqliteUtil::getMaxFontId(QString table_name)
+int DSqliteUtil::getMaxFontId(const QString &table_name)
 {
     QString sql = "select max(fontId) from " + table_name;
     qDebug() << sql;
@@ -312,7 +311,141 @@ int DSqliteUtil::getMaxFontId(QString table_name)
     return maxFontId;
 }
 
-bool DSqliteUtil::delAllRecords(QString table_name)
+void DSqliteUtil::addFontInfo(const QList<DFontPreviewItemData> &fontList, const QString &table_name)
+{
+    if (fontList.isEmpty())
+        return;
+
+    QMutexLocker m_locker(&mutex);
+    bool succ = true;
+    QString sql = "insert into " + table_name + "(" +
+"fontName, \
+isEnabled, \
+isCollected, \
+isChineseFont, \
+isMonoSpace, \
+filePath, \
+familyName, \
+styleName, \
+type, \
+version, \
+copyright, \
+description, \
+sysVersion, \
+isInstalled, \
+isError, \
+fullname, \
+psname, \
+trademark) values( \
+:fontName, \
+:isEnabled, \
+:isCollected, \
+:isChineseFont, \
+:isMonoSpace, \
+:filePath, \
+:familyName, \
+:styleName, \
+:type, \
+:version, \
+:copyright, \
+:description, \
+:sysVersion, \
+:isInstalled, \
+:isError, \
+:fullname, \
+:psname, \
+:trademark)";
+
+    qDebug() << sql;
+    m_query->prepare(sql);
+
+    for (DFontPreviewItemData item : fontList) {
+        m_query->bindValue(":fontName", escapeString(item.strFontName));
+        m_query->bindValue(":isEnabled", escapeString(QString::number(item.isEnabled)));
+        m_query->bindValue(":isCollected", escapeString(QString::number(item.isCollected)));
+        m_query->bindValue(":isChineseFont", escapeString(QString::number(item.isChineseFont)));
+        m_query->bindValue(":isMonoSpace", escapeString(QString::number(item.isMonoSpace)));
+        m_query->bindValue(":filePath", escapeString(item.fontInfo.filePath));
+        m_query->bindValue(":familyName", escapeString(item.fontInfo.familyName));
+        m_query->bindValue(":styleName", escapeString(item.fontInfo.styleName));
+        m_query->bindValue(":type", escapeString(item.fontInfo.type));
+        m_query->bindValue(":version", escapeString(item.fontInfo.version));
+        m_query->bindValue(":copyright", escapeString(item.fontInfo.copyright));
+        m_query->bindValue(":description", escapeString(item.fontInfo.description));
+        m_query->bindValue(":sysVersion", escapeString(item.fontInfo.sysVersion));
+        m_query->bindValue(":isInstalled", escapeString(QString::number(item.fontInfo.isInstalled)));
+        m_query->bindValue(":isError", escapeString(QString::number(item.fontInfo.isError)));
+        m_query->bindValue(":fullname", escapeString(item.fontInfo.fullname));
+        m_query->bindValue(":psname", escapeString(item.fontInfo.psname));
+        m_query->bindValue(":trademark", escapeString(item.fontInfo.trademark));
+        if (!m_query->exec()) {
+            qDebug() << __FUNCTION__ << "add data failed!" << item.fontInfo.filePath << m_query->lastError();
+            succ = false;
+        }
+        qDebug() << __FUNCTION__ << "sql " << m_query->lastQuery() << item.fontInfo.toString();
+    }
+    qDebug() << __FUNCTION__ << succ;
+}
+
+void DSqliteUtil::deleteFontInfo(const QList<DFontPreviewItemData> &fontList, const QString &table_name)
+{
+    QMutexLocker m_locker(&mutex);
+
+    QString sql;
+    sql = "delete from " + table_name +
+            " where filePath = :filePath";
+    qDebug() << sql;
+    m_query->prepare(sql);
+
+    for (DFontPreviewItemData item : fontList) {
+        if (item.fontInfo.filePath.isEmpty())
+            continue;
+        //转义字符 ' -> ''
+        m_query->bindValue(":filePath", escapeString(item.fontInfo.filePath));
+
+        if (!m_query->exec()) {
+            qDebug() << "del data failed!" << item.fontInfo.filePath << m_query->lastError();
+        }
+        qDebug() << __FUNCTION__ << "sql " << m_query->lastQuery() << item.fontInfo.toString();
+    }
+}
+
+void DSqliteUtil::updateFontInfo(const QList<DFontPreviewItemData> &fontList, const QString &key, const QString &table_name)
+{
+    if ((key != "isCollected" && key != "isEnabled") || fontList.isEmpty())
+        return;
+    QMutexLocker m_locker(&mutex);
+
+    QString sql = "update " + table_name + " set " + key + " = ? where filePath = ?";
+    qDebug() << sql;
+    m_query->prepare(sql);
+    bool succ = true;
+
+    for (DFontPreviewItemData item : fontList) {
+        if (key == "isEnabled") {
+            m_query->addBindValue(escapeString(QString::number(item.isEnabled)));
+        } else if (key == "isCollected") {
+            m_query->addBindValue(escapeString(QString::number(item.isCollected)));
+        }
+        m_query->addBindValue(escapeString(item.fontInfo.filePath));
+
+        if (!m_query->exec()) {
+            succ = false;
+            qDebug() << "update data failed!" << item.fontInfo.filePath << m_query->lastError();
+        }
+    }
+    qDebug() << __FUNCTION__ << succ;
+}
+
+QString DSqliteUtil::escapeString(const QString &str)
+{
+    QString escapeStr = str;
+    escapeStr = escapeStr.replace("'", "''");
+//    escapeStr = "'" + escapeStr + "'";
+    return escapeStr;
+}
+
+bool DSqliteUtil::delAllRecords(const QString &table_name)
 {
     QString sql = "delete from " + table_name;
     qDebug() << sql;
