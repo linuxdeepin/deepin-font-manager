@@ -502,6 +502,7 @@ void DFInstallNormalWindow::onCancelInstall()
     qDebug() << __FUNCTION__ << " called";
 #endif
 
+    emit m_signalManager->sendReInstallMessage(0, 0);
     m_fontManager->terminate();
     m_fontManager->wait();
 
