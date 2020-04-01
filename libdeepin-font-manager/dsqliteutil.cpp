@@ -256,7 +256,7 @@ bool DSqliteUtil::findRecords(QList<QString> key, QMap<QString, QString> where,
     sql += " where ";
     for (QMap<QString, QString>::const_iterator it = where.constBegin(); it != where.constEnd();
             it++) {
-        sql += it.key() + "='" + it.value() + "' and ";
+        sql += it.key() + "=\"" + escapeString(it.value()) + "\" and ";
     }
     sql.chop(5);
     qDebug() << sql;
@@ -317,7 +317,6 @@ void DSqliteUtil::addFontInfo(const QList<DFontPreviewItemData> &fontList, const
         return;
 
     QMutexLocker m_locker(&mutex);
-    bool succ = true;
     QString sql = "insert into " + table_name + "(" +
 "fontName, \
 isEnabled, \
@@ -359,32 +358,69 @@ trademark) values( \
     qDebug() << sql;
     m_query->prepare(sql);
 
+    QVariantList fontNameList;
+    QVariantList isEnabledList;
+    QVariantList isCollectedList;
+    QVariantList isChineseList;
+    QVariantList isMonoSpaceList;
+    QVariantList filePathList;
+    QVariantList familyNameList;
+    QVariantList styleNameList;
+    QVariantList typeList;
+    QVariantList versionList;
+    QVariantList copyrightList;
+    QVariantList descriptionList;
+    QVariantList sysVersionList;
+    QVariantList isInstalledList;
+    QVariantList isErrorList;
+    QVariantList fullnameList;
+    QVariantList psnameList;
+    QVariantList trademarkList;
     for (DFontPreviewItemData item : fontList) {
-        m_query->bindValue(":fontName", escapeString(item.strFontName));
-        m_query->bindValue(":isEnabled", escapeString(QString::number(item.isEnabled)));
-        m_query->bindValue(":isCollected", escapeString(QString::number(item.isCollected)));
-        m_query->bindValue(":isChineseFont", escapeString(QString::number(item.isChineseFont)));
-        m_query->bindValue(":isMonoSpace", escapeString(QString::number(item.isMonoSpace)));
-        m_query->bindValue(":filePath", escapeString(item.fontInfo.filePath));
-        m_query->bindValue(":familyName", escapeString(item.fontInfo.familyName));
-        m_query->bindValue(":styleName", escapeString(item.fontInfo.styleName));
-        m_query->bindValue(":type", escapeString(item.fontInfo.type));
-        m_query->bindValue(":version", escapeString(item.fontInfo.version));
-        m_query->bindValue(":copyright", escapeString(item.fontInfo.copyright));
-        m_query->bindValue(":description", escapeString(item.fontInfo.description));
-        m_query->bindValue(":sysVersion", escapeString(item.fontInfo.sysVersion));
-        m_query->bindValue(":isInstalled", escapeString(QString::number(item.fontInfo.isInstalled)));
-        m_query->bindValue(":isError", escapeString(QString::number(item.fontInfo.isError)));
-        m_query->bindValue(":fullname", escapeString(item.fontInfo.fullname));
-        m_query->bindValue(":psname", escapeString(item.fontInfo.psname));
-        m_query->bindValue(":trademark", escapeString(item.fontInfo.trademark));
-        if (!m_query->exec()) {
-            qDebug() << __FUNCTION__ << "add data failed!" << item.fontInfo.filePath << m_query->lastError();
-            succ = false;
-        }
-        qDebug() << __FUNCTION__ << "sql " << m_query->lastQuery() << item.fontInfo.toString();
+        fontNameList << escapeString(item.strFontName);
+        isEnabledList << QString::number(item.isEnabled);
+        isCollectedList << QString::number(item.isCollected);
+        isChineseList << QString::number(item.isChineseFont);
+        isMonoSpaceList << QString::number(item.isMonoSpace);
+        filePathList << escapeString(item.fontInfo.filePath);
+        familyNameList << escapeString(item.fontInfo.familyName);
+        styleNameList << escapeString(item.fontInfo.styleName);
+        typeList << escapeString(item.fontInfo.type);
+        versionList << escapeString(item.fontInfo.version);
+        copyrightList << escapeString(item.fontInfo.copyright);
+        descriptionList << escapeString(item.fontInfo.description);
+        sysVersionList << escapeString(item.fontInfo.sysVersion);
+        isInstalledList << QString::number(item.fontInfo.isInstalled);
+        isErrorList << QString::number(item.fontInfo.isError);
+        fullnameList << escapeString(item.fontInfo.fullname);
+        psnameList << escapeString(item.fontInfo.psname);
+        trademarkList << escapeString(item.fontInfo.trademark);
     }
-    qDebug() << __FUNCTION__ << succ;
+
+    m_query->addBindValue(fontNameList);
+    m_query->addBindValue(isEnabledList);
+    m_query->addBindValue(isCollectedList);
+    m_query->addBindValue(isChineseList);
+    m_query->addBindValue(isMonoSpaceList);
+    m_query->addBindValue(filePathList);
+    m_query->addBindValue(familyNameList);
+    m_query->addBindValue(styleNameList);
+    m_query->addBindValue(typeList);
+    m_query->addBindValue(versionList);
+    m_query->addBindValue(copyrightList);
+    m_query->addBindValue(descriptionList);
+    m_query->addBindValue(sysVersionList);
+    m_query->addBindValue(isInstalledList);
+    m_query->addBindValue(isErrorList);
+    m_query->addBindValue(fullnameList);
+    m_query->addBindValue(psnameList);
+    m_query->addBindValue(trademarkList);
+
+    if (!m_query->execBatch()) {
+        qDebug() << __FUNCTION__ << "add data failed!" << fontNameList;
+    } else {
+        qDebug() << __FUNCTION__ << "true";
+    }
 }
 
 void DSqliteUtil::deleteFontInfo(const QList<DFontPreviewItemData> &fontList, const QString &table_name)
@@ -397,16 +433,18 @@ void DSqliteUtil::deleteFontInfo(const QList<DFontPreviewItemData> &fontList, co
     qDebug() << sql;
     m_query->prepare(sql);
 
+    QVariantList filePathList;
     for (DFontPreviewItemData item : fontList) {
         if (item.fontInfo.filePath.isEmpty())
             continue;
         //转义字符 ' -> ''
-        m_query->bindValue(":filePath", escapeString(item.fontInfo.filePath));
-
-        if (!m_query->exec()) {
-            qDebug() << "del data failed!" << item.fontInfo.filePath << m_query->lastError();
-        }
-        qDebug() << __FUNCTION__ << "sql " << m_query->lastQuery() << item.fontInfo.toString();
+        filePathList << escapeString(item.fontInfo.filePath);
+    }
+    m_query->addBindValue(filePathList);
+    if (!m_query->execBatch()) {
+        qDebug() << "del data failed!" << filePathList;
+    } else {
+        qDebug() << __FUNCTION__ << "succ";
     }
 }
 
@@ -419,29 +457,32 @@ void DSqliteUtil::updateFontInfo(const QList<DFontPreviewItemData> &fontList, co
     QString sql = "update " + table_name + " set " + key + " = ? where filePath = ?";
     qDebug() << sql;
     m_query->prepare(sql);
-    bool succ = true;
 
+    QVariantList keyList;
+    QVariantList filePathList;
     for (DFontPreviewItemData item : fontList) {
         if (key == "isEnabled") {
-            m_query->addBindValue(escapeString(QString::number(item.isEnabled)));
+            keyList << QString::number(item.isEnabled);
         } else if (key == "isCollected") {
-            m_query->addBindValue(escapeString(QString::number(item.isCollected)));
+            keyList << QString::number(item.isCollected);
         }
-        m_query->addBindValue(escapeString(item.fontInfo.filePath));
 
-        if (!m_query->exec()) {
-            succ = false;
-            qDebug() << "update data failed!" << item.fontInfo.filePath << m_query->lastError();
-        }
+        filePathList << escapeString(item.fontInfo.filePath);
     }
-    qDebug() << __FUNCTION__ << succ;
+    m_query->addBindValue(keyList);
+    m_query->addBindValue(filePathList);
+
+    if (!m_query->execBatch()) {
+        qDebug() << "update data failed!" << filePathList;
+    } else {
+        qDebug() << __FUNCTION__ << "true";
+    }
 }
 
 QString DSqliteUtil::escapeString(const QString &str)
 {
     QString escapeStr = str;
-    escapeStr = escapeStr.replace("'", "''");
-//    escapeStr = "'" + escapeStr + "'";
+//    escapeStr = escapeStr.replace("'", "''");
     return escapeStr;
 }
 
