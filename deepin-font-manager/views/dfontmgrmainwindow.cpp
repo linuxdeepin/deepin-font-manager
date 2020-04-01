@@ -207,7 +207,9 @@ void DFontMgrMainWindow::initConnections()
         m_needDelCount = 0;
         if (m_isDeleting && m_isFromSys)
         {
-            waitForInsert();
+            if (m_waitForInstall.count() > 0) {
+                waitForInsert();
+            }
             m_isFromSys = false;
         }
         m_isDeleting = false;
