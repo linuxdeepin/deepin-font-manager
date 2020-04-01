@@ -27,7 +27,7 @@ public:
 
     int getListDataCount();
     bool isListDataLoadFinished();
-    void refreshFontListData();
+    void refreshFontListData(QStringList installFont);
 
     void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
     void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;

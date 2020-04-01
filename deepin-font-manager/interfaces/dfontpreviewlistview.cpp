@@ -70,10 +70,10 @@ bool DFontPreviewListView::isListDataLoadFinished()
     return m_bLoadDataFinish;
 }
 
-void DFontPreviewListView::refreshFontListData()
+void DFontPreviewListView::refreshFontListData(QStringList installFont)
 {
     QMutexLocker locker(&m_mutex);
-    m_dataThread->refreshFontListData();
+    m_dataThread->refreshFontListData(false, installFont);
 
     QList<DFontPreviewItemData> fontInfoList = m_dataThread->getFontModelList();
     qDebug() << "total count:" << fontInfoList.size();
@@ -259,7 +259,7 @@ void DFontPreviewListView::selectFonts(const QStringList &fileList)
 
 QMutex *DFontPreviewListView::getMutex()
 {
-     return &m_mutex;
+    return &m_mutex;
 }
 
 void DFontPreviewListView::selectionChanged(const QItemSelection &selected, const QItemSelection &deselected)

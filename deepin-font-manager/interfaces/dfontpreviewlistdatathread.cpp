@@ -29,11 +29,11 @@ DFontPreviewListDataThread::DFontPreviewListDataThread(DFontPreviewListView *vie
         m_mutex = view->getMutex();
 
 //    QTimer::singleShot(50, this, [this]() {
-        m_dbManager = DFMDBManager::instance();
-        moveToThread(&mThread);
-        QObject::connect(&mThread, SIGNAL(started()), this, SLOT(doWork()));
-        connect(m_view, &DFontPreviewListView::requestDeleted, this, &DFontPreviewListDataThread::onFileChanged, Qt::QueuedConnection);
-        mThread.start();
+    m_dbManager = DFMDBManager::instance();
+    moveToThread(&mThread);
+    QObject::connect(&mThread, SIGNAL(started()), this, SLOT(doWork()));
+    connect(m_view, &DFontPreviewListView::requestDeleted, this, &DFontPreviewListDataThread::onFileChanged, Qt::QueuedConnection);
+    mThread.start();
 //    });
 }
 
@@ -63,7 +63,7 @@ void DFontPreviewListDataThread::doWork()
         //从fontconfig配置文件同步字体启用/禁用状态数据
         syncFontEnableDisableStatusData(disableFontList);
 
-        refreshFontListData(true);
+        refreshFontListData(true, QStringList());
 
         m_view->onFinishedDataLoad();
         return;
@@ -218,7 +218,7 @@ void DFontPreviewListDataThread::insertFontItemData(QString filePath,
     m_fontModelList.append(itemData);
 }
 
-void DFontPreviewListDataThread::refreshFontListData(bool isStartup)
+void DFontPreviewListDataThread::refreshFontListData(bool isStartup, QStringList installFont)
 {
     qDebug() << __FUNCTION__ << " begin";
     DFontInfoManager *fontInfoMgr = DFontInfoManager::instance();
@@ -271,7 +271,7 @@ void DFontPreviewListDataThread::refreshFontListData(bool isStartup)
             QList<QString> diffFilePathList = diffSet.toList();
             for (int i = 0; i < diffFilePathList.size(); ++i) {
                 QString filePath = diffFilePathList.at(i);
-                if (filePath.length() > 0) {
+                if (installFont.contains(filePath)) {
                     insertFontItemData(filePath, maxFontId + i + 1, chineseFontPathList, monoSpaceFontPathList, isStartup);
                 }
             }

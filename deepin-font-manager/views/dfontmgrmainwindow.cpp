@@ -1085,7 +1085,7 @@ void DFontMgrMainWindow::onFontInstallFinished(QStringList fileList)
 {
     Q_D(DFontMgrMainWindow);
 
-    m_fontPreviewListView->refreshFontListData();
+    m_fontPreviewListView->refreshFontListData(fileList);
     d->textInputEdit->textChanged(d->textInputEdit->text());
     if (!fileList.isEmpty()) {
         showInstalledFiles(fileList);
