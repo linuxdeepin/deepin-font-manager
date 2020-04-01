@@ -11,6 +11,7 @@
 
 #include <DWidgetUtil>
 #include <DGuiApplicationHelper>
+#include <DSpinner>
 
 #include <sys/types.h>
 #include <unistd.h>
@@ -25,6 +26,8 @@ SingleFontApplication::SingleFontApplication(int &argc, char **argv)
     connect(DGuiApplicationHelper::instance()
             , &DGuiApplicationHelper::newProcessInstance, this
             , &SingleFontApplication::onNewProcessInstance);
+
+    initWaitForInstallTimer();
 }
 
 SingleFontApplication::~SingleFontApplication()
@@ -163,6 +166,37 @@ void SingleFontApplication::activateWindow()
     }
 }
 
+void SingleFontApplication::slotBatchInstallFonts()
+{
+    reinterpret_cast<DFontMgrMainWindow *>(m_qspMainWnd.get())->waitForInstallSpinner->stop();
+    reinterpret_cast<DFontMgrMainWindow *>(m_qspMainWnd.get())->waitForInstallSpinner->hide();
+    activateWindow();
+    m_selectedFiles.clear();
+}
+
+void SingleFontApplication::initWaitForInstallTimer()
+{
+    waitForNextFontTimer = new QTimer();
+    waitForNextFontTimer->setSingleShot(true);
+    connect(waitForNextFontTimer, &QTimer::timeout, this, &SingleFontApplication::slotBatchInstallFonts);
+}
+
+void SingleFontApplication::installFonts(QStringList fontPathList)
+{
+    /* 临时方案，等文管那边改好了右键-》打开的方式，可以把这个删除 UT000591 */
+    reinterpret_cast<DFontMgrMainWindow *>(m_qspMainWnd.get())->waitForInstallSpinner->start();
+    reinterpret_cast<DFontMgrMainWindow *>(m_qspMainWnd.get())->waitForInstallSpinner->show();
+    /* 选中多个字体，右键->打开，目前后台每次只发送一个字体路径，启用定时器等待接收全部字体后，批量安装 UTOOO591 */
+    waitForNextFontTimer->stop();
+    for (QString fontPath : fontPathList) {
+        if (Utils::isFontMimeType(fontPath)) {
+            m_selectedFiles.append(fontPath);
+        }
+    }
+    waitForNextFontTimer->start(1000);
+}
+
+/* Deprecated ut000591 */
 void SingleFontApplication::onNewProcessInstance(qint64 pid, const QStringList &arguments)
 {
     Q_UNUSED(pid);

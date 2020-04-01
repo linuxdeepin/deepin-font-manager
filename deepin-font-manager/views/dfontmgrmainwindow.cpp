@@ -28,6 +28,7 @@
 #include <DWidgetUtil>
 #include <DDesktopServices>
 #include <DMessageManager>
+#include <DSpinner>
 
 class DFontMgrMainWindowPrivate
 {
@@ -66,6 +67,7 @@ public:
 
     QScopedPointer<QSettings> settingsQsPtr;
     DFontMgrMainWindow *q_ptr;
+
     Q_DECLARE_PUBLIC(DFontMgrMainWindow)
 };
 
@@ -145,10 +147,14 @@ void DFontMgrMainWindow::initConnections()
                      &DFontMgrMainWindow::handleAddFontEvent);
 
     QObject::connect(this, &DFontMgrMainWindow::fileSelected, this,
-    [this](const QStringList & files) { this->installFont(files); });
+    [this](const QStringList & files) {
+        this->installFont(files);
+    });
 
     QObject::connect(this, &DFontMgrMainWindow::fileSelectedInSys, this,
-    [this](const QStringList & files) { this->installFont(files, true); });
+    [this](const QStringList & files) {
+        this->installFont(files, true);
+    });
     // Menu event
     QObject::connect(d->toolBarMenu, &QMenu::triggered, this, &DFontMgrMainWindow::handleMenuEvent);
 
@@ -629,7 +635,21 @@ void DFontMgrMainWindow::initFontPreviewListView(QWidget *parent)
     listViewVBoxLayout->setMargin(0);
     listViewVBoxLayout->setContentsMargins(0, 0, 0, 0);
     listViewVBoxLayout->setSpacing(0);
-    parent->setLayout(listViewVBoxLayout);
+
+    /* 临时方案，等文管那边改好了右键-》打开的方式，可以把这个删除 UT000591*/
+    waitForInstallSpinner = new DSpinner();
+    waitForInstallSpinner->setFixedSize(64, 64);
+    waitForInstallSpinner->hide();
+
+    QGridLayout *gLayout = new QGridLayout();
+    gLayout->setMargin(0);
+    gLayout->setContentsMargins(0, 0, 0, 0);
+    gLayout->setSpacing(0);
+
+    gLayout->addLayout(listViewVBoxLayout, 0, 0);
+    gLayout->addWidget(waitForInstallSpinner, 0, 0, Qt::AlignCenter);
+
+    parent->setLayout(gLayout);
 
     m_fontPreviewListView = new DFontPreviewListView(this);
     m_fontPreviewListView->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
@@ -927,7 +947,9 @@ void DFontMgrMainWindow::InitQuickWindowIfNeeded()
         QObject::connect(this, &DFontMgrMainWindow::quickModeInstall, this,
         [this](const QStringList & files) {
             connect(m_quickInstallWnd.get(), &DFQuickInstallWindow::quickInstall, this,
-            [this, files]() { this->installFont(files); });
+            [this, files]() {
+                this->installFont(files);
+            });
             m_quickInstallWnd.get()->setWindowModality(Qt::WindowModal);
             m_quickInstallWnd->onFileSelected(files);
             m_quickInstallWnd->show();
@@ -1101,9 +1123,10 @@ void DFontMgrMainWindow::onFontListViewRowCountChanged(unsigned int bShow)
                 m_noInstallListView->hide();
             }
             break;
-        } return;
+        }
+        return;
     case 1:
-        while(isSpinnerHidden){
+        while (isSpinnerHidden) {
             m_fontPreviewListView->hide();
             m_noResultListView->show();
             d->stateBar->hide();
@@ -1111,10 +1134,10 @@ void DFontMgrMainWindow::onFontListViewRowCountChanged(unsigned int bShow)
                 m_noInstallListView->hide();
             }
             break;
-        }return;
+        }
+        return;
     case 2:
-        while(isSpinnerHidden)
-        {
+        while (isSpinnerHidden) {
             m_fontPreviewListView->hide();
             d->stateBar->hide();
             if (m_noResultListView->isVisible()) {
@@ -1123,7 +1146,8 @@ void DFontMgrMainWindow::onFontListViewRowCountChanged(unsigned int bShow)
             d->leftSiderBar->setFocus();
             m_noInstallListView->show();
             break;
-        }return;
+        }
+        return;
     default:
         m_fontPreviewListView->show();
         m_noResultListView->hide();

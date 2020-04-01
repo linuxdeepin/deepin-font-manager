@@ -25,6 +25,7 @@
 #include <QCommandLineParser>
 #include <QDebug>
 #include <QDBusConnection>
+#include <QDBusInterface>
 
 #include <DApplication>
 #include <DLog>
@@ -50,25 +51,27 @@ int main(int argc, char *argv[])
     app.setApplicationAcknowledgementPage("https://www.deepin.org/original/deepin-font-installer/");
     app.setProductIcon(QIcon::fromTheme(DEEPIN_FONT_MANAGER));
     app.setProductName(DApplication::translate("Main", "Font Manager"));
-    app.setApplicationDescription(
-        DApplication::translate("Main",
-                                "Font Manager helps users install and manage fonts."));
+    app.setApplicationDescription(DApplication::translate("Main", "Font Manager helps users install and manage fonts."));
 
-    if (!DGuiApplicationHelper::instance()->setSingleInstance(app.applicationName(), DGuiApplicationHelper::UserScope)) {
-        return 0;
-    }
-
-    DApplicationSettings settings;
+    DApplicationSettings savetheme;
 
     DLogManager::registerConsoleAppender();
     DLogManager::registerFileAppender();
 
-    if (!app.parseCmdLine()) {
+    /* 使用DBus实现单例模式 UT000591 */
+    QDBusConnection dbus = QDBusConnection::sessionBus();
+    if (dbus.registerService("com.deepin.FontManager")) {
+        dbus.registerObject("/com/deepin/FontManager", &app, QDBusConnection::ExportScriptableSlots);
+        app.parseCmdLine();
+        app.activateWindow();
+        return app.exec();
+    } else {
+        QCommandLineParser parser;
+        parser.process(app);
+        QList<QVariant> fontInstallPathList;
+        fontInstallPathList << parser.positionalArguments();
+        QDBusInterface notification("com.deepin.FontManager", "/com/deepin/FontManager", "com.deepin.FontManager", QDBusConnection::sessionBus());
+        QDBusMessage msg = notification.callWithArgumentList(QDBus::AutoDetect, "installFonts", fontInstallPathList);
         return 0;
     }
-
-    app.activateWindow();
-    return app.exec();
 }
-
-
