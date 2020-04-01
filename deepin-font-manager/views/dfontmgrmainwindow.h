@@ -90,7 +90,7 @@ protected:
     void showAllShortcut();
     void showInstalledFiles(QStringList fileList);
     void checkCloseUninstallDialog();
-    void waitForInsert(const QStringList path);
+    void waitForInsert();
 
     //Add drag install
     void dragEnterEvent(QDragEnterEvent *event) override;
@@ -169,6 +169,7 @@ protected:
     volatile bool m_fIsDeleting {false};
     QStringList m_fileList;
     QStringList m_uninstallFilePath;
+    QStringList m_waitForInstall;
     DFInstallNormalWindow  *m_dfNormalInstalldlg {nullptr};
 
     QScopedPointer<DFQuickInstallWindow> m_quickInstallWnd;

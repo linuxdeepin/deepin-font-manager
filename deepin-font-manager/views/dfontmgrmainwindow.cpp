@@ -190,31 +190,31 @@ void DFontMgrMainWindow::initConnections()
         onFontSizeChanged(value);
     });
 
-    QObject::connect(SignalManager::instance(), &SignalManager::popUninstallDialog, this, [ = ] {
+    QObject::connect(m_signalManager, &SignalManager::popUninstallDialog, this, [ = ] {
         if (m_needDelCount > 1)
         {
             m_fontUninstallDialog->exec();
         }
 
     });
-    QObject::connect(SignalManager::instance(), &SignalManager::updateUninstallDialog, this, [ = ](QString & fontName, int index, int totalCount) {
+    QObject::connect(m_signalManager, &SignalManager::updateUninstallDialog, this, [ = ](QString & fontName, int index, int totalCount) {
         m_fontUninstallDialog->setValue(fontName, index, totalCount);
     });
 
-    QObject::connect(SignalManager::instance(), &SignalManager::closeUninstallDialog, this, [ = ] {
+    QObject::connect(m_signalManager, &SignalManager::closeUninstallDialog, this, [ = ] {
         m_fontUninstallDialog->setValue(" ", 0, 0);
         m_fontUninstallDialog->close();
         m_needDelCount = 0;
         if (m_isDeleting && m_isFromSys)
         {
-            emit m_signalManager->startToInsert();
+            waitForInsert();
             m_isFromSys = false;
         }
         m_isDeleting = false;
 
     });
 
-    QObject::connect(SignalManager::instance(), &SignalManager::deledFont, this, [ = ](QString & fontPath) {
+    QObject::connect(m_signalManager, &SignalManager::deledFont, this, [ = ](QString & fontPath) {
         if (m_uninstallFilePath.count() == 0)
             return;
         foreach (auto it, m_uninstallFilePath) {
@@ -239,7 +239,11 @@ void DFontMgrMainWindow::initConnections()
 
     QObject::connect(m_fontManager, SIGNAL(uninstallFontFinished(const QStringList &)), this,
                      SLOT(onFontUninstallFinished(const QStringList &)));
-    QObject::connect(SignalManager::instance(), &SignalManager::showFloatingMessage, this, &DFontMgrMainWindow::onShowMessage);
+    QObject::connect(m_signalManager, &SignalManager::showFloatingMessage, this, &DFontMgrMainWindow::onShowMessage);
+
+
+
+
 }
 
 void DFontMgrMainWindow::initShortcuts()
@@ -886,7 +890,7 @@ void DFontMgrMainWindow::installFont(const QStringList &files, bool m_isFromSys)
 
     if (m_isDeleting) {
         qDebug() << "Is deleting ,quit";
-        waitForInsert(files);
+        m_waitForInstall = files;
         return;
     }
 
@@ -1438,35 +1442,32 @@ void DFontMgrMainWindow::checkCloseUninstallDialog()
     }
 }
 
-void DFontMgrMainWindow::waitForInsert(const QStringList path)
+void DFontMgrMainWindow::waitForInsert()
 {
-    connect(m_signalManager, &SignalManager::startToInsert, this, [ = ] {
-        m_dfNormalInstalldlg = new DFInstallNormalWindow(path, this);
-        if (m_isQuickMode)
-        {
-            m_dfNormalInstalldlg->setSkipException(true);
-        }
 
-        //安装结束后刷新字体列表
-        connect(m_dfNormalInstalldlg, &DFInstallNormalWindow::finishFontInstall, this,
-                &DFontMgrMainWindow::onFontInstallFinished);
+    m_dfNormalInstalldlg = new DFInstallNormalWindow(m_waitForInstall, this);
+    if (m_isQuickMode) {
+        m_dfNormalInstalldlg->setSkipException(true);
+    }
 
-        //Set installtion flag
-        /*
-         * Add font from + ,menu, drag file to main view
-         * to task bar can start a installtion flow, so must
-         * to set flag avoid
-         */
-        m_fIsInstalling = true;
+    //安装结束后刷新字体列表
+    connect(m_dfNormalInstalldlg, &DFInstallNormalWindow::finishFontInstall, this,
+            &DFontMgrMainWindow::onFontInstallFinished);
 
-        Dtk::Widget::moveToCenter(m_dfNormalInstalldlg);
-        m_dfNormalInstalldlg->exec();
-        m_dfNormalInstalldlg->deleteLater();
+    //Set installtion flag
+    /*
+     * Add font from + ,menu, drag file to main view
+     * to task bar can start a installtion flow, so must
+     * to set flag avoid
+     */
+    m_fIsInstalling = true;
 
-        //Clear installtion flag when NormalInstalltion window is closed
-        m_fIsInstalling = false;
-    });
+    Dtk::Widget::moveToCenter(m_dfNormalInstalldlg);
+    m_dfNormalInstalldlg->exec();
+    m_dfNormalInstalldlg->deleteLater();
 
+    //Clear installtion flag when NormalInstalltion window is closed
+    m_fIsInstalling = false;
 }
 
 
