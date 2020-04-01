@@ -44,7 +44,7 @@ dfontinfoscrollarea::dfontinfoscrollarea(DFontPreviewItemData *pData,  DWidget *
 
     if(m_fontInfo->fontInfo.description.isEmpty())
     {
-        createLabel(gridLayout, 3, DApplication::translate("FontDetailDailog", "Version"), DApplication::translate("FontDetailDailog", "Unknown"));
+        createLabel(gridLayout, 3, DApplication::translate("FontDetailDailog", "Description"), DApplication::translate("FontDetailDailog", "Unknown"));
     }else {
         createLabel(gridLayout, 3, DApplication::translate("FontDetailDailog", "Description"), m_fontInfo->fontInfo.description);
     }
