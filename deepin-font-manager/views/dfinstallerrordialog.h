@@ -76,7 +76,7 @@ private:
 
 signals:
     void onCancelInstall();
-    void onContinueInstall(QStringList continueInstallFontFilelList, int m_totalCount);
+    void onContinueInstall(QStringList continueInstallFontFilelList);
 
 public slots:
     void onListItemClicked(QModelIndex index);

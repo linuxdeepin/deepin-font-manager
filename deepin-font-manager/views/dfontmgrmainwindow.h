@@ -127,7 +127,7 @@ public slots:
     void onFontListViewRowCountChanged(unsigned int bShow);
 
     void onLoadStatus(int type);
-    void onShowMessage(int totalCount, int systemFontCount);
+    void onShowMessage(int totalCount);
     void upDateUninstallDialog(QString &fontName, int index, int totalCount);
 
 protected:

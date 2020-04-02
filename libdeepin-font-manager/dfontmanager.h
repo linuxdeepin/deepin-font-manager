@@ -58,12 +58,12 @@ signals:
     void installPositionChanged(const QString &instPath);
     void reinstalling();
     void uninstalling();
-    void installFinished(int state, QStringList fileList, int systemFontCount);
-    void reInstallFinished(int state, QStringList fileList, int systemFontCount);
+    void installFinished(int state, QStringList fileList);
+    void reInstallFinished(int state, QStringList fileList);
     void reinstallFinished();
     void uninstallFinished();
     void uninstallFontFinished(const QStringList &uninstallIndex);
-    void showFloatingMessage(int totalCount, int systemFontCount);
+    void showFloatingMessage(int totalCount);
     void popUninstallDialog();
 
 protected:

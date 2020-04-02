@@ -97,7 +97,7 @@ void DFInstallErrorDialog::initData()
         } else if (isSystemFont(fontInfo)) {
             QFileInfo fileInfo(it);
 //            m_SystemFontCount++;
-            itemModel.bSelectable = true;
+            itemModel.bSelectable = false;
             itemModel.bChecked = false;
             itemModel.bSystemFont = true;
             itemModel.strFontFileName = fileInfo.fileName();
@@ -301,11 +301,6 @@ void DFInstallErrorDialog::onListItemClicked(QModelIndex index)
     DFInstallErrorItemModel itemModel =
         qvariant_cast<DFInstallErrorItemModel>(m_installErrorListView->getErrorListSourceModel()->data(index));
     itemModel.bChecked = !itemModel.bChecked;
-    if (itemModel.bSystemFont && itemModel.bChecked) {
-        m_SystemFontCount++;
-    } else if (itemModel.bSystemFont && !itemModel.bChecked) {
-        m_SystemFontCount--;
-    }
     m_installErrorListView->getErrorListSourceModel()->setData(index, QVariant::fromValue(itemModel), Qt::DisplayRole);
 
     resetContinueInstallBtnStatus();
@@ -313,11 +308,11 @@ void DFInstallErrorDialog::onListItemClicked(QModelIndex index)
 
 void DFInstallErrorDialog::onControlButtonClicked(int btnIndex)
 {
-    int sysFontCount = 0;
+
     if (0 == btnIndex) {
         //退出安装
         emit onCancelInstall();
-        m_SystemFontCount = 0;
+
     } else {
         //继续安装
         QStringList continueInstallFontFileList;
@@ -327,14 +322,13 @@ void DFInstallErrorDialog::onControlButtonClicked(int btnIndex)
             DFInstallErrorItemModel itemModel = qvariant_cast<DFInstallErrorItemModel>(m_installErrorListView->model()->data(m_installErrorListView->model()->index(i, 0)));
             if (itemModel.bChecked && !itemModel.bSystemFont)
                 continueInstallFontFileList.push_back(itemModel.strFontFilePath);
-            if (itemModel.bSystemFont && itemModel.bChecked)
-                sysFontCount++;
+
 
         }
 
         m_SystemFontCount = 0;
 
-        emit onContinueInstall(continueInstallFontFileList, sysFontCount);
+        emit onContinueInstall(continueInstallFontFileList);
     }
 
     this->accept();
