@@ -573,8 +573,20 @@ void DFontPreviewListView::setRightContextMenu(QMenu *rightMenu)
 
 QModelIndex DFontPreviewListView::currModelIndex()
 {
-    if (!selectedIndexes().isEmpty() && m_currModelIndex != selectedIndexes().first())
-        m_currModelIndex = selectedIndexes().first();
+    int min = -1;
+    QModelIndex minIndex;
+    for (QModelIndex index : selectedIndexes()) {
+        if (min < 0) {
+            min = index.row();
+            minIndex = index;
+        } else if (min > index.row()) {
+            minIndex = index;
+            min = index.row();
+        }
+    }
+
+    if (minIndex.isValid())
+        m_currModelIndex = minIndex;
 
     return m_currModelIndex;
 }
