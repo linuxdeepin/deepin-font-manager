@@ -153,7 +153,7 @@ void DFontMgrMainWindow::initConnections()
 
     QObject::connect(this, &DFontMgrMainWindow::fileSelectedInSys, this,
     [this](const QStringList & files) {
-        this->installFont(files, true);
+        this->installFontFromSys(files);
     });
     // Menu event
     QObject::connect(d->toolBarMenu, &QMenu::triggered, this, &DFontMgrMainWindow::handleMenuEvent);
@@ -879,20 +879,12 @@ void DFontMgrMainWindow::handleMenuEvent(QAction *action)
     }
 }
 
-void DFontMgrMainWindow::installFont(const QStringList &files, bool m_isFromSys)
+void DFontMgrMainWindow::installFont(const QStringList &files)
 {
     qDebug() << __FUNCTION__ << files;
 
     if (m_fIsInstalling) {
         qDebug() << "Already exist a installtion flow";
-        return;
-    }
-
-    this->m_isFromSys = m_isFromSys;
-
-    if (m_isDeleting) {
-        qDebug() << "Is deleting ,quit";
-        m_waitForInstall = files;
         return;
     }
 
@@ -920,6 +912,20 @@ void DFontMgrMainWindow::installFont(const QStringList &files, bool m_isFromSys)
 
     //Clear installtion flag when NormalInstalltion window is closed
     m_fIsInstalling = false;
+}
+
+void DFontMgrMainWindow::installFontFromSys(const QStringList &files)
+{
+    this->m_isFromSys = true;
+
+    if (m_isDeleting) {
+        qDebug() << "Is deleting ,quit";
+        m_waitForInstall = files;
+        return;
+    } else {
+        installFont(files);
+    }
+
 }
 
 void DFontMgrMainWindow::initRightKeyMenu()
