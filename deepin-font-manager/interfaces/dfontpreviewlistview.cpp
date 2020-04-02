@@ -576,12 +576,9 @@ QModelIndex DFontPreviewListView::currModelIndex()
     int min = -1;
     QModelIndex minIndex;
     for (QModelIndex index : selectedIndexes()) {
-        if (min < 0) {
+        if (min < 0 || min > index.row()) {
             min = index.row();
             minIndex = index;
-        } else if (min > index.row()) {
-            minIndex = index;
-            min = index.row();
         }
     }
 
