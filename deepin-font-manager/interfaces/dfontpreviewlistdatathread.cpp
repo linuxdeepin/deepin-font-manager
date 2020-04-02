@@ -151,7 +151,7 @@ void DFontPreviewListDataThread::onFileChanged(const QStringList &files)
     qDebug() << __FUNCTION__ << files << m_mutex;
     if (m_mutex != nullptr)
         QMutexLocker locker(m_mutex);
-    m_view->deleteFontFiles(files);
+    m_view->deleteCurFonts(files);
     qDebug() << __FUNCTION__ << files << " end ";
 }
 

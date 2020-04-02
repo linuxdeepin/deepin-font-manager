@@ -1126,7 +1126,7 @@ void DFontMgrMainWindow::onFontUninstallFinished(const QStringList &uninstallInd
 //    for (QString filePath : uninstallIndex) {
 //        m_fontPreviewListView->deleteFontModelIndex(filePath);
 //    }
-    Q_EMIT requestDeleted(uninstallIndex);
+//    Q_EMIT requestDeleted(uninstallIndex);
 }
 
 
@@ -1272,6 +1272,8 @@ void DFontMgrMainWindow::delCurrentFont()
         DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
         qDebug() << "Confirm delete:" << currItemData.fontInfo.filePath
                  << " is system font:" << currItemData.fontInfo.isSystemFont;
+        //force delete all fonts
+        Q_EMIT requestDeleted(m_uninstallFilePath);
         m_fontManager->setType(DFontManager::UnInstall);
         m_fontManager->setUnInstallFile(m_uninstallFilePath);
         m_fontManager->start();

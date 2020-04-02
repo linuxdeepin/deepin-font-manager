@@ -658,9 +658,35 @@ void DFontPreviewListView::updateChangedDir(const QString &path)
 
 void DFontPreviewListView::deleteFontFiles(const QStringList &files, bool force)
 {
-    for (QString filePath : files) {
-        changeFontFile(filePath, force);
+    if (force) {
+        for (QString path : files) {
+            bool del = QFile::remove(path);
+            qDebug() << __FUNCTION__ << " force delete file " << path << del;
+        }
     }
+
+    deleteCurFonts(files);
+}
+
+void DFontPreviewListView::deleteCurFonts(const QStringList &files)
+{
+    QList<DFontPreviewItemData> fontInfoList = m_dataThread->getFontModelList();
+    qDebug() << fontInfoList.size() << __FUNCTION__ << files;
+    for (int i = 0; i < fontInfoList.size(); ++i) {
+        DFontPreviewItemData itemData = fontInfoList.at(i);
+        QString filePath = itemData.fontInfo.filePath;
+        QFileInfo filePathInfo(filePath);
+        //如果字体文件已经不存在，则从t_manager表中删除
+        if (files.contains(filePath)) {
+            //删除字体之前启用字体，防止下次重新安装后就被禁用
+            enableFont(itemData);
+            DFMDBManager::instance()->deleteFontInfo(itemData);
+            Q_EMIT itemRemoved(itemData);
+            m_dataThread->removeFontData(itemData);
+            m_dataThread->removePathWatcher(filePath);
+        }
+    }
+    DFMDBManager::instance()->commitDeleteFontInfo();
 }
 
 void DFontPreviewListView::changeFontFile(const QString &path, bool force)
