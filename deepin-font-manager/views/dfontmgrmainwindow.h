@@ -6,6 +6,7 @@
 #include "views/dfontspinnerwidget.h"
 #include "dfontuninstalldialog.h"
 #include "signalmanager.h"
+#include "views/dfdeletedialog.h"
 
 #include <QShortcut>
 

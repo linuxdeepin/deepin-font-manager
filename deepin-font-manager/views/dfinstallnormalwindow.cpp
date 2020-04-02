@@ -28,9 +28,6 @@ DFInstallNormalWindow::DFInstallNormalWindow(const QStringList &files, QWidget *
     GetAllSysfiles();
     verifyFontFiles();
     initConnections();
-
-
-    qDebug() << "ASDASDAs" << endl;
 }
 
 DFInstallNormalWindow::~DFInstallNormalWindow()
@@ -354,7 +351,6 @@ void DFInstallNormalWindow::checkShowMessage()
     if (getInstallMessage == true && getReInstallMessage == true) {
         emit m_signalManager->showInstallFloatingMessage(totalInstallFont);
         totalInstallFont = 0;
-
         getInstallMessage = false;
         getReInstallMessage = false;
         this->close();

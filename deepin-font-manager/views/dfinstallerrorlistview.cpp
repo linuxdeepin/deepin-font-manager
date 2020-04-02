@@ -14,14 +14,14 @@
 
 //DFInstallErrorListDelegate
 DFInstallErrorListDelegate::DFInstallErrorListDelegate(QAbstractItemView *parent)
-    :DStyledItemDelegate(parent)
+    : DStyledItemDelegate(parent)
     , m_parentView(parent)
 {
 }
 
 //用于去除选中项的边框
 void DFInstallErrorListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
-                             const QModelIndex &index) const
+                                       const QModelIndex &index) const
 {
     if (index.isValid()) {
 
@@ -48,7 +48,7 @@ void DFInstallErrorListDelegate::paint(QPainter *painter, const QStyleOptionView
         rect.setWidth(option.rect.width());
         rect.setHeight(option.rect.height());
 
-        QRect bgRect = QRect(rect.left()+10, rect.top(), rect.width()-18, rect.height());
+        QRect bgRect = QRect(rect.left() + 10, rect.top(), rect.width() - 18, rect.height());
 
         if (itemModel.bSelectable) {
 
@@ -86,7 +86,7 @@ void DFInstallErrorListDelegate::paint(QPainter *painter, const QStyleOptionView
 
         int checkBoxSize = 20;
         DCheckBox checkBox;
-        QRect checkboxRect = QRect(bgRect.left() + 10, bgRect.top()+14+2, checkBoxSize-4, checkBoxSize-4);
+        QRect checkboxRect = QRect(bgRect.left() + 10, bgRect.top() + 14 + 2, checkBoxSize - 4, checkBoxSize - 4);
         checkBoxOption.rect = checkboxRect;
         DApplication::style()->drawPrimitive(QStyle::PE_IndicatorCheckBox,
                                              &checkBoxOption,
@@ -95,10 +95,10 @@ void DFInstallErrorListDelegate::paint(QPainter *painter, const QStyleOptionView
 
         int statusLabelMaxWidth = 160;
         int fontNameLeft = FTM_ERROR_ITEM_FONTNAME_LEFT;
-        QRect fontFileNameRect = QRect(bgRect.left()+fontNameLeft,
-                                       checkboxRect.top()-5,
-                                       bgRect.width()-fontNameLeft-statusLabelMaxWidth,
-                                       checkboxRect.height()+10);
+        QRect fontFileNameRect = QRect(bgRect.left() + fontNameLeft,
+                                       checkboxRect.top() - 5,
+                                       bgRect.width() - fontNameLeft - statusLabelMaxWidth,
+                                       checkboxRect.height() + 10);
 
         QFont nameFont = painter->font();
         nameFont.setPixelSize(DFontSizeManager::instance()->fontPixelSize(DFontSizeManager::T6));
@@ -106,20 +106,19 @@ void DFInstallErrorListDelegate::paint(QPainter *painter, const QStyleOptionView
 
         QFontMetrics fontMetric(nameFont);
         QString elidedFontFileNameText = fontMetric.elidedText(strFontFileName,
-                                                   Qt::ElideRight,
-                                                   fontFileNameRect.width(),
-                                                   Qt::TextShowMnemonic);
+                                                               Qt::ElideRight,
+                                                               fontFileNameRect.width(),
+                                                               Qt::TextShowMnemonic);
 
         if (option.state & QStyle::State_Selected) {
             painter->setPen(QPen(option.palette.color(DPalette::Text)));
             painter->drawText(fontFileNameRect, Qt::AlignLeft | Qt::AlignVCenter, elidedFontFileNameText);
-        }
-        else {
+        } else {
             painter->setPen(QPen(option.palette.color(DPalette::Text)));
             painter->drawText(fontFileNameRect, Qt::AlignLeft | Qt::AlignVCenter, elidedFontFileNameText);
         }
 
-        QRect installStatusRect = QRect(bgRect.left()+(bgRect.width()-statusLabelMaxWidth)-10,
+        QRect installStatusRect = QRect(bgRect.left() + (bgRect.width() - statusLabelMaxWidth) - 10,
                                         bgRect.top(),
                                         statusLabelMaxWidth,
                                         bgRect.height());
@@ -130,9 +129,9 @@ void DFInstallErrorListDelegate::paint(QPainter *painter, const QStyleOptionView
 
         QFontMetrics stateFontMetric(installStatusFont);
         QString elidedStatusText = fontMetric.elidedText(strStatus,
-                                                   Qt::ElideRight,
-                                                   installStatusRect.width(),
-                                                   Qt::TextShowMnemonic);
+                                                         Qt::ElideRight,
+                                                         installStatusRect.width(),
+                                                         Qt::TextShowMnemonic);
 
         DPalette pa = DApplicationHelper::instance()->palette(m_parentView);
         DStyleHelper styleHelper;
@@ -147,7 +146,7 @@ void DFInstallErrorListDelegate::paint(QPainter *painter, const QStyleOptionView
 }
 
 QSize DFInstallErrorListDelegate::sizeHint(const QStyleOptionViewItem &option,
-                                         const QModelIndex &index) const
+                                           const QModelIndex &index) const
 {
     Q_UNUSED(index)
 
@@ -162,7 +161,7 @@ DFInstallErrorListView::DFInstallErrorListView(QList<DFInstallErrorItemModel> in
     , m_installErrorFontModelList(installErrorFontModelList)
 {
     QWidget *topSpaceWidget = new QWidget;
-    topSpaceWidget->setFixedSize(this->width(), 70-FTM_TITLE_FIXED_HEIGHT);
+    topSpaceWidget->setFixedSize(this->width(), 70 - FTM_TITLE_FIXED_HEIGHT);
     this->addHeaderWidget(topSpaceWidget);
 
     setAutoScroll(true);
@@ -208,7 +207,7 @@ void DFInstallErrorListView::initDelegate()
     this->setItemDelegate(m_errorListItemDelegate);
 }
 
-QStandardItemModel* DFInstallErrorListView::getErrorListSourceModel()
+QStandardItemModel *DFInstallErrorListView::getErrorListSourceModel()
 {
     return m_errorListSourceModel;
 }
@@ -232,7 +231,6 @@ void DFInstallErrorListView::setSelection(const QRect &rect, QItemSelectionModel
     QModelIndex modelIndex = indexAt(selectionPoint);
 
     if (m_bLeftMouse) {
-
         DFInstallErrorItemModel itemModel =
             qvariant_cast<DFInstallErrorItemModel>(m_errorListSourceModel->data(modelIndex));
         if (!itemModel.bSelectable) {
