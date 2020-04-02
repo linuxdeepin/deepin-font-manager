@@ -90,6 +90,7 @@ DFontMgrMainWindow::DFontMgrMainWindow(bool isQuickMode, QWidget *parent)
     initUI();
     initConnections();
     initShortcuts();
+    initFontFiles();
 }
 
 DFontMgrMainWindow::~DFontMgrMainWindow()
@@ -458,6 +459,25 @@ void DFontMgrMainWindow::initShortcuts()
                 fontInfoAction->trigger();
             }
         });
+    }
+}
+
+void DFontMgrMainWindow::initFontFiles()
+{
+    m_dbManager = DFMDBManager::instance();
+    DFontInfoManager *fontInfoMgr = DFontInfoManager::instance();
+
+    QStringList allFontsList = fontInfoMgr->getAllFontPath();
+    const QString FONTS_DIR = QDir::homePath() + "/.local/share/fonts/";
+
+    QStringList installFont = m_dbManager->getInstalledFontsPath();
+    for (int i = 0; i < allFontsList.size(); ++i) {
+        QString filePath = allFontsList.at(i);
+        if(!installFont.contains(filePath)) {
+            QString str = filePath.split("/").last();
+            QDir dir(filePath.remove(str));
+            dir.removeRecursively();
+        }
     }
 }
 

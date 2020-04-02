@@ -41,6 +41,9 @@ inline void checkDirectory()
 
 int main(int argc, char *argv[])
 {
+    qDebug()<<"ininininininininininininininininininininininininininininininin\nininininininininininininininininininininin";
+    QProcess *process = new QProcess;
+        process->start("fc-cache");
     QCoreApplication app(argc, argv);
     QCommandLineParser parser;
     parser.process(app);
@@ -49,7 +52,7 @@ int main(int argc, char *argv[])
     const QString sysDir = QDir::homePath() + "/.local/share/fonts";
     const QStringList fileList = parser.positionalArguments();
 
-    QProcess *process = new QProcess;
+
     QString target = "";
     QString targetDir = "";
 
@@ -98,7 +101,7 @@ int main(int argc, char *argv[])
         }
     }
 
-    process->start("fc-cache");
+
     process->waitForFinished();
     process->deleteLater();
 

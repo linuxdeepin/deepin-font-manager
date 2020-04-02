@@ -50,7 +50,6 @@ public:
     int getRecordCount(const QString &table_name = "t_fontmanager");
 
     int getMaxFontId(const QString &table_name = "t_fontmanager");
-
     // batch operation
     void addFontInfo(const QList<DFontPreviewItemData> &fontList, const QString &table_name = "t_fontmanager");
     void deleteFontInfo(const QList<DFontPreviewItemData> &fontList, const QString &table_name = "t_fontmanager");
@@ -58,6 +57,10 @@ public:
     QString escapeString(const QString &str);
 
     QSqlDatabase m_db;
+
+    //获取已安装字体路径
+    QStringList getInstalledFontsPath();
+protected:
 
 private:
     QString m_strDatabase;

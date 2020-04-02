@@ -70,7 +70,7 @@ protected:
     void initUI();
     void initConnections();
     void initShortcuts();
-
+    void initFontFiles();
     void initFontUninstallDialog();
     void initTileBar();
     void initTileFrame();
@@ -102,7 +102,7 @@ protected:
     DListView *m_noInstallListView;
     DFontSpinnerWidget *m_fontLoadingSpinner {nullptr};
     DFontuninstalldialog *m_fontUninstallDialog;
-
+    DFMDBManager *m_dbManager {nullptr};
     void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
 signals:
     void fileSelected(const QStringList files) const;

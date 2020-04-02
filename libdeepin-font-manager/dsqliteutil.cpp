@@ -293,7 +293,20 @@ int DSqliteUtil::getRecordCount(const QString &table_name)
 
     return resultCount;
 }
-
+//获取已安装字体路径
+QStringList DSqliteUtil::getInstalledFontsPath()
+{
+    QString sql = "select filePath from t_fontmanager where isInstalled = 1";
+    QStringList installedList;
+    QMutexLocker m_locker(&mutex);
+    m_query->prepare(sql);
+    if (m_query->exec()) {
+        while (m_query->next()) {
+            installedList.append(m_query->value(0).toString());
+            }
+    }
+    return installedList;
+}
 int DSqliteUtil::getMaxFontId(const QString &table_name)
 {
     QString sql = "select max(fontId) from " + table_name;

@@ -131,7 +131,11 @@ int DFMDBManager::getCurrMaxFontId()
 {
     return m_sqlUtil->getMaxFontId();
 }
-
+//获取已安装字体路径
+QStringList DFMDBManager::getInstalledFontsPath()
+{
+    return m_sqlUtil->getInstalledFontsPath();
+}
 QString DFMDBManager::isFontInfoExist(const DFontInfo &newFileFontInfo)
 {
     QList<DFontPreviewItemData> fontItemDataList;

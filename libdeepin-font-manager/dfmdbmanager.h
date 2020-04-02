@@ -17,9 +17,8 @@ public:
 
     QList<DFontPreviewItemData> getAllFontInfo();
     int getRecordCount();
-
     int getCurrMaxFontId();
-
+    QStringList getInstalledFontsPath();//
     QString isFontInfoExist(const DFontInfo &newFileFontInfo);
 
     bool addFontInfo(const DFontPreviewItemData &itemData);
@@ -42,6 +41,7 @@ public:
 
     void beginTransaction();
     void endTransaction();
+
 
 private:
     DFontPreviewItemData parseRecordToItemData(const QMap<QString, QString> &record);
