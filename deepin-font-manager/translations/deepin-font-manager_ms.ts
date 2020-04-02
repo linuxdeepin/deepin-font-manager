@@ -120,11 +120,11 @@
     </message>
     <message>
         <source>The other one system font has already been installed</source>
-        <translation>Satu fon sistem yang lain telah dipasang</translation>
+        <translation type="vanished">Satu fon sistem yang lain telah dipasang</translation>
     </message>
     <message>
         <source>The other %2 system fonts have already been installed</source>
-        <translation>%2 fon sistem yang lain telah dipasang</translation>
+        <translation type="vanished">%2 fon sistem yang lain telah dipasang</translation>
     </message>
     <message>
         <source>%1 fonts installed</source>
@@ -164,6 +164,10 @@
     <message>
         <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
         <translation>Fon-fon ini tidak akan tersedia untuk kegunaan aplikasi, dan %1 fon sistem yang lain tidak boleh dipadamkan</translation>
+    </message>
+    <message>
+        <source>This font will not be available to applications, and the other %1 system fonts cannot be deleted</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

@@ -120,11 +120,11 @@
     </message>
     <message>
         <source>The other one system font has already been installed</source>
-        <translation>Toinen järjestelmän fontti on jo asennettu</translation>
+        <translation type="vanished">Toinen järjestelmän fontti on jo asennettu</translation>
     </message>
     <message>
         <source>The other %2 system fonts have already been installed</source>
-        <translation>Muut %2 järjestelmän fonttit ovat jo asennettuna</translation>
+        <translation type="vanished">Muut %2 järjestelmän fonttit ovat jo asennettuna</translation>
     </message>
     <message>
         <source>%1 fonts installed</source>
@@ -164,6 +164,10 @@
     <message>
         <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
         <translation>Nämä fontit eivät ole sovellusten käytettävissä, eikä muita %1 järjestelmäfontteja voi poistaa</translation>
+    </message>
+    <message>
+        <source>This font will not be available to applications, and the other %1 system fonts cannot be deleted</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

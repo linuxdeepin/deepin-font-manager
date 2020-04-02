@@ -42,7 +42,7 @@
     </message>
     <message>
         <source>Confirm</source>
-        <translation>Confirme</translation>
+        <translation>Confirmar</translation>
     </message>
 </context>
 <context>
@@ -120,11 +120,11 @@
     </message>
     <message>
         <source>The other one system font has already been installed</source>
-        <translation>Otra fuente ya está instalada</translation>
+        <translation type="vanished">Otra fuente ya está instalada</translation>
     </message>
     <message>
         <source>The other %2 system fonts have already been installed</source>
-        <translation>Otras %2 fuentes ya están instaladas</translation>
+        <translation type="vanished">Otras %2 fuentes ya están instaladas</translation>
     </message>
     <message>
         <source>%1 fonts installed</source>
@@ -151,7 +151,7 @@
     </message>
     <message>
         <source>Confirm</source>
-        <translation type="vanished">Confirme</translation>
+        <translation type="vanished">Confirmar</translation>
     </message>
     <message>
         <source>Delete</source>
@@ -164,6 +164,10 @@
     <message>
         <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
         <translation>Estas fuentes no estarán disponibles para las aplicaciones, y las otras %1 fuentes del sistema no pueden ser borradas</translation>
+    </message>
+    <message>
+        <source>This font will not be available to applications, and the other %1 system fonts cannot be deleted</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

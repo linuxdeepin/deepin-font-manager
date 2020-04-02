@@ -120,11 +120,11 @@
     </message>
     <message>
         <source>The other one system font has already been installed</source>
-        <translation>L&apos;altro font di sistema è già stato installato</translation>
+        <translation type="vanished">L&apos;altro font di sistema è già stato installato</translation>
     </message>
     <message>
         <source>The other %2 system fonts have already been installed</source>
-        <translation>Gli altri %2 font di sistema sono già stati installati</translation>
+        <translation type="vanished">Gli altri %2 font di sistema sono già stati installati</translation>
     </message>
     <message>
         <source>%1 fonts installed</source>
@@ -164,6 +164,10 @@
     <message>
         <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
         <translation>Questi font non saranno disponibili per le App, ed inoltre i font di Sistema %1 non possono essere eliminati</translation>
+    </message>
+    <message>
+        <source>This font will not be available to applications, and the other %1 system fonts cannot be deleted</source>
+        <translation>Questo font non sarà disponibile per le App, ed inoltre l&apos;altro font di sistema %1 non può essere eliminato</translation>
     </message>
 </context>
 <context>

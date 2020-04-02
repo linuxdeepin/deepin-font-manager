@@ -14,7 +14,7 @@ signals:
     void deledFont(QString &fontPath);
     void updateUninstallDialog(QString &fontName, int index, int totalCount);
     void closeUninstallDialog();
-    void showFloatingMessage(int totalCount);
+    void showInstallFloatingMessage(int totalCount);
     void sendInstallMessage(int totalCount);
     void sendReInstallMessage(int totalCount);
     void startToInsert();

@@ -165,6 +165,10 @@
         <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
         <translation>Ces polices ne seront pas disponibles pour les applications et les autres polices système %1 ne peuvent pas être supprimées</translation>
     </message>
+    <message>
+        <source>This font will not be available to applications, and the other %1 system fonts cannot be deleted</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>Dfuninstalldialog</name>

@@ -352,7 +352,7 @@ bool DFInstallNormalWindow::isSystemFont(DFontInfo &f)
 void DFInstallNormalWindow::checkShowMessage()
 {
     if (getInstallMessage == true && getReInstallMessage == true) {
-        emit m_signalManager->showFloatingMessage(totalInstallFont);
+        emit m_signalManager->showInstallFloatingMessage(totalInstallFont);
         totalInstallFont = 0;
 
         getInstallMessage = false;

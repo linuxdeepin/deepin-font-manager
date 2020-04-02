@@ -120,11 +120,11 @@
     </message>
     <message>
         <source>The other one system font has already been installed</source>
-        <translation>L&apos;altra lletra del sistema ja s&apos;ha instal·lat.</translation>
+        <translation type="vanished">L&apos;altra lletra del sistema ja s&apos;ha instal·lat.</translation>
     </message>
     <message>
         <source>The other %2 system fonts have already been installed</source>
-        <translation>Les altres %2 lletres del sitema ja s&apos;han instal·lat.</translation>
+        <translation type="vanished">Les altres %2 lletres del sitema ja s&apos;han instal·lat.</translation>
     </message>
     <message>
         <source>%1 fonts installed</source>
@@ -164,6 +164,10 @@
     <message>
         <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
         <translation>Aquestes lletres no estaran disponibles a les aplicacions i les altres %1 lletres del sistema no es poden eliminar.</translation>
+    </message>
+    <message>
+        <source>This font will not be available to applications, and the other %1 system fonts cannot be deleted</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

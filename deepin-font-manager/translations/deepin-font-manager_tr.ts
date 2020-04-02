@@ -120,11 +120,11 @@
     </message>
     <message>
         <source>The other one system font has already been installed</source>
-        <translation>Diğer bir sistem yazı tipi zaten kurulu</translation>
+        <translation type="vanished">Diğer bir sistem yazı tipi zaten kurulu</translation>
     </message>
     <message>
         <source>The other %2 system fonts have already been installed</source>
-        <translation>Diğer %2 sistem yazı tipi zaten kurulu</translation>
+        <translation type="vanished">Diğer %2 sistem yazı tipi zaten kurulu</translation>
     </message>
     <message>
         <source>%1 fonts installed</source>
@@ -164,6 +164,10 @@
     <message>
         <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
         <translation>Bu yazı tipleri uygulamalar tarafından kullanılamaz ve diğer %1 sistem yazı tipleri silinemez</translation>
+    </message>
+    <message>
+        <source>This font will not be available to applications, and the other %1 system fonts cannot be deleted</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

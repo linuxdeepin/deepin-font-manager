@@ -242,11 +242,7 @@ void DFontMgrMainWindow::initConnections()
 
     QObject::connect(m_fontManager, SIGNAL(uninstallFontFinished(const QStringList &)), this,
                      SLOT(onFontUninstallFinished(const QStringList &)));
-    QObject::connect(m_signalManager, &SignalManager::showFloatingMessage, this, &DFontMgrMainWindow::onShowMessage);
-
-
-
-
+    QObject::connect(m_signalManager, &SignalManager::showInstallFloatingMessage, this, &DFontMgrMainWindow::onShowMessage);
 }
 
 void DFontMgrMainWindow::initShortcuts()

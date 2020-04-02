@@ -120,11 +120,11 @@
     </message>
     <message>
         <source>The other one system font has already been installed</source>
-        <translation>다른 하나의 시스템 글꼴이 이미 설치되어 있습니다</translation>
+        <translation type="vanished">다른 하나의 시스템 글꼴이 이미 설치되어 있습니다</translation>
     </message>
     <message>
         <source>The other %2 system fonts have already been installed</source>
-        <translation>다른 %2개의 시스템 글꼴이 이미 설치되어 있습니다</translation>
+        <translation type="vanished">다른 %2개의 시스템 글꼴이 이미 설치되어 있습니다</translation>
     </message>
     <message>
         <source>%1 fonts installed</source>
@@ -165,12 +165,16 @@
         <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
         <translation>이러한 글꼴은 응용 프로그램에서 사용할 수 없으며 다른 %1 시스템 글꼴은 삭제할 수 없습니다</translation>
     </message>
+    <message>
+        <source>This font will not be available to applications, and the other %1 system fonts cannot be deleted</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>Dfuninstalldialog</name>
     <message>
         <source>Deleting fonts, please wait...</source>
-        <translation type="unfinished"/>
+        <translation>글꼴 삭제중, 기다려 주십시오...</translation>
     </message>
 </context>
 <context>

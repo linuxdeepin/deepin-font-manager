@@ -120,11 +120,11 @@
     </message>
     <message>
         <source>The other one system font has already been installed</source>
-        <translation>अर्को एउटा प्रणाली फन्ट पहिले नै स्थापना भइसकेको छ</translation>
+        <translation type="vanished">अर्को एउटा प्रणाली फन्ट पहिले नै स्थापना भइसकेको छ</translation>
     </message>
     <message>
         <source>The other %2 system fonts have already been installed</source>
-        <translation>अन्य% 2 प्रणाली फन्टहरू पहिल्यै स्थापना भइसकेको छ</translation>
+        <translation type="vanished">अन्य% 2 प्रणाली फन्टहरू पहिल्यै स्थापना भइसकेको छ</translation>
     </message>
     <message>
         <source>%1 fonts installed</source>
@@ -164,6 +164,10 @@
     <message>
         <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
         <translation>यी फन्टहरू अनुप्रयोगहरूमा उपलब्ध हुँदैन, र अन्य% 1 प्रणाली फन्टहरू हटाउन सकिदैन</translation>
+    </message>
+    <message>
+        <source>This font will not be available to applications, and the other %1 system fonts cannot be deleted</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

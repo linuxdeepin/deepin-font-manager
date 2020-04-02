@@ -120,11 +120,11 @@
     </message>
     <message>
         <source>The other one system font has already been installed</source>
-        <translation>其它1个为系统字体，无需安装</translation>
+        <translation type="vanished">其它1个为系统字体，无需安装</translation>
     </message>
     <message>
         <source>The other %2 system fonts have already been installed</source>
-        <translation>其它%2个为系统字体，无需安装</translation>
+        <translation type="vanished">其它%2个为系统字体，无需安装</translation>
     </message>
     <message>
         <source>%1 fonts installed</source>
@@ -164,6 +164,10 @@
     <message>
         <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
         <translation>删除后这些字体将不可用于其他应用程序，无法删除其他%1个系统字体</translation>
+    </message>
+    <message>
+        <source>This font will not be available to applications, and the other %1 system fonts cannot be deleted</source>
+        <translation>删除后该字体将不可用于其他应用程序，无法删除其他%1个系统字体</translation>
     </message>
 </context>
 <context>

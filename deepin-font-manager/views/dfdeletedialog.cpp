@@ -85,7 +85,11 @@ void DFDeleteDialog::initUI()
 
     m_messageB = new DLabel(this);
     if (m_deleteCnt <= 1) {
-        m_messageB->setText(DApplication::translate("DeleteConfirmDailog", "This font will not be available to applications"));
+        if (m_systemCnt == 0) {
+            m_messageB->setText(DApplication::translate("DeleteConfirmDailog", "This font will not be available to applications"));
+        } else {
+            m_messageB->setText(DApplication::translate("DeleteConfirmDailog", "This font will not be available to applications, and the other %1 system fonts cannot be deleted").arg(m_systemCnt));
+        }
     } else {
         if (m_systemCnt == 0) {
             m_messageB->setText(DApplication::translate("DeleteConfirmDailog", "These fonts will not be available to applications"));

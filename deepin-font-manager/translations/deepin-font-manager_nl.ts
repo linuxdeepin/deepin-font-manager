@@ -120,11 +120,11 @@
     </message>
     <message>
         <source>The other one system font has already been installed</source>
-        <translation>Het andere systeemlettertype is al geïnstalleerd</translation>
+        <translation type="vanished">Het andere systeemlettertype is al geïnstalleerd</translation>
     </message>
     <message>
         <source>The other %2 system fonts have already been installed</source>
-        <translation>De andere %2 systeemlettertypen zijn al geïnstalleerd</translation>
+        <translation type="vanished">De andere %2 systeemlettertypen zijn al geïnstalleerd</translation>
     </message>
     <message>
         <source>%1 fonts installed</source>
@@ -164,6 +164,10 @@
     <message>
         <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
         <translation>Deze lettertypen zijn niet beschikbaar in programma&apos;s - de andere %1 systeemlettertypen kunnen niet worden verwijderd</translation>
+    </message>
+    <message>
+        <source>This font will not be available to applications, and the other %1 system fonts cannot be deleted</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

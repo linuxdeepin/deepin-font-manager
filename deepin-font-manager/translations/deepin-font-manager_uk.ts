@@ -120,11 +120,11 @@
     </message>
     <message>
         <source>The other one system font has already been installed</source>
-        <translation>Ще один загальносистемний шрифт вже встановлено</translation>
+        <translation type="vanished">Ще один загальносистемний шрифт вже встановлено</translation>
     </message>
     <message>
         <source>The other %2 system fonts have already been installed</source>
-        <translation>%2 інших загальносистемних шрифтів вже встановлено</translation>
+        <translation type="vanished">%2 інших загальносистемних шрифтів вже встановлено</translation>
     </message>
     <message>
         <source>%1 fonts installed</source>
@@ -164,6 +164,10 @@
     <message>
         <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
         <translation>Ці шрифти будуть недоступними для програм, інші %1 загальносистемних шрифтів не може бути вилучено</translation>
+    </message>
+    <message>
+        <source>This font will not be available to applications, and the other %1 system fonts cannot be deleted</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

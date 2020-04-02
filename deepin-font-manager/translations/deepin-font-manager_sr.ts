@@ -120,11 +120,11 @@
     </message>
     <message>
         <source>The other one system font has already been installed</source>
-        <translation>Преостали системски фонт је већ био инсталиран</translation>
+        <translation type="vanished">Преостали системски фонт је већ био инсталиран</translation>
     </message>
     <message>
         <source>The other %2 system fonts have already been installed</source>
-        <translation>Осталих %2 системских фонтова су већ били инсталирани</translation>
+        <translation type="vanished">Осталих %2 системских фонтова су већ били инсталирани</translation>
     </message>
     <message>
         <source>%1 fonts installed</source>
@@ -164,6 +164,10 @@
     <message>
         <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
         <translation>Ови фонтови неће бити доступни програмима, а осталих %1 системских фонтова се не могу уклонити</translation>
+    </message>
+    <message>
+        <source>This font will not be available to applications, and the other %1 system fonts cannot be deleted</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
