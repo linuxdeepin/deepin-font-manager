@@ -194,6 +194,7 @@ void DFontMgrMainWindow::initConnections()
     QObject::connect(m_signalManager, &SignalManager::popUninstallDialog, this, [ = ] {
         if (m_needDelCount > 1)
         {
+            m_fontUninstallDialog->move((this->width() - m_fontUninstallDialog->width() - 220 + mapToGlobal(QPoint(0, 0)).x()), (mapToGlobal(QPoint(0, 0)).y() + 200));
             m_fontUninstallDialog->exec();
         }
 
@@ -469,7 +470,7 @@ void DFontMgrMainWindow::initFontFiles()
     QStringList installFont = m_dbManager->getInstalledFontsPath();
     for (int i = 0; i < allFontsList.size(); ++i) {
         QString filePath = allFontsList.at(i);
-        if(!installFont.contains(filePath)) {
+        if (!installFont.contains(filePath)) {
             QString str = filePath.split("/").last();
             QDir dir(filePath.remove(str));
             dir.removeRecursively();
@@ -922,7 +923,7 @@ void DFontMgrMainWindow::installFont(const QStringList &files)
      */
     m_fIsInstalling = true;
 
-    Dtk::Widget::moveToCenter(m_dfNormalInstalldlg);
+//    Dtk::Widget::moveToCenter(m_dfNormalInstalldlg);
     m_dfNormalInstalldlg->exec();
     m_dfNormalInstalldlg->deleteLater();
 
@@ -1262,8 +1263,8 @@ void DFontMgrMainWindow::delCurrentFont()
         return;
     m_fIsDeleting = true;
     m_isDeleting = true;
-    DFDeleteDialog confirmDelDlg(this, deleteCnt, systemCnt);
-    connect(&confirmDelDlg, &DFDeleteDialog::requestDelete, this, [this]() {
+    DFDeleteDialog *confirmDelDlg = new DFDeleteDialog(this, deleteCnt, systemCnt);
+    connect(confirmDelDlg, &DFDeleteDialog::requestDelete, this, [this]() {
         // Add Delete font code Here
         m_uninstallFilePath.clear();
         m_uninstallFilePath = m_fontPreviewListView->selectedFonts(nullptr, nullptr);
@@ -1276,8 +1277,8 @@ void DFontMgrMainWindow::delCurrentFont()
         m_fontManager->setUnInstallFile(m_uninstallFilePath);
         m_fontManager->start();
     });
-
-    confirmDelDlg.exec();
+    confirmDelDlg->move((this->width() - confirmDelDlg->width() - 230 + mapToGlobal(QPoint(0, 0)).x()), (mapToGlobal(QPoint(0, 0)).y() + 180));
+    confirmDelDlg->exec();
 }
 
 void DFontMgrMainWindow::exportFont()
