@@ -312,10 +312,12 @@ void DFontPreviewListDataThread::syncFontEnableDisableStatusData(QStringList dis
     }
 
     QList<DFontPreviewItemData> fontInfoList = m_dbManager->getAllFontInfo();
+    QStringList fontList;
 
     for (int i = 0; i < fontInfoList.size(); i++) {
         DFontPreviewItemData fontItemData = fontInfoList.at(i);
         QString keyFilePath = fontItemData.fontInfo.filePath;
+        fontList << keyFilePath;
 
         //disableFontMap为被禁用的字体map
         if (disableFontMap.value(keyFilePath)) {
@@ -327,7 +329,15 @@ void DFontPreviewListDataThread::syncFontEnableDisableStatusData(QStringList dis
         }
 
         m_dbManager->updateFontInfo(fontItemData, "isEnabled");
+
     }
 
     m_dbManager->commitUpdateFontInfo();
+
+    QStringList deleteFontList;
+    for (QString disableFont : disableFontPathList) {
+        if (!fontList.contains(disableFont))
+            deleteFontList << disableFont;
+    }
+    m_view->enableFonts(deleteFontList);
 }

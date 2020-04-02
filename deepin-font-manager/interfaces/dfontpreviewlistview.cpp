@@ -467,6 +467,26 @@ bool DFontPreviewListView::disableFont(const DFontPreviewItemData &itemData)
     return false;
 }
 
+void DFontPreviewListView::enableFonts(const QStringList &fontList)
+{
+    QString fontConfigPath = DFMXmlWrapper::m_fontConfigFilePath;
+    bool isCreateSuccess = DFMXmlWrapper::createFontConfigFile(fontConfigPath);
+
+    if (!isCreateSuccess) {
+        return;
+    }
+
+    QStringList strFontPathList;
+    DFMXmlWrapper::queryAllChildNodes_Text(fontConfigPath, "rejectfont", strFontPathList);
+
+    for (QString fontPath : fontList) {
+        if (!strFontPathList.contains(fontPath))
+            continue;
+        if (!DFMXmlWrapper::deleteNodeWithText(fontConfigPath, "pattern", fontPath))
+             return;
+    }
+}
+
 void DFontPreviewListView::onListViewItemEnableBtnClicked(QModelIndexList itemIndexes, bool setValue)
 {
     QMutexLocker locker(&m_mutex);

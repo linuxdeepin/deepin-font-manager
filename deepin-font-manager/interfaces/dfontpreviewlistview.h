@@ -62,6 +62,7 @@ public:
     QMutex *getMutex();
     bool enableFont(const DFontPreviewItemData &itemData);
     bool disableFont(const DFontPreviewItemData &itemData);
+    void enableFonts(const QStringList &fontList);
 
 protected:
     void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected) override;
