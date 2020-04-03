@@ -9,6 +9,15 @@ DWIDGET_USE_NAMESPACE
 
 class DFInstallErrorListDelegate : public DStyledItemDelegate
 {
+private:
+    void drawCheckBox(QPainter *painter, DFInstallErrorItemModel itemModel, QRect bgRect)const;
+    void drawCheckBoxIcon(QPainter *painter, QRect bgRect)const;
+    void drawFontName(QPainter *painter, const QStyleOptionViewItem &option,
+                      DFInstallErrorItemModel itemModel, QRect bgRect, bool bSelectable = true)const;
+    void drawFontStyle(QPainter *painter, const QStyleOptionViewItem &option,
+                       DFInstallErrorItemModel itemModel, QRect bgRect, bool bSelectable = true)const;
+    void drawSelectStatus(QPainter *painter, const QStyleOptionViewItem &option, QRect bgRect)const;
+
 public:
     DFInstallErrorListDelegate(QAbstractItemView *parent = nullptr);
 
@@ -36,7 +45,7 @@ public:
     void initErrorListData();
     void initDelegate();
 
-    QStandardItemModel* getErrorListSourceModel();
+    QStandardItemModel *getErrorListSourceModel();
 
 private:
 

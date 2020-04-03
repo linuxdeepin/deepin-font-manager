@@ -13,11 +13,154 @@
 #define FTM_ERROR_ITEM_FONTNAME_LEFT    39
 
 //DFInstallErrorListDelegate
+
 DFInstallErrorListDelegate::DFInstallErrorListDelegate(QAbstractItemView *parent)
     : DStyledItemDelegate(parent)
     , m_parentView(parent)
 {
 }
+
+void DFInstallErrorListDelegate::drawCheckBox(QPainter *painter, DFInstallErrorItemModel itemModel, QRect bgRect) const
+{
+    QStyleOptionButton checkBoxOption;
+    bool checked = itemModel.bChecked;
+    checkBoxOption.state |= QStyle::State_Enabled;
+    //根据值判断是否选中
+    if (checked) {
+        checkBoxOption.state |= QStyle::State_On;
+    } else {
+        checkBoxOption.state |= QStyle::State_Off;
+    }
+
+    int checkBoxSize = 20;
+    DCheckBox checkBox;
+    QRect checkboxRect = QRect(bgRect.left() + 10, bgRect.top() + 14 + 2, checkBoxSize - 4, checkBoxSize - 4);
+    checkBoxOption.rect = checkboxRect;
+    DApplication::style()->drawPrimitive(QStyle::PE_IndicatorCheckBox,
+                                         &checkBoxOption,
+                                         painter,
+                                         &checkBox);
+}
+
+void DFInstallErrorListDelegate::drawCheckBoxIcon(QPainter *painter, QRect bgRect) const
+{
+
+    int checkBoxSize = 20;
+    QRect checkboxRect = QRect(bgRect.left() + 5, bgRect.top() + 10, checkBoxSize + 10, checkBoxSize + 10);
+//    QRect checkboxRect = QRect(bgRect.left() + 0, bgRect.top(), checkBoxSize - 4, checkBoxSize - 4);
+    DGuiApplicationHelper::ColorType themeType = DGuiApplicationHelper::instance()->themeType();
+    if (themeType == DGuiApplicationHelper::LightType) {
+        QImage checkBox(":/images/checkbox_unchecked_light.svg");
+        painter->drawImage(checkboxRect, checkBox);
+    } else {
+        QImage checkBox(":/images/checkbox_unchecked_dark.svg");
+        painter->drawImage(checkboxRect, checkBox);
+    }
+}
+
+void DFInstallErrorListDelegate::drawFontName(QPainter *painter, const QStyleOptionViewItem &option,
+                                              DFInstallErrorItemModel itemModel, QRect bgRect, bool bSelectable) const
+{
+    QString strFontFileName = itemModel.strFontFileName;
+
+    int checkBoxSize = 20;
+    QRect checkboxRect = QRect(bgRect.left() + 10, bgRect.top() + 14 + 2, checkBoxSize - 4, checkBoxSize - 4);
+    int statusLabelMaxWidth = 160;
+    int fontNameLeft = FTM_ERROR_ITEM_FONTNAME_LEFT;
+    QRect fontFileNameRect = QRect(bgRect.left() + fontNameLeft,
+                                   checkboxRect.top() - 5,
+                                   bgRect.width() - fontNameLeft - statusLabelMaxWidth,
+                                   checkboxRect.height() + 10);
+
+    QFont nameFont = painter->font();
+    nameFont.setPixelSize(DFontSizeManager::instance()->fontPixelSize(DFontSizeManager::T6));
+    painter->setFont(nameFont);
+
+    QFontMetrics fontMetric(nameFont);
+    QString elidedFontFileNameText = fontMetric.elidedText(strFontFileName,
+                                                           Qt::ElideRight,
+                                                           fontFileNameRect.width(),
+                                                           Qt::TextShowMnemonic);
+
+    if (option.state & QStyle::State_Selected) {
+        QColor penColor = option.palette.color(DPalette::Text);
+        if (bSelectable == false) {
+            penColor.setAlphaF(0.4);
+        }
+        painter->setPen(QPen(penColor));
+        painter->drawText(fontFileNameRect, Qt::AlignLeft | Qt::AlignVCenter, elidedFontFileNameText);
+    } else {
+        QColor penColor = option.palette.color(DPalette::Text);
+        if (bSelectable == false) {
+            penColor.setAlphaF(0.4);
+        }
+        painter->setPen(QPen(penColor));
+        painter->drawText(fontFileNameRect, Qt::AlignLeft | Qt::AlignVCenter, elidedFontFileNameText);
+    }
+}
+
+void DFInstallErrorListDelegate::drawFontStyle(QPainter *painter, const QStyleOptionViewItem &option,
+                                               DFInstallErrorItemModel itemModel, QRect bgRect, bool bSelectable) const
+{
+    int statusLabelMaxWidth = 160;
+    QRect installStatusRect = QRect(bgRect.left() + (bgRect.width() - statusLabelMaxWidth) - 10,
+                                    bgRect.top(),
+                                    statusLabelMaxWidth,
+                                    bgRect.height());
+    QString strStatus = itemModel.strFontInstallStatus;
+
+
+    QFont installStatusFont = painter->font();
+    installStatusFont.setPixelSize(DFontSizeManager::instance()->fontPixelSize(DFontSizeManager::T9));
+    painter->setFont(installStatusFont);
+
+
+    QFont nameFont = painter->font();
+    nameFont.setPixelSize(DFontSizeManager::instance()->fontPixelSize(DFontSizeManager::T6));
+    painter->setFont(nameFont);
+
+    QFontMetrics fontMetric(nameFont);
+    QFontMetrics stateFontMetric(installStatusFont);
+    QString elidedStatusText = fontMetric.elidedText(strStatus,
+                                                     Qt::ElideRight,
+                                                     installStatusRect.width(),
+                                                     Qt::TextShowMnemonic);
+
+    DPalette pa = DApplicationHelper::instance()->palette(m_parentView);
+    DStyleHelper styleHelper;
+    QColor penColor = styleHelper.getColor(static_cast<const QStyleOption *>(&option), pa, DPalette::TextWarning);
+    if (bSelectable == false) {
+        penColor.setAlphaF(0.4);
+    }
+    painter->setPen(QPen(penColor));
+    painter->drawText(installStatusRect, Qt::AlignRight | Qt::AlignVCenter, elidedStatusText);
+
+}
+
+void DFInstallErrorListDelegate::drawSelectStatus(QPainter *painter, const QStyleOptionViewItem &option, QRect bgRect) const
+{
+    QPainterPath path;
+    const int radius = 8;
+
+    path.moveTo(bgRect.bottomRight() - QPoint(0, radius));
+    path.lineTo(bgRect.topRight() + QPoint(0, radius));
+    path.arcTo(QRect(QPoint(bgRect.topRight() - QPoint(radius * 2, 0)), QSize(radius * 2, radius * 2)), 0, 90);
+    path.lineTo(bgRect.topLeft() + QPoint(radius, 0));
+    path.arcTo(QRect(QPoint(bgRect.topLeft()), QSize(radius * 2, radius * 2)), 90, 90);
+    path.lineTo(bgRect.bottomLeft() - QPoint(0, radius));
+    path.arcTo(QRect(QPoint(bgRect.bottomLeft() - QPoint(0, radius * 2)), QSize(radius * 2, radius * 2)), 180, 90);
+    path.lineTo(bgRect.bottomLeft() + QPoint(radius, 0));
+    path.arcTo(QRect(QPoint(bgRect.bottomRight() - QPoint(radius * 2, radius * 2)), QSize(radius * 2, radius * 2)), 270, 90);
+
+    if (option.state & QStyle::State_Selected) {
+        DPalette pa = DApplicationHelper::instance()->palette(m_parentView);
+        DStyleHelper styleHelper;
+        QColor fillColor = styleHelper.getColor(static_cast<const QStyleOption *>(&option), pa, DPalette::ItemBackground);
+        painter->fillPath(path, QBrush(fillColor));
+    }
+}
+
+
 
 //用于去除选中项的边框
 void DFInstallErrorListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
@@ -30,10 +173,6 @@ void DFInstallErrorListDelegate::paint(QPainter *painter, const QStyleOptionView
 
         QVariant varErrorItem = index.data(Qt::DisplayRole);
         DFInstallErrorItemModel itemModel = varErrorItem.value<DFInstallErrorItemModel>();
-
-        QString strFontFileName = itemModel.strFontFileName;
-        QString strStatus = itemModel.strFontInstallStatus;
-
         QStyleOptionViewItem viewOption(option);  //用来在视图中画一个item
 
         DPalette::ColorGroup cg = option.state & QStyle::State_Enabled
@@ -51,94 +190,15 @@ void DFInstallErrorListDelegate::paint(QPainter *painter, const QStyleOptionView
         QRect bgRect = QRect(rect.left() + 10, rect.top(), rect.width() - 18, rect.height());
 
         if (itemModel.bSelectable) {
-
-            QPainterPath path;
-            const int radius = 8;
-
-            path.moveTo(bgRect.bottomRight() - QPoint(0, radius));
-            path.lineTo(bgRect.topRight() + QPoint(0, radius));
-            path.arcTo(QRect(QPoint(bgRect.topRight() - QPoint(radius * 2, 0)), QSize(radius * 2, radius * 2)), 0, 90);
-            path.lineTo(bgRect.topLeft() + QPoint(radius, 0));
-            path.arcTo(QRect(QPoint(bgRect.topLeft()), QSize(radius * 2, radius * 2)), 90, 90);
-            path.lineTo(bgRect.bottomLeft() - QPoint(0, radius));
-            path.arcTo(QRect(QPoint(bgRect.bottomLeft() - QPoint(0, radius * 2)), QSize(radius * 2, radius * 2)), 180, 90);
-            path.lineTo(bgRect.bottomLeft() + QPoint(radius, 0));
-            path.arcTo(QRect(QPoint(bgRect.bottomRight() - QPoint(radius * 2, radius * 2)), QSize(radius * 2, radius * 2)), 270, 90);
-
-            if (option.state & QStyle::State_Selected) {
-                DPalette pa = DApplicationHelper::instance()->palette(m_parentView);
-                DStyleHelper styleHelper;
-                QColor fillColor = styleHelper.getColor(static_cast<const QStyleOption *>(&option), pa, DPalette::ItemBackground);
-                painter->fillPath(path, QBrush(fillColor));
-            }
-        }
-
-        //绘制复选框
-        QStyleOptionButton checkBoxOption;
-        bool checked = itemModel.bChecked;
-        checkBoxOption.state |= QStyle::State_Enabled;
-        //根据值判断是否选中
-        if (checked) {
-            checkBoxOption.state |= QStyle::State_On;
+            drawSelectStatus(painter, option, bgRect);
+            drawCheckBox(painter, itemModel, bgRect);
+            drawFontName(painter, option, itemModel, bgRect);
+            drawFontStyle(painter, option, itemModel, bgRect);
         } else {
-            checkBoxOption.state |= QStyle::State_Off;
+            drawCheckBoxIcon(painter, bgRect);
+            drawFontName(painter, option, itemModel, bgRect, false);
+            drawFontStyle(painter, option, itemModel, bgRect, false);
         }
-
-        int checkBoxSize = 20;
-        DCheckBox checkBox;
-        QRect checkboxRect = QRect(bgRect.left() + 10, bgRect.top() + 14 + 2, checkBoxSize - 4, checkBoxSize - 4);
-        checkBoxOption.rect = checkboxRect;
-        DApplication::style()->drawPrimitive(QStyle::PE_IndicatorCheckBox,
-                                             &checkBoxOption,
-                                             painter,
-                                             &checkBox);
-
-        int statusLabelMaxWidth = 160;
-        int fontNameLeft = FTM_ERROR_ITEM_FONTNAME_LEFT;
-        QRect fontFileNameRect = QRect(bgRect.left() + fontNameLeft,
-                                       checkboxRect.top() - 5,
-                                       bgRect.width() - fontNameLeft - statusLabelMaxWidth,
-                                       checkboxRect.height() + 10);
-
-        QFont nameFont = painter->font();
-        nameFont.setPixelSize(DFontSizeManager::instance()->fontPixelSize(DFontSizeManager::T6));
-        painter->setFont(nameFont);
-
-        QFontMetrics fontMetric(nameFont);
-        QString elidedFontFileNameText = fontMetric.elidedText(strFontFileName,
-                                                               Qt::ElideRight,
-                                                               fontFileNameRect.width(),
-                                                               Qt::TextShowMnemonic);
-
-        if (option.state & QStyle::State_Selected) {
-            painter->setPen(QPen(option.palette.color(DPalette::Text)));
-            painter->drawText(fontFileNameRect, Qt::AlignLeft | Qt::AlignVCenter, elidedFontFileNameText);
-        } else {
-            painter->setPen(QPen(option.palette.color(DPalette::Text)));
-            painter->drawText(fontFileNameRect, Qt::AlignLeft | Qt::AlignVCenter, elidedFontFileNameText);
-        }
-
-        QRect installStatusRect = QRect(bgRect.left() + (bgRect.width() - statusLabelMaxWidth) - 10,
-                                        bgRect.top(),
-                                        statusLabelMaxWidth,
-                                        bgRect.height());
-
-        QFont installStatusFont = painter->font();
-        installStatusFont.setPixelSize(DFontSizeManager::instance()->fontPixelSize(DFontSizeManager::T9));
-        painter->setFont(installStatusFont);
-
-        QFontMetrics stateFontMetric(installStatusFont);
-        QString elidedStatusText = fontMetric.elidedText(strStatus,
-                                                         Qt::ElideRight,
-                                                         installStatusRect.width(),
-                                                         Qt::TextShowMnemonic);
-
-        DPalette pa = DApplicationHelper::instance()->palette(m_parentView);
-        DStyleHelper styleHelper;
-        QColor penColor = styleHelper.getColor(static_cast<const QStyleOption *>(&option), pa, DPalette::TextWarning);
-        painter->setPen(QPen(penColor));
-        painter->drawText(installStatusRect, Qt::AlignRight | Qt::AlignVCenter, elidedStatusText);
-
         painter->restore();
     } else {
         QStyledItemDelegate::paint(painter, option, index);

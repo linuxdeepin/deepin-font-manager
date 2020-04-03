@@ -25,5 +25,7 @@
         <file>images/dark_uncollection_hover.svg</file>
         <file>images/dark_uncollection_normal.svg</file>
         <file>images/ok.svg</file>
+        <file>images/checkbox_unchecked_light.svg</file>
+        <file>images/checkbox_unchecked_dark.svg</file>
     </qresource>
 </RCC>
