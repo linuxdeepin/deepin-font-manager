@@ -615,6 +615,7 @@ bool DFMXmlWrapper::queryAllChildNodes_Text(const QString &fileName,
     // 将文件内容读到doc中
     if (!doc.setContent(&file)) {
         file.close();
+        file.remove();
         return false;
     }
     file.close();
