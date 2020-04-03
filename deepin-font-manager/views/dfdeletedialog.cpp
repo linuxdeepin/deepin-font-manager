@@ -112,8 +112,10 @@ void DFDeleteDialog::initUI()
     paB.setColor(DPalette::WindowText, color);
     DApplicationHelper::instance()->setPalette(m_messageB, paB);
     m_messageB->setWordWrap(true);
-    m_messageB->setAlignment(Qt::AlignHCenter);
+    m_messageB->setAlignment(Qt::AlignCenter);
     m_messageB->setMinimumHeight(m_messageB->fontMetrics().height() * 2);
+    /* 19096 UT000591 */
+    m_messageB->setMinimumWidth(DEFAULT_WINDOW_W - 22);
 
     QFontMetrics fm(DFontSizeManager::instance()->t6());
     m_messageA->setFixedHeight(fm.height());
