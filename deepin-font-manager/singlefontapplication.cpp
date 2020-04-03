@@ -168,10 +168,14 @@ void SingleFontApplication::activateWindow()
 
 void SingleFontApplication::slotBatchInstallFonts()
 {
+    qDebug() << "batch install fonts";
     reinterpret_cast<DFontMgrMainWindow *>(m_qspMainWnd.get())->waitForInstallSpinner->stop();
     reinterpret_cast<DFontMgrMainWindow *>(m_qspMainWnd.get())->waitForInstallSpinner->hide();
+
+    m_selectedFiles << waitForInstallSet.toList();
     activateWindow();
     m_selectedFiles.clear();
+    waitForInstallSet.clear();
 }
 
 void SingleFontApplication::initWaitForInstallTimer()
@@ -190,7 +194,8 @@ void SingleFontApplication::installFonts(QStringList fontPathList)
     waitForNextFontTimer->stop();
     for (QString fontPath : fontPathList) {
         if (Utils::isFontMimeType(fontPath)) {
-            m_selectedFiles.append(fontPath);
+            /* bug#19081 UT00591 */
+            waitForInstallSet.insert(fontPath);
         }
     }
     waitForNextFontTimer->start(1000);
