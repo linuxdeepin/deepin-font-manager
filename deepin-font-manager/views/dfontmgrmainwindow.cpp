@@ -1279,6 +1279,12 @@ void DFontMgrMainWindow::delCurrentFont()
         m_fontManager->setUnInstallFile(m_uninstallFilePath);
         m_fontManager->start();
     });
+
+    /* Bug#19111 取消删除字体后，恢复标记位，不用考虑用户操作 UT00591 */
+    connect(confirmDelDlg, &DFDeleteDialog::rejected, this, [this]() {
+        m_isDeleting = false;
+    });
+
     confirmDelDlg->move((this->width() - confirmDelDlg->width() - 230 + mapToGlobal(QPoint(0, 0)).x()), (mapToGlobal(QPoint(0, 0)).y() + 180));
     confirmDelDlg->exec();
 }
