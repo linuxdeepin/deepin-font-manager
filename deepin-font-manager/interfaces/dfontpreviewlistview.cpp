@@ -102,11 +102,7 @@ void DFontPreviewListView::onFinishedDataLoad()
         //如果字体文件已经不存在，则从t_manager表中删除
         if (!filePathInfo.exists()) {
             //删除字体之前启用字体，防止下次重新安装后就被禁用
-            enableFont(itemData);
-            QMap<QString, QString> delInfo;
-//            delInfo.insert("filePath", itemData.fontInfo.filePath);
-            delInfo.insert("familyName", itemData.fontInfo.familyName);
-            delInfo.insert("styleName", itemData.fontInfo.styleName);
+            enableFont(itemData.fontInfo.filePath);
             DFMDBManager::instance()->deleteFontInfo(itemData);
             continue;
         } else {
@@ -117,6 +113,7 @@ void DFontPreviewListView::onFinishedDataLoad()
         Q_EMIT itemAdded(itemData);
     }
     DFMDBManager::instance()->commitDeleteFontInfo();
+    enableFonts();
 
     m_bLoadDataFinish = true;
     emit onLoadFontsStatus(1);
@@ -428,48 +425,21 @@ void DFontPreviewListView::rowsAboutToBeRemoved(const QModelIndex &parent, int s
     qDebug() << __FUNCTION__ << currentIndex() << "end";
 }
 
-bool DFontPreviewListView::enableFont(const DFontPreviewItemData &itemData)
+void DFontPreviewListView::enableFont(const QString &filePath)
 {
-    QString fontConfigPath = DFMXmlWrapper::m_fontConfigFilePath;
-    bool isCreateSuccess = DFMXmlWrapper::createFontConfigFile(fontConfigPath);
-
-    if (!isCreateSuccess) {
-        return false;
-    }
-
-    QStringList strFontPathList;
-    DFMXmlWrapper::queryAllChildNodes_Text(fontConfigPath, "rejectfont", strFontPathList);
-
-    QString fontFilePath = itemData.fontInfo.filePath;
-    if (strFontPathList.contains(fontFilePath)) {
-        return DFMXmlWrapper::deleteNodeWithText(fontConfigPath, "pattern", fontFilePath);
-    }
-
-    return false;
+    if (!m_enableFontList.contains(filePath))
+        m_enableFontList << filePath;
 }
 
-bool DFontPreviewListView::disableFont(const DFontPreviewItemData &itemData)
+void DFontPreviewListView::disableFont(const QString &filePath)
 {
-    QString fontConfigPath = DFMXmlWrapper::m_fontConfigFilePath;
-    bool isCreateSuccess = DFMXmlWrapper::createFontConfigFile(fontConfigPath);
-
-    if (!isCreateSuccess) {
-        return false;
-    }
-
-    QStringList strDisableFontPathList = DFMXmlWrapper::getFontConfigDisableFontPathList();
-
-    QString fontFilePath = itemData.fontInfo.filePath;
-    if (!strDisableFontPathList.contains(fontFilePath)) {
-        return DFMXmlWrapper::addPatternNodesWithText(fontConfigPath, "rejectfont", fontFilePath);
-    }
-
-    return false;
+    if (!m_disableFontList.contains(filePath))
+        m_disableFontList << filePath;
 }
 
-void DFontPreviewListView::enableFonts(const QStringList &fontList)
+void DFontPreviewListView::enableFonts()
 {
-    if (fontList.isEmpty())
+    if (m_enableFontList.isEmpty())
         return;
 
     QString fontConfigPath = DFMXmlWrapper::m_fontConfigFilePath;
@@ -479,15 +449,24 @@ void DFontPreviewListView::enableFonts(const QStringList &fontList)
         return;
     }
 
-    QStringList strFontPathList;
-    DFMXmlWrapper::queryAllChildNodes_Text(fontConfigPath, "rejectfont", strFontPathList);
+    DFMXmlWrapper::deleteNodeWithTextList(fontConfigPath, "pattern", m_enableFontList);
+    m_enableFontList.clear();
+}
 
-    for (QString fontPath : fontList) {
-        if (!strFontPathList.contains(fontPath))
-            continue;
-        if (!DFMXmlWrapper::deleteNodeWithText(fontConfigPath, "pattern", fontPath))
-             return;
+void DFontPreviewListView::disableFonts()
+{
+    if (m_disableFontList.isEmpty())
+        return;
+
+    QString fontConfigPath = DFMXmlWrapper::m_fontConfigFilePath;
+    bool isCreateSuccess = DFMXmlWrapper::createFontConfigFile(fontConfigPath);
+
+    if (!isCreateSuccess) {
+        return;
     }
+
+    DFMXmlWrapper::addPatternNodesWithTextList(fontConfigPath, "rejectfont", m_disableFontList);
+    m_disableFontList.clear();
 }
 
 void DFontPreviewListView::onListViewItemEnableBtnClicked(QModelIndexList itemIndexes, bool setValue)
@@ -512,24 +491,27 @@ void DFontPreviewListView::onListViewItemEnableBtnClicked(QModelIndexList itemIn
 
         qDebug() << __FUNCTION__ << "familyName" << itemData.fontInfo.familyName << endl;
 
-        if (itemData.isEnabled) {
-            enableFont(itemData);
+        if (setValue) {
+            enableFont(itemData.fontInfo.filePath);
         } else {
             if (index == itemIndexes[0])
                 fontName = itemData.strFontName;
-            disableFont(itemData);
+            disableFont(itemData.fontInfo.filePath);
         }
 
         DFMDBManager::instance()->updateFontInfo(itemData, "isEnabled");
 
         m_fontPreviewProxyModel->setData(index, QVariant::fromValue(itemData), Qt::DisplayRole);
-        //        m_fontPreviewProxyModel->setData(itemIndexes[0], QVariant::fromValue(itemData), Qt::DisplayRole);
     }
 
     DFMDBManager::instance()->commitUpdateFontInfo();
 
-    if (setValue)
+    if (setValue) {
+        enableFonts();
         return;
+    } else {
+        disableFonts();
+    }
 
     QString message;
     if (itemIndexes.size() == 1) {
@@ -650,11 +632,7 @@ void DFontPreviewListView::updateChangedDir(const QString &path)
         if (!filePathInfo.exists()) {
             qDebug() << __FUNCTION__ << " begin to delete font " << itemData.fontInfo.filePath;
             //删除字体之前启用字体，防止下次重新安装后就被禁用
-            enableFont(itemData);
-            QMap<QString, QString> delInfo;
-//            delInfo.insert("filePath", itemData.fontInfo.filePath);
-            delInfo.insert("familyName", itemData.fontInfo.familyName);
-            delInfo.insert("styleName", itemData.fontInfo.styleName);
+            enableFont(itemData.fontInfo.filePath);
             DFMDBManager::instance()->deleteFontInfo(itemData);
             Q_EMIT itemRemovedFromSys(itemData);
             m_dataThread->removeFontData(itemData);
@@ -662,6 +640,7 @@ void DFontPreviewListView::updateChangedDir(const QString &path)
         }
     }
     DFMDBManager::instance()->commitDeleteFontInfo();
+    enableFonts();
     qDebug() << __FUNCTION__ << path << " end ";
 }
 
@@ -688,7 +667,7 @@ void DFontPreviewListView::deleteCurFonts(const QStringList &files)
         //如果字体文件已经不存在，则从t_manager表中删除
         if (files.contains(filePath)) {
             //删除字体之前启用字体，防止下次重新安装后就被禁用
-            enableFont(itemData);
+            enableFont(itemData.fontInfo.filePath);
             DFMDBManager::instance()->deleteFontInfo(itemData);
             Q_EMIT itemRemoved(itemData);
             m_dataThread->removeFontData(itemData);
@@ -696,6 +675,7 @@ void DFontPreviewListView::deleteCurFonts(const QStringList &files)
         }
     }
     DFMDBManager::instance()->commitDeleteFontInfo();
+    enableFonts();
 }
 
 void DFontPreviewListView::changeFontFile(const QString &path, bool force)
@@ -715,11 +695,7 @@ void DFontPreviewListView::changeFontFile(const QString &path, bool force)
         //如果字体文件已经不存在，则从t_manager表中删除
         if ((!isDir && (filePath == path) && (!filePathInfo.exists())) || (isDir && filePath.startsWith(path) && !filePathInfo.exists())) {
             //删除字体之前启用字体，防止下次重新安装后就被禁用
-            enableFont(itemData);
-            QMap<QString, QString> delInfo;
-//            delInfo.insert("filePath", itemData.fontInfo.filePath);
-            delInfo.insert("familyName", itemData.fontInfo.familyName);
-            delInfo.insert("styleName", itemData.fontInfo.styleName);
+            enableFont(itemData.fontInfo.filePath);
             DFMDBManager::instance()->deleteFontInfo(itemData);
             Q_EMIT itemRemoved(itemData);
             m_dataThread->removeFontData(itemData);
@@ -729,6 +705,7 @@ void DFontPreviewListView::changeFontFile(const QString &path, bool force)
         }
     }
     DFMDBManager::instance()->commitDeleteFontInfo();
+    enableFonts();
 
     if (isDir) {
         if (!QFileInfo(QDir::homePath() + "/.local/share/fonts").exists()) {

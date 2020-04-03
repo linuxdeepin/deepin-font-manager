@@ -238,6 +238,74 @@ bool DFMXmlWrapper::addNodesWithText(const QString &fileName,
     return true;
 }
 
+bool DFMXmlWrapper::addNodesWithTextList(const QString &fileName, const QString &parentNodeName, const QStringList &nodeNameList,
+                                         const QList<QSTRING_MAP> &nodeAttributeList, const QStringList &lastNodeTextList)
+{
+    if (fileName.isEmpty()) { // 文件名为空
+        return false;
+    }
+
+    // 新建QDomDocument类对象，它代表一个XML文档
+    QDomDocument doc;
+    // 建立指向“fileName”文件的QFile对象
+    QFile file(fileName);
+    // 以只读方式打开
+    if (!file.open(QIODevice::ReadOnly)) {
+        return false;
+    }
+
+    // 将文件内容读到doc中
+    if (!doc.setContent(&file)) {
+        file.close();
+        return false;
+    }
+
+    file.close();
+
+    QDomElement rootEle = doc.documentElement();
+    QDomElement parentNode;
+    getNodeByName(rootEle, parentNodeName, parentNode);
+
+    for (QString lastNodeText : lastNodeTextList) {
+        QDomElement currParentNode = parentNode;
+        for (int i = 0; i < nodeNameList.size(); i++) {
+
+            QString nodeName = nodeNameList.at(i);
+            QSTRING_MAP attributeMap = nodeAttributeList.at(i);
+
+            // 添加元素
+            QDomElement childEle = doc.createElement(nodeName);
+            currParentNode.appendChild(childEle);
+            currParentNode = childEle;
+
+            if (!attributeMap.empty()) {
+                QString attribute = attributeMap.keys().first();
+                QString value = attributeMap.value(attribute);
+
+                childEle.setAttribute(attribute, value);
+            }
+
+            if (nodeNameList.size() - 1 == i) {
+                QDomText text;
+                text = doc.createTextNode(lastNodeText);
+                childEle.appendChild(text);
+            }
+        }
+    }
+
+    if (!file.open(QFile::WriteOnly | QFile::Truncate)) {
+        return false;
+    }
+
+    //输出到文件
+    QTextStream out(&file);
+    // 将文档保存到文件，4为子元素缩进字符数
+    doc.save(out, 4);
+    file.close();
+
+    return true;
+}
+
 bool DFMXmlWrapper::addPatternNodesWithText(const QString &fileName,
                                             const QString &parentNodeName,
                                             const QString &lastNodeText)
@@ -254,6 +322,22 @@ bool DFMXmlWrapper::addPatternNodesWithText(const QString &fileName,
     attributeList.push_back(map3);
 
     return DFMXmlWrapper::addNodesWithText(fileName, parentNodeName, nodeNameList, attributeList, lastNodeText);
+}
+
+bool DFMXmlWrapper::addPatternNodesWithTextList(const QString &fileName, const QString &parentNodeName, const QStringList &lastNodeTextList)
+{
+    QStringList nodeNameList;
+    nodeNameList << "pattern" << "patelt" << "string";
+    QList<QMap<QString, QString>> attributeList;
+    QMap<QString, QString> map1;
+    QMap<QString, QString> map2;
+    map2.insert("name", "file");
+    QMap<QString, QString> map3;
+    attributeList.push_back(map1);
+    attributeList.push_back(map2);
+    attributeList.push_back(map3);
+
+    return DFMXmlWrapper::addNodesWithTextList(fileName, parentNodeName, nodeNameList, attributeList, lastNodeTextList);
 }
 
 bool DFMXmlWrapper::addNode_All(const QString &fileName,
@@ -367,6 +451,71 @@ bool DFMXmlWrapper::deleteNodeWithText(const QString &fileName,
         }
     } else {
         qDebug() << "delete node failed!" << endl;
+    }
+
+    if (!file.open(QFile::WriteOnly | QFile::Truncate)) {
+        return false;
+    }
+
+    //输出到文件
+    QTextStream out_stream(&file);
+    doc.save(out_stream, 4); //缩进4格
+    file.close();
+
+    return true;
+}
+
+bool DFMXmlWrapper::deleteNodeWithTextList(const QString &fileName, const QString &nodeName, const QStringList &nodeTextList)
+{
+    if (fileName.isEmpty()) {
+        return false;
+    }
+
+    QFile file(fileName);
+    //打开文件
+    if (!file.open(QFile::ReadOnly))
+        return false;
+
+    QDomDocument doc;
+    if (!doc.setContent(&file)) {
+        file.close();
+        return false;
+    }
+    file.close();
+
+    QDomElement rootEle = doc.documentElement();
+    QDomElement nodeEle;
+    getNodeByName(rootEle, nodeName, nodeEle);
+
+    // 假如是根节点
+    if (rootEle == nodeEle) {
+        return false;
+    }
+
+    //根据节点包含的文本匹配到的节点，删除节点及其元素
+    QList<QDomNode> removeNodeList;
+    QDomNodeList list = nodeEle.parentNode().childNodes();
+    for (int i = 0; i < list.count(); i++) {
+        QDomNode node = list.at(i);
+        if (nodeEle.isElement()) {
+            if (nodeTextList.contains(node.toElement().text())) {
+                removeNodeList << node;
+            }
+        }
+    }
+
+    for (QDomNode removeNode : removeNodeList) {
+        if (removeNode.isElement()) {
+            QDomNode parentNode = removeNode.parentNode();
+            if (parentNode.isElement()) {
+                parentNode.removeChild(removeNode);
+            } else {
+                qDebug() << "delete node failed!" << endl;
+                return false;
+            }
+        } else {
+            qDebug() << "delete node failed!" << endl;
+        }
     }
 
     if (!file.open(QFile::WriteOnly | QFile::Truncate)) {

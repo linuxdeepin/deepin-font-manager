@@ -117,10 +117,19 @@ public:
                                  const QList<QSTRING_MAP> &nodeAttributeList,
                                  const QString &lastNodeText);
 
+    static bool addNodesWithTextList(const QString &fileName,
+                                 const QString &parentNodeName,
+                                 const QStringList &nodeNameList,
+                                 const QList<QSTRING_MAP> &nodeAttributeList,
+                                 const QStringList &lastNodeTextList);
 
     static bool addPatternNodesWithText(const QString &fileName,
                                         const QString &parentNodeName,
                                         const QString &lastNodeText);
+
+    static bool addPatternNodesWithTextList(const QString &fileName,
+                                        const QString &parentNodeName,
+                                        const QStringList &lastNodeTextList);
 
     /**
     *  @brief  增加包含文本与属性的节点
@@ -149,6 +158,18 @@ public:
     static bool deleteNodeWithText(const QString &fileName,
                                    const QString &nodeName,
                                    const QString &nodeText);
+
+    /**
+    *  @brief  删除节点
+    *  @param[in]  fileName 文件名
+    *  @param[in]  nodeName 节点名
+    *  @param[in]  nodeText 节点包含的文本
+    *  @retval true 表示成功
+    *  @retval false 表示失败
+    */
+    static bool deleteNodeWithTextList(const QString &fileName,
+                                   const QString &nodeName,
+                                   const QStringList &nodeTextList);
 
     /**
     *  @brief  修改节点文本

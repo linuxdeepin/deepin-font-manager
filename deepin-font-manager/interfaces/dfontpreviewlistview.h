@@ -61,9 +61,10 @@ public:
     inline bool isDeleting();
     void selectFonts(const QStringList &fileList);
     QMutex *getMutex();
-    bool enableFont(const DFontPreviewItemData &itemData);
-    bool disableFont(const DFontPreviewItemData &itemData);
-    void enableFonts(const QStringList &fontList);
+    void enableFont(const QString &filePath);
+    void disableFont(const QString &filePath);
+    void enableFonts();
+    void disableFonts();
 
 protected:
     void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected) override;
@@ -92,6 +93,8 @@ private:
     QModelIndex m_pressModelIndex;
     QModelIndex m_hoverModelIndex;
     QMutex m_mutex;
+    QStringList m_enableFontList;
+    QStringList m_disableFontList;
 
 
 signals:

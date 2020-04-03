@@ -242,22 +242,18 @@ void DFontPreviewListDataThread::refreshFontListData(bool isStartup, QStringList
                 //如果字体文件已经不存在，则从t_manager表中删除
                 if (!filePathInfo.exists()) {
                     //删除字体之前启用字体，防止下次重新安装后就被禁用
-                    m_view->enableFont(itemData);
-                    QMap<QString, QString> delInfo;
-//                    delInfo.insert("filePath", itemData.fontInfo.filePath);
-                    delInfo.insert("familyName", itemData.fontInfo.familyName);
-                    delInfo.insert("styleName", itemData.fontInfo.styleName);
+                    m_view->enableFont(itemData.fontInfo.filePath);
                     DFMDBManager::instance()->deleteFontInfo(itemData);
                 }
             }
         } else {
             QString filePath = itemData.fontInfo.filePath;
-            QFileInfo filePathInfo(filePath);
             dbFilePathSet.insert(filePath);
         }
     }
 
     DFMDBManager::instance()->commitDeleteFontInfo();
+    m_view->enableFonts();
 
     m_diffFontModelList.clear();
     if (!isStartup) {
@@ -334,10 +330,9 @@ void DFontPreviewListDataThread::syncFontEnableDisableStatusData(QStringList dis
 
     m_dbManager->commitUpdateFontInfo();
 
-    QStringList deleteFontList;
     for (QString disableFont : disableFontPathList) {
         if (!fontList.contains(disableFont))
-            deleteFontList << disableFont;
+            m_view->enableFont(disableFont);
     }
-    m_view->enableFonts(deleteFontList);
+    m_view->enableFonts();
 }
