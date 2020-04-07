@@ -211,6 +211,7 @@ void DFontMgrMainWindow::initConnections()
         {
             if (m_waitForInstall.count() > 0) {
                 waitForInsert();
+                m_waitForInstall.clear();
             }
             m_isFromSys = false;
         }
