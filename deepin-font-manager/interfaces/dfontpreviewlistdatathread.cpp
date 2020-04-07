@@ -238,6 +238,7 @@ void DFontPreviewListDataThread::refreshFontListData(bool isStartup, QStringList
 
             if (filePathInfo.exists()) {
                 m_fontModelList.append(itemData);
+                dbFilePathSet.insert(filePath);
             } else {
                 //如果字体文件已经不存在，则从t_manager表中删除
                 if (!filePathInfo.exists()) {
@@ -256,6 +257,7 @@ void DFontPreviewListDataThread::refreshFontListData(bool isStartup, QStringList
     m_view->enableFonts();
 
     m_diffFontModelList.clear();
+    isStartup = false;
     if (!isStartup) {
 
         //根据文件路径比较出不同的字体文件
@@ -267,7 +269,7 @@ void DFontPreviewListDataThread::refreshFontListData(bool isStartup, QStringList
             QList<QString> diffFilePathList = diffSet.toList();
             for (int i = 0; i < diffFilePathList.size(); ++i) {
                 QString filePath = diffFilePathList.at(i);
-                if (installFont.contains(filePath)) {
+                if (installFont.isEmpty() || installFont.contains(filePath)) {
                     insertFontItemData(filePath, maxFontId + i + 1, chineseFontPathList, monoSpaceFontPathList, isStartup);
                 }
             }
@@ -297,9 +299,9 @@ void DFontPreviewListDataThread::removeFontData(const DFontPreviewItemData &remo
 void DFontPreviewListDataThread::syncFontEnableDisableStatusData(QStringList disableFontPathList)
 {
     //disableFontPathList为被禁用的字体路径列表
-    if (disableFontPathList.size() == 0) {
-        return;
-    }
+//    if (disableFontPathList.size() == 0) {
+//        return;
+//    }
 
     QMap<QString, bool> disableFontMap;
     for (int i = 0; i < disableFontPathList.size(); i++) {

@@ -441,6 +441,7 @@ void DFontPreviewListView::enableFonts()
 {
     if (m_enableFontList.isEmpty())
         return;
+    qDebug() << __FUNCTION__ << m_enableFontList.size();
 
     QString fontConfigPath = DFMXmlWrapper::m_fontConfigFilePath;
     bool isCreateSuccess = DFMXmlWrapper::createFontConfigFile(fontConfigPath);
@@ -457,6 +458,7 @@ void DFontPreviewListView::disableFonts()
 {
     if (m_disableFontList.isEmpty())
         return;
+    qDebug() << __FUNCTION__ << m_disableFontList.size();
 
     QString fontConfigPath = DFMXmlWrapper::m_fontConfigFilePath;
     bool isCreateSuccess = DFMXmlWrapper::createFontConfigFile(fontConfigPath);
@@ -489,7 +491,7 @@ void DFontPreviewListView::onListViewItemEnableBtnClicked(QModelIndexList itemIn
             continue;
         itemData.isEnabled = setValue;
 
-        qDebug() << __FUNCTION__ << "familyName" << itemData.fontInfo.familyName << endl;
+//        qDebug() << __FUNCTION__ << "familyName" << itemData.fontInfo.familyName << endl;
 
         if (setValue) {
             enableFont(itemData.fontInfo.filePath);
