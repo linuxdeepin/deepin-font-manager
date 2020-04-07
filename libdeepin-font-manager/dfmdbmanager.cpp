@@ -27,9 +27,14 @@ DFMDBManager *DFMDBManager::instance()
     return INSTANCE;
 }
 
-inline bool DFMDBManager::isSystemFont(QString filePath)
+inline bool DFMDBManager::isSystemFont(const QString &filePath)
 {
     return filePath.contains("/.local/share/fonts") ? false : true;
+}
+
+bool DFMDBManager::isUserFont(const QString &filePath)
+{
+    return filePath.contains("/.local/share/fonts");
 }
 
 DFontPreviewItemData DFMDBManager::parseRecordToItemData(const QMap<QString, QString> &record)
@@ -187,7 +192,7 @@ QMap<QString, QString> DFMDBManager::mapItemData(DFontPreviewItemData itemData)
 bool DFMDBManager::addFontInfo(const DFontPreviewItemData &itemData)
 {
 //    qDebug() << __FUNCTION__ << itemData.fontInfo.toString();
-    if (!m_addFontList.contains(itemData))
+    if (!m_addFontList.contains(itemData) || itemData.fontInfo.isSystemFont)
         m_addFontList << itemData;
     return true;
 //    return m_sqlUtil->addRecord(mapItemData(itemData));
@@ -274,7 +279,7 @@ void DFMDBManager::commitDeleteFontInfo()
 
 void DFMDBManager::updateFontInfo(const DFontPreviewItemData &itemData, const QString &strKey)
 {
-    if (!m_updateFontList.contains(itemData)) {
+    if (!m_updateFontList.contains(itemData) || itemData.fontInfo.isSystemFont) {
         m_updateFontList << itemData;
         if (m_strKey != strKey)
             m_strKey = strKey;

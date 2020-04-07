@@ -23,15 +23,15 @@ public:
     virtual ~DFontPreviewListDataThread();
 
     //从fontconfig配置文件同步字体启用/禁用状态数据
-    void syncFontEnableDisableStatusData(QStringList disableFontPathList);
+    void syncFontEnableDisableStatusData(const QStringList &disableFontPathList);
 
-    void refreshFontListData(bool isStartup = false, QStringList list = QStringList());
+    void refreshFontListData(bool isStartup = false, const QStringList &list = QStringList());
     void removeFontData(const DFontPreviewItemData &removeItemData);
 
-    void insertFontItemData(QString filePath,
+    void insertFontItemData(const QString &filePath,
                             int index,
-                            QStringList chineseFontPathList,
-                            QStringList monoSpaceFontPathList,
+                            const QStringList &chineseFontPathList,
+                            const QStringList &monoSpaceFontPathList,
                             bool isStartup = false);
 
     QList<DFontPreviewItemData> getFontModelList();

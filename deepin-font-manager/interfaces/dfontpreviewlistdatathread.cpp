@@ -179,10 +179,10 @@ void DFontPreviewListDataThread::forceDeleteFiles(const QStringList &files)
     qDebug() << __FUNCTION__ << files << " end ";
 }
 
-void DFontPreviewListDataThread::insertFontItemData(QString filePath,
+void DFontPreviewListDataThread::insertFontItemData(const QString &filePath,
                                                     int index,
-                                                    QStringList chineseFontPathList,
-                                                    QStringList monoSpaceFontPathList,
+                                                    const QStringList &chineseFontPathList,
+                                                    const QStringList &monoSpaceFontPathList,
                                                     bool isStartup)
 {
     DFontInfoManager *fontInfoMgr = DFontInfoManager::instance();
@@ -218,7 +218,7 @@ void DFontPreviewListDataThread::insertFontItemData(QString filePath,
     m_fontModelList.append(itemData);
 }
 
-void DFontPreviewListDataThread::refreshFontListData(bool isStartup, QStringList installFont)
+void DFontPreviewListDataThread::refreshFontListData(bool isStartup, const QStringList &installFont)
 {
     qDebug() << __FUNCTION__ << " begin";
     DFontInfoManager *fontInfoMgr = DFontInfoManager::instance();
@@ -238,6 +238,7 @@ void DFontPreviewListDataThread::refreshFontListData(bool isStartup, QStringList
 
             if (filePathInfo.exists()) {
                 m_fontModelList.append(itemData);
+                dbFilePathSet.insert(filePath);
             } else {
                 //如果字体文件已经不存在，则从t_manager表中删除
                 if (!filePathInfo.exists()) {
@@ -256,6 +257,7 @@ void DFontPreviewListDataThread::refreshFontListData(bool isStartup, QStringList
     m_view->enableFonts();
 
     m_diffFontModelList.clear();
+    isStartup = false;
     if (!isStartup) {
 
         //根据文件路径比较出不同的字体文件
@@ -267,7 +269,7 @@ void DFontPreviewListDataThread::refreshFontListData(bool isStartup, QStringList
             QList<QString> diffFilePathList = diffSet.toList();
             for (int i = 0; i < diffFilePathList.size(); ++i) {
                 QString filePath = diffFilePathList.at(i);
-                if (installFont.contains(filePath)) {
+                if (m_dbManager->isSystemFont(filePath) || installFont.contains(filePath)) {
                     insertFontItemData(filePath, maxFontId + i + 1, chineseFontPathList, monoSpaceFontPathList, isStartup);
                 }
             }
@@ -294,12 +296,12 @@ void DFontPreviewListDataThread::removeFontData(const DFontPreviewItemData &remo
     }
 }
 
-void DFontPreviewListDataThread::syncFontEnableDisableStatusData(QStringList disableFontPathList)
+void DFontPreviewListDataThread::syncFontEnableDisableStatusData(const QStringList &disableFontPathList)
 {
     //disableFontPathList为被禁用的字体路径列表
-    if (disableFontPathList.size() == 0) {
-        return;
-    }
+//    if (disableFontPathList.size() == 0) {
+//        return;
+//    }
 
     QMap<QString, bool> disableFontMap;
     for (int i = 0; i < disableFontPathList.size(); i++) {
@@ -315,6 +317,9 @@ void DFontPreviewListDataThread::syncFontEnableDisableStatusData(QStringList dis
         QString keyFilePath = fontItemData.fontInfo.filePath;
         fontList << keyFilePath;
 
+        if (fontItemData.isEnabled != disableFontMap.value(keyFilePath))
+            continue;
+
         //disableFontMap为被禁用的字体map
         if (disableFontMap.value(keyFilePath)) {
             fontItemData.isEnabled = false;
@@ -325,14 +330,15 @@ void DFontPreviewListDataThread::syncFontEnableDisableStatusData(QStringList dis
         }
 
         m_dbManager->updateFontInfo(fontItemData, "isEnabled");
-
     }
 
     m_dbManager->commitUpdateFontInfo();
 
+    qDebug() << __FUNCTION__ << "fontlist " << fontList.size() << "db size " << fontInfoList.size();
     for (QString disableFont : disableFontPathList) {
-        if (!fontList.contains(disableFont))
+        if (!fontList.contains(disableFont) && disableFont.contains("/.local/share/fonts")) {
             m_view->enableFont(disableFont);
+        }
     }
     m_view->enableFonts();
 }

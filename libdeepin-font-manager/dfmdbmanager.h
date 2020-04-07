@@ -42,12 +42,13 @@ public:
     void beginTransaction();
     void endTransaction();
 
+    inline bool isSystemFont(const QString &filePath);
+    inline bool isUserFont(const QString &filePath);
 
 private:
     DFontPreviewItemData parseRecordToItemData(const QMap<QString, QString> &record);
     QMap<QString, QString> mapItemData(DFontPreviewItemData itemData);
     DFontInfo getDFontInfo(const QMap<QString, QString> &record);
-    inline bool isSystemFont(QString filePath);
     inline void appendAllKeys(QList<QString> &keyList);
 
     DSqliteUtil *m_sqlUtil;
