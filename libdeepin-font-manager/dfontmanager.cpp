@@ -244,6 +244,7 @@ void DFontManager::doInstall(const QStringList &fileList, bool reinstall)
 
             // output too fast will crash.
 //            QThread::msleep(10);
+
         }
     }
 

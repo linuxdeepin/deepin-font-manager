@@ -21,7 +21,7 @@ const int COLLECT_ICON_SIZE = 24;
 const int COLLECT_ICON_RIGHT_MARGIN = 15;
 const int COLLECT_ICON_TOP_MARGIN = 10;
 
-const int FONT_NAME_HEIGHT = 25;
+const int FONT_NAME_HEIGHT = 27;
 const int FONT_NAME_LEFT_MARGIN = 50;
 const int FONT_NAME_TOP_MARGIN = 3;
 
