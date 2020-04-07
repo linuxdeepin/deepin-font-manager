@@ -72,7 +72,7 @@ void DFontuninstalldialog::initUi()
     addContent(m_mainFrame);
 
 }
-//n卸载时取消esc快捷键功能
+//n卸载时忽略esc快捷键
 void DFontuninstalldialog::keyPressEvent(QKeyEvent *event)
 {
     if(event->key()==Qt::Key_Escape)

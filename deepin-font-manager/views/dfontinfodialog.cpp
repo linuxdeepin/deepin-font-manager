@@ -118,8 +118,9 @@ void DFontInfoDialog::initUI()
     m_baseicInfoLayout->setSpacing(0);
 
     DLabel *panelName = new DLabel(this);
-//    panelName->setFixedHeight(panelName->fontMetrics().height()+2);
-    panelName->setFixedHeight(40);
+    panelName->setWordWrap(true);
+    panelName->setFixedHeight(panelName->fontMetrics().height()+2);
+//    panelName->setFixedHeight(40);
 
     DFontSizeManager::instance()->bind(panelName, DFontSizeManager::T6);
     panelName->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
@@ -129,14 +130,14 @@ void DFontInfoDialog::initUI()
 
 
 //    insertContents();
-    m_baseicInfoLayout->addStretch();
+    m_baseicInfoLayout->addStretch(2);
     m_basicInfoFrame->setLayout(m_baseicInfoLayout);
 
 
     /**************************Basic info panel****END*******************************/
 
     scrollArea = new QScrollArea();
-    scrollArea->setLineWidth(120);
+//    scrollArea->setLineWidth(120);
     scrollArea->setFixedSize(QSize(290, 375));
 //    scrollArea->setContentsMargins(0,0,30,0);
 
@@ -161,12 +162,12 @@ void DFontInfoDialog::initUI()
 
     // Add childs to main layout
     mainLayout->addWidget(m_fontLogo, 0, Qt::AlignHCenter);
-    mainLayout->addSpacing(6);
+//    mainLayout->addSpacing(6);
     mainLayout->addWidget(m_fontFileName);
-    mainLayout->addSpacing(42);
+//    mainLayout->addSpacing(42);
+    mainLayout->addStretch(8);
     mainLayout->addWidget(scrollArea);
     m_mainFrame->setLayout(mainLayout);
-
     addContent(m_mainFrame);
 
 
