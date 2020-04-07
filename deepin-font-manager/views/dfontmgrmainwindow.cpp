@@ -1102,6 +1102,7 @@ void DFontMgrMainWindow::onLeftSiderBarItemClicked(int index)
     qDebug() << filterGroup << endl;
 
     DFontPreviewProxyModel *filterModel = m_fontPreviewListView->getFontPreviewProxyModel();
+    m_fontPreviewListView->clearSelection();
     filterModel->setFilterKeyColumn(0);
     filterModel->setFilterGroup(filterGroup);
     filterModel->setEditStatus(m_searchTextStatusIsEmpty);

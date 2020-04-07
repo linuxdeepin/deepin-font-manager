@@ -171,12 +171,11 @@ int DFInstallErrorDialog::getErrorFontCheckedCount()
 bool DFInstallErrorDialog::isSystemFont(DFontInfo &f)
 {
     QString fontFullName = f.familyName + f.styleName;
-    foreach (auto it, m_systemFiles) {
-        if (!it.compare(fontFullName)) {
-            return true;
-        }
+    if (m_systemFiles.contains(fontFullName)) {
+        return true;
+    } else {
+        return false;
     }
-    return false;
 }
 
 void DFInstallErrorDialog::initInstallErrorFontViews()
