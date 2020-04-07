@@ -21,7 +21,7 @@
 DFontInfoDialog::DFontInfoDialog(DFontPreviewItemData *fontInfo, QWidget *parent)
     : DFontBaseDialog(parent)
     , m_fontInfo(fontInfo)
-    ,fontinfoArea(nullptr)
+    , fontinfoArea(nullptr)
 {
     initUI();
     initConnections();
@@ -41,11 +41,13 @@ QString DFontInfoDialog::AutoFeed(QString &text)
                 AntoIndex ++;
             }
             if (count == 2) {
-                count = 0;
-                QString str = strText.mid(52, 17).append("...").append(strText.right(5));
-                strText = strText.remove(52, strText.size());
-                strText = strText.append(str);
-                break;
+                if (strText.length() - 52 > 21) {
+                    count = 0;
+                    QString str = strText.mid(52, 17).append("...").append(strText.right(5));
+                    strText = strText.remove(52, strText.size());
+                    strText = strText.append(str);
+                    break;
+                }
             }
         }
     }
@@ -169,16 +171,14 @@ void DFontInfoDialog::initUI()
 
 
 
-    if(DApplicationHelper::DarkType == DGuiApplicationHelper::instance()->themeType())
-    {
+    if (DApplicationHelper::DarkType == DGuiApplicationHelper::instance()->themeType()) {
         DPalette paFrame = DApplicationHelper::instance()->palette(scrollArea->viewport());
         QColor colorFrame = paFrame.textLively().color();
         colorFrame.setAlphaF(0.05);
         paFrame.setColor(DPalette::Base, colorFrame);
         DApplicationHelper::instance()->setPalette(scrollArea->viewport(), paFrame);
 
-    }else if (DApplicationHelper::LightType == DGuiApplicationHelper::instance()->themeType())
-    {
+    } else if (DApplicationHelper::LightType == DGuiApplicationHelper::instance()->themeType()) {
         DPalette paFrame = DApplicationHelper::instance()->palette(scrollArea->viewport());
         QColor colorFrame = paFrame.textLively().color();
         colorFrame.setAlphaF(0.70);
@@ -205,18 +205,17 @@ void DFontInfoDialog::initUI()
 }
 void DFontInfoDialog::initConnections()
 {
-    connect(DApplicationHelper::instance(),&DApplicationHelper::themeTypeChanged,this,[=]
-    {
+    connect(DApplicationHelper::instance(), &DApplicationHelper::themeTypeChanged, this, [ = ] {
         DGuiApplicationHelper::ColorType themeType = DGuiApplicationHelper::instance()->themeType();
 
-        if(DApplicationHelper::DarkType==themeType)
+        if (DApplicationHelper::DarkType == themeType)
         {
             DPalette paFrame = DApplicationHelper::instance()->palette(scrollArea->viewport());
             QColor colorFrame = paFrame.textLively().color();
             colorFrame.setAlphaF(0.05);
             paFrame.setColor(DPalette::Base, colorFrame);
             DApplicationHelper::instance()->setPalette(scrollArea->viewport(), paFrame);
-        }else if (DApplicationHelper::LightType==themeType)
+        } else if (DApplicationHelper::LightType == themeType)
         {
             DPalette paFrame = DApplicationHelper::instance()->palette(scrollArea->viewport());
             QColor colorFrame = paFrame.textLively().color();
