@@ -620,17 +620,16 @@ void DFontPreviewListView::updateChangedFile(const QString &path)
 void DFontPreviewListView::updateChangedDir(const QString &path)
 {
     //no different between "share" or "fonts" dir
-    qDebug() << __FUNCTION__ << path << " begin ";
+//    qDebug() << __FUNCTION__ << path << " begin ";
     QMutexLocker locker(&m_mutex);
     QList<DFontPreviewItemData> fontInfoList = m_dataThread->getFontModelList();
-    qDebug() << fontInfoList.size();
-
+//    qDebug() << fontInfoList.size();
     for (int i = 0; i < fontInfoList.size(); ++i) {
         DFontPreviewItemData itemData = fontInfoList.at(i);
         QFileInfo filePathInfo(itemData.fontInfo.filePath);
         //如果字体文件已经不存在，则从t_manager表中删除
         if (!filePathInfo.exists()) {
-            qDebug() << __FUNCTION__ << " begin to delete font " << itemData.fontInfo.filePath;
+//            qDebug() << __FUNCTION__ << " begin to delete font " << itemData.fontInfo.filePath;
             //删除字体之前启用字体，防止下次重新安装后就被禁用
             enableFont(itemData.fontInfo.filePath);
             DFMDBManager::instance()->deleteFontInfo(itemData);

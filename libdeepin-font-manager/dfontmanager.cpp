@@ -230,7 +230,7 @@ void DFontManager::doInstall(const QStringList &fileList, bool reinstall)
         const int count = fileList.count() - 1;
 
         if (fileList.count() == 1) {
-            qDebug() << __FUNCTION__ << target.toUtf8().data();
+//            qDebug() << __FUNCTION__ << target.toUtf8().data();
             if (!reinstall)
                 Q_EMIT installPositionChanged(target.toUtf8().data());
 //            QThread::msleep(50);
@@ -238,7 +238,7 @@ void DFontManager::doInstall(const QStringList &fileList, bool reinstall)
             QString filePath = filePathOrig;
             double percent = currentIndex / double(count) * 100;
 
-            qDebug() << __FUNCTION__ << filePath << ", " << percent;
+//            qDebug() << __FUNCTION__ << filePath << ", " << percent;
             if (!reinstall)
                 Q_EMIT batchInstall(filePath, percent);
 

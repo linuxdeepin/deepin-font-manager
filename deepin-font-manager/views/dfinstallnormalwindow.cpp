@@ -122,7 +122,7 @@ void DFInstallNormalWindow::initConnections()
             m_installFiles.append(it);
         }
 #ifdef QT_QML_DEBUG
-        qDebug() << __FUNCTION__ << " [reinstallFiles=" << m_installFiles << "]";
+//        qDebug() << __FUNCTION__ << " [reinstallFiles=" << m_installFiles << "]";
 #endif
         batchReInstall();
     });
@@ -167,7 +167,7 @@ void DFInstallNormalWindow::initConnections()
 
         }
 
-        qDebug() << __FUNCTION__ << " installed file list ++++  " << fileList << state;
+//        qDebug() << __FUNCTION__ << " installed file list ++++  " << fileList << state;
         emit  m_signalManager->sendInstallMessage(fileList.size());
 
     });
@@ -215,18 +215,20 @@ void DFInstallNormalWindow::initConnections()
             // User cancel in athorisze window
             this->close();
         }*/
-        qDebug() << __FUNCTION__ << " Reinstalled file list ++++ " << fileList << state;
+//        qDebug() << __FUNCTION__ << " Reinstalled file list ++++ " << fileList << state;
         emit  m_signalManager->sendReInstallMessage(fileList.size());
 
     });
 
     connect(m_signalManager, &SignalManager::sendInstallMessage, this, [ = ](int totalCount) {
+        qDebug() << "install signal send++++++++++++++++++=" << endl;
         getInstallMessage = true;
         totalInstallFont = totalInstallFont + totalCount;
         checkShowMessage();
     });
 
     connect(m_signalManager, &SignalManager::sendReInstallMessage, this, [ = ](int totalCount) {
+        qDebug() << "Reinstall signal send+++++++++++++++++++" << endl;
         getReInstallMessage = true;
         totalInstallFont = totalInstallFont + totalCount;
         checkShowMessage();
@@ -347,9 +349,9 @@ bool DFInstallNormalWindow::isSystemFont(DFontInfo &f)
 
 void DFInstallNormalWindow::checkShowMessage()
 {
-    qDebug() << "Install over,ready to quit++++++" << endl;
+    qDebug() << "Install over" << endl;
     if (getInstallMessage == true && getReInstallMessage == true) {
-        qDebug() << "Install over,ready to quit--------" << endl;
+        qDebug() << "ReInstall over" << endl;
         getInstallMessage = false;
         getReInstallMessage = false;
         emit m_signalManager->showInstallFloatingMessage(totalInstallFont);
@@ -461,7 +463,7 @@ void DFInstallNormalWindow::batchReInstall()
                 DFontInfo fi = m_fontInfoManager->getFontInfo(it);
                 QString filePath = DFMDBManager::instance()->isFontInfoExist(fi);
                 if (QFileInfo(filePath).fileName() == QFileInfo(it).fileName()) {
-                    qDebug() << __FUNCTION__ << "same file " << it << " will be overrided ";
+//                    qDebug() << __FUNCTION__ << "same file " << it << " will be overrided ";
                     continue;
                 }
                 filesInstalled << filePath;
@@ -470,7 +472,7 @@ void DFInstallNormalWindow::batchReInstall()
             DFontPreviewListDataThread *dataThread = DFontPreviewListDataThread::instance();
             if (!filesInstalled.empty()) {
                 dataThread->forceDeleteFiles(filesInstalled);
-                qDebug() << __FUNCTION__ << " remove found installed font : " << filesInstalled;
+//                qDebug() << __FUNCTION__ << " remove found installed font : " << filesInstalled;
             }
         }
 
@@ -483,7 +485,7 @@ void DFInstallNormalWindow::batchReInstall()
         QString familyName = fontInfo.familyName;
         installListWithFamliyName.append(it + "|" + familyName);
 
-        qDebug() << " Prepare install file: " << it + "|" + familyName;
+//        qDebug() << " Prepare install file: " << it + "|" + familyName;
     }
 
     m_fontManager->setType(DFontManager::ReInstall);
@@ -512,7 +514,7 @@ void DFInstallNormalWindow::onCancelInstall()
 void DFInstallNormalWindow::onContinueInstall(const QStringList &continueInstallFontFileList)
 {
 #ifdef QT_QML_DEBUG
-    qDebug() << __FUNCTION__ << " called:" << continueInstallFontFileList;
+//    qDebug() << __FUNCTION__ << " called:" << continueInstallFontFileList;
 #endif
 
     m_installState = InstallState::reinstall;

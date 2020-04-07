@@ -103,7 +103,7 @@ void DFontPreviewListDataThread::initFileSystemWatcher()
 
     connect(m_fsWatcher, &QFileSystemWatcher::directoryChanged,
     this, [ = ](const QString & path) {
-        qDebug() << "directoryChanged" << path;
+//        qDebug() << "directoryChanged" << path;
         updateChangedDir(path);
 
         if (!dir.exists()) {

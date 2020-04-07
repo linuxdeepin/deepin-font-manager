@@ -171,7 +171,6 @@ void DFontInfoDialog::initUI()
     addContent(m_mainFrame);
 
 
-
     if (DApplicationHelper::DarkType == DGuiApplicationHelper::instance()->themeType()) {
         DPalette paFrame = DApplicationHelper::instance()->palette(scrollArea->viewport());
         QColor colorFrame = paFrame.textLively().color();

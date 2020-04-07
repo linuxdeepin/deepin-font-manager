@@ -222,7 +222,6 @@ bool DSqliteUtil::findRecords(QList<QString> key, QList<QMap<QString, QString>> 
     }
     sql.chop(1);
     sql += " from " + table_name;
-    qDebug() << sql;
     m_query->prepare(sql);
     if (m_query->exec()) {
         while (m_query->next()) {
@@ -232,10 +231,10 @@ bool DSqliteUtil::findRecords(QList<QString> key, QList<QMap<QString, QString>> 
             }
             row->append(mapRow);
         }
-        qDebug() << "find all data success!";
+//        qDebug() << "find all data success!";
         return true;
     } else {
-        qDebug() << "find all data failed!";
+//        qDebug() << "find all data failed!";
         return false;
     }
 }
@@ -259,7 +258,7 @@ bool DSqliteUtil::findRecords(QList<QString> key, QMap<QString, QString> where,
         sql += it.key() + "=\"" + escapeString(it.value()) + "\" and ";
     }
     sql.chop(5);
-    qDebug() << sql;
+//    qDebug() << sql;
     m_query->prepare(sql);
     if (m_query->exec()) {
         while (m_query->next()) {
@@ -269,10 +268,10 @@ bool DSqliteUtil::findRecords(QList<QString> key, QMap<QString, QString> where,
             }
             row->append(mapRow);
         }
-        qDebug() << "find data by condition success!";
+//        qDebug() << "find data by condition success!";
         return true;
     } else {
-        qDebug() << "find data by condition failed!";
+//        qDebug() << "find data by condition failed!";
         return false;
     }
 }
@@ -280,7 +279,7 @@ bool DSqliteUtil::findRecords(QList<QString> key, QMap<QString, QString> where,
 int DSqliteUtil::getRecordCount(const QString &table_name)
 {
     QString sql = "select count(1) from " + table_name;
-    qDebug() << sql;
+//    qDebug() << sql;
     QMutexLocker m_locker(&mutex);
     m_query->prepare(sql);
 
@@ -303,7 +302,7 @@ QStringList DSqliteUtil::getInstalledFontsPath()
     if (m_query->exec()) {
         while (m_query->next()) {
             installedList.append(m_query->value(0).toString());
-            }
+        }
     }
     return installedList;
 }
@@ -331,7 +330,7 @@ void DSqliteUtil::addFontInfo(const QList<DFontPreviewItemData> &fontList, const
 
     QMutexLocker m_locker(&mutex);
     QString sql = "insert into " + table_name + "(" +
-"fontName, \
+                  "fontName, \
 isEnabled, \
 isCollected, \
 isChineseFont, \
@@ -442,7 +441,7 @@ void DSqliteUtil::deleteFontInfo(const QList<DFontPreviewItemData> &fontList, co
 
     QString sql;
     sql = "delete from " + table_name +
-            " where filePath = :filePath";
+          " where filePath = :filePath";
     qDebug() << sql;
     m_query->prepare(sql);
 

@@ -186,7 +186,7 @@ QMap<QString, QString> DFMDBManager::mapItemData(DFontPreviewItemData itemData)
 
 bool DFMDBManager::addFontInfo(const DFontPreviewItemData &itemData)
 {
-    qDebug() << __FUNCTION__ << itemData.fontInfo.toString();
+//    qDebug() << __FUNCTION__ << itemData.fontInfo.toString();
     if (!m_addFontList.contains(itemData))
         m_addFontList << itemData;
     return true;
