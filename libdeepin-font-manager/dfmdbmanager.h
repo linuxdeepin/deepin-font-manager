@@ -42,8 +42,8 @@ public:
     void beginTransaction();
     void endTransaction();
 
-    inline bool isSystemFont(const QString &filePath);
-    inline bool isUserFont(const QString &filePath);
+    bool isSystemFont(const QString &filePath);
+    bool isUserFont(const QString &filePath);
 
 private:
     DFontPreviewItemData parseRecordToItemData(const QMap<QString, QString> &record);

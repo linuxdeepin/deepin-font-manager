@@ -90,7 +90,7 @@ protected:
     void delCurrentFont();
     void exportFont();
     void showAllShortcut();
-    void showInstalledFiles(QStringList fileList);
+    void showInstalledFiles(const QStringList &fileList);
     void checkCloseUninstallDialog();
     void waitForInsert();
 
@@ -106,9 +106,9 @@ protected:
     DFMDBManager *m_dbManager {nullptr};
     void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
 signals:
-    void fileSelected(const QStringList files) const;
-    void fileSelectedInSys(const QStringList files) const;
-    void requestDeleted(const QStringList files);
+    void fileSelected(const QStringList &files) const;
+    void fileSelectedInSys(const QStringList &files) const;
+    void requestDeleted(const QStringList &files);
 
     // Only use when user double click font file
     void quickModeInstall(const QStringList files) const;
@@ -123,7 +123,7 @@ public slots:
     void onFontSizeChanged(int fontSize);
 
     void onLeftSiderBarItemClicked(int index);
-    void onFontInstallFinished(QStringList fileList);
+    void onFontInstallFinished(const QStringList &fileList);
     void onFontUninstallFinished(const QStringList &uninstallIndex);
 
     void onFontListViewRowCountChanged(unsigned int bShow);

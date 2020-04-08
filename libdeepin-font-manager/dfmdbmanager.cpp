@@ -27,7 +27,7 @@ DFMDBManager *DFMDBManager::instance()
     return INSTANCE;
 }
 
-inline bool DFMDBManager::isSystemFont(const QString &filePath)
+bool DFMDBManager::isSystemFont(const QString &filePath)
 {
     return filePath.contains("/.local/share/fonts") ? false : true;
 }

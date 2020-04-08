@@ -51,7 +51,8 @@ public slots:
     void updateChangedDir(const QString &path);
     void addPathWatcher(const QString &path);
     void removePathWatcher(const QString &path);
-    void onFileChanged(const QStringList &files);
+    void onFileDeleted(const QStringList &files);
+    void onFileAdded(const QStringList &files);
 
 protected:
     QThread mThread;

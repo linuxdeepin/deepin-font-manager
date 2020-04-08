@@ -27,7 +27,7 @@ public:
 
     int getListDataCount();
     bool isListDataLoadFinished();
-    void refreshFontListData(QStringList installFont);
+    void refreshFontListData(const QStringList &installFont);
 
     void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
     void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
@@ -59,7 +59,6 @@ public:
     QModelIndexList selectedIndex(int *deleteCnt, int *systemCnt);
     void deleteFontModelIndex(const QString &filePath, bool isFromSys = false);
     inline bool isDeleting();
-    void selectFonts(const QStringList &fileList);
     QMutex *getMutex();
     void enableFont(const QString &filePath);
     void disableFont(const QString &filePath);
@@ -99,27 +98,30 @@ private:
 
 signals:
     //用于DFontPreviewListView内部使用的信号
-    void onClickEnableButton(QModelIndexList index, bool setValue);
-    void onClickCollectionButton(QModelIndex index);
-    void onShowContextMenu(QModelIndex index);
+    void onClickEnableButton(const QModelIndexList &index, bool setValue);
+    void onClickCollectionButton(const QModelIndex &index);
+    void onShowContextMenu(const QModelIndex &index);
 
     //右键菜单
-    void onContextMenu(QModelIndex index);
+    void onContextMenu(const QModelIndex &index);
 
     //字体列表加载状态
     void onLoadFontsStatus(int type);
 
-    void requestDeleted(const QStringList files);
+    void requestDeleted(const QStringList &files);
+    void requestAdded(const QStringList &files);
     void itemAdded(const DFontPreviewItemData &data);
     void itemRemoved(const DFontPreviewItemData &data);
     void itemRemovedFromSys(const DFontPreviewItemData &data);
+    void itemSelected(const QStringList &files);
 
 public slots:
 
-    void onListViewItemEnableBtnClicked(QModelIndexList itemIndexes, bool setValue);
-    void onListViewItemCollectionBtnClicked(QModelIndex index);
-    void onListViewShowContextMenu(QModelIndex index);
+    void onListViewItemEnableBtnClicked(const QModelIndexList &itemIndexes, bool setValue);
+    void onListViewItemCollectionBtnClicked(const QModelIndex &index);
+    void onListViewShowContextMenu(const QModelIndex &index);
     void onFinishedDataLoad();
+    void selectFonts(const QStringList &fileList);
     void onItemAdded(const DFontPreviewItemData &itemData);
     void onItemRemoved(const DFontPreviewItemData &itemData);
     void onItemRemovedFromSys(const DFontPreviewItemData &itemData);
