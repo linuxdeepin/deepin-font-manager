@@ -51,6 +51,7 @@ private:
     int m_w_ht {0};
     int m_count {0};
     bool m_deleting;
+    void keyPressEvent(QKeyEvent *event) override;
 };
 
 #endif  // DFDELETEDIALOG_H

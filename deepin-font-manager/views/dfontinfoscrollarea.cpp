@@ -51,7 +51,7 @@ dfontinfoscrollarea::dfontinfoscrollarea(DFontPreviewItemData *pData,  DWidget *
 
 
     createLabel(gridLayout, 4, DApplication::translate("FontDetailDailog", "Full name"), m_fontInfo->fontInfo.fullname);
-    createLabel(gridLayout, 5, DApplication::translate("FontDetailDailog", "Ps name"), m_fontInfo->fontInfo.psname);
+    createLabel(gridLayout, 5, DApplication::translate("FontDetailDaislog", "Ps name"), m_fontInfo->fontInfo.psname);
     createLabel(gridLayout, 6, DApplication::translate("FontDetailDailog", "Trademark"), m_fontInfo->fontInfo.trademark);
 
     auto vLayout = new QVBoxLayout;

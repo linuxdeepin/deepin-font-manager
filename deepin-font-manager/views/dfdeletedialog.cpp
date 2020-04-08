@@ -167,7 +167,6 @@ void DFDeleteDialog::initUI()
 
     addContent(mainFrame);
 }
-
 void DFDeleteDialog::initConnections()
 {
     connect(m_cancelBtn, &DPushButton::clicked, this, [ = ]() {
@@ -222,4 +221,13 @@ void DFDeleteDialog::onFontChanged(const QFont &font)
         return;
     }
     ++m_count;
+}
+
+void DFDeleteDialog::keyPressEvent(QKeyEvent *event)
+{
+    if(event->key()==Qt::Key_Escape)
+    {
+        reject();
+        close();
+    }
 }

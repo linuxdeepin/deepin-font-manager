@@ -1,5 +1,5 @@
 #include "dfontuninstalldialog.h"
-
+#include <QDebug>
 
 DFontuninstalldialog::DFontuninstalldialog(QWidget *parent)
     : DFontBaseDialog(parent)
