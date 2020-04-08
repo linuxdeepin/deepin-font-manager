@@ -1282,8 +1282,8 @@ void DFontMgrMainWindow::delCurrentFont()
         m_fontManager->start();
     });
 
-    /* Bug#19111 取消删除字体后，恢复标记位，不用考虑用户操作 UT00591 */
-    connect(confirmDelDlg, &DFDeleteDialog::rejected, this, [this]() {
+    /* Bug#19111 恢复标记位，不用考虑用户操作 UT00591 */
+    connect(confirmDelDlg, &DFDeleteDialog::closed, this, [this]() {
         m_isDeleting = false;
     });
 
