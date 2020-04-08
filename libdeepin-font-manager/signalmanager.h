@@ -18,6 +18,7 @@ signals:
     void sendInstallMessage(int totalCount);
     void sendReInstallMessage(int totalCount);
     void startToInsert();
+    void finishFontInstall(const QStringList &fileList);
 
 
 private:

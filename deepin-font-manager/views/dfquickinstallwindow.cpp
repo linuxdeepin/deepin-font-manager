@@ -269,7 +269,7 @@ void DFQuickInstallWindow::installFont(const QStringList &files)
 
 
     //Update db after install finish
-    connect(&dfNormalInstalldlg, &DFInstallNormalWindow::finishFontInstall, this,
+    connect(SignalManager::instance(), &SignalManager::finishFontInstall, this,
             &DFQuickInstallWindow::onFontInstallFinished);
 
     Dtk::Widget::moveToCenter(&dfNormalInstalldlg);

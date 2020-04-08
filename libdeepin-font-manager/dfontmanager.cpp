@@ -163,9 +163,11 @@ void DFontManager::handleInstall()
         if (m_instFileList.count() == 1) {
             // emit installFinished();
         }
+        qDebug() << "install success" << endl;
         Q_EMIT installFinished(0, m_installOutList);
     } else {
         // For:unathorized exit
+        qDebug() << "install error" << endl;
         Q_EMIT installFinished(127, QStringList());
     }
 }
@@ -187,10 +189,12 @@ void DFontManager::handleReInstall()
         if (m_instFileList.count() == 1) {
             // emit installFinished();
         }
+        qDebug() << "reinstall success" << endl;
         emit reInstallFinished(0, m_installOutList);
-        qDebug() << "ASDASDasd" << endl;
+//        qDebug() << "ASDASDasd" << endl;
     } else {
         // For:unathorized exit
+        qDebug() << "reinstall error" << endl;
         Q_EMIT reInstallFinished(127, QStringList());
     }
 }

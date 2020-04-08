@@ -245,6 +245,10 @@ void DFontMgrMainWindow::initConnections()
     QObject::connect(m_fontManager, SIGNAL(uninstallFontFinished(const QStringList &)), this,
                      SLOT(onFontUninstallFinished(const QStringList &)));
     QObject::connect(m_signalManager, &SignalManager::showInstallFloatingMessage, this, &DFontMgrMainWindow::onShowMessage);
+
+    //安装结束后刷新字体列表
+    connect(m_signalManager, &SignalManager::finishFontInstall, this,
+            &DFontMgrMainWindow::onFontInstallFinished);
 }
 
 void DFontMgrMainWindow::initShortcuts()
@@ -912,9 +916,7 @@ void DFontMgrMainWindow::installFont(const QStringList &files)
         m_dfNormalInstalldlg->setSkipException(true);
     }
 
-    //安装结束后刷新字体列表
-    connect(m_dfNormalInstalldlg, &DFInstallNormalWindow::finishFontInstall, this,
-            &DFontMgrMainWindow::onFontInstallFinished);
+
 
     //Set installtion flag
     /*
@@ -1464,9 +1466,7 @@ void DFontMgrMainWindow::waitForInsert()
         m_dfNormalInstalldlg->setSkipException(true);
     }
 
-    //安装结束后刷新字体列表
-    connect(m_dfNormalInstalldlg, &DFInstallNormalWindow::finishFontInstall, this,
-            &DFontMgrMainWindow::onFontInstallFinished);
+
 
     //Set installtion flag
     /*
