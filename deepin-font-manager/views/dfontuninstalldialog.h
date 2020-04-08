@@ -36,7 +36,7 @@ private:
     DLabel *m_currentFontLabel;
     DProgressBar *m_progressBar;
     QWidget *m_mainFrame;
-    void keyPressEvent(QKeyEvent *event) override;
+    void keyPressEvent(QKeyEvent *event) Q_DECL_OVERRIDE;
 };
 
 #endif // DFONTUNINSTALLDIALOG_H

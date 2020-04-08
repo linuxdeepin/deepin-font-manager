@@ -62,6 +62,7 @@ public:
 
 private:
     void resetContinueInstallBtnStatus();
+    void keyPressEvent(QKeyEvent *event) Q_DECL_OVERRIDE;
 
     QWidget *titleFrame;
     DLabel *logoLabel;

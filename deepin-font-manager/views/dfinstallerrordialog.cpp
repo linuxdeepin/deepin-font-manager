@@ -295,6 +295,16 @@ void DFInstallErrorDialog::resetContinueInstallBtnStatus()
     }
 }
 
+void DFInstallErrorDialog::keyPressEvent(QKeyEvent *event)
+{
+    if(event->key() == Qt::Key_Escape)
+    {
+        emit onCancelInstall();
+        this->close();
+    }
+}
+
+
 void DFInstallErrorDialog::onListItemClicked(QModelIndex index)
 {
     DFInstallErrorItemModel itemModel =
