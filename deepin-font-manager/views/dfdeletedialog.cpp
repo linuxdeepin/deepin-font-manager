@@ -44,7 +44,7 @@ void DFDeleteDialog::setMainwindow(DFontMgrMainWindow *win)
 
 void DFDeleteDialog::paintEvent(QPaintEvent *event)
 {
-    m_messageB->setMinimumHeight(m_messageB->fontMetrics().height() * 2);
+    Q_UNUSED(event);
 }
 
 void DFDeleteDialog::initUI()
@@ -68,20 +68,15 @@ void DFDeleteDialog::initUI()
         m_messageA->setText(DApplication::translate("DeleteConfirmDailog", "Are you sure you want to delete this font?"));
     } else {
         m_messageA->setText(DApplication::translate("DeleteConfirmDailog", "Are you sure you want to delete %1 fonts").arg(m_deleteCnt));
-//        m_messageA->setText(tr("Are you sure you want to delete %1 fonts").arg(m_deleteCnt));
     }
-//    m_messageA->setFixedHeight(20);
-    m_messageA->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    m_messageA->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     DFontSizeManager::instance()->bind(m_messageA, DFontSizeManager::T6, QFont::Medium);
 
     DPalette paA = DApplicationHelper::instance()->palette(m_messageA);
-    //pa1 = m_messageA->palette();
     QColor color = paA.toolTipText().color();
     color.setAlphaF(0.9);
     paA.setColor(DPalette::WindowText, color);
-    //pa1.setColor(DPalette::WindowText, "#000000");
     DApplicationHelper::instance()->setPalette(m_messageA, paA);
-
 
     m_messageB = new DLabel(this);
     if (m_deleteCnt <= 1) {
@@ -96,17 +91,11 @@ void DFDeleteDialog::initUI()
         } else {
             m_messageB->setText(DApplication::translate("DeleteConfirmDailog", "These fonts will not be available to applications, and the other %1 system fonts cannot be deleted").arg(m_systemCnt));
         }
-//        m_messageB->setText(tr("These fonts will not be available to applications"));
     }
-//    m_messageB->setFixedHeight(20);
-    m_messageB->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    m_messageB->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-//
-//    bfont.setWeight(QFont::Normal);
-//    m_messageB->setFont(bfont);
     DFontSizeManager::instance()->bind(m_messageB, DFontSizeManager::T6, QFont::Normal);
     DPalette paB = DApplicationHelper::instance()->palette(m_messageB);
-    //pa1 = m_messageA->palette();
     QColor colorB = paB.toolTipText().color();
     color.setAlphaF(0.7);
     paB.setColor(DPalette::WindowText, color);
@@ -114,12 +103,11 @@ void DFDeleteDialog::initUI()
     m_messageB->setWordWrap(true);
     m_messageB->setAlignment(Qt::AlignCenter);
     m_messageB->setMinimumHeight(m_messageB->fontMetrics().height() * 2);
-    /* 19096 UT000591 */
+    /* bug#19096 UT000591 */
     m_messageB->setMinimumWidth(DEFAULT_WINDOW_W - 22);
 
     QFontMetrics fm(DFontSizeManager::instance()->t6());
     m_messageA->setFixedHeight(fm.height());
-//    m_messageB->setFixedHeight(fm.height() + 10);
     if (fm.width(m_messageA->text()) > fm.width(m_messageB->text())) {
         m_old_width = fm.width(m_messageA->text());
     } else {
@@ -178,7 +166,7 @@ void DFDeleteDialog::initConnections()
             return;
         m_deleting = true;
         Q_EMIT requestDelete();
-        /* bug#19453 close事件会在popUninstallDialog信号之后执行，所以时许上有问题，
+        /* bug#19453 close事件会在popUninstallDialog信号之后执行，所以时序上有问题，
          * 把信号槽连接设置为Qt::QueuedConnection UT000591 */
         close();
         emit SignalManager::instance()->popUninstallDialog();
@@ -198,9 +186,6 @@ void DFDeleteDialog::onFontChanged(const QFont &font)
         QFontMetrics fm(font);
         QFontInfo fontInfo(font);
         qDebug() << fontInfo.family() << fontInfo.pixelSize();
-
-        m_messageA->setFixedHeight(fm.height());
-        m_messageB->setFixedHeight(fm.height() + 10);
 
         auto wd = 0;
         if (fm.width(m_messageA->text()) > fm.width(m_messageB->text())) {
@@ -227,8 +212,7 @@ void DFDeleteDialog::onFontChanged(const QFont &font)
 
 void DFDeleteDialog::keyPressEvent(QKeyEvent *event)
 {
-    if(event->key()==Qt::Key_Escape)
-    {
+    if (event->key() == Qt::Key_Escape) {
         reject();
         close();
     }
