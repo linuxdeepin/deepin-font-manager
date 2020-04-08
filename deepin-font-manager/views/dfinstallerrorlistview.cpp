@@ -103,6 +103,7 @@ void DFInstallErrorListDelegate::drawFontStyle(QPainter *painter, const QStyleOp
                                                DFInstallErrorItemModel itemModel, QRect bgRect, bool bSelectable) const
 {
     int statusLabelMaxWidth = 160;
+    QColor penColor;
     QRect installStatusRect = QRect(bgRect.left() + (bgRect.width() - statusLabelMaxWidth) - 10,
                                     bgRect.top(),
                                     statusLabelMaxWidth,
@@ -116,7 +117,7 @@ void DFInstallErrorListDelegate::drawFontStyle(QPainter *painter, const QStyleOp
 
 
     QFont nameFont = painter->font();
-    nameFont.setPixelSize(DFontSizeManager::instance()->fontPixelSize(DFontSizeManager::T6));
+    nameFont.setPixelSize(DFontSizeManager::instance()->fontPixelSize(DFontSizeManager::T9));
     painter->setFont(nameFont);
 
     QFontMetrics fontMetric(nameFont);
@@ -126,12 +127,18 @@ void DFInstallErrorListDelegate::drawFontStyle(QPainter *painter, const QStyleOp
                                                      installStatusRect.width(),
                                                      Qt::TextShowMnemonic);
 
-    DPalette pa = DApplicationHelper::instance()->palette(m_parentView);
-    DStyleHelper styleHelper;
-    QColor penColor = styleHelper.getColor(static_cast<const QStyleOption *>(&option), pa, DPalette::TextWarning);
-    if (bSelectable == false) {
-        penColor.setAlphaF(0.4);
+//    DPalette pa = DApplicationHelper::instance()->palette(m_parentView);
+//    DStyleHelper styleHelper;
+//    QColor penColor = styleHelper.getColor(static_cast<const QStyleOption *>(&option), pa, DPalette::TextWarning);
+
+    DGuiApplicationHelper::ColorType themeType = DGuiApplicationHelper::instance()->themeType();
+    if (themeType == DGuiApplicationHelper::LightType) {
+       penColor = QColor("#FF6D6D");
+    } else {
+       penColor = QColor("#FF4E4E");
     }
+
+
     painter->setPen(QPen(penColor));
     painter->drawText(installStatusRect, Qt::AlignRight | Qt::AlignVCenter, elidedStatusText);
 
