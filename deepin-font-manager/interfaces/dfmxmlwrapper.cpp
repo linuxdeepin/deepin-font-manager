@@ -1,7 +1,8 @@
 #include "dfmxmlwrapper.h"
 #include "globaldef.h"
 
-QString DFMXmlWrapper::m_fontConfigFilePath = QDir::homePath() + "/.config/fontconfig/conf.d/" + FTM_REJECT_FONT_CONF_FILENAME;
+const QString FontConfigFileDir = QDir::homePath() + "/.config/fontconfig/conf.d/";
+QString DFMXmlWrapper::m_fontConfigFilePath = FontConfigFileDir + FTM_REJECT_FONT_CONF_FILENAME;
 
 DFMXmlWrapper::DFMXmlWrapper()
 {
@@ -43,6 +44,11 @@ bool DFMXmlWrapper::createFontConfigFile(QString xmlFilePath)
     if (file.exists()) {
         qDebug() << "file is already exist!";
         return true;
+    }
+
+    if (!QFile::exists(FontConfigFileDir)) {
+        QDir dir(FontConfigFileDir);
+        dir.mkpath(FontConfigFileDir);
     }
 
     if (!file.open(QFile::WriteOnly | QFile::Text)) { // 只写模式打开文件
