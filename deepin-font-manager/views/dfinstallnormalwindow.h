@@ -58,8 +58,8 @@ protected slots:
 
     void showInstallErrDlg();
 signals:
-    void batchReinstall(QStringList reinstallFiles);
-    void finishFontInstall(QStringList fileList);
+    void batchReinstall(const QStringList &reinstallFiles);
+    void finishFontInstall(const QStringList &fileList);
 
 
 private:

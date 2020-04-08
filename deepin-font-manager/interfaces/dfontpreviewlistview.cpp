@@ -24,6 +24,7 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
     , m_dataThread(nullptr)
 {
     qRegisterMetaType<DFontPreviewItemData>("DFontPreviewItemData");
+    connect(this, &DFontPreviewListView::itemSelected, this, &DFontPreviewListView::selectFonts);
     connect(this, &DFontPreviewListView::itemAdded, this, &DFontPreviewListView::onItemAdded);
     connect(this, &DFontPreviewListView::itemRemoved, this, &DFontPreviewListView::onItemRemoved);
     connect(this, &DFontPreviewListView::itemRemovedFromSys, this, &DFontPreviewListView::onItemRemovedFromSys);
@@ -70,9 +71,8 @@ bool DFontPreviewListView::isListDataLoadFinished()
     return m_bLoadDataFinish;
 }
 
-void DFontPreviewListView::refreshFontListData(QStringList installFont)
+void DFontPreviewListView::refreshFontListData(const QStringList &installFont)
 {
-    QMutexLocker locker(&m_mutex);
     m_dataThread->refreshFontListData(false, installFont);
 
     QList<DFontPreviewItemData> fontInfoList = m_dataThread->getFontModelList();
@@ -88,6 +88,7 @@ void DFontPreviewListView::refreshFontListData(QStringList installFont)
         /* Bug#16821 UT000591  添加字体后需要加入到Qt的字体数据库中，否则无法使用*/
         QFontDatabase::addApplicationFont(filePath);
     }
+    Q_EMIT itemSelected(installFont);
 }
 
 void DFontPreviewListView::onFinishedDataLoad()
@@ -132,7 +133,6 @@ void DFontPreviewListView::onItemRemoved(const DFontPreviewItemData &itemData)
     if (m_fontPreviewProxyModel == nullptr)
         return;
 
-    qDebug() << __FUNCTION__ << ", path " << itemData.fontInfo.filePath << QThread::currentThreadId();
     deleteFontModelIndex(itemData.fontInfo.filePath);
 
     QItemSelectionModel *selection_model = selectionModel();
@@ -471,7 +471,7 @@ void DFontPreviewListView::disableFonts()
     m_disableFontList.clear();
 }
 
-void DFontPreviewListView::onListViewItemEnableBtnClicked(QModelIndexList itemIndexes, bool setValue)
+void DFontPreviewListView::onListViewItemEnableBtnClicked(const QModelIndexList &itemIndexes, bool setValue)
 {
     QMutexLocker locker(&m_mutex);
     QString fontName;
@@ -526,7 +526,7 @@ void DFontPreviewListView::onListViewItemEnableBtnClicked(QModelIndexList itemIn
     DMessageManager::instance()->sendMessage(this->m_parentWidget, QIcon(":/images/ok.svg"), message);
 }
 
-void DFontPreviewListView::onListViewItemCollectionBtnClicked(QModelIndex index)
+void DFontPreviewListView::onListViewItemCollectionBtnClicked(const QModelIndex &index)
 {
     DFontPreviewItemData itemData =
         qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(index));
@@ -537,7 +537,7 @@ void DFontPreviewListView::onListViewItemCollectionBtnClicked(QModelIndex index)
     m_fontPreviewProxyModel->setData(index, QVariant::fromValue(itemData), Qt::DisplayRole);
 }
 
-void DFontPreviewListView::onListViewShowContextMenu(QModelIndex index)
+void DFontPreviewListView::onListViewShowContextMenu(const QModelIndex &index)
 {
     Q_UNUSED(index)
 

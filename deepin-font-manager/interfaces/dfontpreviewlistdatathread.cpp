@@ -32,7 +32,8 @@ DFontPreviewListDataThread::DFontPreviewListDataThread(DFontPreviewListView *vie
     m_dbManager = DFMDBManager::instance();
     moveToThread(&mThread);
     QObject::connect(&mThread, SIGNAL(started()), this, SLOT(doWork()));
-    connect(m_view, &DFontPreviewListView::requestDeleted, this, &DFontPreviewListDataThread::onFileChanged, Qt::QueuedConnection);
+    connect(m_view, &DFontPreviewListView::requestDeleted, this, &DFontPreviewListDataThread::onFileDeleted, Qt::QueuedConnection);
+    connect(m_view, &DFontPreviewListView::requestAdded, this, &DFontPreviewListDataThread::onFileAdded, Qt::QueuedConnection);
     mThread.start();
 //    });
 }
@@ -146,13 +147,20 @@ void DFontPreviewListDataThread::removePathWatcher(const QString &path)
     m_fsWatcher->removePath(path);
 }
 
-void DFontPreviewListDataThread::onFileChanged(const QStringList &files)
+void DFontPreviewListDataThread::onFileDeleted(const QStringList &files)
 {
     qDebug() << __FUNCTION__ << files << m_mutex;
     if (m_mutex != nullptr)
         QMutexLocker locker(m_mutex);
     m_view->deleteCurFonts(files);
     qDebug() << __FUNCTION__ << files << " end ";
+}
+
+void DFontPreviewListDataThread::onFileAdded(const QStringList &files)
+{
+    if (m_mutex != nullptr)
+        QMutexLocker locker(m_mutex);
+    m_view->refreshFontListData(files);
 }
 
 QList<DFontPreviewItemData> DFontPreviewListDataThread::getFontModelList()
@@ -334,7 +342,6 @@ void DFontPreviewListDataThread::syncFontEnableDisableStatusData(const QStringLi
 
     m_dbManager->commitUpdateFontInfo();
 
-    qDebug() << __FUNCTION__ << "fontlist " << fontList.size() << "db size " << fontInfoList.size();
     for (QString disableFont : disableFontPathList) {
         if (!fontList.contains(disableFont) && disableFont.contains("/.local/share/fonts")) {
             m_view->enableFont(disableFont);

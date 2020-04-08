@@ -1112,11 +1112,11 @@ void DFontMgrMainWindow::onLeftSiderBarItemClicked(int index)
     onPreviewTextChanged(previewText);
 }
 
-void DFontMgrMainWindow::onFontInstallFinished(QStringList fileList)
+void DFontMgrMainWindow::onFontInstallFinished(const QStringList &fileList)
 {
     Q_D(DFontMgrMainWindow);
 
-    m_fontPreviewListView->refreshFontListData(fileList);
+    Q_EMIT m_fontPreviewListView->requestAdded(fileList);
     d->textInputEdit->textChanged(d->textInputEdit->text());
     if (!fileList.isEmpty()) {
         showInstalledFiles(fileList);
@@ -1439,13 +1439,12 @@ void DFontMgrMainWindow::showAllShortcut()
     connect(shortcutViewProcess, SIGNAL(finished(int)), shortcutViewProcess, SLOT(deleteLater()));
 }
 
-void DFontMgrMainWindow::showInstalledFiles(QStringList fileList)
+void DFontMgrMainWindow::showInstalledFiles(const QStringList &fileList)
 {
     D_D(DFontMgrMainWindow);
 
     d->leftSiderBar->setCurrentIndex(d->leftSiderBar->model()->index(DSplitListWidget::UserFont + 1, 0));
     onLeftSiderBarItemClicked(DSplitListWidget::UserFont);
-    m_fontPreviewListView->selectFonts(fileList);
 }
 
 void DFontMgrMainWindow::checkCloseUninstallDialog()
