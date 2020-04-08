@@ -178,6 +178,8 @@ void DFDeleteDialog::initConnections()
             return;
         m_deleting = true;
         Q_EMIT requestDelete();
+        /* bug#19453 close事件会在popUninstallDialog信号之后执行，所以时许上有问题，
+         * 把信号槽连接设置为Qt::QueuedConnection UT000591 */
         close();
         emit SignalManager::instance()->popUninstallDialog();
     });

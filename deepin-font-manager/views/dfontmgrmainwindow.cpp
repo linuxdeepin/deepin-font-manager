@@ -197,8 +197,8 @@ void DFontMgrMainWindow::initConnections()
             m_fontUninstallDialog->move((this->width() - m_fontUninstallDialog->width() - 220 + mapToGlobal(QPoint(0, 0)).x()), (mapToGlobal(QPoint(0, 0)).y() + 200));
             m_fontUninstallDialog->exec();
         }
+    }, Qt::QueuedConnection);
 
-    });
     QObject::connect(m_signalManager, &SignalManager::updateUninstallDialog, this, [ = ](QString & fontName, int index, int totalCount) {
         m_fontUninstallDialog->setValue(fontName, index, totalCount);
     });
