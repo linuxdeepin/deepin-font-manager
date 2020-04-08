@@ -564,3 +564,11 @@ void DFInstallNormalWindow::breakInstalltion()
 
     this->closed();
 }
+void DFInstallNormalWindow::keyPressEvent(QKeyEvent *event)
+{
+    if(event->key()==Qt::Key_Escape)
+    {
+        reject();
+        close();
+    }
+}

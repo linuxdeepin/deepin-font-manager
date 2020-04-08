@@ -101,7 +101,7 @@ private:
     DProgressBar *m_progressBar {nullptr};
 
     DFInstallErrorDialog *m_pexceptionDlg {nullptr};
-
+    void keyPressEvent(QKeyEvent *event) override;
     QScopedPointer<QTimer> m_verifyTimer {nullptr};
 };
 
