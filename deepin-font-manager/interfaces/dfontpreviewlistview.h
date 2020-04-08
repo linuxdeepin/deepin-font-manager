@@ -75,6 +75,10 @@ private:
 
     void deleteFontModelIndex(const DFontInfo &fontInfo);
 
+    void clearFontSelect();
+    void addFontSelect(const QString &file);
+
+    QStringList m_fontSelection;
     bool m_bLoadDataFinish = false;
     bool m_bLeftMouse = true;
     bool m_bClickCollectionOrEnable = false;
@@ -114,6 +118,7 @@ signals:
     void itemRemoved(const DFontPreviewItemData &data);
     void itemRemovedFromSys(const DFontPreviewItemData &data);
     void itemSelected(const QStringList &files);
+    void itemSingleSelect(const QString &file);
 
 public slots:
 
@@ -122,6 +127,7 @@ public slots:
     void onListViewShowContextMenu(const QModelIndex &index);
     void onFinishedDataLoad();
     void selectFonts(const QStringList &fileList);
+    void selectFont(const QString &file);
     void onItemAdded(const DFontPreviewItemData &itemData);
     void onItemRemoved(const DFontPreviewItemData &itemData);
     void onItemRemovedFromSys(const DFontPreviewItemData &itemData);
