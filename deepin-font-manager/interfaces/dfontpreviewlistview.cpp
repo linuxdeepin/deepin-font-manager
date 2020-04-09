@@ -25,7 +25,7 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
 {
     qRegisterMetaType<DFontPreviewItemData>("DFontPreviewItemData");
     connect(this, &DFontPreviewListView::itemSelected, this, &DFontPreviewListView::selectFonts);
-    connect(this, &DFontPreviewListView::itemSingleSelect, this, &DFontPreviewListView::selectFont);
+    connect(this, &DFontPreviewListView::itemAddSelect, this, &DFontPreviewListView::onAddSelectFont, Qt::BlockingQueuedConnection);
     connect(this, &DFontPreviewListView::itemAdded, this, &DFontPreviewListView::onItemAdded);
     connect(this, &DFontPreviewListView::itemRemoved, this, &DFontPreviewListView::onItemRemoved);
     connect(this, &DFontPreviewListView::itemRemovedFromSys, this, &DFontPreviewListView::onItemRemovedFromSys);
@@ -76,18 +76,14 @@ void DFontPreviewListView::refreshFontListData(const QStringList &installFont)
 {
     m_dataThread->refreshFontListData(false, installFont);
 
-    QList<DFontPreviewItemData> fontInfoList = m_dataThread->getFontModelList();
-    qDebug() << "total count:" << fontInfoList.size();
-
-    QStringList addedFont;
-    QList<DFontPreviewItemData> diffFontInfoList = m_dataThread->getDiffFontModelList();
     clearFontSelect();
     Q_EMIT itemSelected(getSelectFont(installFont));
+
+    QList<DFontPreviewItemData> diffFontInfoList = m_dataThread->getDiffFontModelList();
     for (int i = 0; i < diffFontInfoList.size(); ++i) {
         DFontPreviewItemData itemData = diffFontInfoList.at(i);
         QString filePath = itemData.fontInfo.filePath;
-        Q_EMIT itemAdded(itemData);
-        Q_EMIT itemSingleSelect(filePath);
+        Q_EMIT itemAddSelect(itemData);
         m_dataThread->addPathWatcher(filePath);
 
         /* Bug#16821 UT000591  添加字体后需要加入到Qt的字体数据库中，否则无法使用*/
@@ -192,7 +188,7 @@ QRect DFontPreviewListView::getCollectionIconRect(QRect visualRect)
 void DFontPreviewListView::clearFontSelect()
 {
     QItemSelectionModel *selection_model = selectionModel();
-    selection_model->clear();
+    selection_model->reset();
 }
 
 void DFontPreviewListView::sortModelIndexList(QModelIndexList &sourceList)
@@ -288,23 +284,22 @@ void DFontPreviewListView::selectFonts(const QStringList &fileList)
         scrollTo(currModelIndex());
 }
 
-void DFontPreviewListView::selectFont(const QString &file)
+void DFontPreviewListView::onAddSelectFont(const DFontPreviewItemData &itemData)
 {
+    QStandardItemModel *sourceModel = qobject_cast<QStandardItemModel *>(m_fontPreviewProxyModel->sourceModel());
+    QStandardItem *item = new QStandardItem;
+    item->setData(QVariant::fromValue(itemData), Qt::DisplayRole);
+    sourceModel->appendRow(item);
+
+    QModelIndex sindex = sourceModel->indexFromItem(item);
+    QModelIndex index = m_fontPreviewProxyModel->mapFromSource(sindex);
+
     QItemSelectionModel *selection_model = selectionModel();
     QItemSelection selection = selection_model->selection();
-    for (int i = 0; i < getFontPreviewProxyModel()->rowCount(); ++i) {
-        QModelIndex index = getFontPreviewProxyModel()->index(i, 0);
-        DFontPreviewItemData itemData =
-            qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(index));
-        //        qDebug() << __FUNCTION__ << itemData.fontInfo.filePath;
-        if (file == itemData.fontInfo.filePath) {
-            QModelIndex left = m_fontPreviewProxyModel->index(index.row(), 0);
-            QModelIndex right = m_fontPreviewProxyModel->index(index.row(), m_fontPreviewProxyModel->columnCount() - 1);
-            QItemSelection sel(left, right);
-            selection.merge(sel, QItemSelectionModel::Select);
-            break;
-        }
-    }
+
+    QItemSelection sel;
+    sel.select(index, index);
+    selection.merge(sel, QItemSelectionModel::Select);
 
     if (selection.size() > 0)  {
         selection_model->select(selection, QItemSelectionModel::Select);
@@ -604,7 +599,7 @@ void DFontPreviewListView::onListViewItemCollectionBtnClicked(const QModelIndexL
 
         m_fontPreviewProxyModel->setData(index, QVariant::fromValue(itemData), Qt::DisplayRole);
     }
-    qDebug() << "ASDASDSAD" << endl;
+    DFMDBManager::instance()->commitUpdateFontInfo();
 }
 
 void DFontPreviewListView::onListViewShowContextMenu(const QModelIndex &index)
