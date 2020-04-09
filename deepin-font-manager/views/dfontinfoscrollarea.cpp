@@ -8,7 +8,7 @@
 
 dfontinfoscrollarea::dfontinfoscrollarea(DFontPreviewItemData *pData,  DWidget *parent)
     : DFrame(parent)
-    ,m_fontInfo(pData)
+    , m_fontInfo(pData)
 {
     installEventFilter(this);
 
@@ -32,20 +32,18 @@ dfontinfoscrollarea::dfontinfoscrollarea(DFontPreviewItemData *pData,  DWidget *
     createLabel(gridLayout, 1, DApplication::translate("FontDetailDailog", "Type"), m_fontInfo->fontInfo.type);
 
 
-    if(m_fontInfo->fontInfo.version.isEmpty())
-    {
+    if (m_fontInfo->fontInfo.version.isEmpty()) {
         QString version = "Copyright 2014~2015 Adobe Syste-ms Incorporated (http://www.adob.com/), with Reserved "
-                            "Font Name cc Source.";
+                          "Font Name cc Source.";
         createLabel(gridLayout, 2, DApplication::translate("FontDetailDailog", "Version"), version);
-    }else {
+    } else {
         createLabel(gridLayout, 2, DApplication::translate("FontDetailDailog", "Version"), m_fontInfo->fontInfo.version);
     }
 
 
-    if(m_fontInfo->fontInfo.description.isEmpty())
-    {
+    if (m_fontInfo->fontInfo.description.isEmpty()) {
         createLabel(gridLayout, 3, DApplication::translate("FontDetailDailog", "Description"), DApplication::translate("FontDetailDailog", "Unknown"));
-    }else {
+    } else {
         createLabel(gridLayout, 3, DApplication::translate("FontDetailDailog", "Description"), m_fontInfo->fontInfo.description);
     }
 
@@ -93,7 +91,7 @@ void dfontinfoscrollarea::createLabel(QGridLayout *layout, const int &index, con
         labelText->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
         layout->addWidget(labelText, index, 1);
     } else {
-        DFrame *widgets = addTitleFrame(sData,objName);
+        DFrame *widgets = addTitleFrame(sData, objName);
         widgets->setFrameShape(QFrame::NoFrame);
         layout->addWidget(widgets, index, 1);
     }
@@ -101,7 +99,7 @@ void dfontinfoscrollarea::createLabel(QGridLayout *layout, const int &index, con
 }
 
 //增加内容信息frame
-DFrame *dfontinfoscrollarea::addTitleFrame(const QString &sData,const QString &objName)
+DFrame *dfontinfoscrollarea::addTitleFrame(const QString &sData, const QString &objName)
 {
     DFrame *m_textShowFrame = new DFrame(this);
     QString ts = elideText(sData, this->font(), 180);
@@ -111,9 +109,8 @@ DFrame *dfontinfoscrollarea::addTitleFrame(const QString &sData,const QString &o
     QLabel *label = new QLabel(ts, m_textShowFrame);
     label->setFixedWidth(180);
     DFontSizeManager::instance()->bind(label, DFontSizeManager::T8);
-    if(pLabelMap.find(label) == pLabelMap.end())
-    {
-        pLabelMap.insert(std::pair<QLabel*,QString>(label,sData));
+    if (pLabelMap.find(label) == pLabelMap.end()) {
+        pLabelMap.insert(std::pair<QLabel *, QString>(label, sData));
     }
 
     label->setAlignment(Qt::AlignLeft);
@@ -122,24 +119,24 @@ DFrame *dfontinfoscrollarea::addTitleFrame(const QString &sData,const QString &o
     vLayout->addWidget(label);
 
     vLayout->addStretch(1);
-    vLayout->setContentsMargins(0,0,0,0);
+    vLayout->setContentsMargins(0, 0, 0, 0);
     QHBoxLayout *textShowLayout = new QHBoxLayout;
-    textShowLayout->setContentsMargins(0, 0,0, 0);
+    textShowLayout->setContentsMargins(0, 0, 0, 0);
     textShowLayout->setSpacing(0);
     textShowLayout->addLayout(vLayout);
     m_textShowFrame->setLayout(textShowLayout);
-    vLayout->setContentsMargins(0,0,0,0);
+    vLayout->setContentsMargins(0, 0, 0, 0);
 
     textShowLayout->addStretch(1);
 
-    m_textShowFrame->setContentsMargins(0,0,0,0);
+    m_textShowFrame->setContentsMargins(0, 0, 0, 0);
 
     return m_textShowFrame;
 }
 
 void dfontinfoscrollarea::paintEvent(QPaintEvent *event)
 {
-        qDebug()<<"unused event";
+    qDebug() << "unused event";
 }
 QString dfontinfoscrollarea::elideText(const QString &text, const QFont &font, int nLabelSize)
 {
@@ -166,16 +163,14 @@ QString dfontinfoscrollarea::elideText(const QString &text, const QFont &font, i
 
 void dfontinfoscrollarea::updateText()
 {
-   for(auto plabeliter : pLabelMap)
-   {
-       if(!plabeliter.first)
-       {
-           continue;
-       }
-       QString text = plabeliter.second;
-       QString newtext = elideText(text,this->font(),180);
-       plabeliter.first->setText(newtext);
-   }
+    for (auto plabeliter : pLabelMap) {
+        if (!plabeliter.first) {
+            continue;
+        }
+        QString text = plabeliter.second;
+        QString newtext = elideText(text, this->font(), 180);
+        plabeliter.first->setText(newtext);
+    }
 }
 
 

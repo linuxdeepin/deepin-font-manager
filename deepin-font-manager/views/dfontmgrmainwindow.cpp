@@ -194,7 +194,9 @@ void DFontMgrMainWindow::initConnections()
     QObject::connect(m_signalManager, &SignalManager::popUninstallDialog, this, [ = ] {
         if (m_needDelCount > 1)
         {
-            m_fontUninstallDialog->move((this->width() - m_fontUninstallDialog->width() - 220 + mapToGlobal(QPoint(0, 0)).x()), (mapToGlobal(QPoint(0, 0)).y() + 200));
+//            m_fontUninstallDialog->move((this->width() - m_fontUninstallDialog->width() - 220 + mapToGlobal(QPoint(0, 0)).x()), (mapToGlobal(QPoint(0, 0)).y() + 200));
+            //         set this dialog to center
+            m_fontUninstallDialog->move(this->geometry().center() - m_fontUninstallDialog->rect().center());
             m_fontUninstallDialog->exec();
         }
     }, Qt::QueuedConnection);
@@ -1289,7 +1291,8 @@ void DFontMgrMainWindow::delCurrentFont()
         m_isDeleting = false;
     });
 
-    confirmDelDlg->move((this->width() - confirmDelDlg->width() - 230 + mapToGlobal(QPoint(0, 0)).x()), (mapToGlobal(QPoint(0, 0)).y() + 180));
+//    confirmDelDlg->move((this->width() - confirmDelDlg->width() - 230 + mapToGlobal(QPoint(0, 0)).x()), (mapToGlobal(QPoint(0, 0)).y() + 180));
+    confirmDelDlg->move(this->geometry().center() - confirmDelDlg->rect().center());
     confirmDelDlg->exec();
 }
 
