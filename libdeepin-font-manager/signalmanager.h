@@ -19,7 +19,7 @@ signals:
     void sendReInstallMessage(int totalCount);
     void startToInsert();
     void finishFontInstall(const QStringList &fileList);
-
+    void trigerCollect(bool favorite);
 
 private:
     explicit SignalManager(QObject *parent = nullptr);

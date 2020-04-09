@@ -100,7 +100,6 @@ private:
     QStringList m_enableFontList;
     QStringList m_disableFontList;
 
-
 signals:
     //用于DFontPreviewListView内部使用的信号
     void onClickEnableButton(const QModelIndexList &index, bool setValue);

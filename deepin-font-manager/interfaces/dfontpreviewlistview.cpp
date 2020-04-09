@@ -177,10 +177,10 @@ void DFontPreviewListView::initConnections()
     connect(this, &DFontPreviewListView::onShowContextMenu, this,
             &DFontPreviewListView::onListViewShowContextMenu, Qt::ConnectionType::QueuedConnection);
 
-    QObject::connect(m_fontPreviewProxyModel,
-                     SIGNAL(onFilterFinishRowCountChangedInt(unsigned int)),
-                     m_parentWidget,
-                     SLOT(onFontListViewRowCountChanged(unsigned int)), Qt::QueuedConnection);
+    connect(m_fontPreviewProxyModel,
+            SIGNAL(onFilterFinishRowCountChangedInt(unsigned int)),
+            m_parentWidget,
+            SLOT(onFontListViewRowCountChanged(unsigned int)), Qt::QueuedConnection);
 }
 
 QRect DFontPreviewListView::getCollectionIconRect(QRect visualRect)
@@ -598,12 +598,13 @@ void DFontPreviewListView::onListViewItemCollectionBtnClicked(const QModelIndexL
     for (QModelIndex index : itemIndexesNew) {
         DFontPreviewItemData itemData =
             qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(index));
-        itemData.isCollected = !itemData.isCollected;
+        itemData.isCollected = setValue;
 //        DFMDBManager::instance()->updateFontInfoByFontId(itemData.strFontId, "isCollected", QString::number(itemData.isCollected));
         DFMDBManager::instance()->updateFontInfo(itemData, "isCollected");
 
         m_fontPreviewProxyModel->setData(index, QVariant::fromValue(itemData), Qt::DisplayRole);
     }
+    qDebug() << "ASDASDSAD" << endl;
 }
 
 void DFontPreviewListView::onListViewShowContextMenu(const QModelIndex &index)

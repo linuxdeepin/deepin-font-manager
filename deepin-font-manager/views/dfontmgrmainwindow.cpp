@@ -415,15 +415,9 @@ void DFontMgrMainWindow::initShortcuts()
         m_scAddFavFont->setContext(Qt::ApplicationShortcut);
         m_scAddFavFont->setAutoRepeat(false);
 
-        connect(m_scAddFavFont, &QShortcut::activated, this, [this] {
-            DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
-
-            if (!currItemData.isCollected)
-            {
-                QAction *faveriteAction = DFontMenuManager::getInstance()->getActionByMenuAction(
-                    DFontMenuManager::M_Faverator, DFontMenuManager::MenuType::RightKeyMenu);
-                faveriteAction->trigger();
-            }
+        connect(m_scAddFavFont, &QShortcut::activated, this, [ = ] {
+            QModelIndexList itemIndexes = m_fontPreviewListView->selectedIndex(nullptr, nullptr);
+            emit m_fontPreviewListView->onClickCollectionButton(itemIndexes, true);
         });
     }
 
@@ -435,14 +429,16 @@ void DFontMgrMainWindow::initShortcuts()
         m_scCancelFavFont->setAutoRepeat(false);
 
         connect(m_scCancelFavFont, &QShortcut::activated, this, [this] {
-            DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
+            QModelIndexList itemIndexes = m_fontPreviewListView->selectedIndex(nullptr, nullptr);
+            emit m_fontPreviewListView->onClickCollectionButton(itemIndexes, false);
+//            DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
 
-            if (currItemData.isCollected)
-            {
-                QAction *faveriteAction = DFontMenuManager::getInstance()->getActionByMenuAction(
-                    DFontMenuManager::M_Faverator, DFontMenuManager::MenuType::RightKeyMenu);
-                faveriteAction->trigger();
-            }
+//            if (currItemData.isCollected)
+//            {
+//                QAction *faveriteAction = DFontMenuManager::getInstance()->getActionByMenuAction(
+//                    DFontMenuManager::M_Faverator, DFontMenuManager::MenuType::RightKeyMenu);
+//                faveriteAction->trigger();
+//            }
         });
     }
 
@@ -891,7 +887,7 @@ void DFontMgrMainWindow::handleMenuEvent(QAction *action)
 //                QModelIndex modelIndex = m_fontPreviewListView->currModelIndex();
                 DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
                 QModelIndexList itemIndexes = m_fontPreviewListView->selectedIndex(nullptr, nullptr);
-                emit m_fontPreviewListView->onClickCollectionButton(itemIndexes, !currItemData.isChineseFont);
+                emit m_fontPreviewListView->onClickCollectionButton(itemIndexes, !currItemData.isCollected);
             }
             break;
             case DFontMenuManager::MenuAction::M_ShowFontPostion:
