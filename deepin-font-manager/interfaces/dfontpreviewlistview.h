@@ -76,9 +76,8 @@ private:
     void deleteFontModelIndex(const DFontInfo &fontInfo);
 
     void clearFontSelect();
-    void addFontSelect(const QString &file);
+    QStringList getSelectFont(const QStringList &fontList);
 
-    QStringList m_fontSelection;
     bool m_bLoadDataFinish = false;
     bool m_bLeftMouse = true;
     bool m_bClickCollectionOrEnable = false;

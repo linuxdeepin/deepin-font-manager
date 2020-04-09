@@ -36,6 +36,7 @@ public:
 
     QList<DFontPreviewItemData> getFontModelList();
     QList<DFontPreviewItemData> getDiffFontModelList() const;
+    QStringList getDiffFontList() const;
     void setMutex(QMutex *mutex);
     void forceDeleteFiles(const QStringList &files);
 

@@ -158,6 +158,9 @@ void DFontPreviewListDataThread::onFileDeleted(const QStringList &files)
 
 void DFontPreviewListDataThread::onFileAdded(const QStringList &files)
 {
+    if (files.isEmpty())
+        return;
+
     if (m_mutex != nullptr)
         QMutexLocker locker(m_mutex);
     m_view->refreshFontListData(files);
@@ -171,6 +174,15 @@ QList<DFontPreviewItemData> DFontPreviewListDataThread::getFontModelList()
 QList<DFontPreviewItemData> DFontPreviewListDataThread::getDiffFontModelList() const
 {
     return m_diffFontModelList;
+}
+
+QStringList DFontPreviewListDataThread::getDiffFontList() const
+{
+    QStringList fontList;
+    for (DFontPreviewItemData item : m_diffFontModelList) {
+        fontList << item.fontInfo.filePath;
+    }
+    return fontList;
 }
 
 void DFontPreviewListDataThread::setMutex(QMutex *mutex)
