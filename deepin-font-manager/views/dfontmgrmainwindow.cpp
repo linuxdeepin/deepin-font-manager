@@ -207,7 +207,7 @@ void DFontMgrMainWindow::initConnections()
         m_fontUninstallDialog->setValue(" ", 0, 0);
         m_fontUninstallDialog->close();
         m_needDelCount = 0;
-        if (m_isDeleting && m_isFromSys)
+        if (!m_isDeleting && m_isFromSys)
         {
             if (m_waitForInstall.count() > 0) {
                 waitForInsert();
