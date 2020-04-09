@@ -76,6 +76,8 @@ private:
     void deleteFontModelIndex(const DFontInfo &fontInfo);
 
     void clearFontSelect();
+    void sortModelIndexList(QModelIndexList &sourceList);
+
     QStringList getSelectFont(const QStringList &fontList);
 
     bool m_bLoadDataFinish = false;
@@ -102,7 +104,7 @@ private:
 signals:
     //用于DFontPreviewListView内部使用的信号
     void onClickEnableButton(const QModelIndexList &index, bool setValue);
-    void onClickCollectionButton(const QModelIndex &index);
+    void onClickCollectionButton(const QModelIndexList &index, bool setValue);
     void onShowContextMenu(const QModelIndex &index);
 
     //右键菜单
@@ -122,7 +124,7 @@ signals:
 public slots:
 
     void onListViewItemEnableBtnClicked(const QModelIndexList &itemIndexes, bool setValue);
-    void onListViewItemCollectionBtnClicked(const QModelIndex &index);
+    void onListViewItemCollectionBtnClicked(const QModelIndexList &index, bool setValue);
     void onListViewShowContextMenu(const QModelIndex &index);
     void onFinishedDataLoad();
     void selectFonts(const QStringList &fileList);

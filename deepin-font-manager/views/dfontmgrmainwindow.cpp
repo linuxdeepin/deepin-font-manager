@@ -888,8 +888,10 @@ void DFontMgrMainWindow::handleMenuEvent(QAction *action)
             }
             break;
             case DFontMenuManager::MenuAction::M_Faverator: {
-                QModelIndex modelIndex = m_fontPreviewListView->currModelIndex();
-                emit m_fontPreviewListView->onClickCollectionButton(modelIndex);
+//                QModelIndex modelIndex = m_fontPreviewListView->currModelIndex();
+                DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
+                QModelIndexList itemIndexes = m_fontPreviewListView->selectedIndex(nullptr, nullptr);
+                emit m_fontPreviewListView->onClickCollectionButton(itemIndexes, !currItemData.isChineseFont);
             }
             break;
             case DFontMenuManager::MenuAction::M_ShowFontPostion:

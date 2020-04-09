@@ -195,6 +195,28 @@ void DFontPreviewListView::clearFontSelect()
     selection_model->clear();
 }
 
+void DFontPreviewListView::sortModelIndexList(QModelIndexList &sourceList)
+{
+    QModelIndex temp;
+    bool flag;//是否交换的标志
+    for (int i = 0; i < sourceList.count() - 1; i++) {
+
+        flag = false;
+        for (int j = sourceList.count() - 1; j > i; j--) { //选出该趟排序的最大值向前移动
+
+            if (sourceList[j].row() > sourceList[j - 1].row()) {
+                temp = sourceList[j];
+                sourceList[j] = sourceList[j - 1];
+                sourceList[j - 1] = temp;
+                flag = true;    //只要有发生了交换，flag就置为true
+            }
+        }
+        // 判断标志位是否为false，如果为false，说明后面的元素已经有序，就直接return
+        if (!flag)
+            break;
+    }
+}
+
 QStringList DFontPreviewListView::getSelectFont(const QStringList &fontList)
 {
     QSet<QString> allFontListSet = fontList.toSet();
@@ -243,7 +265,7 @@ void DFontPreviewListView::selectFonts(const QStringList &fileList)
         for (int i = 0; i < getFontPreviewProxyModel()->rowCount(); ++i) {
             QModelIndex index = getFontPreviewProxyModel()->index(i, 0);
             DFontPreviewItemData itemData =
-                    qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(index));
+                qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(index));
             //        qDebug() << __FUNCTION__ << itemData.fontInfo.filePath;
             if (fileList.contains(itemData.fontInfo.filePath)) {
                 QModelIndex left = m_fontPreviewProxyModel->index(index.row(), 0);
@@ -418,7 +440,7 @@ void DFontPreviewListView::mouseReleaseEvent(QMouseEvent *event)
     } else if (collectIconRect.contains(clickPoint)) {
         //触发收藏/取消收藏
 //        emit onClickCollectionButton(modelIndex);
-        onListViewItemCollectionBtnClicked(modelIndex);
+        onListViewItemCollectionBtnClicked(indexList, !itemData.isCollected);
     }
 
     m_bClickCollectionOrEnable = false;
@@ -510,11 +532,17 @@ void DFontPreviewListView::onListViewItemEnableBtnClicked(const QModelIndexList 
 {
     QMutexLocker locker(&m_mutex);
     QString fontName;
-    QModelIndexList itemIndexesNew;
+    QModelIndexList itemIndexesNew = itemIndexes;
 
-    for (int i = 0; i < itemIndexes.count(); i++) {
-        itemIndexesNew.append(itemIndexes[itemIndexes.count() - 1 - i]);
-    }
+    sortModelIndexList(itemIndexesNew);
+
+
+
+//    for (int i = 0; i < itemIndexes.count(); i++) {
+//        qDebug() << itemIndexes[i].row() << endl;
+//        itemIndexesNew.append(itemIndexes[itemIndexes.count() - 1 - i]);
+//    }
+
 
     for (QModelIndex index : itemIndexesNew) {
         //        DFontPreviewItemData itemData =
@@ -561,15 +589,20 @@ void DFontPreviewListView::onListViewItemEnableBtnClicked(const QModelIndexList 
     DMessageManager::instance()->sendMessage(this->m_parentWidget, QIcon(":/images/ok.svg"), message);
 }
 
-void DFontPreviewListView::onListViewItemCollectionBtnClicked(const QModelIndex &index)
+void DFontPreviewListView::onListViewItemCollectionBtnClicked(const QModelIndexList &index, bool setValue)
 {
-    DFontPreviewItemData itemData =
-        qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(index));
-    itemData.isCollected = !itemData.isCollected;
+    QMutexLocker locker(&m_mutex);
+    QModelIndexList itemIndexesNew = index;
+    sortModelIndexList(itemIndexesNew);
 
-    DFMDBManager::instance()->updateFontInfoByFontId(itemData.strFontId, "isCollected", QString::number(itemData.isCollected));
+    for (QModelIndex index : itemIndexesNew) {
+        DFontPreviewItemData itemData =
+            qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(index));
+        itemData.isCollected = !itemData.isCollected;
+        DFMDBManager::instance()->updateFontInfoByFontId(itemData.strFontId, "isCollected", QString::number(itemData.isCollected));
 
-    m_fontPreviewProxyModel->setData(index, QVariant::fromValue(itemData), Qt::DisplayRole);
+        m_fontPreviewProxyModel->setData(index, QVariant::fromValue(itemData), Qt::DisplayRole);
+    }
 }
 
 void DFontPreviewListView::onListViewShowContextMenu(const QModelIndex &index)
