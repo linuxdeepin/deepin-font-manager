@@ -108,14 +108,13 @@ void DFontInfoManager::refreshList()
 QStringList DFontInfoManager::getAllFontPath() const
 {
     QStringList pathList;
-    QProcess *process = new QProcess;
+    QProcess process;
 
-    process->start("fc-list", QStringList() << ":" << "file");
-    process->waitForFinished(-1);
+    process.start("fc-list", QStringList() << ":" << "file");
+    process.waitForFinished(-1);
 
-    QString output = process->readAllStandardOutput();
+    QString output = process.readAllStandardOutput();
     QStringList lines = output.split(QChar('\n'));
-    process->deleteLater();
 
     for (QString line : lines) {
         QString filePath = line.remove(QChar(':')).simplified();

@@ -279,7 +279,6 @@ void DFontPreviewListDataThread::refreshFontListData(bool isStartup, const QStri
     m_diffFontModelList.clear();
     isStartup = false;
     if (!isStartup) {
-
         //根据文件路径比较出不同的字体文件
         QSet<QString> allFontListSet = strAllFontList.toSet();
         QSet<QString> diffSet = allFontListSet.subtract(dbFilePathSet);
