@@ -165,11 +165,12 @@ void DFDeleteDialog::initConnections()
         if (m_deleting)
             return;
         m_deleting = true;
-        Q_EMIT requestDelete();
-        /* bug#19453 close事件会在popUninstallDialog信号之后执行，所以时序上有问题，
-         * 把信号槽连接设置为Qt::QueuedConnection UT000591 */
+        /* bug#19453 close事件会在popUninstallDialog信号之后执行，所以时序上有问题，UT000591 */
         close();
-        emit SignalManager::instance()->popUninstallDialog();
+        QTimer::singleShot(0, [this]() {
+            emit SignalManager::instance()->popUninstallDialog();
+            Q_EMIT this->requestDelete();
+        });
     });
     connect(this, &DFDeleteDialog::closed, this, [ = ]() {
         disconnect(quitConn);

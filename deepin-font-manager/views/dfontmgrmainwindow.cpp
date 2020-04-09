@@ -199,7 +199,7 @@ void DFontMgrMainWindow::initConnections()
             m_fontUninstallDialog->move(this->geometry().center() - m_fontUninstallDialog->rect().center());
             m_fontUninstallDialog->exec();
         }
-    }, Qt::QueuedConnection);
+    });
 
     QObject::connect(m_signalManager, &SignalManager::updateUninstallDialog, this, [ = ](QString & fontName, int index, int totalCount) {
         m_fontUninstallDialog->setValue(fontName, index, totalCount);
@@ -1284,7 +1284,7 @@ void DFontMgrMainWindow::delCurrentFont()
         m_fontManager->setType(DFontManager::UnInstall);
         m_fontManager->setUnInstallFile(m_uninstallFilePath);
         m_fontManager->start();
-    });
+    }, Qt::QueuedConnection);
 
     /* Bug#19111 恢复标记位，不用考虑用户操作 UT00591 */
     connect(confirmDelDlg, &DFDeleteDialog::closed, this, [this]() {
