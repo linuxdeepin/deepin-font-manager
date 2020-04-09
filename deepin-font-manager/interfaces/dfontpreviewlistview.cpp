@@ -599,7 +599,8 @@ void DFontPreviewListView::onListViewItemCollectionBtnClicked(const QModelIndexL
         DFontPreviewItemData itemData =
             qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(index));
         itemData.isCollected = !itemData.isCollected;
-        DFMDBManager::instance()->updateFontInfoByFontId(itemData.strFontId, "isCollected", QString::number(itemData.isCollected));
+//        DFMDBManager::instance()->updateFontInfoByFontId(itemData.strFontId, "isCollected", QString::number(itemData.isCollected));
+        DFMDBManager::instance()->updateFontInfo(itemData, "isCollected");
 
         m_fontPreviewProxyModel->setData(index, QVariant::fromValue(itemData), Qt::DisplayRole);
     }
