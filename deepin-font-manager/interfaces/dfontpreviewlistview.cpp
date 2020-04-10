@@ -246,11 +246,11 @@ bool DFontPreviewListView::isDeleting()
 
 void DFontPreviewListView::selectFonts(const QStringList &fileList)
 {
+    QItemSelectionModel *selection_model = selectionModel();
+    QItemSelection selection = selection_model->selection();
+
     if (!fileList.isEmpty()) {
-        QItemSelectionModel *selection_model = selectionModel();
         selection_model->reset();
-        QItemSelection selection = selection_model->selection();
-        bool needSelect = false;
         qDebug() << __FUNCTION__ << " fileList size " << fileList.size() << ", row count " << getFontPreviewProxyModel()->rowCount();
         for (int i = 0; i < getFontPreviewProxyModel()->rowCount(); ++i) {
             QModelIndex index = getFontPreviewProxyModel()->index(i, 0);
@@ -261,16 +261,18 @@ void DFontPreviewListView::selectFonts(const QStringList &fileList)
                 QItemSelection sel;
                 sel.select(index, index);
                 selection.merge(sel, QItemSelectionModel::Select);
-                needSelect = true;
             }
         }
-
-        qDebug() << " selection size " << selection.size();
-
-        if (needSelect && selection.size() > 0)  {
-            selection_model->select(selection, QItemSelectionModel::Select);
-        }
     }
+
+    qDebug() << " selection size " << selection.size();
+
+    if (selection.size() > 0)  {
+        selection_model->select(selection, QItemSelectionModel::Select);
+    }
+
+    if (!fileList.isEmpty())
+        return;
 
     QModelIndex cur = currModelIndex();
     if (cur.isValid())
@@ -284,9 +286,7 @@ void DFontPreviewListView::onAddSelectFont(const DFontPreviewItemData &itemData)
     item->setData(QVariant::fromValue(itemData), Qt::DisplayRole);
     sourceModel->appendRow(item);
 
-    QModelIndex sindex = sourceModel->indexFromItem(item);
-    QModelIndex index = m_fontPreviewProxyModel->mapFromSource(sindex);
-
+    QModelIndex index = m_fontPreviewProxyModel->mapFromSource(sourceModel->indexFromItem(item));
     QItemSelectionModel *selection_model = selectionModel();
     QItemSelection selection = selection_model->selection();
 
