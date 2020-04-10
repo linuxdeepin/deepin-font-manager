@@ -133,7 +133,13 @@ void DFontPreviewListView::onItemRemoved(const DFontPreviewItemData &itemData)
     deleteFontModelIndex(itemData.fontInfo.filePath);
 
     QItemSelectionModel *selection_model = selectionModel();
-    selection_model->select(currModelIndex(), QItemSelectionModel::Select);
+    selection_model->reset();
+
+    QModelIndex index = currModelIndex();
+    int row = index.row();
+    if (row >= m_fontPreviewProxyModel->rowCount())
+        index = index.siblingAtRow(row - 1);
+    setCurrentIndex(index);
 }
 
 void DFontPreviewListView::onItemRemovedFromSys(const DFontPreviewItemData &itemData)
@@ -258,7 +264,7 @@ void DFontPreviewListView::selectFonts(const QStringList &fileList)
 
     QModelIndex cur = currModelIndex();
     if (cur.isValid())
-        scrollTo(currModelIndex());
+        scrollTo(cur);
 }
 
 QMutex *DFontPreviewListView::getMutex()
