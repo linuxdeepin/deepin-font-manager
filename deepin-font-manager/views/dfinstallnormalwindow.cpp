@@ -4,6 +4,7 @@
 #include "utils.h"
 #include "dfmdbmanager.h"
 #include "dfontpreviewlistdatathread.h"
+#include "dfinstallerrordialog.h"
 
 #include <QResizeEvent>
 #include <QVBoxLayout>
@@ -382,10 +383,9 @@ void DFInstallNormalWindow::closeEvent(QCloseEvent *event)
             m_fontManager->wait();
         }
     } else {
-        event->ignore();
+        event->accept();
     }
 }
-
 void DFInstallNormalWindow::batchInstall()
 {
     // Check&Sort uninstalled ,installed & damaged font file here

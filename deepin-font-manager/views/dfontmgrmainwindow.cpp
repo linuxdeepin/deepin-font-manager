@@ -199,10 +199,13 @@ void DFontMgrMainWindow::initConnections()
             m_fontUninstallDialog->move(this->geometry().center() - m_fontUninstallDialog->rect().center());
             m_fontUninstallDialog->exec();
         }
-    });
+    }, Qt::QueuedConnection);
 
     QObject::connect(m_signalManager, &SignalManager::updateUninstallDialog, this, [ = ](QString & fontName, int index, int totalCount) {
         m_fontUninstallDialog->setValue(fontName, index, totalCount);
+        m_fontManager->setType(DFontManager::UnInstall);
+        m_fontManager->setUnInstallFile(m_uninstallFilePath);
+        m_fontManager->start();
     });
 
     QObject::connect(m_signalManager, &SignalManager::closeUninstallDialog, this, [ = ] {
@@ -664,7 +667,7 @@ void DFontMgrMainWindow::initFontPreviewListView(QWidget *parent)
 
     /* 临时方案，等文管那边改好了右键-》打开的方式，可以把这个删除 UT000591*/
     waitForInstallSpinner = new DSpinner();
-    waitForInstallSpinner->setFixedSize(64, 64);
+    waitForInstallSpinner->setFixedSize(32, 32);
     waitForInstallSpinner->hide();
 
     QGridLayout *gLayout = new QGridLayout();
