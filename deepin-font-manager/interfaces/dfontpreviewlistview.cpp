@@ -762,61 +762,12 @@ QStringList DFontPreviewListView::selectedFonts(int *deleteCnt, int *systemCnt)
         }
     }
 
-    if (ret.isEmpty()) {
-        DFontPreviewItemData itemData = currModelData();
-        if (!itemData.fontInfo.filePath.isEmpty()) {
-            if (itemData.fontInfo.isSystemFont) {
-                systemNum++;
-            } else {
-                deleteNum++;
-                ret << itemData.fontInfo.filePath;
-            }
-        }
-    }
     if (systemCnt)
         *systemCnt = systemNum;
     if (deleteCnt)
         *deleteCnt = deleteNum;
 
     qDebug() << __FUNCTION__ << ret;
-    return ret;
-}
-
-QList<DFontPreviewItemData> DFontPreviewListView::selectedFontData(int *deleteCnt, int *systemCnt)
-{
-    QModelIndexList list = selectedIndexes();
-    QList<DFontPreviewItemData> ret;
-    int deleteNum = 0;
-    int systemNum = 0;
-    for (QModelIndex index : list) {
-        QVariant varModel = m_fontPreviewProxyModel->data(index, Qt::DisplayRole);
-        DFontPreviewItemData itemData = varModel.value<DFontPreviewItemData>();
-        if (!itemData.fontInfo.filePath.isEmpty()) {
-            if (itemData.fontInfo.isSystemFont) {
-                systemNum++;
-            } else {
-                deleteNum++;
-                ret << itemData;
-            }
-        }
-    }
-
-    if (ret.isEmpty()) {
-        DFontPreviewItemData itemData = currModelData();
-        if (!itemData.fontInfo.filePath.isEmpty()) {
-            if (itemData.fontInfo.isSystemFont) {
-                systemNum++;
-            } else {
-                deleteNum++;
-                ret << itemData;
-            }
-        }
-    }
-    if (systemCnt)
-        *systemCnt = systemNum;
-    if (deleteCnt)
-        *deleteCnt = deleteNum;
-    qDebug() << __FUNCTION__ << ret.size();
     return ret;
 }
 
@@ -837,16 +788,6 @@ QModelIndexList DFontPreviewListView::selectedIndex(int *deleteCnt, int *systemC
         }
     }
 
-    if (deleteNum == 0 && systemNum == 0) {
-        DFontPreviewItemData itemData = currModelData();
-        if (!itemData.fontInfo.filePath.isEmpty()) {
-            if (itemData.fontInfo.isSystemFont) {
-                systemNum++;
-            } else {
-                deleteNum++;
-            }
-        }
-    }
     if (systemCnt)
         *systemCnt = systemNum;
     if (deleteCnt)
