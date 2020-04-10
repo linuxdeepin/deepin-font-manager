@@ -29,12 +29,12 @@ DFMDBManager *DFMDBManager::instance()
 
 bool DFMDBManager::isSystemFont(const QString &filePath)
 {
-    return filePath.contains("/.local/share/fonts") ? false : true;
+    return filePath.contains("/usr/share/fonts/");
 }
 
 bool DFMDBManager::isUserFont(const QString &filePath)
 {
-    return filePath.contains("/.local/share/fonts");
+    return filePath.contains(QDir::homePath() + "/.local/share/fonts");
 }
 
 DFontPreviewItemData DFMDBManager::parseRecordToItemData(const QMap<QString, QString> &record)
