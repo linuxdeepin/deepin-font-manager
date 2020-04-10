@@ -169,43 +169,6 @@ QStringList DFontInfoManager::getAllMonoSpaceFontPath() const
     return pathList;
 }
 
-QString DFontInfoManager::getInstalledFontPath(const DFontInfo &info)
-{
-    const QList<DFontInfo> famList = dataList;
-    QString filePath = nullptr;
-
-    for (const auto &famItem : famList) {
-        if (info.familyName == famItem.familyName && info.styleName == famItem.styleName) {
-            filePath = famItem.filePath;
-            break;
-        }
-    }
-
-    return filePath;
-}
-
-QStringList DFontInfoManager::getInstalledFontPath(const QStringList &fileList)
-{
-    DFMDBManager *dbManager = DFMDBManager::instance();
-    QList<DFontPreviewItemData> allFontInfo = dbManager->getAllFontInfo();
-    QStringList outlist;
-
-    for (QString filePath : fileList) {
-        QStringList list = getFamilyStyleName(filePath);
-        if (list.isEmpty() || list.size() < 2)
-            continue;
-
-        for (const auto &famItem : allFontInfo) {
-            if (list[0].startsWith(famItem.fontInfo.familyName) && list[1] == famItem.fontInfo.styleName) {
-                outlist << famItem.fontInfo.filePath;
-                break;
-            }
-        }
-    }
-
-    return outlist;
-}
-
 QString DFontInfoManager::getFontType(const QString &filePath)
 {
     const QFileInfo fileInfo(filePath);
