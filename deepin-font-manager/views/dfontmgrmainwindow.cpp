@@ -667,7 +667,7 @@ void DFontMgrMainWindow::initFontPreviewListView(QWidget *parent)
 
     /* 临时方案，等文管那边改好了右键-》打开的方式，可以把这个删除 UT000591*/
     waitForInstallSpinner = new DSpinner();
-    waitForInstallSpinner->setFixedSize(64, 64);
+    waitForInstallSpinner->setFixedSize(32, 32);
     waitForInstallSpinner->hide();
 
     QGridLayout *gLayout = new QGridLayout();
