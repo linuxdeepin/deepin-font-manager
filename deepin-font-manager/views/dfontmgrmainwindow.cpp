@@ -199,10 +199,13 @@ void DFontMgrMainWindow::initConnections()
             m_fontUninstallDialog->move(this->geometry().center() - m_fontUninstallDialog->rect().center());
             m_fontUninstallDialog->exec();
         }
-    });
+    }, Qt::QueuedConnection);
 
     QObject::connect(m_signalManager, &SignalManager::updateUninstallDialog, this, [ = ](QString & fontName, int index, int totalCount) {
         m_fontUninstallDialog->setValue(fontName, index, totalCount);
+        m_fontManager->setType(DFontManager::UnInstall);
+        m_fontManager->setUnInstallFile(m_uninstallFilePath);
+        m_fontManager->start();
     });
 
     QObject::connect(m_signalManager, &SignalManager::closeUninstallDialog, this, [ = ] {
