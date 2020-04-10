@@ -30,6 +30,8 @@
 #include <DMessageManager>
 #include <DSpinner>
 
+#include <unistd.h>
+
 class DFontMgrMainWindowPrivate
 {
 public:
@@ -474,6 +476,13 @@ void DFontMgrMainWindow::initFontFiles()
     const QString FONTS_DIR = QDir::homePath() + "/.local/share/fonts/";
 
     QStringList installFont = m_dbManager->getInstalledFontsPath();
+
+    /* Bug#19657 sudo执行后，QDir::homePath路径不再是/home/user,导致新建数据库，
+     * 与fc-list查出来的数据差异，导致下面的代码删除了系统字体 UT000591  */
+    if (geteuid() == 0) {
+        return;
+    }
+
     for (int i = 0; i < allFontsList.size(); ++i) {
         QString filePath = allFontsList.at(i);
         if (!installFont.contains(filePath)) {
