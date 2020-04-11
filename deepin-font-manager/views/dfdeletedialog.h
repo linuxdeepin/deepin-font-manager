@@ -29,10 +29,12 @@ public slots:
 
 protected:
     void keyPressEvent(QKeyEvent *event) override;
-    void paintEvent(QPaintEvent *event) override;
 
 signals:
     void requestDelete();
+
+private slots:
+    void setTheme();
 
 private:
     void initUI();
@@ -41,7 +43,6 @@ private:
     void initMessageTitle();
     void initMessageDetail();
     QLayout *initBottomButtons();
-
 
     DLabel *m_fontLogo;
     DLabel *messageTitle;

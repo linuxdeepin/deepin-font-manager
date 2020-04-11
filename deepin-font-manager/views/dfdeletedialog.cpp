@@ -25,6 +25,7 @@ DFDeleteDialog::DFDeleteDialog(DFontMgrMainWindow *win, int deleteCnt, int syste
     initUI();
     setMainwindow(win);
     initConnections();
+    setTheme();
 }
 
 DFDeleteDialog::~DFDeleteDialog()
@@ -89,6 +90,8 @@ void DFDeleteDialog::initConnections()
             m_mainWindow->setDeleteFinish();
     });
     connect(qApp, &DApplication::fontChanged, this, &DFDeleteDialog::onFontChanged);
+
+    connect(DApplicationHelper::instance(), &DApplicationHelper::themeTypeChanged, this, &DFDeleteDialog::setTheme);
 }
 
 void DFDeleteDialog::initMessageTitle()
@@ -186,14 +189,11 @@ void DFDeleteDialog::keyPressEvent(QKeyEvent *event)
     }
 }
 
-void DFDeleteDialog::paintEvent(QPaintEvent *event)
+void DFDeleteDialog::setTheme()
 {
-    Q_UNUSED(event);
-
     if ( DApplicationHelper::DarkType == DApplicationHelper::instance()->themeType()) {
         DPalette pa = DApplicationHelper::instance()->palette(this);
         pa.setColor(DPalette::Background, QColor(25, 25, 25, 80));
         DApplicationHelper::instance()->setPalette(this, pa);
     }
-    DFontBaseDialog::paintEvent(event);
 }
