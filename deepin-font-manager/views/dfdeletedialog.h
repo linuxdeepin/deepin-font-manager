@@ -18,27 +18,34 @@ class DFDeleteDialog : public DFontBaseDialog
     Q_OBJECT
 public:
     explicit DFDeleteDialog(DFontMgrMainWindow *win, int deleteCnt = 0, int systemCnt = 0, QWidget *parent = nullptr);
-    ~DFDeleteDialog();
+    ~DFDeleteDialog() override;
     void setMainwindow(DFontMgrMainWindow *win);
 
     static constexpr int DEFAULT_WINDOW_W = 380;
     static constexpr int DEFAULT_WINDOW_H = 160;
 
-    void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
+public slots:
+    void onFontChanged(const QFont &font);
+
 protected:
-    void initUI();
-    void initConnections();
+    void keyPressEvent(QKeyEvent *event) override;
+    void paintEvent(QPaintEvent *event) override;
 
 signals:
     void requestDelete();
 
-public slots:
-    void onFontChanged(const QFont &font);
-
 private:
+    void initUI();
+    void initConnections();
+
+    void initMessageTitle();
+    void initMessageDetail();
+    QLayout *initBottomButtons();
+
+
     DLabel *m_fontLogo;
-    DLabel *m_messageA;
-    DLabel *m_messageB;
+    DLabel *messageTitle;
+    DLabel *messageDetail;
     DPushButton *m_cancelBtn;
     DWarningButton *m_confirmBtn;
     DFontMgrMainWindow *m_mainWindow;
@@ -51,7 +58,6 @@ private:
     int m_w_ht {0};
     int m_count {0};
     bool m_deleting;
-    void keyPressEvent(QKeyEvent *event) override;
 };
 
 #endif  // DFDELETEDIALOG_H

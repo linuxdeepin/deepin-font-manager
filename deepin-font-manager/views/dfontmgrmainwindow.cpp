@@ -1283,7 +1283,7 @@ void DFontMgrMainWindow::delCurrentFont()
         return;
     m_fIsDeleting = true;
     m_isDeleting = true;
-    DFDeleteDialog *confirmDelDlg = new DFDeleteDialog(this, deleteCnt, systemCnt);
+    DFDeleteDialog *confirmDelDlg = new DFDeleteDialog(this, deleteCnt, systemCnt, this);
     connect(confirmDelDlg, &DFDeleteDialog::requestDelete, this, [this]() {
         // Add Delete font code Here
         m_uninstallFilePath.clear();
