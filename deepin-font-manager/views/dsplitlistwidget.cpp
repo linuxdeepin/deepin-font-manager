@@ -46,10 +46,10 @@ void DNoFocusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
 
             QRect lineRect;
             lineRect.setX(option.rect.x() + 10);
-            lineRect.setY(option.rect.y() + option.rect.height()-2);
+            lineRect.setY(option.rect.y() + option.rect.height() - 2);
             lineRect.setWidth(option.rect.width() - 20);
             lineRect.setHeight(2);
-           //绘制分割线
+            //绘制分割线
             DPalette pa = DApplicationHelper::instance()->palette(m_parentView);
             DStyleHelper styleHelper;
             QColor fillColor = styleHelper.getColor(static_cast<const QStyleOption *>(&option), pa, DPalette::ItemBackground);
@@ -62,20 +62,20 @@ void DNoFocusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
             rect.setWidth(option.rect.width());
             rect.setHeight(option.rect.height());
 
-            QRect paintRect = QRect(rect.left() + 10, rect.top(), rect.width() - 20, rect.height());
+            QRect backgroundRect = QRect(rect.left() + 10, rect.top(), rect.width() - 20, rect.height());
 
             QPainterPath path;
             const int radius = 8;
 
-            path.moveTo(paintRect.bottomRight() - QPoint(0, radius));
-            path.lineTo(paintRect.topRight() + QPoint(0, radius));
-            path.arcTo(QRect(QPoint(paintRect.topRight() - QPoint(radius * 2, 0)), QSize(radius * 2, radius * 2)), 0, 90);
-            path.lineTo(paintRect.topLeft() + QPoint(radius, 0));
-            path.arcTo(QRect(QPoint(paintRect.topLeft()), QSize(radius * 2, radius * 2)), 90, 90);
-            path.lineTo(paintRect.bottomLeft() - QPoint(0, radius));
-            path.arcTo(QRect(QPoint(paintRect.bottomLeft() - QPoint(0, radius * 2)), QSize(radius * 2, radius * 2)), 180, 90);
-            path.lineTo(paintRect.bottomLeft() + QPoint(radius, 0));
-            path.arcTo(QRect(QPoint(paintRect.bottomRight() - QPoint(radius * 2, radius * 2)), QSize(radius * 2, radius * 2)), 270, 90);
+            path.moveTo(backgroundRect.bottomRight() - QPoint(0, radius));
+            path.lineTo(backgroundRect.topRight() + QPoint(0, radius));
+            path.arcTo(QRect(QPoint(backgroundRect.topRight() - QPoint(radius * 2, 0)), QSize(radius * 2, radius * 2)), 0, 90);
+            path.lineTo(backgroundRect.topLeft() + QPoint(radius, 0));
+            path.arcTo(QRect(QPoint(backgroundRect.topLeft()), QSize(radius * 2, radius * 2)), 90, 90);
+            path.lineTo(backgroundRect.bottomLeft() - QPoint(0, radius));
+            path.arcTo(QRect(QPoint(backgroundRect.bottomLeft() - QPoint(0, radius * 2)), QSize(radius * 2, radius * 2)), 180, 90);
+            path.lineTo(backgroundRect.bottomLeft() + QPoint(radius, 0));
+            path.arcTo(QRect(QPoint(backgroundRect.bottomRight() - QPoint(radius * 2, radius * 2)), QSize(radius * 2, radius * 2)), 270, 90);
 
             if (option.state & QStyle::State_Selected) {
                 QColor fillColor = option.palette.color(cg, DPalette::Highlight);
@@ -84,7 +84,8 @@ void DNoFocusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
             }
 
             //绘制标题
-            QRect fontNameRect = QRect(rect.left() + 20, rect.top() + (rect.height()-80)/8 , rect.width() - 20, 50);
+            /* bug#20266 UT000591 */
+            QRect fontNameRect = QRect(backgroundRect.left() + 10, backgroundRect.top() + 7, backgroundRect.width() - 20, backgroundRect.height() - 7 - 9);
 
             QFont nameFont = painter->font();
             nameFont.setWeight(QFont::Medium);
