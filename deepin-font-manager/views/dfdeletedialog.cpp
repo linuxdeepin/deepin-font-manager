@@ -80,9 +80,8 @@ void DFDeleteDialog::initConnections()
         if (m_deleting)
             return;
         m_deleting = true;
-        Q_EMIT requestDelete();
         close();
-        emit SignalManager::instance()->popUninstallDialog();
+        emit SignalManager::instance()->popUninstallDialog();//弹出删除进度框
     });
     connect(this, &DFDeleteDialog::closed, this, [ = ]() {
         disconnect(quitConn);
@@ -191,7 +190,7 @@ void DFDeleteDialog::keyPressEvent(QKeyEvent *event)
 
 void DFDeleteDialog::setTheme()
 {
-    if ( DApplicationHelper::DarkType == DApplicationHelper::instance()->themeType()) {
+    if (DApplicationHelper::DarkType == DApplicationHelper::instance()->themeType()) {
         DPalette pa = DApplicationHelper::instance()->palette(this);
         pa.setColor(DPalette::Background, QColor(25, 25, 25, 80));
         DApplicationHelper::instance()->setPalette(this, pa);
