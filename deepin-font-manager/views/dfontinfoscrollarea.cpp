@@ -137,6 +137,15 @@ DFrame *dfontinfoscrollarea::addTitleFrame(const QString &sData, const QString &
 void dfontinfoscrollarea::paintEvent(QPaintEvent *event)
 {
     qDebug() << "unused event";
+    qDebug() << "unused event";
+    int m_totalHeight = 0;
+    for (auto plabeliter : pLabelMap) {
+        if (!plabeliter.first) {
+            continue;
+        }
+        m_totalHeight = m_totalHeight + plabeliter.first->height();
+    }
+    emit m_signalManager->sizeChange(m_totalHeight);
 }
 QString dfontinfoscrollarea::elideText(const QString &text, const QFont &font, int nLabelSize)
 {

@@ -20,6 +20,7 @@ signals:
     void startToInsert();
     void finishFontInstall(const QStringList &fileList);
     void trigerCollect(bool favorite);
+    void sizeChange(int height);
 
 private:
     explicit SignalManager(QObject *parent = nullptr);

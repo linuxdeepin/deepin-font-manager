@@ -20,6 +20,7 @@
 #include <DLabel>
 #include <QTextEdit>
 #include <DWidget>
+#include "signalmanager.h"
 DWIDGET_USE_NAMESPACE
 
 /**
@@ -35,25 +36,27 @@ class dfontinfoscrollarea: public DFrame
 
 public:
     explicit dfontinfoscrollarea(DFontPreviewItemData *pData, DWidget *parent  = nullptr);
-     QString elideText(const QString &text, const QFont &font, int nLabelSize);//
-     void updateText();
+    QString elideText(const QString &text, const QFont &font, int nLabelSize);//
+    void updateText();
+
 
 protected:
     bool eventFilter(QObject *obj, QEvent *e) override;
+    SignalManager *m_signalManager = SignalManager::instance();
 
 private:
     void createLabel(QGridLayout *layout, const int &index, const QString &objName, const QString &sData);
 
 
 private:
-    DFrame *addTitleFrame(const QString &sData,const QString &objName);
+    DFrame *addTitleFrame(const QString &sData, const QString &objName);
     int m_leftminwidth;
 
     DFontPreviewItemData *m_fontInfo;//字体信息
 
     void paintEvent(QPaintEvent *event) override;
 
-    std::map<QLabel* , QString> pLabelMap;//存储信息label键值对
+    std::map<QLabel *, QString> pLabelMap;//存储信息label键值对
 };
 
 #endif // ATTRSCROLLWIDGET_H

@@ -23,6 +23,7 @@ DFontInfoDialog::DFontInfoDialog(DFontPreviewItemData *fontInfo, QWidget *parent
     , m_fontInfo(fontInfo)
     , fontinfoArea(nullptr)
 {
+    m_faCenter = parent->geometry().center();
     initUI();
     initConnections();
 }
@@ -119,7 +120,7 @@ void DFontInfoDialog::initUI()
 
     DLabel *panelName = new DLabel(this);
     panelName->setWordWrap(true);
-    panelName->setFixedHeight(panelName->fontMetrics().height()+2);
+    panelName->setFixedHeight(panelName->fontMetrics().height() + 2);
 //    panelName->setFixedHeight(40);
 
     DFontSizeManager::instance()->bind(panelName, DFontSizeManager::T6);
@@ -156,7 +157,6 @@ void DFontInfoDialog::initUI()
 
     fontinfoArea = new dfontinfoscrollarea(m_fontInfo);
     scrollArea->setWidget(fontinfoArea);
-
     scrollArea->setWidgetResizable(true);
     scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAlwaysOff);
 
@@ -224,11 +224,50 @@ void DFontInfoDialog::initConnections()
             DApplicationHelper::instance()->setPalette(scrollArea->viewport(), paFrame);
         }
     });
+
+    connect(m_signalManager, &SignalManager::sizeChange, this, [ = ](int height) {
+//        fontinfoArea->setFixedHeight(height);
+//        scrollArea->viewport()->setFixedHeight(height + 20);
+//        m_height = height;
+
+        qDebug() << height << "A+++++++++++++++++++++++++" << endl;
+        if (height + 450 < 640) {
+
+            this->setFixedHeight(height + 450);
+            this->move(m_faCenter - this->rect().center());
+
+            QPixmap bmp(QSize(280, height + 180));
+            bmp.fill();
+            QPainter p(&bmp);
+            bmp.setDevicePixelRatio(0);
+            p.setBrush(Qt::black);
+            p.drawRoundedRect(bmp.rect(), 12, 12);
+            p.setRenderHint(QPainter::Antialiasing);
+            scrollArea->viewport()->setMask(bmp);
+            scrollArea->setFixedHeight(height + 180);
+        } else {
+            this->setFixedHeight(DEFAULT_WINDOW_H);
+            this->move(m_faCenter - this->rect().center());
+
+            QPixmap bmp(QSize(280, 375));
+            bmp.fill();
+            QPainter p(&bmp);
+            bmp.setDevicePixelRatio(0);
+            p.setBrush(Qt::black);
+            p.drawRoundedRect(bmp.rect(), 12, 12);
+            p.setRenderHint(QPainter::Antialiasing);
+            scrollArea->viewport()->setMask(bmp);
+            scrollArea->setFixedHeight(375);
+        }
+        //        this->setFixedSize(QSize(DEFAULT_WINDOW_W, height + 300));
+    });
 }
 void DFontInfoDialog::resizeEvent(QResizeEvent *event)
 {
     DFontBaseDialog::resizeEvent(event);
 
 }
+
+
 
 

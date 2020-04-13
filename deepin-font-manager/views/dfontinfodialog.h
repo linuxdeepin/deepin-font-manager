@@ -2,6 +2,7 @@
 #define DFONTINFODIALOG_H
 #include "dfontbasedialog.h"
 #include "dfontinfoscrollarea.h"
+#include "signalmanager.h"
 
 #include <QResizeEvent>
 #include <QPointF>
@@ -33,7 +34,10 @@ signals:
 public slots:
 
 private:
+    int m_height;
     QWidget *m_mainFrame {nullptr};
+    QPoint m_faCenter;
+    SignalManager *m_signalManager = SignalManager::instance();
 
     FontIconText *m_fontLogo {nullptr};
     DLabel *m_fontFileName {nullptr};
