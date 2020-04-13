@@ -253,6 +253,10 @@ void DFontMgrMainWindow::initConnections()
     QObject::connect(m_fontManager, SIGNAL(uninstallFontFinished(const QStringList &)), this,
                      SLOT(onFontUninstallFinished(const QStringList &)));
     QObject::connect(m_signalManager, &SignalManager::showInstallFloatingMessage, this, &DFontMgrMainWindow::onShowMessage);
+    connect(this, &DFontMgrMainWindow::requestUpdatePreview, [=] {
+        QString previewText = d->textInputEdit->text();
+        onPreviewTextChanged(previewText);
+    });
 
     //安装结束后刷新字体列表
     connect(m_signalManager, &SignalManager::finishFontInstall, this,

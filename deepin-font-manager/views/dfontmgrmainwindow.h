@@ -113,6 +113,7 @@ signals:
 
     // Only use when user double click font file
     void quickModeInstall(const QStringList files) const;
+    void requestUpdatePreview();
 
     void requestHide();
 

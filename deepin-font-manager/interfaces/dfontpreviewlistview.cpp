@@ -265,6 +265,10 @@ void DFontPreviewListView::selectFonts(const QStringList &fileList)
     QModelIndex cur = currModelIndex();
     if (cur.isValid())
         scrollTo(cur);
+
+    DFontMgrMainWindow *mw = qobject_cast<DFontMgrMainWindow *>(m_parentWidget);
+    if (mw)
+        Q_EMIT mw->requestUpdatePreview();
 }
 
 QMutex *DFontPreviewListView::getMutex()
