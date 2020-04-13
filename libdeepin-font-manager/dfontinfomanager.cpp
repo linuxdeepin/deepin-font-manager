@@ -85,6 +85,8 @@ DFontInfoManager *DFontInfoManager::instance()
 
 DFontInfoManager::DFontInfoManager(QObject *parent)
     : QObject(parent)
+    , m_library(nullptr)
+    , m_face(nullptr)
 {
     //Should not be called in constructor
     //refreshList();
@@ -129,13 +131,12 @@ QStringList DFontInfoManager::getAllFontPath() const
 QStringList DFontInfoManager::getAllChineseFontPath() const
 {
     QStringList pathList;
-    QProcess *process = new QProcess;
-    process->start("fc-list", QStringList() << ":lang=zh");
-    process->waitForFinished(-1);
+    QProcess process;
+    process.start("fc-list", QStringList() << ":lang=zh");
+    process.waitForFinished(-1);
 
-    QString output = process->readAllStandardOutput();
+    QString output = process.readAllStandardOutput();
     QStringList lines = output.split(QChar('\n'));
-    process->deleteLater();
 
     for (QString line : lines) {
         QString filePath = line.split(QChar(':')).first().simplified();
@@ -151,13 +152,12 @@ QStringList DFontInfoManager::getAllChineseFontPath() const
 QStringList DFontInfoManager::getAllMonoSpaceFontPath() const
 {
     QStringList pathList;
-    QProcess *process = new QProcess;
-    process->start("fc-list", QStringList() << ":spacing=mono");
-    process->waitForFinished(-1);
+    QProcess process;
+    process.start("fc-list", QStringList() << ":spacing=mono");
+    process.waitForFinished(-1);
 
-    QString output = process->readAllStandardOutput();
+    QString output = process.readAllStandardOutput();
     QStringList lines = output.split(QChar('\n'));
-    process->deleteLater();
 
     for (QString line : lines) {
         QString filePath = line.split(QChar(':')).first().simplified();
@@ -183,58 +183,50 @@ QString DFontInfoManager::getFontType(const QString &filePath)
     }
 }
 
-QStringList DFontInfoManager::getFamilyStyleName(const QString &filePath)
+DFontInfo DFontInfoManager::getFontInfo(const QString &filePath, bool force)
 {
-    QStringList ret;
-//    int appFontId = QFontDatabase::addApplicationFont(filePath);
-//    QStringList fontFamilyList = QFontDatabase::applicationFontFamilies(appFontId);
-    QString fontFamily;
-    QString styleName;
-//    if (fontFamilyList.size() > 0) {
-//        fontFamily = QString(fontFamilyList.first().toLocal8Bit()).trimmed();
-//    }
-    fontFamily = getFontInfo(filePath).familyName;
-
-    FT_Library m_library = nullptr;
-    FT_Face m_face = nullptr;
-
-    FT_Init_FreeType(&m_library);
-    FT_Error error = FT_New_Face(m_library, filePath.toUtf8().constData(), 0, &m_face);
-
-    if (error != 0) {
-        return ret;
+    if (!force && m_fontInfoMap.contains(filePath)) {
+        return m_fontInfoMap.value(filePath);
+    } else if (!force) {
+        qDebug() << __FUNCTION__ << " not found " << filePath;
     }
 
-    if (fontFamily.isEmpty())
-        fontFamily = QString::fromUtf8(DFreeTypeUtil::getFontFamilyName(m_face)).trimmed();
-
-    if (fontFamily.isEmpty())
-        fontFamily = QString::fromLatin1(m_face->family_name).trimmed();
-
-    styleName = QString::fromLatin1(m_face->style_name);
-
-    ret << fontFamily << styleName;
-
-    return ret;
-}
-
-DFontInfo DFontInfoManager::getFontInfo(const QString &filePath)
-{
     DFontInfo fontInfo;
     fontInfo.isSystemFont = isSystemFont(filePath);
 
-    FT_Library m_library = 0;
-    FT_Face m_face = 0;
+//    FT_Library m_library = 0;
+//    FT_Face m_face = 0;
 
-    FT_Init_FreeType(&m_library);
-    FT_Error error = FT_New_Face(m_library, filePath.toUtf8().constData(), 0, &m_face);
+    if (m_library == nullptr)
+        FT_Init_FreeType(&m_library);
+
+    FT_Error error = 0;
+    if (m_face == nullptr)
+        error = FT_New_Face(m_library, filePath.toUtf8().constData(), 0, &m_face);
 
     if (error != 0) {
         qDebug() << __FUNCTION__ << " error " << error;
         fontInfo.isError = true;
         FT_Done_Face(m_face);
+        m_face = nullptr;
         FT_Done_FreeType(m_library);
-        return fontInfo;
+        m_library = nullptr;
+        //try again
+        error = FT_Init_FreeType(&m_library);
+        if (error != 0) {
+            FT_Done_FreeType(m_library);
+            m_library = nullptr;
+            return fontInfo;
+        }
+        error = FT_New_Face(m_library, filePath.toUtf8().constData(), 0, &m_face);
+        if (error != 0) {
+            FT_Done_Face(m_face);
+            m_face = nullptr;
+
+            FT_Done_FreeType(m_library);
+            m_library = nullptr;
+            return fontInfo;
+        }
     }
 
     // get the basic data.
@@ -322,7 +314,8 @@ DFontInfo DFontInfoManager::getFontInfo(const QString &filePath)
 
     // destroy object.
     FT_Done_Face(m_face);
-    FT_Done_FreeType(m_library);
+    m_face = nullptr;
+//    FT_Done_FreeType(m_library);
 
     DFMDBManager *dbManager = DFMDBManager::instance();
     if (dbManager->getRecordCount() > 0) {
@@ -335,6 +328,9 @@ DFontInfo DFontInfoManager::getFontInfo(const QString &filePath)
     } else {
         fontInfo.isInstalled = isFontInstalled(fontInfo);
     }
+
+    if (force)
+        m_fontInfoMap.insert(filePath, fontInfo);
 
     return fontInfo;
 }
@@ -353,51 +349,4 @@ bool DFontInfoManager::isFontInstalled(DFontInfo data)
     }
 
     return false;
-}
-
-//检查数据库中是否装有 相同名不同后缀大小写 的文件
-bool DFontInfoManager::checkDBFontSameName(const DFontInfo &info)
-{
-    QFileInfo fileInfo = QFileInfo(info.filePath);
-    QString fileName = fileInfo.fileName();
-    int nPoint = fileName.indexOf(".");
-    QString fileNameNoSuffix = fileName.left(nPoint);
-
-    //从数据库获取所有字体文件名
-    QStringList allFontName = getAllFontName();
-
-    const QString fileSuffixUp = fileInfo.suffix().toUpper();
-    const QString fileSuffixLow = fileInfo.suffix().toLower();
-
-    if (fileSuffixLow == fileInfo.suffix()) {
-        if (allFontName.contains(fileNameNoSuffix + "." + fileSuffixUp)) {
-            return true;
-        }
-    } else if (fileSuffixUp == fileInfo.suffix()) {
-        if (allFontName.contains(fileNameNoSuffix + "." + fileSuffixLow)) {
-            return true;
-        }
-    }
-    return false;
-}
-
-bool DFontInfoManager::isSysFont(QString &path)
-{
-    return isSystemFont(path);
-}
-
-// 从数据库获取所有字体文件名，并返回一个 QStringList
-QStringList DFontInfoManager::getAllFontName() const
-{
-    QStringList allFileNameList;
-    QFileInfo fileInfo;
-    DFMDBManager *dbManager = DFMDBManager::instance();
-    QList<DFontPreviewItemData> allFontInfo = dbManager->getAllFontInfo();
-
-    for (int var = 0; var < allFontInfo.count(); ++var) {
-        fileInfo = QFileInfo(allFontInfo[var].fontInfo.filePath);
-        QString fileName = fileInfo.fileName();
-        allFileNameList << fileName;
-    }
-    return allFileNameList;
 }

@@ -2,6 +2,8 @@
 #include "dfmxmlwrapper.h"
 #include "dfontpreviewlistview.h"
 
+#include <QFontDatabase>
+
 static DFontPreviewListDataThread *INSTANCE = nullptr;
 const QString FONTS_DIR = QDir::homePath() + "/.local/share/fonts/";
 const QString FONTS_UP_DIR = QDir::homePath() + "/.local/share/";
@@ -163,7 +165,8 @@ void DFontPreviewListDataThread::onFileAdded(const QStringList &files)
 
     if (m_mutex != nullptr)
         QMutexLocker locker(m_mutex);
-    m_view->refreshFontListData(files);
+
+    refreshFontListData(false, files);
 }
 
 QList<DFontPreviewItemData> DFontPreviewListDataThread::getFontModelList()
@@ -208,7 +211,11 @@ void DFontPreviewListDataThread::insertFontItemData(const QString &filePath,
     DFontInfoManager *fontInfoMgr = DFontInfoManager::instance();
     DFontPreviewItemData itemData;
     QFileInfo filePathInfo(filePath);
-    itemData.fontInfo = fontInfoMgr->getFontInfo(filePath);
+    if (isStartup) {
+        itemData.fontInfo = fontInfoMgr->getFontInfo(filePath);
+    } else {
+        itemData.fontInfo = fontInfoMgr->getFontInfo(filePath, false);
+    }
 
     if (itemData.fontInfo.styleName.length() > 0) {
         itemData.strFontName =
@@ -230,7 +237,11 @@ void DFontPreviewListDataThread::insertFontItemData(const QString &filePath,
     itemData.fontInfo.isInstalled = true;
 
     m_dbManager->addFontInfo(itemData);
+    Q_EMIT m_view->itemAdded(itemData);
+    addPathWatcher(filePath);
 
+    /* Bug#16821 UT000591  添加字体后需要加入到Qt的字体数据库中，否则无法使用*/
+    QFontDatabase::addApplicationFont(itemData.fontInfo.filePath);
     if (!isStartup) {
         m_diffFontModelList.append(itemData);
     }
@@ -294,6 +305,9 @@ void DFontPreviewListDataThread::refreshFontListData(bool isStartup, const QStri
             }
         }
         m_dbManager->commitAddFontInfo();
+    }
+    if (!installFont.isEmpty()) {
+        Q_EMIT m_view->itemSelected(installFont);
     }
     qDebug() << __FUNCTION__ << " end";
 }

@@ -21,6 +21,10 @@
 #define DFONTINFO_H
 
 #include <QObject>
+#include <QMap>
+
+#include <ft2build.h>
+#include FT_FREETYPE_H
 
 struct DFontInfo {
     QString filePath;
@@ -67,12 +71,13 @@ public:
     QStringList getAllChineseFontPath() const;
     QStringList getAllMonoSpaceFontPath() const;
     QString getFontType(const QString &filePath);
-    QStringList getFamilyStyleName(const QString &filePath);
-    DFontInfo getFontInfo(const QString &filePath);
+    DFontInfo getFontInfo(const QString &filePath, bool force = true);
     bool isFontInstalled(DFontInfo data);
-    bool checkDBFontSameName(const DFontInfo &info);
-    bool isSysFont(QString &path);
-    QStringList getAllFontName() const;
+
+private:
+    QMap<QString, DFontInfo> m_fontInfoMap;
+    FT_Library m_library;
+    FT_Face m_face;
 };
 
 #endif
