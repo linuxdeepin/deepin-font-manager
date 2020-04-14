@@ -134,7 +134,6 @@ void DFontMgrMainWindow::initUI()
     initTileBar();
     initRightKeyMenu();
     initMainVeiws();
-    initFontUninstallDialog();
 }
 
 void DFontMgrMainWindow::initConnections()

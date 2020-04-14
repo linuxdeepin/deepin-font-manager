@@ -554,11 +554,14 @@ void DFontPreviewListView::onListViewItemEnableBtnClicked(const QModelIndexList 
         disableFonts();
     }
 
-    DFontPreviewItemData itemData =
-        qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(itemIndexesNew.last()));
-    QStringList m_needSelect;
-    m_needSelect.append(itemData.fontInfo.filePath);
-    emit itemSelected(m_needSelect);
+    if (itemIndexes.count() == 1) {
+        DFontPreviewItemData itemData =
+            qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(itemIndexesNew.last()));
+        QStringList m_needSelect;
+        m_needSelect.append(itemData.fontInfo.filePath);
+        emit itemSelected(m_needSelect);
+    }
+
 
 
     QString message;
@@ -587,12 +590,13 @@ void DFontPreviewListView::onListViewItemCollectionBtnClicked(const QModelIndexL
 
         m_fontPreviewProxyModel->setData(index, QVariant::fromValue(itemData), Qt::DisplayRole);
     }
-
-    DFontPreviewItemData itemData =
-        qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(itemIndexesNew.last()));
-    QStringList m_needSelect;
-    m_needSelect.append(itemData.fontInfo.filePath);
-    emit itemSelected(m_needSelect);
+    if (index.count() == 1) {
+        DFontPreviewItemData itemData =
+            qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(itemIndexesNew.last()));
+        QStringList m_needSelect;
+        m_needSelect.append(itemData.fontInfo.filePath);
+        emit itemSelected(m_needSelect);
+    }
 
     DFMDBManager::instance()->commitUpdateFontInfo();
 }
