@@ -21,6 +21,7 @@ signals:
     void finishFontInstall(const QStringList &fileList);
     void trigerCollect(bool favorite);
     void sizeChange(int height);
+    void currentFontGroup(int currentFontGroup);
 
 private:
     explicit SignalManager(QObject *parent = nullptr);

@@ -1,6 +1,6 @@
 #include "views/dfontmgrmainwindow.h"
 #include "dfinstallnormalwindow.h"
-#include "dsplitlistwidget.h"
+
 #include "globaldef.h"
 #include "interfaces/dfontmenumanager.h"
 #include "utils.h"
@@ -231,7 +231,7 @@ void DFontMgrMainWindow::initConnections()
     QObject::connect(m_fontManager, SIGNAL(uninstallFontFinished(const QStringList &)), this,
                      SLOT(onFontUninstallFinished(const QStringList &)));
     QObject::connect(m_signalManager, &SignalManager::showInstallFloatingMessage, this, &DFontMgrMainWindow::onShowMessage);
-    connect(this, &DFontMgrMainWindow::requestUpdatePreview, [=] {
+    connect(this, &DFontMgrMainWindow::requestUpdatePreview, [ = ] {
         QString previewText = d->textInputEdit->text();
         onPreviewTextChanged(previewText);
     });
@@ -405,7 +405,13 @@ void DFontMgrMainWindow::initShortcuts()
 
         connect(m_scAddFavFont, &QShortcut::activated, this, [ = ] {
             QModelIndexList itemIndexes = m_fontPreviewListView->selectedIndex(nullptr, nullptr);
-            emit m_fontPreviewListView->onClickCollectionButton(itemIndexes, true);
+            if (filterGroup != DSplitListWidget::FontGroup::CollectFont)
+            {
+                emit m_fontPreviewListView->onClickCollectionButton(itemIndexes, true);
+            } else
+            {
+                emit m_fontPreviewListView->onClickCollectionButton(itemIndexes, true, true);
+            }
         });
     }
 
@@ -418,7 +424,13 @@ void DFontMgrMainWindow::initShortcuts()
 
         connect(m_scCancelFavFont, &QShortcut::activated, this, [this] {
             QModelIndexList itemIndexes = m_fontPreviewListView->selectedIndex(nullptr, nullptr);
-            emit m_fontPreviewListView->onClickCollectionButton(itemIndexes, false);
+            if (filterGroup != DSplitListWidget::FontGroup::CollectFont)
+            {
+                emit m_fontPreviewListView->onClickCollectionButton(itemIndexes, false);
+            } else
+            {
+                emit m_fontPreviewListView->onClickCollectionButton(itemIndexes, false, true);
+            }
 //            DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
 
 //            if (currItemData.isCollected)
@@ -900,7 +912,12 @@ void DFontMgrMainWindow::handleMenuEvent(QAction *action)
             case DFontMenuManager::MenuAction::M_EnableOrDisable: {
                 DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
                 QModelIndexList itemIndexes = m_fontPreviewListView->selectedIndex(nullptr, nullptr);
-                emit m_fontPreviewListView->onClickEnableButton(itemIndexes, !currItemData.isEnabled);
+                if (filterGroup != DSplitListWidget::FontGroup::ActiveFont) {
+                    emit m_fontPreviewListView->onClickEnableButton(itemIndexes, !currItemData.isEnabled);
+                } else {
+                    emit m_fontPreviewListView->onClickEnableButton(itemIndexes, !currItemData.isEnabled, true);
+                }
+
 //                  emit m_fontPreviewListView->onClickEnableButton(currItemData, !currItemData.isEnabled);
             }
             break;
@@ -908,7 +925,12 @@ void DFontMgrMainWindow::handleMenuEvent(QAction *action)
 //                QModelIndex modelIndex = m_fontPreviewListView->currModelIndex();
                 DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
                 QModelIndexList itemIndexes = m_fontPreviewListView->selectedIndex(nullptr, nullptr);
-                emit m_fontPreviewListView->onClickCollectionButton(itemIndexes, !currItemData.isCollected);
+
+                if (filterGroup != DSplitListWidget::FontGroup::CollectFont) {
+                    emit m_fontPreviewListView->onClickCollectionButton(itemIndexes, !currItemData.isCollected);
+                } else {
+                    emit m_fontPreviewListView->onClickCollectionButton(itemIndexes, !currItemData.isCollected, true);
+                }
             }
             break;
             case DFontMenuManager::MenuAction::M_ShowFontPostion:
@@ -1121,7 +1143,8 @@ void DFontMgrMainWindow::onLeftSiderBarItemClicked(int index)
     m_leftIndex = 0;
 
     qDebug() << __FUNCTION__ << index << endl;
-    DSplitListWidget::FontGroup filterGroup = qvariant_cast<DSplitListWidget::FontGroup>(index);
+    filterGroup = qvariant_cast<DSplitListWidget::FontGroup>(index);
+    emit m_signalManager->currentFontGroup(filterGroup);
 
     qDebug() << filterGroup << endl;
 

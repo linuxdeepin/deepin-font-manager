@@ -6,6 +6,7 @@
 #include "views/dfontspinnerwidget.h"
 #include "dfontuninstalldialog.h"
 #include "signalmanager.h"
+#include "dsplitlistwidget.h"
 #include "views/dfdeletedialog.h"
 
 #include <QShortcut>
@@ -138,6 +139,7 @@ protected:
     bool m_isQuickMode = {false};
     DFontManager *m_fontManager;
     SignalManager *m_signalManager = SignalManager::instance();
+    DSplitListWidget::FontGroup filterGroup;
     QShortcut *m_scFullScreen;  //全屏快捷键F11
     QShortcut *m_scZoomIn;        //放大字体快捷键Ctrl+=
     QShortcut *m_scZoomOut;       //放大字体快捷键Ctrl+-

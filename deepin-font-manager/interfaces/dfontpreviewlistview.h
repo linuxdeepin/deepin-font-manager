@@ -18,6 +18,16 @@ DWIDGET_USE_NAMESPACE
 class DFontPreviewListView : public DListView
 {
     Q_OBJECT
+public:
+    enum FontGroup {
+        AllFont,        //所有字体
+        SysFont,        //系统字体
+        UserFont,       //用户字体
+        CollectFont,    //收藏
+        ActiveFont,     //已激活
+        ChineseFont,    //中文
+        EqualWidthFont  //等宽
+    };
 
 public:
     explicit DFontPreviewListView(QWidget *parent = nullptr);
@@ -84,7 +94,7 @@ private:
     QStandardItemModel *m_fontPreviewItemModel {nullptr};
     QList<DFontPreviewItemData> m_fontPreviewItemDataList;
     DFontPreviewItemDelegate *m_fontPreviewItemDelegate {nullptr};
-
+    SignalManager *m_signalManager = SignalManager::instance();
     QMenu *m_rightMenu {nullptr};
 
     QModelIndex m_currModelIndex;
@@ -96,11 +106,13 @@ private:
     QMutex m_mutex;
     QStringList m_enableFontList;
     QStringList m_disableFontList;
+    FontGroup m_currentFontGroup;
+
 
 signals:
     //用于DFontPreviewListView内部使用的信号
-    void onClickEnableButton(const QModelIndexList &index, bool setValue);
-    void onClickCollectionButton(const QModelIndexList &index, bool setValue);
+    void onClickEnableButton(const QModelIndexList &index, bool setValue, bool isFromActiveFont = false);
+    void onClickCollectionButton(const QModelIndexList &index, bool setValue, bool isFromCollectFont = false);
     void onShowContextMenu(const QModelIndex &index);
 
     //右键菜单
@@ -118,14 +130,15 @@ signals:
 
 public slots:
 
-    void onListViewItemEnableBtnClicked(const QModelIndexList &itemIndexes, bool setValue);
-    void onListViewItemCollectionBtnClicked(const QModelIndexList &index, bool setValue);
+    void onListViewItemEnableBtnClicked(const QModelIndexList &itemIndexes, bool setValue, bool isFromActiveFont = false);
+    void onListViewItemCollectionBtnClicked(const QModelIndexList &index, bool setValue, bool isFromCollectFont = false);
     void onListViewShowContextMenu(const QModelIndex &index);
     void onFinishedDataLoad();
     void selectFonts(const QStringList &fileList);
     void onItemAdded(const DFontPreviewItemData &itemData);
     void onItemRemoved(const DFontPreviewItemData &itemData);
     void onItemRemovedFromSys(const DFontPreviewItemData &itemData);
+    void updateCurrentFontGroup(int currentFontGroup);
 };
 
 #endif  // DFONTPREVIEWLISTVIEW_H
