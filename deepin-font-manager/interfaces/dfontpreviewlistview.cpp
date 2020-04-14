@@ -329,10 +329,8 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
     }
 
     QPoint clickPoint = event->pos();
-
     QModelIndex modelIndex = indexAt(clickPoint);
     QRect rect = visualRect(modelIndex);
-
     QRect collectIconRect = getCollectionIconRect(rect);
     int checkBoxSize = 20 + 10;
     QRect checkboxRealRect = QRect(rect.left() + 25, rect.top() + 10 - 5, checkBoxSize, checkBoxSize);
@@ -348,6 +346,7 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
 
     if (collectIconRect.contains(clickPoint)) {
         if (itemData.collectIconStatus != IconPress) {
+
             itemData.collectIconStatus = IconPress;
             m_fontPreviewProxyModel->setData(modelIndex, QVariant::fromValue(itemData), Qt::DisplayRole);
         }
@@ -361,6 +360,7 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
     if (m_bClickCollectionOrEnable) {
         return;
     }
+//    mouseMoveEvent(event);
     DListView::mousePressEvent(event);
 }
 
@@ -402,6 +402,21 @@ void DFontPreviewListView::mouseReleaseEvent(QMouseEvent *event)
 //        emit onClickCollectionButton(modelIndex);
         onListViewItemCollectionBtnClicked(indexList, !itemData.isCollected);
     }
+
+    DFontPreviewItemData m_NextItemData =
+        qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(modelIndex));
+
+    if (collectIconRect.contains(clickPoint)) {
+        if (m_NextItemData.collectIconStatus != IconHover) {
+            m_NextItemData.collectIconStatus = IconHover;
+            m_fontPreviewProxyModel->setData(modelIndex, QVariant::fromValue(m_NextItemData), Qt::DisplayRole);
+        }
+        m_hoverModelIndex = modelIndex;
+    } else if (m_NextItemData.collectIconStatus != IconNormal) {
+        m_NextItemData.collectIconStatus = IconNormal;
+        m_fontPreviewProxyModel->setData(modelIndex, QVariant::fromValue(m_NextItemData), Qt::DisplayRole);
+    }
+
 
     m_bClickCollectionOrEnable = false;
 }
@@ -544,6 +559,7 @@ void DFontPreviewListView::onListViewItemEnableBtnClicked(const QModelIndexList 
     QStringList m_needSelect;
     m_needSelect.append(itemData.fontInfo.filePath);
     emit itemSelected(m_needSelect);
+
 
     QString message;
     if (itemIndexes.size() == 1) {

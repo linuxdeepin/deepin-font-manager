@@ -87,14 +87,15 @@ void DFontPreviewItemDelegate::paintForegroundCollectIcon(QPainter *painter, con
     }
 
     //fix bug-14120 -> clear hover state, if mouse leaved
-    iconStatus = (false == option.state.testFlag(QStyle::State_MouseOver)) ? QString("normal") : iconStatus;
+//    iconStatus = (false == option.state.testFlag(QStyle::State_MouseOver)) ? QString("normal") : iconStatus;
 
+    QString strImageSrc;
     QPixmap pixmap;
     if (itemData.isCollected) {
-        QString strImageSrc = QString(":/images/%1collection_%2.svg").arg(strImgPrefix).arg(iconStatus);
+        strImageSrc = QString(":/images/%1collection_%2.svg").arg(strImgPrefix).arg(iconStatus);
         pixmap = Utils::renderSVG(strImageSrc, QSize(COLLECT_ICON_SIZE, COLLECT_ICON_SIZE));
     } else {
-        QString strImageSrc = QString(":/images/%1uncollection_%2.svg").arg(strImgPrefix).arg(iconStatus);
+        strImageSrc = QString(":/images/%1uncollection_%2.svg").arg(strImgPrefix).arg(iconStatus);
         pixmap = Utils::renderSVG(strImageSrc, QSize(COLLECT_ICON_SIZE, COLLECT_ICON_SIZE));
     }
 
@@ -232,7 +233,7 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
         DFontPreviewItemData itemData = index.data(Qt::DisplayRole).value<DFontPreviewItemData>();
         int fontPixelSize = (index.data(Dtk::UserRole + 2).isNull()) ? itemData.iFontSize : index.data(Dtk::UserRole + 2).toInt();
         QString fontPreviewContent = index.data(Dtk::UserRole + 1).isNull() ? itemData.strFontPreview : index.data(Dtk::UserRole + 1).toString();
-        if ( fontPreviewContent.isEmpty() || 0 == fontPixelSize) {
+        if (fontPreviewContent.isEmpty() || 0 == fontPixelSize) {
             return;
         }
 
