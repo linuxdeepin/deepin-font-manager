@@ -133,9 +133,9 @@ void DFInstallErrorListDelegate::drawFontStyle(QPainter *painter, const QStyleOp
 
     DGuiApplicationHelper::ColorType themeType = DGuiApplicationHelper::instance()->themeType();
     if (themeType == DGuiApplicationHelper::LightType) {
-       penColor = QColor("#FF6D6D");
+        penColor = QColor("#FF6D6D");
     } else {
-       penColor = QColor("#FF4E4E");
+        penColor = QColor("#FF4E4E");
     }
 
 
@@ -162,6 +162,7 @@ void DFInstallErrorListDelegate::drawSelectStatus(QPainter *painter, const QStyl
     if (option.state & QStyle::State_Selected) {
         DPalette pa = DApplicationHelper::instance()->palette(m_parentView);
         DStyleHelper styleHelper;
+        qDebug() << "ASDSAD" << endl;
         QColor fillColor = styleHelper.getColor(static_cast<const QStyleOption *>(&option), pa, DPalette::ItemBackground);
         painter->fillPath(path, QBrush(fillColor));
     }

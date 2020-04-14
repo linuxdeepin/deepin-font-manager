@@ -20,6 +20,7 @@ DFInstallNormalWindow::DFInstallNormalWindow(const QStringList &files, QWidget *
     , m_installFiles(files)
     , m_fontInfoManager(DFontInfoManager::instance())
     , m_fontManager(DFontManager::instance())
+    , m_reInstallFontManager(DFontManager::instance())
     , m_verifyTimer(new QTimer(this))
 
 {
@@ -167,7 +168,7 @@ void DFInstallNormalWindow::initConnections()
 //            emit finishFontInstall(m_outfileList);
 
         }
-
+        qDebug() << "install finish+++++++++++++++++++++++++++++++++++" << endl;
 //        qDebug() << __FUNCTION__ << " installed file list ++++  " << fileList << state;
         emit  m_signalManager->sendInstallMessage(fileList.size());
 
@@ -217,7 +218,7 @@ void DFInstallNormalWindow::initConnections()
             this->close();
         }*/
 //        qDebug() << __FUNCTION__ << " Reinstalled file list ++++ " << fileList << state;
-        qDebug() << "reinstall finish" << endl;
+        qDebug() << "reinstall finish+++++++++++++++++++++++++++++++++++" << endl;
         emit  m_signalManager->sendReInstallMessage(fileList.size());
 
     });
@@ -235,6 +236,22 @@ void DFInstallNormalWindow::initConnections()
         totalInstallFont = totalInstallFont + totalCount;
         checkShowMessage();
     }, Qt::QueuedConnection);
+//    connect(m_fontManager, &QThread::finished, this, [ = ] {
+//        qDebug() << "thread finish" << endl;
+//        if (m_pexceptionDlg != nullptr)
+//            return;
+//        else
+//        {
+//            if (ifNeedShowExceptionWindow()) {
+//                qDebug() << "need reinstall" << endl;
+//                showInstallErrDlg();
+//                return;
+//            } else {
+//                qDebug() << "no need reinstall" << endl;
+//                emit  m_signalManager->sendReInstallMessage(0);
+//            }
+//        }
+//    });
     initVerifyTimer();
 }
 
@@ -441,15 +458,16 @@ void DFInstallNormalWindow::batchInstall()
     m_fontManager->setInstallFileList(installListWithFamliyName);
     m_fontManager->setSystemFontCount(systemFontCount);
     this->systemFontCount = 0;
-
     m_fontManager->start();
 
+    qDebug() << "check if come here" << m_fontManager->currentThreadId() << endl;
+    qDebug() << "current threadid" << QThread::currentThreadId() << endl;
     if (ifNeedShowExceptionWindow()) {
-        qDebug() << "need reinstall" << endl;
+        qDebug() << "need reinstall+++++++++++++++++++++++++++++++" << endl;
         showInstallErrDlg();
         return;
     } else {
-        qDebug() << "no need reinstall" << endl;
+        qDebug() << "no need reinstall+++++++++++++++++++++++++++++++" << endl;
         emit  m_signalManager->sendReInstallMessage(0);
     }
 }
@@ -459,7 +477,7 @@ void DFInstallNormalWindow::batchReInstall()
 {
     QStringList installList;
 
-    qDebug() << "start to reinstall" << endl;
+    qDebug() << "start to reinstall++++++++++++++++++++++++++++++++" << endl;
 
     if (m_installState == InstallState::reinstall) {
         if (m_installedFiles.size() > 0) {
@@ -479,6 +497,7 @@ void DFInstallNormalWindow::batchReInstall()
             DFontPreviewListDataThread *dataThread = DFontPreviewListDataThread::instance();
             if (!filesInstalled.empty()) {
                 dataThread->forceDeleteFiles(filesInstalled);
+                qDebug() << "forceDeleteFiles%%%%%%%%%%%%%%" << endl;
 //                qDebug() << __FUNCTION__ << " remove found installed font : " << filesInstalled;
             }
         }
@@ -494,6 +513,7 @@ void DFInstallNormalWindow::batchReInstall()
 
 //        qDebug() << " Prepare install file: " << it + "|" + familyName;
     }
+
 
     m_fontManager->setType(DFontManager::ReInstall);
     m_fontManager->setInstallFileList(installListWithFamliyName);

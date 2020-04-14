@@ -46,6 +46,7 @@ DFontManager::~DFontManager() {}
 
 void DFontManager::setType(Type type)
 {
+    qDebug() << "+++++++++++++++++++++++++++++" << type << endl;
     m_type = type;
 }
 
@@ -117,6 +118,7 @@ void DFontManager::handleUnInstallOutput()
 
 void DFontManager::run()
 {
+    qDebug() << "+++++++++++++++" << m_type << endl;
     switch (m_type) {
     case Install:
         handleInstall();
@@ -136,7 +138,7 @@ bool DFontManager::doCmd(const QString &program, const QStringList &arguments)
 {
     int failed = false;
     qDebug() << "QProcess start";
-
+    qDebug() << "+++++++++++++++_________________" << m_type << endl;
     switch (m_type) {
     case Install:
         doInstall(arguments);
@@ -159,15 +161,16 @@ bool DFontManager::doCmd(const QString &program, const QStringList &arguments)
 void DFontManager::handleInstall()
 {
     //if (doCmd("pkexec", QStringList() << "dfont-install" << m_instFileList)) {
+    qDebug() << "handleInstall++++++++++++++++++++++++++" << endl;
     if (doCmd("dfont-install", QStringList() << m_instFileList)) {
         if (m_instFileList.count() == 1) {
             // emit installFinished();
         }
-        qDebug() << "install success" << endl;
+        qDebug() << "install success________________++++++++++++++" << endl;
         Q_EMIT installFinished(0, m_installOutList);
     } else {
         // For:unathorized exit
-        qDebug() << "install error" << endl;
+        qDebug() << "install error@@@@@@@@@" << endl;
         Q_EMIT installFinished(127, QStringList());
     }
 }
@@ -185,16 +188,17 @@ void DFontManager::handleUnInstall()
 
 void DFontManager::handleReInstall()
 {
+    qDebug() << "handleReInstall++++++++++++++++++++++++++" << endl;
     if (doCmd("dfont-install", QStringList() << m_instFileList)) {
         if (m_instFileList.count() == 1) {
             // emit installFinished();
         }
-        qDebug() << "reinstall success" << endl;
+        qDebug() << "reinstall success++++++++++++++++++++++++" << endl;
         emit reInstallFinished(0, m_installOutList);
 //        qDebug() << "ASDASDasd" << endl;
     } else {
         // For:unathorized exit
-        qDebug() << "reinstall error" << endl;
+        qDebug() << "reinstall error++++++++++++++++++++++++++++" << endl;
         Q_EMIT reInstallFinished(127, QStringList());
     }
 }

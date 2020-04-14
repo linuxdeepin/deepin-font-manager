@@ -6,6 +6,7 @@
 #include "dfontpreviewlistdatathread.h"
 #include "dfontpreviewproxymodel.h"
 #include "dfmdbmanager.h"
+#include "signalmanager.h"
 
 #include <DListView>
 
