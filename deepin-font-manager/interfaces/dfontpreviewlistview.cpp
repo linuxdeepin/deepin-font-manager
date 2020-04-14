@@ -444,7 +444,7 @@ void DFontPreviewListView::mouseReleaseEvent(QMouseEvent *event)
         //触发收藏/取消收藏
 //        emit onClickCollectionButton(modelIndex);
         if (m_currentFontGroup != FontGroup::CollectFont) {
-            onListViewItemEnableBtnClicked(indexList, !itemData.isEnabled);
+            onListViewItemCollectionBtnClicked(indexList, !itemData.isCollected);
         } else {
             onListViewItemCollectionBtnClicked(indexList, !itemData.isCollected, true);
         }
