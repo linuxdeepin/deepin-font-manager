@@ -160,11 +160,12 @@ void DFInstallErrorListDelegate::drawSelectStatus(QPainter *painter, const QStyl
     path.arcTo(QRect(QPoint(bgRect.bottomRight() - QPoint(radius * 2, radius * 2)), QSize(radius * 2, radius * 2)), 270, 90);
 
     if (option.state & QStyle::State_Selected) {
-        DPalette pa = DApplicationHelper::instance()->palette(m_parentView);
+//        DPalette pa = DApplicationHelper::instance()->palette(m_parentView);//dtk库接口不稳定，更换palette获取方式
+        DPalette pa = DApplicationHelper::instance()->applicationPalette();
         DStyleHelper styleHelper;
-        qDebug() << "ASDSAD" << endl;
         QColor fillColor = styleHelper.getColor(static_cast<const QStyleOption *>(&option), pa, DPalette::ItemBackground);
         painter->fillPath(path, QBrush(fillColor));
+
     }
 }
 

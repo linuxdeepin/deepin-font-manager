@@ -57,10 +57,8 @@ DFInstallErrorDialog::DFInstallErrorDialog(QWidget *parent, QStringList errorIns
     , m_systemFiles(systemFontFileList)
 {
 //    setWindowOpacity(0.3); //Debug
-
     initData();
     initUI();
-
     resetContinueInstallBtnStatus();
 }
 
@@ -115,7 +113,6 @@ void DFInstallErrorDialog::initUI()
     initMainFrame();
     initTitleBar();
     initInstallErrorFontViews();
-
     connect(this, &DFInstallErrorDialog::closed, this, &DFInstallErrorDialog::onCancelInstall);
 }
 
