@@ -212,9 +212,9 @@ void DFontPreviewListDataThread::insertFontItemData(const QString &filePath,
     DFontPreviewItemData itemData;
     QFileInfo filePathInfo(filePath);
     if (isStartup) {
-        itemData.fontInfo = fontInfoMgr->getFontInfo(filePath);
+        itemData.fontInfo = fontInfoMgr->getFontInfo(filePath, true);
     } else {
-        itemData.fontInfo = fontInfoMgr->getFontInfo(filePath, false);
+        itemData.fontInfo = fontInfoMgr->getFontInfo(filePath);
     }
 
     if (itemData.fontInfo.styleName.length() > 0) {

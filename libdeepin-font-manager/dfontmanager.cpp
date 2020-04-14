@@ -247,8 +247,11 @@ void DFontManager::doInstall(const QStringList &fileList, bool reinstall)
             double percent = currentIndex / double(count) * 100;
 
 //            qDebug() << __FUNCTION__ << filePath << ", " << percent;
-            if (!reinstall)
+            if (!reinstall) {
                 Q_EMIT batchInstall(filePath, percent);
+            } else {
+
+            }
 
             // output too fast will crash.
 //            QThread::msleep(10);

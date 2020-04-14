@@ -35,7 +35,9 @@ DFInstallNormalWindow::DFInstallNormalWindow(const QStringList &files, QWidget *
 DFInstallNormalWindow::~DFInstallNormalWindow()
 {
     if (nullptr != m_pexceptionDlg) {
-        delete m_pexceptionDlg;
+        m_pexceptionDlg->close();
+        m_pexceptionDlg->deleteLater();
+        m_pexceptionDlg = nullptr;
     }
 }
 
@@ -284,7 +286,7 @@ void DFInstallNormalWindow::verifyFontFiles()
 
     m_installErrorFontModelList.clear();
     foreach (auto it, m_installFiles) {
-        fontInfo = m_fontInfoManager->getFontInfo(it);
+        fontInfo = m_fontInfoManager->getFontInfo(it, true);
         if (fontInfo.isError) {
             m_damagedFiles.append(it);
 
@@ -555,7 +557,7 @@ void DFInstallNormalWindow::onProgressChanged(const QString &filePath, const dou
         return;
     }
 
-    DFontInfo fontInfo = m_fontInfoManager->getFontInfo(filePath);
+    DFontInfo fontInfo = m_fontInfoManager->getFontInfo(filePath, false);
     m_currentFontLabel->setText(fontInfo.familyName);
     m_progressBar->setValue(static_cast<int>(percent));
     m_progressBar->setTextVisible(false);
@@ -585,7 +587,7 @@ void DFInstallNormalWindow::breakInstalltion()
     //Todo:
     //   Just close the installtion window
     if (m_pexceptionDlg->isVisible()) {
-        m_pexceptionDlg->closed();
+        m_pexceptionDlg->close();
         m_pexceptionDlg->deleteLater();
     }
 

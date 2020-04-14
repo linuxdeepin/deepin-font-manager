@@ -132,7 +132,6 @@ public slots:
 
     void onLoadStatus(int type);
     void onShowMessage(int totalCount);
-    void upDateUninstallDialog(QString &fontName, int index, int totalCount);
 
 protected:
     // For quick install mode

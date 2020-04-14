@@ -194,38 +194,17 @@ void DFontMgrMainWindow::initConnections()
     });
 
     QObject::connect(m_signalManager, &SignalManager::popUninstallDialog, this, [ this ] {
+        initFontUninstallDialog();
+        startToDelete();
         m_fontUninstallDialog->move(this->geometry().center() - m_fontUninstallDialog->rect().center());
-
-        QTimer::singleShot(10, [ = ]()   //执行删除操作
-        {
-            startToDelete();
-        });
-
         m_fontUninstallDialog->exec();
+
+//        QTimer::singleShot(10, [ = ]()   //执行删除操作
+//        {
+//            startToDelete();
+//        });
+
     }, Qt::DirectConnection);
-
-    QObject::connect(m_signalManager, &SignalManager::updateUninstallDialog, this, [ = ](QString & fontName, int index, int totalCount) {
-        m_fontUninstallDialog->setValue(fontName, index, totalCount);
-        m_fontManager->setType(DFontManager::UnInstall);
-        m_fontManager->setUnInstallFile(m_uninstallFilePath);
-        m_fontManager->start();
-    });
-
-    QObject::connect(m_signalManager, &SignalManager::closeUninstallDialog, this, [ = ] {
-        m_fontUninstallDialog->setValue(" ", 0, 0);
-        m_fontUninstallDialog->close();
-        m_needDelCount = 0;
-        if (!m_isDeleting && m_isFromSys)
-        {
-            if (m_waitForInstall.count() > 0) {
-                waitForInsert();
-                m_waitForInstall.clear();
-            }
-            m_isFromSys = false;
-        }
-        m_isDeleting = false;
-
-    });
 
     QObject::connect(m_signalManager, &SignalManager::deledFont, this, [ = ](QString & fontPath) {
         if (m_uninstallFilePath.count() == 0)
@@ -505,6 +484,27 @@ void DFontMgrMainWindow::initFontFiles()
 void DFontMgrMainWindow::initFontUninstallDialog()
 {
     m_fontUninstallDialog = new DFontuninstalldialog;
+
+    QObject::connect(m_signalManager, &SignalManager::updateUninstallDialog, this, [ = ](QString & fontName, int index, int totalCount) {
+        m_fontUninstallDialog->setValue(fontName, index, totalCount);
+    });
+
+    QObject::connect(m_signalManager, &SignalManager::closeUninstallDialog, this, [ = ] {
+        m_fontUninstallDialog->setValue(" ", 0, 0);
+        m_fontUninstallDialog->close();
+        m_fontUninstallDialog->deleteLater();
+        m_needDelCount = 0;
+        if (!m_isDeleting && m_isFromSys)
+        {
+            if (m_waitForInstall.count() > 0) {
+                waitForInsert();
+                m_waitForInstall.clear();
+            }
+            m_isFromSys = false;
+        }
+        m_isDeleting = false;
+
+    });
 }
 
 void DFontMgrMainWindow::initTileBar()
@@ -1271,11 +1271,6 @@ void DFontMgrMainWindow::onShowMessage(int successCount)
         messageA = DApplication::translate("DFontMgrMainWindow", "%1 fonts installed").arg(successCount);
         DMessageManager::instance()->sendMessage(this, QIcon(":/images/ok.svg"), messageA);
     }
-}
-
-void DFontMgrMainWindow::upDateUninstallDialog(QString &fontName, int index, int totalCount)
-{
-    m_fontUninstallDialog->setValue(fontName, index, totalCount);
 }
 
 void DFontMgrMainWindow::delCurrentFont()

@@ -42,7 +42,7 @@ DWIDGET_USE_NAMESPACE
 
 
 static QList<DFontInfo> dataList;
-static DFontInfoManager *INSTANCE = 0;
+static DFontInfoManager *INSTANCE = nullptr;
 
 inline bool isSystemFont(QString filePath)
 {
@@ -231,7 +231,6 @@ DFontInfo DFontInfoManager::getFontInfo(const QString &filePath, bool force)
 
     // get the basic data.
     fontInfo.isError = false;
-    fontInfo.filePath = filePath;
 
 //    int appFontId = QFontDatabase::addApplicationFont(filePath);
 //    QStringList fontFamilyList = QFontDatabase::applicationFontFamilies(appFontId);
@@ -329,10 +328,29 @@ DFontInfo DFontInfoManager::getFontInfo(const QString &filePath, bool force)
         fontInfo.isInstalled = isFontInstalled(fontInfo);
     }
 
-    if (force)
+    if (force) {
+        fontInfo.filePath = getInstFontPath(filePath, fontInfo.familyName);
+        m_fontInfoMap.insert(fontInfo.filePath, fontInfo);
         m_fontInfoMap.insert(filePath, fontInfo);
+//        qDebug() << __FUNCTION__ << " insert " << fontInfo.filePath;
+    }
 
     return fontInfo;
+}
+
+QString DFontInfoManager::getInstFontPath(const QString &originPath, const QString &familyName)
+{
+    const QFileInfo info(originPath);
+    QString dirName = familyName;
+
+    if (dirName.isEmpty()) {
+        dirName = info.baseName();
+    }
+
+    const QString sysDir = QDir::homePath() + "/.local/share/fonts";
+
+    QString target = QString("%1/%2/%3").arg(sysDir).arg(dirName).arg(info.fileName());
+    return target;
 }
 
 bool DFontInfoManager::isFontInstalled(DFontInfo data)
