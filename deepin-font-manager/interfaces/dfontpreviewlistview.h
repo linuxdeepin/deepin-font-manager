@@ -126,7 +126,8 @@ signals:
     void itemAdded(const DFontPreviewItemData &data);
     void itemRemoved(const DFontPreviewItemData &data);
     void itemRemovedFromSys(const DFontPreviewItemData &data);
-    void itemSelected(const QStringList &files);
+    void itemsSelected(const QStringList &files);
+    void itemSelected(const QString &file);
 
 public slots:
 
@@ -135,6 +136,7 @@ public slots:
     void onListViewShowContextMenu(const QModelIndex &index);
     void onFinishedDataLoad();
     void selectFonts(const QStringList &fileList);
+    void selectFont(const QString &file);
     void onItemAdded(const DFontPreviewItemData &itemData);
     void onItemRemoved(const DFontPreviewItemData &itemData);
     void onItemRemovedFromSys(const DFontPreviewItemData &itemData);

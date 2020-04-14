@@ -307,7 +307,7 @@ void DFontPreviewListDataThread::refreshFontListData(bool isStartup, const QStri
         m_dbManager->commitAddFontInfo();
     }
     if (!installFont.isEmpty()) {
-        Q_EMIT m_view->itemSelected(installFont);
+        Q_EMIT m_view->itemsSelected(installFont);
     }
     qDebug() << __FUNCTION__ << " end";
 }
