@@ -55,9 +55,12 @@ protected slots:
     void onContinueInstall(const QStringList &continueInstallFontFileList);
 
     void showInstallErrDlg();
+
+    void onAddFont(const QStringList &fileList);
 signals:
     void batchReinstall(const QStringList &reinstallFiles);
     void finishFontInstall(const QStringList &fileList);
+    void addFont(const QStringList &fileList);
 
 
 private:
@@ -88,7 +91,6 @@ private:
     QList<DFInstallErrorItemModel *> m_installErrorFontModelList;
     DFontInfoManager *m_fontInfoManager;
     DFontManager *m_fontManager;
-    DFontManager *m_reInstallFontManager;
     SignalManager *m_signalManager = SignalManager::instance();
 
     DLabel *m_logoLabel {nullptr};

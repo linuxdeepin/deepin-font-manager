@@ -949,7 +949,8 @@ void DFontMgrMainWindow::installFont(const QStringList &files)
     qDebug() << __FUNCTION__ << files;
 
     if (m_fIsInstalling) {
-        qDebug() << "Already exist a installtion flow";
+        qDebug() << "Already exist a installtion flow";// << m_dfNormalInstalldlg->isVisible();
+//        Q_EMIT m_dfNormalInstalldlg->addFont(files);
         return;
     }
 
@@ -971,7 +972,6 @@ void DFontMgrMainWindow::installFont(const QStringList &files)
 
 //    Dtk::Widget::moveToCenter(m_dfNormalInstalldlg);
     m_dfNormalInstalldlg->exec();
-    m_dfNormalInstalldlg->deleteLater();
 
     //Clear installtion flag when NormalInstalltion window is closed
     m_fIsInstalling = false;
@@ -1505,7 +1505,6 @@ void DFontMgrMainWindow::waitForInsert()
 
     Dtk::Widget::moveToCenter(m_dfNormalInstalldlg);
     m_dfNormalInstalldlg->exec();
-    m_dfNormalInstalldlg->deleteLater();
 
     //Clear installtion flag when NormalInstalltion window is closed
     m_fIsInstalling = false;
