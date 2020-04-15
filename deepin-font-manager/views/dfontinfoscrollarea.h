@@ -55,7 +55,7 @@ private:
     DFontPreviewItemData *m_fontInfo;//字体信息
 
     void paintEvent(QPaintEvent *event) override;
-
+    DLabel *basicLabel = nullptr;
     std::map<QLabel *, QString> pLabelMap;//存储信息label键值对
 };
 

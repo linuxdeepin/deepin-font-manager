@@ -55,7 +55,7 @@ dfontinfoscrollarea::dfontinfoscrollarea(DFontPreviewItemData *pData,  DWidget *
     auto vLayout = new QVBoxLayout;
     vLayout->setContentsMargins(10, 10, 10, 10);
 
-    auto basicLabel = new DLabel(DApplication::translate("FontDetailDailog", "Basic info"));
+    basicLabel = new DLabel(DApplication::translate("FontDetailDailog", "Basic info"));
     DFontSizeManager::instance()->bind(basicLabel, DFontSizeManager::T6);
     vLayout->addWidget(basicLabel);
 
@@ -145,7 +145,7 @@ void dfontinfoscrollarea::paintEvent(QPaintEvent *event)
         }
         m_totalHeight = m_totalHeight + plabeliter.first->height();
     }
-    emit m_signalManager->sizeChange(m_totalHeight);
+    emit m_signalManager->sizeChange(m_totalHeight + 76 + basicLabel->height());
 }
 QString dfontinfoscrollarea::elideText(const QString &text, const QFont &font, int nLabelSize)
 {
