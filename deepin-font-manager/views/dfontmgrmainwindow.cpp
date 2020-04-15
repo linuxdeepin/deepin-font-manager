@@ -971,6 +971,8 @@ void DFontMgrMainWindow::installFont(const QStringList &files)
 
 //    Dtk::Widget::moveToCenter(m_dfNormalInstalldlg);
     m_dfNormalInstalldlg->exec();
+    m_dfNormalInstalldlg->deleteLater();
+
 
     //Clear installtion flag when NormalInstalltion window is closed
     m_fIsInstalling = false;
@@ -1504,6 +1506,8 @@ void DFontMgrMainWindow::waitForInsert()
 
     Dtk::Widget::moveToCenter(m_dfNormalInstalldlg);
     m_dfNormalInstalldlg->exec();
+    m_dfNormalInstalldlg->deleteLater();
+
 
     //Clear installtion flag when NormalInstalltion window is closed
     m_fIsInstalling = false;
