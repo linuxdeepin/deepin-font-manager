@@ -167,7 +167,7 @@ void DFInstallNormalWindow::initConnections()
 
 //            emit finishFontInstall(m_outfileList);
         }
-        qDebug() << "install finish+++++++++++++++++++++++++++++++++++" << endl;
+
 //        qDebug() << __FUNCTION__ << " installed file list ++++  " << fileList << state;
         emit  m_signalManager->sendInstallMessage(fileList.size());
 
@@ -217,20 +217,18 @@ void DFInstallNormalWindow::initConnections()
             this->close();
         }*/
 //        qDebug() << __FUNCTION__ << " Reinstalled file list ++++ " << fileList << state;
-        qDebug() << "reinstall finish+++++++++++++++++++++++++++++++++++" << endl;
+
         emit  m_signalManager->sendReInstallMessage(fileList.size());
 
     });
 
     connect(m_signalManager, &SignalManager::sendInstallMessage, this, [ = ](int totalCount) {
-        qDebug() << "install signal rec++++++++++++++++++=" << endl;
         getInstallMessage = true;
         totalInstallFont = totalInstallFont + totalCount;
         checkShowMessage();
     }, Qt::QueuedConnection);
 
     connect(m_signalManager, &SignalManager::sendReInstallMessage, this, [ = ](int totalCount) {
-        qDebug() << "Reinstall signal rec+++++++++++++++++++" << endl;
         getReInstallMessage = true;
         totalInstallFont = totalInstallFont + totalCount;
         checkShowMessage();
@@ -476,8 +474,6 @@ void DFInstallNormalWindow::batchReInstall()
 {
     QStringList installList;
 
-    qDebug() << "start to reinstall++++++++++++++++++++++++++++++++" << endl;
-
     if (m_installState == InstallState::reinstall) {
         if (m_installedFiles.size() > 0) {
             QStringList filesInstalled;
@@ -496,7 +492,6 @@ void DFInstallNormalWindow::batchReInstall()
             DFontPreviewListDataThread *dataThread = DFontPreviewListDataThread::instance();
             if (!filesInstalled.empty()) {
                 dataThread->forceDeleteFiles(filesInstalled);
-                qDebug() << "forceDeleteFiles%%%%%%%%%%%%%%" << endl;
 //                qDebug() << __FUNCTION__ << " remove found installed font : " << filesInstalled;
             }
         }
