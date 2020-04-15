@@ -124,10 +124,11 @@ QPoint DFontPreviewItemDelegate::adjustPreviewFontBaseLinePoint(const QRect &fon
 //    } else {
 //        baseLineY = fontPreviewRect.bottom() - (fontPreviewRect.height() - previewFontMetrics.height()) / 2;
 //    }
-    /* 调整descent值，用来调整预览效果 UT000591 */
-    int commonFontDescent = 4;
+    /* Bug#20555 调整descent值，用来调整预览效果 UT000591 */
+    int commonFontDescent = fontPreviewRect.height() / 5;
     int baseLineX = fontPreviewRect.x();
     int baseLineY = fontPreviewRect.bottom() - commonFontDescent;
+
     return QPoint(baseLineX, baseLineY);
 }
 
