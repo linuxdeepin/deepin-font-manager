@@ -306,9 +306,8 @@ void DFontPreviewListView::selectFonts(const QStringList &fileList)
     if (cur.isValid())
         scrollTo(cur);
 
-
-
-
+    if (selection.size() == 1)
+        setCurrentIndex(cur);
 
     DFontMgrMainWindow *mw = qobject_cast<DFontMgrMainWindow *>(m_parentWidget);
     if (mw)

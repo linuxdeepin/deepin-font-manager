@@ -46,7 +46,7 @@ DFontManager::~DFontManager() {}
 
 void DFontManager::setType(Type type)
 {
-    qDebug() << "+++++++++++++++++++++++++++++" << type << endl;
+    qDebug() << type << endl;
     m_type = type;
 }
 
@@ -118,7 +118,7 @@ void DFontManager::handleUnInstallOutput()
 
 void DFontManager::run()
 {
-    qDebug() << "+++++++++++++++" << m_type << endl;
+    qDebug() << m_type << endl;
     switch (m_type) {
     case Install:
         handleInstall();
@@ -138,7 +138,7 @@ bool DFontManager::doCmd(const QString &program, const QStringList &arguments)
 {
     int failed = false;
     qDebug() << "QProcess start";
-    qDebug() << "+++++++++++++++_________________" << m_type << endl;
+    qDebug() << m_type << endl;
     switch (m_type) {
     case Install:
         doInstall(arguments);

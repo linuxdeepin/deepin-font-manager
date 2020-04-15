@@ -101,7 +101,7 @@ void DFontInfoManager::refreshList()
     }
 
     for (auto path : getAllFontPath()) {
-        DFontInfo fontInfo = getFontInfo(path);
+        DFontInfo fontInfo = getFontInfo(path, true);
         fontInfo.isSystemFont = isSystemFont(path);
         dataList << fontInfo;
     }
@@ -340,6 +340,9 @@ DFontInfo DFontInfoManager::getFontInfo(const QString &filePath, bool force)
 
 QString DFontInfoManager::getInstFontPath(const QString &originPath, const QString &familyName)
 {
+    if (isSystemFont(originPath) || originPath.contains("/.local/share/fonts"))
+        return originPath;
+
     const QFileInfo info(originPath);
     QString dirName = familyName;
 

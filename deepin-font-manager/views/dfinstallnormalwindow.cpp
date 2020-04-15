@@ -375,7 +375,6 @@ void DFInstallNormalWindow::checkShowMessage()
         m_outfileList.clear();
         totalInstallFont = 0;
         this->close();
-        deleteLater();
     } else if (getInstallMessage == true) {
         if (ifNeedShowExceptionWindow()) {
             qDebug() << "need reinstall+++++++++++++++++++++++++++++++" << endl;
@@ -409,6 +408,7 @@ void DFInstallNormalWindow::closeEvent(QCloseEvent *event)
     } else {
         event->accept();
     }
+    deleteLater();
 }
 void DFInstallNormalWindow::batchInstall()
 {
@@ -525,10 +525,6 @@ void DFInstallNormalWindow::onCancelInstall()
     qDebug() << "cancel reinstall" << endl;
     emit m_signalManager->sendReInstallMessage(0);
 
-
-    m_fontManager->terminate();
-    m_fontManager->wait();
-
     this->accept();
 }
 
@@ -583,7 +579,7 @@ void DFInstallNormalWindow::breakInstalltion()
         m_pexceptionDlg->deleteLater();
     }
 
-    this->closed();
+    this->close();
 }
 void DFInstallNormalWindow::keyPressEvent(QKeyEvent *event)
 {

@@ -1250,7 +1250,7 @@ void DFontMgrMainWindow::onLoadStatus(int type)
             m_fontLoadingSpinner->show();
             break;
         case 1:
-            if (m_leftIndex > 0) {
+            if (m_leftIndex >= 0) {
                 onLeftSiderBarItemClicked(m_leftIndex);
             }
             m_fontLoadingSpinner->hide();
