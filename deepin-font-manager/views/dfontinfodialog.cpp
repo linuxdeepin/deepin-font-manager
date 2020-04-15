@@ -26,6 +26,7 @@ DFontInfoDialog::DFontInfoDialog(DFontPreviewItemData *fontInfo, QWidget *parent
     m_faCenter = parent->geometry().center();
     initUI();
     initConnections();
+    this->move(m_faCenter - this->rect().center());
 }
 
 QString DFontInfoDialog::AutoFeed(QString &text)
@@ -134,7 +135,6 @@ void DFontInfoDialog::initUI()
     m_baseicInfoLayout->addStretch(2);
     m_basicInfoFrame->setLayout(m_baseicInfoLayout);
 
-
     /**************************Basic info panel****END*******************************/
 
     scrollArea = new QScrollArea();
@@ -229,12 +229,9 @@ void DFontInfoDialog::initConnections()
 //        fontinfoArea->setFixedHeight(height);
 //        scrollArea->viewport()->setFixedHeight(height + 20);
 //        m_height = height;
-
-        qDebug() << height << "A+++++++++++++++++++++++++" << endl;
         if (height * 1.3 + 280 < DEFAULT_WINDOW_H) {
             this->setFixedHeight(height * 1.3 + 280);
-            this->move(m_faCenter - this->rect().center());
-
+//            this->move(m_faCenter - this->rect().center());
             QPixmap bmp(QSize(280, height * 1.3));
             bmp.fill();
             QPainter p(&bmp);
@@ -247,8 +244,7 @@ void DFontInfoDialog::initConnections()
             scrollArea->setFixedHeight(height * 1.3);
         } else {
             this->setFixedHeight(DEFAULT_WINDOW_H);
-            this->move(m_faCenter - this->rect().center());
-
+//            this->move(m_faCenter - this->rect().center());
             QPixmap bmp(QSize(280, 375));
             bmp.fill();
             QPainter p(&bmp);
