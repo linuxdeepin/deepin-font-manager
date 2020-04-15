@@ -56,7 +56,6 @@ protected slots:
 
     void showInstallErrDlg();
 
-    void onAddFont(const QStringList &fileList);
 signals:
     void batchReinstall(const QStringList &reinstallFiles);
     void finishFontInstall(const QStringList &fileList);

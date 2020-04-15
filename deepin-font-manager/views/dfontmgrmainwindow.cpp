@@ -949,8 +949,7 @@ void DFontMgrMainWindow::installFont(const QStringList &files)
     qDebug() << __FUNCTION__ << files;
 
     if (m_fIsInstalling) {
-        qDebug() << "Already exist a installtion flow";// << m_dfNormalInstalldlg->isVisible();
-//        Q_EMIT m_dfNormalInstalldlg->addFont(files);
+        qDebug() << "Already exist a installtion flow";
         return;
     }
 

@@ -110,7 +110,6 @@ void DFInstallNormalWindow::initVerifyTimer()
 
 void DFInstallNormalWindow::initConnections()
 {
-    connect(this, &DFInstallNormalWindow::addFont, this, &DFInstallNormalWindow::onAddFont);
     connect(m_verifyTimer.get(), &QTimer::timeout, this, [ = ]() {
         // Install the font list ,which may be changed in exception window
         batchInstall();
@@ -573,11 +572,6 @@ void DFInstallNormalWindow::showInstallErrDlg()
             &DFInstallNormalWindow::onContinueInstall);
 
     m_pexceptionDlg->exec();
-}
-
-void DFInstallNormalWindow::onAddFont(const QStringList &fileList)
-{
-    qDebug() << __FUNCTION__ << fileList;
 }
 
 void DFInstallNormalWindow::setSkipException(bool skip)
