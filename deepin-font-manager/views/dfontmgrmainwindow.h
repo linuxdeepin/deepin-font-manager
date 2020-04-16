@@ -104,7 +104,7 @@ protected:
     DListView *m_noResultListView;
     DListView *m_noInstallListView;
     DFontSpinnerWidget *m_fontLoadingSpinner {nullptr};
-    DFontuninstalldialog *m_fontUninstallDialog {nullptr};
+    DFontuninstalldialog *m_fontUninstallDialog = nullptr;
     DFMDBManager *m_dbManager {nullptr};
     void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
 signals:

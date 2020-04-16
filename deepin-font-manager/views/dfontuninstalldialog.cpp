@@ -75,8 +75,7 @@ void DFontuninstalldialog::initUi()
 //n卸载时忽略esc快捷键
 void DFontuninstalldialog::keyPressEvent(QKeyEvent *event)
 {
-    if(event->key()==Qt::Key_Escape)
-    {
+    if (event->key() == Qt::Key_Escape) {
         return ;
     }
 }

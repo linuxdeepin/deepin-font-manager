@@ -496,28 +496,29 @@ void DFontMgrMainWindow::initFontFiles()
 
 void DFontMgrMainWindow::initFontUninstallDialog()
 {
-    m_fontUninstallDialog = new DFontuninstalldialog;
+    /* Bug#20872 UT000591 */
+    if (nullptr == m_fontUninstallDialog) {
+        m_fontUninstallDialog = new DFontuninstalldialog;
 
-    QObject::connect(m_signalManager, &SignalManager::updateUninstallDialog, this, [ = ](QString & fontName, int index, int totalCount) {
-        m_fontUninstallDialog->setValue(fontName, index, totalCount);
-    });
+        QObject::connect(m_signalManager, &SignalManager::updateUninstallDialog, this, [ = ](QString & fontName, int index, int totalCount) {
+            m_fontUninstallDialog->setValue(fontName, index, totalCount);
+        }, Qt::UniqueConnection);
 
-    QObject::connect(m_signalManager, &SignalManager::closeUninstallDialog, this, [ = ] {
-        m_fontUninstallDialog->setValue(" ", 0, 0);
-        m_fontUninstallDialog->close();
-        m_fontUninstallDialog->deleteLater();
-        m_needDelCount = 0;
-        if (!m_isDeleting && m_isFromSys)
-        {
-            if (m_waitForInstall.count() > 0) {
-                waitForInsert();
-                m_waitForInstall.clear();
+        QObject::connect(m_signalManager, &SignalManager::closeUninstallDialog, this, [ = ] {
+            m_fontUninstallDialog->setValue(" ", 0, 0);
+            m_fontUninstallDialog->close();
+            m_needDelCount = 0;
+            if (!m_isDeleting && m_isFromSys)
+            {
+                if (m_waitForInstall.count() > 0) {
+                    waitForInsert();
+                    m_waitForInstall.clear();
+                }
+                m_isFromSys = false;
             }
-            m_isFromSys = false;
-        }
-        m_isDeleting = false;
-
-    });
+            m_isDeleting = false;
+        }, Qt::UniqueConnection);
+    }
 }
 
 void DFontMgrMainWindow::initTileBar()

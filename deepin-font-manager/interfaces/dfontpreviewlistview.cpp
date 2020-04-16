@@ -439,7 +439,6 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
         m_fontPreviewProxyModel->setData(modelIndex, QVariant::fromValue(itemData), Qt::DisplayRole);
     }
 
-
     if (m_bClickCollectionOrEnable) {
         return;
     }
