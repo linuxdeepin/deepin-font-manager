@@ -943,7 +943,8 @@ void DFontPreviewListView::scrollWithTheSelected()
     QModelIndexList indexes = selectionModel()->selectedIndexes();
     sortModelIndexList(indexes);
     if (this->visibleRegion().contains(m_curRect.topLeft()) || this->visibleRegion().contains(m_curRect.bottomLeft())) {
-        scrollTo(indexes.last(), ScrollHint::PositionAtCenter);
+//        scrollTo(indexes.last(), ScrollHint::PositionAtCenter);
+        scrollTo(indexes.last());
         qDebug() << __FUNCTION__ << "scroll to cur";
     } return;//if selecteditems is not in this visibleRegion return
 }
