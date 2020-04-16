@@ -696,21 +696,7 @@ void DFontMgrMainWindow::initFontPreviewListView(QWidget *parent)
     listViewVBoxLayout->setContentsMargins(0, 0, 0, 0);
     listViewVBoxLayout->setSpacing(0);
 
-    /* 临时方案，等文管那边改好了右键-》打开的方式，可以把这个删除 UT000591*/
-    waitForInstallSpinner = new DSpinner(this);
-    waitForInstallSpinner->setFixedSize(32, 32);
-    waitForInstallSpinner->hide();
-
-    QGridLayout *gLayout = new QGridLayout();
-    gLayout->setMargin(0);
-    gLayout->setContentsMargins(0, 0, 0, 0);
-    gLayout->setSpacing(0);
-
-    gLayout->addLayout(listViewVBoxLayout, 0, 0);
-//    gLayout->addWidget(waitForInstallSpinner, 0, 0, Qt::AlignCenter);
-    waitForInstallSpinner->move((this->width() - waitForInstallSpinner->width()) / 2 + (waitForInstallSpinner->width() * 2.5), (this->height() - waitForInstallSpinner->height()) / 2);
-
-    parent->setLayout(gLayout);
+    parent->setLayout(listViewVBoxLayout);
 
     m_fontPreviewListView = new DFontPreviewListView(this);
     m_fontPreviewListView->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
@@ -1415,8 +1401,6 @@ void DFontMgrMainWindow::resizeEvent(QResizeEvent *event)
         m_winHight = geometry().height();
         m_winWidth = geometry().width();
     }
-    waitForInstallSpinner->move((this->width() - waitForInstallSpinner->width()) / 2
-                                + (waitForInstallSpinner->width() * 2.5), (this->height() - waitForInstallSpinner->height()) / 2);
 }
 
 void DFontMgrMainWindow::showAllShortcut()

@@ -182,9 +182,6 @@ protected:
     QScopedPointer<DFontMgrMainWindowPrivate> d_ptr;
 
     Q_DECLARE_PRIVATE_D(qGetPtrHelper(d_ptr), DFontMgrMainWindow)
-
-public:
-    DSpinner *waitForInstallSpinner = nullptr;
 };
 
 #endif  // DFONTMGRMAINWINDOW_H

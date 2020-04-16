@@ -33,14 +33,11 @@ private slots:
     void slotBatchInstallFonts();
 
 private:
-    void initWaitForInstallTimer();
-
     QStringList m_selectedFiles;
 
     QScopedPointer<DMainWindow> m_qspMainWnd;  // MainWindow ptr
     QScopedPointer<DMainWindow> m_qspQuickWnd;  // QuickInstall Window ptr
 
-    QTimer          *waitForNextFontTimer = nullptr;
     QSet<QString>   waitForInstallSet;   /* 可能存在多次安装相同的一个字体，将会接收到多次消息，QSet可以用来剔除重复的安装请求 UT000591 */
 };
 
