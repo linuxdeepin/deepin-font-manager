@@ -1096,6 +1096,7 @@ void DFontMgrMainWindow::onPreviewTextChanged(const QString &currStr)
 
 void DFontMgrMainWindow::onFontSizeChanged(int fontSize)
 {
+    Q_EMIT m_signalManager->refreshCurRect();
     if (!m_fontPreviewListView->isListDataLoadFinished()) {
         return;
     }
@@ -1108,6 +1109,7 @@ void DFontMgrMainWindow::onFontSizeChanged(int fontSize)
         filterModel->setData(modelIndex, QVariant(fontSize), Dtk::UserRole + 2);
         filterModel->setEditStatus(m_searchTextStatusIsEmpty);
     }
+    Q_EMIT m_signalManager->prevFontChanged();
 }
 
 void DFontMgrMainWindow::showFontFilePostion()

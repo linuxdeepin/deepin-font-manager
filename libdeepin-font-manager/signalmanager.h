@@ -22,7 +22,8 @@ signals:
     void trigerCollect(bool favorite);
     void sizeChange(int height);
     void currentFontGroup(int currentFontGroup);
-
+    void prevFontChanged();
+    void refreshCurRect();
 private:
     explicit SignalManager(QObject *parent = nullptr);
 

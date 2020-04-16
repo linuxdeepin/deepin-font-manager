@@ -87,6 +87,8 @@ private:
 
     void sortModelIndexList(QModelIndexList &sourceList);
 
+    void scrollWithTheSelected();
+    void refreshRect();
     bool m_bLoadDataFinish = false;
     bool m_bLeftMouse = true;
     bool m_bClickCollectionOrEnable = false;
@@ -108,6 +110,7 @@ private:
     QStringList m_disableFontList;
     FontGroup m_currentFontGroup;
 
+    QRect m_curRect;
 
 signals:
     //用于DFontPreviewListView内部使用的信号

@@ -29,6 +29,8 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
     connect(this, &DFontPreviewListView::itemAdded, this, &DFontPreviewListView::onItemAdded);
     connect(this, &DFontPreviewListView::itemRemoved, this, &DFontPreviewListView::onItemRemoved);
     connect(this, &DFontPreviewListView::itemRemovedFromSys, this, &DFontPreviewListView::onItemRemovedFromSys);
+    connect(m_signalManager, &SignalManager::prevFontChanged, this, &DFontPreviewListView::scrollWithTheSelected);
+    connect(m_signalManager, &SignalManager::refreshCurRect, this, &DFontPreviewListView::refreshRect);
     m_dataThread = DFontPreviewListDataThread::instance(this);
     QWidget *topSpaceWidget = new QWidget;
     topSpaceWidget->setFixedSize(this->width(), 10);
@@ -933,4 +935,23 @@ QModelIndexList DFontPreviewListView::selectedIndex(int *deleteCnt, int *systemC
         *deleteCnt = deleteNum;
 
     return list;
+}
+
+//字体变化设置选中行居中UT000539
+void DFontPreviewListView::scrollWithTheSelected()
+{
+    QModelIndexList indexes = selectionModel()->selectedIndexes();
+    sortModelIndexList(indexes);
+    if (this->visibleRegion().contains(m_curRect.topLeft()) || this->visibleRegion().contains(m_curRect.bottomLeft())) {
+        scrollTo(indexes.last(), ScrollHint::PositionAtCenter);
+        qDebug() << __FUNCTION__ << "scroll to cur";
+    } return;//if selecteditems is not in this visibleRegion return
+}
+
+//记录下当前选中的位置,用于局中显示UT000539
+void DFontPreviewListView::refreshRect()
+{
+    QModelIndexList indexes = selectionModel()->selectedIndexes();
+    sortModelIndexList(indexes);
+    m_curRect = visualRect(indexes.last());
 }
