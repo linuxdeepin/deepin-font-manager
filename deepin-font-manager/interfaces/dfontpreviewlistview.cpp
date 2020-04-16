@@ -418,7 +418,7 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
     int checkBoxSize = 20 + 10;
     QRect checkboxRealRect = QRect(rect.left() + 25, rect.top() + 10 - 5, checkBoxSize, checkBoxSize);
 
-    if (collectIconRect.contains(clickPoint) || checkboxRealRect.contains(clickPoint)) {
+    if (m_bLeftMouse && (collectIconRect.contains(clickPoint) || checkboxRealRect.contains(clickPoint))) {
         m_bClickCollectionOrEnable = true;
     } else {
         m_bClickCollectionOrEnable = false;
