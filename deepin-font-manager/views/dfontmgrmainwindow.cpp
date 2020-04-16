@@ -633,6 +633,7 @@ void DFontMgrMainWindow::initLeftSideBar()
     // leftSiderBar->setAttribute(Qt::WA_TranslucentBackground, true);
     d->leftSiderBar->setFrameShape(DFrame::NoFrame);
     d->leftSiderBar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    leftMainLayout->addSpacing(10);
     leftMainLayout->addWidget(d->leftSiderBar);
     d->leftBarHolder->setLayout(leftMainLayout);
 
@@ -1467,7 +1468,7 @@ void DFontMgrMainWindow::showInstalledFiles(const QStringList &fileList)
 {
     D_D(DFontMgrMainWindow);
 
-    d->leftSiderBar->setCurrentIndex(d->leftSiderBar->model()->index(DSplitListWidget::UserFont + 1, 0));
+    d->leftSiderBar->setCurrentIndex(d->leftSiderBar->model()->index(DSplitListWidget::UserFont, 0));
     onLeftSiderBarItemClicked(DSplitListWidget::UserFont);
 }
 

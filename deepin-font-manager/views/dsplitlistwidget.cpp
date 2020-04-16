@@ -113,9 +113,7 @@ QSize DNoFocusDelegate::sizeHint(const QStyleOptionViewItem &option,
     Q_UNUSED(index)
 
     int rowIndex = index.row();
-    if (0 == rowIndex) {
-        return QSize(option.rect.width(), 10);
-    } else if (FTM_SPLIT_LINE_INDEX == rowIndex) {
+    if (FTM_SPLIT_LINE_INDEX == rowIndex) {
         return QSize(option.rect.width(), 24);
     } else {
         return QSize(option.rect.width(), 36);
@@ -152,12 +150,9 @@ void DSplitListWidget::initListData()
     m_categoryItemModell = new QStandardItemModel;
 
     int iTitleIndex = 0;
-    for (int i = 0; i < m_titleStringList.size() + 2; i++) {
+    for (int i = 0; i < m_titleStringList.size() + 1; i++) {
         QStandardItem *item = new QStandardItem;
-        if (0 == i) {
-            item->setFlags(item->flags() & ~Qt::ItemIsSelectable & ~Qt::ItemIsEnabled);
-            item->setData(QVariant::fromValue(QString(FTM_SPLIT_TOP_SPACE_TAG)), Qt::DisplayRole);
-        } else if (FTM_SPLIT_LINE_INDEX == i) {
+        if (FTM_SPLIT_LINE_INDEX == i) {
             item->setFlags(item->flags() & ~Qt::ItemIsSelectable & ~Qt::ItemIsEnabled);
             item->setData(QVariant::fromValue(QString(FTM_SPLIT_TOP_SPLIT_TAG)), Qt::DisplayRole);
         } else {
@@ -170,13 +165,13 @@ void DSplitListWidget::initListData()
     this->setModel(m_categoryItemModell);
 
     //设置默认选中
-    QModelIndex index = m_categoryItemModell->index(1, 0);
+    QModelIndex index = m_categoryItemModell->index(AllFont, 0);
     selectionModel()->select(index, QItemSelectionModel::Select);
 }
 
 void DSplitListWidget::currentChanged(const QModelIndex &current, const QModelIndex &previous)
 {
-    if (current.row() <= 0 || FTM_SPLIT_LINE_INDEX == current.row()) {
+    if (current.row() < 0 || FTM_SPLIT_LINE_INDEX == current.row()) {
         return;
     }
 

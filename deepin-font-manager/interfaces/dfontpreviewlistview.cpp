@@ -952,6 +952,8 @@ void DFontPreviewListView::scrollWithTheSelected()
 void DFontPreviewListView::refreshRect()
 {
     QModelIndexList indexes = selectionModel()->selectedIndexes();
+    if (indexes.isEmpty())
+        return;
     sortModelIndexList(indexes);
     m_curRect = visualRect(indexes.last());
 }
