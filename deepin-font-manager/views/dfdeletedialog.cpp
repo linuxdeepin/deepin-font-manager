@@ -80,6 +80,7 @@ void DFDeleteDialog::initConnections()
         if (m_deleting)
             return;
         m_deleting = true;
+        accept();
         close();
         emit SignalManager::instance()->popUninstallDialog();//弹出删除进度框
     });

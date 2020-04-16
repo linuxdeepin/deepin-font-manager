@@ -193,10 +193,12 @@ void DFontMgrMainWindow::initConnections()
     });
 
     QObject::connect(m_signalManager, &SignalManager::popUninstallDialog, this, [ this ] {
+        qDebug() << "pop uninstall progress dialog";
         initFontUninstallDialog();
         startToDelete();
         m_fontUninstallDialog->move(this->geometry().center() - m_fontUninstallDialog->rect().center());
         m_fontUninstallDialog->exec();
+        m_fontUninstallDialog->deleteLater();
 
 //        QTimer::singleShot(10, [ = ]()   //执行删除操作
 //        {
@@ -1298,14 +1300,18 @@ void DFontMgrMainWindow::onShowMessage(int successCount)
 
 void DFontMgrMainWindow::delCurrentFont()
 {
+    qDebug() << __FUNCTION__ << m_fIsDeleting;
     if (m_fIsDeleting)
         return;
+    m_fIsDeleting = true;
     int deleteCnt = 0;
     int systemCnt = 0;
     QStringList uninstallFilePath = m_fontPreviewListView->selectedFonts(&deleteCnt, &systemCnt);
-    if (deleteCnt < 1)
+    if (deleteCnt < 1) {
+        m_fIsDeleting = false;
         return;
-    m_fIsDeleting = true;
+    }
+
     m_isDeleting = true;
     DFDeleteDialog *confirmDelDlg = new DFDeleteDialog(this, deleteCnt, systemCnt, this);
 
@@ -1317,6 +1323,7 @@ void DFontMgrMainWindow::delCurrentFont()
 //    confirmDelDlg->move((this->width() - confirmDelDlg->width() - 230 + mapToGlobal(QPoint(0, 0)).x()), (mapToGlobal(QPoint(0, 0)).y() + 180));
     confirmDelDlg->move(this->geometry().center() - confirmDelDlg->rect().center());
     confirmDelDlg->exec();
+    confirmDelDlg->deleteLater();
 }
 
 void DFontMgrMainWindow::exportFont()
