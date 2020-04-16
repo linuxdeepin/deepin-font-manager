@@ -140,7 +140,7 @@ void DFInstallNormalWindow::initConnections()
 
         if (0 == state) {
             m_installFiles.clear();
-            m_installState = InstallState::reinstall;
+            m_installState = InstallState::Install;
 
             // Update the installtion file list showed in exception dialog
             foreach (auto it, m_installedFiles) {
@@ -375,7 +375,8 @@ void DFInstallNormalWindow::checkShowMessage()
         m_outfileList.clear();
         totalInstallFont = 0;
         this->close();
-    } else if (getInstallMessage == true) {
+    }
+    if (getInstallMessage == true) {
         if (ifNeedShowExceptionWindow()) {
             qDebug() << "need reinstall+++++++++++++++++++++++++++++++" << endl;
             showInstallErrDlg();
