@@ -15,6 +15,8 @@
 
 DWIDGET_USE_NAMESPACE
 
+const QString ONLYPROGRESS = "onlyprogress";
+
 DFInstallNormalWindow::DFInstallNormalWindow(const QStringList &files, QWidget *parent)
     : DFontBaseDialog(parent)
     , m_installFiles(files)
@@ -224,6 +226,11 @@ void DFInstallNormalWindow::initConnections()
         totalInstallFont = totalInstallFont + totalCount;
         checkShowMessage();
     }, Qt::QueuedConnection);
+
+    connect(m_signalManager, &SignalManager::requestInstallAdded, this, [ = ]() {
+        m_installAdded = true;
+        checkShowMessage();
+    }, Qt::QueuedConnection);
 //    connect(m_fontManager, &QThread::finished, this, [ = ] {
 //        qDebug() << "thread finish" << endl;
 //        if (m_pexceptionDlg != nullptr)
@@ -359,14 +366,25 @@ void DFInstallNormalWindow::checkShowMessage()
     qDebug() << "Install over" << endl;
     if (getInstallMessage == true && getReInstallMessage == true) {
         qDebug() << "ReInstall over" << endl;
+        if (!m_installFinishSent) {
+            emit m_signalManager->finishFontInstall(m_outfileList);
+            m_installFinishSent = true;
+        }
+    }
+
+    if (getInstallMessage == true && getReInstallMessage == true && m_installAdded) {
+        qDebug() << "install refresh over";
+        onProgressChanged(ONLYPROGRESS, 100);
         getInstallMessage = false;
         getReInstallMessage = false;
+        m_installFinishSent = false;
+        m_installAdded = false;
         emit m_signalManager->showInstallFloatingMessage(totalInstallFont);
-        emit m_signalManager->finishFontInstall(m_outfileList);
         m_outfileList.clear();
         totalInstallFont = 0;
         this->close();
     }
+
     if (getInstallMessage == true) {
         if (ifNeedShowExceptionWindow()) {
             qDebug() << "need reinstall+++++++++++++++++++++++++++++++" << endl;
@@ -536,8 +554,10 @@ void DFInstallNormalWindow::onProgressChanged(const QString &filePath, const dou
         return;
     }
 
-    DFontInfo fontInfo = m_fontInfoManager->getFontInfo(filePath, false);
-    m_currentFontLabel->setText(fontInfo.familyName);
+    if (filePath != ONLYPROGRESS) {
+        DFontInfo fontInfo = m_fontInfoManager->getFontInfo(filePath, false);
+        m_currentFontLabel->setText(fontInfo.familyName);
+    }
     m_progressBar->setValue(static_cast<int>(percent));
     m_progressBar->setTextVisible(false);
 

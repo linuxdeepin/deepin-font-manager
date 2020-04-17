@@ -24,6 +24,8 @@ signals:
     void currentFontGroup(int currentFontGroup);
     void prevFontChanged();
     void refreshCurRect();
+    void requestInstallAdded();
+
 private:
     explicit SignalManager(QObject *parent = nullptr);
 
