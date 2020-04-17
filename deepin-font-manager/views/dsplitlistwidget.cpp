@@ -12,7 +12,7 @@
 
 #define FTM_SPLIT_TOP_SPACE_TAG "_space_"
 #define FTM_SPLIT_TOP_SPLIT_TAG "_split_"
-#define FTM_SPLIT_LINE_INDEX    6
+#define FTM_SPLIT_LINE_INDEX    5
 
 DNoFocusDelegate::DNoFocusDelegate(QAbstractItemView *parent)
     : DStyledItemDelegate(parent)
