@@ -11,6 +11,7 @@
 
 class DFontMgrMainWindow;
 
+
 DWIDGET_USE_NAMESPACE
 
 class DFDeleteDialog : public DFontBaseDialog
@@ -47,6 +48,7 @@ private:
     DLabel *m_fontLogo;
     DLabel *messageTitle;
     DLabel *messageDetail;
+    DScrollArea *messageDetailScrollArea;
     DPushButton *m_cancelBtn;
     DWarningButton *m_confirmBtn;
     int m_deleteCnt;

@@ -3,17 +3,18 @@
 #include "globaldef.h"
 #include "dfontmgrmainwindow.h"
 
+#include <QHBoxLayout>
+#include <QVBoxLayout>
+#include <QDebug>
+#include <QScrollBar>
+
 #include <DGuiApplicationHelper>
 #include <DApplication>
 #include <DApplicationHelper>
 #include <DFrame>
 #include <DFontSizeManager>
 #include <DTipLabel>
-
-#include <QHBoxLayout>
-#include <QVBoxLayout>
-#include <QDebug>
-
+#include <DScrollArea>
 
 DFDeleteDialog::DFDeleteDialog(DFontMgrMainWindow *win, int deleteCnt, int systemCnt, QWidget *parent)
     : DFontBaseDialog(parent)
@@ -28,8 +29,7 @@ DFDeleteDialog::DFDeleteDialog(DFontMgrMainWindow *win, int deleteCnt, int syste
 
 void DFDeleteDialog::initUI()
 {
-    int dialogHeight = (m_systemCnt <= 0) ? DEFAULT_WINDOW_H : DEFAULT_WINDOW_H + 40;
-    resize(DEFAULT_WINDOW_W, dialogHeight);
+    setFixedWidth(DEFAULT_WINDOW_W);
 
     initMessageTitle();
     initMessageDetail();
@@ -82,6 +82,9 @@ void DFDeleteDialog::initMessageTitle()
         messageTitle->setText(DApplication::translate("DeleteConfirmDailog", "Are you sure you want to delete %1 fonts").arg(m_deleteCnt));
     }
     messageTitle->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    messageTitle->setWordWrap(true);
+    messageTitle->setAlignment(Qt::AlignCenter);
+
     DFontSizeManager::instance()->bind(messageTitle, DFontSizeManager::T6, QFont::Medium);
 
     DPalette pa = DApplicationHelper::instance()->palette(messageTitle);
@@ -109,9 +112,9 @@ void DFDeleteDialog::initMessageDetail()
             messageDetail->setText(DApplication::translate("DeleteConfirmDailog", "These fonts will not be available to applications, and the other %1 system fonts cannot be deleted").arg(m_systemCnt));
         }
     }
-    /* bug#19096 UT000591 */
-    messageDetail->setFixedWidth(DEFAULT_WINDOW_W - 22);
-    messageDetail->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+    messageDetail->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    messageDetail->setWordWrap(true);
+    messageDetail->setAlignment(Qt::AlignCenter);
 
     DFontSizeManager::instance()->bind(messageDetail, DFontSizeManager::T6, QFont::Normal);
     DPalette pa = DApplicationHelper::instance()->palette(messageDetail);
@@ -119,8 +122,6 @@ void DFDeleteDialog::initMessageDetail()
     color.setAlphaF(0.7);
     pa.setColor(DPalette::WindowText, color);
     DApplicationHelper::instance()->setPalette(messageDetail, pa);
-    messageDetail->setWordWrap(true);
-    messageDetail->setAlignment(Qt::AlignCenter);
 }
 
 QLayout *DFDeleteDialog::initBottomButtons()
@@ -158,6 +159,8 @@ QLayout *DFDeleteDialog::initBottomButtons()
 void DFDeleteDialog::onFontChanged(const QFont &font)
 {
     Q_UNUSED(font);
+    /* Bug#20953 #21069  UT000591 */
+    resize(sizeHint());
 }
 
 void DFDeleteDialog::keyPressEvent(QKeyEvent *event)
@@ -173,6 +176,10 @@ void DFDeleteDialog::setTheme()
     if (DApplicationHelper::DarkType == DApplicationHelper::instance()->themeType()) {
         DPalette pa = DApplicationHelper::instance()->palette(this);
         pa.setColor(DPalette::Background, QColor(25, 25, 25, 80));
+        DApplicationHelper::instance()->setPalette(this, pa);
+    } else {
+        DPalette pa = DApplicationHelper::instance()->palette(this);
+        pa.setColor(DPalette::Background, QColor(247, 247, 247, 80));
         DApplicationHelper::instance()->setPalette(this, pa);
     }
 }
