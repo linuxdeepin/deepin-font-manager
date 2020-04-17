@@ -194,19 +194,11 @@ void DFontMgrMainWindow::initConnections()
     });
 
     QObject::connect(m_signalManager, &SignalManager::popUninstallDialog, this, [ this ] {
-        static bool isUninstalling = false;
-        qDebug() << "pop uninstall progress dialog " << isUninstalling;
-        if (isUninstalling)
-            return ;
-
-        isUninstalling = true;
+        qDebug() << "pop uninstall progress dialog ";
         DFontuninstalldialog *dialog = new DFontuninstalldialog(this);
         dialog->move(this->geometry().center() - dialog->rect().center());
         dialog->exec();
-
-        isUninstalling = false;
-
-    });
+    }, Qt::UniqueConnection);
 
     QObject::connect(m_signalManager, &SignalManager::deledFont, this, [ = ](QString & fontPath) {
         if (m_uninstallFilePath.count() == 0)

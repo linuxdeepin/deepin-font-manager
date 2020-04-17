@@ -51,6 +51,7 @@ private:
     DScrollArea *messageDetailScrollArea;
     DPushButton *m_cancelBtn;
     DWarningButton *m_confirmBtn;
+    DFontMgrMainWindow *m_mainWindow;
     int m_deleteCnt;
     int m_systemCnt;
     int m_old_width {0};

@@ -1,6 +1,7 @@
 #include "dfontuninstalldialog.h"
 #include "signalmanager.h"
 #include "dfontmgrmainwindow.h"
+#include <QApplication>
 
 #include <QDebug>
 
@@ -10,27 +11,15 @@ DFontuninstalldialog::DFontuninstalldialog(DFontMgrMainWindow *win, QWidget *par
 {
     initUi();
 
-    connect(SignalManager::instance(), &SignalManager::updateUninstallDialog, this, [ = ](QString & fontName, int index, int totalCount) {
-        setValue(fontName, index, totalCount);
-//        qDebug() << "DFontBaseDialog updateUninstallDialog";
-    }, Qt::UniqueConnection);
-
-    connect(SignalManager::instance(), &SignalManager::closeUninstallDialog, this, [ = ] {
-        qDebug() << "DFontBaseDialog closeUninstallDialog";
-        setValue(" ", 0, 0);
-        close();
-    }, Qt::UniqueConnection);
-
-    connect(this, &DFontuninstalldialog::closed, this, [ = ]() {
-        if (m_mainWindow != nullptr)
-            m_mainWindow->setDeleteFinish();
-    });
-
     setMainwindow(win);
 }
 
 DFontuninstalldialog::~DFontuninstalldialog()
 {
+    if (qApp->activeWindow() == this) {
+        qApp->setActiveWindow(m_mainWindow);
+        hide();
+    }
 }
 
 void DFontuninstalldialog::setValue(const QString &fontName, int index, int totalCount)
@@ -42,6 +31,26 @@ void DFontuninstalldialog::setValue(const QString &fontName, int index, int tota
 
 void DFontuninstalldialog::setMainwindow(DFontMgrMainWindow *win)
 {
+    connect(SignalManager::instance(), &SignalManager::updateUninstallDialog, this, [ = ](QString & fontName, int index, int totalCount) {
+        setValue(fontName, index, totalCount);
+    }, Qt::UniqueConnection);
+
+    connect(SignalManager::instance(), &SignalManager::closeUninstallDialog, this, [ = ] {
+        qDebug() << "DFontuninstalldialog closeUninstallDialog" << isVisible();
+        setValue(" ", 0, 0);
+        if (isVisible())
+        {
+            accept();
+            close();
+        }
+    }, Qt::UniqueConnection);
+
+    connect(this, &DFontuninstalldialog::closed, this, [ = ]() {
+        qDebug() << "DFontuninstalldialog closed ";
+        if (m_mainWindow != nullptr)
+            m_mainWindow->setDeleteFinish();
+    });
+
     if (m_mainWindow != win && win != nullptr) {
         m_mainWindow = win;
         //start to delete
