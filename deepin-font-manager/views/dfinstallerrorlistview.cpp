@@ -77,10 +77,13 @@ void DFInstallErrorListDelegate::drawFontName(QPainter *painter, const QStyleOpt
     painter->setFont(nameFont);
 
     QFontMetrics fontMetric(nameFont);
-    QString elidedFontFileNameText = fontMetric.elidedText(strFontFileName,
-                                                           Qt::ElideRight,
-                                                           fontFileNameRect.width(),
-                                                           Qt::TextShowMnemonic);
+//    QString elidedFontFileNameText = fontMetric.elidedText(strFontFileName,
+//                                                           Qt::ElideRight,
+//                                                           fontFileNameRect.width(),
+//                                                           Qt::TextShowMnemonic);
+
+    //Automatically truncates and adds ellipsis based on the font width /*UT000539*/
+    QString elidedFontFileNameText = fontMetric.elidedText(strFontFileName, Qt::ElideRight, 235);
 
     if (option.state & QStyle::State_Selected) {
         QColor penColor = option.palette.color(DPalette::Text);
