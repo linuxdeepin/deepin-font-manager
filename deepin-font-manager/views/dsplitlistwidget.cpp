@@ -84,8 +84,14 @@ void DNoFocusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
             }
 
             //绘制标题
-            /* bug#20266 UT000591 */
-            QRect fontNameRect = QRect(backgroundRect.left() + 10, backgroundRect.top() + 7, backgroundRect.width() - 20, backgroundRect.height() - 7 - 9);
+            /* bug#20266 UT000591 */ /*bug 21075 ut000442*/
+            QRect fontNameRect;
+            if (strTitle == "System") {
+                fontNameRect = QRect(backgroundRect.left() + 10, backgroundRect.top() + 1, backgroundRect.width() - 20, backgroundRect.height() - 7);
+            } else {
+                fontNameRect = QRect(backgroundRect.left() + 10, backgroundRect.top() + 2, backgroundRect.width() - 20, backgroundRect.height() - 7);
+            }
+
 
             QFont nameFont = painter->font();
             nameFont.setWeight(QFont::Medium);
