@@ -167,7 +167,7 @@
     </message>
     <message>
         <source>This font will not be available to applications, and the other %1 system fonts cannot be deleted</source>
-        <translation type="unfinished"/>
+        <translation>Aquesta lletra no estarà disponible a les aplicacions i les altres %1 lletres del sistema no es poden eliminar.</translation>
     </message>
 </context>
 <context>
@@ -201,7 +201,11 @@
     </message>
     <message>
         <source>No need to install system fonts again</source>
-        <translation>No cal tornar a instal·lar les lletres del sistema.</translation>
+        <translation type="vanished">No cal tornar a instal·lar les lletres del sistema.</translation>
+    </message>
+    <message>
+        <source>No fonts to be installed</source>
+        <translation>Cap font per instal·lar</translation>
     </message>
 </context>
 <context>

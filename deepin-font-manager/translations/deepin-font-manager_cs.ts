@@ -19,26 +19,26 @@
     </message>
     <message>
         <source>Active</source>
-        <translation>Činný</translation>
+        <translation>Aktivní</translation>
     </message>
     <message>
         <source>Chinese</source>
-        <translation>Čínština</translation>
+        <translation>čínština</translation>
     </message>
     <message>
         <source>Monospaced</source>
-        <translation>Strojové</translation>
+        <translation>Všechny znaky stejně široké</translation>
     </message>
 </context>
 <context>
     <name>DFDeleteDialog</name>
     <message>
         <source>The other %2 system fonts cannot be deleted</source>
-        <translation type="unfinished"/>
+        <translation type="vanished">Dalších %2 systémových písem nemůže být smazáno</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Zrušit</translation>
+        <translation>Storno</translation>
     </message>
     <message>
         <source>Confirm</source>
@@ -49,7 +49,7 @@
     <name>DFInstallErrorDialog</name>
     <message>
         <source>Broken file</source>
-        <translation type="unfinished"/>
+        <translation>Poškozený soubor</translation>
     </message>
     <message>
         <source>Same version installed</source>
@@ -120,11 +120,11 @@
     </message>
     <message>
         <source>The other one system font has already been installed</source>
-        <translation type="unfinished"/>
+        <translation type="vanished">Další systémové písmo už bylo nainstalováno</translation>
     </message>
     <message>
         <source>The other %2 system fonts have already been installed</source>
-        <translation type="unfinished"/>
+        <translation type="vanished">Další %2 systémová písma už byla nainstalována</translation>
     </message>
     <message>
         <source>%1 fonts installed</source>
@@ -135,19 +135,19 @@
     <name>DeleteConfirmDailog</name>
     <message>
         <source>Are you sure you want to delete this font?</source>
-        <translation>Opravdu chcete smazat toto písmo?</translation>
+        <translation>Opravdu chcete toto písmo smazat?</translation>
     </message>
     <message>
         <source>This font will not be available to applications</source>
-        <translation>Toto písmo nebude dostupné programům</translation>
+        <translation>Toto písmo nebude dostupné aplikacím</translation>
     </message>
     <message>
         <source>These fonts will not be available to applications</source>
-        <translation>Toto písmo nebude dostupné programům</translation>
+        <translation>Tato písma nebude dostupná aplikacím</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="vanished">Zrušit</translation>
+        <translation type="vanished">Storno</translation>
     </message>
     <message>
         <source>Confirm</source>
@@ -159,22 +159,22 @@
     </message>
     <message>
         <source>Are you sure you want to delete %1 fonts</source>
-        <translation type="unfinished"/>
+        <translation>Opravdu chcete smazat %1 písem</translation>
     </message>
     <message>
         <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
-        <translation type="unfinished"/>
+        <translation>Tato písma nebudou k dispozici aplikacím a dalších %1 systémových písem není možné smazat</translation>
     </message>
     <message>
         <source>This font will not be available to applications, and the other %1 system fonts cannot be deleted</source>
-        <translation type="unfinished"/>
+        <translation>Toto písmo nebude k dispozici aplikacím a další %1 systémových písem není možné smazat</translation>
     </message>
 </context>
 <context>
     <name>Dfuninstalldialog</name>
     <message>
         <source>Deleting fonts, please wait...</source>
-        <translation type="unfinished"/>
+        <translation>Mazání písem – čekejte prosím…</translation>
     </message>
 </context>
 <context>
@@ -193,7 +193,7 @@
     </message>
     <message>
         <source>Exit</source>
-        <translation>Opustit</translation>
+        <translation>Ukončit</translation>
     </message>
     <message>
         <source>Continue</source>
@@ -201,6 +201,10 @@
     </message>
     <message>
         <source>No need to install system fonts again</source>
+        <translation type="vanished">Není třeba instalovat systémová písma znovu</translation>
+    </message>
+    <message>
+        <source>No fonts to be installed</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -208,7 +212,7 @@
     <name>Font</name>
     <message>
         <source>Don&apos;t let your dreams be dreams</source>
-        <translation>Don&apos;t let your dreams be dreams</translation>
+        <translation>Nedovolte svým snům zůstat pouze sny</translation>
     </message>
 </context>
 <context>
@@ -239,38 +243,38 @@
     </message>
     <message>
         <source>Full name</source>
-        <translation type="unfinished"/>
+        <translation>Úplný název</translation>
     </message>
     <message>
         <source>Ps name</source>
-        <translation type="unfinished"/>
+        <translation>PostScript název</translation>
     </message>
     <message>
         <source>Trademark</source>
-        <translation type="unfinished"/>
+        <translation>Registrovaná obchodní značka</translation>
     </message>
 </context>
 <context>
     <name>Main</name>
     <message>
         <source>Font Manager</source>
-        <translation>Správce písem</translation>
+        <translation>Správa písem</translation>
     </message>
     <message>
         <source>Font Manager helps users install and manage fonts.</source>
-        <translation>Správce písem uživatelům pomáhá nainstalovat a spravovat písma.</translation>
+        <translation>Správa písem pomáhá uživatelům instalovat a spravovat písma.</translation>
     </message>
     <message>
         <source>Loading fonts, please wait...</source>
-        <translation>Nahrávají se písma. Počkejte, prosím...</translation>
+        <translation>Načítání písem – čekejte prosím…</translation>
     </message>
     <message>
         <source>The font exported to your desktop</source>
-        <translation type="unfinished"/>
+        <translation>Písmo exportováno na vaši plochu</translation>
     </message>
     <message>
         <source>%1 fonts exported to your desktop</source>
-        <translation type="unfinished"/>
+        <translation>%1 písem exportováno na vaši plochu</translation>
     </message>
 </context>
 <context>
@@ -309,7 +313,7 @@
     </message>
     <message>
         <source>Export</source>
-        <translation>Vyvést</translation>
+        <translation>Exportovat</translation>
     </message>
 </context>
 <context>
@@ -320,18 +324,18 @@
     </message>
     <message>
         <source>The fonts have been deactivated</source>
-        <translation type="unfinished"/>
+        <translation>Písma byla deaktivována</translation>
     </message>
 </context>
 <context>
     <name>NormalInstallWindow</name>
     <message>
         <source>Install Font</source>
-        <translation>Instalovat písmo</translation>
+        <translation>Nainstalovat písmo</translation>
     </message>
     <message>
         <source>Verifying...</source>
-        <translation>Ověřuje se...</translation>
+        <translation>Ověřování…</translation>
     </message>
 </context>
 <context>
@@ -354,7 +358,7 @@
     </message>
     <message>
         <source>Install Font</source>
-        <translation>Instalovat písmo</translation>
+        <translation>Nainstalovat písmo</translation>
     </message>
 </context>
 <context>
@@ -427,7 +431,7 @@
     </message>
     <message>
         <source>Page down</source>
-        <translation type="vanished">O stranu dolů</translation>
+        <translation type="vanished">O stránku dolů</translation>
     </message>
     <message>
         <source>Delete</source>
@@ -447,7 +451,7 @@
     </message>
     <message>
         <source>Font info</source>
-        <translation type="vanished">Údaje o písmu</translation>
+        <translation type="vanished">Informace o písmu</translation>
     </message>
 </context>
 <context>

@@ -167,7 +167,7 @@
     </message>
     <message>
         <source>This font will not be available to applications, and the other %1 system fonts cannot be deleted</source>
-        <translation type="unfinished"/>
+        <translation>Tämä fontti ei ole käytettävissä sovelluksissa, eikä muita %1 järjestelmäfontteja voi poistaa</translation>
     </message>
 </context>
 <context>
@@ -201,7 +201,11 @@
     </message>
     <message>
         <source>No need to install system fonts again</source>
-        <translation>Järjestelmän fontteja ei tarvitse asentaa uudelleen</translation>
+        <translation type="vanished">Järjestelmän fontteja ei tarvitse asentaa uudelleen</translation>
+    </message>
+    <message>
+        <source>No fonts to be installed</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -254,11 +258,11 @@
     <name>Main</name>
     <message>
         <source>Font Manager</source>
-        <translation>Fonttien hallinta</translation>
+        <translation>Kirjasinhallinta</translation>
     </message>
     <message>
         <source>Font Manager helps users install and manage fonts.</source>
-        <translation>Fonttien hallinta auttaa käyttäjiä asentamaan ja hallitsemaan fontteja.</translation>
+        <translation>Kirjasinhallinta auttaa käyttäjiä asentamaan ja hallitsemaan fontteja.</translation>
     </message>
     <message>
         <source>Loading fonts, please wait...</source>
@@ -266,7 +270,7 @@
     </message>
     <message>
         <source>The font exported to your desktop</source>
-        <translation>Fontti on viety työpöydällesi</translation>
+        <translation>Tämä fontti on viety työpöydällesi</translation>
     </message>
     <message>
         <source>%1 fonts exported to your desktop</source>
@@ -320,7 +324,7 @@
     </message>
     <message>
         <source>The fonts have been deactivated</source>
-        <translation>Fonttit on poistettu käytöstä</translation>
+        <translation>Nämä fonttit on poistettu käytöstä</translation>
     </message>
 </context>
 <context>
@@ -408,7 +412,7 @@
     </message>
     <message>
         <source>Font info</source>
-        <translation>Fonttitiedot</translation>
+        <translation>Fontin tiedot</translation>
     </message>
 </context>
 <context>
@@ -447,7 +451,7 @@
     </message>
     <message>
         <source>Font info</source>
-        <translation type="vanished">Fonttitiedot</translation>
+        <translation type="vanished">Fontin tiedot</translation>
     </message>
 </context>
 <context>

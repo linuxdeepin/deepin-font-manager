@@ -167,7 +167,7 @@
     </message>
     <message>
         <source>This font will not be available to applications, and the other %1 system fonts cannot be deleted</source>
-        <translation type="unfinished"/>
+        <translation>이 글꼴은 응용프로그램에서 사용할 수 없으며 다른 %1 시스템 글꼴은 삭제할 수 없습니다.</translation>
     </message>
 </context>
 <context>
@@ -201,7 +201,11 @@
     </message>
     <message>
         <source>No need to install system fonts again</source>
-        <translation>시스템 글꼴을 다시 설치할 필요가 없습니다</translation>
+        <translation type="vanished">시스템 글꼴을 다시 설치할 필요가 없습니다</translation>
+    </message>
+    <message>
+        <source>No fonts to be installed</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

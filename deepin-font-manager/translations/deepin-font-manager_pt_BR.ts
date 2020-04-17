@@ -167,7 +167,7 @@
     </message>
     <message>
         <source>This font will not be available to applications, and the other %1 system fonts cannot be deleted</source>
-        <translation type="unfinished"/>
+        <translation>Este tipo de letra não estará disponível para as aplicações e as outras %1 fontes do sistema não podem ser excluídas.</translation>
     </message>
 </context>
 <context>
@@ -201,7 +201,11 @@
     </message>
     <message>
         <source>No need to install system fonts again</source>
-        <translation>Não há necessidade de instalar as fontes do sistema novamente</translation>
+        <translation type="vanished">Não há necessidade de instalar as fontes do sistema novamente</translation>
+    </message>
+    <message>
+        <source>No fonts to be installed</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

@@ -201,7 +201,11 @@
     </message>
     <message>
         <source>No need to install system fonts again</source>
-        <translation>Non occorre installare nuovamente i font di sistema</translation>
+        <translation type="vanished">Non occorre installare nuovamente i font di sistema</translation>
+    </message>
+    <message>
+        <source>No fonts to be installed</source>
+        <translation>Non ci sono font da installare</translation>
     </message>
 </context>
 <context>

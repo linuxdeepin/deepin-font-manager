@@ -49,15 +49,15 @@
     <name>DFInstallErrorDialog</name>
     <message>
         <source>Broken file</source>
-        <translation type="unfinished"/>
+        <translation>ملف معطوب</translation>
     </message>
     <message>
         <source>Same version installed</source>
-        <translation type="unfinished"/>
+        <translation>نفس الخط مثبت مسبقاً</translation>
     </message>
     <message>
         <source>System Font</source>
-        <translation type="unfinished"/>
+        <translation>خط النظام</translation>
     </message>
 </context>
 <context>
@@ -116,19 +116,19 @@
     </message>
     <message>
         <source>%1 font installed</source>
-        <translation type="unfinished"/>
+        <translation>%1 خط مثبت</translation>
     </message>
     <message>
         <source>The other one system font has already been installed</source>
-        <translation type="unfinished"/>
+        <translation type="vanished">تم تثبيت خط النظام الآخر بالفعل</translation>
     </message>
     <message>
         <source>The other %2 system fonts have already been installed</source>
-        <translation type="unfinished"/>
+        <translation type="vanished">تم تثبيت خط النظام 2% بالفعل</translation>
     </message>
     <message>
         <source>%1 fonts installed</source>
-        <translation type="unfinished"/>
+        <translation>%1 خط مثبت</translation>
     </message>
 </context>
 <context>
@@ -167,14 +167,14 @@
     </message>
     <message>
         <source>This font will not be available to applications, and the other %1 system fonts cannot be deleted</source>
-        <translation type="unfinished"/>
+        <translation>هذه الخطوط لن تكون متاحة للبرامج، وخطوط النظام %1 الاخرى لا يمكن حذفها</translation>
     </message>
 </context>
 <context>
     <name>Dfuninstalldialog</name>
     <message>
         <source>Deleting fonts, please wait...</source>
-        <translation type="unfinished"/>
+        <translation>يتم حذف الخطوط، الرجاء الانتظار... </translation>
     </message>
 </context>
 <context>
@@ -201,6 +201,10 @@
     </message>
     <message>
         <source>No need to install system fonts again</source>
+        <translation type="vanished">لا حاجه لتثبيت خطوط النظام مره اخرى</translation>
+    </message>
+    <message>
+        <source>No fonts to be installed</source>
         <translation type="unfinished"/>
     </message>
 </context>

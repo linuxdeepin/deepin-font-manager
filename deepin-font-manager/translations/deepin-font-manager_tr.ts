@@ -167,7 +167,7 @@
     </message>
     <message>
         <source>This font will not be available to applications, and the other %1 system fonts cannot be deleted</source>
-        <translation type="unfinished"/>
+        <translation>Bu yazı tipi uygulamalar tarafından kullanılamaz ve diğer %1 sistem yazı tipleri silinemez</translation>
     </message>
 </context>
 <context>
@@ -201,7 +201,11 @@
     </message>
     <message>
         <source>No need to install system fonts again</source>
-        <translation>Sistem yazı tiplerini tekrar yüklemenize gerek yok</translation>
+        <translation type="vanished">Sistem yazı tiplerini tekrar yüklemenize gerek yok</translation>
+    </message>
+    <message>
+        <source>No fonts to be installed</source>
+        <translation>Kurulacak yazı tipi yok</translation>
     </message>
 </context>
 <context>

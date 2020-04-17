@@ -167,7 +167,7 @@
     </message>
     <message>
         <source>This font will not be available to applications, and the other %1 system fonts cannot be deleted</source>
-        <translation type="unfinished"/>
+        <translation>Цей шрифти буде недоступним для програм, інші %1 загальносистемних шрифтів не може бути вилучено</translation>
     </message>
 </context>
 <context>
@@ -201,7 +201,11 @@
     </message>
     <message>
         <source>No need to install system fonts again</source>
-        <translation>Немає потреби у повторному встановленні загальносистемного шрифту</translation>
+        <translation type="vanished">Немає потреби у повторному встановленні загальносистемного шрифту</translation>
+    </message>
+    <message>
+        <source>No fonts to be installed</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

@@ -167,14 +167,14 @@
     </message>
     <message>
         <source>This font will not be available to applications, and the other %1 system fonts cannot be deleted</source>
-        <translation type="unfinished"/>
+        <translation>Fon ini tidak akan tersedia untuk aplikasi, dan %1 fon sistem yang lain tidak dapat dipadamkan</translation>
     </message>
 </context>
 <context>
     <name>Dfuninstalldialog</name>
     <message>
         <source>Deleting fonts, please wait...</source>
-        <translation type="unfinished"/>
+        <translation>Memadam fon, tunggu sebentar...</translation>
     </message>
 </context>
 <context>
@@ -201,7 +201,11 @@
     </message>
     <message>
         <source>No need to install system fonts again</source>
-        <translation>Tiada perlu memasang fon sistem lagi</translation>
+        <translation type="vanished">Tiada perlu memasang fon sistem lagi</translation>
+    </message>
+    <message>
+        <source>No fonts to be installed</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

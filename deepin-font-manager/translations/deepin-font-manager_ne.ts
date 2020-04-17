@@ -201,7 +201,11 @@
     </message>
     <message>
         <source>No need to install system fonts again</source>
-        <translation>फेरि प्रणाली फन्ट स्थापना गर्न आवश्यक छैन</translation>
+        <translation type="vanished">फेरि प्रणाली फन्ट स्थापना गर्न आवश्यक छैन</translation>
+    </message>
+    <message>
+        <source>No fonts to be installed</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

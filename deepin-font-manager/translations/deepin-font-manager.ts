@@ -203,7 +203,11 @@
     </message>
     <message>
         <source>No need to install system fonts again</source>
-        <translation>No need to install system fonts again</translation>
+        <translation type="vanished">No need to install system fonts again</translation>
+    </message>
+    <message>
+        <source>No fonts to be installed</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

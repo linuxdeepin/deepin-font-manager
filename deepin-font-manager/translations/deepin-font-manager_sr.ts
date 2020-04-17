@@ -167,7 +167,7 @@
     </message>
     <message>
         <source>This font will not be available to applications, and the other %1 system fonts cannot be deleted</source>
-        <translation type="unfinished"/>
+        <translation>Овиј фонт неће бити доступан програмима, а осталих %1 системских фонтова се не могу уклонити</translation>
     </message>
 </context>
 <context>
@@ -201,7 +201,11 @@
     </message>
     <message>
         <source>No need to install system fonts again</source>
-        <translation>Није потребно поново инсталирати системске фонтове</translation>
+        <translation type="vanished">Није потребно поново инсталирати системске фонтове</translation>
+    </message>
+    <message>
+        <source>No fonts to be installed</source>
+        <translation>Нема фонтова за инсталацију</translation>
     </message>
 </context>
 <context>

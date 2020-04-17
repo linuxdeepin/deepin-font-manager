@@ -49,15 +49,15 @@
     <name>DFInstallErrorDialog</name>
     <message>
         <source>Broken file</source>
-        <translation type="unfinished"/>
+        <translation>Fichier cassé</translation>
     </message>
     <message>
         <source>Same version installed</source>
-        <translation type="unfinished"/>
+        <translation>Même version installée</translation>
     </message>
     <message>
         <source>System Font</source>
-        <translation type="unfinished"/>
+        <translation>Police du système</translation>
     </message>
 </context>
 <context>
@@ -116,19 +116,19 @@
     </message>
     <message>
         <source>%1 font installed</source>
-        <translation type="unfinished"/>
+        <translation>%1 police installée</translation>
     </message>
     <message>
         <source>The other one system font has already been installed</source>
-        <translation type="unfinished"/>
+        <translation type="vanished">L&apos;autre police système a déjà été installée</translation>
     </message>
     <message>
         <source>The other %2 system fonts have already been installed</source>
-        <translation type="unfinished"/>
+        <translation type="vanished">Les autres polices système %2 ont déjà été installées</translation>
     </message>
     <message>
         <source>%1 fonts installed</source>
-        <translation type="unfinished"/>
+        <translation>%1 polices installées</translation>
     </message>
 </context>
 <context>
@@ -167,14 +167,14 @@
     </message>
     <message>
         <source>This font will not be available to applications, and the other %1 system fonts cannot be deleted</source>
-        <translation type="unfinished"/>
+        <translation>Cette police ne sera pas disponible pour les applications et les autres polices du système %1 ne peuvent pas être supprimées</translation>
     </message>
 </context>
 <context>
     <name>Dfuninstalldialog</name>
     <message>
         <source>Deleting fonts, please wait...</source>
-        <translation type="unfinished"/>
+        <translation>Suppression des polices, veuillez patienter...</translation>
     </message>
 </context>
 <context>
@@ -201,7 +201,11 @@
     </message>
     <message>
         <source>No need to install system fonts again</source>
-        <translation>Pas besoin d´installer les polices du système à nouveau</translation>
+        <translation type="vanished">Pas besoin d´installer les polices du système à nouveau</translation>
+    </message>
+    <message>
+        <source>No fonts to be installed</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

@@ -279,6 +279,10 @@ void DFInstallErrorDialog::resetContinueInstallBtnStatus()
     //所有字体都未勾选时，禁止点击"继续安装"
     if (0 == getErrorFontCheckedCount()) {
 //        m_continueInstallBtn->setEnabled(false);
+        if (m_errorInstallFiles.count() > 0) {
+            m_continueInstallBtn->setToolTip(DApplication::translate("ExceptionWindow", "No fonts to be installed"));
+        }
+
         m_continueInstallBtn->setDisabled(true);
 //        m_continueInstallBtn->setDisabled(true);
 //        m_continueInstallBtn->setAttribute(Qt::WA_TransparentForMouseEvents, false);
@@ -286,10 +290,8 @@ void DFInstallErrorDialog::resetContinueInstallBtnStatus()
         m_continueInstallBtn->setEnabled(true);
 //        m_continueInstallBtn->setAttribute(Qt::WA_TransparentForMouseEvents, false);
     }
-    int a = getErrorFontCheckedCount();
-    if (a == m_SystemFontCount) {
-        m_continueInstallBtn->setToolTip(DApplication::translate("ExceptionWindow", "No need to install system fonts again"));
-    }
+
+
 }
 
 void DFInstallErrorDialog::keyPressEvent(QKeyEvent *event)

@@ -201,7 +201,11 @@
     </message>
     <message>
         <source>No need to install system fonts again</source>
-        <translation>系统字体无需安装</translation>
+        <translation type="vanished">系统字体无需安装</translation>
+    </message>
+    <message>
+        <source>No fonts to be installed</source>
+        <translation>无可用安装字体</translation>
     </message>
 </context>
 <context>
