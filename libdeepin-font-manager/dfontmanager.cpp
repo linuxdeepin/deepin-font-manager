@@ -292,7 +292,7 @@ void DFontManager::doUninstall(const QStringList &fileList)
         }
 
 #ifdef QT_DEBUG
-        qDebug() << "Delete font ok:" << fileDir.path() << " " << openFile.completeSuffix();
+//        qDebug() << "Delete font ok:" << fileDir.path() << " " << openFile.completeSuffix();
 #endif
     }
 

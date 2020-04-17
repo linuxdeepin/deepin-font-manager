@@ -151,11 +151,11 @@ void DFontPreviewListDataThread::removePathWatcher(const QString &path)
 
 void DFontPreviewListDataThread::onFileDeleted(const QStringList &files)
 {
-    qDebug() << __FUNCTION__ << files << m_mutex;
+    qDebug() << __FUNCTION__ << files.size() << m_mutex;
     if (m_mutex != nullptr)
         QMutexLocker locker(m_mutex);
     m_view->deleteCurFonts(files);
-    qDebug() << __FUNCTION__ << files << " end ";
+//    qDebug() << __FUNCTION__ << files.size() << " end ";
 }
 
 void DFontPreviewListDataThread::onFileAdded(const QStringList &files)

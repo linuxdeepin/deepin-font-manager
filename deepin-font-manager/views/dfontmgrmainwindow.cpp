@@ -93,6 +93,7 @@ DFontMgrMainWindow::DFontMgrMainWindow(bool isQuickMode, QWidget *parent)
     initConnections();
     initShortcuts();
     initFontFiles();
+    initFontUninstallDialog();
 }
 
 DFontMgrMainWindow::~DFontMgrMainWindow()
@@ -193,19 +194,19 @@ void DFontMgrMainWindow::initConnections()
     });
 
     QObject::connect(m_signalManager, &SignalManager::popUninstallDialog, this, [ this ] {
-        qDebug() << "pop uninstall progress dialog";
-        initFontUninstallDialog();
-        startToDelete();
-        m_fontUninstallDialog->move(this->geometry().center() - m_fontUninstallDialog->rect().center());
-        m_fontUninstallDialog->exec();
-        m_fontUninstallDialog->deleteLater();
+        static bool isUninstalling = false;
+        qDebug() << "pop uninstall progress dialog " << isUninstalling;
+        if (isUninstalling)
+            return ;
 
-//        QTimer::singleShot(10, [ = ]()   //执行删除操作
-//        {
-//            startToDelete();
-//        });
+        isUninstalling = true;
+        DFontuninstalldialog *dialog = new DFontuninstalldialog(this);
+        dialog->move(this->geometry().center() - dialog->rect().center());
+        dialog->exec();
 
-    }, Qt::DirectConnection);
+        isUninstalling = false;
+
+    });
 
     QObject::connect(m_signalManager, &SignalManager::deledFont, this, [ = ](QString & fontPath) {
         if (m_uninstallFilePath.count() == 0)
@@ -496,29 +497,18 @@ void DFontMgrMainWindow::initFontFiles()
 
 void DFontMgrMainWindow::initFontUninstallDialog()
 {
-    /* Bug#20872 UT000591 */
-    if (nullptr == m_fontUninstallDialog) {
-        m_fontUninstallDialog = new DFontuninstalldialog;
-
-        QObject::connect(m_signalManager, &SignalManager::updateUninstallDialog, this, [ = ](QString & fontName, int index, int totalCount) {
-            m_fontUninstallDialog->setValue(fontName, index, totalCount);
-        }, Qt::UniqueConnection);
-
-        QObject::connect(m_signalManager, &SignalManager::closeUninstallDialog, this, [ = ] {
-            m_fontUninstallDialog->setValue(" ", 0, 0);
-            m_fontUninstallDialog->close();
-            m_needDelCount = 0;
-            if (!m_isDeleting && m_isFromSys)
-            {
-                if (m_waitForInstall.count() > 0) {
-                    waitForInsert();
-                    m_waitForInstall.clear();
-                }
-                m_isFromSys = false;
+    QObject::connect(m_signalManager, &SignalManager::closeUninstallDialog, this, [ = ] {
+        m_needDelCount = 0;
+        if (!m_isDeleting && m_isFromSys)
+        {
+            if (m_waitForInstall.count() > 0) {
+                waitForInsert();
+                m_waitForInstall.clear();
             }
-            m_isDeleting = false;
-        }, Qt::UniqueConnection);
-    }
+            m_isFromSys = false;
+        }
+        m_isDeleting = false;
+    }, Qt::UniqueConnection);
 }
 
 void DFontMgrMainWindow::initTileBar()
@@ -961,8 +951,6 @@ void DFontMgrMainWindow::installFont(const QStringList &files)
 
 //    Dtk::Widget::moveToCenter(m_dfNormalInstalldlg);
     m_dfNormalInstalldlg->exec();
-    m_dfNormalInstalldlg->deleteLater();
-
 
     //Clear installtion flag when NormalInstalltion window is closed
     m_fIsInstalling = false;
@@ -1313,7 +1301,6 @@ void DFontMgrMainWindow::delCurrentFont()
 //    confirmDelDlg->move((this->width() - confirmDelDlg->width() - 230 + mapToGlobal(QPoint(0, 0)).x()), (mapToGlobal(QPoint(0, 0)).y() + 180));
     confirmDelDlg->move(this->geometry().center() - confirmDelDlg->rect().center());
     confirmDelDlg->exec();
-    confirmDelDlg->deleteLater();
 }
 
 void DFontMgrMainWindow::exportFont()
@@ -1362,7 +1349,7 @@ void DFontMgrMainWindow::dragEnterEvent(QDragEnterEvent *event)
             return;
         }
     }
-
+    qDebug() << __FUNCTION__ << "ignore";
     event->ignore();
 }
 
@@ -1501,8 +1488,6 @@ void DFontMgrMainWindow::waitForInsert()
 
     Dtk::Widget::moveToCenter(m_dfNormalInstalldlg);
     m_dfNormalInstalldlg->exec();
-    m_dfNormalInstalldlg->deleteLater();
-
 
     //Clear installtion flag when NormalInstalltion window is closed
     m_fIsInstalling = false;
@@ -1513,7 +1498,7 @@ void DFontMgrMainWindow::startToDelete()
 {
     m_uninstallFilePath.clear();
     m_uninstallFilePath = m_fontPreviewListView->selectedFonts(nullptr, nullptr);
-    qDebug() << m_uninstallFilePath << endl;
+//    qDebug() << m_uninstallFilePath << endl;
     m_needDelCount = m_uninstallFilePath.count();
     DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
     qDebug() << "Confirm delete:" << currItemData.fontInfo.filePath

@@ -262,7 +262,7 @@ void DFontPreviewListView::deleteFontModelIndex(const QString &filePath, bool is
         DFontPreviewItemData itemData = varModel.value<DFontPreviewItemData>();
 
         if (itemData.fontInfo.filePath == filePath) {
-            qDebug() << __FUNCTION__ << filePath << " font remove row " << i << QThread::currentThreadId();
+//            qDebug() << __FUNCTION__ << filePath << " font remove row " << i << QThread::currentThreadId();
             m_fontPreviewProxyModel->sourceModel()->removeRow(i, modelIndex.parent());
             emit SignalManager::instance()->deledFont(itemData.fontInfo.filePath);
             //            emit SignalManager::instance()->updateUninstallDialog(itemData.fontInfo.psname, deledCount, delTotalCount);
@@ -544,10 +544,10 @@ void DFontPreviewListView::setModel(QAbstractItemModel *model)
 
 void DFontPreviewListView::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end)
 {
-    qDebug() << __FUNCTION__ << currentIndex() << "begin" << start << " to " << end;
+//    qDebug() << __FUNCTION__ << currentIndex() << "begin" << start << " to " << end;
     selectionModel()->setCurrentIndex(parent, QItemSelectionModel::NoUpdate);
     DListView::rowsAboutToBeRemoved(parent, start, end);
-    qDebug() << __FUNCTION__ << currentIndex() << "end";
+//    qDebug() << __FUNCTION__ << currentIndex() << "end";
 }
 
 void DFontPreviewListView::enableFont(const QString &filePath)
@@ -808,7 +808,7 @@ void DFontPreviewListView::updateChangedDir(const QString &path)
     }
     DFMDBManager::instance()->commitDeleteFontInfo();
     enableFonts();
-    qDebug() << __FUNCTION__ << path << " end ";
+//    qDebug() << __FUNCTION__ << path << " end ";
 }
 
 void DFontPreviewListView::deleteFontFiles(const QStringList &files, bool force)
@@ -907,7 +907,7 @@ QStringList DFontPreviewListView::selectedFonts(int *deleteCnt, int *systemCnt)
     if (deleteCnt)
         *deleteCnt = deleteNum;
 
-    qDebug() << __FUNCTION__ << ret;
+    qDebug() << __FUNCTION__ << ret.size();
     return ret;
 }
 

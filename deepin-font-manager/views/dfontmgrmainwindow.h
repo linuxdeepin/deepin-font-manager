@@ -31,7 +31,6 @@ class DFontMgrMainWindow : public DMainWindow
 {
     Q_OBJECT
 
-    void startToDelete();
 public:
     explicit DFontMgrMainWindow(bool isQuickMode = false, QWidget *parent = nullptr);
     ~DFontMgrMainWindow() override;
@@ -64,6 +63,7 @@ public:
     {
         m_fileList = list;
     }
+    void startToDelete();
 
     //Main window Size
     int m_winHight;

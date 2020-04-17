@@ -10,6 +10,7 @@ DWIDGET_USE_NAMESPACE
 DFontBaseDialog::DFontBaseDialog(QWidget *parent)
     : DAbstractDialog(parent)
 {
+    setAttribute(Qt::WA_DeleteOnClose);
     initUI();
     InitConnections();
 }

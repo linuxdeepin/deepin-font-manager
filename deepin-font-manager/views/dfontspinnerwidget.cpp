@@ -35,10 +35,6 @@ void DFontSpinnerWidget::initUI()
 
 DFontSpinnerWidget::~DFontSpinnerWidget()
 {
-    delete m_spinner;
-    delete m_label;
-    m_spinner = nullptr;
-    m_label = nullptr;
 }
 
 void DFontSpinnerWidget::spinnerStart()

@@ -27,7 +27,6 @@ class DFInstallNormalWindow : public DFontBaseDialog
     Q_OBJECT
 public:
     DFInstallNormalWindow(const QStringList &files = QStringList(), QWidget *parent = nullptr);
-    ~DFInstallNormalWindow() override;
 
     void setSkipException(bool skip);
     void breakInstalltion();

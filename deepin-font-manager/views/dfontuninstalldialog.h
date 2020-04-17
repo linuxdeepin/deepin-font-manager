@@ -23,11 +23,18 @@
 DWIDGET_USE_NAMESPACE
 DCORE_USE_NAMESPACE
 
+class DFontMgrMainWindow;
+
 class DFontuninstalldialog : public DFontBaseDialog
 {
 public:
-    DFontuninstalldialog(QWidget *parent = nullptr);
+    DFontuninstalldialog(DFontMgrMainWindow *win, QWidget *parent = nullptr);
+    ~DFontuninstalldialog() override;
+
     void setValue(const QString &fontName, int index, int totalCount);
+
+    void setMainwindow(DFontMgrMainWindow *win);
+
 private:
     void initUi();
 
@@ -36,6 +43,7 @@ private:
     DLabel *m_currentFontLabel;
     DProgressBar *m_progressBar;
     QWidget *m_mainFrame;
+    DFontMgrMainWindow *m_mainWindow;
     void keyPressEvent(QKeyEvent *event) Q_DECL_OVERRIDE;
 };
 

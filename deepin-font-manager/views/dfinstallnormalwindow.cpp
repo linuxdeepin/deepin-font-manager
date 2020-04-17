@@ -31,15 +31,6 @@ DFInstallNormalWindow::DFInstallNormalWindow(const QStringList &files, QWidget *
     initConnections();
 }
 
-DFInstallNormalWindow::~DFInstallNormalWindow()
-{
-    if (nullptr != m_pexceptionDlg) {
-        m_pexceptionDlg->close();
-        m_pexceptionDlg->deleteLater();
-        m_pexceptionDlg = nullptr;
-    }
-}
-
 void DFInstallNormalWindow::initUI()
 {
     setFixedSize(QSize(380, 136));
@@ -409,7 +400,6 @@ void DFInstallNormalWindow::closeEvent(QCloseEvent *event)
     } else {
         event->accept();
     }
-    deleteLater();
 }
 void DFInstallNormalWindow::batchInstall()
 {
@@ -577,7 +567,7 @@ void DFInstallNormalWindow::breakInstalltion()
     //   Just close the installtion window
     if (m_pexceptionDlg->isVisible()) {
         m_pexceptionDlg->close();
-        m_pexceptionDlg->deleteLater();
+        m_pexceptionDlg = nullptr;
     }
 
     this->close();

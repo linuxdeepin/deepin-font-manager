@@ -17,32 +17,13 @@
 
 DFDeleteDialog::DFDeleteDialog(DFontMgrMainWindow *win, int deleteCnt, int systemCnt, QWidget *parent)
     : DFontBaseDialog(parent)
-    , m_mainWindow(nullptr)
     , m_deleteCnt(deleteCnt)
     , m_systemCnt(systemCnt)
     , m_deleting(false)
 {
     initUI();
-    setMainwindow(win);
     initConnections();
     setTheme();
-}
-
-DFDeleteDialog::~DFDeleteDialog()
-{
-}
-
-void DFDeleteDialog::setMainwindow(DFontMgrMainWindow *win)
-{
-    if (m_mainWindow != win && win != nullptr) {
-        m_mainWindow = win;
-        quitConn = connect(m_mainWindow, &DFontMgrMainWindow::requestDeleted, [ = ]() {
-            if (isVisible()) {
-                accept();
-                close();
-            }
-        });
-    }
 }
 
 void DFDeleteDialog::initUI()
@@ -82,12 +63,10 @@ void DFDeleteDialog::initConnections()
         m_deleting = true;
         accept();
         close();
-        emit SignalManager::instance()->popUninstallDialog();//弹出删除进度框
     });
+
     connect(this, &DFDeleteDialog::closed, this, [ = ]() {
-        disconnect(quitConn);
-        if (m_mainWindow != nullptr)
-            m_mainWindow->setDeleteFinish();
+        emit SignalManager::instance()->popUninstallDialog();//弹出删除进度框
     });
     connect(qApp, &DApplication::fontChanged, this, &DFDeleteDialog::onFontChanged);
 
