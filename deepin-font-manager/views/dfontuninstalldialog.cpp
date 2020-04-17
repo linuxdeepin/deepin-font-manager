@@ -11,6 +11,8 @@ DFontuninstalldialog::DFontuninstalldialog(DFontMgrMainWindow *win, QWidget *par
 {
     initUi();
 
+    repaint();
+
     setMainwindow(win);
 }
 
