@@ -36,6 +36,7 @@ public slots:
 private:
     int m_height;
     QWidget *m_mainFrame {nullptr};
+    QString m_FileName;
     QPoint m_faCenter;
     SignalManager *m_signalManager = SignalManager::instance();
 
@@ -43,7 +44,7 @@ private:
     DLabel *m_fontFileName {nullptr};
 
     QFrame *m_basicInfoFrame {nullptr};
-    QString AutoFeed(QString &text);
+    QString AutoFeed(QString text);
     QVBoxLayout *m_baseicInfoLayout;
 
     DFontPreviewItemData *m_fontInfo;

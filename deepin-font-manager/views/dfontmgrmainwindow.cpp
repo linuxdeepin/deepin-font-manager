@@ -1266,7 +1266,7 @@ void DFontMgrMainWindow::onShowMessage(int successCount)
 //        }
 //    }
 
-    if (successCount == 0 || successCount == 1) {
+    if (successCount == 1) {
         messageA = DApplication::translate("DFontMgrMainWindow", "%1 font installed").arg(successCount);
         DMessageManager::instance()->sendMessage(this, QIcon(":/images/ok.svg"), messageA);
 

@@ -29,31 +29,32 @@ DFontInfoDialog::DFontInfoDialog(DFontPreviewItemData *fontInfo, QWidget *parent
     this->move(m_faCenter - this->rect().center());
 }
 
-QString DFontInfoDialog::AutoFeed(QString &text)
+QString DFontInfoDialog::AutoFeed(QString text)
 {
-    QString strText = text;
-    int AntoIndex = 1;
-    int count = 0;
-    if (!strText.isEmpty()) {
-
-        for (int i = 1; i < strText.size() + 1; i++) { //25个字符换一行
-            if (i == 25 * AntoIndex + AntoIndex - 1) {
-                strText.insert(i, "\n");
+    QFont m_CurrentFont = this->font();
+    QFontMetrics fm(m_CurrentFont);
+    int n_TextSize = fm.width(text);
+    int count  = 0;
+    if (n_TextSize > 300) {
+        int n_position = 0;
+        long n_curSumWidth = 0;
+        for (int i = 0; i < text.size(); i++) {
+            n_curSumWidth += fm.width(text.at(i));
+            if (n_curSumWidth >= 300 * (count + 1)) {
+                n_position = i;
+                text.insert(n_position, "\n");
                 count++;
-                AntoIndex ++;
             }
-            if (count == 2) {
-                if (strText.length() - 52 > 21) {
-                    count = 0;
-                    QString str = strText.mid(52, 17).append("...").append(strText.right(5));
-                    strText = strText.remove(52, strText.size());
-                    strText = strText.append(str);
-                    break;
-                }
+            if (count > 2) {//超过两行，设置后7位前省略号/*UT000539*/
+                QString s = text.right(6);
+                text.remove(n_position - 7, text.size());
+                qDebug() << "text" << text;
+                text.append("...").append(s);
             }
         }
     }
-    return strText;
+    qDebug() << text;
+    return text;
 }
 
 void DFontInfoDialog::initUI()
@@ -86,15 +87,16 @@ void DFontInfoDialog::initUI()
     m_fontLogo->setFontName(m_fontInfo->fontInfo.familyName, m_fontInfo->fontInfo.styleName);
 
     m_fontFileName = new DLabel(this);
+    m_fontFileName->setFixedWidth(280);
     m_fontFileName->adjustSize();
     m_fontFileName->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     m_fontFileName->setAlignment(Qt::AlignVCenter | Qt::AlignHCenter);
     m_fontFileName->setMinimumHeight(m_fontFileName->fontMetrics().height());
-    m_fontFileName->setWordWrap(true);
+//    m_fontFileName->setWordWrap(true);
 
     DFontSizeManager::instance()->bind(m_fontFileName, DFontSizeManager::T8);
-    QString str = QFileInfo(m_fontInfo->fontInfo.filePath).fileName();
-    QString text = AutoFeed(str);
+    m_FileName = QFileInfo(m_fontInfo->fontInfo.filePath).fileName();
+    QString text = AutoFeed(m_FileName);
 
 
     QFontMetrics elideFont(this->font());
@@ -121,6 +123,7 @@ void DFontInfoDialog::initUI()
 
     DLabel *panelName = new DLabel(this);
     panelName->setWordWrap(true);
+//    panelName->setFixedWidth(200);
     panelName->setFixedHeight(panelName->fontMetrics().height() + 2);
 //    panelName->setFixedHeight(40);
 
@@ -226,9 +229,15 @@ void DFontInfoDialog::initConnections()
     });
 
     connect(m_signalManager, &SignalManager::sizeChange, this, [ = ](int height) {
-//        fontinfoArea->setFixedHeight(height);
-//        scrollArea->viewport()->setFixedHeight(height + 20);
-//        m_height = height;
+
+        //repaint m_fontFileName/*UT000539*/
+        m_fontFileName->clear();//clear option will reset m_fontFileName's all attributes but faster
+        //reset color on m_fontFileName's font
+        DPalette pa = DApplicationHelper::instance()->palette(m_fontFileName);
+        pa.setBrush(DPalette::WindowText, pa.color(DPalette::ToolTipText));
+        m_fontFileName->setPalette(pa);
+        m_fontFileName->setText(AutoFeed(m_FileName));
+
         if (height * 1.3 + 280 < DEFAULT_WINDOW_H) {
             this->setFixedHeight(height * 1.3 + 280);
 //            this->move(m_faCenter - this->rect().center());
