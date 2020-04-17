@@ -281,6 +281,7 @@ bool DFontPreviewListView::isDeleting()
 
 void DFontPreviewListView::selectFonts(const QStringList &fileList)
 {
+    Q_EMIT DFontManager::instance()->batchInstall("onlyprogress", 98);
     QItemSelection selection;
     qDebug() << __FUNCTION__ << " fileList size " << fileList.size() << ", row count " << getFontPreviewProxyModel()->rowCount();
     for (int i = 0; i < getFontPreviewProxyModel()->rowCount(); ++i) {
@@ -314,6 +315,8 @@ void DFontPreviewListView::selectFonts(const QStringList &fileList)
     DFontMgrMainWindow *mw = qobject_cast<DFontMgrMainWindow *>(m_parentWidget);
     if (mw)
         Q_EMIT mw->requestUpdatePreview();
+
+    Q_EMIT SignalManager::instance()->requestInstallAdded();
 }
 
 void DFontPreviewListView::selectFont(const QString &file)
@@ -826,7 +829,7 @@ void DFontPreviewListView::deleteFontFiles(const QStringList &files, bool force)
 void DFontPreviewListView::deleteCurFonts(const QStringList &files)
 {
     QList<DFontPreviewItemData> fontInfoList = m_dataThread->getFontModelList();
-    qDebug() << fontInfoList.size() << __FUNCTION__ << files;
+    qDebug() << fontInfoList.size() << __FUNCTION__ << files.size();
     for (int i = 0; i < fontInfoList.size(); ++i) {
         DFontPreviewItemData itemData = fontInfoList.at(i);
         QString filePath = itemData.fontInfo.filePath;

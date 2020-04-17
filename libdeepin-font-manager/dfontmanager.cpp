@@ -244,7 +244,7 @@ void DFontManager::doInstall(const QStringList &fileList, bool reinstall)
 //            QThread::msleep(50);
         } else {
             QString filePath = filePathOrig;
-            double percent = currentIndex / double(count) * 100;
+            double percent = currentIndex / double(count) * 93;
 
 //            qDebug() << __FUNCTION__ << filePath << ", " << percent;
             if (!reinstall) {
@@ -262,6 +262,13 @@ void DFontManager::doInstall(const QStringList &fileList, bool reinstall)
     QProcess process;
     process.start("fc-cache");
     process.waitForFinished();
+
+    if (!reinstall) {
+        QString filename;
+        if (!fileList.isEmpty())
+            filename = fileList.last();
+        Q_EMIT batchInstall(filename, 96);
+    }
 }
 
 void DFontManager::doUninstall(const QStringList &fileList)
