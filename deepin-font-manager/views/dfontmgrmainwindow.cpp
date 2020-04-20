@@ -869,8 +869,8 @@ void DFontMgrMainWindow::handleMenuEvent(QAction *action)
             break;
             case DFontMenuManager::MenuAction::M_FontInfo: {
                 DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
-                DFontInfoDialog fontInfoDlg(&currItemData, this);
-                fontInfoDlg.exec();
+                DFontInfoDialog *fontInfoDlg = new DFontInfoDialog(&currItemData, this);
+                fontInfoDlg->exec();
             }
             break;
             case DFontMenuManager::MenuAction::M_DeleteFont: {
