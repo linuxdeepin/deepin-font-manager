@@ -432,8 +432,9 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
 
     if (collectIconRect.contains(clickPoint)) {
         if (itemData.collectIconStatus != IconPress) {
-
-            itemData.collectIconStatus = IconPress;
+            if (Qt::LeftButton == event->button()) {//取消press状态/*UT000539*/
+                itemData.collectIconStatus = IconPress;
+            }
             m_fontPreviewProxyModel->setData(modelIndex, QVariant::fromValue(itemData), Qt::DisplayRole);
         }
         m_pressModelIndex = modelIndex;
