@@ -113,7 +113,7 @@ void DFInstallErrorDialog::initUI()
     initMainFrame();
     initTitleBar();
     initInstallErrorFontViews();
-    connect(this, &DFInstallErrorDialog::rejected, this, &DFInstallErrorDialog::onCancelInstall);
+    connect(this, &DFInstallErrorDialog::closeBtnClicked, this, &DFInstallErrorDialog::onCancelInstall);
 }
 
 void DFInstallErrorDialog::resizeEvent(QResizeEvent *event)

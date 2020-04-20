@@ -36,6 +36,8 @@ protected:
     void closeEvent(QCloseEvent *event) override;
 signals:
     void closed();
+    void closeBtnClicked();
+
 public slots:
 private:
     QWidget *m_titleBar {nullptr};
