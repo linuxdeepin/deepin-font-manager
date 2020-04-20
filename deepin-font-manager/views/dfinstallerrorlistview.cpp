@@ -61,29 +61,50 @@ void DFInstallErrorListDelegate::drawCheckBoxIcon(QPainter *painter, QRect bgRec
 void DFInstallErrorListDelegate::drawFontName(QPainter *painter, const QStyleOptionViewItem &option,
                                               DFInstallErrorItemModel itemModel, QRect bgRect, bool bSelectable) const
 {
+    QFont nameFont = painter->font();
+    nameFont.setPixelSize(DFontSizeManager::instance()->fontPixelSize(DFontSizeManager::T6));
+    painter->setFont(nameFont);
+
     QString strFontFileName = itemModel.strFontFileName;
+    QString strStatus = itemModel.strFontInstallStatus;
+
 
     int checkBoxSize = 20;
     QRect checkboxRect = QRect(bgRect.left() + 10, bgRect.top() + 14 + 2, checkBoxSize - 4, checkBoxSize - 4);
     int statusLabelMaxWidth = 160;
     int fontNameLeft = FTM_ERROR_ITEM_FONTNAME_LEFT;
-    QRect fontFileNameRect = QRect(bgRect.left() + fontNameLeft,
-                                   checkboxRect.top() - 5,
-                                   bgRect.width() - fontNameLeft - statusLabelMaxWidth,
-                                   checkboxRect.height() + 10);
-
-    QFont nameFont = painter->font();
-    nameFont.setPixelSize(DFontSizeManager::instance()->fontPixelSize(DFontSizeManager::T6));
-    painter->setFont(nameFont);
 
     QFontMetrics fontMetric(nameFont);
+    int m_StatusWidth = fontMetric.width(strStatus);
+    if (m_StatusWidth > statusLabelMaxWidth)
+        m_StatusWidth = statusLabelMaxWidth;
+    int m_NameWidth = fontMetric.width(strFontFileName);
+
+    QRect fontFileNameRect = QRect(bgRect.left() + fontNameLeft,
+                                   checkboxRect.top() - 5,
+                                   bgRect.width() - fontNameLeft - m_StatusWidth,
+                                   checkboxRect.height() + 10);
+
+
+
+
 //    QString elidedFontFileNameText = fontMetric.elidedText(strFontFileName,
 //                                                           Qt::ElideRight,
 //                                                           fontFileNameRect.width(),
 //                                                           Qt::TextShowMnemonic);
 
     //Automatically truncates and adds ellipsis based on the font width /*UT000539*/
-    QString elidedFontFileNameText = fontMetric.elidedText(strFontFileName, Qt::ElideRight, 235);
+    //QString elidedFontFileNameText = fontMetric.elidedText(strFontFileName, Qt::ElideRight, 235);
+    QString elidedFontFileNameText;
+
+//    qDebug() << m_NameWidth << endl;
+//    qDebug() << m_StatusWidth  << endl;
+    if (m_NameWidth  + m_StatusWidth < 360) {
+        elidedFontFileNameText = strFontFileName;
+    } else {
+        elidedFontFileNameText = AutoFeed(painter, strFontFileName, m_StatusWidth);
+    }
+
 
     if (option.state & QStyle::State_Selected) {
         QColor penColor = option.palette.color(DPalette::Text);
@@ -170,6 +191,36 @@ void DFInstallErrorListDelegate::drawSelectStatus(QPainter *painter, const QStyl
         painter->fillPath(path, QBrush(fillColor));
 
     }
+}
+
+QString DFInstallErrorListDelegate::AutoFeed(QPainter *painter, QString sourceStr, int m_StatusWidth) const
+{
+    //ut000442 自适应长度处理
+
+    QFont nameFont = painter->font();
+    QFontMetrics fontMetric(nameFont);
+
+    QString m_TargetStr = sourceStr.left(1);
+    QString m_Suffix("...");
+    m_Suffix.append(sourceStr.right(5));
+    m_TargetStr.append(m_Suffix);
+
+    int m_TargetStrWidth = fontMetric.width(m_TargetStr);
+
+    int m_index = 1;
+
+    while (m_TargetStrWidth + m_StatusWidth < 350) {
+//        m_TargetStr.append(sourceStr.at(m_index));
+//      每次插入一个字符，直到长度超过最大范围
+        m_TargetStr.insert(m_index, sourceStr.at(m_index));
+        m_TargetStrWidth = fontMetric.width(m_TargetStr);
+        m_index++;
+    }
+
+//    m_TargetStr.append(m_Suffix);
+//    qDebug() << m_TargetStr;
+    return m_TargetStr;
+
 }
 
 

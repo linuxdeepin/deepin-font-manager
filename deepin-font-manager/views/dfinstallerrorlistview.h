@@ -18,6 +18,9 @@ private:
                        DFInstallErrorItemModel itemModel, QRect bgRect, bool bSelectable = true)const;
     void drawSelectStatus(QPainter *painter, const QStyleOptionViewItem &option, QRect bgRect)const;
 
+    QString AutoFeed(QPainter *painter, QString sourceStr, int m_StatusWidth)const;
+
+
 public:
     DFInstallErrorListDelegate(QAbstractItemView *parent = nullptr);
 
