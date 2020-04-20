@@ -94,7 +94,9 @@ void DFDeleteDialog::initMessageTitle()
     } else {
         messageTitle->setText(DApplication::translate("DeleteConfirmDailog", "Are you sure you want to delete %1 fonts").arg(m_deleteCnt));
     }
-    messageTitle->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    /* Bug#21515 UT000591*/
+    messageTitle->setFixedWidth(DEFAULT_WINDOW_W - 22);
+    messageTitle->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
     messageTitle->setWordWrap(true);
     messageTitle->setAlignment(Qt::AlignCenter);
 
@@ -125,7 +127,9 @@ void DFDeleteDialog::initMessageDetail()
             messageDetail->setText(DApplication::translate("DeleteConfirmDailog", "These fonts will not be available to applications, and the other %1 system fonts cannot be deleted").arg(m_systemCnt));
         }
     }
-    messageDetail->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    /* Bug#21515 UT000591*/
+    messageDetail->setFixedWidth(DEFAULT_WINDOW_W - 22);
+    messageDetail->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
     messageDetail->setWordWrap(true);
     messageDetail->setAlignment(Qt::AlignCenter);
 
