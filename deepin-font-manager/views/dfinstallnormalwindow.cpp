@@ -225,12 +225,12 @@ void DFInstallNormalWindow::initConnections()
         getReInstallMessage = true;
         totalInstallFont = totalInstallFont + totalCount;
         checkShowMessage();
-    }, Qt::QueuedConnection);
+    }, Qt::UniqueConnection);
 
     connect(m_signalManager, &SignalManager::requestInstallAdded, this, [ = ]() {
         m_installAdded = true;
         checkShowMessage();
-    }, Qt::QueuedConnection);
+    }, Qt::UniqueConnection);
 //    connect(m_fontManager, &QThread::finished, this, [ = ] {
 //        qDebug() << "thread finish" << endl;
 //        if (m_pexceptionDlg != nullptr)
@@ -364,6 +364,7 @@ bool DFInstallNormalWindow::isSystemFont(DFontInfo &f)
 void DFInstallNormalWindow::checkShowMessage()
 {
     qDebug() << "Install over" << endl;
+    qDebug() << getInstallMessage << getReInstallMessage << m_installAdded << m_installFinishSent;
     if (getInstallMessage == true && getReInstallMessage == true) {
         qDebug() << "ReInstall over" << endl;
         if (!m_installFinishSent) {
@@ -385,7 +386,7 @@ void DFInstallNormalWindow::checkShowMessage()
         this->close();
     }
 
-    if (getInstallMessage == true) {
+    if (getInstallMessage == true && getReInstallMessage == false) {
         if (ifNeedShowExceptionWindow()) {
             qDebug() << "need reinstall+++++++++++++++++++++++++++++++" << endl;
             showInstallErrDlg();
@@ -533,6 +534,7 @@ void DFInstallNormalWindow::onCancelInstall()
 
     qDebug() << "cancel reinstall" << endl;
     emit m_signalManager->sendReInstallMessage(0);
+    Q_EMIT SignalManager::instance()->requestInstallAdded();
 
     this->accept();
 }

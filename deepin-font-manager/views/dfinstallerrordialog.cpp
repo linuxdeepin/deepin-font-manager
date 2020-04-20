@@ -113,7 +113,7 @@ void DFInstallErrorDialog::initUI()
     initMainFrame();
     initTitleBar();
     initInstallErrorFontViews();
-    connect(this, &DFInstallErrorDialog::closed, this, &DFInstallErrorDialog::onCancelInstall);
+    connect(this, &DFInstallErrorDialog::rejected, this, &DFInstallErrorDialog::onCancelInstall);
 }
 
 void DFInstallErrorDialog::resizeEvent(QResizeEvent *event)
@@ -319,7 +319,7 @@ void DFInstallErrorDialog::onControlButtonClicked(int btnIndex)
     if (0 == btnIndex) {
         //退出安装
         emit onCancelInstall();
-
+        reject();
     } else {
         //继续安装
         QStringList continueInstallFontFileList;
@@ -336,7 +336,8 @@ void DFInstallErrorDialog::onControlButtonClicked(int btnIndex)
         m_SystemFontCount = 0;
 
         emit onContinueInstall(continueInstallFontFileList);
+        accept();
     }
 
-    this->accept();
+    this->close();
 }
