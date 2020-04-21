@@ -57,6 +57,10 @@ void DFDeleteDialog::initUI()
     mainFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     mainFrame->setLayout(mainLayout);
 
+    //#000794 解决显示不全的问题
+    messageTitle->setMinimumWidth(DEFAULT_WINDOW_W - 20);
+    messageDetail->setMinimumWidth(DEFAULT_WINDOW_W - 20);
+
     addContent(mainFrame);
 }
 
