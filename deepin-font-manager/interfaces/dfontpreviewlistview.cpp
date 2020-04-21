@@ -31,6 +31,9 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
     connect(this, &DFontPreviewListView::itemRemovedFromSys, this, &DFontPreviewListView::onItemRemovedFromSys);
     connect(m_signalManager, &SignalManager::prevFontChanged, this, &DFontPreviewListView::scrollWithTheSelected);
     connect(m_signalManager, &SignalManager::refreshCurRect, this, &DFontPreviewListView::refreshRect);
+    connect(m_signalManager, &SignalManager::setIsJustInstalled, this, [ = ]() {
+        m_isJustInstalled = true;
+    });
     m_dataThread = DFontPreviewListDataThread::instance(this);
     QWidget *topSpaceWidget = new QWidget;
     topSpaceWidget->setFixedSize(this->width(), 10);
@@ -420,8 +423,8 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
 
     m_curRect = rect;
 
-    selectionModel()->clear();
-    selectionModel()->selectedIndexes().append(modelIndex);
+//    selectionModel()->clear();
+//    selectionModel()->selectedIndexes().append(modelIndex);
 
     QRect collectIconRect = getCollectionIconRect(rect);
     int checkBoxSize = 20 + 10;
@@ -953,17 +956,22 @@ void DFontPreviewListView::scrollWithTheSelected()
     sortModelIndexList(indexes);
     if (indexes.isEmpty())
         return;
+
+    qDebug() << "__________m_isJustInstalled_______" << m_isJustInstalled;
     if (this->visibleRegion().contains(m_curRect.topLeft()) || this->visibleRegion().contains(m_curRect.bottomLeft())) {
-        qDebug() << m_curRect.center().y();
-        if (m_curRect.center().y() < 156) {
-            scrollTo(indexes.last(), ScrollHint::PositionAtTop);
-        } else if (156 <= m_curRect.center().y() && m_curRect.center().y() <= 312) {
-            scrollTo(indexes.last(), ScrollHint::PositionAtCenter);
-        } else if (m_curRect.center().y() > 312) {
-            scrollTo(indexes.last(), ScrollHint::PositionAtBottom);
+        if (m_isJustInstalled) {
+            if (m_curRect.center().y() < 156) {
+                scrollTo(indexes.last(), ScrollHint::PositionAtTop);
+            } else if (156 <= m_curRect.center().y() && m_curRect.center().y() <= 312) {
+                scrollTo(indexes.last(), ScrollHint::PositionAtCenter);
+            } else if (m_curRect.center().y() > 312) {
+                scrollTo(indexes.last(), ScrollHint::PositionAtBottom);
+            } return;
+        } else {
+            scrollTo(indexes.last());
         }
         qDebug() << __FUNCTION__ << "scroll to selectionModel";
-    } return;//if selecteditems is not in this visibleRegion return
+    } return;//if selecteditems is not in this visibleRegion then return
 }
 
 //记录下当前选中的位置,用于局中显示UT000539
@@ -975,3 +983,4 @@ void DFontPreviewListView::refreshRect()
     sortModelIndexList(indexes);
     m_curRect = visualRect(indexes.last());
 }
+

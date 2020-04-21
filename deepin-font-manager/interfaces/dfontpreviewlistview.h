@@ -111,7 +111,7 @@ private:
     FontGroup m_currentFontGroup;
 
     QRect m_curRect;
-
+    bool m_isJustInstalled = false;
 signals:
     //用于DFontPreviewListView内部使用的信号
     void onClickEnableButton(const QModelIndexList &index, bool setValue, bool isFromActiveFont = false);

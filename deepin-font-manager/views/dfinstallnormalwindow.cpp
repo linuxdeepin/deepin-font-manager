@@ -395,6 +395,7 @@ void DFInstallNormalWindow::checkShowMessage()
             emit  m_signalManager->sendReInstallMessage(0);
         }
     }
+    emit m_signalManager->setIsJustInstalled();
 }
 
 void DFInstallNormalWindow::resizeEvent(QResizeEvent *event)
