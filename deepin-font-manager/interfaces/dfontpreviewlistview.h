@@ -127,6 +127,7 @@ signals:
     void requestDeleted(const QStringList &files);
     void requestAdded(const QStringList &files);
     void itemAdded(const DFontPreviewItemData &data);
+    void multiItemsAdded(const QList<DFontPreviewItemData> &data);
     void itemRemoved(const DFontPreviewItemData &data);
     void itemRemovedFromSys(const DFontPreviewItemData &data);
     void itemsSelected(const QStringList &files);
@@ -141,6 +142,7 @@ public slots:
     void selectFonts(const QStringList &fileList);
     void selectFont(const QString &file);
     void onItemAdded(const DFontPreviewItemData &itemData);
+    void onMultiItemsAdded(const QList<DFontPreviewItemData> &data);
     void onItemRemoved(const DFontPreviewItemData &itemData);
     void onItemRemovedFromSys(const DFontPreviewItemData &itemData);
     void updateCurrentFontGroup(int currentFontGroup);

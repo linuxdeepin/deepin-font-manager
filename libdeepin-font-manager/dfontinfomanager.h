@@ -77,8 +77,6 @@ public:
 
 private:
     QMap<QString, DFontInfo> m_fontInfoMap;
-    FT_Library m_library;
-    FT_Face m_face;
 };
 
 #endif

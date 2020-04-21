@@ -24,9 +24,12 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
     , m_dataThread(nullptr)
 {
     qRegisterMetaType<DFontPreviewItemData>("DFontPreviewItemData");
+    qRegisterMetaType<QList<DFontPreviewItemData>>("DFontPreviewItemDataList");
+    m_fontPreviewItemModel->setColumnCount(1);
     connect(this, &DFontPreviewListView::itemsSelected, this, &DFontPreviewListView::selectFonts);
     connect(this, &DFontPreviewListView::itemSelected, this, &DFontPreviewListView::selectFont);
-    connect(this, &DFontPreviewListView::itemAdded, this, &DFontPreviewListView::onItemAdded);
+//    connect(this, &DFontPreviewListView::itemAdded, this, &DFontPreviewListView::onItemAdded);
+    connect(this, &DFontPreviewListView::multiItemsAdded, this, &DFontPreviewListView::onMultiItemsAdded);
     connect(this, &DFontPreviewListView::itemRemoved, this, &DFontPreviewListView::onItemRemoved);
     connect(this, &DFontPreviewListView::itemRemovedFromSys, this, &DFontPreviewListView::onItemRemovedFromSys);
     connect(m_signalManager, &SignalManager::prevFontChanged, this, &DFontPreviewListView::scrollWithTheSelected);
@@ -129,6 +132,30 @@ void DFontPreviewListView::onItemAdded(const DFontPreviewItemData &itemData)
     QStandardItem *item = new QStandardItem;
     item->setData(QVariant::fromValue(itemData), Qt::DisplayRole);
     sourceModel->appendRow(item);
+}
+
+void DFontPreviewListView::onMultiItemsAdded(const QList<DFontPreviewItemData> &data)
+{
+    if (data.isEmpty())
+        return;
+
+    QStandardItemModel *sourceModel = qobject_cast<QStandardItemModel *>(m_fontPreviewProxyModel->sourceModel());
+    int rows = sourceModel->rowCount();
+//    qDebug() << __FUNCTION__ << data.size() << rows;
+
+    int i = 0;
+    bool res = sourceModel->insertRows(rows, data.size());
+    if (!res)
+        qDebug() << __FUNCTION__ << "insertRows fail";
+    qDebug() << __FUNCTION__ << "rows = " << sourceModel->rowCount();
+    for (DFontPreviewItemData itemData : data) {
+        QModelIndex index = sourceModel->index(rows + i,   0);
+        qDebug() << __FUNCTION__ << index;
+        res = sourceModel->setData(index, QVariant::fromValue(itemData), Qt::DisplayRole);
+        if (!res)
+            qDebug() << __FUNCTION__ << "setData fail";
+        i++;
+    }
 }
 
 void DFontPreviewListView::onItemRemoved(const DFontPreviewItemData &itemData)

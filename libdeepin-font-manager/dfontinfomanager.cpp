@@ -85,8 +85,6 @@ DFontInfoManager *DFontInfoManager::instance()
 
 DFontInfoManager::DFontInfoManager(QObject *parent)
     : QObject(parent)
-    , m_library(nullptr)
-    , m_face(nullptr)
 {
     //Should not be called in constructor
     //refreshList();
@@ -190,6 +188,9 @@ DFontInfo DFontInfoManager::getFontInfo(const QString &filePath, bool force)
 //    } else if (!force) {
 //        qDebug() << __FUNCTION__ << " not found " << filePath;
 //    }
+
+    FT_Library m_library = nullptr;
+    FT_Face m_face = nullptr;
 
     DFontInfo fontInfo;
     fontInfo.isSystemFont = isSystemFont(filePath);

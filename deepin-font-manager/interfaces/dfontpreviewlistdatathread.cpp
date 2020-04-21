@@ -83,6 +83,8 @@ void DFontPreviewListDataThread::doWork()
         }
     }
 
+    Q_EMIT m_view->multiItemsAdded(m_fontModelList);
+
     m_dbManager->commitAddFontInfo();
 
     m_view->onFinishedDataLoad();
@@ -234,7 +236,7 @@ void DFontPreviewListDataThread::insertFontItemData(const QString &filePath,
     itemData.fontInfo.isInstalled = true;
 
     m_dbManager->addFontInfo(itemData);
-    Q_EMIT m_view->itemAdded(itemData);
+//    Q_EMIT m_view->itemAdded(itemData);
     addPathWatcher(filePath);
 
     /* Bug#16821 UT000591  添加字体后需要加入到Qt的字体数据库中，否则无法使用*/
@@ -304,7 +306,10 @@ void DFontPreviewListDataThread::refreshFontListData(bool isStartup, const QStri
         m_dbManager->commitAddFontInfo();
     }
     if (!installFont.isEmpty()) {
+        Q_EMIT m_view->multiItemsAdded(m_diffFontModelList);
         Q_EMIT m_view->itemsSelected(installFont);
+    } else {
+        Q_EMIT m_view->multiItemsAdded(m_fontModelList);
     }
     qDebug() << __FUNCTION__ << " end";
 }
