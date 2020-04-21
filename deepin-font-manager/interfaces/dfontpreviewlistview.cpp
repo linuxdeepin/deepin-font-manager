@@ -288,7 +288,7 @@ void DFontPreviewListView::selectFonts(const QStringList &fileList)
         QModelIndex index = getFontPreviewProxyModel()->index(i, 0);
         DFontPreviewItemData itemData =
             qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(index));
-        //        qDebug() << __FUNCTION__ << itemData.fontInfo.filePath;
+        qDebug() << __FUNCTION__ << itemData.fontInfo.filePath;
         if (fileList.contains(itemData.fontInfo.filePath)) {
             QModelIndex left = m_fontPreviewProxyModel->index(index.row(), 0);
             QModelIndex right = m_fontPreviewProxyModel->index(index.row(), m_fontPreviewProxyModel->columnCount() - 1);
@@ -333,7 +333,7 @@ void DFontPreviewListView::selectFont(const QString &file)
             QModelIndex left = m_fontPreviewProxyModel->index(index.row(), 0);
             QModelIndex right = m_fontPreviewProxyModel->index(index.row(), m_fontPreviewProxyModel->columnCount() - 1);
             QItemSelection sel(left, right);
-            selection.merge(sel, QItemSelectionModel::Select);
+            (sel, QItemSelectionModel::Select);
         }
     }
 
@@ -351,7 +351,6 @@ void DFontPreviewListView::selectFont(const QString &file)
 
     selection_model->reset();
     setCurrentIndex(cur);
-
     DFontMgrMainWindow *mw = qobject_cast<DFontMgrMainWindow *>(m_parentWidget);
     if (mw)
         Q_EMIT mw->requestUpdatePreview();
@@ -418,6 +417,12 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
     QPoint clickPoint = event->pos();
     QModelIndex modelIndex = indexAt(clickPoint);
     QRect rect = visualRect(modelIndex);
+
+    m_curRect = rect;
+
+    selectionModel()->clear();
+    selectionModel()->selectedIndexes().append(modelIndex);
+
     QRect collectIconRect = getCollectionIconRect(rect);
     int checkBoxSize = 20 + 10;
     QRect checkboxRealRect = QRect(rect.left() + 25, rect.top() + 10 - 5, checkBoxSize, checkBoxSize);
@@ -949,9 +954,15 @@ void DFontPreviewListView::scrollWithTheSelected()
     if (indexes.isEmpty())
         return;
     if (this->visibleRegion().contains(m_curRect.topLeft()) || this->visibleRegion().contains(m_curRect.bottomLeft())) {
-//        scrollTo(indexes.last(), ScrollHint::PositionAtCenter);
-        scrollTo(indexes.last());
-        qDebug() << __FUNCTION__ << "scroll to cur";
+        qDebug() << m_curRect.center().y();
+        if (m_curRect.center().y() < 156) {
+            scrollTo(indexes.last(), ScrollHint::PositionAtTop);
+        } else if (156 <= m_curRect.center().y() && m_curRect.center().y() <= 312) {
+            scrollTo(indexes.last(), ScrollHint::PositionAtCenter);
+        } else if (m_curRect.center().y() > 312) {
+            scrollTo(indexes.last(), ScrollHint::PositionAtBottom);
+        }
+        qDebug() << __FUNCTION__ << "scroll to selectionModel";
     } return;//if selecteditems is not in this visibleRegion return
 }
 
