@@ -95,14 +95,13 @@ void DFInstallErrorListDelegate::drawFontName(QPainter *painter, const QStyleOpt
 
     //Automatically truncates and adds ellipsis based on the font width /*UT000539*/
     //QString elidedFontFileNameText = fontMetric.elidedText(strFontFileName, Qt::ElideRight, 235);
+    //ut000442 Optimize the adaptive effect here 20200421
     QString elidedFontFileNameText;
 
-//    qDebug() << m_NameWidth << endl;
-//    qDebug() << m_StatusWidth  << endl;
     if (m_NameWidth  + m_StatusWidth < 360) {
         elidedFontFileNameText = strFontFileName;
     } else {
-        elidedFontFileNameText = AutoFeed(painter, strFontFileName, m_StatusWidth);
+        elidedFontFileNameText = lengthAutoFeed(painter, strFontFileName, m_StatusWidth);
     }
 
 
@@ -193,9 +192,9 @@ void DFInstallErrorListDelegate::drawSelectStatus(QPainter *painter, const QStyl
     }
 }
 
-QString DFInstallErrorListDelegate::AutoFeed(QPainter *painter, QString sourceStr, int m_StatusWidth) const
+QString DFInstallErrorListDelegate::lengthAutoFeed(QPainter *painter, QString sourceStr, int m_StatusWidth) const
 {
-    //ut000442 自适应长度处理
+    //ut000442 listview中字体名长度自适应处理
 
     QFont nameFont = painter->font();
     QFontMetrics fontMetric(nameFont);
@@ -210,7 +209,7 @@ QString DFInstallErrorListDelegate::AutoFeed(QPainter *painter, QString sourceSt
     int m_index = 1;
 
     while (m_TargetStrWidth + m_StatusWidth < 350) {
-//        m_TargetStr.append(sourceStr.at(m_index));
+
 //      每次插入一个字符，直到长度超过最大范围
         m_TargetStr.insert(m_index, sourceStr.at(m_index));
         m_TargetStrWidth = fontMetric.width(m_TargetStr);
