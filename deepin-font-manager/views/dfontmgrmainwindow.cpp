@@ -1178,7 +1178,9 @@ void DFontMgrMainWindow::onFontListViewRowCountChanged(unsigned int bShow)
     case 1:
         while (isSpinnerHidden) {
             m_fontPreviewListView->hide();
-            m_noResultListView->show();
+            QTimer::singleShot(5, [ = ]() {
+                m_noResultListView->show();
+            });
             d->stateBar->hide();
             if (m_noInstallListView->isVisible()) {
                 m_noInstallListView->hide();
