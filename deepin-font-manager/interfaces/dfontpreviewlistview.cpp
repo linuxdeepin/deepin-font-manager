@@ -317,6 +317,7 @@ void DFontPreviewListView::selectFonts(const QStringList &fileList)
         Q_EMIT mw->requestUpdatePreview();
 
     Q_EMIT SignalManager::instance()->requestInstallAdded();
+//    Q_EMIT DFontManager::instance()->batchInstall("onlyprogress", 100);
 }
 
 void DFontPreviewListView::selectFont(const QString &file)

@@ -383,7 +383,7 @@ void DFInstallNormalWindow::checkShowMessage()
         emit m_signalManager->showInstallFloatingMessage(totalInstallFont);
         m_outfileList.clear();
         totalInstallFont = 0;
-        this->close();
+//        this->close();
     }
 
     if (getInstallMessage == true && getReInstallMessage == false) {
@@ -564,8 +564,14 @@ void DFInstallNormalWindow::onProgressChanged(const QString &filePath, const dou
     m_progressBar->setTextVisible(false);
 
     qDebug() << QString("font install progress: %1%").arg(percent);
+//    ut000442 fix bug 21562.When the precision bar progress is 100%,
+//    delay for a short period of time, close the window
+    if (static_cast<int>(percent) == 100) {
+        QTimer::singleShot(50, this, [this]() {
+            this->close();
+        });
+    }
 }
-
 void DFInstallNormalWindow::showInstallErrDlg()
 {
     m_pexceptionDlg = new DFInstallErrorDialog(this, m_errorList, m_AllSysFiles);
