@@ -181,6 +181,7 @@ protected:
     QScopedPointer<DFQuickInstallWindow> m_quickInstallWnd;
 
     QScopedPointer<DFontMgrMainWindowPrivate> d_ptr;
+    QString mhistoryDir = ""; //保存上次文件的路径的文件夹
 
     Q_DECLARE_PRIVATE_D(qGetPtrHelper(d_ptr), DFontMgrMainWindow)
 };

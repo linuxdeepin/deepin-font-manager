@@ -837,7 +837,11 @@ void DFontMgrMainWindow::handleAddFontEvent()
     if (historyDir.isEmpty()) {
         historyDir = QDir::homePath();
     }
-    dialog.setDirectory(historyDir);
+    if (!mhistoryDir.isEmpty()) {
+        dialog.setDirectory(mhistoryDir);
+    } else {
+        dialog.setDirectory(historyDir);
+    }
 
     const int mode = dialog.exec();
 
@@ -847,6 +851,23 @@ void DFontMgrMainWindow::handleAddFontEvent()
     // if click cancel button or close button.
     if (mode != QDialog::Accepted) {
         return;
+    } else {
+        QStringList filelist = dialog.selectedFiles();
+        if (filelist.count() > 0) {
+            mhistoryDir.clear();
+            QStringList strlist;
+            strlist = filelist.at(0).split("/");
+            for (int i = 0; i < strlist.count(); i++) {
+                if (i == 0) {
+                    mhistoryDir += strlist[i];
+                } else  if (i == strlist.count() - 1) {
+
+                } else {
+                    mhistoryDir += "/" + strlist[i];
+                }
+
+            }
+        }
     }
 
     Q_EMIT fileSelected(dialog.selectedFiles());
