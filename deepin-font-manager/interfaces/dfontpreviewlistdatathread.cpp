@@ -36,6 +36,7 @@ DFontPreviewListDataThread::DFontPreviewListDataThread(DFontPreviewListView *vie
     QObject::connect(&mThread, SIGNAL(started()), this, SLOT(doWork()));
     connect(m_view, &DFontPreviewListView::requestDeleted, this, &DFontPreviewListDataThread::onFileDeleted, Qt::QueuedConnection);
     connect(m_view, &DFontPreviewListView::requestAdded, this, &DFontPreviewListDataThread::onFileAdded, Qt::QueuedConnection);
+    connect(this, &DFontPreviewListDataThread::requestForceDeleteFiles, this, &DFontPreviewListDataThread::forceDeleteFiles);
     mThread.start();
 //    });
 }
@@ -201,6 +202,8 @@ void DFontPreviewListDataThread::forceDeleteFiles(const QStringList &files)
     if (m_mutex != nullptr)
         QMutexLocker locker(m_mutex);
     m_view->deleteFontFiles(files, true);
+
+    Q_EMIT requestBatchReInstallContinue();
     qDebug() << __FUNCTION__ << files << " end ";
 }
 

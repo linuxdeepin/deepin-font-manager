@@ -38,10 +38,11 @@ public:
     QList<DFontPreviewItemData> getDiffFontModelList() const;
     QStringList getDiffFontList() const;
     void setMutex(QMutex *mutex);
-    void forceDeleteFiles(const QStringList &files);
 
 signals:
     void resultReady();
+    void requestForceDeleteFiles(const QStringList &files);
+    void requestBatchReInstallContinue();
 
 protected slots:
     void doWork();
@@ -54,6 +55,7 @@ public slots:
     void removePathWatcher(const QString &path);
     void onFileDeleted(const QStringList &files);
     void onFileAdded(const QStringList &files);
+    void forceDeleteFiles(const QStringList &files);
 
 protected:
     QThread mThread;

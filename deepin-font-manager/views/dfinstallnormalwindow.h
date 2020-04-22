@@ -49,6 +49,7 @@ protected:
 protected slots:
     void batchInstall();
     void batchReInstall();
+    void batchReInstallContinue();
     void onProgressChanged(const QString &filePath, const double &percent);
 
     void onCancelInstall();

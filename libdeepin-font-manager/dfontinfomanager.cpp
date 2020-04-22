@@ -195,9 +195,6 @@ DFontInfo DFontInfoManager::getFontInfo(const QString &filePath, bool force)
     DFontInfo fontInfo;
     fontInfo.isSystemFont = isSystemFont(filePath);
 
-//    FT_Library m_library = 0;
-//    FT_Face m_face = 0;
-
     if (m_library == nullptr)
         FT_Init_FreeType(&m_library);
 
@@ -206,28 +203,13 @@ DFontInfo DFontInfoManager::getFontInfo(const QString &filePath, bool force)
         error = FT_New_Face(m_library, filePath.toUtf8().constData(), 0, &m_face);
 
     if (error != 0) {
-        qDebug() << __FUNCTION__ << " error " << error;
+        qDebug() << __FUNCTION__ << " error " << error << filePath;
         fontInfo.isError = true;
         FT_Done_Face(m_face);
         m_face = nullptr;
         FT_Done_FreeType(m_library);
         m_library = nullptr;
-        //try again
-        error = FT_Init_FreeType(&m_library);
-        if (error != 0) {
-            FT_Done_FreeType(m_library);
-            m_library = nullptr;
-            return fontInfo;
-        }
-        error = FT_New_Face(m_library, filePath.toUtf8().constData(), 0, &m_face);
-        if (error != 0) {
-            FT_Done_Face(m_face);
-            m_face = nullptr;
-
-            FT_Done_FreeType(m_library);
-            m_library = nullptr;
-            return fontInfo;
-        }
+        return fontInfo;
     }
 
     // get the basic data.

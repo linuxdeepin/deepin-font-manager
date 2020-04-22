@@ -231,6 +231,8 @@ void DFInstallNormalWindow::initConnections()
         m_installAdded = true;
         checkShowMessage();
     }, Qt::UniqueConnection);
+
+    connect(DFontPreviewListDataThread::instance(), &DFontPreviewListDataThread::requestBatchReInstallContinue, this, &DFInstallNormalWindow::batchReInstallContinue);
 //    connect(m_fontManager, &QThread::finished, this, [ = ] {
 //        qDebug() << "thread finish" << endl;
 //        if (m_pexceptionDlg != nullptr)
@@ -510,7 +512,9 @@ void DFInstallNormalWindow::batchReInstall()
             //force delete fonts installed
             DFontPreviewListDataThread *dataThread = DFontPreviewListDataThread::instance();
             if (!filesInstalled.empty()) {
-                dataThread->forceDeleteFiles(filesInstalled);
+                Q_EMIT dataThread->requestForceDeleteFiles(filesInstalled);
+                //exit
+                return;
 //                qDebug() << __FUNCTION__ << " remove found installed font : " << filesInstalled;
             }
         }
@@ -533,7 +537,25 @@ void DFInstallNormalWindow::batchReInstall()
     m_fontManager->start();
 }
 
+void DFInstallNormalWindow::batchReInstallContinue()
+{
+    if (m_installState == InstallState::reinstall) {
+        m_installedFiles.clear();
+    }
 
+    QStringList installListWithFamliyName;
+    foreach (auto it, m_installFiles) {
+        DFontInfo fontInfo = m_fontInfoManager->getFontInfo(it);
+        QString familyName = fontInfo.familyName;
+        installListWithFamliyName.append(it + "|" + familyName);
+
+        qDebug() << " Prepare install file: " << it + "|" + familyName;
+    }
+
+    m_fontManager->setType(DFontManager::ReInstall);
+    m_fontManager->setInstallFileList(installListWithFamliyName);
+    m_fontManager->start();
+}
 
 void DFInstallNormalWindow::onCancelInstall()
 {
