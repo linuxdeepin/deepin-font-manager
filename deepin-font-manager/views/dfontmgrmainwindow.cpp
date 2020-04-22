@@ -194,10 +194,17 @@ void DFontMgrMainWindow::initConnections()
     });
 
     QObject::connect(m_signalManager, &SignalManager::popUninstallDialog, this, [ this ] {
+//        ut000442 bug21256 改变show和move的顺序解决弹出虚框的问题
         qDebug() << "pop uninstall progress dialog ";
-        DFontuninstalldialog *dialog = new DFontuninstalldialog(this);
-        dialog->move(this->geometry().center() - dialog->rect().center());
-        dialog->exec();
+//        添加延迟是因为在无窗口特效模式下，弹出之前会有残影，待Dtk那比优化后看情况可以去掉延迟
+        QTimer::singleShot(50, this, [this]()
+        {
+            DFontuninstalldialog *dialog = new DFontuninstalldialog(this);
+            dialog->setModal(true);
+            dialog->show();
+            dialog->move(this->geometry().center() - dialog->rect().center());
+        });
+
     }, Qt::UniqueConnection);
 
     QObject::connect(m_signalManager, &SignalManager::deledFont, this, [ = ](QString & fontPath) {
