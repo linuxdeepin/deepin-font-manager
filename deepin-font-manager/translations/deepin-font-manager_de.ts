@@ -159,7 +159,7 @@
     </message>
     <message>
         <source>Are you sure you want to delete %1 fonts</source>
-        <translation>Sind Sie sicher, dass Sie %1 Schriftarten löschen möchten?</translation>
+        <translation type="vanished">Sind Sie sicher, dass Sie %1 Schriftarten löschen möchten?</translation>
     </message>
     <message>
         <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
@@ -168,6 +168,10 @@
     <message>
         <source>This font will not be available to applications, and the other %1 system fonts cannot be deleted</source>
         <translation>Diese Schriftart steht Anwendungen nicht zur Verfügung, und die anderen %1-Systemschriftarten können nicht gelöscht werden</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete %1 fonts?</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -205,7 +209,7 @@
     </message>
     <message>
         <source>No fonts to be installed</source>
-        <translation type="unfinished"/>
+        <translation>Es werden keine Schriftarten installiert</translation>
     </message>
 </context>
 <context>

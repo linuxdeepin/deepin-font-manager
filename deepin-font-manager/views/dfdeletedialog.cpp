@@ -96,7 +96,7 @@ void DFDeleteDialog::initMessageTitle()
     if (m_deleteCnt <= 1) {
         messageTitle->setText(DApplication::translate("DeleteConfirmDailog", "Are you sure you want to delete this font?"));
     } else {
-        messageTitle->setText(DApplication::translate("DeleteConfirmDailog", "Are you sure you want to delete %1 fonts").arg(m_deleteCnt));
+        messageTitle->setText(DApplication::translate("DeleteConfirmDailog", "Are you sure you want to delete %1 fonts?").arg(m_deleteCnt));
     }
     /* Bug#21515 UT000591*/
     messageTitle->setFixedWidth(DEFAULT_WINDOW_W - 22);

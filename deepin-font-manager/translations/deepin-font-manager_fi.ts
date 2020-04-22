@@ -159,7 +159,7 @@
     </message>
     <message>
         <source>Are you sure you want to delete %1 fonts</source>
-        <translation>Haluatko varmasti poistaa %1 fontit</translation>
+        <translation type="vanished">Haluatko varmasti poistaa %1 fontit</translation>
     </message>
     <message>
         <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
@@ -168,6 +168,10 @@
     <message>
         <source>This font will not be available to applications, and the other %1 system fonts cannot be deleted</source>
         <translation>Tämä fontti ei ole käytettävissä sovelluksissa, eikä muita %1 järjestelmäfontteja voi poistaa</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete %1 fonts?</source>
+        <translation>Haluatko varmasti poistaa %1 fontit?</translation>
     </message>
 </context>
 <context>
@@ -205,7 +209,7 @@
     </message>
     <message>
         <source>No fonts to be installed</source>
-        <translation type="unfinished"/>
+        <translation>Ei asennettavia fontteja</translation>
     </message>
 </context>
 <context>

@@ -159,7 +159,7 @@
     </message>
     <message>
         <source>Are you sure you want to delete %1 fonts</source>
-        <translation>Заиста желите да обришете %1 фонта/ова</translation>
+        <translation type="vanished">Заиста желите да обришете %1 фонта/ова</translation>
     </message>
     <message>
         <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
@@ -168,6 +168,10 @@
     <message>
         <source>This font will not be available to applications, and the other %1 system fonts cannot be deleted</source>
         <translation>Овиј фонт неће бити доступан програмима, а осталих %1 системских фонтова се не могу уклонити</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete %1 fonts?</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

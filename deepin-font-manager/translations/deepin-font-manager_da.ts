@@ -159,7 +159,7 @@
     </message>
     <message>
         <source>Are you sure you want to delete %1 fonts</source>
-        <translation>Er du sikker på, at du vil slette %1 skrifttyper?</translation>
+        <translation type="vanished">Er du sikker på, at du vil slette %1 skrifttyper?</translation>
     </message>
     <message>
         <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
@@ -168,6 +168,10 @@
     <message>
         <source>This font will not be available to applications, and the other %1 system fonts cannot be deleted</source>
         <translation>Skrifttyperne vil ikke være tilgængelige for programmer og de andre %1 systemskrifttyper kan ikke slettes</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete %1 fonts?</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -205,7 +209,7 @@
     </message>
     <message>
         <source>No fonts to be installed</source>
-        <translation type="unfinished"/>
+        <translation>Ingen skrifttyper at installere</translation>
     </message>
 </context>
 <context>

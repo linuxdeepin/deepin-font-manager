@@ -159,7 +159,7 @@
     </message>
     <message>
         <source>Are you sure you want to delete %1 fonts</source>
-        <translation>Segur que voleu eliminar %1 lletres?</translation>
+        <translation type="vanished">Segur que voleu eliminar %1 lletres?</translation>
     </message>
     <message>
         <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
@@ -168,6 +168,10 @@
     <message>
         <source>This font will not be available to applications, and the other %1 system fonts cannot be deleted</source>
         <translation>Aquesta lletra no estarà disponible a les aplicacions i les altres %1 lletres del sistema no es poden eliminar.</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete %1 fonts?</source>
+        <translation>Segur que voleu eliminar %1 lletres?</translation>
     </message>
 </context>
 <context>

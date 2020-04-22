@@ -364,7 +364,7 @@ bool DFInstallNormalWindow::isSystemFont(DFontInfo &f)
 void DFInstallNormalWindow::checkShowMessage()
 {
     qDebug() << "Install over" << endl;
-    qDebug() << getInstallMessage << getReInstallMessage << m_installAdded << m_installFinishSent;
+//    qDebug() << getInstallMessage << getReInstallMessage << m_installAdded << m_installFinishSent;
     if (getInstallMessage == true && getReInstallMessage == true) {
         qDebug() << "ReInstall over" << endl;
         if (!m_installFinishSent) {
@@ -401,6 +401,14 @@ void DFInstallNormalWindow::checkShowMessage()
 void DFInstallNormalWindow::resizeEvent(QResizeEvent *event)
 {
     DFontBaseDialog::resizeEvent(event);
+}
+
+void DFInstallNormalWindow::paintEvent(QPaintEvent *event)
+{
+//  ut000442 优化显示效果，弹出对话框时可以动态调整label的高度，从而避免遮挡的出现
+
+    DFontBaseDialog::paintEvent(event);
+    m_progressStepLabel->setFixedHeight(m_progressStepLabel->fontMetrics().height());
 }
 
 void DFInstallNormalWindow::closeEvent(QCloseEvent *event)
@@ -536,8 +544,8 @@ void DFInstallNormalWindow::onCancelInstall()
     qDebug() << "cancel reinstall" << endl;
     emit m_signalManager->sendReInstallMessage(0);
     Q_EMIT SignalManager::instance()->requestInstallAdded();
-
-    this->accept();
+//ut000442 后面添加了关闭这个框的逻辑，不需要在这里关闭。
+//    this->accept();
 }
 
 void DFInstallNormalWindow::onContinueInstall(const QStringList &continueInstallFontFileList)

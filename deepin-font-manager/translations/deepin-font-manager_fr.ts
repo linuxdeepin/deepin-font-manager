@@ -49,7 +49,7 @@
     <name>DFInstallErrorDialog</name>
     <message>
         <source>Broken file</source>
-        <translation>Fichier cassé</translation>
+        <translation>Fichier corrompu</translation>
     </message>
     <message>
         <source>Same version installed</source>
@@ -159,7 +159,7 @@
     </message>
     <message>
         <source>Are you sure you want to delete %1 fonts</source>
-        <translation>Voulez-vous vraiment supprimer les polices %1</translation>
+        <translation type="vanished">Voulez-vous vraiment supprimer les polices %1</translation>
     </message>
     <message>
         <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
@@ -168,6 +168,10 @@
     <message>
         <source>This font will not be available to applications, and the other %1 system fonts cannot be deleted</source>
         <translation>Cette police ne sera pas disponible pour les applications et les autres polices du système %1 ne peuvent pas être supprimées</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete %1 fonts?</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -205,14 +209,14 @@
     </message>
     <message>
         <source>No fonts to be installed</source>
-        <translation type="unfinished"/>
+        <translation>Aucune police à installer</translation>
     </message>
 </context>
 <context>
     <name>Font</name>
     <message>
         <source>Don&apos;t let your dreams be dreams</source>
-        <translation>Ne laisse pas tes rêves devenir des rêves</translation>
+        <translation>Ne laissez pas vos rêves devenir des rêves</translation>
     </message>
 </context>
 <context>
@@ -243,7 +247,7 @@
     </message>
     <message>
         <source>Full name</source>
-        <translation>Nom complet</translation>
+        <translation>Nom </translation>
     </message>
     <message>
         <source>Ps name</source>
@@ -301,7 +305,7 @@
     </message>
     <message>
         <source>Unfavorite</source>
-        <translation>Ne pas aimer</translation>
+        <translation>Défavoris</translation>
     </message>
     <message>
         <source>Details</source>
@@ -369,7 +373,7 @@
     </message>
     <message>
         <source>No search results</source>
-        <translation>Pas de résultat</translation>
+        <translation>Aucun résultat trouvé</translation>
     </message>
     <message>
         <source>No fonts</source>
@@ -408,7 +412,7 @@
     </message>
     <message>
         <source>Unfavorite</source>
-        <translation>Ne pas aimer</translation>
+        <translation>Défavoris</translation>
     </message>
     <message>
         <source>Font info</source>
@@ -447,7 +451,7 @@
     </message>
     <message>
         <source>Unfavorite</source>
-        <translation type="vanished">Ne pas aimer</translation>
+        <translation type="vanished">Défavoris</translation>
     </message>
     <message>
         <source>Font info</source>

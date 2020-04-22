@@ -159,7 +159,7 @@
     </message>
     <message>
         <source>Are you sure you want to delete %1 fonts</source>
-        <translation>%1 yazı tipini silmek istediğinizden emin misiniz?</translation>
+        <translation type="vanished">%1 yazı tipini silmek istediğinizden emin misiniz?</translation>
     </message>
     <message>
         <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
@@ -168,6 +168,10 @@
     <message>
         <source>This font will not be available to applications, and the other %1 system fonts cannot be deleted</source>
         <translation>Bu yazı tipi uygulamalar tarafından kullanılamaz ve diğer %1 sistem yazı tipleri silinemez</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete %1 fonts?</source>
+        <translation>%1 yazı tipini silmek istediğinizden emin misiniz?</translation>
     </message>
 </context>
 <context>

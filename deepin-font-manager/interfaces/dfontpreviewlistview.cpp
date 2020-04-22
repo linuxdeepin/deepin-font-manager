@@ -42,7 +42,7 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
     topSpaceWidget->setFixedSize(this->width(), 10);
     this->addHeaderWidget(topSpaceWidget);
 
-    setAutoScroll(true);
+//    setAutoScroll(true);
     setMouseTracking(true);
     setUpdatesEnabled(true);
     setSelectionMode(QAbstractItemView::ExtendedSelection);

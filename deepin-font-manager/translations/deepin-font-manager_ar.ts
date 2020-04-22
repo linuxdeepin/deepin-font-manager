@@ -159,7 +159,7 @@
     </message>
     <message>
         <source>Are you sure you want to delete %1 fonts</source>
-        <translation>هل انت متأكد من حذف %1 خط/خطوط؟</translation>
+        <translation type="vanished">هل انت متأكد من حذف %1 خط/خطوط؟</translation>
     </message>
     <message>
         <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
@@ -168,6 +168,10 @@
     <message>
         <source>This font will not be available to applications, and the other %1 system fonts cannot be deleted</source>
         <translation>هذه الخطوط لن تكون متاحة للبرامج، وخطوط النظام %1 الاخرى لا يمكن حذفها</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete %1 fonts?</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -205,7 +209,7 @@
     </message>
     <message>
         <source>No fonts to be installed</source>
-        <translation type="unfinished"/>
+        <translation>لا توجد خطوط ليتم تثبيتها</translation>
     </message>
 </context>
 <context>

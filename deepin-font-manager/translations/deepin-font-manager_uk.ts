@@ -159,7 +159,7 @@
     </message>
     <message>
         <source>Are you sure you want to delete %1 fonts</source>
-        <translation>Ви справді хочете вилучити %1 шрифтів?</translation>
+        <translation type="vanished">Ви справді хочете вилучити %1 шрифтів?</translation>
     </message>
     <message>
         <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
@@ -168,6 +168,10 @@
     <message>
         <source>This font will not be available to applications, and the other %1 system fonts cannot be deleted</source>
         <translation>Цей шрифти буде недоступним для програм, інші %1 загальносистемних шрифтів не може бути вилучено</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete %1 fonts?</source>
+        <translation>Ви справді хочете вилучити %1 шрифтів?</translation>
     </message>
 </context>
 <context>
@@ -205,7 +209,7 @@
     </message>
     <message>
         <source>No fonts to be installed</source>
-        <translation type="unfinished"/>
+        <translation>Не буде встановлено жодного шрифту</translation>
     </message>
 </context>
 <context>

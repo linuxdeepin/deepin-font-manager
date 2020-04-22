@@ -45,6 +45,7 @@ protected:
     void checkShowMessage();
 
     void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
+    void paintEvent(QPaintEvent *event) override;
 protected slots:
     void batchInstall();
     void batchReInstall();

@@ -159,7 +159,7 @@
     </message>
     <message>
         <source>Are you sure you want to delete %1 fonts</source>
-        <translation>您确定要删除这%1个字体吗？</translation>
+        <translation type="vanished">您确定要删除这%1个字体吗？</translation>
     </message>
     <message>
         <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
@@ -168,6 +168,10 @@
     <message>
         <source>This font will not be available to applications, and the other %1 system fonts cannot be deleted</source>
         <translation>删除后该字体将不可用于其他应用程序，无法删除其他%1个系统字体</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete %1 fonts?</source>
+        <translation>您确定要删除这%1个字体吗？</translation>
     </message>
 </context>
 <context>
