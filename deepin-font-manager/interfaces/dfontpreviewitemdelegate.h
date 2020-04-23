@@ -2,7 +2,7 @@
 #define DFONTPREVIEWITEMDELEGATE_H
 
 #include "dfontpreviewitemdef.h"
-
+#include <stdlib.h>
 #include <DStyledItemDelegate>
 
 DWIDGET_USE_NAMESPACE

@@ -103,6 +103,7 @@ void DFontPreviewItemDelegate::paintForegroundCollectIcon(QPainter *painter, con
                                       option.rect.top() + COLLECT_ICON_TOP_MARGIN,
                                       COLLECT_ICON_SIZE, COLLECT_ICON_SIZE);
     painter->drawPixmap(collectIconRealRect, pixmap);
+
 }
 
 QRect DFontPreviewItemDelegate::adjustPreviewRect(const QRect bgRect) const

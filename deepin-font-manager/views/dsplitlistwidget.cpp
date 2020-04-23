@@ -9,10 +9,12 @@
 #include <DApplicationHelper>
 #include <DLog>
 #include <DFontSizeManager>
+#include <QToolTip>
 
 #define FTM_SPLIT_TOP_SPACE_TAG "_space_"
 #define FTM_SPLIT_TOP_SPLIT_TAG "_split_"
 #define FTM_SPLIT_LINE_INDEX    5
+#define TITLE_VISIBLE_WIDTH    96
 
 DNoFocusDelegate::DNoFocusDelegate(QAbstractItemView *parent)
     : DStyledItemDelegate(parent)
@@ -30,7 +32,10 @@ void DNoFocusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
         painter->setRenderHint(QPainter::Antialiasing, true);
 
         QVariant varDisplay = index.data(Qt::DisplayRole);
-        QString strTitle = varDisplay.value<QString>();
+        QString iniTitle = varDisplay.value<QString>();
+        QFont nameFont = painter->font();
+        QString strTitle = adjustLength(iniTitle, nameFont);
+
 
         QStyleOptionViewItem viewOption(option);  //用来在视图中画一个item
 
@@ -93,7 +98,7 @@ void DNoFocusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
             }
 
 
-            QFont nameFont = painter->font();
+
             nameFont.setWeight(QFont::Medium);
             nameFont.setPixelSize(DFontSizeManager::instance()->fontPixelSize(DFontSizeManager::T6));
             painter->setFont(nameFont);
@@ -125,6 +130,34 @@ QSize DNoFocusDelegate::sizeHint(const QStyleOptionViewItem &option,
         return QSize(option.rect.width(), 36);
     }
 }
+//adjust length/*UT000539*/
+QString DNoFocusDelegate::adjustLength(QString &titleName, QFont &font) const
+{
+    QFontMetrics fontMetric(font);
+
+    QString finalTitle = "";
+    QString m_curTitle = "";
+
+    int curWidth ;
+
+    for (auto str : titleName) {
+        m_curTitle += str;
+        curWidth = fontMetric.width(m_curTitle);
+        if (curWidth > TITLE_VISIBLE_WIDTH) {
+            if (m_curTitle == titleName) {
+                finalTitle = titleName;
+                break;
+            } else {
+
+                finalTitle =   m_curTitle.append("...");
+                break;
+            }
+        } else {
+            finalTitle = titleName;
+        }
+    }
+    return finalTitle;
+}
 
 DSplitListWidget::DSplitListWidget(QWidget *parent)
     : DListView(parent)
@@ -133,7 +166,8 @@ DSplitListWidget::DSplitListWidget(QWidget *parent)
     this->setItemDelegate(new DNoFocusDelegate(this));
     this->setEditTriggers(QAbstractItemView::EditTrigger::NoEditTriggers);
     this->setAutoScroll(false);
-
+    this->setMouseTracking(true);
+    this->installEventFilter(this);
     initListData();
 }
 
@@ -187,4 +221,43 @@ void DSplitListWidget::currentChanged(const QModelIndex &current, const QModelIn
     int realIndex = m_titleStringIndexMap.value(varUserData.toString());
 
     emit onListWidgetItemClicked(realIndex);
+}
+
+//hover for helper on leftListview /*UT000539*/
+bool DNoFocusDelegate::helpEvent(QHelpEvent *event, QAbstractItemView *view, const QStyleOptionViewItem &option, const QModelIndex &index)
+{
+    QToolTip::hideText();
+    if (event->type() == QEvent::ToolTip) {
+        const QString tooltip = index.data(Qt::DisplayRole).toString();
+        qDebug() << __FUNCTION__ << "__now Hover is :__" << tooltip;
+        if (tooltip.isEmpty() || tooltip == "_split_") {
+            hideTooltipImmediately();
+        } else {
+            int tooltipsize = tooltip.size();
+            const int nlong = 32;
+            int lines = tooltipsize / nlong + 1;
+            QString strtooltip;
+            for (int i = 0; i < lines; ++i) {
+                strtooltip.append(tooltip.mid(i * nlong, nlong));
+                strtooltip.append("\n");
+            }
+            strtooltip.chop(1);
+//            QTimer::singleShot(1000, [ = ]() {
+            QToolTip::showText(event->globalPos(), strtooltip, view);
+//            });
+        }
+        return false;
+    }
+    return DNoFocusDelegate::helpEvent(event, view, option, index);
+}
+
+//hide tooltip
+void DNoFocusDelegate::hideTooltipImmediately()
+{
+    QWidgetList qwl = QApplication::topLevelWidgets();
+    for (QWidget *qw : qwl) {
+        if (QStringLiteral("QTipLabel") == qw->metaObject()->className()) {
+            qw->close();
+        }
+    }
 }

@@ -2,8 +2,9 @@
 #define DSPLITLISTWIDGET_H
 
 #include <DListView>
-
+#include <QModelIndex>
 #include <QMetaType>
+#include <DToolTip>
 #include <DStyledItemDelegate>
 DWIDGET_USE_NAMESPACE
 
@@ -18,8 +19,12 @@ public:
     QSize sizeHint(const QStyleOptionViewItem &option,
                    const QModelIndex &index) const override;
 
+    QString adjustLength(QString &titleName, QFont &font) const;
+protected:
+    bool helpEvent(QHelpEvent *event, QAbstractItemView *view, const QStyleOptionViewItem &option, const QModelIndex &index)override;
 private:
     QAbstractItemView *m_parentView;
+    void hideTooltipImmediately();
 };
 
 class DSplitListWidget : public DListView
@@ -50,6 +55,7 @@ public:
 
 signals:
     void onListWidgetItemClicked(int index);
+protected:
 };
 
 Q_DECLARE_METATYPE(DSplitListWidget::FontGroup)

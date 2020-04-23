@@ -8,7 +8,6 @@
 #include "signalmanager.h"
 #include "dsplitlistwidget.h"
 #include "views/dfdeletedialog.h"
-
 #include <QShortcut>
 
 #include <DFrame>

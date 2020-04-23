@@ -63,7 +63,8 @@ struct DFontPreviewItemData {
         collectIconStatus = IconNormal;
     }
 
-    DFontPreviewItemData(const DFontPreviewItemData &other) {
+    DFontPreviewItemData(const DFontPreviewItemData &other)
+    {
         fontInfo.filePath = other.fontInfo.filePath;
         fontInfo.familyName = other.fontInfo.familyName;
         fontInfo.styleName = other.fontInfo.styleName;
@@ -91,7 +92,8 @@ struct DFontPreviewItemData {
         collectIconStatus = other.collectIconStatus;
     }
 
-    bool operator==(const DFontPreviewItemData &info) {
+    bool operator==(const DFontPreviewItemData &info)
+    {
         return (fontInfo == info.fontInfo);
     }
 };

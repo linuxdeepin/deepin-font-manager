@@ -94,6 +94,7 @@ DFontMgrMainWindow::DFontMgrMainWindow(bool isQuickMode, QWidget *parent)
     initShortcuts();
     initFontFiles();
     initFontUninstallDialog();
+
 }
 
 DFontMgrMainWindow::~DFontMgrMainWindow()
