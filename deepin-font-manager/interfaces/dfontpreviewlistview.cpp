@@ -726,6 +726,11 @@ void DFontPreviewListView::onListViewItemCollectionBtnClicked(const QModelIndexL
         m_fontPreviewProxyModel->setData(index, QVariant::fromValue(itemData), Qt::DisplayRole);
     }
     if (isFromCollectFont == true) {
+//      ut000442 bug 22350.通过快捷键访问时，有可能选中字体为空，添加相关判断，为空直接返回
+        if (itemIndexesNew.count() == 0) {
+            return;
+        }
+
         DFontPreviewItemData itemData =
             qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(itemIndexesNew.last()));
         if (itemData.strFontFileName.size()) {
