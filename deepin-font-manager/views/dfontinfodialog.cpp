@@ -241,7 +241,7 @@ void DFontInfoDialog::initConnections()
         if (height * 1.3 + 280 < DEFAULT_WINDOW_H) {
             this->setFixedHeight(height * 1.3 + 280);
 //            this->move(m_faCenter - this->rect().center());
-            QPixmap bmp(QSize(280, height * 1.3));
+            QPixmap bmp(QSize(280, height * 1.3 + 25));
             bmp.fill();
             QPainter p(&bmp);
             bmp.setDevicePixelRatio(0);
@@ -249,8 +249,8 @@ void DFontInfoDialog::initConnections()
             p.drawRoundedRect(bmp.rect(), 12, 12);
             p.setRenderHint(QPainter::Antialiasing);
             scrollArea->viewport()->setMask(bmp);
-            scrollArea->viewport()->setFixedHeight(height * 1.3);
-            scrollArea->setFixedHeight(height * 1.3);
+            scrollArea->viewport()->setFixedHeight(height * 1.3 + 25);
+            scrollArea->setFixedHeight(height * 1.3 + 25);
         } else {
             this->setFixedHeight(DEFAULT_WINDOW_H);
 //            this->move(m_faCenter - this->rect().center());
