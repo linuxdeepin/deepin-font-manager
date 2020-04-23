@@ -83,7 +83,7 @@ void DFInstallErrorListDelegate::drawFontName(QPainter *painter, const QStyleOpt
     QRect fontFileNameRect = QRect(bgRect.left() + fontNameLeft,
                                    checkboxRect.top() - 5,
                                    bgRect.width() - fontNameLeft - m_StatusWidth,
-                                   checkboxRect.height() + 10);
+                                   checkboxRect.height() + 15);
 
 
 
