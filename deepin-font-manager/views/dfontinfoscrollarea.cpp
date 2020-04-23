@@ -5,6 +5,8 @@
 #include <DApplicationHelper>
 
 #define LAEBL_TEXT_WIDTH   165
+#define TITLE_VISIBLE_WIDTH 90
+#define INFO_VISIBLE_WIDTH 180
 
 dfontinfoscrollarea::dfontinfoscrollarea(DFontPreviewItemData *pData,  DWidget *parent)
     : DFrame(parent)
@@ -77,13 +79,16 @@ bool dfontinfoscrollarea::eventFilter(QObject *obj, QEvent *e)
 
 void dfontinfoscrollarea::createLabel(QGridLayout *layout, const int &index, const QString &objName, const QString &sData)
 {
-    DLabel *label = new DLabel(objName, this);
+    QString str = objName;
+    DLabel *label = new DLabel(adjustLength(str), this);
     DFontSizeManager::instance()->bind(label, DFontSizeManager::T8);
     label->setAlignment(Qt::AlignTop);
 
     label->setFixedWidth(100);
     layout->addWidget(label, index, 0);
-
+    if (pTitleMap.find(label) == pTitleMap.end()) {
+        pTitleMap.insert(std::pair<QLabel *, QString>(label, objName));
+    }
     if (sData == "") {
         DLabel *labelText = new DLabel(this);
         DFontSizeManager::instance()->bind(labelText, DFontSizeManager::T8);
@@ -102,12 +107,12 @@ void dfontinfoscrollarea::createLabel(QGridLayout *layout, const int &index, con
 DFrame *dfontinfoscrollarea::addTitleFrame(const QString &sData, const QString &objName)
 {
     DFrame *m_textShowFrame = new DFrame(this);
-    QString ts = elideText(sData, this->font(), 180);
+    QString ts = elideText(sData, this->font(), INFO_VISIBLE_WIDTH);
 
     QVBoxLayout *vLayout = new QVBoxLayout;
 
     QLabel *label = new QLabel(ts, m_textShowFrame);
-    label->setFixedWidth(180);
+    label->setFixedWidth(INFO_VISIBLE_WIDTH);
     DFontSizeManager::instance()->bind(label, DFontSizeManager::T8);
     if (pLabelMap.find(label) == pLabelMap.end()) {
         pLabelMap.insert(std::pair<QLabel *, QString>(label, sData));
@@ -148,37 +153,94 @@ void dfontinfoscrollarea::paintEvent(QPaintEvent *event)
 QString dfontinfoscrollarea::elideText(const QString &text, const QFont &font, int nLabelSize)
 {
     QFontMetrics fm(font);
-    int nTextSize = fm.width(text);
-    if (nTextSize > nLabelSize) {
-        int nPos = 0;
-        long nOffset = 0;
-        for (int i = 0; i < text.size(); i++) {
-            nOffset += fm.width(text.at(i));
-            if (nOffset >= nLabelSize) {
-                nPos = i;
-                break;
+    QString strText = text;
+    int n_TextSize = fm.width(strText);
+    int count  = 0;
+    if (n_TextSize > nLabelSize) {
+        int n_position = 0;
+        long n_curSumWidth = 0;
+        for (int i = 0; i < strText.size(); i++) {
+            n_curSumWidth += fm.width(strText.at(i));
+            if (n_curSumWidth > nLabelSize * (count + 1)) {
+                n_position = i;
+                strText.insert(n_position, "\n");
+                count++;
             }
         }
-        nPos = (nPos - 1 < 0) ? 0 : nPos - 1;
-
-        QString qstrLeftData = text.left(nPos);
-        QString qstrMidData = text.mid(nPos);
-        return qstrLeftData + "\n" + elideText(qstrMidData, font, nLabelSize);
     }
-    return text;
+    return strText;
+//勿删，函数递归有时异常，需要排查原因，已用上段方法解决
+//    QFontMetrics fm(font);
+//    int nTextSize = fm.width(text);
+//    if (nTextSize > nLabelSize) {
+//        int nPos = 0;
+//        long nOffset = 0;
+//        for (int i = 0; i < text.size(); i++) {
+//            nOffset += fm.width(text.at(i));
+//            if (nOffset >= nLabelSize) {
+//                nPos = i;
+//                break;
+//            }
+//        }
+//        nPos = (nPos - 1 < 0) ? 0 : nPos - 1;
+
+//        QString qstrLeftData = text.left(nPos);
+//        QString qstrMidData = text.mid(nPos);
+//        return qstrLeftData + "\n" + elideText(qstrMidData, font, nLabelSize);
+//    }
+//    return text;
 }
 
 void dfontinfoscrollarea::updateText()
 {
+    for (auto pTltle : pTitleMap) {
+        if (!pTltle.first) {
+            continue;
+        }
+        QString text = pTltle.second;
+        QString newtext = adjustLength(text);
+        pTltle.first->setText(newtext);
+    }
     for (auto plabeliter : pLabelMap) {
         if (!plabeliter.first) {
             continue;
         }
         QString text = plabeliter.second;
-        QString newtext = elideText(text, this->font(), 180);
+        QString newtext = elideText(text, this->font(), INFO_VISIBLE_WIDTH);
         plabeliter.first->setText(newtext);
     }
 }
 
+QString dfontinfoscrollarea::adjustLength(QString &titleName) const
+{
+    QFont font = this->font();
+    QFontMetrics fontMetric(font);
 
+    QString finalTitle = "";
+    QString m_curTitle = "";
 
+    int curWidth = 0;
+
+    for (auto str : titleName) {
+        if (str == "\t") {
+            curWidth  += fontMetric.width("a");
+        } else {
+            curWidth  += fontMetric.width(str);
+        }
+        m_curTitle += str;
+
+        if (curWidth > TITLE_VISIBLE_WIDTH) {
+            if (m_curTitle == titleName) {
+                finalTitle = titleName;
+                break;
+            } else {
+
+                finalTitle =   m_curTitle.append("...");
+                break;
+            }
+        } else {
+            finalTitle = titleName;
+        }
+    }
+    return finalTitle;
+}

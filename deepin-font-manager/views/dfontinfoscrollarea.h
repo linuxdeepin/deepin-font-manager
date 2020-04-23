@@ -56,7 +56,9 @@ private:
 
     void paintEvent(QPaintEvent *event) override;
     DLabel *basicLabel = nullptr;
-    std::map<QLabel *, QString> pLabelMap;//存储信息label键值对
+    std::map<QLabel *, QString> pTitleMap;//存储信息title键值对
+    std::map<QLabel *, QString> pLabelMap;//存储信息info label键值对
+    QString adjustLength(QString &titleName) const;
 };
 
 #endif // ATTRSCROLLWIDGET_H
