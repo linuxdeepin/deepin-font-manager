@@ -30,7 +30,6 @@ public slots:
 
 protected:
     void keyPressEvent(QKeyEvent *event) override;
-
 signals:
     void requestDelete();
 

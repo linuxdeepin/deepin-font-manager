@@ -55,6 +55,7 @@ void DFDeleteDialog::initUI()
 
     QWidget *mainFrame = new QWidget(this);
     mainFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    messageDetail->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     mainFrame->setLayout(mainLayout);
 
     //#000794 解决显示不全的问题
@@ -181,6 +182,7 @@ void DFDeleteDialog::onFontChanged(const QFont &font)
 {
     Q_UNUSED(font);
     /* Bug#20953 #21069  UT000591 */
+    messageDetail->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     resize(sizeHint());
 }
 
