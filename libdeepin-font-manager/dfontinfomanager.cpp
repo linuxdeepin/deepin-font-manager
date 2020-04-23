@@ -177,7 +177,7 @@ QString DFontInfoManager::getFontType(const QString &filePath)
     } else if (suffix == "otf") {
         return "OpenType";
     } else {
-        return DApplication::translate("FontDetailDailog", "Unknown");
+        return "Unknown";//DApplication::translate("FontDetailDailog", "Unknown");
     }
 }
 
@@ -230,6 +230,9 @@ DFontInfo DFontInfoManager::getFontInfo(const QString &filePath, bool force)
 //        fontInfo.familyName = QString::fromLatin1(m_face->family_name);
 //    }
 
+    if (filePath.contains("/usr/share/fonts/truetype/deepin/")) {
+        qDebug() << __FUNCTION__ << " found " << m_face->family_name << m_face->style_name;
+    }
     fontInfo.styleName = QString::fromLatin1(m_face->style_name);
     fontInfo.type = getFontType(filePath);
 

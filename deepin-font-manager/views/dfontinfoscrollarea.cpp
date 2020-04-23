@@ -29,7 +29,7 @@ dfontinfoscrollarea::dfontinfoscrollarea(DFontPreviewItemData *pData,  DWidget *
 
 
     createLabel(gridLayout, 0, DApplication::translate("FontDetailDailog", "Style"), m_fontInfo->fontInfo.styleName);
-    createLabel(gridLayout, 1, DApplication::translate("FontDetailDailog", "Type"), m_fontInfo->fontInfo.type);
+    createLabel(gridLayout, 1, DApplication::translate("FontDetailDailog", "Type"), DApplication::translate("FontDetailDailog", m_fontInfo->fontInfo.type.toLatin1()));
 
 
     if (m_fontInfo->fontInfo.version.isEmpty()) {
