@@ -193,7 +193,8 @@ bool DFMDBManager::addFontInfo(const DFontPreviewItemData &itemData)
 {
 //    qDebug() << __FUNCTION__ << itemData.fontInfo.toString();
     if (!m_addFontList.contains(itemData) || itemData.fontInfo.isSystemFont)
-        m_addFontList << itemData;
+//        m_addFontList << itemData;
+        m_addFontList.append(itemData);
     return true;
 //    return m_sqlUtil->addRecord(mapItemData(itemData));
 }

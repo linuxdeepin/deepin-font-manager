@@ -258,6 +258,8 @@ QRect DFontPreviewListView::getCollectionIconRect(QRect visualRect)
     return QRect(visualRect.right() - 10 - 33, visualRect.top() + 10 - 5, collectIconSize, collectIconSize);
 }
 
+// ut000442 对选中字体的索引按照row从大到小进行排序，为了在我的收藏界面和已激活界面进行操作时
+// 涉及到删除listview中item时从后往前删，避免在删除过程中索引出错的问题。
 void DFontPreviewListView::sortModelIndexList(QModelIndexList &sourceList)
 {
     QModelIndex temp;
@@ -363,7 +365,7 @@ void DFontPreviewListView::selectFont(const QString &file)
             QModelIndex left = m_fontPreviewProxyModel->index(index.row(), 0);
             QModelIndex right = m_fontPreviewProxyModel->index(index.row(), m_fontPreviewProxyModel->columnCount() - 1);
             QItemSelection sel(left, right);
-            (sel, QItemSelectionModel::Select);
+            selection.merge(sel, QItemSelectionModel::Select);
         }
     }
 
@@ -488,6 +490,7 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
 
 void DFontPreviewListView::mouseReleaseEvent(QMouseEvent *event)
 {
+
     DListView::mouseReleaseEvent(event);
 
     if (m_fontPreviewItemModel && m_fontPreviewItemModel->rowCount() == 0) {
@@ -536,6 +539,9 @@ void DFontPreviewListView::mouseReleaseEvent(QMouseEvent *event)
 
     }
 
+
+//ut000442 bug20343 鼠标点击右侧爱心时不移动，松开时再次获取此时鼠标位置的item，再去判断鼠标点击
+//点还在不在爱心上，这样就能正确显示相应效果。
     DFontPreviewItemData m_NextItemData =
         qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(modelIndex));
 

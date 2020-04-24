@@ -238,10 +238,10 @@ void DFontInfoDialog::initConnections()
         m_fontFileName->setPalette(pa);
         m_fontFileName->setText(AutoFeed(m_FileName));
 
-        if (height * 1.5 + 280 < DEFAULT_WINDOW_H) {
-            this->setFixedHeight(static_cast<int>(height * 1.5 + 280));
+        if (height * 1.1 + 280 < DEFAULT_WINDOW_H) {
+            this->setFixedHeight(static_cast<int>(height * 1.1 + 280));
 //            this->move(m_faCenter - this->rect().center());
-            QPixmap bmp(QSize(280, (static_cast<int>(height * 1.5 + 10))));
+            QPixmap bmp(QSize(280, (static_cast<int>(height * 1.1 + 20))));
             bmp.fill();
             QPainter p(&bmp);
             bmp.setDevicePixelRatio(0);
@@ -249,8 +249,8 @@ void DFontInfoDialog::initConnections()
             p.drawRoundedRect(bmp.rect(), 12, 12);
             p.setRenderHint(QPainter::Antialiasing);
             scrollArea->viewport()->setMask(bmp);
-            scrollArea->viewport()->setFixedHeight(static_cast<int>(height * 1.5 + 10));
-            scrollArea->setFixedHeight(static_cast<int>(height * 1.5 + 10));
+            scrollArea->viewport()->setFixedHeight(static_cast<int>(height * 1.1 + 20));
+            scrollArea->setFixedHeight(static_cast<int>(height * 1.1 + 20));
         } else {
             this->setFixedHeight(DEFAULT_WINDOW_H);
 //            this->move(m_faCenter - this->rect().center());
