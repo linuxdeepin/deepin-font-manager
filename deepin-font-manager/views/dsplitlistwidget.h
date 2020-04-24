@@ -22,9 +22,11 @@ public:
     QString adjustLength(QString &titleName, QFont &font) const;
 protected:
     bool helpEvent(QHelpEvent *event, QAbstractItemView *view, const QStyleOptionViewItem &option, const QModelIndex &index)override;
+
 private:
     QAbstractItemView *m_parentView;
     void hideTooltipImmediately();
+
 };
 
 class DSplitListWidget : public DListView
@@ -56,6 +58,7 @@ public:
 signals:
     void onListWidgetItemClicked(int index);
 protected:
+    void mouseMoveEvent(QMouseEvent *event) override;
 };
 
 Q_DECLARE_METATYPE(DSplitListWidget::FontGroup)

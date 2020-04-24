@@ -222,6 +222,14 @@ void DSplitListWidget::currentChanged(const QModelIndex &current, const QModelIn
     emit onListWidgetItemClicked(realIndex);
 }
 
+void DSplitListWidget::mouseMoveEvent(QMouseEvent *event)
+{
+    if (QToolTip::isVisible()) {
+        QToolTip::hideText();
+    }
+    return;
+}
+
 //hover for helper on leftListview /*UT000539*/
 bool DNoFocusDelegate::helpEvent(QHelpEvent *event, QAbstractItemView *view
                                  , const QStyleOptionViewItem &option, const QModelIndex &index)
@@ -244,6 +252,10 @@ bool DNoFocusDelegate::helpEvent(QHelpEvent *event, QAbstractItemView *view
             strtooltip.chop(1);
 //            QTimer::singleShot(1000, [ = ]() {
             QToolTip::showText(event->globalPos(), strtooltip, view);
+
+//            QTimer::singleShot(500, []() {
+//                QToolTip::hideText();
+//            });
 //            });
         }
         return false;
