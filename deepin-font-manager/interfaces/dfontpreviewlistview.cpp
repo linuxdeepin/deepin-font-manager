@@ -150,7 +150,7 @@ void DFontPreviewListView::onMultiItemsAdded(const QList<DFontPreviewItemData> &
     qDebug() << __FUNCTION__ << "rows = " << sourceModel->rowCount();
     for (DFontPreviewItemData itemData : data) {
         QModelIndex index = sourceModel->index(rows + i,   0);
-        qDebug() << __FUNCTION__ << index;
+//        qDebug() << __FUNCTION__ << index;
         res = sourceModel->setData(index, QVariant::fromValue(itemData), Qt::DisplayRole);
         if (!res)
             qDebug() << __FUNCTION__ << "setData fail";

@@ -370,6 +370,9 @@ bool DFInstallNormalWindow::isSystemFont(DFontInfo &f)
 
 void DFInstallNormalWindow::checkShowMessage()
 {
+//新安装的字体在安装完成时 getInstallMessage置为true。重复安装的字体安装完成时 getReInstallMessage置为true
+//列表刷新完成后 m_installAdded置为true。三者都为true时表示一次安装过程结束。
+
     qDebug() << "Install over" << endl;
 //    qDebug() << getInstallMessage << getReInstallMessage << m_installAdded << m_installFinishSent;
     if (getInstallMessage == true && getReInstallMessage == true) {

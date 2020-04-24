@@ -493,8 +493,8 @@ void DSqliteUtil::updateFontInfo(const QList<DFontPreviewItemData> &fontList, co
 
 QString DSqliteUtil::escapeString(const QString &str)
 {
-//    if (str.isEmpty() || str.isNull())
-//        return "";
+    if (str.isEmpty() || str.isNull())
+        return "";
     QString escapeStr = str;
 //    escapeStr = escapeStr.replace("'", "''");
     return escapeStr;
