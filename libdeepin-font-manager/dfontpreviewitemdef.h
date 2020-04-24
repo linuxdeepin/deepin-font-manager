@@ -44,6 +44,9 @@ struct DFontPreviewItemData {
         fontInfo.copyright = "";
         fontInfo.description = "";
         fontInfo.sysVersion = "";
+        fontInfo.fullname = "";
+        fontInfo.psname = "";
+        fontInfo.trademark = "";
         fontInfo.isInstalled = false;
         fontInfo.isError = false;
         fontInfo.isSystemFont = true;
@@ -73,6 +76,9 @@ struct DFontPreviewItemData {
         fontInfo.copyright = other.fontInfo.copyright;
         fontInfo.description = other.fontInfo.description;
         fontInfo.sysVersion = other.fontInfo.sysVersion;
+        fontInfo.fullname = other.fontInfo.fullname;
+        fontInfo.psname = other.fontInfo.psname;
+        fontInfo.trademark = other.fontInfo.trademark;
         fontInfo.isInstalled = other.fontInfo.isInstalled;
         fontInfo.isError = other.fontInfo.isError;
         fontInfo.isSystemFont = other.fontInfo.isSystemFont;
