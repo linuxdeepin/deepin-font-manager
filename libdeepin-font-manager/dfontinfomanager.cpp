@@ -230,9 +230,6 @@ DFontInfo DFontInfoManager::getFontInfo(const QString &filePath, bool force)
 //        fontInfo.familyName = QString::fromLatin1(m_face->family_name);
 //    }
 
-    if (filePath.contains("/usr/share/fonts/truetype/deepin/")) {
-        qDebug() << __FUNCTION__ << " found " << m_face->family_name << m_face->style_name;
-    }
     fontInfo.styleName = QString::fromLatin1(m_face->style_name);
     fontInfo.type = getFontType(filePath);
 
@@ -288,14 +285,14 @@ DFontInfo DFontInfoManager::getFontInfo(const QString &filePath, bool force)
         }
     }
 
-    if (!fontInfo.fullname.isEmpty()) {
+    if (!fontInfo.fullname.isEmpty() && !fontInfo.isSystemFont) {
         fontInfo.familyName = fontInfo.fullname.replace(QRegExp(QString(" " + fontInfo.styleName + "$")), "");
     }
     if (fontInfo.familyName.trimmed().length() < 1) {
-        fontInfo.familyName = QString::fromUtf8(DFreeTypeUtil::getFontFamilyName(m_face));
+        fontInfo.familyName = QString::fromLatin1(m_face->family_name);
     }
     if (fontInfo.familyName.trimmed().length() < 1) {
-        fontInfo.familyName = QString::fromLatin1(m_face->family_name);
+        fontInfo.familyName = QString::fromUtf8(DFreeTypeUtil::getFontFamilyName(m_face));
     }
 
     // destroy object.

@@ -40,6 +40,12 @@ DFontManager *DFontManager::instance()
 DFontManager::DFontManager(QObject *parent)
     : QThread(parent)
 {
+    connect(this, &QThread::finished, [ = ] {
+        qDebug() << "########## finished";
+    });
+    connect(this, &QThread::started, [ = ] {
+        qDebug() << "########## started";
+    });
 }
 
 DFontManager::~DFontManager() {}
