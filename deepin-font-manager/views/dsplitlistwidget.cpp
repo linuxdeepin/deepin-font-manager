@@ -139,7 +139,6 @@ QString DNoFocusDelegate::adjustLength(QString &titleName, QFont &font) const
     QString m_curTitle = "";
 
     int curWidth ;
-
     for (auto str : titleName) {
         m_curTitle += str;
         curWidth = fontMetric.width(m_curTitle);
@@ -224,7 +223,8 @@ void DSplitListWidget::currentChanged(const QModelIndex &current, const QModelIn
 }
 
 //hover for helper on leftListview /*UT000539*/
-bool DNoFocusDelegate::helpEvent(QHelpEvent *event, QAbstractItemView *view, const QStyleOptionViewItem &option, const QModelIndex &index)
+bool DNoFocusDelegate::helpEvent(QHelpEvent *event, QAbstractItemView *view
+                                 , const QStyleOptionViewItem &option, const QModelIndex &index)
 {
     QToolTip::hideText();
     if (event->type() == QEvent::ToolTip) {

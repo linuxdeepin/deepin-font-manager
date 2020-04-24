@@ -44,6 +44,7 @@ protected:
     bool eventFilter(QObject *obj, QEvent *e) override;
     SignalManager *m_signalManager = SignalManager::instance();
 
+    void initUi();
 private:
     void createLabel(QGridLayout *layout, const int &index, const QString &objName, const QString &sData);
 
@@ -58,7 +59,7 @@ private:
     DLabel *basicLabel = nullptr;
     std::map<QLabel *, QString> pTitleMap;//存储信息title键值对
     std::map<QLabel *, QString> pLabelMap;//存储信息info label键值对
-    QString adjustLength(QString &titleName) const;
+    QString elideText(QString &titleName) const;
 };
 
 #endif // ATTRSCROLLWIDGET_H

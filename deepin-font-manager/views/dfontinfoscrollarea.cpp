@@ -15,7 +15,11 @@ dfontinfoscrollarea::dfontinfoscrollarea(DFontPreviewItemData *pData,  DWidget *
     installEventFilter(this);
 
     setFrameShape(QFrame::NoFrame);
+    initUi();
+}
 
+void dfontinfoscrollarea::initUi()
+{
     auto gridLayout = new QGridLayout;
     gridLayout->setContentsMargins(0, 6, 0, 6);
     gridLayout->setSpacing(3);
@@ -29,42 +33,36 @@ dfontinfoscrollarea::dfontinfoscrollarea(DFontPreviewItemData *pData,  DWidget *
         m_leftminwidth = fm.horizontalAdvance("页面大小");
     }
 
-
-    createLabel(gridLayout, 0, DApplication::translate("FontDetailDailog", "Style"), m_fontInfo->fontInfo.styleName);
-    createLabel(gridLayout, 1, DApplication::translate("FontDetailDailog", "Type"), DApplication::translate("FontDetailDailog", m_fontInfo->fontInfo.type.toLatin1()));
-
-
+    createLabel(gridLayout, 0, DApplication::translate("FontDetailDailog", "Style")
+                , m_fontInfo->fontInfo.styleName);
+    createLabel(gridLayout, 1, DApplication::translate("FontDetailDailog", "Type")
+                , DApplication::translate("FontDetailDailog", m_fontInfo->fontInfo.type.toLatin1()));
     if (m_fontInfo->fontInfo.version.isEmpty()) {
-        QString version = "Copyright 2014~2015 Adobe Syste-ms Incorporated (http://www.adob.com/), with Reserved "
-                          "Font Name cc Source.";
+        QString version = "Copyright 2014~2015 Adobe Syste-ms Incorporated (http://www.adob.com/), with Reserved Font Name cc Source.";
         createLabel(gridLayout, 2, DApplication::translate("FontDetailDailog", "Version"), version);
     } else {
-        createLabel(gridLayout, 2, DApplication::translate("FontDetailDailog", "Version"), m_fontInfo->fontInfo.version);
+        createLabel(gridLayout, 2, DApplication::translate("FontDetailDailog", "Version")
+                    , m_fontInfo->fontInfo.version);
     }
-
-
     if (m_fontInfo->fontInfo.description.isEmpty()) {
-        createLabel(gridLayout, 3, DApplication::translate("FontDetailDailog", "Description"), DApplication::translate("FontDetailDailog", "Unknown"));
+        createLabel(gridLayout, 3, DApplication::translate("FontDetailDailog", "Description")
+                    , DApplication::translate("FontDetailDailog", "Unknown"));
     } else {
-        createLabel(gridLayout, 3, DApplication::translate("FontDetailDailog", "Description"), m_fontInfo->fontInfo.description);
+        createLabel(gridLayout, 3, DApplication::translate("FontDetailDailog", "Description")
+                    , m_fontInfo->fontInfo.description);
     }
-
-
     createLabel(gridLayout, 4, DApplication::translate("FontDetailDailog", "Full name"), m_fontInfo->fontInfo.fullname);
     createLabel(gridLayout, 5, DApplication::translate("FontDetailDailog", "Ps name"), m_fontInfo->fontInfo.psname);
     createLabel(gridLayout, 6, DApplication::translate("FontDetailDailog", "Trademark"), m_fontInfo->fontInfo.trademark);
 
     auto vLayout = new QVBoxLayout;
     vLayout->setContentsMargins(10, 10, 10, 10);
-
     basicLabel = new DLabel(DApplication::translate("FontDetailDailog", "Basic info"));
     DFontSizeManager::instance()->bind(basicLabel, DFontSizeManager::T6);
+
     vLayout->addWidget(basicLabel);
-
     vLayout->addItem(gridLayout);
-
     vLayout->addStretch(1);
-
     this->setLayout(vLayout);
 }
 
@@ -77,10 +75,11 @@ bool dfontinfoscrollarea::eventFilter(QObject *obj, QEvent *e)
     return  DFrame::eventFilter(obj, e);
 }
 
+//初始化信息页面label/*539*/
 void dfontinfoscrollarea::createLabel(QGridLayout *layout, const int &index, const QString &objName, const QString &sData)
 {
     QString str = objName;
-    DLabel *label = new DLabel(adjustLength(str), this);
+    DLabel *label = new DLabel(elideText(str), this);
     DFontSizeManager::instance()->bind(label, DFontSizeManager::T8);
     label->setAlignment(Qt::AlignTop);
 
@@ -103,7 +102,7 @@ void dfontinfoscrollarea::createLabel(QGridLayout *layout, const int &index, con
 
 }
 
-//增加内容信息frame
+//增加内容信息frame/*539*/
 DFrame *dfontinfoscrollarea::addTitleFrame(const QString &sData, const QString &objName)
 {
     DFrame *m_textShowFrame = new DFrame(this);
@@ -139,6 +138,7 @@ DFrame *dfontinfoscrollarea::addTitleFrame(const QString &sData, const QString &
     return m_textShowFrame;
 }
 
+//重绘信息页面/*539*/
 void dfontinfoscrollarea::paintEvent(QPaintEvent *event)
 {
     int m_totalHeight = 0;
@@ -150,6 +150,39 @@ void dfontinfoscrollarea::paintEvent(QPaintEvent *event)
     }
     emit m_signalManager->sizeChange(m_totalHeight + 76 + basicLabel->height());
 }
+
+//用于信息页面title名称长度判断/*539*/
+QString dfontinfoscrollarea::elideText(QString &titleName) const
+{
+    QFont font = this->font();
+    QFontMetrics fontMetric(font);
+    QString finalTitle = "";
+    QString m_curTitle = "";
+    int curWidth = 0;
+
+    for (auto str : titleName) {
+        if (str == "\t") {
+            curWidth  += fontMetric.width("a");
+        } else {
+            curWidth  += fontMetric.width(str);
+        }
+        m_curTitle += str;
+        if (curWidth > TITLE_VISIBLE_WIDTH) {
+            if (m_curTitle == titleName) {
+                finalTitle = titleName;
+                break;
+            } else {
+                finalTitle =   m_curTitle.append("...");
+                break;
+            }
+        } else {
+            finalTitle = titleName;
+        }
+    }
+    return finalTitle;
+}
+
+//用于信息页面详细信息部分换行判断/*539*/
 QString dfontinfoscrollarea::elideText(const QString &text, const QFont &font, int nLabelSize)
 {
     QFontMetrics fm(font);
@@ -169,7 +202,7 @@ QString dfontinfoscrollarea::elideText(const QString &text, const QFont &font, i
         }
     }
     return strText;
-//勿删，函数递归有时异常，需要排查原因，已用上段方法解决
+//勿删，函数递归有时异常，需要排查原因，已用上段方法解决/*539*/
 //    QFontMetrics fm(font);
 //    int nTextSize = fm.width(text);
 //    if (nTextSize > nLabelSize) {
@@ -191,6 +224,7 @@ QString dfontinfoscrollarea::elideText(const QString &text, const QFont &font, i
 //    return text;
 }
 
+//重绘信息页面/*539*/
 void dfontinfoscrollarea::updateText()
 {
     for (auto pTltle : pTitleMap) {
@@ -198,7 +232,7 @@ void dfontinfoscrollarea::updateText()
             continue;
         }
         QString text = pTltle.second;
-        QString newtext = adjustLength(text);
+        QString newtext = elideText(text);
         pTltle.first->setText(newtext);
     }
     for (auto plabeliter : pLabelMap) {
@@ -209,38 +243,4 @@ void dfontinfoscrollarea::updateText()
         QString newtext = elideText(text, this->font(), INFO_VISIBLE_WIDTH);
         plabeliter.first->setText(newtext);
     }
-}
-
-QString dfontinfoscrollarea::adjustLength(QString &titleName) const
-{
-    QFont font = this->font();
-    QFontMetrics fontMetric(font);
-
-    QString finalTitle = "";
-    QString m_curTitle = "";
-
-    int curWidth = 0;
-
-    for (auto str : titleName) {
-        if (str == "\t") {
-            curWidth  += fontMetric.width("a");
-        } else {
-            curWidth  += fontMetric.width(str);
-        }
-        m_curTitle += str;
-
-        if (curWidth > TITLE_VISIBLE_WIDTH) {
-            if (m_curTitle == titleName) {
-                finalTitle = titleName;
-                break;
-            } else {
-
-                finalTitle =   m_curTitle.append("...");
-                break;
-            }
-        } else {
-            finalTitle = titleName;
-        }
-    }
-    return finalTitle;
 }
