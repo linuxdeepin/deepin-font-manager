@@ -28,7 +28,7 @@ DFInstallNormalWindow::DFInstallNormalWindow(const QStringList &files, QWidget *
 //    setWindowOpacity(0.5);
     qDebug() << __FUNCTION__ << "install files " << files;
     initUI();
-    GetAllSysfiles();
+    getAllSysfiles();
     verifyFontFiles();
     initConnections();
 }
@@ -252,7 +252,9 @@ void DFInstallNormalWindow::initConnections()
     initVerifyTimer();
 }
 
-void DFInstallNormalWindow::GetAllSysfiles()
+
+//ut000442 从数据库中读取系统字体，用于之后的判断
+void DFInstallNormalWindow::getAllSysfiles()
 {
     DFMDBManager *dbManager = DFMDBManager::instance();
     QString systemFile;
@@ -266,9 +268,10 @@ void DFInstallNormalWindow::GetAllSysfiles()
     }
 }
 
+//字体文件过滤器，过滤后得到需要新安装的字体，重复安装字体，损毁字体，系统字体
+//过滤后进行安装
 void DFInstallNormalWindow::verifyFontFiles()
 {
-    // debug
     DFontInfo fontInfo;
     QList<DFontInfo> fontInfos;
     QList<DFontInfo> instFontInfos;
@@ -315,6 +318,8 @@ void DFInstallNormalWindow::verifyFontFiles()
     m_errorList = m_damagedFiles + m_installedFiles + m_systemFiles;
 }
 
+
+//检测是否要弹出字体验证框，存在重复安装字体，系统字体时，损坏字体时弹出字体验证框
 bool DFInstallNormalWindow::ifNeedShowExceptionWindow() const
 {
     // Skip Exception dialog
@@ -595,8 +600,8 @@ void DFInstallNormalWindow::onProgressChanged(const QString &filePath, const dou
     m_progressBar->setTextVisible(false);
 
     qDebug() << QString("font install progress: %1%").arg(percent);
-//    ut000442 fix bug 21562.When the precision bar progress is 100%,
-//    delay for a short period of time, close the window
+//    ut000442 fix bug 21562.之前进度条到100的同时关闭这个窗口，导致
+//    用户看不到进度条满的效果。
     if (static_cast<int>(percent) == 100) {
         QTimer::singleShot(50, this, [this]() {
             this->close();

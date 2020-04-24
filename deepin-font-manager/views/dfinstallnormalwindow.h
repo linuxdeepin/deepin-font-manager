@@ -36,7 +36,7 @@ protected:
 
     void initUI();
     void initConnections();
-    void GetAllSysfiles();
+    void getAllSysfiles();
     void initVerifyTimer();
 
     void verifyFontFiles();
