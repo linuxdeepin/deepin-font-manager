@@ -250,6 +250,8 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
     } else {
         QStyledItemDelegate::paint(painter, option, index);
     }
+    /* Bug#21463 UT000591 */
+    QFont::cleanup();
 }
 
 QSize DFontPreviewItemDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
