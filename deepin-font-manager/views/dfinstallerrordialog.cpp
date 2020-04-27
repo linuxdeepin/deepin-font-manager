@@ -177,13 +177,12 @@ bool DFInstallErrorDialog::isSystemFont(DFontInfo &f)
 
 void DFInstallErrorDialog::initInstallErrorFontViews()
 {
-    contentFrame = new QWidget(this);
-    contentFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    //contentFrame = new QWidget(this);
+    //contentFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-    QVBoxLayout *contentLayout = new QVBoxLayout;
-    contentLayout->setMargin(0);
-    contentLayout->setSpacing(0);
-    contentLayout->setContentsMargins(0, 0, 0, 0);
+    m_mainLayout->setMargin(0);
+    m_mainLayout->setSpacing(0);
+    m_mainLayout->setContentsMargins(0, 0, 0, 0);
 
     QVBoxLayout *listViewLayout = new QVBoxLayout;
     listViewLayout->setMargin(0);
@@ -211,7 +210,7 @@ void DFInstallErrorDialog::initInstallErrorFontViews()
     m_quitInstallBtn = new DPushButton;
     m_quitInstallBtn->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     m_quitInstallBtn->setFont(btnFont);
-//    m_quitInstallBtn->setFixedSize(204, btnHeight);
+    //    m_quitInstallBtn->setFixedSize(204, btnHeight);
     m_quitInstallBtn->setMinimumSize(204, btnHeight);
     m_quitInstallBtn->setMaximumSize(204, btnHeight + 5);
     m_quitInstallBtn->setText(DApplication::translate("ExceptionWindow", "Exit"));
@@ -219,7 +218,7 @@ void DFInstallErrorDialog::initInstallErrorFontViews()
     m_continueInstallBtn = new DSuggestButton;
     m_continueInstallBtn->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-//    m_continueInstallBtn->setFixedSize(204, btnHeight);
+    //    m_continueInstallBtn->setFixedSize(204, btnHeight);
     m_continueInstallBtn->setMinimumSize(204, btnHeight);
     m_continueInstallBtn->setMaximumSize(204, btnHeight + 5);
     m_continueInstallBtn->setFont(btnFont);
@@ -251,13 +250,9 @@ void DFInstallErrorDialog::initInstallErrorFontViews()
     m_installErrorListView->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
     listViewLayout->addWidget(m_installErrorListView);
-    contentLayout->addLayout(listViewLayout);
-    contentLayout->addWidget(btnFrame);
-    contentLayout->addStretch();
-
-    contentFrame->setLayout(contentLayout);
-
-    m_mainLayout->addWidget(contentFrame);
+    m_mainLayout->addWidget(m_installErrorListView);
+    m_mainLayout->addWidget(btnFrame);
+    m_mainLayout->addStretch();
 
     connect(m_installErrorListView, SIGNAL(onClickErrorListItem(QModelIndex)), this,
             SLOT(onListItemClicked(QModelIndex)));
@@ -268,7 +263,7 @@ void DFInstallErrorDialog::initInstallErrorFontViews()
     // Debug layout code
 #ifdef FTM_DEBUG_LAYOUT_COLOR
     m_installErrorListView->setStyleSheet("background-color:cyan");
-    contentFrame->setStyleSheet("background-color:blue");
+    //contentFrame->setStyleSheet("background-color:blue");
 #endif
 }
 

@@ -67,7 +67,7 @@ private:
     QWidget *titleFrame;
     DLabel *logoLabel;
     DLabel *titleLabel;
-    QWidget *contentFrame;
+    //QWidget *contentFrame;
 
     QStringList m_errorInstallFiles;
     QStringList m_systemFiles;
