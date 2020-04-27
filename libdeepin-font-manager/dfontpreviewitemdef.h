@@ -15,7 +15,7 @@
 typedef enum IconStatus {
     IconHover = 0,
     IconPress,
-    IconNormal
+    IconNormal,
 } IconStatus;
 
 struct DFontPreviewItemData {
