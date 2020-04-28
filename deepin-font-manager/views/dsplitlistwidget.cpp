@@ -15,6 +15,7 @@
 #define FTM_SPLIT_TOP_SPLIT_TAG "_split_"
 #define FTM_SPLIT_LINE_INDEX    5
 #define TITLE_VISIBLE_WIDTH    96
+#define IS_NEED_ELLIPSIS  30 //是否需要省略号
 
 DNoFocusDelegate::DNoFocusDelegate(QAbstractItemView *parent)
     : DStyledItemDelegate(parent)
@@ -144,11 +145,15 @@ QString DNoFocusDelegate::adjustLength(QString &titleName, QFont &font) const
         curWidth = fontMetric.width(m_curTitle);
         if (curWidth > TITLE_VISIBLE_WIDTH) {
             if (m_curTitle == titleName) {
-                finalTitle = titleName;
+                finalTitle = m_curTitle;
                 break;
             } else {
+                if (fontMetric.width("...") > IS_NEED_ELLIPSIS) {
+                    finalTitle = m_curTitle;
+                } else {
 
-                finalTitle =   m_curTitle.append("...");
+                    finalTitle =   m_curTitle.append("...");
+                }
                 break;
             }
         } else {

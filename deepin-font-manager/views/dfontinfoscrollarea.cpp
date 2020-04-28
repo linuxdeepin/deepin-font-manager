@@ -7,6 +7,7 @@
 #define LAEBL_TEXT_WIDTH   165
 #define TITLE_VISIBLE_WIDTH 90
 #define INFO_VISIBLE_WIDTH 180
+#define IS_NEED_ELLIPSIS 30 //是否需要省略号
 
 dfontinfoscrollarea::dfontinfoscrollarea(DFontPreviewItemData *pData,  DWidget *parent)
     : DFrame(parent)
@@ -172,7 +173,11 @@ QString dfontinfoscrollarea::elideText(QString &titleName) const
                 finalTitle = titleName;
                 break;
             } else {
-                finalTitle =   m_curTitle.append("...");
+                if (fontMetric.width("...") > IS_NEED_ELLIPSIS) {
+                    finalTitle = m_curTitle;
+                } else {
+                    finalTitle =   m_curTitle.append("...");
+                }
                 break;
             }
         } else {
