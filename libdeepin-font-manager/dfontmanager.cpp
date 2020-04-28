@@ -78,23 +78,25 @@ void DFontManager::setUnInstallFile(const QStringList &filePath)
 
 void DFontManager::handleInstallOutput()
 {
-    QProcess *process = dynamic_cast<QProcess *>(sender());
-    qDebug() << process->processId();
-    QString output = process->readAllStandardOutput();
+// unused code
 
-    // single file installation.
-    if (m_instFileList.count() == 1) {
-        emit installPositionChanged(output);
-    } else {
-        // FIXME(Rekols): this operation is required under the Loongson platform.
-        for (const QString &line : output.split("\n")) {
-            QJsonDocument document = QJsonDocument::fromJson(line.toUtf8());
-            QJsonObject object = document.object();
+//    QProcess *process = dynamic_cast<QProcess *>(sender());
+//    qDebug() << process->processId();
+//    QString output = process->readAllStandardOutput();
 
-            emit batchInstall(object.value("FilePath").toString(),
-                              object.value("Percent").toDouble());
-        }
-    }
+//    // single file installation.
+//    if (m_instFileList.count() == 1) {
+//        emit installPositionChanged(output);
+//    } else {
+//        // FIXME(Rekols): this operation is required under the Loongson platform.
+//        for (const QString &line : output.split("\n")) {
+//            QJsonDocument document = QJsonDocument::fromJson(line.toUtf8());
+//            QJsonObject object = document.object();
+
+//            emit batchInstall(object.value("FilePath").toString(),
+//                              object.value("Percent").toDouble());
+//        }
+//    }
 }
 
 void DFontManager::handleReInstallOutput()
@@ -250,14 +252,14 @@ void DFontManager::doInstall(const QStringList &fileList, bool reinstall)
 //            QThread::msleep(50);
         } else {
             QString filePath = filePathOrig;
-            double percent = currentIndex / double(count) * 93;
+            double percent = currentIndex / double(count) * 100;
 
 //            qDebug() << __FUNCTION__ << filePath << ", " << percent;
-            if (!reinstall) {
-                Q_EMIT batchInstall(filePath, percent);
-            } else {
+//            if (!reinstall) {
+            Q_EMIT batchInstall(filePath, percent);
+//            } else {
 
-            }
+//            }
 
             // output too fast will crash.
 //            QThread::msleep(10);
@@ -269,12 +271,12 @@ void DFontManager::doInstall(const QStringList &fileList, bool reinstall)
     process.start("fc-cache");
     process.waitForFinished();
 
-    if (!reinstall) {
-        QString filename;
-        if (!fileList.isEmpty())
-            filename = fileList.last();
-        Q_EMIT batchInstall(filename, 96);
-    }
+//    if (!reinstall) {
+//        QString filename;
+//        if (!fileList.isEmpty())
+//            filename = fileList.last();
+////        Q_EMIT batchInstall(filename, 96);
+//    }
 }
 
 void DFontManager::doUninstall(const QStringList &fileList)

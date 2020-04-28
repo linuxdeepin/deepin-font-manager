@@ -5,7 +5,7 @@
 #include "dfmdbmanager.h"
 #include "dfontpreviewlistdatathread.h"
 #include "dfinstallerrordialog.h"
-
+#include "freetype/freetype.h"
 #include <QResizeEvent>
 #include <QVBoxLayout>
 
@@ -227,10 +227,10 @@ void DFInstallNormalWindow::initConnections()
         checkShowMessage();
     }, Qt::UniqueConnection);
 
-    connect(m_signalManager, &SignalManager::requestInstallAdded, this, [ = ]() {
-        m_installAdded = true;
-        checkShowMessage();
-    }, Qt::UniqueConnection);
+//    connect(m_signalManager, &SignalManager::requestInstallAdded, this, [ = ]() {
+//        m_installAdded = true;
+//        checkShowMessage();
+//    }, Qt::UniqueConnection);
 
     connect(DFontPreviewListDataThread::instance(), &DFontPreviewListDataThread::requestBatchReInstallContinue, this, &DFInstallNormalWindow::batchReInstallContinue);
 //    connect(m_fontManager, &QThread::finished, this, [ = ] {
@@ -247,8 +247,9 @@ void DFInstallNormalWindow::initConnections()
 //                qDebug() << "no need reinstall" << endl;
 //                emit  m_signalManager->sendReInstallMessage(0);
 //            }
-//        }
+//        }initConnections
 //    });
+
     initVerifyTimer();
 }
 
@@ -377,23 +378,24 @@ void DFInstallNormalWindow::checkShowMessage()
 //    qDebug() << getInstallMessage << getReInstallMessage << m_installAdded << m_installFinishSent;
     if (getInstallMessage == true && getReInstallMessage == true) {
         qDebug() << "ReInstall over" << endl;
-        if (!m_installFinishSent) {
-            emit m_signalManager->finishFontInstall(m_outfileList);
-            m_installFinishSent = true;
-        }
+//        if (!m_installFinishSent) {
+        emit m_signalManager->finishFontInstall(m_outfileList);
+//            m_installFinishSent = true;
+//        }
     }
 
-    if (getInstallMessage == true && getReInstallMessage == true && m_installAdded) {
+    if (getInstallMessage == true && getReInstallMessage == true/* && m_installAdded*/) {
         qDebug() << "install refresh over";
-        onProgressChanged(ONLYPROGRESS, 100);
+//        onProgressChanged(ONLYPROGRESS, 100);
         getInstallMessage = false;
         getReInstallMessage = false;
-        m_installFinishSent = false;
-        m_installAdded = false;
+//        m_installFinishSent = false;
+//        m_installAdded = false;
         emit m_signalManager->showInstallFloatingMessage(totalInstallFont);
         m_outfileList.clear();
         totalInstallFont = 0;
-//        this->close();
+        emit m_signalManager->closeInstallDialog();
+        this->close();
     }
 
     if (getInstallMessage == true && getReInstallMessage == false) {
@@ -536,7 +538,7 @@ void DFInstallNormalWindow::batchReInstall()
         QString familyName = fontInfo.familyName;
         installListWithFamliyName.append(it + "|" + familyName);
 
-//        qDebug() << " Prepare install file: " << it + "|" + familyName;
+//        qDebug() << " Prepare install file: " << it + m_loadingSpinner"|" + familyName;
     }
 
 
@@ -605,11 +607,11 @@ void DFInstallNormalWindow::onProgressChanged(const QString &filePath, const dou
     qDebug() << QString("font install progress: %1%").arg(percent);
 //    ut000442 fix bug 21562.之前进度条到100的同时关闭这个窗口，导致
 //    用户看不到进度条满的效果。
-    if (static_cast<int>(percent) == 100) {
-        QTimer::singleShot(50, this, [this]() {
-            this->close();
-        });
-    }
+//    if (static_cast<int>(percent) == 100) {
+//        QTimer::singleShot(50, this, [this]() {
+//            this->close();
+//        });
+//    }
 }
 void DFInstallNormalWindow::showInstallErrDlg()
 {

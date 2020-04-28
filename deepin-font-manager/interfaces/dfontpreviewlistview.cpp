@@ -313,7 +313,7 @@ bool DFontPreviewListView::isDeleting()
 
 void DFontPreviewListView::selectFonts(const QStringList &fileList)
 {
-    Q_EMIT DFontManager::instance()->batchInstall("onlyprogress", 98);
+//    Q_EMIT DFontManager::instance()->batchInstall("onlyprogress", 98);
     QItemSelection selection;
     qDebug() << __FUNCTION__ << " fileList size " << fileList.size() << ", row count " << getFontPreviewProxyModel()->rowCount();
     for (int i = 0; i < getFontPreviewProxyModel()->rowCount(); ++i) {

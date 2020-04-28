@@ -80,8 +80,8 @@ private:
     int totalSysFontCount = 0;
     bool getInstallMessage = false;
     bool getReInstallMessage = false;
-    bool m_installFinishSent = false;
-    bool m_installAdded = false;
+//    bool m_installFinishSent = false;
+//    bool m_installAdded = false;
 
     // Skip popup exception dialog if true
     bool m_isNeedSkipException {false};

@@ -85,7 +85,7 @@ DFontMgrMainWindow::DFontMgrMainWindow(bool isQuickMode, QWidget *parent)
     , m_quickInstallWnd(nullptr)
     , d_ptr(new DFontMgrMainWindowPrivate(this))
 {
-    // setWindowOpacity(0.5); //Debug
+    // setWindoDSpinnerwOpacity(0.5); //Debug
     // setWindowFlags(windowFlags() | (Qt::FramelessWindowHint | Qt::WindowMaximizeButtonHint));
 
     initData();
@@ -132,7 +132,9 @@ void DFontMgrMainWindow::initUI()
 {
     //Enable main window accept drag event
     setAcceptDrops(true);
-
+//    m_loadingSpinner = new DSpinner(this);
+//    m_loadingSpinner->setFixedSize(32, 32);
+//    m_loadingSpinner->hide();
     initTileBar();
     initRightKeyMenu();
     initMainVeiws();
@@ -242,6 +244,35 @@ void DFontMgrMainWindow::initConnections()
     //安装结束后刷新字体列表
     connect(m_signalManager, &SignalManager::finishFontInstall, this,
             &DFontMgrMainWindow::onFontInstallFinished);
+
+    connect(m_signalManager, &SignalManager::closeInstallDialog, this, [ = ] {
+//        if (m_loadingSpinner == nullptr)
+//        {
+//            m_loadingSpinner = new DSpinner(this);
+//            m_loadingSpinner->show();
+//            m_loadingSpinner->setFixedSize(32, 32);
+//            m_loadingSpinner->move((this->width() - m_loadingSpinner->width()) / 2 + (m_loadingSpinner->width() * 2.5),
+//                                   (this->height() - m_loadingSpinner->height()) / 2);
+//            //        s->move(); waitForInstallSpinner->move((this->width() - waitForInstallSpinner->width()) / 2 +
+//            //        (waitForInstallSpinner->width() * 2.5), (this->height() - waitForInstallSpinner->height()) / 2);
+
+//            m_loadingSpinner->start();
+//        }
+        m_fontLoadingSpinner->spinnerStart();
+        m_noInstallListView->hide();
+        m_fontPreviewListView->hide();
+        d->stateBar->hide();
+        m_fontLoadingSpinner->show();
+
+    });
+
+    connect(m_signalManager, &SignalManager::requestInstallAdded, this, [ = ]() {
+        m_fontLoadingSpinner->spinnerStop();
+        m_fontPreviewListView->show();
+        d->stateBar->show();
+        m_fontLoadingSpinner->hide();
+    }, Qt::UniqueConnection);
+
 }
 
 void DFontMgrMainWindow::initShortcuts()
@@ -1414,6 +1445,11 @@ void DFontMgrMainWindow::resizeEvent(QResizeEvent *event)
     if (0 == int(QWidget::windowState())) {
         m_winHight = geometry().height();
         m_winWidth = geometry().width();
+    }
+
+    if (m_loadingSpinner != nullptr) {
+        m_loadingSpinner->move((this->width() - m_loadingSpinner->width()) / 2 + (m_loadingSpinner->width() * 2.5),
+                               (this->height() - m_loadingSpinner->height()) / 2);
     }
 }
 
