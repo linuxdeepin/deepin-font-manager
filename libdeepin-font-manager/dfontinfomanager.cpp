@@ -118,10 +118,14 @@ QStringList DFontInfoManager::getAllFontPath() const
 
     for (QString line : lines) {
         QString filePath = line.remove(QChar(':')).simplified();
-        if (filePath.length() > 0) {
+        if (filePath.length() > 0 && !pathList.contains(filePath)) {
             pathList << filePath;
         }
     }
+
+    qSort(pathList.begin(), pathList.end(), [](const QString & s1, const QString & s2) {
+        return s1 < s2;
+    });
 
     return pathList;
 }

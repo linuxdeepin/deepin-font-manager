@@ -238,17 +238,43 @@ void DFontPreviewListDataThread::insertFontItemData(const QString &filePath,
 
     itemData.fontInfo.isInstalled = true;
 
-    m_dbManager->addFontInfo(itemData);
+    /* Bug#16821 UT000591  添加字体后需要加入到Qt的字体数据库中，否则无法使用*/
+    QFontDatabase::addApplicationFont(itemData.fontInfo.filePath);
+
+    //中文字体
+    if (itemData.fontInfo.isSystemFont && itemData.isChineseFont) {
+        int appFontId = QFontDatabase::addApplicationFont(filePath);
+        QStringList fontFamilyList = QFontDatabase::applicationFontFamilies(appFontId);
+        if (fontFamilyList.size() > 1) {
+            int i = 0;
+            for (QString fontFamily : fontFamilyList) {
+                itemData.strFontId = QString::number(index + i);
+                i++;
+                itemData.fontInfo.familyName = fontFamily;
+                if (itemData.fontInfo.styleName.length() > 0) {
+                    itemData.strFontName =
+                        QString("%1-%2").arg(itemData.fontInfo.familyName).arg(itemData.fontInfo.styleName);
+                } else {
+                    itemData.strFontName = itemData.fontInfo.familyName;
+                }
+                m_dbManager->addFontInfo(itemData);
+                m_fontModelList.append(itemData);
+            }
+        } else {
+            m_dbManager->addFontInfo(itemData);
+            m_fontModelList.append(itemData);
+        }
+    } else {
+        m_dbManager->addFontInfo(itemData);
+        m_fontModelList.append(itemData);
+    }
+
 //    Q_EMIT m_view->itemAdded(itemData);
     addPathWatcher(filePath);
 
-    /* Bug#16821 UT000591  添加字体后需要加入到Qt的字体数据库中，否则无法使用*/
-    QFontDatabase::addApplicationFont(itemData.fontInfo.filePath);
     if (!isStartup) {
         m_diffFontModelList.append(itemData);
     }
-
-    m_fontModelList.append(itemData);
 }
 
 void DFontPreviewListDataThread::refreshFontListData(bool isStartup, const QStringList &installFont)
