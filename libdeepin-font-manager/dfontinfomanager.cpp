@@ -123,9 +123,9 @@ QStringList DFontInfoManager::getAllFontPath() const
         }
     }
 
-    qSort(pathList.begin(), pathList.end(), [](const QString & s1, const QString & s2) {
+    /*qSort(pathList.begin(), pathList.end(), [](const QString & s1, const QString & s2) {
         return s1 < s2;
-    });
+    });*/
 
     return pathList;
 }
