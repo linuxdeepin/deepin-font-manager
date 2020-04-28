@@ -118,7 +118,7 @@ QStringList DFontInfoManager::getAllFontPath() const
 
     for (QString line : lines) {
         QString filePath = line.remove(QChar(':')).simplified();
-        if (filePath.length() > 0) {
+        if (filePath.length() > 0 && !pathList.contains(filePath)) {
             pathList << filePath;
         }
     }
