@@ -140,7 +140,7 @@ protected:
     DFontManager *m_fontManager;
     SignalManager *m_signalManager = SignalManager::instance();
     DSplitListWidget::FontGroup filterGroup;
-    DSpinner *m_loadingSpinner = nullptr;
+//    DSpinner *m_loadingSpinner = nullptr;
     QShortcut *m_scFullScreen;  //全屏快捷键F11
     QShortcut *m_scZoomIn;        //放大字体快捷键Ctrl+=
     QShortcut *m_scZoomOut;       //放大字体快捷键Ctrl+-

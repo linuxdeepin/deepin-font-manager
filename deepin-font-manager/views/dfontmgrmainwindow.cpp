@@ -1447,10 +1447,6 @@ void DFontMgrMainWindow::resizeEvent(QResizeEvent *event)
         m_winWidth = geometry().width();
     }
 
-    if (m_loadingSpinner != nullptr) {
-        m_loadingSpinner->move((this->width() - m_loadingSpinner->width()) / 2 + (m_loadingSpinner->width() * 2.5),
-                               (this->height() - m_loadingSpinner->height()) / 2);
-    }
 }
 
 void DFontMgrMainWindow::showAllShortcut()

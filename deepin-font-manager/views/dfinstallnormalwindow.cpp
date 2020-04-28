@@ -5,7 +5,6 @@
 #include "dfmdbmanager.h"
 #include "dfontpreviewlistdatathread.h"
 #include "dfinstallerrordialog.h"
-#include "freetype/freetype.h"
 #include <QResizeEvent>
 #include <QVBoxLayout>
 
@@ -233,23 +232,6 @@ void DFInstallNormalWindow::initConnections()
 //    }, Qt::UniqueConnection);
 
     connect(DFontPreviewListDataThread::instance(), &DFontPreviewListDataThread::requestBatchReInstallContinue, this, &DFInstallNormalWindow::batchReInstallContinue);
-//    connect(m_fontManager, &QThread::finished, this, [ = ] {
-//        qDebug() << "thread finish" << endl;
-//        if (m_pexceptionDlg != nullptr)
-//            return;
-//        else
-//        {
-//            if (ifNeedShowExceptionWindow()) {
-//                qDebug() << "need reinstall" << endl;
-//                showInstallErrDlg();
-//                return;
-//            } else {
-//                qDebug() << "no need reinstall" << endl;
-//                emit  m_signalManager->sendReInstallMessage(0);
-//            }
-//        }initConnections
-//    });
-
     initVerifyTimer();
 }
 
