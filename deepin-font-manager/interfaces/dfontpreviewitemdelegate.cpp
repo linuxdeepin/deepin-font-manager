@@ -67,7 +67,10 @@ void DFontPreviewItemDelegate::paintForegroundFontName(QPainter *painter, const 
     DFontPreviewItemData itemData = index.data(Qt::DisplayRole).value<DFontPreviewItemData>();
     QRect fontNameRect = QRect(option.rect.x() + FONT_NAME_LEFT_MARGIN, option.rect.y() + FONT_NAME_TOP_MARGIN,
                                option.rect.width() - 20, FONT_NAME_HEIGHT);
-    painter->drawText(fontNameRect, Qt::AlignLeft | Qt::AlignVCenter, itemData.strFontName);
+
+    QFontMetrics mt(nameFont);//特殊图案字体下截断字体名称/*UT000539*/
+    QString elidedText = mt.elidedText(itemData.strFontName, Qt::ElideRight, option.rect.width() - 120, Qt::TextShowMnemonic);
+    painter->drawText(fontNameRect, Qt::AlignLeft | Qt::AlignVCenter, elidedText);
 }
 
 void DFontPreviewItemDelegate::paintForegroundCollectIcon(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
