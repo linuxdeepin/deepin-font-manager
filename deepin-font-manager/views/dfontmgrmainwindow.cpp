@@ -267,10 +267,15 @@ void DFontMgrMainWindow::initConnections()
     });
 
     connect(m_signalManager, &SignalManager::requestInstallAdded, this, [ = ]() {
-        m_fontLoadingSpinner->spinnerStop();
-        m_fontPreviewListView->show();
-        d->stateBar->show();
-        m_fontLoadingSpinner->hide();
+//        ut000442 安装少量字体时,会出现闪屏现象,通过加短暂延迟解决.
+        QTimer::singleShot(50, this, [ = ]() {
+            m_fontLoadingSpinner->spinnerStop();
+            m_fontPreviewListView->show();
+            d->stateBar->show();
+            m_fontLoadingSpinner->hide();
+        });
+
+
     }, Qt::UniqueConnection);
 
 }
