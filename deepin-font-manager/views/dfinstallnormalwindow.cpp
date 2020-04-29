@@ -415,11 +415,11 @@ void DFInstallNormalWindow::closeEvent(QCloseEvent *event)
     if (flag) {
         event->accept();
         // TODO: close dfontmanager thread and emit signal to update font show.
-        if (m_fontManager) {
-            m_fontManager->requestInterruption();
-            m_fontManager->quit();
-            m_fontManager->wait();
-        }
+//        if (m_fontManager) {
+//            m_fontManager->requestInterruption();
+//            m_fontManager->quit();
+//            m_fontManager->wait();
+//        }
     } else {
         event->accept();
     }
