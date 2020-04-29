@@ -232,6 +232,7 @@ void DFInstallNormalWindow::initConnections()
 //    }, Qt::UniqueConnection);
 
     connect(DFontPreviewListDataThread::instance(), &DFontPreviewListDataThread::requestBatchReInstallContinue, this, &DFInstallNormalWindow::batchReInstallContinue);
+
     initVerifyTimer();
 }
 

@@ -57,6 +57,8 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
 
     initDelegate();
     initConnections();
+
+
 }
 
 DFontPreviewListView::~DFontPreviewListView()
@@ -170,8 +172,16 @@ void DFontPreviewListView::onItemRemoved(const DFontPreviewItemData &itemData)
 
     QModelIndex index = currModelIndex();
     int row = index.row();
-    if (row >= m_fontPreviewProxyModel->rowCount())
+    m_bListviewAtButtom = isAtListviewBottom();
+    m_bListviewAtTop = isAtListviewTop();
+    if (row >= m_fontPreviewProxyModel->rowCount()) {
+//        if (!m_bListviewAtTop)
         index = index.siblingAtRow(row - 1);
+    }
+    if (m_bListviewAtButtom && !m_bListviewAtTop) {
+        if (row != 0)
+            index = index.siblingAtRow(row - 1);
+    }
     setCurrentIndex(index);
 }
 
@@ -250,6 +260,7 @@ void DFontPreviewListView::initConnections()
             SLOT(onFontListViewRowCountChanged(unsigned int)), Qt::QueuedConnection);
 
     connect(m_signalManager, &SignalManager::currentFontGroup, this, &DFontPreviewListView::updateCurrentFontGroup);
+
 }
 
 QRect DFontPreviewListView::getCollectionIconRect(QRect visualRect)
@@ -378,6 +389,7 @@ void DFontPreviewListView::selectFont(const QString &file)
     }
 
     QModelIndex cur = currModelIndex();
+
     if (cur.isValid())
         scrollTo(cur);
 
@@ -422,6 +434,7 @@ void DFontPreviewListView::mouseMoveEvent(QMouseEvent *event)
     clearHoverState();///*UT000539*/
     if (collectIconRect.contains(clickPoint)) {
         itemData.collectIconStatus = IconHover;
+//        qDebug() << "+++++++++++++" << itemData.strFontName << endl;
         m_hoverModelIndex = modelIndex;
     } else {
         itemData.collectIconStatus =  IconNormal;
@@ -446,6 +459,7 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
 
     QPoint clickPoint = event->pos();
     QModelIndex modelIndex = indexAt(clickPoint);
+
     QRect rect = visualRect(modelIndex);
 
     m_curRect = rect;
@@ -470,6 +484,7 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
         if (itemData.collectIconStatus != IconPress) {
             if (Qt::LeftButton == event->button()) {//取消press状态/*UT000539*/
                 itemData.collectIconStatus = IconPress;
+                qDebug() << itemData.strFontName << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAA" << endl;
             }
             m_fontPreviewProxyModel->setData(modelIndex, QVariant::fromValue(itemData), Qt::DisplayRole);
         }
@@ -498,12 +513,15 @@ void DFontPreviewListView::mouseReleaseEvent(QMouseEvent *event)
     QPoint clickPoint = event->pos();
 
     QModelIndex modelIndex = indexAt(clickPoint);
+
     QModelIndexList indexList;
     indexList << modelIndex;
     m_currModelIndex = modelIndex;
 
     DFontPreviewItemData itemData =
         qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(modelIndex));
+
+    qDebug() << "@@@@@@@@@@@@@@@@@@@@@2" << itemData.strFontName << endl;
 
     if (itemData.collectIconStatus != IconNormal) {
         itemData.collectIconStatus = IconNormal;
@@ -540,12 +558,17 @@ void DFontPreviewListView::mouseReleaseEvent(QMouseEvent *event)
 
 //ut000442 bug20343 鼠标点击右侧爱心时不移动，松开时再次获取此时鼠标位置的item，再去判断鼠标点击
 //点还在不在爱心上，这样就能正确显示相应效果。
+
+
+    modelIndex = currModelIndex();
+
     DFontPreviewItemData m_NextItemData =
         qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(modelIndex));
 
     if (collectIconRect.contains(clickPoint)) {
         if (m_NextItemData.collectIconStatus != IconHover) {
             m_NextItemData.collectIconStatus = IconHover;
+            qDebug() << "-------------------" << m_NextItemData.strFontName;
             m_fontPreviewProxyModel->setData(modelIndex, QVariant::fromValue(m_NextItemData), Qt::DisplayRole);
         }
         m_hoverModelIndex = modelIndex;
@@ -640,6 +663,24 @@ void DFontPreviewListView::disableFonts()
     m_disableFontList.clear();
 }
 
+bool DFontPreviewListView::isAtListviewBottom()
+{
+    if (this->verticalScrollBar()->value() == this->verticalScrollBar()->maximum()) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+bool DFontPreviewListView::isAtListviewTop()
+{
+    if (this->verticalScrollBar()->value() == this->verticalScrollBar()->minimum()) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 void DFontPreviewListView::onListViewItemEnableBtnClicked(const QModelIndexList &itemIndexes, bool setValue, bool isFromActiveFont)
 {
     QMutexLocker locker(&m_mutex);
@@ -691,11 +732,18 @@ void DFontPreviewListView::onListViewItemEnableBtnClicked(const QModelIndexList 
     if (isFromActiveFont == true) {
         DFontPreviewItemData itemData =
             qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(itemIndexesNew.last()));
-        if (itemData.strFontFileName.size()) {
+
+        m_bListviewAtButtom = isAtListviewBottom();
+        m_bListviewAtTop = isAtListviewTop();
+
+        if (itemData.strFontFileName.size() && !m_bListviewAtButtom) {
+            emit itemSelected(itemData.fontInfo.filePath);
+        } else if (itemData.strFontFileName.size() && m_bListviewAtTop) {
             emit itemSelected(itemData.fontInfo.filePath);
         } else {
             DFontPreviewProxyModel *filterModel = this->getFontPreviewProxyModel();
-            int i = filterModel->rowCount();
+//            int i = filterModel->rowCount();
+            int i = itemIndexesNew.last().row();
             QModelIndex modelIndex = filterModel->index(i - 1, 0);
             DFontPreviewItemData itemData =
                 qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(modelIndex));
@@ -735,13 +783,26 @@ void DFontPreviewListView::onListViewItemCollectionBtnClicked(const QModelIndexL
             return;
         }
 
+//        m_bListviewAtButtom = isAtListviewButttom();
+//        QModelIndex index = currModelIndex();
+//        int row = itemIndexesNew.last().row();
+
+//        m_bListviewAtButtom = isAtListviewButttom();
+//        if (row >= m_fontPreviewProxyModel->rowCount() || m_bListviewAtButtom)
+//            index = index.siblingAtRow(row - 1);
+//        setCurrentIndex(index);
+
+        m_bListviewAtButtom = isAtListviewBottom();
+        m_bListviewAtTop = isAtListviewTop();
         DFontPreviewItemData itemData =
             qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(itemIndexesNew.last()));
-        if (itemData.strFontFileName.size()) {
+        if (itemData.strFontFileName.size() && !m_bListviewAtButtom) {
+            emit itemSelected(itemData.fontInfo.filePath);
+        } else if (itemData.strFontFileName.size() && m_bListviewAtTop) {
             emit itemSelected(itemData.fontInfo.filePath);
         } else {
             DFontPreviewProxyModel *filterModel = this->getFontPreviewProxyModel();
-            int i = filterModel->rowCount();
+            int i = itemIndexesNew.last().row();
             QModelIndex modelIndex = filterModel->index(i - 1, 0);
             DFontPreviewItemData itemData =
                 qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(modelIndex));
@@ -807,7 +868,7 @@ void DFontPreviewListView::clearPressState()
 
     DFontPreviewItemData pressData =
         qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(m_pressModelIndex));
-    qDebug() << " restore press item " << pressData.strFontName;
+//    qDebug() << " restore press item " << pressData.strFontName;
     pressData.collectIconStatus = IconNormal;
     m_fontPreviewProxyModel->setData(m_pressModelIndex, QVariant::fromValue(pressData), Qt::DisplayRole);
     m_pressModelIndex = QModelIndex();
@@ -820,7 +881,7 @@ void DFontPreviewListView::clearHoverState()
 
     DFontPreviewItemData itemData =
         qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(m_hoverModelIndex));
-    qDebug() << " restore hover item " << itemData.strFontName;
+//    qDebug() << " restore hover item " << itemData.strFontName;
     itemData.collectIconStatus = IconNormal;
     m_fontPreviewProxyModel->setData(m_hoverModelIndex, QVariant::fromValue(itemData), Qt::DisplayRole);
     m_hoverModelIndex = QModelIndex();

@@ -7,7 +7,7 @@
 #include "dfontpreviewproxymodel.h"
 #include "dfmdbmanager.h"
 #include "signalmanager.h"
-
+#include <QScrollBar>
 #include <DListView>
 
 #include <QMouseEvent>
@@ -74,6 +74,8 @@ public:
     void disableFont(const QString &filePath);
     void enableFonts();
     void disableFonts();
+    bool isAtListviewBottom();
+    bool isAtListviewTop();
 
 protected:
     void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected) override;
@@ -92,6 +94,8 @@ private:
     bool m_bLoadDataFinish = false;
     bool m_bLeftMouse = true;
     bool m_bClickCollectionOrEnable = false;
+    bool m_bListviewAtButtom = false;
+    bool m_bListviewAtTop = false;
     QWidget *m_parentWidget;
     QStandardItemModel *m_fontPreviewItemModel {nullptr};
     QList<DFontPreviewItemData> m_fontPreviewItemDataList;
