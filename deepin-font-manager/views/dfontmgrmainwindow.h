@@ -106,6 +106,8 @@ protected:
     DFontuninstalldialog *m_fontUninstallDialog = nullptr;
     DFMDBManager *m_dbManager {nullptr};
     void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
+
+
 signals:
     void fileSelected(const QStringList &files) const;
     void fileSelectedInSys(const QStringList &files) const;
@@ -184,6 +186,7 @@ protected:
     QString mhistoryDir = ""; //保存上次文件的路径的文件夹
 
     Q_DECLARE_PRIVATE_D(qGetPtrHelper(d_ptr), DFontMgrMainWindow)
+    void autoLabelWidth(QString text, DLabel *lab, QFontMetrics fm);
 };
 
 #endif  // DFONTMGRMAINWINDOW_H

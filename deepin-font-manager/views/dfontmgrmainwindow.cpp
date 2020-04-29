@@ -94,7 +94,6 @@ DFontMgrMainWindow::DFontMgrMainWindow(bool isQuickMode, QWidget *parent)
     initShortcuts();
     initFontFiles();
     initFontUninstallDialog();
-
 }
 
 DFontMgrMainWindow::~DFontMgrMainWindow()
@@ -191,8 +190,9 @@ void DFontMgrMainWindow::initConnections()
 
         QString fontSizeText;
         fontSizeText.sprintf(FMT_FONT_SIZE, value);
-        d->fontSizeLabel->setText(fontSizeText);
-
+//        d->fontSizeLabel->setText(fontSizeText);
+        //调节右下角字体大小显示label显示内容/*UT000539*/
+        autoLabelWidth(fontSizeText, d->fontSizeLabel, d->fontSizeLabel->fontMetrics());
         onFontSizeChanged(value);
     });
 
@@ -278,6 +278,12 @@ void DFontMgrMainWindow::initConnections()
 
     }, Qt::UniqueConnection);
 
+    //调节右下角字体大小显示label显示内容/*UT000539*/
+    connect(qApp, &DApplication::fontChanged, this, [ = ]() {
+        int size = d->fontScaleSlider->value();
+        QString fontSize = QString::number(size) + "px";
+        autoLabelWidth(fontSize, d->fontSizeLabel, d->fontSizeLabel->fontMetrics());
+    });
 }
 
 void DFontMgrMainWindow::initShortcuts()
@@ -848,13 +854,16 @@ void DFontMgrMainWindow::initStateBar()
     // Init the default font size
     QString defaultFontSize;
     defaultFontSize.sprintf(FMT_FONT_SIZE, DEFAULT_FONT_SIZE);
-    d->fontSizeLabel->setText(defaultFontSize);
+
+    //调节右下角字体大小显示label显示内容/*UT000539*/
+    autoLabelWidth(defaultFontSize, d->fontSizeLabel, d->fontSizeLabel->fontMetrics());
+//    d->fontSizeLabel->setText(defaultFontSize);
 
     stateBarLayout->addSpacing(10);
     stateBarLayout->addWidget(d->textInputEdit, 1);
     stateBarLayout->addSpacing(20);
     stateBarLayout->addWidget(d->fontScaleSlider);
-    stateBarLayout->addSpacing(20);
+    stateBarLayout->addSpacing(10);
     stateBarLayout->addWidget(d->fontSizeLabel);
     stateBarLayout->addSpacing(20);
 
@@ -1127,8 +1136,9 @@ void DFontMgrMainWindow::onPreviewTextChanged(const QString &currStr)
         previewText = QString(DApplication::translate("Font", "Don't let your dreams be dreams"));
     }
 
-    QString strFontSize = d->fontSizeLabel->text();
-    int iFontSize = strFontSize.remove("px").toInt();
+//    QString strFontSize = d->fontSizeLabel->text();
+    int iFontSize = d->fontScaleSlider->value();
+//    int iFontSize = strFontSize.remove("px").toInt();
 
     DFontPreviewProxyModel *filterModel = m_fontPreviewListView->getFontPreviewProxyModel();
     qDebug() << __FUNCTION__ << "filter Count:" << filterModel->rowCount() << endl;
@@ -1568,4 +1578,25 @@ void DFontMgrMainWindow::startToDelete()
     m_fontManager->setType(DFontManager::UnInstall);
     m_fontManager->setUnInstallFile(m_uninstallFilePath);
     m_fontManager->start();
+}
+
+//调节右下角字体大小显示label显示内容/*UT000539*/
+void DFontMgrMainWindow::autoLabelWidth(QString text, DLabel *lab, QFontMetrics fm)
+{
+    QString str = text;
+    if (fm.width(text) <= 65) {
+        lab->setFixedWidth(65);
+    } else if (fm.width(text) > 45) {
+        lab->setFixedWidth(80);
+        for (int i = 0; i < text.size(); i++) {
+            str = str.left(str.length() - 1);
+            if (str.length() == 1) {
+                break;
+            }
+            if (fm.width(str) < 80) {
+                break;
+            }
+        }
+    }
+    lab->setText(str);
 }

@@ -4,6 +4,7 @@
 #include "dfontpreviewitemdef.h"
 #include <stdlib.h>
 #include <DStyledItemDelegate>
+#include <signalmanager.h>
 
 DWIDGET_USE_NAMESPACE
 
@@ -19,7 +20,7 @@ public:
 
 protected:
     bool eventFilter(QObject *object, QEvent *event) override;
-
+    SignalManager *m_signalManager = SignalManager::instance();
 private:
     QRect adjustPreviewRect(const QRect bgRect) const;
     QFont adjustPreviewFont(const QString &fontFamilyName, const QString &fontStyleName, const int &fontSize) const;
