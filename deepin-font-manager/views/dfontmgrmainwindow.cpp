@@ -844,7 +844,7 @@ void DFontMgrMainWindow::initStateBar()
     fontScaleFont.setPixelSize(14);
     d->fontSizeLabel->setFont(fontScaleFont);
     d->fontSizeLabel->setFixedSize(FTM_SBAR_FSIZE_LABEL_W, FTM_SBAR_FSIZE_LABEL_H);
-    d->fontSizeLabel->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+    d->fontSizeLabel->setAlignment(Qt::AlignCenter | Qt::AlignVCenter);
 
 //    QFont fontSize;
 //    fontSize.setPixelSize(14);
