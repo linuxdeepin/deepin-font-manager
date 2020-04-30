@@ -167,6 +167,11 @@ DSplitListWidget::DSplitListWidget(QWidget *parent)
     : DListView(parent)
 {
     //去除选中项的边框
+    QAbstractItemDelegate *delegate = itemDelegate();
+    if (delegate) {
+        delegate->setParent(nullptr);
+        delegate->deleteLater();
+    }
     this->setItemDelegate(new DNoFocusDelegate(this));
     this->setEditTriggers(QAbstractItemView::EditTrigger::NoEditTriggers);
     this->setAutoScroll(false);
@@ -191,7 +196,7 @@ void DSplitListWidget::initListData()
         m_titleStringIndexMap.insert(titleString, i);
     }
 
-    m_categoryItemModell = new QStandardItemModel;
+    m_categoryItemModell = new QStandardItemModel(this);
 
     int iTitleIndex = 0;
     for (int i = 0; i < m_titleStringList.size() + 1; i++) {

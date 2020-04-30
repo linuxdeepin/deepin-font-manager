@@ -113,7 +113,7 @@ void DFDeleteDialog::initMessageTitle()
     pa.setColor(DPalette::WindowText, color);
     DApplicationHelper::instance()->setPalette(messageTitle, pa);
 
-    QFontMetrics fm(DFontSizeManager::instance()->t6());
+//    QFontMetrics fm(DFontSizeManager::instance()->t6());
 }
 
 void DFDeleteDialog::initMessageDetail()

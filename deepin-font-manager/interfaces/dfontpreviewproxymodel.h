@@ -27,6 +27,8 @@ public:
     void setEditStatus(bool editStatus);
 
     bool getEditStatus() const;
+
+    void invalidate();
 signals:
     void onFilterFinishRowCountChangedInt(unsigned int bShow) const;
 

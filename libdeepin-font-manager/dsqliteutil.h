@@ -23,9 +23,6 @@ public:
     //创建数据库表
     bool createTable();
 
-    //创建索引
-    bool createIndex();
-
     //增加数据
     bool addRecord(QMap<QString, QString> data, const QString &table_name = "t_fontmanager");
 
@@ -40,11 +37,15 @@ public:
                       const QString &table_name = "t_fontmanager");
 
     //查找所有记录
-    bool findRecords(QList<QString> key, QList<QMap<QString, QString>> *row,
+    bool findAllRecords(const QList<QString> &key, QList<QMap<QString, QString>> &row,
+                        const QString &table_name = "t_fontmanager");
+
+    //查找所有记录
+    bool findRecords(const QList<QString> &key, QList<QMap<QString, QString>> *row,
                      const QString &table_name = "t_fontmanager");
 
     //按条件查找
-    bool findRecords(QList<QString> key, QMap<QString, QString> where, QList<QMap<QString, QString>> *row,
+    bool findRecords(const QList<QString> &key, const QMap<QString, QString> &where, QList<QMap<QString, QString>> *row,
                      const QString &table_name = "t_fontmanager");
 
     int getRecordCount(const QString &table_name = "t_fontmanager");
@@ -55,6 +56,14 @@ public:
     void deleteFontInfo(const QList<DFontPreviewItemData> &fontList, const QString &table_name = "t_fontmanager");
     void updateFontInfo(const QList<DFontPreviewItemData> &fontList, const QString &key, const QString &table_name = "t_fontmanager");
     QString escapeString(const QString &str);
+    inline void finish()
+    {
+        if (m_query == nullptr)
+            return;
+//        qDebug() << __FUNCTION__ << m_query->isActive();
+        m_query->finish();
+//        m_query->clear();
+    }
 
     QSqlDatabase m_db;
 

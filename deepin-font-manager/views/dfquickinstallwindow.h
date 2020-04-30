@@ -20,7 +20,7 @@ class DFQuickInstallWindow : public DMainWindow
 {
     Q_OBJECT
 public:
-    explicit DFQuickInstallWindow(QStringList files = QStringList(), QWidget* parent = nullptr);
+    explicit DFQuickInstallWindow(QStringList files = QStringList(), QWidget *parent = nullptr);
 
     ~DFQuickInstallWindow() override;
 
@@ -33,30 +33,30 @@ protected:
     void InitPreviewFont(DFontInfo fontInfo);
     void installFont(const QStringList &files);
 
-    void resizeEvent(QResizeEvent* event) override;
+    void resizeEvent(QResizeEvent *event) override;
 signals:
-    void fileSelected(QStringList fileList);
+    void fileSelected(const QStringList &fileList);
     void quickInstall();
-    void requestShowMainWindow(QStringList fileList);
+    void requestShowMainWindow(const QStringList &fileList);
 
 public slots:
-    void onFileSelected(QStringList fileList);
+    void onFileSelected(const QStringList &fileList);
     void onInstallBtnClicked();
     void onFontInstallFinished();
 
 private:
-    DLabel* m_titleLabel {nullptr};
-    QWidget* m_mainFrame {nullptr};
+    DLabel *m_titleLabel {nullptr};
+    QWidget *m_mainFrame {nullptr};
 
-    DComboBox* m_fontType {nullptr};
-    DFontPreviewer* m_fontPreviewTxt {nullptr};
+    DComboBox *m_fontType {nullptr};
+    DFontPreviewer *m_fontPreviewTxt {nullptr};
 
-    DLabel* m_stateLabel {nullptr};
-    DPushButton* m_actionBtn {nullptr};
+    DLabel *m_stateLabel {nullptr};
+    DPushButton *m_actionBtn {nullptr};
 
-    DFontInfoManager* m_fontInfoManager;
-    DFontManager* m_fontManager;
-    DFMDBManager* m_dbManager;
+    DFontInfoManager *m_fontInfoManager;
+    DFontManager *m_fontManager;
+    DFMDBManager *m_dbManager;
 
 
     QStringList m_installFiles;

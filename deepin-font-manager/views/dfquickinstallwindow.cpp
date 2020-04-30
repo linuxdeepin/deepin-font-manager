@@ -148,7 +148,7 @@ void DFQuickInstallWindow::resizeEvent(QResizeEvent *event)
     // m_mainFrame->setFixedSize(event->size().width() - 150, event->size().height());
 }
 
-void DFQuickInstallWindow::onFileSelected(QStringList fileList)
+void DFQuickInstallWindow::onFileSelected(const QStringList &fileList)
 {
     if (fileList.size() > 0) {
         QString file = fileList.at(0);

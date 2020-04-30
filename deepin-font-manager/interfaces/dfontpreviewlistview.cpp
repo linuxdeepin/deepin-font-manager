@@ -20,7 +20,7 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
     : DListView(parent)
     , m_bLoadDataFinish(false)
     , m_parentWidget(parent)
-    , m_fontPreviewItemModel(new QStandardItemModel)
+    , m_fontPreviewItemModel(new QStandardItemModel(this))
     , m_dataThread(nullptr)
 {
     qRegisterMetaType<DFontPreviewItemData>("DFontPreviewItemData");
@@ -70,11 +70,6 @@ void DFontPreviewListView::initFontListData()
     emit onLoadFontsStatus(0);
     //qDebug() << "main thread id = " << QThread::currentThreadId();
 //    connect(m_dataThread, SIGNAL(resultReady()), this, SLOT(onFinishedDataLoad()));
-}
-
-int DFontPreviewListView::getListDataCount()
-{
-    return m_dataThread->getFontModelList().size();
 }
 
 bool DFontPreviewListView::isListDataLoadFinished()
@@ -242,7 +237,8 @@ void DFontPreviewListView::initDelegate()
     m_fontPreviewProxyModel = new DFontPreviewProxyModel(this);
     m_fontPreviewProxyModel->setSourceModel(m_fontPreviewItemModel);
     m_fontPreviewProxyModel->setDynamicSortFilter(true);
-    this->setModel(m_fontPreviewProxyModel);
+
+    QListView::setModel(m_fontPreviewProxyModel);
 }
 
 void DFontPreviewListView::initConnections()
@@ -295,20 +291,18 @@ void DFontPreviewListView::sortModelIndexList(QModelIndexList &sourceList)
 
 void DFontPreviewListView::deleteFontModelIndex(const QString &filePath, bool isFromSys)
 {
+    qDebug() << __FUNCTION__ << "m_fontPreviewProxyModel rowcount = " << m_fontPreviewProxyModel->rowCount();
     if (m_fontPreviewItemModel && m_fontPreviewItemModel->rowCount() == 0) {
         return;
     }
 
-    for (int i = 0; i < m_fontPreviewProxyModel->sourceModel()->rowCount(); i++) {
-        QModelIndex modelIndex = m_fontPreviewProxyModel->sourceModel()->index(i, 0);
-        QVariant varModel = m_fontPreviewProxyModel->sourceModel()->data(modelIndex, Qt::DisplayRole);
+    for (int i = 0; i < m_fontPreviewProxyModel->rowCount(); i++) {
+        QModelIndex modelIndex = m_fontPreviewProxyModel->index(i, 0);
+        QVariant varModel = m_fontPreviewProxyModel->data(modelIndex, Qt::DisplayRole);
         DFontPreviewItemData itemData = varModel.value<DFontPreviewItemData>();
 
         if (itemData.fontInfo.filePath == filePath) {
-//            qDebug() << __FUNCTION__ << filePath << " font remove row " << i << QThread::currentThreadId();
-            m_fontPreviewProxyModel->sourceModel()->removeRow(i, modelIndex.parent());
-            emit SignalManager::instance()->deledFont(itemData.fontInfo.filePath);
-            //            emit SignalManager::instance()->updateUninstallDialog(itemData.fontInfo.psname, deledCount, delTotalCount);
+            m_fontPreviewProxyModel->removeRow(i);
             break;
         }
     }
@@ -331,7 +325,7 @@ void DFontPreviewListView::selectFonts(const QStringList &fileList)
         QModelIndex index = getFontPreviewProxyModel()->index(i, 0);
         DFontPreviewItemData itemData =
             qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(index));
-        qDebug() << __FUNCTION__ << itemData.fontInfo.filePath;
+//        qDebug() << __FUNCTION__ << itemData.fontInfo.filePath;
         if (fileList.contains(itemData.fontInfo.filePath)) {
             QModelIndex left = m_fontPreviewProxyModel->index(index.row(), 0);
             QModelIndex right = m_fontPreviewProxyModel->index(index.row(), m_fontPreviewProxyModel->columnCount() - 1);
@@ -443,7 +437,6 @@ void DFontPreviewListView::mouseMoveEvent(QMouseEvent *event)
     m_fontPreviewProxyModel->setData(modelIndex, QVariant::fromValue(itemData), Qt::DisplayRole);
     DListView::mouseMoveEvent(event);
 }
-
 
 void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
 {
@@ -755,6 +748,7 @@ void DFontPreviewListView::onListViewItemEnableBtnClicked(const QModelIndexList 
         toSetCurrentIndex(itemIndexesNew);
     }
 
+    itemIndexesNew.clear();
 
     QString message;
     if (itemIndexes.size() == 1) {
@@ -792,6 +786,7 @@ void DFontPreviewListView::onListViewItemCollectionBtnClicked(const QModelIndexL
 
     DFMDBManager::instance()->commitUpdateFontInfo();
 
+    itemIndexesNew.clear();
 }
 
 void DFontPreviewListView::onListViewShowContextMenu(const QModelIndex &index)
@@ -816,12 +811,15 @@ QModelIndex DFontPreviewListView::currModelIndex()
 {
     int min = -1;
     QModelIndex minIndex;
-    for (QModelIndex index : selectedIndexes()) {
+    QModelIndexList modelIndexes = selectedIndexes();
+    for (QModelIndex index : modelIndexes) {
         if (min < 0 || min > index.row()) {
             min = index.row();
             minIndex = index;
         }
     }
+
+    modelIndexes.clear();
 
     if (minIndex.isValid())
         m_currModelIndex = minIndex;
@@ -899,6 +897,7 @@ void DFontPreviewListView::updateChangedDir(const QString &path)
     }
     DFMDBManager::instance()->commitDeleteFontInfo();
     enableFonts();
+    fontInfoList.clear();
 //    qDebug() << __FUNCTION__ << path << " end ";
 }
 
@@ -916,8 +915,10 @@ void DFontPreviewListView::deleteFontFiles(const QStringList &files, bool force)
 
 void DFontPreviewListView::deleteCurFonts(const QStringList &files)
 {
+    qDebug() << __FUNCTION__ << " before delete " << m_dataThread->getFontModelList().size() << m_fontPreviewProxyModel->rowCount()  << m_fontPreviewProxyModel->sourceModel()->rowCount();
     QList<DFontPreviewItemData> fontInfoList = m_dataThread->getFontModelList();
     qDebug() << fontInfoList.size() << __FUNCTION__ << files.size();
+    int delCnt = 0;
     for (int i = 0; i < fontInfoList.size(); ++i) {
         DFontPreviewItemData itemData = fontInfoList.at(i);
         QString filePath = itemData.fontInfo.filePath;
@@ -928,12 +929,19 @@ void DFontPreviewListView::deleteCurFonts(const QStringList &files)
             enableFont(itemData.fontInfo.filePath);
             DFMDBManager::instance()->deleteFontInfo(itemData);
             Q_EMIT itemRemoved(itemData);
+            delCnt++;
+            emit SignalManager::instance()->updateUninstallDialog(itemData.fontInfo.filePath.split("/").last(), delCnt, files.size());
             m_dataThread->removeFontData(itemData);
             m_dataThread->removePathWatcher(filePath);
         }
     }
     DFMDBManager::instance()->commitDeleteFontInfo();
+//    emit SignalManager::instance()->updateUninstallDialog(QString("test"), delCnt, files.size());
+    emit SignalManager::instance()->closeUninstallDialog();
     enableFonts();
+    fontInfoList.clear();
+    DFontInfoManager::instance()->removeFontInfo();
+    qDebug() << __FUNCTION__ << " after delete " << m_dataThread->getFontModelList().size() << m_fontPreviewProxyModel->rowCount()  << m_fontPreviewProxyModel->sourceModel()->rowCount();
 }
 
 void DFontPreviewListView::changeFontFile(const QString &path, bool force)
@@ -964,6 +972,8 @@ void DFontPreviewListView::changeFontFile(const QString &path, bool force)
     }
     DFMDBManager::instance()->commitDeleteFontInfo();
     enableFonts();
+    fontInfoList.clear();
+    DFontInfoManager::instance()->removeFontInfo();
 
     if (isDir) {
         if (!QFileInfo(QDir::homePath() + "/.local/share/fonts").exists()) {
@@ -998,8 +1008,34 @@ QStringList DFontPreviewListView::selectedFonts(int *deleteCnt, int *systemCnt)
     if (deleteCnt)
         *deleteCnt = deleteNum;
 
+    list.clear();
     qDebug() << __FUNCTION__ << ret.size();
     return ret;
+}
+
+void DFontPreviewListView::selectedFontsNum(int *deleteCnt, int *systemCnt)
+{
+    QModelIndexList list = selectedIndexes();
+
+    int deleteNum = 0;
+    int systemNum = 0;
+    for (QModelIndex index : list) {
+        QVariant varModel = m_fontPreviewProxyModel->data(index, Qt::DisplayRole);
+        DFontPreviewItemData itemData = varModel.value<DFontPreviewItemData>();
+        if (!itemData.fontInfo.filePath.isEmpty()) {
+            if (itemData.fontInfo.isSystemFont) {
+                systemNum++;
+            } else {
+                deleteNum++;
+            }
+        }
+    }
+
+    if (systemCnt)
+        *systemCnt = systemNum;
+    if (deleteCnt)
+        *deleteCnt = deleteNum;
+    list.clear();
 }
 
 QModelIndexList DFontPreviewListView::selectedIndex(int *deleteCnt, int *systemCnt)

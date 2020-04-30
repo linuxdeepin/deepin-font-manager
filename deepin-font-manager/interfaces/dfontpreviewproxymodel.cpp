@@ -41,6 +41,12 @@ bool DFontPreviewProxyModel::getEditStatus() const
     return m_editStatus;
 }
 
+void DFontPreviewProxyModel::invalidate()
+{
+    qDebug() << __FUNCTION__;
+    QSortFilterProxyModel::invalidate();
+}
+
 void DFontPreviewProxyModel::setEditStatus(bool editStatus)
 {
     m_editStatus = editStatus;
@@ -58,20 +64,18 @@ bool DFontPreviewProxyModel::isFontNameContainsPattern(QString fontName) const
 bool DFontPreviewProxyModel::isCustomFilterAcceptsRow(const QModelIndex &modelIndex) const
 {
     QVariant varModel = sourceModel()->data(modelIndex, Qt::DisplayRole);
-    if(varModel.isValid() == false )
-    {
+    if (varModel.isValid() == false) {
         return false;
     }
 
     //zhangya 20200313  fix varModel is not DFontPreviewItemData crash
-    if(varModel.canConvert<DFontPreviewItemData>() == false)
-    {
+    if (varModel.canConvert<DFontPreviewItemData>() == false) {
         return false;
     }
 
     DFontPreviewItemData itemData = varModel.value<DFontPreviewItemData>();
 
-    const QString& fontName = itemData.strFontName;
+    const QString &fontName = itemData.strFontName;
 
     switch (m_filterGroup) {
     //显示所有字体
@@ -85,8 +89,8 @@ bool DFontPreviewProxyModel::isCustomFilterAcceptsRow(const QModelIndex &modelIn
     case DSplitListWidget::SysFont: {
         QString fontFilePath = itemData.fontInfo.filePath;
         if (fontFilePath.startsWith("/usr/share/fonts/") &&
-            !fontFilePath.contains("/.local/share/fonts/") &&
-            isFontNameContainsPattern(fontName)) {
+                !fontFilePath.contains("/.local/share/fonts/") &&
+                isFontNameContainsPattern(fontName)) {
             return true;
         }
     } break;
@@ -94,7 +98,7 @@ bool DFontPreviewProxyModel::isCustomFilterAcceptsRow(const QModelIndex &modelIn
     case DSplitListWidget::UserFont: {
         QString fontFilePath = itemData.fontInfo.filePath;
         if (fontFilePath.contains("/.local/share/fonts/") &&
-            isFontNameContainsPattern(fontName)) {
+                isFontNameContainsPattern(fontName)) {
             return true;
         }
     } break;
@@ -139,8 +143,7 @@ bool DFontPreviewProxyModel::filterAcceptsRow(int source_row,
 
     QModelIndex modelIndex = sourceModel()->index(source_row, 0, source_parent);
 
-    if(modelIndex.isValid() ==false)
-    {
+    if (modelIndex.isValid() == false) {
         return false;
     }
 
@@ -160,7 +163,7 @@ int DFontPreviewProxyModel::rowCount(const QModelIndex &parent) const
 
     unsigned int bShow = 0;
     if (0 == filterRowCount) {
-        if (getEditStatus()) {          
+        if (getEditStatus()) {
             bShow = 2;
         } else {
             bShow = 1;

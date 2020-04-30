@@ -38,8 +38,10 @@ bool DSqliteUtil::createConnection(const QString &database)
     qDebug() << drivers;
     if (!drivers.contains("QSQLITE")) {
         qDebug() << "no sqlite driver!";
+        drivers.clear();
         return false;
     }
+    drivers.clear();
 
     //与数据库建立连接
     if (QSqlDatabase::contains("font_manager")) {
@@ -94,27 +96,11 @@ isMonoSpace TINYINT)";
 
     if (!m_query->exec(createTableSql)) {
         qDebug() << "create table failed!";
+        finish();
         return false;
     } else {
+        finish();
         qDebug() << "create table sucess!";
-        return true;
-    }
-}
-
-bool DSqliteUtil::createIndex()
-{
-    if (!m_db.isOpen()) {
-        createConnection(m_strDatabase);
-    }
-
-    m_query = new QSqlQuery(m_db);
-
-    QString createIndexSql = "CREATE INDEX idx_familyStyle ON t_fontmanager(familyName, styleName)";
-    if (!m_query->exec(createIndexSql)) {
-        qDebug() << "create index failed!";
-        return false;
-    } else {
-        qDebug() << "create index sucess!";
         return true;
     }
 }
@@ -141,9 +127,11 @@ bool DSqliteUtil::addRecord(QMap<QString, QString> data, const QString &table_na
     m_query->prepare(sql);
 
     if (!m_query->exec()) {
+        finish();
         qDebug() << "add data failed!";
         return false;
     } else {
+        finish();
         qDebug() << "add data success!";
         return true;
     }
@@ -171,9 +159,11 @@ bool DSqliteUtil::delRecord(QMap<QString, QString> where, const QString &table_n
     m_query->prepare(sql);
 
     if (!m_query->exec()) {
+        finish();
         qDebug() << "del data failed!";
         return false;
     } else {
+        finish();
         qDebug() << "del data success!";
         return true;
     }
@@ -201,16 +191,60 @@ bool DSqliteUtil::updateRecord(QMap<QString, QString> where, QMap<QString, QStri
     m_query->prepare(sql);
 
     if (!m_query->exec()) {
+        finish();
         qDebug() << "update data failed!";
         return false;
     } else {
+        finish();
         qDebug() << "update data success!";
         return true;
     }
 }
 
+bool DSqliteUtil::findAllRecords(const QList<QString> &key, QList<QMap<QString, QString> > &row, const QString &table_name)
+{
+    QString sql = "select \
+fontId,\
+fontName,\
+isEnabled,\
+isCollected,\
+filePath,\
+familyName,\
+styleName,\
+type,\
+version,\
+copyright,\
+description,\
+sysVersion,\
+isInstalled,\
+isError,\
+isChineseFont,\
+isMonoSpace,\
+fullname,\
+psname,\
+trademark from " + table_name;
+
+    QMutexLocker m_locker(&mutex);
+    m_query->prepare(sql);
+
+    if (m_query->exec()) {
+        while (m_query->next()) {
+            QMap<QString, QString> mapRow;
+            for (int i = 0; i < key.size(); i++) {
+                mapRow.insert(key.at(i), m_query->value(i).toString());
+            }
+            row.append(mapRow);
+            mapRow.clear();
+        }
+        finish();
+        return true;
+    }
+    finish();
+    return false;
+}
+
 //查找所有记录
-bool DSqliteUtil::findRecords(QList<QString> key, QList<QMap<QString, QString>> *row,
+bool DSqliteUtil::findRecords(const QList<QString> &key, QList<QMap<QString, QString>> *row,
                               const QString &table_name)
 {
     QString sql = "select ";
@@ -231,16 +265,18 @@ bool DSqliteUtil::findRecords(QList<QString> key, QList<QMap<QString, QString>> 
             }
             row->append(mapRow);
         }
+        finish();
 //        qDebug() << "find all data success!";
         return true;
     } else {
+        finish();
 //        qDebug() << "find all data failed!";
         return false;
     }
 }
 
 //按条件查找
-bool DSqliteUtil::findRecords(QList<QString> key, QMap<QString, QString> where,
+bool DSqliteUtil::findRecords(const QList<QString> &key, const QMap<QString, QString> &where,
                               QList<QMap<QString, QString>> *row, const QString &table_name)
 {
     QString sql = "select ";
@@ -260,6 +296,7 @@ bool DSqliteUtil::findRecords(QList<QString> key, QMap<QString, QString> where,
     sql.chop(5);
 //    qDebug() << sql;
     m_query->prepare(sql);
+
     if (m_query->exec()) {
         while (m_query->next()) {
             QMap<QString, QString> mapRow;
@@ -267,10 +304,13 @@ bool DSqliteUtil::findRecords(QList<QString> key, QMap<QString, QString> where,
                 mapRow.insert(key.at(i), m_query->value(i).toString());
             }
             row->append(mapRow);
+            mapRow.clear();
         }
+        finish();
 //        qDebug() << "find data by condition success!";
         return true;
     } else {
+        finish();
 //        qDebug() << "find data by condition failed!";
         return false;
     }
@@ -289,6 +329,7 @@ int DSqliteUtil::getRecordCount(const QString &table_name)
             resultCount = m_query->value(0).toInt();
         }
     }
+    finish();
 
     return resultCount;
 }
@@ -304,8 +345,10 @@ QStringList DSqliteUtil::getInstalledFontsPath()
             installedList.append(m_query->value(0).toString());
         }
     }
+    finish();
     return installedList;
 }
+
 int DSqliteUtil::getMaxFontId(const QString &table_name)
 {
     QString sql = "select max(fontId) from " + table_name;
@@ -319,6 +362,7 @@ int DSqliteUtil::getMaxFontId(const QString &table_name)
             maxFontId = m_query->value(0).toInt();
         }
     }
+    finish();
 
     return maxFontId;
 }
@@ -329,8 +373,8 @@ void DSqliteUtil::addFontInfo(const QList<DFontPreviewItemData> &fontList, const
         return;
 
     QMutexLocker m_locker(&mutex);
-    QString sql = "insert into " + table_name + "(" +
-                  "fontName, \
+    QString sql = "insert into " + table_name +
+                  "(fontName, \
 isEnabled, \
 isCollected, \
 isChineseFont, \
@@ -433,6 +477,26 @@ trademark) values( \
     } else {
         qDebug() << __FUNCTION__ << "true";
     }
+
+    fontNameList.clear();
+    isEnabledList.clear();
+    isCollectedList.clear();
+    isChineseList.clear();
+    isMonoSpaceList.clear();
+    filePathList.clear();
+    familyNameList.clear();
+    styleNameList.clear();
+    typeList.clear();
+    versionList.clear();
+    copyrightList.clear();
+    descriptionList.clear();
+    sysVersionList.clear();
+    isInstalledList.clear();
+    isErrorList.clear();
+    fullnameList.clear();
+    psnameList.clear();
+    trademarkList.clear();
+    finish();
 }
 
 void DSqliteUtil::deleteFontInfo(const QList<DFontPreviewItemData> &fontList, const QString &table_name)
@@ -458,6 +522,8 @@ void DSqliteUtil::deleteFontInfo(const QList<DFontPreviewItemData> &fontList, co
     } else {
         qDebug() << __FUNCTION__ << "succ";
     }
+    filePathList.clear();
+    finish();
 }
 
 void DSqliteUtil::updateFontInfo(const QList<DFontPreviewItemData> &fontList, const QString &key, const QString &table_name)
@@ -489,15 +555,19 @@ void DSqliteUtil::updateFontInfo(const QList<DFontPreviewItemData> &fontList, co
     } else {
         qDebug() << __FUNCTION__ << "true";
     }
+    keyList.clear();
+    filePathList.clear();
+    finish();
 }
 
 QString DSqliteUtil::escapeString(const QString &str)
 {
     if (str.isEmpty() || str.isNull())
         return "";
-    QString escapeStr = str;
+    return str;
+//    QString escapeStr = str;
 //    escapeStr = escapeStr.replace("'", "''");
-    return escapeStr;
+//    return escapeStr;
 }
 
 bool DSqliteUtil::delAllRecords(const QString &table_name)
@@ -508,9 +578,11 @@ bool DSqliteUtil::delAllRecords(const QString &table_name)
     m_query->prepare(sql);
 
     if (!m_query->exec()) {
+        finish();
         qDebug() << "delete all records failed!";
         return false;
     } else {
+        finish();
         qDebug() << "delete all records success!";
         return true;
     }

@@ -36,7 +36,6 @@ public:
     void initFontListData();
     void initDelegate();
 
-    int getListDataCount();
     bool isListDataLoadFinished();
     void refreshFontListData(const QStringList &installFont);
 
@@ -66,6 +65,7 @@ public:
     void deleteCurFonts(const QStringList &files);
     void changeFontFile(const QString &path, bool force = false);
     QStringList selectedFonts(int *deleteCnt, int *systemCnt);
+    void selectedFontsNum(int *deleteCnt, int *systemCnt);
     QModelIndexList selectedIndex(int *deleteCnt, int *systemCnt);
     void deleteFontModelIndex(const QString &filePath, bool isFromSys = false);
     inline bool isDeleting();
@@ -99,7 +99,7 @@ private:
     bool m_bListviewAtTop = false;
     QWidget *m_parentWidget;
     QStandardItemModel *m_fontPreviewItemModel {nullptr};
-    QList<DFontPreviewItemData> m_fontPreviewItemDataList;
+
     DFontPreviewItemDelegate *m_fontPreviewItemDelegate {nullptr};
     SignalManager *m_signalManager = SignalManager::instance();
     QMenu *m_rightMenu {nullptr};

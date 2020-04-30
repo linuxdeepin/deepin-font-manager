@@ -27,6 +27,7 @@ class DFInstallNormalWindow : public DFontBaseDialog
     Q_OBJECT
 public:
     DFInstallNormalWindow(const QStringList &files = QStringList(), QWidget *parent = nullptr);
+    ~DFInstallNormalWindow();
 
     void setSkipException(bool skip);
     void breakInstalltion();
@@ -50,7 +51,7 @@ protected slots:
     void batchInstall();
     void batchReInstall();
     void batchReInstallContinue();
-    void onProgressChanged(const QString &filePath, const double &percent);
+    void onProgressChanged(const QString &familyName, const double &percent);
 
     void onCancelInstall();
     void onContinueInstall(const QStringList &continueInstallFontFileList);
@@ -60,8 +61,6 @@ protected slots:
 signals:
     void batchReinstall(const QStringList &reinstallFiles);
     void finishFontInstall(const QStringList &fileList);
-    void addFont(const QStringList &fileList);
-
 
 private:
     enum InstallState { Install, reinstall, damaged };
@@ -90,7 +89,6 @@ private:
 
     InstallState m_installState {Install};
 
-    QList<DFInstallErrorItemModel *> m_installErrorFontModelList;
     DFontInfoManager *m_fontInfoManager;
     DFontManager *m_fontManager;
     SignalManager *m_signalManager = SignalManager::instance();

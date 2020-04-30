@@ -50,8 +50,8 @@ void DFMSuggestButton::paintEvent(QPaintEvent *event)
     p.drawControl(QStyle::CE_PushButton, option);
 }
 
-DFInstallErrorDialog::DFInstallErrorDialog(QWidget *parent, QStringList errorInstallFontFileList,
-                                           QStringList systemFontFileList)
+DFInstallErrorDialog::DFInstallErrorDialog(QWidget *parent, const QStringList &errorInstallFontFileList,
+                                           const  QStringList &systemFontFileList)
     : DFontBaseDialog(parent)
     , m_errorInstallFiles(errorInstallFontFileList)
     , m_systemFiles(systemFontFileList)
@@ -62,7 +62,12 @@ DFInstallErrorDialog::DFInstallErrorDialog(QWidget *parent, QStringList errorIns
     resetContinueInstallBtnStatus();
 }
 
-DFInstallErrorDialog::~DFInstallErrorDialog() {}
+DFInstallErrorDialog::~DFInstallErrorDialog()
+{
+    m_errorInstallFiles.clear();
+    m_systemFiles.clear();
+    m_installErrorFontModelList.clear();
+}
 
 void DFInstallErrorDialog::initData()
 {

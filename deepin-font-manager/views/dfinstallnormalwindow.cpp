@@ -32,6 +32,18 @@ DFInstallNormalWindow::DFInstallNormalWindow(const QStringList &files, QWidget *
     initConnections();
 }
 
+DFInstallNormalWindow::~DFInstallNormalWindow()
+{
+    m_installFiles.clear();
+    m_installedFiles.clear();
+    m_newInstallFiles.clear();
+    m_damagedFiles.clear();
+    m_systemFiles.clear();
+    m_outfileList.clear();
+    m_errorList.clear();
+    m_AllSysFiles.clear();
+}
+
 void DFInstallNormalWindow::initUI()
 {
     setFixedSize(QSize(380, 136));
@@ -240,12 +252,12 @@ void DFInstallNormalWindow::initConnections()
 //ut000442 从数据库中读取系统字体，用于之后的判断
 void DFInstallNormalWindow::getAllSysfiles()
 {
-    DFMDBManager *dbManager = DFMDBManager::instance();
-    QString systemFile;
-    QList<DFontPreviewItemData> allFontInfo = dbManager->getAllFontInfo();
+    QList<DFontPreviewItemData> allFontInfo = DFontPreviewListDataThread::instance()->getFontModelList();
+    if (allFontInfo.isEmpty())
+        allFontInfo = DFMDBManager::instance()->getAllFontInfo();
     for (auto font : allFontInfo) {
         if (font.fontInfo.filePath.contains("/usr/share/")) {
-            systemFile.clear();
+            QString systemFile;
             systemFile.append(font.fontInfo.familyName).append(font.fontInfo.styleName);
             m_AllSysFiles.append(systemFile);
         }
@@ -266,7 +278,6 @@ void DFInstallNormalWindow::verifyFontFiles()
     m_systemFiles.clear();
     m_errorList.clear();
 
-    m_installErrorFontModelList.clear();
     foreach (auto it, m_installFiles) {
         fontInfo = m_fontInfoManager->getFontInfo(it, true);
         if (fontInfo.isError) {
@@ -300,6 +311,8 @@ void DFInstallNormalWindow::verifyFontFiles()
         }
     }
     m_errorList = m_damagedFiles + m_installedFiles + m_systemFiles;
+    fontInfos.clear();
+    instFontInfos.clear();
 }
 
 
@@ -475,12 +488,15 @@ void DFInstallNormalWindow::batchInstall()
 //        qDebug() << " Prepare install file: " << it + "|" + familyName;
     }
 
+    installList.clear();
+
     m_fontManager->setType(DFontManager::Install);
     m_fontManager->setInstallFileList(installListWithFamliyName);
     m_fontManager->setSystemFontCount(systemFontCount);
     this->systemFontCount = 0;
     m_fontManager->start();
 
+    installListWithFamliyName.clear();
 }
 
 
@@ -524,10 +540,12 @@ void DFInstallNormalWindow::batchReInstall()
 //        qDebug() << " Prepare install file: " << it + m_loadingSpinner"|" + familyName;
     }
 
-
     m_fontManager->setType(DFontManager::ReInstall);
     m_fontManager->setInstallFileList(installListWithFamliyName);
     m_fontManager->start();
+
+    installList.clear();
+    installListWithFamliyName.clear();
 }
 
 void DFInstallNormalWindow::batchReInstallContinue()
@@ -548,6 +566,8 @@ void DFInstallNormalWindow::batchReInstallContinue()
     m_fontManager->setType(DFontManager::ReInstall);
     m_fontManager->setInstallFileList(installListWithFamliyName);
     m_fontManager->start();
+
+    installListWithFamliyName.clear();
 }
 
 void DFInstallNormalWindow::onCancelInstall()
@@ -574,20 +594,18 @@ void DFInstallNormalWindow::onContinueInstall(const QStringList &continueInstall
     Q_EMIT batchReinstall(continueInstallFontFileList);
 }
 
-void DFInstallNormalWindow::onProgressChanged(const QString &filePath, const double &percent)
+void DFInstallNormalWindow::onProgressChanged(const QString &familyName, const double &percent)
 {
-    if (filePath.isEmpty()) {
+    if (familyName.isEmpty()) {
         return;
     }
 
-    if (filePath != ONLYPROGRESS) {
-        DFontInfo fontInfo = m_fontInfoManager->getFontInfo(filePath, false);
-        m_currentFontLabel->setText(fontInfo.familyName);
-    }
+    m_currentFontLabel->setText(familyName);
+
     m_progressBar->setValue(static_cast<int>(percent));
     m_progressBar->setTextVisible(false);
 
-    qDebug() << QString("font install progress: %1%").arg(percent);
+//    qDebug() << QString("font install progress: %1%").arg(percent);
 //    ut000442 fix bug 21562.之前进度条到100的同时关闭这个窗口，导致
 //    用户看不到进度条满的效果。
 //    if (static_cast<int>(percent) == 100) {

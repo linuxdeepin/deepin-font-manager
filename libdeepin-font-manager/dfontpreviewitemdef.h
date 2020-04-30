@@ -5,7 +5,8 @@
 
 #include <QMetaType>
 #include <QString>
-#include <DApplication>
+#include <QDebug>
+//#include <DApplication>
 
 //#define FTM_DEFAULT_PREVIEW_TEXT QString(tr("Don't let your dreams be dreams"))
 //#define FTM_DEFAULT_PREVIEW_TEXT  QString(DApplication::translate("Font", "Don't let your dreams be dreams"))
@@ -99,6 +100,11 @@ struct DFontPreviewItemData {
         isMonoSpace = other.isMonoSpace;
 
         collectIconStatus = other.collectIconStatus;
+    }
+
+    ~DFontPreviewItemData()
+    {
+//        qDebug() << __FUNCTION__ << strFontName;
     }
 
     bool operator==(const DFontPreviewItemData &info)

@@ -43,7 +43,7 @@ public:
     *  @retval true 表示成功
     *  @retval false 表示失败
     */
-    static bool createFontConfigFile(QString xmlFilePath);
+    static bool createFontConfigFile(const QString &xmlFilePath);
 
     /**
     *  @brief  删除文件
@@ -118,18 +118,18 @@ public:
                                  const QString &lastNodeText);
 
     static bool addNodesWithTextList(const QString &fileName,
-                                 const QString &parentNodeName,
-                                 const QStringList &nodeNameList,
-                                 const QList<QSTRING_MAP> &nodeAttributeList,
-                                 const QStringList &lastNodeTextList);
+                                     const QString &parentNodeName,
+                                     const QStringList &nodeNameList,
+                                     const QList<QSTRING_MAP> &nodeAttributeList,
+                                     const QStringList &lastNodeTextList);
 
     static bool addPatternNodesWithText(const QString &fileName,
                                         const QString &parentNodeName,
                                         const QString &lastNodeText);
 
     static bool addPatternNodesWithTextList(const QString &fileName,
-                                        const QString &parentNodeName,
-                                        const QStringList &lastNodeTextList);
+                                            const QString &parentNodeName,
+                                            const QStringList &lastNodeTextList);
 
     /**
     *  @brief  增加包含文本与属性的节点
@@ -168,8 +168,8 @@ public:
     *  @retval false 表示失败
     */
     static bool deleteNodeWithTextList(const QString &fileName,
-                                   const QString &nodeName,
-                                   const QStringList &nodeTextList);
+                                       const QString &nodeName,
+                                       const QStringList &nodeTextList);
 
     /**
     *  @brief  修改节点文本

@@ -38,7 +38,7 @@ bool DFMXmlWrapper::createXmlFile(const QString &fileName,
     return true;
 }
 
-bool DFMXmlWrapper::createFontConfigFile(QString xmlFilePath)
+bool DFMXmlWrapper::createFontConfigFile(const QString &xmlFilePath)
 {
     QFile file(xmlFilePath);
     if (file.exists()) {
@@ -327,7 +327,11 @@ bool DFMXmlWrapper::addPatternNodesWithText(const QString &fileName,
     attributeList.push_back(map2);
     attributeList.push_back(map3);
 
-    return DFMXmlWrapper::addNodesWithText(fileName, parentNodeName, nodeNameList, attributeList, lastNodeText);
+    bool ret = DFMXmlWrapper::addNodesWithText(fileName, parentNodeName, nodeNameList, attributeList, lastNodeText);
+    map2.clear();
+    nodeNameList.clear();
+    attributeList.clear();
+    return ret;
 }
 
 bool DFMXmlWrapper::addPatternNodesWithTextList(const QString &fileName, const QString &parentNodeName, const QStringList &lastNodeTextList)
@@ -343,7 +347,11 @@ bool DFMXmlWrapper::addPatternNodesWithTextList(const QString &fileName, const Q
     attributeList.push_back(map2);
     attributeList.push_back(map3);
 
-    return DFMXmlWrapper::addNodesWithTextList(fileName, parentNodeName, nodeNameList, attributeList, lastNodeTextList);
+    bool ret = DFMXmlWrapper::addNodesWithTextList(fileName, parentNodeName, nodeNameList, attributeList, lastNodeTextList);
+    map2.clear();
+    nodeNameList.clear();
+    attributeList.clear();
+    return ret;
 }
 
 bool DFMXmlWrapper::addNode_All(const QString &fileName,
@@ -383,7 +391,7 @@ bool DFMXmlWrapper::addNode_All(const QString &fileName,
 
     // 添加属性
     QSTRING_MAP_ITER it;
-    for ( it = attMap.begin(); it != attMap.end(); ++it ) {
+    for (it = attMap.begin(); it != attMap.end(); ++it) {
         // 属性名
         QDomAttr att = doc.createAttribute(it.key());
         // 属性值
@@ -614,7 +622,7 @@ bool DFMXmlWrapper::modifyNode_Attribute(const QString &fileName,
     if (nodeEle.isElement()) {
         QSTRING_MAP_ITER it;
         //遍历map
-        for ( it = attMap.begin(); it != attMap.end(); ++it ) {
+        for (it = attMap.begin(); it != attMap.end(); ++it) {
             QDomAttr att = nodeEle.attributeNode(it.key());
             // 删除之前的属性及其值
             nodeEle.removeAttribute(it.key());

@@ -11,8 +11,7 @@ public:
 
 signals:
     void popUninstallDialog();
-    void deledFont(QString &fontPath);
-    void updateUninstallDialog(QString &fontName, int index, int totalCount);
+    void updateUninstallDialog(const QString &fontName, int index, int totalCount);
     void closeUninstallDialog();
     void showInstallFloatingMessage(int totalCount);
     void sendInstallMessage(int totalCount);

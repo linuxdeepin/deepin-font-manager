@@ -44,10 +44,9 @@ private:
     void initMessageDetail();
     QLayout *initBottomButtons();
 
-    DLabel *m_fontLogo;
     DLabel *messageTitle;
     DLabel *messageDetail;
-    DScrollArea *messageDetailScrollArea;
+
     DPushButton *m_cancelBtn;
     DWarningButton *m_confirmBtn;
     DFontMgrMainWindow *m_mainWindow;

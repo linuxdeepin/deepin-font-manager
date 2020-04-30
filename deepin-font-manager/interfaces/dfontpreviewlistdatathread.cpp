@@ -52,7 +52,6 @@ void DFontPreviewListDataThread::doWork()
     m_fontModelList.clear();
 
     qDebug() << "doWork thread id = " << QThread::currentThreadId();
-    QStringList fontNameList;
     DFontInfoManager *fontInfoMgr = DFontInfoManager::instance();
 
     //Call refreshList out side DFontInfoManager constructor
@@ -66,12 +65,14 @@ void DFontPreviewListDataThread::doWork()
 
         //从fontconfig配置文件同步字体启用/禁用状态数据
         syncFontEnableDisableStatusData(disableFontList);
+        disableFontList.clear();
 
         refreshFontListData(true, QStringList());
 
         m_view->onFinishedDataLoad();
         return;
     }
+    disableFontList.clear();
 
     QStringList chineseFontPathList = fontInfoMgr->getAllChineseFontPath();
     QStringList monoSpaceFontPathList = fontInfoMgr->getAllMonoSpaceFontPath();
@@ -83,6 +84,9 @@ void DFontPreviewListDataThread::doWork()
             insertFontItemData(filePath, i + 1, chineseFontPathList, monoSpaceFontPathList, true);
         }
     }
+    chineseFontPathList.clear();
+    monoSpaceFontPathList.clear();
+    strAllFontList.clear();
 
     Q_EMIT m_view->multiItemsAdded(m_fontModelList);
 
@@ -174,7 +178,9 @@ void DFontPreviewListDataThread::onFileAdded(const QStringList &files)
 
 QList<DFontPreviewItemData> DFontPreviewListDataThread::getFontModelList()
 {
-    return m_fontModelList;
+    if (m_view->isListDataLoadFinished())
+        return m_fontModelList;
+    return QList<DFontPreviewItemData>();
 }
 
 QList<DFontPreviewItemData> DFontPreviewListDataThread::getDiffFontModelList() const
@@ -216,8 +222,11 @@ void DFontPreviewListDataThread::insertFontItemData(const QString &filePath,
     DFontInfoManager *fontInfoMgr = DFontInfoManager::instance();
     DFontPreviewItemData itemData;
     QFileInfo filePathInfo(filePath);
-
-    itemData.fontInfo = fontInfoMgr->getFontInfo(filePath);
+    if (isStartup) {
+        itemData.fontInfo = fontInfoMgr->getFontInfo(filePath, true);
+    } else {
+        itemData.fontInfo = fontInfoMgr->getFontInfo(filePath);
+    }
 
     if (itemData.fontInfo.styleName.length() > 0) {
         itemData.strFontName =
@@ -283,7 +292,12 @@ void DFontPreviewListDataThread::refreshFontListData(bool isStartup, const QStri
     DFontInfoManager *fontInfoMgr = DFontInfoManager::instance();
     QStringList strAllFontList = fontInfoMgr->getAllFontPath();
 
-    QList<DFontPreviewItemData> fontInfoList = m_dbManager->getAllFontInfo();
+    QList<DFontPreviewItemData> fontInfoList;
+    if (isStartup)
+        fontInfoList = m_dbManager->getAllFontInfo();
+    else {
+        fontInfoList = m_fontModelList;
+    }
     QStringList chineseFontPathList = fontInfoMgr->getAllChineseFontPath();
     QStringList monoSpaceFontPathList = fontInfoMgr->getAllMonoSpaceFontPath();
 
@@ -312,6 +326,9 @@ void DFontPreviewListDataThread::refreshFontListData(bool isStartup, const QStri
         }
     }
 
+    if (isStartup)
+        fontInfoList.clear();
+
     DFMDBManager::instance()->commitDeleteFontInfo();
     m_view->enableFonts();
 
@@ -333,10 +350,19 @@ void DFontPreviewListDataThread::refreshFontListData(bool isStartup, const QStri
             }
         }
         m_dbManager->commitAddFontInfo();
+        allFontListSet.clear();
+        diffSet.clear();
     }
+
+    strAllFontList.clear();
+    chineseFontPathList.clear();
+    monoSpaceFontPathList.clear();
+    dbFilePathSet.clear();
+
     if (!installFont.isEmpty()) {
         Q_EMIT m_view->multiItemsAdded(m_diffFontModelList);
         Q_EMIT m_view->itemsSelected(installFont);
+        m_view->selectFonts(installFont);
     } else {
         Q_EMIT m_view->multiItemsAdded(m_fontModelList);
     }
@@ -397,6 +423,8 @@ void DFontPreviewListDataThread::syncFontEnableDisableStatusData(const QStringLi
     }
 
     m_dbManager->commitUpdateFontInfo();
+    fontInfoList.clear();
+    disableFontMap.clear();
 
     for (QString disableFont : disableFontPathList) {
         if (!fontList.contains(disableFont) && m_dbManager->isUserFont(disableFont)) {
@@ -404,4 +432,5 @@ void DFontPreviewListDataThread::syncFontEnableDisableStatusData(const QStringLi
         }
     }
     m_view->enableFonts();
+    fontList.clear();
 }

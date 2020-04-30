@@ -16,6 +16,7 @@ INCLUDEPATH += $$PWD/../libdeepin-font-manager \
                $$PWD/interfaces
 LIBS += -L$$OUT_PWD/../libdeepin-font-manager -ldeepin-font-manager
 DEFINES += QT_MESSAGELOGCONTEXT
+DEFINES += QFONTCACHE_DEBUG
 
 HEADERS += utils.h \
     views/dfontmgrmainwindow.h \

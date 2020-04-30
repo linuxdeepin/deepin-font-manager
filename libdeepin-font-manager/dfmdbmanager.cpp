@@ -45,6 +45,7 @@ DFontPreviewItemData DFMDBManager::parseRecordToItemData(const QMap<QString, QSt
     QString filePath = record.value("filePath");
     itemData.strFontName = record.value("fontName");
     QFileInfo filePathInfo(filePath);
+    filePathInfo.setCaching(false);
     itemData.strFontFileName = filePathInfo.baseName();
     itemData.strFontPreview = QString(DApplication::translate("Font", "Don't let your dreams be dreams"));
     itemData.iFontSize = FTM_DEFAULT_PREVIEW_FONTSIZE;
@@ -115,14 +116,17 @@ QList<DFontPreviewItemData> DFMDBManager::getAllFontInfo()
     QList<QString> keyList;
     appendAllKeys(keyList);
 
-    m_sqlUtil->findRecords(keyList, &recordList);
+    m_sqlUtil->findAllRecords(keyList, recordList);
     for (int i = 0; i < recordList.size(); ++i) {
         QMap<QString, QString> record = recordList.at(i);
         if (record.size() > 0) {
             DFontPreviewItemData itemData = parseRecordToItemData(record);
             fontItemDataList.push_back(itemData);
+            record.clear();
         }
     }
+    keyList.clear();
+    recordList.clear();
 
     return fontItemDataList;
 }
@@ -143,8 +147,6 @@ QStringList DFMDBManager::getInstalledFontsPath()
 }
 QString DFMDBManager::isFontInfoExist(const DFontInfo &newFileFontInfo)
 {
-    QList<DFontPreviewItemData> fontItemDataList;
-
     QList<QMap<QString, QString>> recordList;
 
     QList<QString> keyList;
@@ -154,9 +156,14 @@ QString DFMDBManager::isFontInfoExist(const DFontInfo &newFileFontInfo)
     whereMap.insert("familyName", newFileFontInfo.familyName);
     whereMap.insert("styleName", newFileFontInfo.styleName);
     m_sqlUtil->findRecords(keyList, whereMap, &recordList);
+    keyList.clear();
+    whereMap.clear();
 
     if (recordList.size() > 0) {
-        return recordList.first().value("filePath");
+        QString result = recordList.first().value("filePath");
+
+        recordList.clear();
+        return result;
     }
 
     return QString();

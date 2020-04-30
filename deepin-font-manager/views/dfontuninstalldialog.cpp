@@ -33,13 +33,14 @@ void DFontuninstalldialog::setValue(const QString &fontName, int index, int tota
 
 void DFontuninstalldialog::setMainwindow(DFontMgrMainWindow *win)
 {
-    connect(SignalManager::instance(), &SignalManager::updateUninstallDialog, this, [ = ](QString & fontName, int index, int totalCount) {
+    connect(SignalManager::instance(), &SignalManager::updateUninstallDialog, this, [ = ](const QString & fontName, int index, int totalCount) {
+        qDebug() << "update uninstall "  << index << totalCount;
         setValue(fontName, index, totalCount);
     }, Qt::UniqueConnection);
 
     connect(SignalManager::instance(), &SignalManager::closeUninstallDialog, this, [ = ] {
         qDebug() << "DFontuninstalldialog closeUninstallDialog" << isVisible();
-        setValue(" ", 0, 0);
+//        setValue(" ", 0, 0);
         if (isVisible())
         {
             accept();

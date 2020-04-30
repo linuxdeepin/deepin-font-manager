@@ -2,7 +2,7 @@
 #define DFONTPREVIEWITEMDELEGATE_H
 
 #include "dfontpreviewitemdef.h"
-#include <stdlib.h>
+
 #include <DStyledItemDelegate>
 #include <signalmanager.h>
 

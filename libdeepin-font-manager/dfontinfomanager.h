@@ -42,8 +42,23 @@ struct DFontInfo {
 
 
     bool isInstalled {false};
-    bool isError {false};;
+    bool isError {false};
     bool isSystemFont {true};  // Default is system font
+
+//    ~DFontInfo()
+//    {
+//        filePath.clear();
+//        familyName.clear();
+//        styleName.clear();
+//        type.clear();
+//        version.clear();
+//        copyright.clear();
+//        description.clear();
+//        sysVersion.clear();
+//        fullname.clear();
+//        psname.clear();
+//        trademark.clear();
+//    }
 
     bool operator==(const DFontInfo &info)
     {
@@ -73,10 +88,13 @@ public:
     QString getFontType(const QString &filePath);
     DFontInfo getFontInfo(const QString &filePath, bool force = false);
     QString getInstFontPath(const QString &originPath, const QString &familyName);
-    bool isFontInstalled(DFontInfo data);
+    bool isFontInstalled(DFontInfo &data);
+    void removeFontInfo();
 
 private:
     QMap<QString, DFontInfo> m_fontInfoMap;
+    FT_Library m_library;
+    FT_Face m_face;
 };
 
 #endif

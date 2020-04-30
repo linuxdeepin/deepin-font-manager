@@ -39,7 +39,7 @@ class DFInstallErrorListView : public DListView
     Q_OBJECT
 
 public:
-    explicit DFInstallErrorListView(QList<DFInstallErrorItemModel> installErrorFontModelList,
+    explicit DFInstallErrorListView(const QList<DFInstallErrorItemModel> &installErrorFontModelList,
                                     QWidget *parent = nullptr);
     ~DFInstallErrorListView() override;
 

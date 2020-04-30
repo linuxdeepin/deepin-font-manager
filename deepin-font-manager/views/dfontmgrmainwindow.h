@@ -58,10 +58,10 @@ public:
     {
         return m_fIsDeleting;
     }
-    inline void setFileList(QStringList list)
-    {
-        m_fileList = list;
-    }
+//    inline void setFileList(const QStringList &list)
+//    {
+//        m_fileList = list;
+//    }
     void startToDelete();
 
     //Main window Size
@@ -91,8 +91,7 @@ protected:
     void delCurrentFont();
     void exportFont();
     void showAllShortcut();
-    void showInstalledFiles(const QStringList &fileList);
-    void checkCloseUninstallDialog();
+    void showInstalledFiles();
     void waitForInsert();
 
     //Add drag install
@@ -149,8 +148,6 @@ protected:
     QShortcut *m_scDefaultSize;   //默认⼤⼩字体快捷键Ctrl+0
     int m_previewFontSize;
     int m_leftIndex {0};
-    int m_needDelCount = 0;
-    int m_deledCount = 0;
 
     bool m_searchTextStatusIsEmpty = true;
     bool m_isDeleting = false;
@@ -175,8 +172,7 @@ protected:
     //is it in uninstalling font flow
     //Avoid start multi delete confirm dialog
     volatile bool m_fIsDeleting {false};
-    QStringList m_fileList;
-    QStringList m_uninstallFilePath;
+//    QStringList m_fileList;
     QStringList m_waitForInstall;
     DFInstallNormalWindow  *m_dfNormalInstalldlg {nullptr};
 

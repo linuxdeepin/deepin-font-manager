@@ -181,6 +181,9 @@ void DFontManager::handleInstall()
 
         Q_EMIT installFinished(127, QStringList());
     }
+    //clear
+    m_instFileList.clear();
+    m_installOutList.clear();
 }
 
 void DFontManager::handleUnInstall()
@@ -191,7 +194,8 @@ void DFontManager::handleUnInstall()
 
         emit uninstallFontFinished(m_uninstFile);
     }
-
+    //clear
+    m_uninstFile.clear();
 }
 
 void DFontManager::handleReInstall()
@@ -209,6 +213,9 @@ void DFontManager::handleReInstall()
 
         Q_EMIT reInstallFinished(127, QStringList());
     }
+    //clear
+    m_instFileList.clear();
+    m_installOutList.clear();
 }
 
 void DFontManager::setSystemFontCount(int systemFontCount)
@@ -256,7 +263,7 @@ void DFontManager::doInstall(const QStringList &fileList, bool reinstall)
 
 //            qDebug() << __FUNCTION__ << filePath << ", " << percent;
 //            if (!reinstall) {
-            Q_EMIT batchInstall(filePath, percent);
+            Q_EMIT batchInstall(familyName, percent);
 //            } else {
 
 //            }

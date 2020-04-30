@@ -91,7 +91,7 @@ void SingleFontApplication::activateWindow()
 
             DFQuickInstallWindow *qw = qobject_cast<DFQuickInstallWindow *>(m_qspQuickWnd.get());
 
-            connect(qw, &DFQuickInstallWindow::requestShowMainWindow, this, [ = ](QStringList fileList) {
+            connect(qw, &DFQuickInstallWindow::requestShowMainWindow, this, [ = ](const QStringList & fileList) {
                 qDebug() << "requestShowMainWindow " << fileList;
                 if (nullptr == m_qspMainWnd.get()) {
                     m_qspMainWnd.reset(new
@@ -110,7 +110,7 @@ void SingleFontApplication::activateWindow()
 
                     m_qspMainWnd->show();
                     DFontMgrMainWindow *mw = qobject_cast<DFontMgrMainWindow *>(m_qspMainWnd.get());
-                    mw->setFileList(fileList);
+//                    mw->setFileList(fileList);
                 } else {
                     m_qspMainWnd->setWindowState(Qt::WindowActive);
                     m_qspMainWnd->activateWindow(); // Reactive main window

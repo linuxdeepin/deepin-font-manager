@@ -9,6 +9,7 @@
 #include <DStyleHelper>
 #include <DApplication>
 #include <DApplicationHelper>
+#include <DCheckBox>
 
 #define FTM_ERROR_ITEM_FONTNAME_LEFT    39
 
@@ -164,7 +165,7 @@ void DFInstallErrorListDelegate::drawFontStyle(QPainter *painter, const QStyleOp
 
     painter->setPen(QPen(penColor));
     painter->drawText(installStatusRect, Qt::AlignRight | Qt::AlignVCenter, elidedStatusText);
-
+    QFont::cleanup();
 }
 
 void DFInstallErrorListDelegate::drawSelectStatus(QPainter *painter, const QStyleOptionViewItem &option, QRect bgRect) const
@@ -216,6 +217,7 @@ QString DFInstallErrorListDelegate::lengthAutoFeed(QPainter *painter, QString so
         m_index++;
     }
 
+    QFont::cleanup();
 //    m_TargetStr.append(m_Suffix);
 //    qDebug() << m_TargetStr;
     return m_TargetStr;
@@ -265,6 +267,7 @@ void DFInstallErrorListDelegate::paint(QPainter *painter, const QStyleOptionView
     } else {
         QStyledItemDelegate::paint(painter, option, index);
     }
+    QFont::cleanup();
 }
 
 QSize DFInstallErrorListDelegate::sizeHint(const QStyleOptionViewItem &option,
@@ -277,7 +280,7 @@ QSize DFInstallErrorListDelegate::sizeHint(const QStyleOptionViewItem &option,
 
 
 //DFInstallErrorListView
-DFInstallErrorListView::DFInstallErrorListView(QList<DFInstallErrorItemModel> installErrorFontModelList,
+DFInstallErrorListView::DFInstallErrorListView(const QList<DFInstallErrorItemModel> &installErrorFontModelList,
                                                QWidget *parent)
     : DListView(parent)
     , m_installErrorFontModelList(installErrorFontModelList)
@@ -295,11 +298,13 @@ DFInstallErrorListView::DFInstallErrorListView(QList<DFInstallErrorItemModel> in
 
 DFInstallErrorListView::~DFInstallErrorListView()
 {
+    m_errorListSourceModel->clear();
+    m_installErrorFontModelList.clear();
 }
 
 void DFInstallErrorListView::initErrorListData()
 {
-    m_errorListSourceModel = new QStandardItemModel;
+    m_errorListSourceModel = new QStandardItemModel(this);
 
     for (int i = 0; i < m_installErrorFontModelList.size(); i++) {
 
