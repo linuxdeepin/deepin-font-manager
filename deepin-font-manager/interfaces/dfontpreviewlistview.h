@@ -74,6 +74,7 @@ public:
     void disableFont(const QString &filePath);
     void enableFonts();
     void disableFonts();
+    void toSetCurrentIndex(QModelIndexList &itemIndexesNew);
     bool isAtListviewBottom();
     bool isAtListviewTop();
 

@@ -663,6 +663,26 @@ void DFontPreviewListView::disableFonts()
     m_disableFontList.clear();
 }
 
+void DFontPreviewListView::toSetCurrentIndex(QModelIndexList &itemIndexesNew)
+{
+    m_bListviewAtButtom = isAtListviewBottom();
+    m_bListviewAtTop = isAtListviewTop();
+    int i = itemIndexesNew.last().row();
+    DFontPreviewProxyModel *filterModel = this->getFontPreviewProxyModel();
+    if ((m_bListviewAtButtom && !m_bListviewAtTop)/* || m_bListviewAtButtom*/) {
+        QModelIndex modelIndex = filterModel->index(i - 1, 0);
+        setCurrentIndex(modelIndex);
+//            qDebug() << "modelIndex+++++++++++++++++++++++++" << modelIndex << endl;
+    } else if (itemIndexesNew.last().row() == filterModel->rowCount()) {
+
+        QModelIndex modelIndex = filterModel->index(itemIndexesNew.last().row() - 1, 0);
+        setCurrentIndex(modelIndex);
+    } else {
+        setCurrentIndex(itemIndexesNew.last());
+//            qDebug() << "modelIndex+++++++++++++++++++++++++" << itemIndexesNew.last() << endl;
+    }
+}
+
 bool DFontPreviewListView::isAtListviewBottom()
 {
     if (this->verticalScrollBar()->value() == this->verticalScrollBar()->maximum()) {
@@ -730,26 +750,9 @@ void DFontPreviewListView::onListViewItemEnableBtnClicked(const QModelIndexList 
     }
 
     if (isFromActiveFont == true) {
-        DFontPreviewItemData itemData =
-            qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(itemIndexesNew.last()));
-
-        m_bListviewAtButtom = isAtListviewBottom();
-        m_bListviewAtTop = isAtListviewTop();
-
-        if (itemData.strFontFileName.size() && !m_bListviewAtButtom) {
-            emit itemSelected(itemData.fontInfo.filePath);
-        } else if (itemData.strFontFileName.size() && m_bListviewAtTop) {
-            emit itemSelected(itemData.fontInfo.filePath);
-        } else {
-            DFontPreviewProxyModel *filterModel = this->getFontPreviewProxyModel();
-//            int i = filterModel->rowCount();
-            int i = itemIndexesNew.last().row();
-            QModelIndex modelIndex = filterModel->index(i - 1, 0);
-            DFontPreviewItemData itemData =
-                qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(modelIndex));
-            emit itemSelected(itemData.fontInfo.filePath);
-        }
+        toSetCurrentIndex(itemIndexesNew);
     }
+
 
     QString message;
     if (itemIndexes.size() == 1) {
@@ -782,35 +785,11 @@ void DFontPreviewListView::onListViewItemCollectionBtnClicked(const QModelIndexL
         if (itemIndexesNew.count() == 0) {
             return;
         }
-
-//        m_bListviewAtButtom = isAtListviewButttom();
-//        QModelIndex index = currModelIndex();
-//        int row = itemIndexesNew.last().row();
-
-//        m_bListviewAtButtom = isAtListviewButttom();
-//        if (row >= m_fontPreviewProxyModel->rowCount() || m_bListviewAtButtom)
-//            index = index.siblingAtRow(row - 1);
-//        setCurrentIndex(index);
-
-        m_bListviewAtButtom = isAtListviewBottom();
-        m_bListviewAtTop = isAtListviewTop();
-        DFontPreviewItemData itemData =
-            qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(itemIndexesNew.last()));
-        if (itemData.strFontFileName.size() && !m_bListviewAtButtom) {
-            emit itemSelected(itemData.fontInfo.filePath);
-        } else if (itemData.strFontFileName.size() && m_bListviewAtTop) {
-            emit itemSelected(itemData.fontInfo.filePath);
-        } else {
-            DFontPreviewProxyModel *filterModel = this->getFontPreviewProxyModel();
-            int i = itemIndexesNew.last().row();
-            QModelIndex modelIndex = filterModel->index(i - 1, 0);
-            DFontPreviewItemData itemData =
-                qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(modelIndex));
-            emit itemSelected(itemData.fontInfo.filePath);
-        }
+        toSetCurrentIndex(itemIndexesNew);
     }
 
     DFMDBManager::instance()->commitUpdateFontInfo();
+
 }
 
 void DFontPreviewListView::onListViewShowContextMenu(const QModelIndex &index)
