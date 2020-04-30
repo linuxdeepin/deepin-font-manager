@@ -484,7 +484,6 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
         if (itemData.collectIconStatus != IconPress) {
             if (Qt::LeftButton == event->button()) {//取消press状态/*UT000539*/
                 itemData.collectIconStatus = IconPress;
-                qDebug() << itemData.strFontName << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAA" << endl;
             }
             m_fontPreviewProxyModel->setData(modelIndex, QVariant::fromValue(itemData), Qt::DisplayRole);
         }
@@ -520,8 +519,6 @@ void DFontPreviewListView::mouseReleaseEvent(QMouseEvent *event)
 
     DFontPreviewItemData itemData =
         qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(modelIndex));
-
-    qDebug() << "@@@@@@@@@@@@@@@@@@@@@2" << itemData.strFontName << endl;
 
     if (itemData.collectIconStatus != IconNormal) {
         itemData.collectIconStatus = IconNormal;
@@ -559,8 +556,14 @@ void DFontPreviewListView::mouseReleaseEvent(QMouseEvent *event)
 //ut000442 bug20343 鼠标点击右侧爱心时不移动，松开时再次获取此时鼠标位置的item，再去判断鼠标点击
 //点还在不在爱心上，这样就能正确显示相应效果。
 
+//我的搜藏界面,index点击之后会涉及到index的变化,所以需要重新获取一遍
+    if (m_currentFontGroup == FontGroup::CollectFont) {
+        modelIndex = currModelIndex();
+        rect = visualRect(modelIndex);
+        checkboxRealRect = QRect(rect.left() + 25, rect.top() + 10 - 5, checkBoxSize, checkBoxSize);
+        collectIconRect = getCollectionIconRect(rect);
+    }
 
-    modelIndex = currModelIndex();
 
     DFontPreviewItemData m_NextItemData =
         qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(modelIndex));
@@ -568,7 +571,6 @@ void DFontPreviewListView::mouseReleaseEvent(QMouseEvent *event)
     if (collectIconRect.contains(clickPoint)) {
         if (m_NextItemData.collectIconStatus != IconHover) {
             m_NextItemData.collectIconStatus = IconHover;
-            qDebug() << "-------------------" << m_NextItemData.strFontName;
             m_fontPreviewProxyModel->setData(modelIndex, QVariant::fromValue(m_NextItemData), Qt::DisplayRole);
         }
         m_hoverModelIndex = modelIndex;
