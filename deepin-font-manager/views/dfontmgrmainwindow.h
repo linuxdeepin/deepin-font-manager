@@ -63,6 +63,8 @@ public:
 //        m_fileList = list;
 //    }
     void startToDelete();
+    inline bool isPreviewTextEmpty();
+    QString getPreviewTextWithSize(int *fontSize = nullptr);
 
     //Main window Size
     int m_winHight;
@@ -106,7 +108,6 @@ protected:
     DFMDBManager *m_dbManager {nullptr};
     void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
 
-
 signals:
     void fileSelected(const QStringList &files) const;
     void fileSelectedInSys(const QStringList &files) const;
@@ -130,7 +131,7 @@ public slots:
     void onFontInstallFinished(const QStringList &fileList);
     void onFontUninstallFinished(const QStringList &uninstallIndex);
 
-    void onFontListViewRowCountChanged(unsigned int bShow);
+    void onFontListViewRowCountChanged();
 
     void onLoadStatus(int type);
     void onShowMessage(int totalCount);

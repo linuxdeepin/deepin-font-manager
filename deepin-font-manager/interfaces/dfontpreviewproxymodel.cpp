@@ -36,10 +36,10 @@ void DFontPreviewProxyModel::setFilterFontNamePattern(const QString &pattern)
     invalidateFilter();
 }
 
-bool DFontPreviewProxyModel::getEditStatus() const
-{
-    return m_editStatus;
-}
+//bool DFontPreviewProxyModel::getEditStatus() const
+//{
+//    return m_editStatus;
+//}
 
 void DFontPreviewProxyModel::invalidate()
 {
@@ -47,10 +47,10 @@ void DFontPreviewProxyModel::invalidate()
     QSortFilterProxyModel::invalidate();
 }
 
-void DFontPreviewProxyModel::setEditStatus(bool editStatus)
-{
-    m_editStatus = editStatus;
-}
+//void DFontPreviewProxyModel::setEditStatus(bool editStatus)
+//{
+//    m_editStatus = editStatus;
+//}
 
 bool DFontPreviewProxyModel::isFontNameContainsPattern(QString fontName) const
 {
@@ -161,18 +161,19 @@ int DFontPreviewProxyModel::rowCount(const QModelIndex &parent) const
     int filterRowCount = QSortFilterProxyModel::rowCount();
     //qDebug() << "filterRowCount" << filterRowCount;
 
-    unsigned int bShow = 0;
-    if (0 == filterRowCount) {
-        if (getEditStatus()) {
-            bShow = 2;
-        } else {
-            bShow = 1;
-        }
-    } else {
-        bShow = 0;
-    }
+//    unsigned int bShow = 0;
+//    if (0 == filterRowCount) {
+//        if (getEditStatus()) {
+//            bShow = 2;
+//        } else {
+//            bShow = 1;
+//        }
+//    } else {
+//        bShow = 0;
 
-    emit this->onFilterFinishRowCountChangedInt(bShow);
+//    }
+
+//    emit this->onFilterFinishRowCountChangedInt(bShow);
 
     return filterRowCount;
 }

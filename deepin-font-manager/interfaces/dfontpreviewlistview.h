@@ -77,6 +77,7 @@ public:
     void toSetCurrentIndex(QModelIndexList &itemIndexesNew);
     bool isAtListviewBottom();
     bool isAtListviewTop();
+    QString getPreviewTextWithSize(int *fontSize = nullptr);
 
 protected:
     void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected) override;
@@ -117,6 +118,7 @@ private:
 
     QRect m_curRect;
     bool m_isJustInstalled = false;
+
 signals:
     //用于DFontPreviewListView内部使用的信号
     void onClickEnableButton(const QModelIndexList &index, bool setValue, bool isFromActiveFont = false);
@@ -137,6 +139,7 @@ signals:
     void itemRemovedFromSys(const DFontPreviewItemData &data);
     void itemsSelected(const QStringList &files);
     void itemSelected(const QString &file);
+    void rowCountChanged();
 
 public slots:
 

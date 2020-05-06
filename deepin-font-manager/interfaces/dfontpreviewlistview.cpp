@@ -25,6 +25,7 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
 {
     qRegisterMetaType<DFontPreviewItemData>("DFontPreviewItemData");
     qRegisterMetaType<QList<DFontPreviewItemData>>("DFontPreviewItemDataList");
+    qRegisterMetaType<QItemSelection>("QItemSelection");
     m_fontPreviewItemModel->setColumnCount(1);
     connect(this, &DFontPreviewListView::itemsSelected, this, &DFontPreviewListView::selectFonts);
     connect(this, &DFontPreviewListView::itemSelected, this, &DFontPreviewListView::selectFont);
@@ -142,8 +143,10 @@ void DFontPreviewListView::onMultiItemsAdded(const QList<DFontPreviewItemData> &
 
     int i = 0;
     bool res = sourceModel->insertRows(rows, data.size());
-    if (!res)
+    if (!res) {
         qDebug() << __FUNCTION__ << "insertRows fail";
+        return;
+    }
     qDebug() << __FUNCTION__ << "rows = " << sourceModel->rowCount();
     for (DFontPreviewItemData itemData : data) {
         QModelIndex index = sourceModel->index(rows + i,   0);
@@ -250,11 +253,6 @@ void DFontPreviewListView::initConnections()
     connect(this, &DFontPreviewListView::onShowContextMenu, this,
             &DFontPreviewListView::onListViewShowContextMenu, Qt::ConnectionType::QueuedConnection);
 
-    connect(m_fontPreviewProxyModel,
-            SIGNAL(onFilterFinishRowCountChangedInt(unsigned int)),
-            m_parentWidget,
-            SLOT(onFontListViewRowCountChanged(unsigned int)), Qt::QueuedConnection);
-
     connect(m_signalManager, &SignalManager::currentFontGroup, this, &DFontPreviewListView::updateCurrentFontGroup);
 
 }
@@ -349,9 +347,9 @@ void DFontPreviewListView::selectFonts(const QStringList &fileList)
     if (selection.size() == 1)
         setCurrentIndex(cur);
 
-    DFontMgrMainWindow *mw = qobject_cast<DFontMgrMainWindow *>(m_parentWidget);
-    if (mw)
-        Q_EMIT mw->requestUpdatePreview();
+//    DFontMgrMainWindow *mw = qobject_cast<DFontMgrMainWindow *>(m_parentWidget);
+//    if (mw)
+//        Q_EMIT mw->requestUpdatePreview();
 
     Q_EMIT SignalManager::instance()->requestInstallAdded();
 //    Q_EMIT DFontManager::instance()->batchInstall("onlyprogress", 100);
@@ -389,9 +387,9 @@ void DFontPreviewListView::selectFont(const QString &file)
 
     selection_model->reset();
     setCurrentIndex(cur);
-    DFontMgrMainWindow *mw = qobject_cast<DFontMgrMainWindow *>(m_parentWidget);
-    if (mw)
-        Q_EMIT mw->requestUpdatePreview();
+//    DFontMgrMainWindow *mw = qobject_cast<DFontMgrMainWindow *>(m_parentWidget);
+//    if (mw)
+//        Q_EMIT mw->requestUpdatePreview();
 
 }
 
@@ -696,6 +694,16 @@ bool DFontPreviewListView::isAtListviewTop()
     }
 }
 
+QString DFontPreviewListView::getPreviewTextWithSize(int *fontSize)
+{
+    DFontMgrMainWindow *mw = qobject_cast<DFontMgrMainWindow *>(m_parentWidget);
+    if (mw)
+        return mw->getPreviewTextWithSize(fontSize);
+    if (fontSize != nullptr)
+        *fontSize = FTM_DEFAULT_PREVIEW_FONTSIZE;
+    return QString(DApplication::translate("Font", "Don't let your dreams be dreams"));
+}
+
 void DFontPreviewListView::onListViewItemEnableBtnClicked(const QModelIndexList &itemIndexes, bool setValue, bool isFromActiveFont)
 {
     QMutexLocker locker(&m_mutex);
@@ -759,6 +767,7 @@ void DFontPreviewListView::onListViewItemEnableBtnClicked(const QModelIndexList 
     }
     /* Bug#18083 UT000591 禁用提示与导出提示位置相同 */
     DMessageManager::instance()->sendMessage(this->m_parentWidget, QIcon(":/images/ok.svg"), message);
+    Q_EMIT rowCountChanged();
 }
 
 void DFontPreviewListView::onListViewItemCollectionBtnClicked(const QModelIndexList &index, bool setValue, bool isFromCollectFont)
@@ -785,6 +794,8 @@ void DFontPreviewListView::onListViewItemCollectionBtnClicked(const QModelIndexL
     }
 
     DFMDBManager::instance()->commitUpdateFontInfo();
+
+    Q_EMIT rowCountChanged();
 
     itemIndexesNew.clear();
 }
@@ -898,6 +909,7 @@ void DFontPreviewListView::updateChangedDir(const QString &path)
     DFMDBManager::instance()->commitDeleteFontInfo();
     enableFonts();
     fontInfoList.clear();
+    Q_EMIT rowCountChanged();
 //    qDebug() << __FUNCTION__ << path << " end ";
 }
 
@@ -941,6 +953,7 @@ void DFontPreviewListView::deleteCurFonts(const QStringList &files)
     enableFonts();
     fontInfoList.clear();
     DFontInfoManager::instance()->removeFontInfo();
+    Q_EMIT rowCountChanged();
     qDebug() << __FUNCTION__ << " after delete " << m_dataThread->getFontModelList().size() << m_fontPreviewProxyModel->rowCount()  << m_fontPreviewProxyModel->sourceModel()->rowCount();
 }
 
