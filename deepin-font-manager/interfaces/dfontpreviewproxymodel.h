@@ -24,9 +24,9 @@ public:
 
     void setFilterFontNamePattern(const QString &pattern);
 
-    void setEditStatus(bool editStatus);
+//    void setEditStatus(bool editStatus);
 
-    bool getEditStatus() const;
+//    bool getEditStatus() const;
 
     void invalidate();
 signals:
@@ -35,7 +35,7 @@ signals:
 private:
     int m_filterGroup;
     bool m_useSystemFilter;
-    bool m_editStatus;
+//    bool m_editStatus;
     QString m_fontNamePattern;
 };
 

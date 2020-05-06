@@ -147,6 +147,8 @@ void DFontMgrMainWindow::initConnections()
     QObject::connect(m_fontPreviewListView, SIGNAL(onLoadFontsStatus(int)),
                      this, SLOT(onLoadStatus(int)));
 
+    connect(m_fontPreviewListView, &DFontPreviewListView::rowCountChanged, this, &DFontMgrMainWindow::onFontListViewRowCountChanged);
+
     // Add Font button event
     QObject::connect(d->addFontButton, &DIconButton::clicked, this,
                      &DFontMgrMainWindow::handleAddFontEvent);
@@ -1107,9 +1109,11 @@ void DFontMgrMainWindow::onSearchTextChanged(const QString &currStr)
     //根据搜索框内容实时过滤列表
     filterModel->setFilterKeyColumn(0);
     filterModel->setFilterFontNamePattern(strSearchFontName);
-    filterModel->setEditStatus(m_searchTextStatusIsEmpty);
+//    filterModel->setEditStatus(m_searchTextStatusIsEmpty);
 
     qDebug() << __FUNCTION__ << "filter Count:" << filterModel->rowCount() << endl;
+
+    onFontListViewRowCountChanged();
 
 //    QString previewText = d->textInputEdit->text();
     const QString previewText = d->textInputEdit->text();
@@ -1131,7 +1135,7 @@ void DFontMgrMainWindow::onPreviewTextChanged(const QString &currStr)
     }
 
 //    QString strFontSize = d->fontSizeLabel->text();
-    int iFontSize = d->fontScaleSlider->value();
+//    int iFontSize = d->fontScaleSlider->value();
 //    int iFontSize = strFontSize.remove("px").toInt();
 
     DFontPreviewProxyModel *filterModel = m_fontPreviewListView->getFontPreviewProxyModel();
@@ -1140,8 +1144,8 @@ void DFontMgrMainWindow::onPreviewTextChanged(const QString &currStr)
     for (int rowIndex = 0; rowIndex < filterModel->rowCount(); rowIndex++) {
         QModelIndex modelIndex = filterModel->index(rowIndex, 0);
         filterModel->setData(modelIndex, QVariant(previewText), Dtk::UserRole + 1);
-        filterModel->setData(modelIndex, QVariant(iFontSize), Dtk::UserRole + 2);
-        filterModel->setEditStatus(m_searchTextStatusIsEmpty);
+//        filterModel->setData(modelIndex, QVariant(iFontSize), Dtk::UserRole + 2);
+//        filterModel->setEditStatus(m_searchTextStatusIsEmpty);
     }
 }
 
@@ -1158,7 +1162,7 @@ void DFontMgrMainWindow::onFontSizeChanged(int fontSize)
     for (int rowIndex = 0; rowIndex < filterModel->rowCount(); rowIndex++) {
         QModelIndex modelIndex = filterModel->index(rowIndex, 0);
         filterModel->setData(modelIndex, QVariant(fontSize), Dtk::UserRole + 2);
-        filterModel->setEditStatus(m_searchTextStatusIsEmpty);
+//        filterModel->setEditStatus(m_searchTextStatusIsEmpty);
     }
 //    Q_EMIT m_signalManager->prevFontChanged();
 }
@@ -1194,7 +1198,8 @@ void DFontMgrMainWindow::onLeftSiderBarItemClicked(int index)
     m_fontPreviewListView->clearSelection();
     filterModel->setFilterKeyColumn(0);
     filterModel->setFilterGroup(filterGroup);
-    filterModel->setEditStatus(m_searchTextStatusIsEmpty);
+//    filterModel->setEditStatus(m_searchTextStatusIsEmpty);
+    onFontListViewRowCountChanged();
 
     QString previewText = d->textInputEdit->text();
     onPreviewTextChanged(previewText);
@@ -1228,9 +1233,18 @@ void DFontMgrMainWindow::onFontUninstallFinished(const QStringList &uninstallInd
  * dShow = 2 :未安装字体，显示“暂无字体”
  * default   :默认有信息，显示正常
  */
-void DFontMgrMainWindow::onFontListViewRowCountChanged(unsigned int bShow)
+void DFontMgrMainWindow::onFontListViewRowCountChanged()
 {
     Q_D(DFontMgrMainWindow);
+    unsigned int bShow = 0;
+    DFontPreviewProxyModel *filterModel = m_fontPreviewListView->getFontPreviewProxyModel();
+    if (0 == filterModel->rowCount()) {
+        if (m_searchTextStatusIsEmpty) {
+            bShow = 2;
+        } else {
+            bShow = 1; //未找到字体
+        }
+    }
     bool isSpinnerHidden = m_fontLoadingSpinner->isHidden();
     switch (bShow) {
     case 0:

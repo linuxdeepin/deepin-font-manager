@@ -250,11 +250,6 @@ void DFontPreviewListView::initConnections()
     connect(this, &DFontPreviewListView::onShowContextMenu, this,
             &DFontPreviewListView::onListViewShowContextMenu, Qt::ConnectionType::QueuedConnection);
 
-    connect(m_fontPreviewProxyModel,
-            SIGNAL(onFilterFinishRowCountChangedInt(unsigned int)),
-            m_parentWidget,
-            SLOT(onFontListViewRowCountChanged(unsigned int)), Qt::QueuedConnection);
-
     connect(m_signalManager, &SignalManager::currentFontGroup, this, &DFontPreviewListView::updateCurrentFontGroup);
 
 }
@@ -759,6 +754,7 @@ void DFontPreviewListView::onListViewItemEnableBtnClicked(const QModelIndexList 
     }
     /* Bug#18083 UT000591 禁用提示与导出提示位置相同 */
     DMessageManager::instance()->sendMessage(this->m_parentWidget, QIcon(":/images/ok.svg"), message);
+    Q_EMIT rowCountChanged();
 }
 
 void DFontPreviewListView::onListViewItemCollectionBtnClicked(const QModelIndexList &index, bool setValue, bool isFromCollectFont)
@@ -785,6 +781,8 @@ void DFontPreviewListView::onListViewItemCollectionBtnClicked(const QModelIndexL
     }
 
     DFMDBManager::instance()->commitUpdateFontInfo();
+
+    Q_EMIT rowCountChanged();
 
     itemIndexesNew.clear();
 }
@@ -898,6 +896,7 @@ void DFontPreviewListView::updateChangedDir(const QString &path)
     DFMDBManager::instance()->commitDeleteFontInfo();
     enableFonts();
     fontInfoList.clear();
+    Q_EMIT rowCountChanged();
 //    qDebug() << __FUNCTION__ << path << " end ";
 }
 
@@ -941,6 +940,7 @@ void DFontPreviewListView::deleteCurFonts(const QStringList &files)
     enableFonts();
     fontInfoList.clear();
     DFontInfoManager::instance()->removeFontInfo();
+    Q_EMIT rowCountChanged();
     qDebug() << __FUNCTION__ << " after delete " << m_dataThread->getFontModelList().size() << m_fontPreviewProxyModel->rowCount()  << m_fontPreviewProxyModel->sourceModel()->rowCount();
 }
 

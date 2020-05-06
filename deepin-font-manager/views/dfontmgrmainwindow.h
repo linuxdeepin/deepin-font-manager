@@ -130,7 +130,7 @@ public slots:
     void onFontInstallFinished(const QStringList &fileList);
     void onFontUninstallFinished(const QStringList &uninstallIndex);
 
-    void onFontListViewRowCountChanged(unsigned int bShow);
+    void onFontListViewRowCountChanged();
 
     void onLoadStatus(int type);
     void onShowMessage(int totalCount);
