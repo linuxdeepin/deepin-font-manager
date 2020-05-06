@@ -247,11 +247,9 @@ void DFontPreviewListDataThread::insertFontItemData(const QString &filePath,
     itemData.fontInfo.isInstalled = true;
 
     /* Bug#16821 UT000591  添加字体后需要加入到Qt的字体数据库中，否则无法使用*/
-    QFontDatabase::addApplicationFont(itemData.fontInfo.filePath);
-
+    int appFontId = QFontDatabase::addApplicationFont(itemData.fontInfo.filePath);
     //中文字体
     if (itemData.fontInfo.isSystemFont && itemData.isChineseFont) {
-        int appFontId = QFontDatabase::addApplicationFont(filePath);
         QStringList fontFamilyList = QFontDatabase::applicationFontFamilies(appFontId);
         if (fontFamilyList.size() > 1) {
             int i = 0;
@@ -361,7 +359,6 @@ void DFontPreviewListDataThread::refreshFontListData(bool isStartup, const QStri
     if (!installFont.isEmpty()) {
         Q_EMIT m_view->multiItemsAdded(m_diffFontModelList);
         Q_EMIT m_view->itemsSelected(installFont);
-        m_view->selectFonts(installFont);
     } else {
         Q_EMIT m_view->multiItemsAdded(m_fontModelList);
     }

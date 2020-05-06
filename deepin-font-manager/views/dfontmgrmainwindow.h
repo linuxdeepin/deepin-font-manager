@@ -124,7 +124,7 @@ public slots:
     void handleMenuEvent(QAction *);
 
     void onSearchTextChanged(const QString &currStr);
-    void onPreviewTextChanged(const QString &currStr);
+    void onPreviewTextChanged(const QString &text = QString());
     void onFontSizeChanged(int fontSize);
 
     void onLeftSiderBarItemClicked(int index);
@@ -148,6 +148,7 @@ protected:
     QShortcut *m_scZoomOut;       //放大字体快捷键Ctrl+-
     QShortcut *m_scDefaultSize;   //默认⼤⼩字体快捷键Ctrl+0
     int m_previewFontSize;
+    QString m_previewText;
     int m_leftIndex {0};
 
     bool m_searchTextStatusIsEmpty = true;

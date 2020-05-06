@@ -1116,12 +1116,12 @@ void DFontMgrMainWindow::onSearchTextChanged(const QString &currStr)
     onFontListViewRowCountChanged();
 
 //    QString previewText = d->textInputEdit->text();
-    const QString previewText = d->textInputEdit->text();
-    onPreviewTextChanged(previewText);
+//    const QString previewText = d->textInputEdit->text();
+    onPreviewTextChanged();
     m_fontPreviewListView->scrollToTop();
 }
 
-void DFontMgrMainWindow::onPreviewTextChanged(const QString &currStr)
+void DFontMgrMainWindow::onPreviewTextChanged(const QString &text)
 {
     Q_D(DFontMgrMainWindow);
 
@@ -1130,7 +1130,17 @@ void DFontMgrMainWindow::onPreviewTextChanged(const QString &currStr)
     }
 
     int iFontSize = d->fontScaleSlider->value();
-    QString previewTxt = getPreviewTextWithSize();
+    bool isEmpty = d->textInputEdit->text().isEmpty();
+    if (!isEmpty) {
+        if (m_previewText != d->textInputEdit->text()) {
+            m_previewText = d->textInputEdit->text();
+        }
+    } else {
+        if (m_previewText != FTM_DEFAULT_PREVIEW_TEXT) {
+            m_previewText = FTM_DEFAULT_PREVIEW_TEXT;
+        }
+    }
+
 
 //    QString strFontSize = d->fontSizeLabel->text();
 //    int iFontSize = strFontSize.remove("px").toInt();
@@ -1141,8 +1151,8 @@ void DFontMgrMainWindow::onPreviewTextChanged(const QString &currStr)
     for (int rowIndex = 0; rowIndex < filterModel->rowCount(); rowIndex++) {
         QModelIndex modelIndex = filterModel->index(rowIndex, 0);
         QString itemPreviewTxt = filterModel->data(modelIndex, Dtk::UserRole + 1).toString();
-        if (previewTxt != itemPreviewTxt)
-            filterModel->setData(modelIndex, QVariant(previewTxt), Dtk::UserRole + 1);
+        if (m_previewText != itemPreviewTxt)
+            filterModel->setData(modelIndex, QVariant(m_previewText), Dtk::UserRole + 1);
         if (iFontSize != filterModel->data(modelIndex, Dtk::UserRole + 2).toInt())
             filterModel->setData(modelIndex, QVariant(iFontSize), Dtk::UserRole + 2);
 //        filterModel->setEditStatus(m_searchTextStatusIsEmpty);
@@ -1201,8 +1211,8 @@ void DFontMgrMainWindow::onLeftSiderBarItemClicked(int index)
 //    filterModel->setEditStatus(m_searchTextStatusIsEmpty);
     onFontListViewRowCountChanged();
 
-    QString previewText = d->textInputEdit->text();
-    onPreviewTextChanged(previewText);
+//    QString previewText = d->textInputEdit->text();
+    onPreviewTextChanged();
 }
 
 void DFontMgrMainWindow::onFontInstallFinished(const QStringList &fileList)
@@ -1488,15 +1498,10 @@ bool DFontMgrMainWindow::isPreviewTextEmpty()
 
 QString DFontMgrMainWindow::getPreviewTextWithSize(int *fontSize)
 {
-    Q_D(DFontMgrMainWindow);
     if (fontSize != nullptr)
-        *fontSize = d->fontScaleSlider->value();
-    bool isEmpty = d->textInputEdit->text().isEmpty();
-    if (!isEmpty)
-        return d->textInputEdit->text();
+        *fontSize = m_previewFontSize;
 
-    //返回默认的预览文字
-    return QString(DApplication::translate("Font", "Don't let your dreams be dreams"));
+    return m_previewText;
 }
 
 void DFontMgrMainWindow::showAllShortcut()

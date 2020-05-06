@@ -579,9 +579,10 @@ void DFInstallNormalWindow::onCancelInstall()
     qDebug() << __FUNCTION__ << " called";
 #endif
 
-    qDebug() << "cancel reinstall" << endl;
+    qDebug() << "cancel reinstall" << totalInstallFont << endl;
     emit m_signalManager->sendReInstallMessage(0);
-    Q_EMIT SignalManager::instance()->requestInstallAdded();
+    if (totalInstallFont > 0)
+        Q_EMIT SignalManager::instance()->requestInstallAdded();
 //ut000442 后面添加了关闭这个框的逻辑，不需要在这里关闭。
 //    this->accept();
 }
