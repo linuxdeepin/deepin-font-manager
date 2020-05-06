@@ -592,6 +592,8 @@ void DFInstallNormalWindow::onContinueInstall(const QStringList &continueInstall
 //    qDebug() << __FUNCTION__ << " called:" << continueInstallFontFileList;
 #endif
 
+//ut000442 安装重复字体过程开始时,将之前的进度条清空
+    m_progressBar->setValue(0);
     m_installState = InstallState::reinstall;
 
     Q_EMIT batchReinstall(continueInstallFontFileList);

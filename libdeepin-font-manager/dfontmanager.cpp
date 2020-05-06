@@ -254,8 +254,10 @@ void DFontManager::doInstall(const QStringList &fileList, bool reinstall)
 
         if (fileList.count() == 1) {
 //            qDebug() << __FUNCTION__ << target.toUtf8().data();
-            if (!reinstall)
-                Q_EMIT installPositionChanged(target.toUtf8().data());
+//            if (!reinstall)
+//          Q_EMIT installPositionChanged(target.toUtf8().data());
+//  ut000442 之前安装一个字体时没有安装进度条,在此添加
+            Q_EMIT batchInstall(familyName, 100);
 //            QThread::msleep(50);
         } else {
             QString filePath = filePathOrig;
