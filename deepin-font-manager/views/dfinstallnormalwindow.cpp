@@ -389,8 +389,11 @@ void DFInstallNormalWindow::checkShowMessage()
 //        m_installAdded = false;
         emit m_signalManager->showInstallFloatingMessage(totalInstallFont);
         m_outfileList.clear();
+        if (totalInstallFont > 0) {
+            emit m_signalManager->closeInstallDialog();
+        }
+
         totalInstallFont = 0;
-        emit m_signalManager->closeInstallDialog();
         this->close();
     }
 
