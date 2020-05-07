@@ -82,6 +82,7 @@ DFontMgrMainWindow::DFontMgrMainWindow(bool isQuickMode, QWidget *parent)
     , m_scZoomOut(nullptr)
     , m_scDefaultSize(nullptr)
     , m_previewFontSize(DEFAULT_FONT_SIZE)
+    , m_previewText(FTM_DEFAULT_PREVIEW_TEXT)
     , m_quickInstallWnd(nullptr)
     , d_ptr(new DFontMgrMainWindowPrivate(this))
 {
