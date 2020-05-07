@@ -41,12 +41,6 @@ void DFontPreviewProxyModel::setFilterFontNamePattern(const QString &pattern)
 //    return m_editStatus;
 //}
 
-void DFontPreviewProxyModel::invalidate()
-{
-    qDebug() << __FUNCTION__;
-    QSortFilterProxyModel::invalidate();
-}
-
 //void DFontPreviewProxyModel::setEditStatus(bool editStatus)
 //{
 //    m_editStatus = editStatus;

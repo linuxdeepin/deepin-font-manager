@@ -447,7 +447,6 @@ void DFontMgrMainWindow::initShortcuts()
             {
                 emit m_fontPreviewListView->onClickCollectionButton(itemIndexes, true, true);
             }
-            itemIndexes.clear();
         });
     }
 
@@ -467,7 +466,6 @@ void DFontMgrMainWindow::initShortcuts()
             {
                 emit m_fontPreviewListView->onClickCollectionButton(itemIndexes, false, true);
             }
-            itemIndexes.clear();
 //            DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
 
 //            if (currItemData.isCollected)
@@ -527,8 +525,6 @@ void DFontMgrMainWindow::initFontFiles()
             }
         }
     }
-    allFontsList.clear();
-    installFont.clear();
 }
 
 void DFontMgrMainWindow::initFontUninstallDialog()
@@ -912,13 +908,10 @@ void DFontMgrMainWindow::handleAddFontEvent()
             } else {
                 mhistoryDir += "/" + strlist[i];
             }
-
         }
-        strlist.clear();
     }
 
     Q_EMIT fileSelected(filelist);
-    filelist.clear();
 }
 
 void DFontMgrMainWindow::handleMenuEvent(QAction *action)
@@ -958,7 +951,6 @@ void DFontMgrMainWindow::handleMenuEvent(QAction *action)
                 } else {
                     emit m_fontPreviewListView->onClickEnableButton(itemIndexes, !currItemData.isEnabled, true);
                 }
-                itemIndexes.clear();
 
 //                  emit m_fontPreviewListView->onClickEnableButton(currItemData, !currItemData.isEnabled);
             }
@@ -973,7 +965,6 @@ void DFontMgrMainWindow::handleMenuEvent(QAction *action)
                 } else {
                     emit m_fontPreviewListView->onClickCollectionButton(itemIndexes, !currItemData.isCollected, true);
                 }
-                itemIndexes.clear();
             }
             break;
             case DFontMenuManager::MenuAction::M_ShowFontPostion:
@@ -1393,7 +1384,6 @@ void DFontMgrMainWindow::exportFont()
         message = DApplication::translate("Main", "%1 fonts exported to your desktop").arg(files.size());
         DMessageManager::instance()->sendMessage(this, QIcon(":/images/ok.svg"), message);
     }
-    files.clear();
 }
 
 void DFontMgrMainWindow::dragEnterEvent(QDragEnterEvent *event)
@@ -1408,14 +1398,12 @@ void DFontMgrMainWindow::dragEnterEvent(QDragEnterEvent *event)
             //For one-drag check MIME,ignore non-font file
             if (Utils::isFontMimeType(dragFiles[0].path())) {
                 event->accept();
-                dragFiles.clear();
                 return;
             }
         } else {
             //Multi-drag just accept all file at start
             //will filter non-font files in drapEvent
             event->accept();
-            dragFiles.clear();
             return;
         }
     }
@@ -1443,13 +1431,11 @@ void DFontMgrMainWindow::dropEvent(QDropEvent *event)
                 installFileList.append(dragFiles[0].path());
             }
         }
-        dragFiles.clear();
 
         //Check if need to trigger installtion
         if (installFileList.size() > 0) {
             event->accept();
             Q_EMIT fileSelected(installFileList);
-            installFileList.clear();
         } else {
             event->ignore();
         }
@@ -1519,7 +1505,6 @@ void DFontMgrMainWindow::showAllShortcut()
         jsonItem.insert("value", it.value().replace("Meta", "Super"));
         fontJsonItems.append(jsonItem);
     }
-    shortcutKeymap.clear();
 
     fontMgrJsonGroup.insert("groupItems", fontJsonItems);
     jsonGroups.append(fontMgrJsonGroup);
@@ -1605,7 +1590,6 @@ void DFontMgrMainWindow::startToDelete()
     m_fontManager->setType(DFontManager::UnInstall);
     m_fontManager->setUnInstallFile(uninstallFonts);
     m_fontManager->start();
-    uninstallFonts.clear();
 }
 
 //调节右下角字体大小显示label显示内容/*UT000539*/

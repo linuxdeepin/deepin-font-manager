@@ -759,7 +759,6 @@ void DFontPreviewListView::onListViewItemEnableBtnClicked(const QModelIndexList 
         toSetCurrentIndex(itemIndexesNew);
     }
 
-    itemIndexesNew.clear();
 
     QString message;
     if (itemIndexes.size() == 1) {
@@ -799,8 +798,6 @@ void DFontPreviewListView::onListViewItemCollectionBtnClicked(const QModelIndexL
     DFMDBManager::instance()->commitUpdateFontInfo();
 
     Q_EMIT rowCountChanged();
-
-    itemIndexesNew.clear();
 }
 
 void DFontPreviewListView::onListViewShowContextMenu(const QModelIndex &index)
@@ -825,15 +822,12 @@ QModelIndex DFontPreviewListView::currModelIndex()
 {
     int min = -1;
     QModelIndex minIndex;
-    QModelIndexList modelIndexes = selectedIndexes();
-    for (QModelIndex index : modelIndexes) {
+    for (QModelIndex index : selectedIndexes()) {
         if (min < 0 || min > index.row()) {
             min = index.row();
             minIndex = index;
         }
     }
-
-    modelIndexes.clear();
 
     if (minIndex.isValid())
         m_currModelIndex = minIndex;
@@ -885,6 +879,8 @@ void DFontPreviewListView::updateChangedFile(const QString &path)
     qDebug() << __FUNCTION__ << path << " begin ";
     QMutexLocker locker(&m_mutex);
     changeFontFile(path);
+
+    Q_EMIT rowCountChanged();
     qDebug() << __FUNCTION__ << path << " end ";
 }
 
@@ -911,7 +907,7 @@ void DFontPreviewListView::updateChangedDir(const QString &path)
     }
     DFMDBManager::instance()->commitDeleteFontInfo();
     enableFonts();
-    fontInfoList.clear();
+
     Q_EMIT rowCountChanged();
 //    qDebug() << __FUNCTION__ << path << " end ";
 }
@@ -954,8 +950,7 @@ void DFontPreviewListView::deleteCurFonts(const QStringList &files)
 //    emit SignalManager::instance()->updateUninstallDialog(QString("test"), delCnt, files.size());
     emit SignalManager::instance()->closeUninstallDialog();
     enableFonts();
-    fontInfoList.clear();
-    DFontInfoManager::instance()->removeFontInfo();
+//    DFontInfoManager::instance()->removeFontInfo();
     Q_EMIT rowCountChanged();
     qDebug() << __FUNCTION__ << " after delete " << m_dataThread->getFontModelList().size() << m_fontPreviewProxyModel->rowCount()  << m_fontPreviewProxyModel->sourceModel()->rowCount();
 }
@@ -988,8 +983,7 @@ void DFontPreviewListView::changeFontFile(const QString &path, bool force)
     }
     DFMDBManager::instance()->commitDeleteFontInfo();
     enableFonts();
-    fontInfoList.clear();
-    DFontInfoManager::instance()->removeFontInfo();
+//    DFontInfoManager::instance()->removeFontInfo();
 
     if (isDir) {
         if (!QFileInfo(QDir::homePath() + "/.local/share/fonts").exists()) {
@@ -1024,7 +1018,6 @@ QStringList DFontPreviewListView::selectedFonts(int *deleteCnt, int *systemCnt)
     if (deleteCnt)
         *deleteCnt = deleteNum;
 
-    list.clear();
     qDebug() << __FUNCTION__ << ret.size();
     return ret;
 }

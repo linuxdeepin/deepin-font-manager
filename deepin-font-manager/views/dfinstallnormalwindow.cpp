@@ -311,8 +311,6 @@ void DFInstallNormalWindow::verifyFontFiles()
         }
     }
     m_errorList = m_damagedFiles + m_installedFiles + m_systemFiles;
-    fontInfos.clear();
-    instFontInfos.clear();
 }
 
 
@@ -491,15 +489,11 @@ void DFInstallNormalWindow::batchInstall()
 //        qDebug() << " Prepare install file: " << it + "|" + familyName;
     }
 
-    installList.clear();
-
     m_fontManager->setType(DFontManager::Install);
     m_fontManager->setInstallFileList(installListWithFamliyName);
     m_fontManager->setSystemFontCount(systemFontCount);
     this->systemFontCount = 0;
     m_fontManager->start();
-
-    installListWithFamliyName.clear();
 }
 
 
@@ -546,9 +540,6 @@ void DFInstallNormalWindow::batchReInstall()
     m_fontManager->setType(DFontManager::ReInstall);
     m_fontManager->setInstallFileList(installListWithFamliyName);
     m_fontManager->start();
-
-    installList.clear();
-    installListWithFamliyName.clear();
 }
 
 void DFInstallNormalWindow::batchReInstallContinue()
@@ -569,8 +560,6 @@ void DFInstallNormalWindow::batchReInstallContinue()
     m_fontManager->setType(DFontManager::ReInstall);
     m_fontManager->setInstallFileList(installListWithFamliyName);
     m_fontManager->start();
-
-    installListWithFamliyName.clear();
 }
 
 void DFInstallNormalWindow::onCancelInstall()

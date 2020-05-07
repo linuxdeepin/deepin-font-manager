@@ -328,9 +328,6 @@ bool DFMXmlWrapper::addPatternNodesWithText(const QString &fileName,
     attributeList.push_back(map3);
 
     bool ret = DFMXmlWrapper::addNodesWithText(fileName, parentNodeName, nodeNameList, attributeList, lastNodeText);
-    map2.clear();
-    nodeNameList.clear();
-    attributeList.clear();
     return ret;
 }
 
@@ -348,9 +345,6 @@ bool DFMXmlWrapper::addPatternNodesWithTextList(const QString &fileName, const Q
     attributeList.push_back(map3);
 
     bool ret = DFMXmlWrapper::addNodesWithTextList(fileName, parentNodeName, nodeNameList, attributeList, lastNodeTextList);
-    map2.clear();
-    nodeNameList.clear();
-    attributeList.clear();
     return ret;
 }
 

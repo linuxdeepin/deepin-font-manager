@@ -86,8 +86,6 @@ DFontInfoManager *DFontInfoManager::instance()
 
 DFontInfoManager::DFontInfoManager(QObject *parent)
     : QObject(parent)
-    , m_library(nullptr)
-    , m_face(nullptr)
 {
     //Should not be called in constructor
     //refreshList();
@@ -101,13 +99,11 @@ void DFontInfoManager::refreshList()
         dataList.clear();
     }
 
-    QStringList allFonts  = getAllFontPath();
-    for (auto path : allFonts) {
+    for (auto path : getAllFontPath()) {
         DFontInfo fontInfo = getFontInfo(path, true);
         fontInfo.isSystemFont = isSystemFont(path);
         dataList << fontInfo;
     }
-    allFonts.clear();
 }
 
 QStringList DFontInfoManager::getAllFontPath() const
@@ -192,14 +188,14 @@ QString DFontInfoManager::getFontType(const QString &filePath)
 
 DFontInfo DFontInfoManager::getFontInfo(const QString &filePath, bool force)
 {
-    if (!force && m_fontInfoMap.contains(filePath)) {
-        return m_fontInfoMap.value(filePath);
-    } else if (!force) {
-        qDebug() << __FUNCTION__ << " not found " << filePath;
-    }
+//    if (!force && m_fontInfoMap.contains(filePath)) {
+//        return m_fontInfoMap.value(filePath);
+//    } else if (!force) {
+//        qDebug() << __FUNCTION__ << " not found " << filePath;
+//    }
 
-//    FT_Library m_library = nullptr;
-//    FT_Face m_face = nullptr;
+    FT_Library m_library = nullptr;
+    FT_Face m_face = nullptr;
 
     DFontInfo fontInfo;
     fontInfo.isSystemFont = isSystemFont(filePath);
@@ -223,6 +219,7 @@ DFontInfo DFontInfoManager::getFontInfo(const QString &filePath, bool force)
 
     // get the basic data.
     fontInfo.isError = false;
+    fontInfo.filePath = filePath;
 
 //    int appFontId = QFontDatabase::addApplicationFont(filePath);
 //    QStringList fontFamilyList = QFontDatabase::applicationFontFamilies(appFontId);
@@ -320,12 +317,12 @@ DFontInfo DFontInfoManager::getFontInfo(const QString &filePath, bool force)
         fontInfo.isInstalled = isFontInstalled(fontInfo);
     }
 
-    if (force) {
-        fontInfo.filePath = getInstFontPath(filePath, fontInfo.familyName);
-        m_fontInfoMap.insert(fontInfo.filePath, fontInfo);
-        m_fontInfoMap.insert(filePath, fontInfo);
-//        qDebug() << __FUNCTION__ << " insert " << fontInfo.filePath;
-    }
+//    if (force) {
+//        fontInfo.filePath = getInstFontPath(filePath, fontInfo.familyName);
+//        m_fontInfoMap.insert(fontInfo.filePath, fontInfo);
+//        m_fontInfoMap.insert(filePath, fontInfo);
+////        qDebug() << __FUNCTION__ << " insert " << fontInfo.filePath;
+//    }
 
     return fontInfo;
 }
@@ -364,6 +361,6 @@ bool DFontInfoManager::isFontInstalled(DFontInfo &data)
 
 void DFontInfoManager::removeFontInfo()
 {
-    m_fontInfoMap.clear();
-    qDebug() << __FUNCTION__ << m_fontInfoMap.size();
+    //m_fontInfoMap.clear();
+    //qDebug() << __FUNCTION__ << m_fontInfoMap.size();
 }

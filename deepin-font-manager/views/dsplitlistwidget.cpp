@@ -167,11 +167,6 @@ DSplitListWidget::DSplitListWidget(QWidget *parent)
     : DListView(parent)
 {
     //去除选中项的边框
-    QAbstractItemDelegate *delegate = itemDelegate();
-    if (delegate) {
-        delegate->setParent(nullptr);
-        delegate->deleteLater();
-    }
     this->setItemDelegate(new DNoFocusDelegate(this));
     this->setEditTriggers(QAbstractItemView::EditTrigger::NoEditTriggers);
     this->setAutoScroll(false);

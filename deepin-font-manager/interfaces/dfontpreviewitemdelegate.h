@@ -4,7 +4,6 @@
 #include "dfontpreviewitemdef.h"
 
 #include <DStyledItemDelegate>
-#include <signalmanager.h>
 
 DWIDGET_USE_NAMESPACE
 
@@ -20,16 +19,16 @@ public:
 
 protected:
     bool eventFilter(QObject *object, QEvent *event) override;
-    SignalManager *m_signalManager = SignalManager::instance();
+
 private:
     QRect adjustPreviewRect(const QRect bgRect) const;
     QFont adjustPreviewFont(const QString &fontFamilyName, const QString &fontStyleName, const int &fontSize) const;
     QPoint adjustPreviewFontBaseLinePoint(const QRect &fontPreviewRect, const QFontMetrics &previewFontMetrics) const;
 
-    void paintForegroundCheckBox(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
-    void paintForegroundFontName(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
-    void paintForegroundCollectIcon(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
-    void paintForegroundPreviewFont(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
+    void paintForegroundCheckBox(QPainter *painter, const QStyleOptionViewItem &option, const DFontPreviewItemData &itemData) const;
+    void paintForegroundFontName(QPainter *painter, const QStyleOptionViewItem &option, const DFontPreviewItemData &itemData) const;
+    void paintForegroundCollectIcon(QPainter *painter, const QStyleOptionViewItem &option, const DFontPreviewItemData &itemData) const;
+    void paintForegroundPreviewFont(QPainter *painter, const QStyleOptionViewItem &option, const DFontPreviewItemData &data, int fontPixelSize, const QString &fontPreviewText) const;
     void paintForegroundPreviewContent(QPainter *painter, const QString &content, const QRect &fontPreviewRect, const QFont &previewFont) const;
     void paintBackground(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
