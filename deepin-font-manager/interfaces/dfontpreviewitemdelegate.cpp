@@ -184,8 +184,15 @@ void DFontPreviewItemDelegate::paintForegroundPreviewFont(QPainter *painter, con
     painter->setPen(QPen(option.palette.color(DPalette::Text)));
     if (itemData.isPreviewEnabled) {
         QFont previewFont = adjustPreviewFont(itemData.fontInfo.familyName, itemData.fontInfo.styleName, fontPixelSize);
-        painter->setFont(previewFont);
-        paintForegroundPreviewContent(painter, fontPreviewContent, fontPreviewRect, previewFont);
+        if (previewFont.weight() == DApplication::font().weight() && itemData.fontInfo.isSystemFont) {
+            QFont previewFontNew;
+            previewFontNew.setPixelSize(fontPixelSize);
+            painter->setFont(previewFontNew);
+            paintForegroundPreviewContent(painter, fontPreviewContent, fontPreviewRect, previewFontNew);
+        } else {
+            painter->setFont(previewFont);
+            paintForegroundPreviewContent(painter, fontPreviewContent, fontPreviewRect, previewFont);
+        }
     } else {
         QFont previewFont;
         previewFont.setPixelSize(fontPixelSize);
