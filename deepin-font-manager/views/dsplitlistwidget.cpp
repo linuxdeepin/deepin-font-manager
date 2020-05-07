@@ -234,6 +234,7 @@ void DSplitListWidget::currentChanged(const QModelIndex &current, const QModelIn
 
 void DSplitListWidget::mouseMoveEvent(QMouseEvent *event)
 {
+    Q_UNUSED(event)
     if (QToolTip::isVisible()) {
         QToolTip::hideText();
     }

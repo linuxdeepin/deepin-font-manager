@@ -154,7 +154,7 @@ void DFontInfoDialog::initUI()
     p.setRenderHint(QPainter::Antialiasing);
     scrollArea->viewport()->setMask(bmp);
 
-    m_basicInfoFrame->setAttribute(Qt::WA_TranslucentBackground);
+//    m_basicInfoFrame->setAttribute(Qt::WA_TranslucentBackground);
 
     scrollArea->setFrameShape(QFrame::Shape::NoFrame);
 
@@ -220,11 +220,11 @@ void DFontInfoDialog::initConnections()
             DApplicationHelper::instance()->setPalette(scrollArea->viewport(), paFrame);
         } else if (DApplicationHelper::LightType == themeType)
         {
-            DPalette paFrame = DApplicationHelper::instance()->palette(scrollArea->viewport());
+            DPalette paFrame = DApplicationHelper::instance()->palette(m_basicInfoFrame);
             QColor colorFrame = paFrame.textLively().color();
             colorFrame.setAlphaF(0.70);
             paFrame.setColor(DPalette::Base, colorFrame);
-            DApplicationHelper::instance()->setPalette(scrollArea->viewport(), paFrame);
+            DApplicationHelper::instance()->setPalette(m_basicInfoFrame, paFrame);
         }
     });
 
@@ -273,7 +273,4 @@ void DFontInfoDialog::resizeEvent(QResizeEvent *event)
     DFontBaseDialog::resizeEvent(event);
 
 }
-
-
-
 
