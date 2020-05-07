@@ -95,6 +95,7 @@ protected:
     void showAllShortcut();
     void showInstalledFiles();
     void waitForInsert();
+    void onPreviewTextChanged();
 
     //Add drag install
     void dragEnterEvent(QDragEnterEvent *event) override;
@@ -124,7 +125,7 @@ public slots:
     void handleMenuEvent(QAction *);
 
     void onSearchTextChanged(const QString &currStr);
-    void onPreviewTextChanged(const QString &text = QString());
+    void onPreviewTextChanged(const QString &text);
     void onFontSizeChanged(int fontSize);
 
     void onLeftSiderBarItemClicked(int index);

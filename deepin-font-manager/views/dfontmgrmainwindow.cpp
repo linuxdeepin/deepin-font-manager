@@ -1092,8 +1092,6 @@ void DFontMgrMainWindow::setDeleteFinish()
 
 void DFontMgrMainWindow::onSearchTextChanged(const QString &currStr)
 {
-    Q_D(DFontMgrMainWindow);
-
     if (!m_fontPreviewListView->isListDataLoadFinished()) {
         return;
     }
@@ -1102,7 +1100,7 @@ void DFontMgrMainWindow::onSearchTextChanged(const QString &currStr)
     const QString strSearchFontName = currStr;
     qDebug() << strSearchFontName << endl;
 
-    m_searchTextStatusIsEmpty = d->searchFontEdit->text().isEmpty();
+    m_searchTextStatusIsEmpty = strSearchFontName.isEmpty();
 
     DFontPreviewProxyModel *filterModel = m_fontPreviewListView->getFontPreviewProxyModel();
 
@@ -1123,17 +1121,10 @@ void DFontMgrMainWindow::onSearchTextChanged(const QString &currStr)
 
 void DFontMgrMainWindow::onPreviewTextChanged(const QString &text)
 {
-    Q_D(DFontMgrMainWindow);
-
-    if (!m_fontPreviewListView->isListDataLoadFinished()) {
-        return;
-    }
-
-    int iFontSize = d->fontScaleSlider->value();
-    bool isEmpty = d->textInputEdit->text().isEmpty();
+    bool isEmpty = text.isEmpty();
     if (!isEmpty) {
-        if (m_previewText != d->textInputEdit->text()) {
-            m_previewText = d->textInputEdit->text();
+        if (m_previewText != text) {
+            m_previewText = text;
         }
     } else {
         if (m_previewText != FTM_DEFAULT_PREVIEW_TEXT) {
@@ -1141,22 +1132,7 @@ void DFontMgrMainWindow::onPreviewTextChanged(const QString &text)
         }
     }
 
-
-//    QString strFontSize = d->fontSizeLabel->text();
-//    int iFontSize = strFontSize.remove("px").toInt();
-
-    DFontPreviewProxyModel *filterModel = m_fontPreviewListView->getFontPreviewProxyModel();
-    qDebug() << __FUNCTION__ << "filter Count:" << filterModel->rowCount() << endl;
-
-    for (int rowIndex = 0; rowIndex < filterModel->rowCount(); rowIndex++) {
-        QModelIndex modelIndex = filterModel->index(rowIndex, 0);
-        QString itemPreviewTxt = filterModel->data(modelIndex, Dtk::UserRole + 1).toString();
-        if (m_previewText != itemPreviewTxt)
-            filterModel->setData(modelIndex, QVariant(m_previewText), Dtk::UserRole + 1);
-        if (iFontSize != filterModel->data(modelIndex, Dtk::UserRole + 2).toInt())
-            filterModel->setData(modelIndex, QVariant(iFontSize), Dtk::UserRole + 2);
-//        filterModel->setEditStatus(m_searchTextStatusIsEmpty);
-    }
+    onPreviewTextChanged();
 }
 
 void DFontMgrMainWindow::onFontSizeChanged(int fontSize)
@@ -1593,6 +1569,26 @@ void DFontMgrMainWindow::waitForInsert()
 
     //Clear installtion flag when NormalInstalltion window is closed
     m_fIsInstalling = false;
+}
+
+void DFontMgrMainWindow::onPreviewTextChanged()
+{
+    if (!m_fontPreviewListView->isListDataLoadFinished()) {
+        return;
+    }
+
+    DFontPreviewProxyModel *filterModel = m_fontPreviewListView->getFontPreviewProxyModel();
+    qDebug() << __FUNCTION__ << "filter Count:" << filterModel->rowCount() << endl;
+
+    for (int rowIndex = 0; rowIndex < filterModel->rowCount(); rowIndex++) {
+        QModelIndex modelIndex = filterModel->index(rowIndex, 0);
+        QString itemPreviewTxt = filterModel->data(modelIndex, Dtk::UserRole + 1).toString();
+        if (m_previewText != itemPreviewTxt)
+            filterModel->setData(modelIndex, QVariant(m_previewText), Dtk::UserRole + 1);
+        if (m_previewFontSize != filterModel->data(modelIndex, Dtk::UserRole + 2).toInt())
+            filterModel->setData(modelIndex, QVariant(m_previewFontSize), Dtk::UserRole + 2);
+//        filterModel->setEditStatus(m_searchTextStatusIsEmpty);
+    }
 }
 
 //弹出删除进度框后执行删除操作
