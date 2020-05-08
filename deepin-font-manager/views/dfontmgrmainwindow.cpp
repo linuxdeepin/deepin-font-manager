@@ -219,7 +219,6 @@ void DFontMgrMainWindow::initConnections()
 
     QObject::connect(d->textInputEdit, SIGNAL(textChanged(const QString &)), this,
                      SLOT(onPreviewTextChanged(const QString &)));
-
     QObject::connect(d->leftSiderBar, SIGNAL(onListWidgetItemClicked(int)), this,
                      SLOT(onLeftSiderBarItemClicked(int)));
 
@@ -245,24 +244,29 @@ void DFontMgrMainWindow::initConnections()
 //                                   (this->height() - m_loadingSpinner->height()) / 2);
 //            //        s->move(); waitForInstallSpinner->move((this->width() - waitForInstallSpinner->width()) / 2 +
 //            //        (waitForInstallSpinner->width() * 2.5), (this->height() - waitForInstallSpinner->height()) / 2);
-
 //            m_loadingSpinner->start();
 //        }
-        m_fontLoadingSpinner->spinnerStart();
+
         m_noInstallListView->hide();
         m_fontPreviewListView->hide();
+        m_noResultListView->hide();
         d->stateBar->hide();
         m_fontLoadingSpinner->show();
+        m_fontLoadingSpinner->spinnerStart();
 
     });
 
     connect(m_signalManager, &SignalManager::requestInstallAdded, this, [ = ]() {
 //        ut000442 安装少量字体时,会出现闪屏现象,通过加短暂延迟解决.
+
         QTimer::singleShot(50, this, [ = ]() {
             m_fontLoadingSpinner->spinnerStop();
-            m_fontPreviewListView->show();
-            d->stateBar->show();
+            //            m_fontPreviewListView->show();
             m_fontLoadingSpinner->hide();
+            m_isNoResultViewShow = false;
+            onFontListViewRowCountChanged();
+//            d->stateBar->show();
+
         });
 
 
@@ -1230,6 +1234,7 @@ void DFontMgrMainWindow::onFontListViewRowCountChanged()
         while (isSpinnerHidden) {
             m_fontPreviewListView->show();
             m_noResultListView->hide();
+            m_isNoResultViewShow = false;
             d->stateBar->show();
             if (m_noInstallListView->isVisible()) {
                 m_noInstallListView->hide();
@@ -1238,24 +1243,31 @@ void DFontMgrMainWindow::onFontListViewRowCountChanged()
         }
         return;
     case 1:
-        while (isSpinnerHidden) {
-            m_fontPreviewListView->hide();
-            QTimer::singleShot(5, [ = ]() {
-                m_noResultListView->show();
-            });
-            d->stateBar->hide();
-            if (m_noInstallListView->isVisible()) {
-                m_noInstallListView->hide();
+        if (!m_isNoResultViewShow) {
+            while (isSpinnerHidden) {
+                m_fontPreviewListView->hide();
+                QTimer::singleShot(5, [ = ]() {
+                    m_noResultListView->show();
+                    m_isNoResultViewShow = true;
+                });
+                d->stateBar->hide();
+                if (m_noInstallListView->isVisible()) {
+                    m_noInstallListView->hide();
+                }
+                break;
             }
-            break;
+            return;
+        } else {
+            return;
         }
-        return;
+
     case 2:
         while (isSpinnerHidden) {
             m_fontPreviewListView->hide();
             d->stateBar->hide();
             if (m_noResultListView->isVisible()) {
                 m_noResultListView->hide();
+                m_isNoResultViewShow = false;
             }
             d->leftSiderBar->setFocus();
             m_noInstallListView->show();
@@ -1265,6 +1277,7 @@ void DFontMgrMainWindow::onFontListViewRowCountChanged()
     default:
         m_fontPreviewListView->show();
         m_noResultListView->hide();
+        m_isNoResultViewShow = false;
         d->stateBar->show();
         break;
     }

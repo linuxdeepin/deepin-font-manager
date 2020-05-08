@@ -155,6 +155,7 @@ protected:
     bool m_searchTextStatusIsEmpty = true;
     bool m_isDeleting = false;
     bool m_isFromSys = false;
+    bool m_isNoResultViewShow = false;
 
     //Stand shortcut
     //Implement by DTK                       //Close window       --> Alt+F4
