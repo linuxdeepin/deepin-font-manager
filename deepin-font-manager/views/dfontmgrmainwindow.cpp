@@ -536,10 +536,7 @@ void DFontMgrMainWindow::initFontUninstallDialog()
     QObject::connect(m_signalManager, &SignalManager::closeUninstallDialog, this, [ = ] {
         if (!m_isDeleting && m_isFromSys)
         {
-            if (m_waitForInstall.count() > 0) {
-                waitForInsert();
-                m_waitForInstall.clear();
-            }
+            waitForInsert();
             m_isFromSys = false;
         }
         m_isDeleting = false;
@@ -1018,14 +1015,19 @@ void DFontMgrMainWindow::installFontFromSys(const QStringList &files)
 {
     this->m_isFromSys = true;
 
+    if (!m_fontPreviewListView->isListDataLoadFinished()) {
+        qDebug() << "Is loading ,quit";
+        m_waitForInstall = files;
+        return;
+    }
+
     if (m_isDeleting) {
         qDebug() << "Is deleting ,quit";
         m_waitForInstall = files;
         return;
-    } else {
-        installFont(files);
     }
 
+    installFont(files);
 }
 
 void DFontMgrMainWindow::initRightKeyMenu()
@@ -1307,6 +1309,7 @@ void DFontMgrMainWindow::onLoadStatus(int type)
                 onLeftSiderBarItemClicked(m_leftIndex);
             }
             m_fontPreviewListView->show();
+            waitForInsert(false);
             break;
         default:
             break;
@@ -1545,8 +1548,10 @@ void DFontMgrMainWindow::showInstalledFiles()
     onLeftSiderBarItemClicked(DSplitListWidget::UserFont);
 }
 
-void DFontMgrMainWindow::waitForInsert()
+void DFontMgrMainWindow::waitForInsert(bool deleting)
 {
+    if (m_waitForInstall.isEmpty())
+        return;
 
     m_dfNormalInstalldlg = new DFInstallNormalWindow(m_waitForInstall, this);
     if (m_isQuickMode) {
@@ -1561,13 +1566,16 @@ void DFontMgrMainWindow::waitForInsert()
      * to task bar can start a installtion flow, so must
      * to set flag avoid
      */
-    m_fIsInstalling = true;
+    if (deleting)
+        m_fIsInstalling = true;
 
     Dtk::Widget::moveToCenter(m_dfNormalInstalldlg);
     m_dfNormalInstalldlg->exec();
 
     //Clear installtion flag when NormalInstalltion window is closed
-    m_fIsInstalling = false;
+    if (deleting)
+        m_fIsInstalling = false;
+    m_waitForInstall.clear();
 }
 
 void DFontMgrMainWindow::onPreviewTextChanged()

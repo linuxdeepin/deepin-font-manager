@@ -94,7 +94,7 @@ protected:
     void exportFont();
     void showAllShortcut();
     void showInstalledFiles();
-    void waitForInsert();
+    void waitForInsert(bool deleting = true);
     void onPreviewTextChanged();
 
     //Add drag install
