@@ -521,6 +521,9 @@ void DFontPreviewListView::mouseReleaseEvent(QMouseEvent *event)
     if (m_fontPreviewItemModel && m_fontPreviewItemModel->rowCount() == 0) {
         return;
     }
+    if (Qt::MidButton == event->button()) {
+        return;
+    }
 
     QPoint clickPoint = event->pos();
 
