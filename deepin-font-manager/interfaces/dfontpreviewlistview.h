@@ -95,6 +95,7 @@ private:
     void refreshRect();
     bool m_bLoadDataFinish = false;
     bool m_bLeftMouse = true;
+    bool m_bRightMous = true;
     bool m_bClickCollectionOrEnable = false;
     bool m_bListviewAtButtom = false;
     bool m_bListviewAtTop = false;
