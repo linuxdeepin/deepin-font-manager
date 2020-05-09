@@ -737,10 +737,10 @@ void DFontMgrMainWindow::initFontPreviewListView(QWidget *parent)
     listViewVBoxLayout->addWidget(m_fontPreviewListView);
 
     // 加载图标
-    DLabel *onLoadingSpinner = new DLabel(m_fontLoadingSpinner);
-    onLoadingSpinner->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    onLoadingSpinner->setFixedHeight(onLoadingSpinner->fontMetrics().height());
-    onLoadingSpinner->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
+//    DLabel *onLoadingSpinner = new DLabel(m_fontLoadingSpinner);
+//    onLoadingSpinner->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+//    onLoadingSpinner->setFixedHeight(onLoadingSpinner->fontMetrics().height());
+//    onLoadingSpinner->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
 
 //    QVBoxLayout *lblLayoutLoad = new QVBoxLayout();
 //    lblLayoutLoad->addWidget(onLoadingSpinner);

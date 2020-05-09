@@ -24,7 +24,7 @@ const int COLLECT_ICON_TOP_MARGIN = 10;
 const int FONT_NAME_HEIGHT = 27;
 const int FONT_NAME_LEFT_MARGIN = 50;
 const int FONT_NAME_TOP_MARGIN = 3;
-
+const QString STR_FORWIDTH = "中文";
 const int FONT_PREVIEW_LEFT_MARGIN = 50;
 const int FONT_PREVIEW_RIGHT_MARGIN = COLLECT_ICON_SIZE + COLLECT_ICON_RIGHT_MARGIN;
 const int FONT_PREVIEW_TOP_MARGIN = 27;
@@ -35,6 +35,7 @@ DFontPreviewItemDelegate::DFontPreviewItemDelegate(QAbstractItemView *parent)
     : DStyledItemDelegate(parent)
     , m_parentView(parent)
 {
+    chineseFontPathList =  DFontInfoManager::instance()->getAllChineseFontPath();
 }
 
 void DFontPreviewItemDelegate::paintForegroundCheckBox(QPainter *painter, const QStyleOptionViewItem &option, const DFontPreviewItemData &itemData) const
@@ -176,10 +177,30 @@ void DFontPreviewItemDelegate::paintForegroundPreviewFont(QPainter *painter, con
     QRect fontPreviewRect = adjustPreviewRect(option.rect);
 
     painter->setPen(QPen(option.palette.color(DPalette::Text)));
+
     if (itemData.isPreviewEnabled) {
         QFont previewFont = adjustPreviewFont(itemData.fontInfo.familyName, itemData.fontInfo.styleName, fontPixelSize);
-        painter->setFont(previewFont);
-        paintForegroundPreviewContent(painter, fontPreviewText, fontPreviewRect, previewFont);
+        QFontMetrics fm(previewFont);
+        QFont font = DApplication::font();
+        font.setPixelSize(fontPixelSize);
+        QFontMetrics curFont(font);
+
+        if (previewFont.weight() == DApplication::font().weight()
+                && itemData.fontInfo.isSystemFont
+                && isZhCode(fontPreviewText)
+                && !chineseFontPathList.contains(itemData.fontInfo.filePath)
+                && !previewFont.italic()
+                && (fm.width(STR_FORWIDTH) == curFont.width(STR_FORWIDTH))) {
+            QFont font ;
+            font.setWeight(previewFont.weight());
+            font.setPixelSize(fontPixelSize);
+            font.setItalic(previewFont.italic());
+            painter->setFont(font);
+            paintForegroundPreviewContent(painter, fontPreviewText, fontPreviewRect, font);
+        } else {
+            painter->setFont(previewFont);
+            paintForegroundPreviewContent(painter, fontPreviewText, fontPreviewRect, previewFont);
+        }
     } else {
         QFont previewFont;
         previewFont.setPixelSize(fontPixelSize);
@@ -272,4 +293,21 @@ bool DFontPreviewItemDelegate::eventFilter(QObject *object, QEvent *event)
     }
 
     return false;
+}
+
+bool DFontPreviewItemDelegate::isZhCode(const QString &str) const
+{
+    int nCount = str.count();
+    bool bret = true;
+    for (int i = 0; i < nCount; ++i) {
+        QChar cha = str.at(i);
+        ushort uni = cha.unicode();
+        if (uni >= 0x4E00 && uni <= 0x9FA5) {
+            return bret;
+        } else {
+            bret = false;
+            break;
+        }
+    }
+    return bret;
 }

@@ -20,6 +20,7 @@ public:
 protected:
     bool eventFilter(QObject *object, QEvent *event) override;
 
+    bool isZhCode(const QString &str) const;
 private:
     QRect adjustPreviewRect(const QRect bgRect) const;
     QFont adjustPreviewFont(const QString &fontFamilyName, const QString &fontStyleName, const int &fontSize) const;
@@ -33,7 +34,7 @@ private:
     void paintBackground(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
     QAbstractItemView *m_parentView;
-
+    QStringList chineseFontPathList;
 };
 
 #endif  // DFONTPREVIEWITEMDELEGATE_H
