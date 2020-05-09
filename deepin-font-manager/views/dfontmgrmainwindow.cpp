@@ -742,10 +742,10 @@ void DFontMgrMainWindow::initFontPreviewListView(QWidget *parent)
     onLoadingSpinner->setFixedHeight(onLoadingSpinner->fontMetrics().height());
     onLoadingSpinner->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
 
-    QVBoxLayout *lblLayoutLoad = new QVBoxLayout;
-    lblLayoutLoad->addWidget(onLoadingSpinner);
+//    QVBoxLayout *lblLayoutLoad = new QVBoxLayout();
+//    lblLayoutLoad->addWidget(onLoadingSpinner);
 
-    m_fontLoadingSpinner->setLayout(lblLayoutLoad);
+//    m_fontLoadingSpinner->setLayout(lblLayoutLoad);
     listViewVBoxLayout->addWidget(m_fontLoadingSpinner);
 
     m_fontLoadingSpinner->spinnerStart();

@@ -7,7 +7,8 @@
 
 DFontuninstalldialog::DFontuninstalldialog(DFontMgrMainWindow *win, QWidget *parent)
     : DFontBaseDialog(parent)
-
+    , m_mainFrame(new QWidget(this))
+    , m_mainWindow(nullptr)
 {
     initUi();
 
@@ -33,6 +34,10 @@ void DFontuninstalldialog::setValue(const QString &fontName, int index, int tota
 
 void DFontuninstalldialog::setMainwindow(DFontMgrMainWindow *win)
 {
+    if (m_mainWindow != win && win != nullptr) {
+        m_mainWindow = win;
+    }
+
     connect(SignalManager::instance(), &SignalManager::updateUninstallDialog, this, [ = ](const QString & fontName, int index, int totalCount) {
         qDebug() << "update uninstall "  << index << totalCount;
         setValue(fontName, index, totalCount);
@@ -54,8 +59,7 @@ void DFontuninstalldialog::setMainwindow(DFontMgrMainWindow *win)
             m_mainWindow->setDeleteFinish();
     });
 
-    if (m_mainWindow != win && win != nullptr) {
-        m_mainWindow = win;
+    if (m_mainWindow != nullptr) {
         //start to delete
         m_mainWindow->startToDelete();
     }
@@ -110,7 +114,6 @@ void DFontuninstalldialog::initUi()
 
     mainLayout->addLayout(contentLayout);
 
-    m_mainFrame = new QWidget(this);
     m_mainFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     m_mainFrame->setLayout(mainLayout);
 

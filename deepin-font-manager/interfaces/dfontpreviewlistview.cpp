@@ -324,8 +324,7 @@ void DFontPreviewListView::selectFonts(const QStringList &fileList)
     qDebug() << __FUNCTION__ << " fileList size " << fileList.size() << ", row count " << getFontPreviewProxyModel()->rowCount();
     for (int i = 0; i < getFontPreviewProxyModel()->rowCount(); ++i) {
         QModelIndex index = getFontPreviewProxyModel()->index(i, 0);
-        DFontPreviewItemData itemData =
-            qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(index));
+        DFontPreviewItemData itemData = qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(index));
 //        qDebug() << __FUNCTION__ << itemData.fontInfo.filePath;
         if (fileList.contains(itemData.fontInfo.filePath)) {
             QModelIndex left = m_fontPreviewProxyModel->index(index.row(), 0);
@@ -364,8 +363,7 @@ void DFontPreviewListView::selectFont(const QString &file)
 
     for (int i = 0; i < getFontPreviewProxyModel()->rowCount(); ++i) {
         QModelIndex index = getFontPreviewProxyModel()->index(i, 0);
-        DFontPreviewItemData itemData =
-            qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(index));
+        DFontPreviewItemData itemData = qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(index));
         //        qDebug() << __FUNCTION__ << itemData.fontInfo.filePath;
         if (!file.compare(itemData.fontInfo.filePath)) {
             QModelIndex left = m_fontPreviewProxyModel->index(index.row(), 0);
@@ -424,18 +422,22 @@ void DFontPreviewListView::mouseMoveEvent(QMouseEvent *event)
 
     QRect collectIconRect = getCollectionIconRect(rect);
 
-    DFontPreviewItemData itemData =
-        qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(modelIndex));
+    DFontPreviewItemData itemData = qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(modelIndex));
     clearHoverState();///*UT000539*/
     if (collectIconRect.contains(clickPoint)) {
-        itemData.collectIconStatus = IconHover;
+        if (itemData.collectIconStatus != IconHover) {
+            itemData.collectIconStatus = IconHover;
+            m_fontPreviewProxyModel->setData(modelIndex, QVariant::fromValue(itemData), Qt::DisplayRole);
+        }
 //        qDebug() << "+++++++++++++" << itemData.strFontName << endl;
         m_hoverModelIndex = modelIndex;
     } else {
-        itemData.collectIconStatus =  IconNormal;
+        if (itemData.collectIconStatus != IconNormal) {
+            itemData.collectIconStatus =  IconNormal;
+            m_fontPreviewProxyModel->setData(modelIndex, QVariant::fromValue(itemData), Qt::DisplayRole);
+        }
     }
 
-    m_fontPreviewProxyModel->setData(modelIndex, QVariant::fromValue(itemData), Qt::DisplayRole);
     DListView::mouseMoveEvent(event);
 }
 
@@ -490,8 +492,7 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
         m_bClickCollectionOrEnable = false;
     }
 
-    DFontPreviewItemData itemData =
-        qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(modelIndex));
+    DFontPreviewItemData itemData = qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(modelIndex));
 
     if (collectIconRect.contains(clickPoint)) {
         if (itemData.collectIconStatus != IconPress) {
@@ -529,8 +530,7 @@ void DFontPreviewListView::mouseReleaseEvent(QMouseEvent *event)
     indexList << modelIndex;
     m_currModelIndex = modelIndex;
 
-    DFontPreviewItemData itemData =
-        qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(modelIndex));
+    DFontPreviewItemData itemData = qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(modelIndex));
 
     if (itemData.collectIconStatus != IconNormal) {
         itemData.collectIconStatus = IconNormal;
@@ -741,8 +741,7 @@ void DFontPreviewListView::onListViewItemEnableBtnClicked(const QModelIndexList 
     for (QModelIndex index : itemIndexesNew) {
         //        DFontPreviewItemData itemData =
         //            qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(itemIndexes[0]));
-        DFontPreviewItemData itemData =
-            qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(index));
+        DFontPreviewItemData itemData = qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(index));
         QFileInfo fi(itemData.fontInfo.filePath);
         if (!fi.exists())
             continue;
@@ -797,8 +796,7 @@ void DFontPreviewListView::onListViewItemCollectionBtnClicked(const QModelIndexL
     sortModelIndexList(itemIndexesNew);
 
     for (QModelIndex index : itemIndexesNew) {
-        DFontPreviewItemData itemData =
-            qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(index));
+        DFontPreviewItemData itemData = qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(index));
         itemData.isCollected = setValue;
 //        DFMDBManager::instance()->updateFontInfoByFontId(itemData.strFontId, "isCollected", QString::number(itemData.isCollected));
         DFMDBManager::instance()->updateFontInfo(itemData, "isCollected");
@@ -884,8 +882,7 @@ void DFontPreviewListView::clearHoverState()
     if (!m_hoverModelIndex.isValid())
         return;
 
-    DFontPreviewItemData itemData =
-        qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(m_hoverModelIndex));
+    DFontPreviewItemData itemData = qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(m_hoverModelIndex));
 //    qDebug() << " restore hover item " << itemData.strFontName;
     itemData.collectIconStatus = IconNormal;
     m_fontPreviewProxyModel->setData(m_hoverModelIndex, QVariant::fromValue(itemData), Qt::DisplayRole);
