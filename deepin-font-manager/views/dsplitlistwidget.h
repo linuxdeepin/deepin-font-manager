@@ -59,6 +59,7 @@ signals:
     void onListWidgetItemClicked(int index);
 protected:
     void mouseMoveEvent(QMouseEvent *event) override;
+    void mousePressEvent(QMouseEvent *event)override;
 };
 
 Q_DECLARE_METATYPE(DSplitListWidget::FontGroup)
