@@ -425,10 +425,10 @@ void DFontPreviewListView::mouseMoveEvent(QMouseEvent *event)
     DFontPreviewItemData itemData = qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(modelIndex));
     clearHoverState();///*UT000539*/
     if (collectIconRect.contains(clickPoint)) {
-        if (itemData.collectIconStatus != IconHover) {
-            itemData.collectIconStatus = IconHover;
-            m_fontPreviewProxyModel->setData(modelIndex, QVariant::fromValue(itemData), Qt::DisplayRole);
-        }
+//        if (itemData.collectIconStatus != IconHover) {
+        itemData.collectIconStatus = IconHover;
+        m_fontPreviewProxyModel->setData(modelIndex, QVariant::fromValue(itemData), Qt::DisplayRole);
+//        }
 //        qDebug() << "+++++++++++++" << itemData.strFontName << endl;
         m_hoverModelIndex = modelIndex;
     } else {
