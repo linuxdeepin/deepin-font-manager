@@ -282,7 +282,7 @@ void DNoFocusDelegate::hideTooltipImmediately()
 
 void DSplitListWidget::mousePressEvent(QMouseEvent *event)
 {
-    if (Qt::RightButton == event->button()) {
+    if (Qt::RightButton == event->button() || Qt::MiddleButton == event->button()) {
         return;
     }
     DListView::mousePressEvent(event);
