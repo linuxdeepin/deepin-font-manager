@@ -280,7 +280,7 @@ void DFontPreviewListDataThread::insertFontItemData(const QString &filePath,
 
 void DFontPreviewListDataThread::refreshFontListData(bool isStartup, const QStringList &installFont)
 {
-    qDebug() << __FUNCTION__ << " begin";
+    qDebug() << __FUNCTION__ << " begin " << installFont.size();
     DFontInfoManager *fontInfoMgr = DFontInfoManager::instance();
     QStringList strAllFontList = fontInfoMgr->getAllFontPath();
 
@@ -304,6 +304,7 @@ void DFontPreviewListDataThread::refreshFontListData(bool isStartup, const QStri
             if (filePathInfo.exists()) {
                 m_fontModelList.append(itemData);
                 dbFilePathSet.insert(filePath);
+                addPathWatcher(filePath);
             } else {
                 //如果字体文件已经不存在，则从t_manager表中删除
                 if (!filePathInfo.exists()) {
@@ -315,6 +316,7 @@ void DFontPreviewListDataThread::refreshFontListData(bool isStartup, const QStri
         } else {
             QString filePath = itemData.fontInfo.filePath;
             dbFilePathSet.insert(filePath);
+            addPathWatcher(filePath);
         }
     }
 
@@ -343,6 +345,7 @@ void DFontPreviewListDataThread::refreshFontListData(bool isStartup, const QStri
     if (!installFont.isEmpty()) {
         Q_EMIT m_view->multiItemsAdded(m_diffFontModelList);
         Q_EMIT m_view->itemsSelected(installFont);
+//        Q_EMIT SignalManager::instance()->showInstallFloatingMessage(m_diffFontModelList.size());
     } else {
         Q_EMIT m_view->multiItemsAdded(m_fontModelList);
     }

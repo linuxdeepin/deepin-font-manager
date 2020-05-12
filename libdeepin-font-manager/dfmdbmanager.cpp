@@ -122,11 +122,8 @@ QList<DFontPreviewItemData> DFMDBManager::getAllFontInfo()
         if (record.size() > 0) {
             DFontPreviewItemData itemData = parseRecordToItemData(record);
             fontItemDataList.push_back(itemData);
-            record.clear();
         }
     }
-    keyList.clear();
-    recordList.clear();
 
     return fontItemDataList;
 }
@@ -156,13 +153,10 @@ QString DFMDBManager::isFontInfoExist(const DFontInfo &newFileFontInfo)
     whereMap.insert("familyName", newFileFontInfo.familyName);
     whereMap.insert("styleName", newFileFontInfo.styleName);
     m_sqlUtil->findRecords(keyList, whereMap, &recordList);
-    keyList.clear();
-    whereMap.clear();
 
     if (recordList.size() > 0) {
         QString result = recordList.first().value("filePath");
 
-        recordList.clear();
         return result;
     }
 
