@@ -289,18 +289,18 @@ void DFontPreviewListView::sortModelIndexList(QModelIndexList &sourceList)
 
 void DFontPreviewListView::deleteFontModelIndex(const QString &filePath, bool isFromSys)
 {
-    qDebug() << __FUNCTION__ << "m_fontPreviewProxyModel rowcount = " << m_fontPreviewProxyModel->rowCount();
+    qDebug() << __FUNCTION__ << "m_fontPreviewProxyModel rowcount = " << m_fontPreviewProxyModel->sourceModel()->rowCount();
     if (m_fontPreviewItemModel && m_fontPreviewItemModel->rowCount() == 0) {
         return;
     }
 
-    for (int i = 0; i < m_fontPreviewProxyModel->rowCount(); i++) {
-        QModelIndex modelIndex = m_fontPreviewProxyModel->index(i, 0);
-        QVariant varModel = m_fontPreviewProxyModel->data(modelIndex, Qt::DisplayRole);
+    for (int i = 0; i < m_fontPreviewProxyModel->sourceModel()->rowCount(); i++) {
+        QModelIndex modelIndex = m_fontPreviewProxyModel->sourceModel()->index(i, 0);
+        QVariant varModel = m_fontPreviewProxyModel->sourceModel()->data(modelIndex, Qt::DisplayRole);
         DFontPreviewItemData itemData = varModel.value<DFontPreviewItemData>();
 
         if (itemData.fontInfo.filePath == filePath) {
-            m_fontPreviewProxyModel->removeRow(i);
+            m_fontPreviewProxyModel->sourceModel()->removeRow(i);
             break;
         }
     }
