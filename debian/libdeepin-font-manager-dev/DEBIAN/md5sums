@@ -1,0 +1,14 @@
+8b05fa47c26c2de64d41f7ece68a3dc4  usr/include/deepin-font-manager/dfmdbmanager.h
+c05d16d850dee4510d6c0ea301042292  usr/include/deepin-font-manager/dfontinfomanager.h
+4cfec292aa645fdb7398d780e2d3d348  usr/include/deepin-font-manager/dfontloadthread.h
+cd4899be011793db17189bd27cb4a4bb  usr/include/deepin-font-manager/dfontmanager.h
+eb1f9ab0eaa5ae207e0f38bec7c67ce0  usr/include/deepin-font-manager/dfontpreview.h
+99107291f76d2bf4d71372829e6b26e6  usr/include/deepin-font-manager/dfontpreviewitemdef.h
+231cb76dadcc494b124d695f86b8c36b  usr/include/deepin-font-manager/dfontwidget.h
+f2969adbec3a38e695d8e514af853974  usr/include/deepin-font-manager/dfreetypeutil.h
+6a2530ad33d443a0b0f6f90891f8ac61  usr/include/deepin-font-manager/dsqliteutil.h
+398be66132104353c568bc7dc15ecf18  usr/include/deepin-font-manager/signalmanager.h
+d6ac30e38588c9c27d7a35a4f07c45d3  usr/lib/x86_64-linux-gnu/pkgconfig/deepin-font-manager.pc
+f1c52fe3b053319de79b1a58e670a006  usr/share/doc/libdeepin-font-manager-dev/changelog.Debian.gz
+e1ecd1aeda9a1c691c1fbbf0ffa0bedc  usr/share/doc/libdeepin-font-manager-dev/changelog.gz
+211b63d7555aed59e150e9c4ccd522d7  usr/share/doc/libdeepin-font-manager-dev/copyright

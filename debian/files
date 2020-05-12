@@ -1,0 +1,6 @@
+deepin-font-manager-dbgsym_0.1-1_amd64.deb debug optional automatic=yes
+deepin-font-manager_0.1-1_amd64.buildinfo utils optional
+deepin-font-manager_0.1-1_amd64.deb utils optional
+libdeepin-font-manager-dbgsym_0.1-1_amd64.deb debug optional automatic=yes
+libdeepin-font-manager-dev_0.1-1_amd64.deb utils optional
+libdeepin-font-manager_0.1-1_amd64.deb utils optional

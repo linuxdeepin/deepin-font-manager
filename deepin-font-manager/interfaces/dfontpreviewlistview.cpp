@@ -354,6 +354,7 @@ void DFontPreviewListView::selectFonts(const QStringList &fileList)
 //        Q_EMIT mw->requestUpdatePreview();
 
     Q_EMIT SignalManager::instance()->requestInstallAdded();
+    Q_EMIT m_signalManager->refreshFocus();
 //    Q_EMIT DFontManager::instance()->batchInstall("onlyprogress", 100);
 }
 
@@ -1172,4 +1173,5 @@ void DFontPreviewListView::setSelectedFalse()
 {
     isSelectedNow = false;
     currentSelectedRow = -1;
+    scrollToTop();
 }

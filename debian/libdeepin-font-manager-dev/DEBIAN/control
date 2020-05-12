@@ -1,0 +1,13 @@
+Package: libdeepin-font-manager-dev
+Source: deepin-font-manager
+Version: 0.1-1
+Architecture: amd64
+Maintainer: Rekols <rekols@foxmail.com>
+Installed-Size: 73
+Depends: libdeepin-font-manager (= 0.1-1)
+Section: utils
+Priority: optional
+Homepage: http://www.deepin.org
+Description: Deepin Font Manager Devel library
+ This package contains the header files and static libraries
+ of libdeepin-font-manager

@@ -277,6 +277,13 @@ void DFontMgrMainWindow::initConnections()
         QString fontSize = QString::number(size) + "px";
         autoLabelWidth(fontSize, d->fontSizeLabel, d->fontSizeLabel->fontMetrics());
     });
+
+    connect(m_signalManager, &SignalManager::refreshFocus, [ = ]() {
+        QTimer::singleShot(200, [ = ]() {
+
+            this->m_fontPreviewListView->setFocus(Qt::MouseFocusReason);
+        });
+    });
 }
 
 void DFontMgrMainWindow::initShortcuts()

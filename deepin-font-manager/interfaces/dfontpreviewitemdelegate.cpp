@@ -180,27 +180,28 @@ void DFontPreviewItemDelegate::paintForegroundPreviewFont(QPainter *painter, con
 
     if (itemData.isPreviewEnabled) {
         QFont previewFont = adjustPreviewFont(itemData.fontInfo.familyName, itemData.fontInfo.styleName, fontPixelSize);
-        QFontMetrics fm(previewFont);
-        QFont font = DApplication::font();
-        font.setPixelSize(fontPixelSize);
-        QFontMetrics curFont(font);
+//        QFontMetrics fm(previewFont);
+//        QFont font = DApplication::font();
+//        font.setPixelSize(fontPixelSize);
+//        QFontMetrics curFont(font);
 
-        if (previewFont.weight() == DApplication::font().weight()
-                && itemData.fontInfo.isSystemFont
-                && isZhCode(fontPreviewText)
-                && !chineseFontPathList.contains(itemData.fontInfo.filePath)
-                && !previewFont.italic()
-                && (fm.width(STR_FORWIDTH) == curFont.width(STR_FORWIDTH))) {
-            QFont font ;
-            font.setWeight(previewFont.weight());
-            font.setPixelSize(fontPixelSize);
-            font.setItalic(previewFont.italic());
-            painter->setFont(font);
-            paintForegroundPreviewContent(painter, fontPreviewText, fontPreviewRect, font);
-        } else {
-            painter->setFont(previewFont);
-            paintForegroundPreviewContent(painter, fontPreviewText, fontPreviewRect, previewFont);
-        }
+//        if (previewFont.weight() == DApplication::font().weight()
+//                && itemData.fontInfo.isSystemFont
+//                && isZhCode(fontPreviewText)
+//                && !chineseFontPathList.contains(itemData.fontInfo.filePath)
+//                && !previewFont.italic()
+//                && (fm.width(STR_FORWIDTH) == curFont.width(STR_FORWIDTH))) {
+//            QFont font ;
+//            font.setWeight(previewFont.weight());
+//            font.setPixelSize(fontPixelSize);
+//            font.setItalic(previewFont.italic());
+//            painter->setFont(font);
+//            paintForegroundPreviewContent(painter, fontPreviewText, fontPreviewRect, font);
+//        } else {
+        previewFont.setPixelSize(fontPixelSize);
+        painter->setFont(previewFont);
+        paintForegroundPreviewContent(painter, fontPreviewText, fontPreviewRect, previewFont);
+//        }
     } else {
         QFont previewFont;
         previewFont.setPixelSize(fontPixelSize);

@@ -1,0 +1,5 @@
+QMAKE_PRL_BUILD_DIR = /data/home/nyc/workspace/git/font_manager/libdeepin-font-manager
+QMAKE_PRO_INPUT = libdeepin-font-manager.pro
+QMAKE_PRL_TARGET = libdeepin-font-manager.so.1.0.0
+QMAKE_PRL_CONFIG = lex yacc exceptions depend_includepath testcase_targets import_plugins import_qpa_plugin file_copies qmake_use qt warn_on release link_prl incremental shared release linux unix posix gcc c++11 link_pkgconfig create_pc create_prl no_install_prl have_target dll thread uic opengl dbusadaptors dbusinterfaces moc resources
+QMAKE_PRL_VERSION = 1.0.0
