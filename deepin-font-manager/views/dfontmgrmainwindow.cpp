@@ -1627,6 +1627,7 @@ void DFontMgrMainWindow::onPreviewTextChanged()
             filterModel->setData(modelIndex, QVariant(m_previewFontSize), Dtk::UserRole + 2);
 //        filterModel->setEditStatus(m_searchTextStatusIsEmpty);
     }
+    emit m_signalManager->freshListView();
 }
 
 qint64 DFontMgrMainWindow::getDiskSpace(bool m_IsSystemDisk)

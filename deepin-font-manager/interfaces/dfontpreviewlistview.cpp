@@ -33,6 +33,7 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
     connect(this, &DFontPreviewListView::multiItemsAdded, this, &DFontPreviewListView::onMultiItemsAdded);
     connect(this, &DFontPreviewListView::itemRemoved, this, &DFontPreviewListView::onItemRemoved);
     connect(this, &DFontPreviewListView::itemRemovedFromSys, this, &DFontPreviewListView::onItemRemovedFromSys);
+    connect(m_signalManager, &SignalManager::freshListView, this, &DFontPreviewListView::setSelectedFalse);
 //    connect(m_signalManager, &SignalManager::prevFontChanged, this, &DFontPreviewListView::scrollWithTheSelected);
 //    connect(m_signalManager, &SignalManager::refreshCurRect, this, &DFontPreviewListView::refreshRect);
 //    connect(m_signalManager, &SignalManager::setIsJustInstalled, this, [ = ]() {
@@ -55,7 +56,6 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
         Q_EMIT requestDeleted(files);
     });
     initFontListData();
-
     initDelegate();
     initConnections();
 
@@ -448,6 +448,38 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
     if (event->button() == Qt::LeftButton) {
         m_bLeftMouse = true;
         m_bRightMous = false;
+        /*UT000539*/
+        if (QApplication::keyboardModifiers() == Qt::ShiftModifier) {
+            if (currentSelectedRow == -1) {
+                this->selectionModel()->clear();
+                for (int i = 0; i <= modelIndex.row(); i++) {
+                    QModelIndex modelIndex1 = m_fontPreviewProxyModel->index(i, 0);
+                    selectionModel()->select(modelIndex1, QItemSelectionModel::Select);
+                }
+            } else {
+                if (currentSelectedRow < modelIndex.row()) {
+                    this->selectionModel()->clear();
+                    for (int i = currentSelectedRow; i <= modelIndex.row(); i++) {
+                        QModelIndex modelIndex1 = m_fontPreviewProxyModel->index(i, 0);
+
+                        selectionModel()->select(modelIndex1, QItemSelectionModel::Select);
+                    }
+                } else if (currentSelectedRow > modelIndex.row()) {
+                    this->selectionModel()->clear();
+                    for (int i = modelIndex.row(); i <= currentSelectedRow; i++) {
+                        QModelIndex modelIndex1 = m_fontPreviewProxyModel->index(i, 0);
+
+                        selectionModel()->select(modelIndex1, QItemSelectionModel::Select);
+                    }
+                } else {
+                    this->selectionModel()->clear();
+                    selectionModel()->select(modelIndex, QItemSelectionModel::Select);
+                }
+            }
+        } else {
+
+            currentSelectedRow = modelIndex.row();
+        }
     } else {
         m_bLeftMouse = false;
         if (event->button() == Qt::RightButton) {
@@ -512,7 +544,7 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
     }
 
 //    mouseMoveEvent(event)
-    DListView::mousePressEvent(event);
+    DListView::mousePressEvent(event);// 获取鼠标在点击窗体上的坐标
 }
 
 void DFontPreviewListView::mouseReleaseEvent(QMouseEvent *event)
@@ -1125,3 +1157,8 @@ void DFontPreviewListView::refreshRect()
     m_curRect = visualRect(indexes.last());
 }
 
+void DFontPreviewListView::setSelectedFalse()
+{
+    isSelectedNow = false;
+    currentSelectedRow = -1;
+}

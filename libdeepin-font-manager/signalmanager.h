@@ -26,6 +26,7 @@ signals:
     void requestInstallAdded();
     void setIsJustInstalled();
     void closeInstallDialog();
+    void freshListView();
 private:
     explicit SignalManager(QObject *parent = nullptr);
 

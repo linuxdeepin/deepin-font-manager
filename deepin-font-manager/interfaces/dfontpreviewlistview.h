@@ -81,7 +81,6 @@ public:
 
 protected:
     void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected) override;
-
 private:
     void initConnections();
 
@@ -93,6 +92,8 @@ private:
 
     void scrollWithTheSelected();
     void refreshRect();
+
+    void setSelectedFalse();
     bool m_bLoadDataFinish = false;
     bool m_bLeftMouse = true;
     bool m_bRightMous = true;
@@ -119,7 +120,8 @@ private:
 
     QRect m_curRect;
     bool m_isJustInstalled = false;
-
+    int currentSelectedRow = -1;
+    bool isSelectedNow = false;
 signals:
     //用于DFontPreviewListView内部使用的信号
     void onClickEnableButton(const QModelIndexList &index, bool setValue, bool isFromActiveFont = false);
