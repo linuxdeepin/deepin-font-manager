@@ -54,6 +54,8 @@ public:
 
     void setRightContextMenu(QMenu *rightMenu);
 
+    void keyPressEvent(QKeyEvent *event)Q_DECL_OVERRIDE;
+
     QModelIndex currModelIndex();
     DFontPreviewItemData currModelData();
     DFontPreviewProxyModel *getFontPreviewProxyModel();

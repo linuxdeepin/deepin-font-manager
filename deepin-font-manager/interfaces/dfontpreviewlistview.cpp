@@ -547,6 +547,17 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
     DListView::mousePressEvent(event);// 获取鼠标在点击窗体上的坐标
 }
 
+void DFontPreviewListView::keyPressEvent(QKeyEvent *event)
+{
+    if ((event->modifiers() == Qt::ControlModifier) && (event->key() == Qt::Key_End)) {
+        scrollToBottom();
+    } else if ((event->modifiers() == Qt::ControlModifier) && (event->key() == Qt::Key_Home)) {
+        scrollToTop();
+    } else {
+        DListView::keyPressEvent(event);
+    }
+}
+
 void DFontPreviewListView::mouseReleaseEvent(QMouseEvent *event)
 {
     DListView::mouseReleaseEvent(event);
