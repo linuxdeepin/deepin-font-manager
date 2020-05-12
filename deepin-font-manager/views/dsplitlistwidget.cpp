@@ -284,12 +284,16 @@ void DSplitListWidget::mousePressEvent(QMouseEvent *event)
 {
     if (Qt::RightButton == event->button()) {
         return;
-    } else {
-        this->selectionModel()->clear();
-        QPoint clickPoint = event->pos();
-        const QModelIndex index = indexAt(clickPoint);
-        selectionModel()->select(index, QItemSelectionModel::Select);
-        currentChanged(index, index);
     }
+    DListView::mousePressEvent(event);
+//    if (Qt::RightButton == event->button()) {
+//        return;
+//    } else {
+//        this->selectionModel()->clear();
+//        QPoint clickPoint = event->pos();
+//        const QModelIndex index = indexAt(clickPoint);
+//        selectionModel()->select(index, QItemSelectionModel::Select);
+//        currentChanged(index, index);
+//    }
 
 }
