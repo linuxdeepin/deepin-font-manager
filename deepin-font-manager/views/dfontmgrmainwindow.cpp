@@ -88,7 +88,6 @@ DFontMgrMainWindow::DFontMgrMainWindow(bool isQuickMode, QWidget *parent)
 {
     // setWindoDSpinnerwOpacity(0.5); //Debug
     // setWindowFlags(windowFlags() | (Qt::FramelessWindowHint | Qt::WindowMaximizeButtonHint));
-
     initData();
     initUI();
     initConnections();
@@ -983,12 +982,22 @@ void DFontMgrMainWindow::installFont(const QStringList &files)
 {
     qDebug() << __FUNCTION__ << files;
 
+//    qint64 m_currentDiskSpace = getDiskSpace();
+//    if (m_currentDiskSpace == 0)
+//        return;
+
+    QStringList m_installFiles = checkFilesSpace(files);
+    if (m_installFiles.count() == 0)
+        return;
+
     if (m_fIsInstalling) {
         qDebug() << "Already exist a installtion flow";
         return;
     }
 
-    m_dfNormalInstalldlg = new DFInstallNormalWindow(files, this);
+
+
+    m_dfNormalInstalldlg = new DFInstallNormalWindow(m_installFiles, this);
 
     if (m_isQuickMode) {
         m_dfNormalInstalldlg->setSkipException(true);
@@ -1383,21 +1392,33 @@ void DFontMgrMainWindow::exportFont()
     int systemCnt = 0;
 
     QStringList files = m_fontPreviewListView->selectedFonts(&cnt, &systemCnt);
+
+//    qint64 m_currentDiskSpace = getDiskSpace(false);
+//    if (m_currentDiskSpace == 0)
+//        return;
+
+    QStringList m_installFiles = checkFilesSpace(files, false);
+    if (m_installFiles.count() == 0) {
+        return;
+    }
+
+
+
     if (cnt < 1)
         return;
     QString desktopPath = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation) + "/" + tr("Fonts") + "/";
     QDir dir(desktopPath);
     if (!dir.exists())
         dir.mkpath(desktopPath);
-    for (QString file : files) {
+    for (QString file : m_installFiles) {
         QFile::copy(file, desktopPath + QFileInfo(file).fileName());
     }
     QString message;
-    if (files.size() == 1) {
+    if (m_installFiles.size() == 1) {
         message = DApplication::translate("Main", "The font exported to your desktop");
         DMessageManager::instance()->sendMessage(this, QIcon(":/images/ok.svg"), message);
     } else {
-        message = DApplication::translate("Main", "%1 fonts exported to your desktop").arg(files.size());
+        message = DApplication::translate("Main", "%1 fonts exported to your desktop").arg(m_installFiles.size());
         DMessageManager::instance()->sendMessage(this, QIcon(":/images/ok.svg"), message);
     }
 }
@@ -1553,7 +1574,17 @@ void DFontMgrMainWindow::waitForInsert(bool deleting)
     if (m_waitForInstall.isEmpty())
         return;
 
-    m_dfNormalInstalldlg = new DFInstallNormalWindow(m_waitForInstall, this);
+//    qint64 m_currentDiskSpace = getDiskSpace();
+//    if (m_currentDiskSpace == 0)
+//        return;
+
+    QStringList m_installFiles = checkFilesSpace(m_waitForInstall);
+
+    if (m_installFiles.count() == 0)
+        return;
+
+    m_dfNormalInstalldlg = new DFInstallNormalWindow(m_installFiles, this);
+
     if (m_isQuickMode) {
         m_dfNormalInstalldlg->setSkipException(true);
     }
@@ -1597,6 +1628,45 @@ void DFontMgrMainWindow::onPreviewTextChanged()
 //        filterModel->setEditStatus(m_searchTextStatusIsEmpty);
     }
 }
+
+qint64 DFontMgrMainWindow::getDiskSpace(bool m_IsSystemDisk)
+{
+//    QStorageInfo storage = QStorageInfo::root();
+    QStorageInfo storage;
+    if (m_IsSystemDisk) {
+        storage = QStorageInfo::root();
+    } else {
+        QString desktopPath = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
+        storage = QStorageInfo(desktopPath);
+    }
+
+    qint64 m_remainSpace = storage.bytesAvailable()/*/1000/1000*/;//不用转换直接用bytes更加准确
+    qDebug() << m_remainSpace << endl;
+    return m_remainSpace;
+}
+
+QStringList DFontMgrMainWindow::checkFilesSpace(const QStringList &files, bool m_IsSystemDisk)
+{
+
+    QStringList m_installFiles;
+    qint64 m_totalSelectSpace = 0;
+    qint64 m_currentDiskSpace = getDiskSpace(m_IsSystemDisk);
+
+    foreach (auto it, files) {
+        QFile file(it);
+        if (file.open(QIODevice::ReadWrite) || file.open(QIODevice::ReadOnly)) {
+            m_totalSelectSpace = m_totalSelectSpace + file.size();
+            if (m_totalSelectSpace >= m_currentDiskSpace) {
+                break;
+            } else {
+                m_installFiles.append(it);
+            }
+        }
+    }
+
+    return m_installFiles;
+}
+
 
 //弹出删除进度框后执行删除操作
 void DFontMgrMainWindow::startToDelete()

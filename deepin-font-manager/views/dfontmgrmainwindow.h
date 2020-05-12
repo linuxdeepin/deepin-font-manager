@@ -9,7 +9,7 @@
 #include "dsplitlistwidget.h"
 #include "views/dfdeletedialog.h"
 #include <QShortcut>
-
+#include <QStorageInfo>
 #include <DFrame>
 #include <DMainWindow>
 #include <QResizeEvent>
@@ -96,6 +96,8 @@ protected:
     void showInstalledFiles();
     void waitForInsert(bool deleting = true);
     void onPreviewTextChanged();
+    qint64 getDiskSpace(bool m_IsSystemDisk = true);
+    QStringList checkFilesSpace(const QStringList &files, bool m_IsSystemDisk = true);
 
     //Add drag install
     void dragEnterEvent(QDragEnterEvent *event) override;
@@ -170,7 +172,7 @@ protected:
     QShortcut *m_scCancelFavFont {nullptr};  //Cancel favorite    --> Ctrl+Shift+K
     QShortcut *m_scFontInfo      {nullptr};  //Font information   --> Alt+Enter
 
-    //is in installing font flow
+    //is in installing font flow9875
     //Avoid start multi-NormalInstalltion window
     bool                    m_fIsInstalling {false};
     //is it in uninstalling font flow
