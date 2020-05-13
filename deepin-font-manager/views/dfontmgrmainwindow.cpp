@@ -279,7 +279,7 @@ void DFontMgrMainWindow::initConnections()
     });
 
     connect(m_signalManager, &SignalManager::refreshFocus, [ = ]() {
-        QTimer::singleShot(200, [ = ]() {
+        QTimer::singleShot(50, [ = ]() {
 
             this->m_fontPreviewListView->setFocus(Qt::MouseFocusReason);
         });
