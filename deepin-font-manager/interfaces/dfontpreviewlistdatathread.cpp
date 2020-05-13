@@ -296,7 +296,6 @@ void DFontPreviewListDataThread::refreshFontListData(bool isStartup, const QStri
             if (!strAllFontList.contains(filePath))
                 strAllFontList << filePath;
         }
-        qDebug() << installFont;
     } else {
         fontInfoList = m_fontModelList;
     }
