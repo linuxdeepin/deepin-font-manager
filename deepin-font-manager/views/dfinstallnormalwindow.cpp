@@ -284,7 +284,7 @@ void DFInstallNormalWindow::verifyFontFiles()
             m_damagedFiles.append(it);
 
 #ifdef QT_QML_DEBUG
-//            qDebug() << __FUNCTION__ << " (" << it << " :Damaged file)";
+            qDebug() << __FUNCTION__ << " (" << it << " :Damaged file)";
 #endif
         } else if (fontInfo.isInstalled && !isSystemFont(fontInfo)) {
             if (!instFontInfos.contains(fontInfo)) {
@@ -293,20 +293,20 @@ void DFInstallNormalWindow::verifyFontFiles()
             }
 
 #ifdef QT_QML_DEBUG
-//            qDebug() << __FUNCTION__ << " (" << it << " :Installed file)";
+            qDebug() << __FUNCTION__ << " (" << it << " :Installed file)";
 #endif
         } else if (isSystemFont(fontInfo)) {
             m_systemFiles.append(it);
 
 #ifdef QT_QML_DEBUG
-//            qDebug() << __FUNCTION__ << " (" << it << " :Installed file)";
+            qDebug() << __FUNCTION__ << " (" << it << " :Installed file)";
 #endif
         } else if (!fontInfos.contains(fontInfo)) {
             fontInfos.append(fontInfo);
             m_newInstallFiles.append(it);
 
 #ifdef QT_QML_DEBUG
-//            qDebug() << __FUNCTION__ << " (" << it << " :New file)";
+            qDebug() << __FUNCTION__ << " (" << it << " :New file)";
 #endif
         }
     }
@@ -385,7 +385,7 @@ void DFInstallNormalWindow::checkShowMessage()
         getReInstallMessage = false;
 //        m_installFinishSent = false;
 //        m_installAdded = false;
-        emit m_signalManager->showInstallFloatingMessage(totalInstallFont);
+//        emit m_signalManager->showInstallFloatingMessage(totalInstallFont);
         m_outfileList.clear();
         if (totalInstallFont > 0) {
             emit m_signalManager->closeInstallDialog();
