@@ -1669,16 +1669,16 @@ void DFontMgrMainWindow::onPreviewTextChanged()
 qint64 DFontMgrMainWindow::getDiskSpace(bool m_IsSystemDisk)
 {
 //    QStorageInfo storage = QStorageInfo::root();
+
     QStorageInfo storage;
     if (m_IsSystemDisk) {
-        storage = QStorageInfo::root();
+        storage = QStorageInfo(QDir::homePath() + "/.local/share/fonts/");
     } else {
         QString desktopPath = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
         storage = QStorageInfo(desktopPath);
     }
 
     qint64 m_remainSpace = storage.bytesAvailable()/*/1000/1000*/;//不用转换直接用bytes更加准确
-    qDebug() << m_remainSpace << endl;
     return m_remainSpace;
 }
 
