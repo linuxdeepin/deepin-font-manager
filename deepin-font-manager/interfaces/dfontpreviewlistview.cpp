@@ -487,6 +487,9 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
             m_bRightMous = true;
             //DMenu *rightMenu = m_rightMenu;
             //在当前鼠标位置显示
+            if (!modelIndex.isValid()) {
+                return;
+            }
             if (!m_rightMenu->isVisible()) {
                 connect(m_rightMenu, &QMenu::aboutToHide, this, [ = ] {
                     clearPressState();
