@@ -28,11 +28,11 @@ public:
     void refreshFontListData(bool isStartup = false, const QStringList &list = QStringList());
     void removeFontData(const DFontPreviewItemData &removeItemData);
 
-    void insertFontItemData(const QString &filePath,
-                            int index,
-                            const QStringList &chineseFontPathList,
-                            const QStringList &monoSpaceFontPathList,
-                            bool isStartup = false);
+    int insertFontItemData(const QString &filePath,
+                           int index,
+                           const QStringList &chineseFontPathList,
+                           const QStringList &monoSpaceFontPathList,
+                           bool isStartup = false, bool isEnabled = true);
 
     QList<DFontPreviewItemData> getFontModelList();
     QList<DFontPreviewItemData> getDiffFontModelList() const;

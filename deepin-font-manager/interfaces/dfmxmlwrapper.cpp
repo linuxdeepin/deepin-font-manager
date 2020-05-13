@@ -786,7 +786,9 @@ bool DFMXmlWrapper::queryAllChildNodes_Text(const QString &fileName,
     for (int i = 0; i < list.count(); i++) {
         QDomNode n = list.at(i);
         if (node.isElement()) {
-            textList << n.toElement().text();
+            QString path = n.toElement().text();
+            if (QFile::exists(path))
+                textList << path;
         }
     }
 
