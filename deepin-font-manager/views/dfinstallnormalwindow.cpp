@@ -114,6 +114,8 @@ void DFInstallNormalWindow::initVerifyTimer()
 
 void DFInstallNormalWindow::initConnections()
 {
+
+
     connect(m_verifyTimer.get(), &QTimer::timeout, this, [ = ]() {
         // Install the font list ,which may be changed in exception window
         batchInstall();

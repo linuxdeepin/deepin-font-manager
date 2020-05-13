@@ -130,6 +130,14 @@
         <source>%1 fonts installed</source>
         <translation>%1 Schriftarten installiert</translation>
     </message>
+    <message>
+        <source>Failed to install %1 fonts. There is not enough disk space.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Failed to install 1 font. There is not enough disk space.</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>DeleteConfirmDailog</name>
@@ -171,7 +179,7 @@
     </message>
     <message>
         <source>Are you sure you want to delete %1 fonts?</source>
-        <translation type="unfinished"/>
+        <translation>Sind Sie sicher, dass Sie %1 Schriften löschen möchten?</translation>
     </message>
 </context>
 <context>
@@ -279,6 +287,14 @@
     <message>
         <source>%1 fonts exported to your desktop</source>
         <translation>%1 Schriftarten wurde auf Ihren Desktop exportiert</translation>
+    </message>
+    <message>
+        <source>Failed to export 1 font. There is not enough disk space.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Failed to export %1 fonts. There is not enough disk space.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
