@@ -116,7 +116,7 @@
     </message>
     <message>
         <source>%1 font installed</source>
-        <translation>Nainstalována %1 písma</translation>
+        <translation>Nainstalováno %1 písmo</translation>
     </message>
     <message>
         <source>The other one system font has already been installed</source>
@@ -128,7 +128,15 @@
     </message>
     <message>
         <source>%1 fonts installed</source>
-        <translation>Nainstalována %1 písma</translation>
+        <translation>Nainstalováno %1 písem</translation>
+    </message>
+    <message>
+        <source>Failed to install %1 fonts. There is not enough disk space.</source>
+        <translation>Nepodařilo se nainstalovat %1 písem. Není dost volného místa na disku</translation>
+    </message>
+    <message>
+        <source>Failed to install 1 font. There is not enough disk space.</source>
+        <translation>Nepodařilo se nainstalovat 1 písmo. Není dost volného místa na disku</translation>
     </message>
 </context>
 <context>
@@ -171,7 +179,7 @@
     </message>
     <message>
         <source>Are you sure you want to delete %1 fonts?</source>
-        <translation type="unfinished"/>
+        <translation>Opravdu chcete smazat %1 písem?</translation>
     </message>
 </context>
 <context>
@@ -279,6 +287,14 @@
     <message>
         <source>%1 fonts exported to your desktop</source>
         <translation>%1 písem exportováno na vaši plochu</translation>
+    </message>
+    <message>
+        <source>Failed to export 1 font. There is not enough disk space.</source>
+        <translation>Nepodařilo se exportovat 1 písmo. Není dost volného místa na disku.</translation>
+    </message>
+    <message>
+        <source>Failed to export %1 fonts. There is not enough disk space.</source>
+        <translation>Nepodařilo se exportovat %1 písem. Není dost volného místa na disku.</translation>
     </message>
 </context>
 <context>

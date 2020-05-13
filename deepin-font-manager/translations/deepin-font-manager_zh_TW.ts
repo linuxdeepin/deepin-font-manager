@@ -130,6 +130,14 @@
         <source>%1 fonts installed</source>
         <translation>已安裝%1個字體</translation>
     </message>
+    <message>
+        <source>Failed to install %1 fonts. There is not enough disk space.</source>
+        <translation>目標磁碟空間不足，%1 個文件安裝失敗</translation>
+    </message>
+    <message>
+        <source>Failed to install 1 font. There is not enough disk space.</source>
+        <translation>目標磁碟空間不足，1 個文件安裝失敗</translation>
+    </message>
 </context>
 <context>
     <name>DeleteConfirmDailog</name>
@@ -171,7 +179,7 @@
     </message>
     <message>
         <source>Are you sure you want to delete %1 fonts?</source>
-        <translation type="unfinished"/>
+        <translation>您確定要刪除這%1個字體嗎？</translation>
     </message>
 </context>
 <context>
@@ -209,7 +217,7 @@
     </message>
     <message>
         <source>No fonts to be installed</source>
-        <translation type="unfinished"/>
+        <translation>無可用安裝字體</translation>
     </message>
 </context>
 <context>
@@ -279,6 +287,14 @@
     <message>
         <source>%1 fonts exported to your desktop</source>
         <translation>%1個字體已匯出到桌面</translation>
+    </message>
+    <message>
+        <source>Failed to export 1 font. There is not enough disk space.</source>
+        <translation>目標磁碟空間不足，1 個文件匯出失敗</translation>
+    </message>
+    <message>
+        <source>Failed to export %1 fonts. There is not enough disk space.</source>
+        <translation>目標磁碟空間不足，%1 個文件匯出失敗</translation>
     </message>
 </context>
 <context>

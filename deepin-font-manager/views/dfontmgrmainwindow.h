@@ -92,6 +92,7 @@ protected:
     void showFontFilePostion();
     void delCurrentFont();
     void exportFont();
+    void showExportFontMessage(int successCount, int abandonFilesCount);
     void showAllShortcut();
     void showInstalledFiles();
     void waitForInsert(bool deleting = true);
@@ -151,6 +152,7 @@ protected:
     QShortcut *m_scZoomOut;       //放大字体快捷键Ctrl+-
     QShortcut *m_scDefaultSize;   //默认⼤⼩字体快捷键Ctrl+0
     int m_previewFontSize;
+    int m_abandonFilesCount = 0;
     QString m_previewText;
     int m_leftIndex {0};
 

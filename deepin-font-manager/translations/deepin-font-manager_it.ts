@@ -130,6 +130,14 @@
         <source>%1 fonts installed</source>
         <translation>Font %1 installato</translation>
     </message>
+    <message>
+        <source>Failed to install %1 fonts. There is not enough disk space.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Failed to install 1 font. There is not enough disk space.</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>DeleteConfirmDailog</name>
@@ -171,7 +179,7 @@
     </message>
     <message>
         <source>Are you sure you want to delete %1 fonts?</source>
-        <translation type="unfinished"/>
+        <translation>Sicuro di voler eliminare %1 font?</translation>
     </message>
 </context>
 <context>
@@ -280,6 +288,14 @@ Localizzazione italiana a cura di Massimo A. Carofano.</translation>
     <message>
         <source>%1 fonts exported to your desktop</source>
         <translation>%1 font esportati sul desktop</translation>
+    </message>
+    <message>
+        <source>Failed to export 1 font. There is not enough disk space.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Failed to export %1 fonts. There is not enough disk space.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

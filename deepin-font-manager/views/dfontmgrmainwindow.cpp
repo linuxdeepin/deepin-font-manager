@@ -994,8 +994,12 @@ void DFontMgrMainWindow::installFont(const QStringList &files)
 //        return;
 
     QStringList m_installFiles = checkFilesSpace(files);
-    if (m_installFiles.count() == 0)
+    m_abandonFilesCount = files.count() - m_installFiles.count();
+    if (m_installFiles.count() == 0) {
+        emit m_signalManager->showInstallFloatingMessage(0);
         return;
+    }
+
 
     if (m_fIsInstalling) {
         qDebug() << "Already exist a installtion flow";
@@ -1355,15 +1359,24 @@ void DFontMgrMainWindow::onShowMessage(int successCount)
 //            DMessageManager::instance()->sendMessage(this, QIcon(":/images/exception-logo.svg"), messageB);
 //        }
 //    }
+    if (m_abandonFilesCount == 0) {
+        if (successCount == 1) {
+            messageA = DApplication::translate("DFontMgrMainWindow", "%1 font installed").arg(successCount);
+            DMessageManager::instance()->sendMessage(this, QIcon(":/images/ok.svg"), messageA);
 
-    if (successCount == 1) {
-        messageA = DApplication::translate("DFontMgrMainWindow", "%1 font installed").arg(successCount);
-        DMessageManager::instance()->sendMessage(this, QIcon(":/images/ok.svg"), messageA);
-
-    } else if (successCount > 1) {
-        messageA = DApplication::translate("DFontMgrMainWindow", "%1 fonts installed").arg(successCount);
-        DMessageManager::instance()->sendMessage(this, QIcon(":/images/ok.svg"), messageA);
+        } else if (successCount > 1) {
+            messageA = DApplication::translate("DFontMgrMainWindow", "%1 fonts installed").arg(successCount);
+            DMessageManager::instance()->sendMessage(this, QIcon(":/images/ok.svg"), messageA);
+        }
+    } else if (m_abandonFilesCount == 1) {
+        messageA = DApplication::translate("DFontMgrMainWindow", "Failed to install 1 font. There is not enough disk space.");
+        DMessageManager::instance()->sendMessage(this, QIcon(":/images/exception-logo.svg"), messageA);
+    } else {
+        messageA = DApplication::translate("DFontMgrMainWindow", "Failed to install %1 fonts. There is not enough disk space.").arg(m_abandonFilesCount);
+        DMessageManager::instance()->sendMessage(this, QIcon(":/images/exception-logo.svg"), messageA);
     }
+
+
 }
 
 void DFontMgrMainWindow::delCurrentFont()
@@ -1404,8 +1417,8 @@ void DFontMgrMainWindow::exportFont()
 //    if (m_currentDiskSpace == 0)
 //        return;
 
-    QStringList m_installFiles = checkFilesSpace(files, false);
-    if (m_installFiles.count() == 0) {
+    QStringList m_exportFiles = checkFilesSpace(files, false);
+    if (m_exportFiles.count() == 0) {
         return;
     }
 
@@ -1417,17 +1430,32 @@ void DFontMgrMainWindow::exportFont()
     QDir dir(desktopPath);
     if (!dir.exists())
         dir.mkpath(desktopPath);
-    for (QString file : m_installFiles) {
+    for (QString file : m_exportFiles) {
         QFile::copy(file, desktopPath + QFileInfo(file).fileName());
     }
+    showExportFontMessage(m_exportFiles.count(), files.count() - m_exportFiles.count());
+
+}
+
+void DFontMgrMainWindow::showExportFontMessage(int successCount, int abandonFilesCount)
+{
     QString message;
-    if (m_installFiles.size() == 1) {
-        message = DApplication::translate("Main", "The font exported to your desktop");
-        DMessageManager::instance()->sendMessage(this, QIcon(":/images/ok.svg"), message);
-    } else {
-        message = DApplication::translate("Main", "%1 fonts exported to your desktop").arg(m_installFiles.size());
-        DMessageManager::instance()->sendMessage(this, QIcon(":/images/ok.svg"), message);
+    if (abandonFilesCount == 0) {
+        if (successCount == 1) {
+            message = DApplication::translate("Main", "The font exported to your desktop");
+            DMessageManager::instance()->sendMessage(this, QIcon(":/images/ok.svg"), message);
+        } else {
+            message = DApplication::translate("Main", "%1 fonts exported to your desktop").arg(successCount);
+            DMessageManager::instance()->sendMessage(this, QIcon(":/images/ok.svg"), message);
+        }
+    } else if (abandonFilesCount == 1) {
+        message = DApplication::translate("Main", "Failed to export 1 font. There is not enough disk space.");
+        DMessageManager::instance()->sendMessage(this, QIcon(":/images/exception-logo.svg"), message);
+    } else if (abandonFilesCount > 1) {
+        message = DApplication::translate("Main", "Failed to export %1 fonts. There is not enough disk space.").arg(abandonFilesCount);
+        DMessageManager::instance()->sendMessage(this, QIcon(":/images/exception-logo.svg"), message);
     }
+
 }
 
 void DFontMgrMainWindow::dragEnterEvent(QDragEnterEvent *event)
@@ -1586,10 +1614,11 @@ void DFontMgrMainWindow::waitForInsert(bool deleting)
 //        return;
 
     QStringList m_installFiles = checkFilesSpace(m_waitForInstall);
-
-    if (m_installFiles.count() == 0)
+    m_abandonFilesCount = m_waitForInstall.count() - m_installFiles.count();
+    if (m_installFiles.count() == 0) {
+        emit m_signalManager->showInstallFloatingMessage(0);
         return;
-
+    }
     m_dfNormalInstalldlg = new DFInstallNormalWindow(m_installFiles, this);
 
     if (m_isQuickMode) {
@@ -1659,7 +1688,7 @@ QStringList DFontMgrMainWindow::checkFilesSpace(const QStringList &files, bool m
     QStringList m_installFiles;
     qint64 m_totalSelectSpace = 0;
     qint64 m_currentDiskSpace = getDiskSpace(m_IsSystemDisk);
-
+    qDebug() << m_currentDiskSpace << endl;
     foreach (auto it, files) {
         QFile file(it);
         if (file.open(QIODevice::ReadWrite) || file.open(QIODevice::ReadOnly)) {
