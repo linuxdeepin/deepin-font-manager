@@ -1,5 +1,272 @@
 <?xml version="1.0" ?><!DOCTYPE TS><TS language="ru" version="2.1">
 <context>
+    <name>Category</name>
+    <message>
+        <source>All Fonts</source>
+        <translation>Все Шрифты</translation>
+    </message>
+    <message>
+        <source>System</source>
+        <translation>Системные</translation>
+    </message>
+    <message>
+        <source>User</source>
+        <translation>Пользовательские</translation>
+    </message>
+    <message>
+        <source>Favorites</source>
+        <translation>Избранные</translation>
+    </message>
+    <message>
+        <source>Active</source>
+        <translation>Активные</translation>
+    </message>
+    <message>
+        <source>Chinese</source>
+        <translation>Китайские</translation>
+    </message>
+    <message>
+        <source>Monospaced</source>
+        <translation>Моноширинные</translation>
+    </message>
+</context>
+<context>
+    <name>DFDeleteDialog</name>
+    <message>
+        <source>The other %2 system fonts cannot be deleted</source>
+        <translation type="vanished">Остальные системные шрифты %2 удалить нельзя.</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Отменить</translation>
+    </message>
+    <message>
+        <source>Confirm</source>
+        <translation>Подтвердить</translation>
+    </message>
+</context>
+<context>
+    <name>DFInstallErrorDialog</name>
+    <message>
+        <source>Broken file</source>
+        <translation>Поврежденный файл</translation>
+    </message>
+    <message>
+        <source>Same version installed</source>
+        <translation>Эта версия уже установлена</translation>
+    </message>
+    <message>
+        <source>System Font</source>
+        <translation>Системный шрифт</translation>
+    </message>
+</context>
+<context>
+    <name>DFontMgrMainWindow</name>
+    <message>
+        <source>Ctrl+Shift+/</source>
+        <translation>Ctrl+Shift+/</translation>
+    </message>
+    <message>
+        <source>PgUp</source>
+        <translation>PgUp</translation>
+    </message>
+    <message>
+        <source>PgDown</source>
+        <translation>PgDown</translation>
+    </message>
+    <message>
+        <source>Ctrl+Alt+F</source>
+        <translation>Ctrl+Alt+F</translation>
+    </message>
+    <message>
+        <source>Ctrl+F</source>
+        <translation>Ctrl+F</translation>
+    </message>
+    <message>
+        <source>Ctrl+O</source>
+        <translation>Ctrl+O</translation>
+    </message>
+    <message>
+        <source>Ctrl+K</source>
+        <translation>Ctrl+K</translation>
+    </message>
+    <message>
+        <source>Ctrl+Shift+K</source>
+        <translation>Ctrl+Shift+K</translation>
+    </message>
+    <message>
+        <source>Alt+Return</source>
+        <translation>Alt+Return</translation>
+    </message>
+    <message>
+        <source>Fonts</source>
+        <translation>Шрифты</translation>
+    </message>
+    <message>
+        <source>Ctrl+=</source>
+        <translation>Ctrl+=</translation>
+    </message>
+    <message>
+        <source>Ctrl+-</source>
+        <translation>Ctrl+-</translation>
+    </message>
+    <message>
+        <source>Ctrl+0</source>
+        <translation>Ctrl+0</translation>
+    </message>
+    <message>
+        <source>%1 font installed</source>
+        <translation>%1 установлены</translation>
+    </message>
+    <message>
+        <source>The other one system font has already been installed</source>
+        <translation type="vanished">Другой системный шрифт уже установлен.</translation>
+    </message>
+    <message>
+        <source>The other %2 system fonts have already been installed</source>
+        <translation type="vanished">Остальные системные шрифты %2 уже установлены.</translation>
+    </message>
+    <message>
+        <source>%1 fonts installed</source>
+        <translation>%1 установленный шрифт</translation>
+    </message>
+    <message>
+        <source>Failed to install %1 fonts. There is not enough disk space.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Failed to install 1 font. There is not enough disk space.</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>DeleteConfirmDailog</name>
+    <message>
+        <source>Are you sure you want to delete this font?</source>
+        <translation>Вы уверены, что хотите удалить этот шрифт?</translation>
+    </message>
+    <message>
+        <source>This font will not be available to applications</source>
+        <translation>Этот шрифт не будет доступен для приложений</translation>
+    </message>
+    <message>
+        <source>These fonts will not be available to applications</source>
+        <translation>Эти шрифты не будут доступны для приложений.</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="vanished">Отменить</translation>
+    </message>
+    <message>
+        <source>Confirm</source>
+        <translation type="vanished">Подтвердить</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="vanished">Удалить</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete %1 fonts</source>
+        <translation type="vanished">Вы уверены, что хотите удалить %1 шрифт.</translation>
+    </message>
+    <message>
+        <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
+        <translation>Эти шрифты будут недоступны приложениям, а остальные %1 системные шрифты удалить нельзя.</translation>
+    </message>
+    <message>
+        <source>This font will not be available to applications, and the other %1 system fonts cannot be deleted</source>
+        <translation>Этот шрифт не будет доступен приложениям, а остальные %1 системные шрифты удалить нельзя.</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete %1 fonts?</source>
+        <translation>Вы уверены, что хотите удалить %1 шрифт?</translation>
+    </message>
+</context>
+<context>
+    <name>Dfuninstalldialog</name>
+    <message>
+        <source>Deleting fonts, please wait...</source>
+        <translation>Удаление шрифтов, пожалуйста, подождите...</translation>
+    </message>
+</context>
+<context>
+    <name>ExceptionWindow</name>
+    <message>
+        <source>Font Verification</source>
+        <translation>Проверка Шрифта</translation>
+    </message>
+    <message>
+        <source>Broken file</source>
+        <translation type="vanished">Поврежденный файл</translation>
+    </message>
+    <message>
+        <source>Same version installed</source>
+        <translation type="vanished">Эта версия уже установлена</translation>
+    </message>
+    <message>
+        <source>Exit</source>
+        <translation>Выход</translation>
+    </message>
+    <message>
+        <source>Continue</source>
+        <translation>Продолжить</translation>
+    </message>
+    <message>
+        <source>No need to install system fonts again</source>
+        <translation type="vanished">Нет необходимости устанавливать системные шрифты снова</translation>
+    </message>
+    <message>
+        <source>No fonts to be installed</source>
+        <translation>Шрифты не устанавливаются</translation>
+    </message>
+</context>
+<context>
+    <name>Font</name>
+    <message>
+        <source>Don&apos;t let your dreams be dreams</source>
+        <translation>Не позволяй своим мечтам быть мечтами.</translation>
+    </message>
+</context>
+<context>
+    <name>FontDetailDailog</name>
+    <message>
+        <source>Basic info</source>
+        <translation>Основная информация</translation>
+    </message>
+    <message>
+        <source>Style</source>
+        <translation>Стиль</translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation>Тип</translation>
+    </message>
+    <message>
+        <source>Version</source>
+        <translation>Версия</translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation>Описание</translation>
+    </message>
+    <message>
+        <source>Unknown</source>
+        <translation>Неизвестный</translation>
+    </message>
+    <message>
+        <source>Full name</source>
+        <translation>Полное имя</translation>
+    </message>
+    <message>
+        <source>Ps name</source>
+        <translation>Пс-Имя</translation>
+    </message>
+    <message>
+        <source>Trademark</source>
+        <translation>Торговая марка</translation>
+    </message>
+</context>
+<context>
     <name>Main</name>
     <message>
         <source>Font Manager</source>
@@ -13,27 +280,21 @@
         <source>Loading fonts, please wait...</source>
         <translation>Загрузка шрифтов, пожалуйста, подождите...</translation>
     </message>
-</context>
-<context>
-    <name>SearchBar</name>
     <message>
-        <source>Search</source>
-        <translation>Поиск</translation>
+        <source>The font exported to your desktop</source>
+        <translation>Шрифт экспортируется на рабочий стол</translation>
     </message>
     <message>
-        <source>No search results</source>
-        <translation>Нет результатов поиска</translation>
+        <source>%1 fonts exported to your desktop</source>
+        <translation>%1 шрифт, экспортированный на рабочий стол</translation>
     </message>
     <message>
-        <source>No fonts</source>
-        <translation>Нет шрифтов</translation>
+        <source>Failed to export 1 font. There is not enough disk space.</source>
+        <translation type="unfinished"/>
     </message>
-</context>
-<context>
-    <name>MessageManager</name>
     <message>
-        <source>deactivated</source>
-        <translation>отключенный</translation>
+        <source>Failed to export %1 fonts. There is not enough disk space.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -70,6 +331,21 @@
         <source>Display in file manager</source>
         <translation>Показать в файловом менеджере</translation>
     </message>
+    <message>
+        <source>Export</source>
+        <translation>Экспорт</translation>
+    </message>
+</context>
+<context>
+    <name>MessageManager</name>
+    <message>
+        <source>deactivated</source>
+        <translation>отключенный</translation>
+    </message>
+    <message>
+        <source>The fonts have been deactivated</source>
+        <translation>Шрифты были отключены</translation>
+    </message>
 </context>
 <context>
     <name>NormalInstallWindow</name>
@@ -86,7 +362,7 @@
     <name>QuickInstallWindow</name>
     <message>
         <source>Unknown</source>
-        <translation type="unfinished"/>
+        <translation>Неизвестный</translation>
     </message>
     <message>
         <source>Broken file</source>
@@ -106,114 +382,22 @@
     </message>
 </context>
 <context>
-    <name>ExceptionWindow</name>
+    <name>SearchBar</name>
     <message>
-        <source>Font Verification</source>
-        <translation>Проверка Шрифта</translation>
+        <source>Search</source>
+        <translation>Поиск</translation>
     </message>
     <message>
-        <source>Broken file</source>
-        <translation>Поврежденный файл</translation>
+        <source>No search results</source>
+        <translation>Нет результатов поиска</translation>
     </message>
     <message>
-        <source>Same version installed</source>
-        <translation>Эта версия уже установлена</translation>
-    </message>
-    <message>
-        <source>Exit</source>
-        <translation>Выход</translation>
-    </message>
-    <message>
-        <source>Continue</source>
-        <translation>Продолжить</translation>
+        <source>No fonts</source>
+        <translation>Нет шрифтов</translation>
     </message>
 </context>
 <context>
-    <name>DeleteConfirmDailog</name>
-    <message>
-        <source>Are you sure you want to delete this font?</source>
-        <translation>Вы уверены, что хотите удалить этот шрифт?</translation>
-    </message>
-    <message>
-        <source>This font will not be available to applications</source>
-        <translation>Этот шрифт не будет доступен для приложений</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Отменить</translation>
-    </message>
-    <message>
-        <source>Confirm</source>
-        <translation>Подтвердить</translation>
-    </message>
-</context>
-<context>
-    <name>FontDetailDailog</name>
-    <message>
-        <source>Basic info</source>
-        <translation>Основная информация</translation>
-    </message>
-    <message>
-        <source>Style</source>
-        <translation>Стиль</translation>
-    </message>
-    <message>
-        <source>Type</source>
-        <translation>Тип</translation>
-    </message>
-    <message>
-        <source>Version</source>
-        <translation>Версия</translation>
-    </message>
-    <message>
-        <source>Description</source>
-        <translation>Описание</translation>
-    </message>
-    <message>
-        <source>Unknown</source>
-        <translation type="unfinished"/>
-    </message>
-</context>
-<context>
-    <name>Category</name>
-    <message>
-        <source>All Fonts</source>
-        <translation>Все Шрифты</translation>
-    </message>
-    <message>
-        <source>System</source>
-        <translation>Системные</translation>
-    </message>
-    <message>
-        <source>User</source>
-        <translation>Пользовательские</translation>
-    </message>
-    <message>
-        <source>Favorites</source>
-        <translation>Избранные</translation>
-    </message>
-    <message>
-        <source>Active</source>
-        <translation>Активные</translation>
-    </message>
-    <message>
-        <source>Chinese</source>
-        <translation>Китайские</translation>
-    </message>
-    <message>
-        <source>Monospaced</source>
-        <translation>Моноширинные</translation>
-    </message>
-</context>
-<context>
-    <name>StateBar</name>
-    <message>
-        <source>Input preview text</source>
-        <translation>Введите текст для просмотра</translation>
-    </message>
-</context>
-<context>
-    <name>Shortcuts</name>
+    <name>Shortcut</name>
     <message>
         <source>Help</source>
         <translation>Помощь</translation>
@@ -228,9 +412,6 @@
     </message>
     <message>
         <source>Page down</source>
-
-
-
         <translation>Страница вниз</translation>
     </message>
     <message>
@@ -247,11 +428,57 @@
     </message>
     <message>
         <source>Unfavorite</source>
-        <translation type="unfinished"/>
+        <translation>Удалить из избранного</translation>
     </message>
     <message>
         <source>Font info</source>
         <translation>Информация о шрифте</translation>
+    </message>
+</context>
+<context>
+    <name>Shortcuts</name>
+    <message>
+        <source>Help</source>
+        <translation type="vanished">Помощь</translation>
+    </message>
+    <message>
+        <source>Display shortcuts</source>
+        <translation type="vanished">Показать сочетания клавиш</translation>
+    </message>
+    <message>
+        <source>Page up</source>
+        <translation type="vanished">Страница вверх</translation>
+    </message>
+    <message>
+        <source>Page down</source>
+        <translation type="vanished">Страница вниз</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="vanished">Удалить</translation>
+    </message>
+    <message>
+        <source>Add font</source>
+        <translation type="vanished">Добавить шрифт</translation>
+    </message>
+    <message>
+        <source>Favorite</source>
+        <translation type="vanished">Избранное</translation>
+    </message>
+    <message>
+        <source>Unfavorite</source>
+        <translation type="vanished">Удалить из избранного</translation>
+    </message>
+    <message>
+        <source>Font info</source>
+        <translation type="vanished">Информация о шрифте</translation>
+    </message>
+</context>
+<context>
+    <name>StateBar</name>
+    <message>
+        <source>Input preview text</source>
+        <translation>Введите текст для просмотра</translation>
     </message>
 </context>
 </TS>

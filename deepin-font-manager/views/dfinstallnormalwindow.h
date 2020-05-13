@@ -77,6 +77,7 @@ private:
 
     int totalInstallFont = 0;
     int totalSysFontCount = 0;
+
     bool getInstallMessage = false;
     bool getReInstallMessage = false;
 //    bool m_installFinishSent = false;
@@ -86,6 +87,7 @@ private:
     bool m_isNeedSkipException {false};
     bool m_isFristThreadEnd = false;
     int systemFontCount = 0;
+    int m_abandonFilesCount = 0;
 
     InstallState m_installState {Install};
 

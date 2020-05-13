@@ -130,6 +130,14 @@
         <source>%1 fonts installed</source>
         <translation>%1 fonts installed</translation>
     </message>
+    <message>
+        <source>Failed to install %1 fonts. There is not enough disk space.</source>
+        <translation>Failed to install %1 fonts. There is not enough disk space.</translation>
+    </message>
+    <message>
+        <source>Failed to install 1 font. There is not enough disk space.</source>
+        <translation>Failed to install 1 font. There is not enough disk space.</translation>
+    </message>
 </context>
 <context>
     <name>DeleteConfirmDailog</name>
@@ -279,6 +287,14 @@
     <message>
         <source>%1 fonts exported to your desktop</source>
         <translation>%1 fonts exported to your desktop</translation>
+    </message>
+    <message>
+        <source>Failed to export 1 font. There is not enough disk space.</source>
+        <translation>Failed to export 1 font. There is not enough disk space.</translation>
+    </message>
+    <message>
+        <source>Failed to export %1 fonts. There is not enough disk space.</source>
+        <translation>Failed to export %1 fonts. There is not enough disk space.</translation>
     </message>
 </context>
 <context>

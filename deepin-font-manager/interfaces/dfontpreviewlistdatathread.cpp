@@ -337,9 +337,7 @@ void DFontPreviewListDataThread::refreshFontListData(bool isStartup, const QStri
 
     //根据文件路径比较出不同的字体文件
     QSet<QString> allFontListSet = strAllFontList.toSet();
-//    qDebug() << __FUNCTION__ << "allFontList " << allFontListSet;
     QSet<QString> diffSet = allFontListSet.subtract(dbFilePathSet);
-//    qDebug() << __FUNCTION__ << "dbfontList " << dbFilePathSet;
     qDebug() << "diffSet count:" << diffSet.count();
     if (diffSet.count() > 0) {
         int maxFontId = m_dbManager->getCurrMaxFontId();
@@ -348,7 +346,6 @@ void DFontPreviewListDataThread::refreshFontListData(bool isStartup, const QStri
             QString filePath = diffFilePathList.at(i);
             if (m_dbManager->isSystemFont(filePath) || installFont.contains(filePath)) {
                 bool isEnabled = (isStartup && installFont.contains(filePath)) ? false : true;
-                qDebug() << __FUNCTION__ << filePath << isEnabled;
                 insertFontItemData(filePath, maxFontId + i + 1, chineseFontPathList, monoSpaceFontPathList, isStartup, isEnabled);
             }
         }
