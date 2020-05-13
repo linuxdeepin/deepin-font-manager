@@ -26,11 +26,12 @@ public:
     bool parseCmdLine();
 
 public slots:
-    Q_SCRIPTABLE void installFonts(QStringList fontPathList);
+    Q_SCRIPTABLE void installFonts(const QStringList &fontPathList);
 
 private slots:
     void onNewProcessInstance(qint64 pid, const QStringList &arguments);
     void slotBatchInstallFonts();
+    void onFontInstallFinished(const QStringList &fileList);
 
 private:
     QStringList m_selectedFiles;

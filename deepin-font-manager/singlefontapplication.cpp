@@ -8,6 +8,7 @@
 #include <QLocalServer>
 #include <QLocalSocket>
 #include <QCommandLineParser>
+//#include <QDebug>
 
 #include <DWidgetUtil>
 #include <DGuiApplicationHelper>
@@ -26,6 +27,9 @@ SingleFontApplication::SingleFontApplication(int &argc, char **argv)
     connect(DGuiApplicationHelper::instance()
             , &DGuiApplicationHelper::newProcessInstance, this
             , &SingleFontApplication::onNewProcessInstance);
+
+    connect(SignalManager::instance(), &SignalManager::finishFontInstall, this,
+            &SingleFontApplication::onFontInstallFinished);
 }
 
 SingleFontApplication::~SingleFontApplication()
@@ -173,8 +177,14 @@ void SingleFontApplication::slotBatchInstallFonts()
     waitForInstallSet.clear();
 }
 
-void SingleFontApplication::installFonts(QStringList fontPathList)
+void SingleFontApplication::onFontInstallFinished(const QStringList &fileList)
 {
+    m_selectedFiles.clear();
+}
+
+void SingleFontApplication::installFonts(const QStringList &fontPathList)
+{
+//    qDebug() << __FUNCTION__ << fontPathList;
     for (QString fontPath : fontPathList) {
         if (Utils::isFontMimeType(fontPath)) {
             /* bug#19081 UT00591 */
