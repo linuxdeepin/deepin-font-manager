@@ -37,9 +37,8 @@ static QHash<QString, QString> contents = {};
 
 DFontPreview::DFontPreview(QWidget *parent)
     : QWidget(parent),
-      m_library(0),
-      m_face(0),
-      fontDatabase(new QFontDatabase)
+      m_library(nullptr),
+      m_face(nullptr)
 {
     initContents();
 
@@ -78,7 +77,7 @@ void DFontPreview::paintEvent(QPaintEvent *e)
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing, true);
 
-    QFont font(fontDatabase->applicationFontFamilies(0).first());
+    QFont font(fontDatabase.applicationFontFamilies(0).first());
     painter.setPen(Qt::black);
 
     if (styleName.contains("Italic")) {
@@ -150,7 +149,7 @@ void DFontPreview::paintEvent(QPaintEvent *e)
         if (y + sampleHeight >= rect().height() - padding * 2)
             break;
 
-        painter.drawText(QRect(x, y + padding * 2, sampleWidth , sampleHeight), Qt::AlignLeft, sampleString);
+        painter.drawText(QRect(x, y + padding * 2, sampleWidth, sampleHeight), Qt::AlignLeft, sampleString);
         y += sampleHeight + padding;
     }
 
@@ -215,7 +214,7 @@ QString DFontPreview::getLanguageSampleString(const QString &language)
     } else {
         const QStringList parseList = language.split("_", QString::SkipEmptyParts);
         if (parseList.length() > 0 &&
-            contents.contains(parseList.first())) {
+                contents.contains(parseList.first())) {
             key = parseList.first();
         }
     }

@@ -189,11 +189,6 @@ void DFInstallErrorDialog::initInstallErrorFontViews()
     m_mainLayout->setSpacing(0);
     m_mainLayout->setContentsMargins(0, 0, 0, 0);
 
-    QVBoxLayout *listViewLayout = new QVBoxLayout;
-    listViewLayout->setMargin(0);
-    listViewLayout->setSpacing(0);
-    listViewLayout->setContentsMargins(0, 0, 0, 0);
-
     QHBoxLayout *buttonLayout = new QHBoxLayout;
     buttonLayout->setMargin(0);
     buttonLayout->setSpacing(0);
@@ -254,7 +249,6 @@ void DFInstallErrorDialog::initInstallErrorFontViews()
     m_installErrorListView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     m_installErrorListView->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
-    listViewLayout->addWidget(m_installErrorListView);
     m_mainLayout->addWidget(m_installErrorListView);
     m_mainLayout->addWidget(btnFrame);
     m_mainLayout->addStretch();

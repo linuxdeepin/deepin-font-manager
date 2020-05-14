@@ -303,7 +303,8 @@ DFontInfo DFontInfoManager::getFontInfo(const QString &filePath, bool force)
     // destroy object.
     FT_Done_Face(m_face);
     m_face = nullptr;
-//    FT_Done_FreeType(m_library);
+    FT_Done_FreeType(m_library);
+    m_library = nullptr;
 
     DFMDBManager *dbManager = DFMDBManager::instance();
     if (dbManager->getRecordCount() > 0) {

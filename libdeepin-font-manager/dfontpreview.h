@@ -38,7 +38,7 @@ public:
 
     void setFileUrl(const QString &url);
 
-    QFontDatabase *fontDatabase;
+    QFontDatabase fontDatabase;
 
 protected:
     void paintEvent(QPaintEvent *);
