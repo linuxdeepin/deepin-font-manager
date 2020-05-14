@@ -1419,10 +1419,9 @@ void DFontMgrMainWindow::exportFont()
 
     QStringList m_exportFiles = checkFilesSpace(files, false);
     if (m_exportFiles.count() == 0) {
+        showExportFontMessage(0, files.count());
         return;
     }
-
-
 
     if (cnt < 1)
         return;
