@@ -394,7 +394,11 @@ void DFInstallNormalWindow::checkShowMessage()
         }
 
         totalInstallFont = 0;
-        this->close();
+
+        //ut000442 bug25822 通过log推测此窗口提前关闭导致的问题,因为没有必现步骤,检查逻辑暂时没发现问题,暂时通过添加延迟来进行解决
+        QTimer::singleShot(50, this, [ = ]() {
+            this->close();
+        });
     }
 
     if (getInstallMessage == true && getReInstallMessage == false) {
@@ -425,20 +429,22 @@ void DFInstallNormalWindow::paintEvent(QPaintEvent *event)
 void DFInstallNormalWindow::closeEvent(QCloseEvent *event)
 {
     qDebug() << __FUNCTION__;
-    getInstallMessage = false;
-    getReInstallMessage = false;
-    static bool flag = true;
-    if (flag) {
-        event->accept();
-        // TODO: close dfontmanager thread and emit signal to update font show.
-//        if (m_fontManager) {
-//            m_fontManager->requestInterruption();
-//            m_fontManager->quit();
-//            m_fontManager->wait();
-//        }
-    } else {
-        event->accept();
-    }
+//ut000442 去除这一段代码,如果这段代码有用可以告知一下
+
+//    getInstallMessage = false;
+//    getReInstallMessage = false;
+//    static bool flag = true;
+//    if (flag) {
+//        event->accept();
+//        // TODO: close dfontmanager thread and emit signal to update font show.
+////        if (m_fontManager) {
+////            m_fontManager->requestInterruption();
+////            m_fontManager->quit();
+////            m_fontManager->wait();
+////        }
+//    } else {
+//        event->accept();
+//    }
 }
 void DFInstallNormalWindow::batchInstall()
 {
