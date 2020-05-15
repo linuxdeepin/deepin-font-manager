@@ -1137,7 +1137,7 @@ void DFontMgrMainWindow::onSearchTextChanged(const QString &currStr)
 //    QString previewText = d->textInputEdit->text();
 //    const QString previewText = d->textInputEdit->text();
     onPreviewTextChanged();
-    m_fontPreviewListView->scrollToTop();
+//    m_fontPreviewListView->scrollToTop();
 }
 
 void DFontMgrMainWindow::onPreviewTextChanged(const QString &text)
