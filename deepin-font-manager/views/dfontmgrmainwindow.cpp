@@ -147,7 +147,7 @@ void DFontMgrMainWindow::initConnections()
     QObject::connect(m_fontPreviewListView, SIGNAL(onLoadFontsStatus(int)),
                      this, SLOT(onLoadStatus(int)));
 
-    connect(m_fontPreviewListView, &DFontPreviewListView::rowCountChanged, this, &DFontMgrMainWindow::onFontListViewRowCountChanged);
+    connect(m_fontPreviewListView, &DFontPreviewListView::rowCountChanged, this, &DFontMgrMainWindow::onFontListViewRowCountChanged, Qt::UniqueConnection);
 
     // Add Font button event
     QObject::connect(d->addFontButton, &DIconButton::clicked, this,
@@ -526,8 +526,7 @@ void DFontMgrMainWindow::initFontFiles()
 
     QStringList installFont = m_dbManager->getInstalledFontsPath();
 
-    for (int i = 0; i < allFontsList.size(); ++i) {
-        QString filePath = allFontsList.at(i);
+    for (QString filePath : allFontsList) {
         if (!m_dbManager->isSystemFont(filePath) && !installFont.contains(filePath)) {
             QFileInfo openFile(filePath);
             if (!QFile::remove(filePath))
@@ -1138,7 +1137,7 @@ void DFontMgrMainWindow::onSearchTextChanged(const QString &currStr)
 //    QString previewText = d->textInputEdit->text();
 //    const QString previewText = d->textInputEdit->text();
     onPreviewTextChanged();
-    m_fontPreviewListView->scrollToTop();
+//    m_fontPreviewListView->scrollToTop();
 }
 
 void DFontMgrMainWindow::onPreviewTextChanged(const QString &text)
@@ -1655,9 +1654,10 @@ void DFontMgrMainWindow::onPreviewTextChanged()
     }
 
     DFontPreviewProxyModel *filterModel = m_fontPreviewListView->getFontPreviewProxyModel();
-    qDebug() << __FUNCTION__ << "filter Count:" << filterModel->rowCount() << endl;
+    int total = filterModel->rowCount();
+    qDebug() << __FUNCTION__ << "filter Count:" << total << endl;
 
-    for (int rowIndex = 0; rowIndex < filterModel->rowCount(); rowIndex++) {
+    for (int rowIndex = 0; rowIndex < total; rowIndex++) {
         QModelIndex modelIndex = filterModel->index(rowIndex, 0);
         QString itemPreviewTxt = filterModel->data(modelIndex, Dtk::UserRole + 1).toString();
         if (m_previewText != itemPreviewTxt)
