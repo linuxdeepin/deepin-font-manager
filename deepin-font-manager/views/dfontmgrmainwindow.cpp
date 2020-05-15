@@ -455,7 +455,8 @@ void DFontMgrMainWindow::initShortcuts()
                 emit m_fontPreviewListView->onClickCollectionButton(itemIndexes, true);
             } else
             {
-                emit m_fontPreviewListView->onClickCollectionButton(itemIndexes, true, true);
+                return ;
+//                emit m_fontPreviewListView->onClickCollectionButton(itemIndexes, true, true);
             }
         });
     }
@@ -496,7 +497,10 @@ void DFontMgrMainWindow::initShortcuts()
 
         connect(m_scFontInfo, &QShortcut::activated, this, [this] {
             DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
-
+            if (m_fontPreviewListView->selectionModel()->selectedIndexes().length() < 1)
+            {
+                return ;
+            }
             if (!currItemData.fontInfo.filePath.isEmpty())
             {
                 QAction *fontInfoAction = DFontMenuManager::getInstance()->getActionByMenuAction(
