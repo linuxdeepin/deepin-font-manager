@@ -43,7 +43,7 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
     connect(m_signalManager, &SignalManager::changeView, this, [ = ]() {
         scrollToTop();
         isSelectedNow = false;
-        currentSelectedRow = -1;
+        m_currentSelectedRow = -1;
     });
     m_dataThread = DFontPreviewListDataThread::instance(this);
     QWidget *topSpaceWidget = new QWidget;
@@ -261,6 +261,20 @@ void DFontPreviewListView::initConnections()
 
     connect(m_signalManager, &SignalManager::currentFontGroup, this, &DFontPreviewListView::updateCurrentFontGroup);
 
+    /*UT000539 refreshFocus、scrollTo、setCurrentIndex(勿删勿动！)*/
+    connect(m_signalManager, &SignalManager::refreshFocus, [ = ](int count) {
+        if (1 == count) {
+            setCurrentSelected(selectionModel()->selectedIndexes().first().row());
+        } else {
+            m_currentSelectedRow = -1;
+        }
+        m_isJustInstalled = true;
+        QTimer::singleShot(50, [ = ]() {
+            scrollTo(selectionModel()->selectedIndexes().first());
+            setFocus(Qt::MouseFocusReason);
+        });
+    });
+
 }
 
 QRect DFontPreviewListView::getCollectionIconRect(QRect visualRect)
@@ -360,7 +374,9 @@ void DFontPreviewListView::selectFonts(const QStringList &fileList)
 //        Q_EMIT mw->requestUpdatePreview();
 
     Q_EMIT SignalManager::instance()->requestInstallAdded();
-    Q_EMIT m_signalManager->refreshFocus();
+
+    /*用于安装后刷新聚焦、安装后focus for ctrl+a UT000539(勿删勿动！)*/
+    Q_EMIT m_signalManager->refreshFocus(fileList.size());
 //    Q_EMIT DFontManager::instance()->batchInstall("onlyprogress", 100);
 }
 
@@ -452,40 +468,43 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
 {
     QPoint clickPoint = event->pos();
     QModelIndex modelIndex = indexAt(clickPoint);
+    qDebug() << "______________modelIndex__________" << modelIndex.row();
     if (event->button() == Qt::LeftButton) {
         m_bLeftMouse = true;
         m_bRightMous = false;
         /*UT000539(勿删勿动!)*/
         if (QApplication::keyboardModifiers() == Qt::ShiftModifier) {
-            if (currentSelectedRow == -1) {
-                this->selectionModel()->clear();
-                for (int i = 0; i <= modelIndex.row(); i++) {
-                    QModelIndex modelIndex1 = m_fontPreviewProxyModel->index(i, 0);
-                    selectionModel()->select(modelIndex1, QItemSelectionModel::Select);
-                }
-            } else {
-                if (currentSelectedRow < modelIndex.row()) {
-                    this->selectionModel()->clear();
-                    for (int i = currentSelectedRow; i <= modelIndex.row(); i++) {
+            qDebug() << "______________shift_index__________" << m_currentSelectedRow;
+            if (-1 != m_currentSelectedRow) {
+                if (m_currentSelectedRow < modelIndex.row()) {
+                    selectionModel()->clear();
+                    for (int i = m_currentSelectedRow; i <= modelIndex.row(); i++) {
                         QModelIndex modelIndex1 = m_fontPreviewProxyModel->index(i, 0);
 
                         selectionModel()->select(modelIndex1, QItemSelectionModel::Select);
                     }
-                } else if (currentSelectedRow > modelIndex.row()) {
-                    this->selectionModel()->clear();
-                    for (int i = modelIndex.row(); i <= currentSelectedRow; i++) {
+                } else if (m_currentSelectedRow > modelIndex.row()) {
+                    selectionModel()->clear();
+                    for (int i = modelIndex.row(); i <= m_currentSelectedRow; i++) {
                         QModelIndex modelIndex1 = m_fontPreviewProxyModel->index(i, 0);
 
                         selectionModel()->select(modelIndex1, QItemSelectionModel::Select);
                     }
                 } else {
-                    this->selectionModel()->clear();
+                    selectionModel()->clear();
                     selectionModel()->select(modelIndex, QItemSelectionModel::Select);
+                }
+            } else {
+                selectionModel()->clear();
+                for (int i = 0; i <= modelIndex.row(); i++) {
+                    QModelIndex modelIndex1 = m_fontPreviewProxyModel->index(i, 0);
+                    selectionModel()->select(modelIndex1, QItemSelectionModel::Select);
                 }
             }
         } else {
 
-            currentSelectedRow = modelIndex.row();
+            m_currentSelectedRow = modelIndex.row();
+            isSelectedNow = true;
         }
     } else {
         m_bLeftMouse = false;
@@ -779,6 +798,11 @@ QString DFontPreviewListView::getPreviewTextWithSize(int *fontSize)
     if (fontSize != nullptr)
         *fontSize = FTM_DEFAULT_PREVIEW_FONTSIZE;
     return QString(DApplication::translate("Font", "Don't let your dreams be dreams"));
+}
+
+void DFontPreviewListView::setCurrentSelected(int indexRow)
+{
+    m_currentSelectedRow = indexRow;
 }
 
 void DFontPreviewListView::onListViewItemEnableBtnClicked(const QModelIndexList &itemIndexes, bool setValue, bool isFromActiveFont)

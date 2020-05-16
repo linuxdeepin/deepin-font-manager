@@ -80,6 +80,7 @@ public:
     bool isAtListviewBottom();
     bool isAtListviewTop();
     QString getPreviewTextWithSize(int *fontSize = nullptr);
+    void setCurrentSelected(int indexRow);
 
 protected:
     void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected) override;
@@ -121,7 +122,7 @@ private:
 
     QRect m_curRect;
     bool m_isJustInstalled = false;
-    int currentSelectedRow = -1;
+    int m_currentSelectedRow = -1;
     bool isSelectedNow = false;
 signals:
     //用于DFontPreviewListView内部使用的信号

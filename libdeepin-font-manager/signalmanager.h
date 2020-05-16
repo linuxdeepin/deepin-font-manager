@@ -26,7 +26,7 @@ signals:
     void requestInstallAdded();
     void setIsJustInstalled();
     void closeInstallDialog();
-    void refreshFocus();//刷新聚焦状态
+    void refreshFocus(int count);//刷新聚焦状态
     void changeView();
 private:
     explicit SignalManager(QObject *parent = nullptr);
