@@ -95,7 +95,6 @@ private:
     void scrollWithTheSelected();
     void refreshRect();
 
-    void setSelectedFalse();
     bool m_bLoadDataFinish = false;
     bool m_bLeftMouse = true;
     bool m_bRightMous = true;

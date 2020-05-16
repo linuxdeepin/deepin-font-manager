@@ -76,7 +76,7 @@ bool dfontinfoscrollarea::eventFilter(QObject *obj, QEvent *e)
     return  DFrame::eventFilter(obj, e);
 }
 
-//初始化信息页面label/*539*/
+//初始化信息页面label/*539(勿删勿动!)*/
 void dfontinfoscrollarea::createLabel(QGridLayout *layout, const int &index, const QString &objName, const QString &sData)
 {
     QString str = objName;
@@ -103,7 +103,7 @@ void dfontinfoscrollarea::createLabel(QGridLayout *layout, const int &index, con
 
 }
 
-//增加内容信息frame/*539*/
+//增加内容信息frame/*539(勿删勿动!)*/
 DFrame *dfontinfoscrollarea::addTitleFrame(const QString &sData, const QString &objName)
 {
     DFrame *m_textShowFrame = new DFrame(this);
@@ -139,7 +139,7 @@ DFrame *dfontinfoscrollarea::addTitleFrame(const QString &sData, const QString &
     return m_textShowFrame;
 }
 
-//重绘信息页面/*539*/
+//重绘信息页面/*539(勿删勿动!)*/
 void dfontinfoscrollarea::paintEvent(QPaintEvent *event)
 {
     int m_totalHeight = 0;
@@ -152,7 +152,7 @@ void dfontinfoscrollarea::paintEvent(QPaintEvent *event)
     emit m_signalManager->sizeChange(m_totalHeight + 76 + basicLabel->height());
 }
 
-//用于信息页面title名称长度判断/*539*/
+//用于信息页面title名称长度判断/*539(勿删勿动!)*/
 QString dfontinfoscrollarea::elideText(QString &titleName) const
 {
     QFont font = this->font();
@@ -187,7 +187,7 @@ QString dfontinfoscrollarea::elideText(QString &titleName) const
     return finalTitle;
 }
 
-//用于信息页面详细信息部分换行判断/*539*/
+//用于信息页面详细信息部分换行判断/*539(勿删勿动!)*/
 QString dfontinfoscrollarea::elideText(const QString &text, const QFont &font, int nLabelSize)
 {
     QFontMetrics fm(font);
@@ -229,7 +229,7 @@ QString dfontinfoscrollarea::elideText(const QString &text, const QFont &font, i
 //    return text;
 }
 
-//重绘信息页面/*539*/
+//重绘信息页面/*539(勿删勿动!)*/
 void dfontinfoscrollarea::updateText()
 {
     for (auto pTltle : pTitleMap) {

@@ -193,7 +193,7 @@ void DFontMgrMainWindow::initConnections()
         QString fontSizeText;
         fontSizeText.sprintf(FMT_FONT_SIZE, value);
 //        d->fontSizeLabel->setText(fontSizeText);
-        //调节右下角字体大小显示label显示内容/*UT000539*/
+        //调节右下角字体大小显示label显示内容/*UT000539(勿删勿动!)*/
         autoLabelWidth(fontSizeText, d->fontSizeLabel, d->fontSizeLabel->fontMetrics());
         onFontSizeChanged(value);
     });
@@ -271,7 +271,7 @@ void DFontMgrMainWindow::initConnections()
 
     }, Qt::UniqueConnection);
 
-    //调节右下角字体大小显示label显示内容/*UT000539*/
+    //调节右下角字体大小显示label显示内容/*UT000539(勿删勿动!)*/
     connect(qApp, &DApplication::fontChanged, this, [ = ]() {
         int size = d->fontScaleSlider->value();
         QString fontSize = QString::number(size) + "px";
@@ -854,7 +854,7 @@ void DFontMgrMainWindow::initStateBar()
     QString defaultFontSize;
     defaultFontSize.sprintf(FMT_FONT_SIZE, DEFAULT_FONT_SIZE);
 
-    //调节右下角字体大小显示label显示内容/*UT000539*/
+    //调节右下角字体大小显示label显示内容/*UT000539(勿删勿动!)*/
     autoLabelWidth(defaultFontSize, d->fontSizeLabel, d->fontSizeLabel->fontMetrics());
 //    d->fontSizeLabel->setText(defaultFontSize);
 
@@ -1666,7 +1666,6 @@ void DFontMgrMainWindow::onPreviewTextChanged()
             filterModel->setData(modelIndex, QVariant(m_previewFontSize), Dtk::UserRole + 2);
 //        filterModel->setEditStatus(m_searchTextStatusIsEmpty);
     }
-    emit m_signalManager->freshListView();
 }
 
 qint64 DFontMgrMainWindow::getDiskSpace(bool m_IsSystemDisk)
@@ -1723,7 +1722,7 @@ void DFontMgrMainWindow::startToDelete()
     m_fontManager->start();
 }
 
-//调节右下角字体大小显示label显示内容/*UT000539*/
+//调节右下角字体大小显示label显示内容/*UT000539(勿删勿动!)*/
 void DFontMgrMainWindow::autoLabelWidth(QString text, DLabel *lab, QFontMetrics fm)
 {
     QString str = text;

@@ -33,12 +33,18 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
     connect(this, &DFontPreviewListView::multiItemsAdded, this, &DFontPreviewListView::onMultiItemsAdded);
     connect(this, &DFontPreviewListView::itemRemoved, this, &DFontPreviewListView::onItemRemoved);
     connect(this, &DFontPreviewListView::itemRemovedFromSys, this, &DFontPreviewListView::onItemRemovedFromSys);
-    connect(m_signalManager, &SignalManager::freshListView, this, &DFontPreviewListView::setSelectedFalse);
 //    connect(m_signalManager, &SignalManager::prevFontChanged, this, &DFontPreviewListView::scrollWithTheSelected);
 //    connect(m_signalManager, &SignalManager::refreshCurRect, this, &DFontPreviewListView::refreshRect);
 //    connect(m_signalManager, &SignalManager::setIsJustInstalled, this, [ = ]() {
 //        m_isJustInstalled = true;
 //    });//勿删
+
+    /*切换listview后，scrolltotop UT000539(勿删勿动)*/
+    connect(m_signalManager, &SignalManager::changeView, this, [ = ]() {
+        scrollToTop();
+        isSelectedNow = false;
+        currentSelectedRow = -1;
+    });
     m_dataThread = DFontPreviewListDataThread::instance(this);
     QWidget *topSpaceWidget = new QWidget;
     topSpaceWidget->setFixedSize(this->width(), 10);
@@ -424,7 +430,7 @@ void DFontPreviewListView::mouseMoveEvent(QMouseEvent *event)
     QRect collectIconRect = getCollectionIconRect(rect);
 
     DFontPreviewItemData itemData = qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(modelIndex));
-    clearHoverState();///*UT000539*/
+    clearHoverState();///*UT000539(勿删勿动!)*/
     if (collectIconRect.contains(clickPoint)) {
 //        if (itemData.collectIconStatus != IconHover) {
         itemData.collectIconStatus = IconHover;
@@ -449,7 +455,7 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
     if (event->button() == Qt::LeftButton) {
         m_bLeftMouse = true;
         m_bRightMous = false;
-        /*UT000539*/
+        /*UT000539(勿删勿动!)*/
         if (QApplication::keyboardModifiers() == Qt::ShiftModifier) {
             if (currentSelectedRow == -1) {
                 this->selectionModel()->clear();
@@ -532,7 +538,7 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
 
     if (collectIconRect.contains(clickPoint)) {
         if (itemData.collectIconStatus != IconPress) {
-            if (Qt::LeftButton == event->button()) {//取消press状态/*UT000539*/
+            if (Qt::LeftButton == event->button()) {//取消press状态/*UT000539(勿删勿动!)*/
                 itemData.collectIconStatus = IconPress;
             }
             m_fontPreviewProxyModel->setData(modelIndex, QVariant::fromValue(itemData), Qt::DisplayRole);
@@ -1170,11 +1176,4 @@ void DFontPreviewListView::refreshRect()
         return;
     sortModelIndexList(indexes);
     m_curRect = visualRect(indexes.last());
-}
-
-void DFontPreviewListView::setSelectedFalse()
-{
-    isSelectedNow = false;
-    currentSelectedRow = -1;
-    scrollToTop();
 }

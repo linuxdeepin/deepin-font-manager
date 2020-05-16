@@ -6,6 +6,7 @@
 #include <QMetaType>
 #include <DToolTip>
 #include <DStyledItemDelegate>
+#include <signalmanager.h>
 DWIDGET_USE_NAMESPACE
 
 class DNoFocusDelegate : public DStyledItemDelegate
@@ -50,6 +51,7 @@ public:
 
     void currentChanged(const QModelIndex &current, const QModelIndex &previous) override;
 
+    SignalManager *m_signalManager = SignalManager::instance();
     QStringList m_titleStringList;
     QMap<QString, int> m_titleStringIndexMap;
     QStandardItemModel *m_categoryItemModell;
