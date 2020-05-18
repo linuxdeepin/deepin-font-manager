@@ -229,9 +229,22 @@ QString DFontPreview::getLanguageSampleString(const QString &language)
 
 bool DFontPreview::checkFontContainText(const QString &text)
 {
+    if (m_face == nullptr || m_face->num_charmaps == 0)
+        return false;
+
     bool retval = true;
 
-    FT_Select_Charmap(m_face, FT_ENCODING_UNICODE);
+    int err = 0;
+    if (m_face->charmap == nullptr)
+        err = FT_Select_Charmap(m_face, FT_ENCODING_UNICODE);
+    if (err != 0) {
+        for (int i = 0; i < m_face->num_charmaps; ++i) {
+            err = FT_Select_Charmap(m_face, m_face->charmaps[i]->encoding);
+            if (err == 0) {
+                break;
+            }
+        }
+    }
 
     for (auto ch : text) {
         if (!FT_Get_Char_Index(m_face, ch.unicode())) {
