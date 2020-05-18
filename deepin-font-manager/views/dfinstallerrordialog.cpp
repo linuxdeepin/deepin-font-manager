@@ -51,10 +51,11 @@ void DFMSuggestButton::paintEvent(QPaintEvent *event)
 }
 
 DFInstallErrorDialog::DFInstallErrorDialog(QWidget *parent, const QStringList &errorInstallFontFileList,
-                                           const  QStringList &systemFontFileList)
+                                           const  QStringList &systemFontFileListPsname, const QStringList &systemFontFileListFamilyname)
     : DFontBaseDialog(parent)
     , m_errorInstallFiles(errorInstallFontFileList)
-    , m_systemFiles(systemFontFileList)
+    , m_systemFilesPsname(systemFontFileListPsname)
+    , m_systemFilesFamilyname(systemFontFileListFamilyname)
 {
 //    setWindowOpacity(0.3); //Debug
     initData();
@@ -65,7 +66,8 @@ DFInstallErrorDialog::DFInstallErrorDialog(QWidget *parent, const QStringList &e
 DFInstallErrorDialog::~DFInstallErrorDialog()
 {
     m_errorInstallFiles.clear();
-    m_systemFiles.clear();
+    m_systemFilesFamilyname.clear();
+    m_systemFilesPsname.clear();
     m_installErrorFontModelList.clear();
 }
 
@@ -172,12 +174,19 @@ int DFInstallErrorDialog::getErrorFontCheckedCount()
 
 bool DFInstallErrorDialog::isSystemFont(DFontInfo &f)
 {
-    QString fontFullName = f.familyName + f.styleName;
-    if (m_systemFiles.contains(fontFullName)) {
+    QString fontFullPsname = f.psname + f.styleName;
+    QString fontFullFamliyName = f.familyName + f.styleName;
+//    foreach (auto it, m_AllSysFiles) {
+//        if (!it.compare(fontFullName)) {
+//            return true;
+//        }
+//    }
+    if (m_systemFilesPsname.contains(fontFullPsname) || m_systemFilesFamilyname.contains(fontFullFamliyName)) {
         return true;
     } else {
         return false;
     }
+
 }
 
 void DFInstallErrorDialog::initInstallErrorFontViews()

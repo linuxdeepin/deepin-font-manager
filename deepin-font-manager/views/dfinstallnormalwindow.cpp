@@ -41,7 +41,7 @@ DFInstallNormalWindow::~DFInstallNormalWindow()
     m_systemFiles.clear();
     m_outfileList.clear();
     m_errorList.clear();
-    m_AllSysFiles.clear();
+    m_AllSysFilesPsname.clear();
 }
 
 void DFInstallNormalWindow::initUI()
@@ -259,9 +259,11 @@ void DFInstallNormalWindow::getAllSysfiles()
         allFontInfo = DFMDBManager::instance()->getAllFontInfo();
     for (auto font : allFontInfo) {
         if (font.fontInfo.filePath.contains("/usr/share/")) {
-            QString systemFile;
-            systemFile.append(font.fontInfo.familyName).append(font.fontInfo.styleName);
-            m_AllSysFiles.append(systemFile);
+            QString systemFilePsname;
+            systemFilePsname.append(font.fontInfo.psname).append(font.fontInfo.styleName);
+            m_AllSysFilesPsname.append(systemFilePsname);
+            QString systemFileFamilyName;
+            systemFileFamilyName.append(font.fontInfo.familyName).append(font.fontInfo.styleName);
         }
     }
 }
@@ -351,13 +353,14 @@ bool DFInstallNormalWindow::ifNeedShowExceptionWindow() const
 
 bool DFInstallNormalWindow::isSystemFont(DFontInfo &f)
 {
-    QString fontFullName = f.familyName + f.styleName;
+    QString fontFullPsname = f.psname + f.styleName;
+    QString fontFullFamliyName = f.familyName + f.styleName;
 //    foreach (auto it, m_AllSysFiles) {
 //        if (!it.compare(fontFullName)) {
 //            return true;
 //        }
 //    }
-    if (m_AllSysFiles.contains(fontFullName)) {
+    if (m_AllSysFilesPsname.contains(fontFullPsname) || m_AllSysFilesfamilyName.contains(fontFullFamliyName)) {
         return true;
     } else {
         return false;
@@ -619,7 +622,7 @@ void DFInstallNormalWindow::onProgressChanged(const QString &familyName, const d
 }
 void DFInstallNormalWindow::showInstallErrDlg()
 {
-    m_pexceptionDlg = new DFInstallErrorDialog(this, m_errorList, m_AllSysFiles);
+    m_pexceptionDlg = new DFInstallErrorDialog(this, m_errorList, m_AllSysFilesPsname, m_AllSysFilesfamilyName);
 
     connect(m_pexceptionDlg, &DFInstallErrorDialog::onCancelInstall, this,
             &DFInstallNormalWindow::onCancelInstall);

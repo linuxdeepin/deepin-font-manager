@@ -72,7 +72,8 @@ private:
     QStringList m_systemFiles;
     QStringList m_outfileList;
     QStringList m_errorList;
-    QStringList m_AllSysFiles;
+    QStringList m_AllSysFilesPsname;
+    QStringList m_AllSysFilesfamilyName;
 
 
     int totalInstallFont = 0;

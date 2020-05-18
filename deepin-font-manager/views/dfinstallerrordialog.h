@@ -37,7 +37,8 @@ class DFInstallErrorDialog : public DFontBaseDialog
 public:
     explicit DFInstallErrorDialog(QWidget *parent = nullptr,
                                   const QStringList &errorInstallFontFileList = QStringList(),
-                                  const QStringList &systemFontFileList = QStringList());
+                                  const QStringList &systemFontFileListPsname = QStringList(),
+                                  const QStringList &systemFontFileListFamilyname = QStringList());
     ~DFInstallErrorDialog();
 
     void initData();
@@ -70,7 +71,8 @@ private:
     //QWidget *contentFrame;
 
     QStringList m_errorInstallFiles;
-    QStringList m_systemFiles;
+    QStringList m_systemFilesPsname;
+    QStringList m_systemFilesFamilyname;
     QList<DFInstallErrorItemModel> m_installErrorFontModelList;
 
     int m_SystemFontCount = 0;
