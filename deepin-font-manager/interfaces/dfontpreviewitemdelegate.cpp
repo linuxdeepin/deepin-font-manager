@@ -67,6 +67,9 @@ void DFontPreviewItemDelegate::paintForegroundFontName(QPainter *painter, const 
     QRect fontNameRect = QRect(option.rect.x() + FONT_NAME_LEFT_MARGIN, option.rect.y() + FONT_NAME_TOP_MARGIN,
                                option.rect.width() - 20, FONT_NAME_HEIGHT);
 
+    bool notexistF = painter->fontInfo().family().isEmpty();
+    if (notexistF)
+        return;
     QFontMetrics mt(nameFont);//特殊图案字体下截断字体名称/*UT000539(勿删勿动!)*/
     QString elidedText = mt.elidedText(itemData.strFontName, Qt::ElideRight, option.rect.width() - 120, Qt::TextShowMnemonic);
     painter->drawText(fontNameRect, Qt::AlignLeft | Qt::AlignVCenter, elidedText);
@@ -164,6 +167,9 @@ QFont DFontPreviewItemDelegate::adjustPreviewFont(const QString &fontFamilyName,
 
 void DFontPreviewItemDelegate::paintForegroundPreviewContent(QPainter *painter, const QString &content, const QRect &fontPreviewRect, const QFont &previewFont) const
 {
+    bool notexistF = painter->fontInfo().family().isEmpty();
+    if (notexistF)
+        return;
     QFontMetrics fontMetric(previewFont);
     QString elidedText = fontMetric.elidedText(content, Qt::ElideRight, fontPreviewRect.width(), Qt::TextShowMnemonic);
     QPoint baseLinePoint = adjustPreviewFontBaseLinePoint(fontPreviewRect, fontMetric);
@@ -297,19 +303,19 @@ bool DFontPreviewItemDelegate::eventFilter(QObject *object, QEvent *event)
     return false;
 }
 
-bool DFontPreviewItemDelegate::isZhCode(const QString &str) const
-{
-    int nCount = str.count();
-    bool bret = true;
-    for (int i = 0; i < nCount; ++i) {
-        QChar cha = str.at(i);
-        ushort uni = cha.unicode();
-        if (uni >= 0x4E00 && uni <= 0x9FA5) {
-            return bret;
-        } else {
-            bret = false;
-            break;
-        }
-    }
-    return bret;
-}
+//bool DFontPreviewItemDelegate::isZhCode(const QString &str) const
+//{
+//    int nCount = str.count();
+//    bool bret = true;
+//    for (int i = 0; i < nCount; ++i) {
+//        QChar cha = str.at(i);
+//        ushort uni = cha.unicode();
+//        if (uni >= 0x4E00 && uni <= 0x9FA5) {
+//            return bret;
+//        } else {
+//            bret = false;
+//            break;
+//        }
+//    }
+//    return bret;
+//}
