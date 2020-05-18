@@ -1667,7 +1667,7 @@ qint64 DFontMgrMainWindow::getDiskSpace(bool m_IsSystemDisk)
 
     QStorageInfo storage;
     if (m_IsSystemDisk) {
-        storage = QStorageInfo(QDir::homePath() + "/.local/share/fonts/");
+        storage = QStorageInfo(QDir::homePath() /*+ "/.local/share/fonts/"*/);
         qDebug() << storage.bytesAvailable();
     } else {
         QString desktopPath = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
