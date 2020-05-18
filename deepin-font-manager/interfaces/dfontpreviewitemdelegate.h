@@ -34,7 +34,7 @@ private:
     void paintBackground(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
     QAbstractItemView *m_parentView;
-    QStringList chineseFontPathList;
+//    QStringList chineseFontPathList;
 };
 
 #endif  // DFONTPREVIEWITEMDELEGATE_H

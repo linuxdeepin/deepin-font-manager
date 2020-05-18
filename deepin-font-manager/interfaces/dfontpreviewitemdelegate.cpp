@@ -35,7 +35,7 @@ DFontPreviewItemDelegate::DFontPreviewItemDelegate(QAbstractItemView *parent)
     : DStyledItemDelegate(parent)
     , m_parentView(parent)
 {
-    chineseFontPathList =  DFontInfoManager::instance()->getAllChineseFontPath();
+//    chineseFontPathList =  DFontInfoManager::instance()->getAllChineseFontPath();
 }
 
 void DFontPreviewItemDelegate::paintForegroundCheckBox(QPainter *painter, const QStyleOptionViewItem &option, const DFontPreviewItemData &itemData) const
@@ -253,6 +253,7 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
 
         DFontPreviewItemData itemData = index.data(Qt::DisplayRole).value<DFontPreviewItemData>();
         int fontPixelSize = (index.data(Dtk::UserRole + 2).isNull()) ? itemData.iFontSize : index.data(Dtk::UserRole + 2).toInt();
+        fontPixelSize = (fontPixelSize <= 0) ? FTM_DEFAULT_PREVIEW_FONTSIZE : fontPixelSize;
         QString fontPreviewContent = index.data(Dtk::UserRole + 1).isNull() ? itemData.strFontPreview : index.data(Dtk::UserRole + 1).toString();
         if (fontPreviewContent.isEmpty() || 0 == fontPixelSize) {
             painter->restore();
