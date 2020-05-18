@@ -9,7 +9,7 @@
 #include "dsplitlistwidget.h"
 #include "views/dfdeletedialog.h"
 #include <QShortcut>
-#include <QStorageInfo>
+
 #include <DFrame>
 #include <DMainWindow>
 #include <QResizeEvent>
@@ -97,8 +97,8 @@ protected:
     void showInstalledFiles();
     void waitForInsert(bool deleting = true);
     void onPreviewTextChanged();
-    qint64 getDiskSpace(bool m_IsSystemDisk = true);
-    QStringList checkFilesSpace(const QStringList &files, bool m_IsSystemDisk = true);
+    qint64 getDiskSpace(bool m_bInstall = true);
+    QStringList checkFilesSpace(const QStringList &files, bool m_bInstall = true);
 
     //Add drag install
     void dragEnterEvent(QDragEnterEvent *event) override;
@@ -132,7 +132,7 @@ public slots:
     void onFontSizeChanged(int fontSize);
 
     void onLeftSiderBarItemClicked(int index);
-    void onFontInstallFinished(const QStringList &fileList);
+    void onFontInstallFinished(const QStringList &fileList, bool isFirstInstall = false);
     void onFontUninstallFinished(const QStringList &uninstallIndex);
 
     void onFontListViewRowCountChanged();
@@ -159,6 +159,7 @@ protected:
     bool m_searchTextStatusIsEmpty = true;
     bool m_isDeleting = false;
     bool m_isFromSys = false;
+    bool m_isPopInstallErrorDialog = false;
     bool m_isNoResultViewShow = false;
 
     //Stand shortcut
@@ -174,7 +175,7 @@ protected:
     QShortcut *m_scCancelFavFont {nullptr};  //Cancel favorite    --> Ctrl+Shift+K
     QShortcut *m_scFontInfo      {nullptr};  //Font information   --> Alt+Enter
 
-    //is in installing font flow9875
+    //is in installing font flow
     //Avoid start multi-NormalInstalltion window
     bool                    m_fIsInstalling {false};
     //is it in uninstalling font flow

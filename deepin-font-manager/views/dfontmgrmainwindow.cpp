@@ -88,6 +88,7 @@ DFontMgrMainWindow::DFontMgrMainWindow(bool isQuickMode, QWidget *parent)
 {
     // setWindoDSpinnerwOpacity(0.5); //Debug
     // setWindowFlags(windowFlags() | (Qt::FramelessWindowHint | Qt::WindowMaximizeButtonHint));
+
     initData();
     initUI();
     initConnections();
@@ -193,7 +194,7 @@ void DFontMgrMainWindow::initConnections()
         QString fontSizeText;
         fontSizeText.sprintf(FMT_FONT_SIZE, value);
 //        d->fontSizeLabel->setText(fontSizeText);
-        //调节右下角字体大小显示label显示内容/*UT000539(勿删勿动!)*/
+        //调节右下角字体大小显示label显示内容/*UT000539*/(勿删勿动!)*
         autoLabelWidth(fontSizeText, d->fontSizeLabel, d->fontSizeLabel->fontMetrics());
         onFontSizeChanged(value);
     });
@@ -211,6 +212,7 @@ void DFontMgrMainWindow::initConnections()
         });
 
     }, Qt::UniqueConnection);
+
 
     // Search text changed
     QObject::connect(d->searchFontEdit, SIGNAL(textChanged(const QString &)), this,
@@ -271,12 +273,27 @@ void DFontMgrMainWindow::initConnections()
 
     }, Qt::UniqueConnection);
 
-    //调节右下角字体大小显示label显示内容/*UT000539(勿删勿动!)*/
+    //调节右下角字体大小显示label显示内容/*UT000539*/(勿删勿动!)*
     connect(qApp, &DApplication::fontChanged, this, [ = ]() {
         int size = d->fontScaleSlider->value();
         QString fontSize = QString::number(size) + "px";
         autoLabelWidth(fontSize, d->fontSizeLabel, d->fontSizeLabel->fontMetrics());
     });
+
+    connect(m_signalManager, &SignalManager::popInstallErrorDialog, this, [ = ] {
+        m_isPopInstallErrorDialog = true;
+    });
+
+    connect(m_signalManager, &SignalManager::hideInstallErrorDialog, this, [ = ] {
+        m_isPopInstallErrorDialog = false;
+    });
+    connect(m_signalManager, &SignalManager::refreshFocus, [ = ]() {
+        QTimer::singleShot(50, [ = ]() {
+
+            this->m_fontPreviewListView->setFocus(Qt::MouseFocusReason);
+        });
+    });
+
 }
 
 void DFontMgrMainWindow::initShortcuts()
@@ -741,7 +758,7 @@ void DFontMgrMainWindow::initFontPreviewListView(QWidget *parent)
 //    onLoadingSpinner->setFixedHeight(onLoadingSpinner->fontMetrics().height());
 //    onLoadingSpinner->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
 
-//    QVBoxLayout *lblLayoutLoad = new QVBoxLayout();
+//    QVBoxLayout *lblLayoutLoad = new QVBoxLayout;
 //    lblLayoutLoad->addWidget(onLoadingSpinner);
 
 //    m_fontLoadingSpinner->setLayout(lblLayoutLoad);
@@ -847,7 +864,7 @@ void DFontMgrMainWindow::initStateBar()
     QString defaultFontSize;
     defaultFontSize.sprintf(FMT_FONT_SIZE, DEFAULT_FONT_SIZE);
 
-    //调节右下角字体大小显示label显示内容/*UT000539(勿删勿动!)*/
+    //调节右下角字体大小显示label显示内容/*UT000539*/(勿删勿动!)*
     autoLabelWidth(defaultFontSize, d->fontSizeLabel, d->fontSizeLabel->fontMetrics());
 //    d->fontSizeLabel->setText(defaultFontSize);
 
@@ -1035,15 +1052,15 @@ void DFontMgrMainWindow::installFontFromSys(const QStringList &files)
         qDebug() << "Is loading ,quit";
         m_waitForInstall = files;
         return;
-    }
-
-    if (m_isDeleting) {
+    } else if (m_isDeleting) {
         qDebug() << "Is deleting ,quit";
         m_waitForInstall = files;
         return;
+    } else if (m_isPopInstallErrorDialog) {
+        emit m_signalManager->installDuringPopErrorDialog(files);
+    } else {
+        installFont(files);
     }
-
-    installFont(files);
 }
 
 void DFontMgrMainWindow::initRightKeyMenu()
@@ -1130,7 +1147,7 @@ void DFontMgrMainWindow::onSearchTextChanged(const QString &currStr)
 //    QString previewText = d->textInputEdit->text();
 //    const QString previewText = d->textInputEdit->text();
     onPreviewTextChanged();
-    m_fontPreviewListView->scrollToTop();
+//    m_fontPreviewListView->scrollToTop();
 }
 
 void DFontMgrMainWindow::onPreviewTextChanged(const QString &text)
@@ -1205,11 +1222,11 @@ void DFontMgrMainWindow::onLeftSiderBarItemClicked(int index)
     onPreviewTextChanged();
 }
 
-void DFontMgrMainWindow::onFontInstallFinished(const QStringList &fileList)
+void DFontMgrMainWindow::onFontInstallFinished(const QStringList &fileList, bool isFirstInstall)
 {
     Q_D(DFontMgrMainWindow);
 
-    Q_EMIT m_fontPreviewListView->requestAdded(fileList);
+    Q_EMIT m_fontPreviewListView->requestAdded(fileList, isFirstInstall);
     d->textInputEdit->textChanged(d->textInputEdit->text());
     if (!fileList.isEmpty()) {
         showInstalledFiles();
@@ -1355,24 +1372,15 @@ void DFontMgrMainWindow::onShowMessage(int successCount)
 //            DMessageManager::instance()->sendMessage(this, QIcon(":/images/exception-logo.svg"), messageB);
 //        }
 //    }
-    if (m_abandonFilesCount == 0) {
-        if (successCount == 1) {
-            messageA = DApplication::translate("DFontMgrMainWindow", "%1 font installed").arg(successCount);
-            DMessageManager::instance()->sendMessage(this, QIcon(":/images/ok.svg"), messageA);
 
-        } else if (successCount > 1) {
-            messageA = DApplication::translate("DFontMgrMainWindow", "%1 fonts installed").arg(successCount);
-            DMessageManager::instance()->sendMessage(this, QIcon(":/images/ok.svg"), messageA);
-        }
-    } else if (m_abandonFilesCount == 1) {
-        messageA = DApplication::translate("DFontMgrMainWindow", "Failed to install 1 font. There is not enough disk space.");
-        DMessageManager::instance()->sendMessage(this, QIcon(":/images/exception-logo.svg"), messageA);
-    } else {
-        messageA = DApplication::translate("DFontMgrMainWindow", "Failed to install %1 fonts. There is not enough disk space.").arg(m_abandonFilesCount);
-        DMessageManager::instance()->sendMessage(this, QIcon(":/images/exception-logo.svg"), messageA);
+    if (successCount == 1) {
+        messageA = DApplication::translate("DFontMgrMainWindow", "%1 font installed").arg(successCount);
+        DMessageManager::instance()->sendMessage(this, QIcon(":/images/ok.svg"), messageA);
+
+    } else if (successCount > 1) {
+        messageA = DApplication::translate("DFontMgrMainWindow", "%1 fonts installed").arg(successCount);
+        DMessageManager::instance()->sendMessage(this, QIcon(":/images/ok.svg"), messageA);
     }
-
-
 }
 
 void DFontMgrMainWindow::delCurrentFont()
@@ -1418,7 +1426,6 @@ void DFontMgrMainWindow::exportFont()
         showExportFontMessage(0, files.count());
         return;
     }
-
     if (cnt < 1)
         return;
     QString desktopPath = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation) + "/" + tr("Fonts") + "/";
@@ -1429,7 +1436,6 @@ void DFontMgrMainWindow::exportFont()
         QFile::copy(file, desktopPath + QFileInfo(file).fileName());
     }
     showExportFontMessage(m_exportFiles.count(), files.count() - m_exportFiles.count());
-
 }
 
 void DFontMgrMainWindow::showExportFontMessage(int successCount, int abandonFilesCount)
@@ -1601,6 +1607,7 @@ void DFontMgrMainWindow::showInstalledFiles()
 
 void DFontMgrMainWindow::waitForInsert(bool deleting)
 {
+
     if (m_waitForInstall.isEmpty())
         return;
 
@@ -1638,17 +1645,20 @@ void DFontMgrMainWindow::waitForInsert(bool deleting)
     if (deleting)
         m_fIsInstalling = false;
     m_waitForInstall.clear();
+
 }
 
 void DFontMgrMainWindow::onPreviewTextChanged()
 {
+
+
     if (!m_fontPreviewListView->isListDataLoadFinished()) {
         return;
     }
 
     DFontPreviewProxyModel *filterModel = m_fontPreviewListView->getFontPreviewProxyModel();
     int total = filterModel->rowCount();
-    qDebug() << __FUNCTION__ << "filter Count:" << total << endl;
+    qDebug() << __FUNCTION__ << "filter Count:" << filterModel->rowCount() << endl;
 
     for (int rowIndex = 0; rowIndex < total; rowIndex++) {
         QModelIndex modelIndex = filterModel->index(rowIndex, 0);
@@ -1659,30 +1669,31 @@ void DFontMgrMainWindow::onPreviewTextChanged()
             filterModel->setData(modelIndex, QVariant(m_previewFontSize), Dtk::UserRole + 2);
 //        filterModel->setEditStatus(m_searchTextStatusIsEmpty);
     }
+    emit m_signalManager->freshListView();
 }
 
-qint64 DFontMgrMainWindow::getDiskSpace(bool m_IsSystemDisk)
+qint64 DFontMgrMainWindow::getDiskSpace(bool m_bInstall)
 {
-//    QStorageInfo storage = QStorageInfo::root();
+    //    QStorageInfo storage = QStorageInfo::root();
 
     QStorageInfo storage;
-    if (m_IsSystemDisk) {
-        storage = QStorageInfo(QDir::homePath() /*+ "/.local/share/fonts/"*/);
+    if (m_bInstall) {
+        storage = QStorageInfo(QDir::homePath());
         qDebug() << storage.bytesAvailable();
     } else {
         QString desktopPath = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
         storage = QStorageInfo(desktopPath);
     }
+
     qint64 m_remainSpace = storage.bytesAvailable()/*/1000/1000*/;//不用转换直接用bytes更加准确
     return m_remainSpace;
 }
 
-QStringList DFontMgrMainWindow::checkFilesSpace(const QStringList &files, bool m_IsSystemDisk)
+QStringList DFontMgrMainWindow::checkFilesSpace(const QStringList &files, bool m_bInstall)
 {
-
     QStringList m_installFiles;
     qint64 m_totalSelectSpace = 0;
-    qint64 m_currentDiskSpace = getDiskSpace(m_IsSystemDisk);
+    qint64 m_currentDiskSpace = getDiskSpace(m_bInstall);
     qDebug() << m_currentDiskSpace << endl;
     foreach (auto it, files) {
         QFile file(it);
@@ -1697,10 +1708,10 @@ QStringList DFontMgrMainWindow::checkFilesSpace(const QStringList &files, bool m
     }
 
     return m_installFiles;
+
 }
 
-
-//弹出删除进度框后执行删除操作
+//弹出删除进度框后执行删除操作(勿删勿动!)*
 void DFontMgrMainWindow::startToDelete()
 {
     QStringList uninstallFonts = m_fontPreviewListView->selectedFonts(nullptr, nullptr);
@@ -1715,7 +1726,7 @@ void DFontMgrMainWindow::startToDelete()
     m_fontManager->start();
 }
 
-//调节右下角字体大小显示label显示内容/*UT000539(勿删勿动!)*/
+//调节右下角字体大小显示label显示内容/*UT000539*/(勿删勿动!)*
 void DFontMgrMainWindow::autoLabelWidth(QString text, DLabel *lab, QFontMetrics fm)
 {
     QString str = text;

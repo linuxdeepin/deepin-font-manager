@@ -66,7 +66,7 @@ void DFontPreviewListDataThread::doWork()
         //从fontconfig配置文件同步字体启用/禁用状态数据
         syncFontEnableDisableStatusData(disableFontList);
 
-        refreshFontListData(true, disableFontList);
+        refreshFontListData(true, false, disableFontList);
 
         m_view->onFinishedDataLoad();
         return;
@@ -87,6 +87,7 @@ void DFontPreviewListDataThread::doWork()
     for (QString filePath : disableFontList) {
         index = insertFontItemData(filePath, index, chineseFontPathList, monoSpaceFontPathList, true, false);
     }
+
 
     Q_EMIT m_view->multiItemsAdded(m_fontModelList);
 
@@ -165,15 +166,20 @@ void DFontPreviewListDataThread::onFileDeleted(const QStringList &files)
 //    qDebug() << __FUNCTION__ << files.size() << " end ";
 }
 
-void DFontPreviewListDataThread::onFileAdded(const QStringList &files)
+void DFontPreviewListDataThread::onFileAdded(const QStringList &files, bool isFirstInstall)
 {
-    if (files.isEmpty())
+    if (files.isEmpty()) {
+        if (isFirstInstall) {
+            Q_EMIT SignalManager::instance()->showInstallErrorDialog();
+        }
         return;
+    }
+
 
     if (m_mutex != nullptr)
         QMutexLocker locker(m_mutex);
 
-    refreshFontListData(false, files);
+    refreshFontListData(false, isFirstInstall, files);
 }
 
 QList<DFontPreviewItemData> DFontPreviewListDataThread::getFontModelList()
@@ -283,9 +289,9 @@ int DFontPreviewListDataThread::insertFontItemData(const QString &filePath,
     return (index + 1);
 }
 
-void DFontPreviewListDataThread::refreshFontListData(bool isStartup, const QStringList &installFont)
+void DFontPreviewListDataThread::refreshFontListData(bool isStartup,  bool isFirstInstall, const QStringList &installFont)
 {
-    qDebug() << __FUNCTION__ << " begin " << installFont.size();
+    qDebug() << __FUNCTION__ << " begin";
     DFontInfoManager *fontInfoMgr = DFontInfoManager::instance();
     QStringList strAllFontList = fontInfoMgr->getAllFontPath();
 
@@ -296,6 +302,8 @@ void DFontPreviewListDataThread::refreshFontListData(bool isStartup, const QStri
             if (!strAllFontList.contains(filePath))
                 strAllFontList << filePath;
         }
+        qDebug() << installFont;
+
     } else {
         fontInfoList = m_fontModelList;
     }
@@ -333,28 +341,29 @@ void DFontPreviewListDataThread::refreshFontListData(bool isStartup, const QStri
     m_view->enableFonts();
 
     m_diffFontModelList.clear();
-
-    //根据文件路径比较出不同的字体文件
-    QSet<QString> allFontListSet = strAllFontList.toSet();
-    QSet<QString> diffSet = allFontListSet.subtract(dbFilePathSet);
-    qDebug() << "diffSet count:" << diffSet.count();
-    if (diffSet.count() > 0) {
-        int maxFontId = m_dbManager->getCurrMaxFontId();
-        QList<QString> diffFilePathList = diffSet.toList();
-        for (int i = 0; i < diffFilePathList.size(); ++i) {
-            QString filePath = diffFilePathList.at(i);
-            if (m_dbManager->isSystemFont(filePath) || installFont.contains(filePath)) {
-                bool isEnabled = (isStartup && installFont.contains(filePath)) ? false : true;
-                insertFontItemData(filePath, maxFontId + i + 1, chineseFontPathList, monoSpaceFontPathList, isStartup, isEnabled);
+    isStartup = false;
+    if (!isStartup) {
+        //根据文件路径比较出不同的字体文件
+        QSet<QString> allFontListSet = strAllFontList.toSet();
+        QSet<QString> diffSet = allFontListSet.subtract(dbFilePathSet);
+        qDebug() << "diffSet count:" << diffSet.count();
+        if (diffSet.count() > 0) {
+            int maxFontId = m_dbManager->getCurrMaxFontId();
+            QList<QString> diffFilePathList = diffSet.toList();
+            for (int i = 0; i < diffFilePathList.size(); ++i) {
+                QString filePath = diffFilePathList.at(i);
+                if (m_dbManager->isSystemFont(filePath) || installFont.contains(filePath)) {
+                    bool isEnabled = (isStartup && installFont.contains(filePath)) ? false : true;
+                    insertFontItemData(filePath, maxFontId + i + 1, chineseFontPathList, monoSpaceFontPathList, isStartup, isEnabled);
+                }
             }
         }
-    }
-    m_dbManager->commitAddFontInfo();
 
+        m_dbManager->commitAddFontInfo();
+    }
     if (!isStartup && !installFont.isEmpty()) {
         Q_EMIT m_view->multiItemsAdded(m_diffFontModelList);
-        Q_EMIT m_view->itemsSelected(installFont);
-//        Q_EMIT SignalManager::instance()->showInstallFloatingMessage(m_diffFontModelList.size());
+        Q_EMIT m_view->itemsSelected(installFont, isFirstInstall);
     } else {
         Q_EMIT m_view->multiItemsAdded(m_fontModelList);
     }
@@ -392,12 +401,12 @@ void DFontPreviewListDataThread::syncFontEnableDisableStatusData(const QStringLi
     }
 
     QList<DFontPreviewItemData> fontInfoList = m_dbManager->getAllFontInfo();
-//    QStringList fontList;
+    QStringList fontList;
 
     for (int i = 0; i < fontInfoList.size(); i++) {
         DFontPreviewItemData fontItemData = fontInfoList.at(i);
         QString keyFilePath = fontItemData.fontInfo.filePath;
-//        fontList << keyFilePath;
+        fontList << keyFilePath;
 
         if (fontItemData.isEnabled != disableFontMap.value(keyFilePath))
             continue;

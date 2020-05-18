@@ -94,7 +94,7 @@ void DFInstallErrorListDelegate::drawFontName(QPainter *painter, const QStyleOpt
 //                                                           fontFileNameRect.width(),
 //                                                           Qt::TextShowMnemonic);
 
-    //Automatically truncates and adds ellipsis based on the font width /*UT000539*/
+    //Automatically truncates and adds ellipsis based on the font width /*UT000539*/(勿删勿动!)*
     //QString elidedFontFileNameText = fontMetric.elidedText(strFontFileName, Qt::ElideRight, 235);
     //ut000442 Optimize the adaptive effect here 20200421
     QString elidedFontFileNameText;
@@ -305,6 +305,60 @@ DFInstallErrorListView::~DFInstallErrorListView()
 void DFInstallErrorListView::initErrorListData()
 {
     m_errorListSourceModel = new QStandardItemModel(this);
+    DFontInfo fontInfo;
+    for (int i = 0; i < m_installErrorFontModelList.size(); i++) {
+
+        QStandardItem *item = new QStandardItem;
+        DFInstallErrorItemModel itemModel = m_installErrorFontModelList.at(i);
+        item->setData(QVariant::fromValue(itemModel), Qt::DisplayRole);
+        m_errorListSourceModel->appendRow(item);
+
+        fontInfo = m_fontInfoManager->getFontInfo(itemModel.strFontFilePath, true);
+        m_errorFontlist.append(fontInfo.familyName + fontInfo.styleName);
+    }
+
+    this->setModel(m_errorListSourceModel);
+
+    //设置默认选中第一行
+    QModelIndex firstRowModelIndex = m_errorListSourceModel->index(0, 0);
+
+    DFInstallErrorItemModel itemModel =
+        qvariant_cast<DFInstallErrorItemModel>(m_errorListSourceModel->data(firstRowModelIndex));
+
+    if (itemModel.bSelectable) {
+        selectionModel()->select(firstRowModelIndex, QItemSelectionModel::Select);
+    }
+}
+
+void DFInstallErrorListView::initDelegate()
+{
+    m_errorListItemDelegate = new DFInstallErrorListDelegate(this);
+    this->setItemDelegate(m_errorListItemDelegate);
+}
+
+void DFInstallErrorListView::addErrorListData(QList<DFInstallErrorItemModel> installErrorFontModelList)
+{
+    m_errorListSourceModel->clear();
+    this->setModel(m_errorListSourceModel);
+//    m_installErrorFontModelList.append(installErrorFontModelList);
+    DFontInfo fontInfo;
+    foreach (auto it, installErrorFontModelList) {
+        fontInfo = m_fontInfoManager->getFontInfo(it.strFontFilePath, true);
+        if (!m_errorFontlist.contains(fontInfo.familyName + fontInfo.styleName)) {
+            m_installErrorFontModelList.append(it);
+            m_errorFontlist.append(it.strFontFileName);
+        }
+    }
+
+
+//    QSet<QVariant> m_installErrorFontModelSet;
+
+//    foreach (auto it, m_installErrorFontModelList) {
+//        m_installErrorFontModelSet.insert(QVariant::fromValue(it));
+//    }
+
+//    qDebug() << m_installErrorFontModelSet.count() << endl;
+
 
     for (int i = 0; i < m_installErrorFontModelList.size(); i++) {
 
@@ -326,12 +380,6 @@ void DFInstallErrorListView::initErrorListData()
     if (itemModel.bSelectable) {
         selectionModel()->select(firstRowModelIndex, QItemSelectionModel::Select);
     }
-}
-
-void DFInstallErrorListView::initDelegate()
-{
-    m_errorListItemDelegate = new DFInstallErrorListDelegate(this);
-    this->setItemDelegate(m_errorListItemDelegate);
 }
 
 QStandardItemModel *DFInstallErrorListView::getErrorListSourceModel()

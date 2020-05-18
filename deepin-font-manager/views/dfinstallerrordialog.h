@@ -5,6 +5,7 @@
 #include "dfinstallerroritemmodel.h"
 #include "dfontinfomanager.h"
 #include "dfinstallerrorlistview.h"
+#include "signalmanager.h"
 
 #include <DFrame>
 #include <DLabel>
@@ -38,7 +39,8 @@ public:
     explicit DFInstallErrorDialog(QWidget *parent = nullptr,
                                   const QStringList &errorInstallFontFileList = QStringList(),
                                   const QStringList &systemFontFileListPsname = QStringList(),
-                                  const QStringList &systemFontFileListFamilyname = QStringList());
+                                  const QStringList &systemFontFileListFamilyname = QStringList()
+                                 );
     ~DFInstallErrorDialog();
 
     void initData();
@@ -66,6 +68,9 @@ private:
     void keyPressEvent(QKeyEvent *event) Q_DECL_OVERRIDE;
 
     QWidget *titleFrame;
+    SignalManager *m_signalManager = SignalManager::instance();
+
+
     DLabel *logoLabel;
     DLabel *titleLabel;
     //QWidget *contentFrame;
@@ -83,8 +88,9 @@ signals:
 
 public slots:
     void onListItemClicked(QModelIndex index);
-
+    void addData(QStringList &errorFileList);
     void onControlButtonClicked(int btnIndex);
 };
+
 
 #endif  // DFINSTALLERRORDIALOG_H

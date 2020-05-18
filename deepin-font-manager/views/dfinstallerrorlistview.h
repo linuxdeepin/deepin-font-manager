@@ -2,6 +2,7 @@
 #define DFINSTALLERRORLISTVIEW_H
 
 #include "dfinstallerroritemmodel.h"
+#include "dfontinfodialog.h"
 
 #include <DListView>
 
@@ -47,14 +48,16 @@ public:
     void setSelection(const QRect &rect, QItemSelectionModel::SelectionFlags command) override;
     void initErrorListData();
     void initDelegate();
-
+    void addErrorListData(QList<DFInstallErrorItemModel> installErrorFontModelList);
     QStandardItemModel *getErrorListSourceModel();
 
 private:
 
+    DFontInfoManager *m_fontInfoManager;
     DFInstallErrorListDelegate *m_errorListItemDelegate;
     QStandardItemModel *m_errorListSourceModel;
     QList<DFInstallErrorItemModel> m_installErrorFontModelList;
+    QList<QString> m_errorFontlist;
 
     bool m_bLeftMouse;
 

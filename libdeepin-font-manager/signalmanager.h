@@ -14,19 +14,25 @@ signals:
     void updateUninstallDialog(const QString &fontName, int index, int totalCount);
     void closeUninstallDialog();
     void showInstallFloatingMessage(int totalCount);
-    void sendInstallMessage(int totalCount);
-    void sendReInstallMessage(int totalCount);
+    void sendInstallMessage(const QStringList &m_finishFileList);
+    void sendReInstallMessage(const QStringList &m_finishFileList);
     void startToInsert();
-    void finishFontInstall(const QStringList &fileList);
+    void finishFontInstall(const QStringList &fileList, bool isNeedCheckPopErrdialog = false);
     void trigerCollect(bool favorite);
     void sizeChange(int height);
     void currentFontGroup(int currentFontGroup);
     void prevFontChanged();
     void refreshCurRect();
     void requestInstallAdded();
+    void popInstallErrorDialog();
+    void hideInstallErrorDialog();
+    void updateInstallErrorListview(QStringList &errorFileList);
+    void installDuringPopErrorDialog(const QStringList &fileList);
     void setIsJustInstalled();
     void closeInstallDialog();
-    void refreshFocus(int count);//刷新聚焦状态
+    void showInstallErrorDialog();
+    void freshListView();
+    void refreshFocus(int count);
     void changeView();
 private:
     explicit SignalManager(QObject *parent = nullptr);

@@ -30,8 +30,8 @@ class DFontManager : public QThread
     Q_OBJECT
 
 public:
-    enum Type { Install, ReInstall, UnInstall };
-
+    enum Type { Install, ReInstall, UnInstall, HalfwayInstall};
+    enum InstallStatus {InstallSuccess, HalfwayInstallSuccess, Failed};
     static DFontManager *instance();
     DFontManager(QObject *parent = nullptr);
     ~DFontManager();
@@ -71,7 +71,7 @@ protected:
 
 private:
     bool doCmd(const QString &program, const QStringList &arguments);
-    void handleInstall();
+    void handleInstall(bool isHalfwayInstall = false);
     void handleUnInstall();
     void handleReInstall();
     void doInstall(const QStringList &fileList, bool reinstal = false);

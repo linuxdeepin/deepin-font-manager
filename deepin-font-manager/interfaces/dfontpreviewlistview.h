@@ -51,10 +51,10 @@ public:
     void setModel(QAbstractItemModel *model) Q_DECL_OVERRIDE;
 
     void rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end) Q_DECL_OVERRIDE;
+    void keyPressEvent(QKeyEvent *event)Q_DECL_OVERRIDE;
+
 
     void setRightContextMenu(QMenu *rightMenu);
-
-    void keyPressEvent(QKeyEvent *event)Q_DECL_OVERRIDE;
 
     QModelIndex currModelIndex();
     DFontPreviewItemData currModelData();
@@ -81,9 +81,9 @@ public:
     bool isAtListviewTop();
     QString getPreviewTextWithSize(int *fontSize = nullptr);
     void setCurrentSelected(int indexRow);
-
 protected:
     void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected) override;
+
 private:
     void initConnections();
 
@@ -95,6 +95,7 @@ private:
 
     void scrollWithTheSelected();
     void refreshRect();
+    void setSelectedFalse();
 
     bool m_bLoadDataFinish = false;
     bool m_bLeftMouse = true;
@@ -121,9 +122,10 @@ private:
     FontGroup m_currentFontGroup;
 
     QRect m_curRect;
-    bool m_isJustInstalled = false;
     int m_currentSelectedRow = -1;
     bool isSelectedNow = false;
+    bool m_isJustInstalled = false;
+
 signals:
     //用于DFontPreviewListView内部使用的信号
     void onClickEnableButton(const QModelIndexList &index, bool setValue, bool isFromActiveFont = false);
@@ -137,12 +139,12 @@ signals:
     void onLoadFontsStatus(int type);
 
     void requestDeleted(const QStringList &files);
-    void requestAdded(const QStringList &files);
+    void requestAdded(const QStringList &files, bool isFirstInstall = false);
     void itemAdded(const DFontPreviewItemData &data);
     void multiItemsAdded(const QList<DFontPreviewItemData> &data);
     void itemRemoved(const DFontPreviewItemData &data);
     void itemRemovedFromSys(const DFontPreviewItemData &data);
-    void itemsSelected(const QStringList &files);
+    void itemsSelected(const QStringList &files, bool isFirstInstall = false);
     void itemSelected(const QString &file);
     void rowCountChanged();
 
@@ -152,7 +154,7 @@ public slots:
     void onListViewItemCollectionBtnClicked(const QModelIndexList &index, bool setValue, bool isFromCollectFont = false);
     void onListViewShowContextMenu(const QModelIndex &index);
     void onFinishedDataLoad();
-    void selectFonts(const QStringList &fileList);
+    void selectFonts(const QStringList &fileList, bool isFirstInstall = false);
     void selectFont(const QString &file);
     void onItemAdded(const DFontPreviewItemData &itemData);
     void onMultiItemsAdded(const QList<DFontPreviewItemData> &data);

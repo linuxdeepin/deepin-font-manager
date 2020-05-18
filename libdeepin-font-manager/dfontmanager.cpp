@@ -131,12 +131,16 @@ void DFontManager::run()
     case Install:
         handleInstall();
         break;
+    case HalfwayInstall:
+        handleInstall(true);
+        break;
     case ReInstall:
         handleReInstall();
         break;
     case UnInstall:
         handleUnInstall();
         break;
+
     default:
         break;
     }
@@ -155,6 +159,10 @@ bool DFontManager::doCmd(const QString &program, const QStringList &arguments)
     case ReInstall:
         doInstall(arguments, true);
         break;
+    case HalfwayInstall:
+        doInstall(arguments);
+        break;
+
 
     case UnInstall:
         doUninstall(arguments);
@@ -166,7 +174,7 @@ bool DFontManager::doCmd(const QString &program, const QStringList &arguments)
     return !failed;
 }
 
-void DFontManager::handleInstall()
+void DFontManager::handleInstall(bool isHalfwayInstall)
 {
     //if (doCmd("pkexec", QStringList() << "dfont-install" << m_instFileList)) {
 
@@ -174,8 +182,12 @@ void DFontManager::handleInstall()
         if (m_instFileList.count() == 1) {
             // emit installFinished();
         }
+        if (!isHalfwayInstall) {
+            Q_EMIT installFinished(InstallStatus::InstallSuccess, m_installOutList);
+        } else {
+            Q_EMIT installFinished(InstallStatus::HalfwayInstallSuccess, m_installOutList);
+        }
 
-        Q_EMIT installFinished(0, m_installOutList);
     } else {
         // For:unathorized exit
 
@@ -255,10 +267,11 @@ void DFontManager::doInstall(const QStringList &fileList, bool reinstall)
         if (fileList.count() == 1) {
 //            qDebug() << __FUNCTION__ << target.toUtf8().data();
 //            if (!reinstall)
-//          Q_EMIT installPositionChanged(target.toUtf8().data());
-//  ut000442 之前安装一个字体时没有安装进度条,在此添加
-            Q_EMIT batchInstall(familyName, 100);
+//                Q_EMIT installPositionChanged(target.toUtf8().data());
 //            QThread::msleep(50);
+            //  ut000442 之前安装一个字体时没有安装进度条,在此添加
+            Q_EMIT batchInstall(familyName, 100);
+
         } else {
             QString filePath = filePathOrig;
             double percent = currentIndex / double(count) * 100;

@@ -44,12 +44,14 @@ protected:
     bool ifNeedShowExceptionWindow() const;
     bool isSystemFont(DFontInfo &f);
     void checkShowMessage();
+    void getNoSameFilesCount(const QStringList &filesList);
 
     void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
     void paintEvent(QPaintEvent *event) override;
 protected slots:
     void batchInstall();
     void batchReInstall();
+    void batchHalfwayInstall(const QStringList &filelist);
     void batchReInstallContinue();
     void onProgressChanged(const QString &familyName, const double &percent);
 
@@ -74,13 +76,14 @@ private:
     QStringList m_errorList;
     QStringList m_AllSysFilesPsname;
     QStringList m_AllSysFilesfamilyName;
+    QStringList m_finishInstallFiles;
 
+    QList<DFontInfo> m_installedFilesFontinfo;
 
-    int totalInstallFont = 0;
     int totalSysFontCount = 0;
-
     bool getInstallMessage = false;
     bool getReInstallMessage = false;
+    bool m_popedInstallErrorDialg = false;
 //    bool m_installFinishSent = false;
 //    bool m_installAdded = false;
 
@@ -88,7 +91,6 @@ private:
     bool m_isNeedSkipException {false};
     bool m_isFristThreadEnd = false;
     int systemFontCount = 0;
-    int m_abandonFilesCount = 0;
 
     InstallState m_installState {Install};
 
