@@ -213,7 +213,6 @@ void DFontMgrMainWindow::initConnections()
 
     }, Qt::UniqueConnection);
 
-
     // Search text changed
     QObject::connect(d->searchFontEdit, SIGNAL(textChanged(const QString &)), this,
                      SLOT(onSearchTextChanged(const QString &)));
@@ -1226,6 +1225,7 @@ void DFontMgrMainWindow::onFontInstallFinished(const QStringList &fileList, bool
 {
     Q_D(DFontMgrMainWindow);
 
+    m_fontPreviewListView->updateFont(false);
     Q_EMIT m_fontPreviewListView->requestAdded(fileList, isFirstInstall);
     d->textInputEdit->textChanged(d->textInputEdit->text());
     if (!fileList.isEmpty()) {
@@ -1239,7 +1239,7 @@ void DFontMgrMainWindow::onFontUninstallFinished(const QStringList &uninstallInd
 //    for (QString filePath : uninstallIndex) {
 //        m_fontPreviewListView->deleteFontModelIndex(filePath);
 //    }
-//    Q_EMIT requestDeleted(uninstallIndex);
+    Q_EMIT requestDeleted(uninstallIndex);
 }
 
 
@@ -1720,7 +1720,6 @@ void DFontMgrMainWindow::startToDelete()
     qDebug() << "Confirm delete:" << currItemData.fontInfo.filePath
              << " is system font:" << currItemData.fontInfo.isSystemFont;
     //force delete all fonts
-    Q_EMIT requestDeleted(uninstallFonts);
     m_fontManager->setType(DFontManager::UnInstall);
     m_fontManager->setUnInstallFile(uninstallFonts);
     m_fontManager->start();

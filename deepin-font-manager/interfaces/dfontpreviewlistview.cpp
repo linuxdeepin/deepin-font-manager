@@ -145,7 +145,6 @@ void DFontPreviewListView::onMultiItemsAdded(const QList<DFontPreviewItemData> &
 {
     if (data.isEmpty())
         return;
-
     QStandardItemModel *sourceModel = qobject_cast<QStandardItemModel *>(m_fontPreviewProxyModel->sourceModel());
     int rows = sourceModel->rowCount();
 //    qDebug() << __FUNCTION__ << data.size() << rows;
@@ -264,6 +263,9 @@ void DFontPreviewListView::initConnections()
 
     connect(m_signalManager, &SignalManager::currentFontGroup, this, &DFontPreviewListView::updateCurrentFontGroup);
     connect(m_signalManager, &SignalManager::refreshFocus, [ = ](int count) {
+        if (selectionModel()->selectedIndexes().isEmpty())
+            return;
+
         if (1 == count) {
             setCurrentSelected(selectionModel()->selectedIndexes().first().row());
         } else {
@@ -326,6 +328,20 @@ void DFontPreviewListView::deleteFontModelIndex(const QString &filePath, bool is
             m_fontPreviewProxyModel->sourceModel()->removeRow(i);
             break;
         }
+    }
+}
+
+void DFontPreviewListView::updateFont(bool nofont)
+{
+    if (!nofont) {
+        m_fontPreviewItemDelegate->setNoFont(nofont);
+        return;
+    }
+
+    QStringList fonts = DFontInfoManager::instance()->getAllFontPath();
+    if (fonts.isEmpty()) {
+        QFontDatabase::removeAllApplicationFonts();
+        m_fontPreviewItemDelegate->setNoFont(nofont);
     }
 }
 
@@ -750,6 +766,7 @@ void DFontPreviewListView::enableFonts()
 
     DFMXmlWrapper::deleteNodeWithTextList(fontConfigPath, "pattern", m_enableFontList);
     m_enableFontList.clear();
+    m_fontPreviewItemDelegate->setNoFont(false);
 }
 
 void DFontPreviewListView::disableFonts()
@@ -1022,6 +1039,7 @@ void DFontPreviewListView::updateChangedDir(const QString &path)
     }
     DFMDBManager::instance()->commitDeleteFontInfo();
     enableFonts();
+    updateFont();
 
     Q_EMIT rowCountChanged();
 //    qDebug() << __FUNCTION__ << path << " end ";
@@ -1065,10 +1083,7 @@ void DFontPreviewListView::deleteCurFonts(const QStringList &files)
 //    emit SignalManager::instance()->updateUninstallDialog(QString("test"), delCnt, files.size());
     emit SignalManager::instance()->closeUninstallDialog();
     enableFonts();
-    QStringList fonts = DFontInfoManager::instance()->getAllFontPath();
-    if (fonts.isEmpty())
-        QFontDatabase::removeAllApplicationFonts();
-
+    updateFont();
 //    DFontInfoManager::instance()->removeFontInfo();
     Q_EMIT rowCountChanged();
     qDebug() << __FUNCTION__ << " after delete " << m_dataThread->getFontModelList().size() << m_fontPreviewProxyModel->rowCount()  << m_fontPreviewProxyModel->sourceModel()->rowCount();

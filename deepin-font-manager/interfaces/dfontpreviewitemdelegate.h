@@ -13,6 +13,7 @@ class DFontPreviewItemDelegate : public DStyledItemDelegate
 
 public:
     explicit DFontPreviewItemDelegate(QAbstractItemView *parent = nullptr);
+    void setNoFont(bool noFont);
 
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const Q_DECL_OVERRIDE;
     QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const Q_DECL_OVERRIDE;
@@ -34,6 +35,7 @@ private:
     void paintBackground(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
     QAbstractItemView *m_parentView;
+    bool m_hasFont;
 //    QStringList chineseFontPathList;
 };
 
