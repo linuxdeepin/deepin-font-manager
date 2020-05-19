@@ -128,7 +128,7 @@ public slots:
     void handleMenuEvent(QAction *);
 
     void onSearchTextChanged(const QString &currStr);
-    void onPreviewTextChanged(const QString &text);
+    void onPreviewTextChanged1(const QString &text);
     void onFontSizeChanged(int fontSize);
 
     void onLeftSiderBarItemClicked(int index);

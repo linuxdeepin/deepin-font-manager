@@ -175,7 +175,7 @@ void DFInstallNormalWindow::initConnections()
 
 //            emit finishFontInstall(m_outfileList);
         }
-
+        qDebug() << __func__ << "S" << endl;
         if (state == 0) {
             emit m_signalManager->finishFontInstall(m_outfileList, true);
         } else if (state == 1) {

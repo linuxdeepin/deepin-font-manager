@@ -1149,7 +1149,7 @@ void DFontMgrMainWindow::onSearchTextChanged(const QString &currStr)
 //    m_fontPreviewListView->scrollToTop();
 }
 
-void DFontMgrMainWindow::onPreviewTextChanged(const QString &text)
+void DFontMgrMainWindow::onPreviewTextChanged1(const QString &text)
 {
     bool isEmpty = text.isEmpty();
     if (!isEmpty) {
@@ -1161,7 +1161,7 @@ void DFontMgrMainWindow::onPreviewTextChanged(const QString &text)
             m_previewText = FTM_DEFAULT_PREVIEW_TEXT;
         }
     }
-
+    qDebug() << __func__ << "s" << endl;
     onPreviewTextChanged();
 }
 
@@ -1215,10 +1215,14 @@ void DFontMgrMainWindow::onLeftSiderBarItemClicked(int index)
     filterModel->setFilterKeyColumn(0);
     filterModel->setFilterGroup(filterGroup);
 //    filterModel->setEditStatus(m_searchTextStatusIsEmpty);
+
+    qDebug() << "onFontListViewRowCountChanged s" << endl;
     onFontListViewRowCountChanged();
+    onPreviewTextChanged();
+    qDebug() << "onFontListViewRowCountChanged e" << endl;
 
 //    QString previewText = d->textInputEdit->text();
-    onPreviewTextChanged();
+//    onPreviewTextChanged();
 }
 
 void DFontMgrMainWindow::onFontInstallFinished(const QStringList &fileList, bool isFirstInstall)
@@ -1253,6 +1257,8 @@ void DFontMgrMainWindow::onFontUninstallFinished(const QStringList &uninstallInd
 void DFontMgrMainWindow::onFontListViewRowCountChanged()
 {
     Q_D(DFontMgrMainWindow);
+    qDebug() << QThread::currentThreadId() << endl;
+
     unsigned int bShow = 0;
     DFontPreviewProxyModel *filterModel = m_fontPreviewListView->getFontPreviewProxyModel();
     qDebug() << " filter count " << filterModel->rowCount();
@@ -1650,15 +1656,15 @@ void DFontMgrMainWindow::waitForInsert(bool deleting)
 
 void DFontMgrMainWindow::onPreviewTextChanged()
 {
-
-
+    qDebug() << QThread::currentThreadId() << endl;
+    qDebug() << __FUNCTION__ << "Sstart+++++" << endl;
     if (!m_fontPreviewListView->isListDataLoadFinished()) {
         return;
     }
 
     DFontPreviewProxyModel *filterModel = m_fontPreviewListView->getFontPreviewProxyModel();
     int total = filterModel->rowCount();
-    qDebug() << __FUNCTION__ << "filter Count:" << filterModel->rowCount() << endl;
+//    qDebug() << __FUNCTION__ << "filter Count:" << filterModel->rowCount() << endl;
 
     for (int rowIndex = 0; rowIndex < total; rowIndex++) {
         QModelIndex modelIndex = filterModel->index(rowIndex, 0);

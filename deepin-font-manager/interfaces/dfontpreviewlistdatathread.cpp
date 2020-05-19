@@ -35,7 +35,7 @@ DFontPreviewListDataThread::DFontPreviewListDataThread(DFontPreviewListView *vie
     moveToThread(&mThread);
     QObject::connect(&mThread, SIGNAL(started()), this, SLOT(doWork()));
     connect(m_view, &DFontPreviewListView::requestDeleted, this, &DFontPreviewListDataThread::onFileDeleted, Qt::QueuedConnection);
-    connect(m_view, &DFontPreviewListView::requestAdded, this, &DFontPreviewListDataThread::onFileAdded, Qt::QueuedConnection);
+    connect(m_view, &DFontPreviewListView::requestAdded, this, &DFontPreviewListDataThread::onFileAdded/*, Qt::QueuedConnection*/);
     connect(this, &DFontPreviewListDataThread::requestForceDeleteFiles, this, &DFontPreviewListDataThread::forceDeleteFiles);
     mThread.start();
 //    });
@@ -65,7 +65,7 @@ void DFontPreviewListDataThread::doWork()
 
         //从fontconfig配置文件同步字体启用/禁用状态数据
         syncFontEnableDisableStatusData(disableFontList);
-
+        qDebug() << __func__ << "S" << endl;
         refreshFontListData(true, false, disableFontList);
 
         m_view->onFinishedDataLoad();
@@ -176,7 +176,7 @@ void DFontPreviewListDataThread::onFileAdded(const QStringList &files, bool isFi
 
     if (m_mutex != nullptr)
         QMutexLocker locker(m_mutex);
-
+    qDebug() << __func__ << "S" << endl;
     refreshFontListData(false, isFirstInstall, files);
 }
 

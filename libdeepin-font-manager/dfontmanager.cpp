@@ -41,6 +41,7 @@ DFontManager::DFontManager(QObject *parent)
     : QThread(parent)
 {
     connect(this, &QThread::finished, [ = ] {
+        qDebug() << QThread::currentThreadId() << endl;
         qDebug() << "########## finished";
     });
     connect(this, &QThread::started, [ = ] {
@@ -162,8 +163,6 @@ bool DFontManager::doCmd(const QString &program, const QStringList &arguments)
     case HalfwayInstall:
         doInstall(arguments);
         break;
-
-
     case UnInstall:
         doUninstall(arguments);
         break;
@@ -238,6 +237,8 @@ void DFontManager::setSystemFontCount(int systemFontCount)
 // install fileList fonts
 void DFontManager::doInstall(const QStringList &fileList, bool reinstall)
 {
+    qDebug() << __func__ << "s" << endl;
+
     QString target = "";
     QString targetDir = "";
 
@@ -288,10 +289,12 @@ void DFontManager::doInstall(const QStringList &fileList, bool reinstall)
 
         }
     }
-
+    qDebug() << __func__ << "process" << endl;
     QProcess process;
+    qDebug() << __func__ << "1" << endl;
     process.start("fc-cache");
-    process.waitForFinished();
+    qDebug() << __func__ << "2" << endl;
+    process.waitForFinished(100);
 
 //    if (!reinstall) {
 //        QString filename;
@@ -299,6 +302,7 @@ void DFontManager::doInstall(const QStringList &fileList, bool reinstall)
 //            filename = fileList.last();
 ////        Q_EMIT batchInstall(filename, 96);
 //    }
+    qDebug() << __func__ << "e" << endl;
 }
 
 void DFontManager::doUninstall(const QStringList &fileList)
@@ -335,7 +339,7 @@ void DFontManager::doUninstall(const QStringList &fileList)
 
     QProcess process;
     process.start("fc-cache");
-    process.waitForFinished();
+    process.waitForFinished(100);
 
     QThread::msleep(30);
     Q_EMIT uninstallFinished();

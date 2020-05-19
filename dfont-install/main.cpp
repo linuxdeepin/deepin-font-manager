@@ -41,9 +41,9 @@ inline void checkDirectory()
 
 int main(int argc, char *argv[])
 {
-    qDebug()<<"ininininininininininininininininininininininininininininininin\nininininininininininininininininininininin";
+    qDebug() << "ininininininininininininininininininininininininininininininin\nininininininininininininininininininininin";
     QProcess *process = new QProcess;
-        process->start("fc-cache");
+    process->start("fc-cache");
     QCoreApplication app(argc, argv);
     QCommandLineParser parser;
     parser.process(app);
@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
     QString target = "";
     QString targetDir = "";
 
-    for ( QString file : fileList) {
+    for (QString file : fileList) {
         QStringList fileParamList = file.split("|");
         QString filePathOrig = fileParamList.at(0);
         QString familyName = fileParamList.at(1);
@@ -102,7 +102,7 @@ int main(int argc, char *argv[])
     }
 
 
-    process->waitForFinished();
+    process->waitForFinished(-1);
     process->deleteLater();
 
     return 0;

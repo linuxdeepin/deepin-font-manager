@@ -89,6 +89,7 @@ bool DFontPreviewListView::isListDataLoadFinished()
 
 void DFontPreviewListView::refreshFontListData(const QStringList &installFont)
 {
+    qDebug() << __func__ << "S" << endl;
     m_dataThread->refreshFontListData(false, false, installFont);
 
     QList<DFontPreviewItemData> diffFontInfoList = m_dataThread->getDiffFontModelList();
@@ -740,8 +741,6 @@ void DFontPreviewListView::keyPressEvent(QKeyEvent *event)
     } else {
         DListView::keyPressEvent(event);
     }
-
-
 }
 
 void DFontPreviewListView::enableFont(const QString &filePath)
