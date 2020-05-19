@@ -232,7 +232,7 @@ int DFontPreviewListDataThread::insertFontItemData(const QString &filePath,
 
     itemData.strFontId = QString::number(index);
     itemData.strFontFileName = filePathInfo.baseName();
-    itemData.strFontPreview = m_view->getPreviewTextWithSize(&itemData.iFontSize);
+//    itemData.strFontPreview = m_view->getPreviewTextWithSize(&itemData.iFontSize);
     itemData.isEnabled = isEnabled;
     itemData.isPreviewEnabled = true;
     itemData.isCollected = false;

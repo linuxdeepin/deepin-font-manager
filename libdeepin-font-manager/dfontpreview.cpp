@@ -116,21 +116,21 @@ void DFontPreview::paintEvent(QPaintEvent *e)
 
     // if we don't have lowercase/uppercase/punctuation text in the face
     // we omit it directly, and render a random text below.
-    if (checkFontContainText(lowerTextStock)) {
+    if (checkFontContainText(m_face, lowerTextStock)) {
         const int lowerWidth = metrics.width(lowerTextStock);
         const int lowerHeight = metrics.height();
         painter.drawText(QRect(x, y + padding, lowerWidth, lowerHeight), Qt::AlignLeft, lowerTextStock);
         y += lowerHeight;
     }
 
-    if (checkFontContainText(upperTextStock)) {
+    if (checkFontContainText(m_face, upperTextStock)) {
         const int upperWidth = metrics.width(upperTextStock);
         const int upperHeight = metrics.height();
         painter.drawText(QRect(x, y + padding, upperWidth, upperHeight), Qt::AlignLeft, upperTextStock);
         y += upperHeight;
     }
 
-    if (checkFontContainText(punctuationTextStock)) {
+    if (checkFontContainText(m_face, punctuationTextStock)) {
         const int punWidth = metrics.width(punctuationTextStock);
         int punHeight = metrics.height();
         painter.drawText(QRect(x, y + padding, punWidth, punHeight), Qt::AlignLeft, punctuationTextStock);
@@ -184,21 +184,21 @@ QString DFontPreview::getSampleString()
 
     // check the current system language sample string.
     sampleString = getLanguageSampleString(QLocale::system().name());
-    if (checkFontContainText(sampleString) && !sampleString.isEmpty()) {
+    if (checkFontContainText(m_face, sampleString) && !sampleString.isEmpty()) {
         isAvailable = true;
     }
 
     // check english sample string.
     if (!isAvailable) {
         sampleString = getLanguageSampleString("en");
-        if (checkFontContainText(sampleString)) {
+        if (checkFontContainText(m_face, sampleString)) {
             isAvailable = true;
         }
     }
 
     // random string from available chars.
     if (!isAvailable) {
-        sampleString = buildCharlistForFace(36);
+        sampleString = buildCharlistForFace(m_face, 36);
     }
 
     return sampleString;
@@ -227,19 +227,19 @@ QString DFontPreview::getLanguageSampleString(const QString &language)
     return result;
 }
 
-bool DFontPreview::checkFontContainText(const QString &text)
+bool DFontPreview::checkFontContainText(FT_Face face, const QString &text)
 {
-    if (m_face == nullptr || m_face->num_charmaps == 0)
+    if (face == nullptr || face->num_charmaps == 0)
         return false;
 
     bool retval = true;
 
     int err = 0;
-    if (m_face->charmap == nullptr)
-        err = FT_Select_Charmap(m_face, FT_ENCODING_UNICODE);
+    if (face->charmap == nullptr)
+        err = FT_Select_Charmap(face, FT_ENCODING_UNICODE);
     if (err != 0) {
-        for (int i = 0; i < m_face->num_charmaps; ++i) {
-            err = FT_Select_Charmap(m_face, m_face->charmaps[i]->encoding);
+        for (int i = 0; i < face->num_charmaps; ++i) {
+            err = FT_Select_Charmap(face, face->charmaps[i]->encoding);
             if (err == 0) {
                 break;
             }
@@ -247,7 +247,7 @@ bool DFontPreview::checkFontContainText(const QString &text)
     }
 
     for (auto ch : text) {
-        if (!FT_Get_Char_Index(m_face, ch.unicode())) {
+        if (!FT_Get_Char_Index(face, ch.unicode())) {
             retval = false;
             break;
         }
@@ -256,19 +256,23 @@ bool DFontPreview::checkFontContainText(const QString &text)
     return retval;
 }
 
-QString DFontPreview::buildCharlistForFace(int length)
+QString DFontPreview::buildCharlistForFace(FT_Face face, int length)
 {
-    unsigned int glyph;
-    unsigned long ch;
-    int totalChars = 0;
     QString retval;
+    if (face == nullptr)
+        return retval;
 
-    ch = FT_Get_First_Char(m_face, &glyph);
+    unsigned int glyph = 0;
+    unsigned long ch = 0;
+    int totalChars = 0;
+
+    ch = FT_Get_First_Char(face, &glyph);
+    retval.append(QChar(static_cast<int>(ch)));
 
     while (glyph != 0) {
         retval.append(QChar(static_cast<int>(ch)));
         retval = retval.simplified();
-        ch = FT_Get_Next_Char(m_face, ch, &glyph);
+        ch = FT_Get_Next_Char(face, ch, &glyph);
         totalChars++;
 
         if (retval.count() == length)

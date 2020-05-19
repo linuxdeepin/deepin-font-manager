@@ -63,6 +63,8 @@ void DFontPreviewItemDelegate::paintForegroundFontName(QPainter *painter, const 
     QFont nameFont = painter->font();
     nameFont.setPixelSize(DFontSizeManager::instance()->fontPixelSize(DFontSizeManager::T6));
     painter->setFont(nameFont);
+    if (!m_fdb.hasFamily(painter->fontInfo().family()))
+        return;
     DStyleHelper styleHelper;
     DPalette pa = DApplicationHelper::instance()->palette(m_parentView);
     QColor fillColor = styleHelper.getColor(static_cast<const QStyleOption *>(&option), pa, DPalette::TextTips);
@@ -178,21 +180,26 @@ void DFontPreviewItemDelegate::paintForegroundPreviewContent(QPainter *painter, 
 
 void DFontPreviewItemDelegate::paintForegroundPreviewFont(QPainter *painter, const QStyleOptionViewItem &option, const DFontPreviewItemData &itemData, int fontPixelSize, const QString &fontPreviewText) const
 {
-    QRect fontPreviewRect = adjustPreviewRect(option.rect);
-
-    painter->setPen(QPen(option.palette.color(DPalette::Text)));
-
+    QFont previewFont;
     if (itemData.isPreviewEnabled) {
-        QFont previewFont = adjustPreviewFont(itemData.fontInfo.familyName, itemData.fontInfo.styleName, fontPixelSize);
+        previewFont = adjustPreviewFont(itemData.fontInfo.familyName, itemData.fontInfo.styleName, fontPixelSize);
         previewFont.setPixelSize(fontPixelSize);
         painter->setFont(previewFont);
-        paintForegroundPreviewContent(painter, fontPreviewText, fontPreviewRect, previewFont);
+        if (painter->font().family() != painter->fontInfo().family()) {
+            m_fdb.addApplicationFont(itemData.fontInfo.filePath);
+            painter->setFont(previewFont);
+        }
     } else {
-        QFont previewFont;
         previewFont.setPixelSize(fontPixelSize);
         painter->setFont(previewFont);
-        paintForegroundPreviewContent(painter, fontPreviewText, fontPreviewRect, previewFont);
     }
+
+    if (!m_fdb.hasFamily(painter->fontInfo().family()))
+        return;
+
+    QRect fontPreviewRect = adjustPreviewRect(option.rect);
+    painter->setPen(QPen(option.palette.color(DPalette::Text)));
+    paintForegroundPreviewContent(painter, fontPreviewText, fontPreviewRect, previewFont);
 }
 
 void DFontPreviewItemDelegate::paintBackground(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
@@ -239,7 +246,8 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
         DFontPreviewItemData itemData = index.data(Qt::DisplayRole).value<DFontPreviewItemData>();
         int fontPixelSize = (index.data(Dtk::UserRole + 2).isNull()) ? itemData.iFontSize : index.data(Dtk::UserRole + 2).toInt();
         fontPixelSize = (fontPixelSize <= 0) ? FTM_DEFAULT_PREVIEW_FONTSIZE : fontPixelSize;
-        QString fontPreviewContent = index.data(Dtk::UserRole + 1).isNull() ? itemData.strFontPreview : index.data(Dtk::UserRole + 1).toString();
+        QString fontPreviewContent = index.data(Dtk::UserRole + 1).toString().isEmpty() ? itemData.fontInfo.defaultPreview : index.data(Dtk::UserRole + 1).toString();
+
         if (fontPreviewContent.isEmpty() || 0 == fontPixelSize) {
             painter->restore();
             return;

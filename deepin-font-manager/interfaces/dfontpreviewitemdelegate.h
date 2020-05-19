@@ -3,6 +3,8 @@
 
 #include "dfontpreviewitemdef.h"
 
+#include <QFontDatabase>
+
 #include <DStyledItemDelegate>
 
 DWIDGET_USE_NAMESPACE
@@ -35,7 +37,7 @@ private:
 
     QAbstractItemView *m_parentView;
     bool m_hasFont;
-
+    QFontDatabase m_fdb;
 };
 
 #endif  // DFONTPREVIEWITEMDELEGATE_H

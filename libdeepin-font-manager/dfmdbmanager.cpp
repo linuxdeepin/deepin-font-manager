@@ -47,7 +47,7 @@ DFontPreviewItemData DFMDBManager::parseRecordToItemData(const QMap<QString, QSt
     QFileInfo filePathInfo(filePath);
     filePathInfo.setCaching(false);
     itemData.strFontFileName = filePathInfo.baseName();
-    itemData.strFontPreview = QString(DApplication::translate("Font", "Don't let your dreams be dreams"));
+//    itemData.strFontPreview = QString(DApplication::translate("Font", "Don't let your dreams be dreams"));
     itemData.iFontSize = FTM_DEFAULT_PREVIEW_FONTSIZE;
     itemData.isEnabled = record.value("isEnabled").toInt();
     itemData.isPreviewEnabled = itemData.isEnabled;
@@ -79,6 +79,8 @@ DFontInfo DFMDBManager::getDFontInfo(const QMap<QString, QString> &record)
     fontInfo.fullname = record.value("fullname");
     fontInfo.psname = record.value("psname");
     fontInfo.trademark = record.value("trademark");
+    DFontInfoManager::instance()->getDefaultPreview(fontInfo);
+    qDebug() << __FUNCTION__ << fontInfo.familyName << fontInfo.defaultPreview;
 
     return fontInfo;
 }
@@ -117,8 +119,7 @@ QList<DFontPreviewItemData> DFMDBManager::getAllFontInfo()
     appendAllKeys(keyList);
 
     m_sqlUtil->findAllRecords(keyList, recordList);
-    for (int i = 0; i < recordList.size(); ++i) {
-        QMap<QString, QString> record = recordList.at(i);
+    for (QMap<QString, QString> &record : recordList) {
         if (record.size() > 0) {
             DFontPreviewItemData itemData = parseRecordToItemData(record);
             fontItemDataList.push_back(itemData);

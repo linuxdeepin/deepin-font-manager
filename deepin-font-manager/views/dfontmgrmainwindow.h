@@ -133,7 +133,6 @@ public slots:
 
     void onLeftSiderBarItemClicked(int index);
     void onFontInstallFinished(const QStringList &fileList, bool isFirstInstall = false);
-    void onFontUninstallFinished(const QStringList &uninstallIndex);
 
     void onFontListViewRowCountChanged();
 

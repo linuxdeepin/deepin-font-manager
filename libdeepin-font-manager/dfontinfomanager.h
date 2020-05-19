@@ -39,6 +39,9 @@ struct DFontInfo {
     QString fullname;
     QString psname;
     QString trademark;
+    //add default preview text
+//    int previewSettings;
+    QString defaultPreview;
 
 
     bool isInstalled {false};
@@ -87,9 +90,10 @@ public:
     QStringList getAllMonoSpaceFontPath() const;
     QString getFontType(const QString &filePath);
     DFontInfo getFontInfo(const QString &filePath, bool force = false);
+    QString getDefaultPreview(const QString &filePath);
     QString getInstFontPath(const QString &originPath, const QString &familyName);
     bool isFontInstalled(DFontInfo &data);
-    void removeFontInfo();
+    void getDefaultPreview(DFontInfo &data);
 
 private:
 //    QMap<QString, DFontInfo> m_fontInfoMap;

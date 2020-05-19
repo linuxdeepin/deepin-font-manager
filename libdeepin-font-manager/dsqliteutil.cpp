@@ -230,7 +230,8 @@ trademark from " + table_name;
     if (m_query->exec()) {
         while (m_query->next()) {
             QMap<QString, QString> mapRow;
-            for (int i = 0; i < key.size(); i++) {
+            int columnLen = key.size();
+            for (int i = 0; i < columnLen; i++) {
                 mapRow.insert(key.at(i), m_query->value(i).toString());
             }
             row.append(mapRow);

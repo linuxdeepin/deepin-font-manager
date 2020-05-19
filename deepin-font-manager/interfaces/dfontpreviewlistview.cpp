@@ -862,6 +862,7 @@ void DFontPreviewListView::onListViewItemEnableBtnClicked(const QModelIndexList 
         if (!fi.exists())
             continue;
         itemData.isEnabled = setValue;
+        itemData.isPreviewEnabled = setValue;
 
         //        qDebug() << __FUNCTION__ << "familyName" << itemData.fontInfo.familyName << endl;
 

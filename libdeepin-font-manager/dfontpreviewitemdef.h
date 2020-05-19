@@ -10,6 +10,9 @@
 
 //#define FTM_DEFAULT_PREVIEW_TEXT QString(tr("Don't let your dreams be dreams"))
 #define FTM_DEFAULT_PREVIEW_TEXT  QString(DApplication::translate("Font", "Don't let your dreams be dreams"))
+#define FTM_DEFAULT_PREVIEW_CN_TEXT QString("因理想而出生，为责任而成长")
+#define FTM_DEFAULT_PREVIEW_EN_TEXT QString("Don't let your dreams be dreams")
+#define FTM_DEFAULT_PREVIEW_DIGIT_TEXT QString("0123456789")
 #define FTM_DEFAULT_PREVIEW_FONTSIZE 30
 #define FTM_PREVIEW_ITEM_HEIGHT (72+2)
 
@@ -24,7 +27,7 @@ struct DFontPreviewItemData {
     QString strFontName;      //字体名称
     QString strFontFileName;  //字体文件名称
     int iFontSize;            //字体大小
-    QString strFontPreview;   //字体预览内容
+//    QString strFontPreview;   //字体预览内容
     bool isEnabled;           //是否启用
     bool isPreviewEnabled;    //是否启用(用于预览字体delegate,由于启用/禁用字体不是及时生效,需要该字段保存启用历史状态)
     bool isCollected;         //是否收藏
@@ -51,11 +54,12 @@ struct DFontPreviewItemData {
         fontInfo.isInstalled = false;
         fontInfo.isError = false;
         fontInfo.isSystemFont = true;
+        fontInfo.defaultPreview = "";
 
         strFontName = "";
         strFontFileName = "";
         iFontSize = 0;
-        strFontPreview = "";
+//        strFontPreview = "";
         isEnabled = false;
         isPreviewEnabled = false;
         isCollected = false;
@@ -86,11 +90,12 @@ struct DFontPreviewItemData {
         fontInfo.fullname = other.fontInfo.fullname;
         fontInfo.psname = other.fontInfo.psname;
         fontInfo.trademark = other.fontInfo.trademark;
+        fontInfo.defaultPreview = other.fontInfo.defaultPreview;
 
         strFontName = other.strFontName;
         strFontFileName = other.strFontFileName;
         iFontSize = other.iFontSize;
-        strFontPreview = other.strFontPreview;
+//        strFontPreview = other.strFontPreview;
         isEnabled = other.isEnabled;
         isPreviewEnabled = other.isPreviewEnabled;
         isCollected = other.isCollected;

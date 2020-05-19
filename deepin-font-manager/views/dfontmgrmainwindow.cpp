@@ -82,7 +82,7 @@ DFontMgrMainWindow::DFontMgrMainWindow(bool isQuickMode, QWidget *parent)
     , m_scZoomOut(nullptr)
     , m_scDefaultSize(nullptr)
     , m_previewFontSize(DEFAULT_FONT_SIZE)
-    , m_previewText(FTM_DEFAULT_PREVIEW_TEXT)
+    , m_previewText(QString()) //用户输入的预览
     , m_quickInstallWnd(nullptr)
     , d_ptr(new DFontMgrMainWindowPrivate(this))
 {
@@ -223,7 +223,7 @@ void DFontMgrMainWindow::initConnections()
                      SLOT(onLeftSiderBarItemClicked(int)));
 
     QObject::connect(m_fontManager, SIGNAL(uninstallFontFinished(const QStringList &)), this,
-                     SLOT(onFontUninstallFinished(const QStringList &)));
+                     SIGNAL(requestDeleted(const QStringList &)));
     QObject::connect(m_signalManager, &SignalManager::showInstallFloatingMessage, this, &DFontMgrMainWindow::onShowMessage);
 //    connect(this, &DFontMgrMainWindow::requestUpdatePreview, [ = ] {
 //        QString previewText = d->textInputEdit->text();
@@ -1158,16 +1158,8 @@ void DFontMgrMainWindow::onSearchTextChanged(const QString &currStr)
 void DFontMgrMainWindow::onPreviewTextChanged1(const QString &text)
 {
     bool isEmpty = text.isEmpty();
-    if (!isEmpty) {
-        if (m_previewText != text) {
-            m_previewText = text;
-        }
-    } else {
-        if (m_previewText != FTM_DEFAULT_PREVIEW_TEXT) {
-            m_previewText = FTM_DEFAULT_PREVIEW_TEXT;
-        }
-    }
-    qDebug() << __func__ << "s" << endl;
+    m_previewText = text;
+
     onPreviewTextChanged();
 }
 
@@ -1226,9 +1218,6 @@ void DFontMgrMainWindow::onLeftSiderBarItemClicked(int index)
     onFontListViewRowCountChanged();
     onPreviewTextChanged();
     qDebug() << "onFontListViewRowCountChanged e" << endl;
-
-//    QString previewText = d->textInputEdit->text();
-//    onPreviewTextChanged();
 }
 
 void DFontMgrMainWindow::onFontInstallFinished(const QStringList &fileList, bool isFirstInstall)
@@ -1242,17 +1231,6 @@ void DFontMgrMainWindow::onFontInstallFinished(const QStringList &fileList, bool
         showInstalledFiles();
     }
 }
-
-void DFontMgrMainWindow::onFontUninstallFinished(const QStringList &uninstallIndex)
-{
-//    qDebug() << "finished remove fonts:" << uninstallIndex << endl;
-//    for (QString filePath : uninstallIndex) {
-//        m_fontPreviewListView->deleteFontModelIndex(filePath);
-//    }
-    Q_EMIT requestDeleted(uninstallIndex);
-}
-
-
 
 /* 判断FontListView的结果并显示对应状态
  * dShow = 0 :查找到信息，显示正常
@@ -1619,7 +1597,6 @@ void DFontMgrMainWindow::showInstalledFiles()
 
 void DFontMgrMainWindow::waitForInsert(bool deleting)
 {
-
     if (m_waitForInstall.isEmpty())
         return;
 
@@ -1659,13 +1636,10 @@ void DFontMgrMainWindow::waitForInsert(bool deleting)
     if (deleting)
         m_fIsInstalling = false;
     m_waitForInstall.clear();
-
 }
 
 void DFontMgrMainWindow::onPreviewTextChanged()
 {
-    qDebug() << QThread::currentThreadId() << endl;
-    qDebug() << __FUNCTION__ << "Sstart+++++" << endl;
     if (!m_fontPreviewListView->isListDataLoadFinished()) {
         return;
     }
@@ -1722,7 +1696,6 @@ QStringList DFontMgrMainWindow::checkFilesSpace(const QStringList &files, bool m
     }
 
     return m_installFiles;
-
 }
 
 //弹出删除进度框后执行删除操作/*UT000539*/*

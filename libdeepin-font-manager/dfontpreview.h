@@ -38,6 +38,10 @@ public:
 
     void setFileUrl(const QString &url);
 
+    static bool checkFontContainText(FT_Face face, const QString &text);
+
+    static QString buildCharlistForFace(FT_Face face, int length);
+
     QFontDatabase fontDatabase;
 
 protected:
@@ -47,8 +51,6 @@ private:
     void initContents();
     QString getSampleString();
     QString getLanguageSampleString(const QString &language);
-    bool checkFontContainText(const QString &text);
-    QString buildCharlistForFace(int length);
 
 private:
     FT_Library m_library;

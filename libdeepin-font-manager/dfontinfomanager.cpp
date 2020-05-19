@@ -19,6 +19,7 @@
 
 #include "dfontinfomanager.h"
 #include "dfmdbmanager.h"
+#include "dfontpreview.h"
 #include "dfreetypeutil.h"
 #include "freetype/freetype.h"
 
@@ -73,6 +74,25 @@ QString convertToUtf8(char *content, int len)
 
     delete[] backupPtr;
     return convertedStr;
+}
+
+QString getDefaultPreviewText(FT_Face face)
+{
+    QString previewTxt;
+    if (face == nullptr || face->num_charmaps == 0)
+        return previewTxt;
+
+    previewTxt = FTM_DEFAULT_PREVIEW_TEXT;
+    if (DFontPreview::checkFontContainText(face, FTM_DEFAULT_PREVIEW_TEXT))
+        return FTM_DEFAULT_PREVIEW_TEXT;
+
+    if (previewTxt != FTM_DEFAULT_PREVIEW_EN_TEXT && DFontPreview::checkFontContainText(face, FTM_DEFAULT_PREVIEW_EN_TEXT))
+        return FTM_DEFAULT_PREVIEW_EN_TEXT;
+
+    if (DFontPreview::checkFontContainText(face, FTM_DEFAULT_PREVIEW_DIGIT_TEXT))
+        return FTM_DEFAULT_PREVIEW_DIGIT_TEXT;
+
+    return DFontPreview::buildCharlistForFace(face, FTM_DEFAULT_PREVIEW_TEXT.size());
 }
 
 DFontInfoManager *DFontInfoManager::instance()
@@ -300,6 +320,9 @@ DFontInfo DFontInfoManager::getFontInfo(const QString &filePath, bool force)
         fontInfo.familyName = QString::fromUtf8(DFreeTypeUtil::getFontFamilyName(m_face));
     }
 
+    //default preview text
+    fontInfo.defaultPreview = getDefaultPreviewText(m_face);
+
     // destroy object.
     FT_Done_Face(m_face);
     m_face = nullptr;
@@ -318,14 +341,30 @@ DFontInfo DFontInfoManager::getFontInfo(const QString &filePath, bool force)
         fontInfo.isInstalled = isFontInstalled(fontInfo);
     }
 
-//    if (force) {
-//        fontInfo.filePath = getInstFontPath(filePath, fontInfo.familyName);
-//        m_fontInfoMap.insert(fontInfo.filePath, fontInfo);
-//        m_fontInfoMap.insert(filePath, fontInfo);
-////        qDebug() << __FUNCTION__ << " insert " << fontInfo.filePath;
-//    }
-
     return fontInfo;
+}
+
+QString DFontInfoManager::getDefaultPreview(const QString &filePath)
+{
+    FT_Library m_library = nullptr;
+    FT_Face m_face = nullptr;
+    QString defaultPreview;
+
+    FT_Init_FreeType(&m_library);
+    FT_Error error = FT_New_Face(m_library, filePath.toUtf8().constData(), 0, &m_face);
+
+    if (error != 0) {
+        qDebug() << __FUNCTION__ << " error " << error << filePath;
+        FT_Done_Face(m_face);
+        m_face = nullptr;
+        FT_Done_FreeType(m_library);
+        m_library = nullptr;
+        return defaultPreview;
+    }
+    defaultPreview = getDefaultPreviewText(m_face);
+    FT_Done_Face(m_face);
+    FT_Done_FreeType(m_library);
+    return defaultPreview;
 }
 
 QString DFontInfoManager::getInstFontPath(const QString &originPath, const QString &familyName)
@@ -348,9 +387,7 @@ QString DFontInfoManager::getInstFontPath(const QString &originPath, const QStri
 
 bool DFontInfoManager::isFontInstalled(DFontInfo &data)
 {
-    for (int i = 0; i < dataList.count(); ++i) {
-        DFontInfo item = dataList.at(i);
-
+    for (DFontInfo &item : dataList) {
         if (data == item) {
             data.sysVersion = item.version;
             return true;
@@ -360,8 +397,13 @@ bool DFontInfoManager::isFontInstalled(DFontInfo &data)
     return false;
 }
 
-void DFontInfoManager::removeFontInfo()
+void DFontInfoManager::getDefaultPreview(DFontInfo &data)
 {
-    //m_fontInfoMap.clear();
-    //qDebug() << __FUNCTION__ << m_fontInfoMap.size();
+    for (DFontInfo &item : dataList) {
+        if (data == item) {
+            data.defaultPreview = item.defaultPreview;
+            return;
+        }
+    }
+    data.defaultPreview = getDefaultPreview(data.filePath);
 }
