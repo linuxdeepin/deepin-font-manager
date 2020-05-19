@@ -275,7 +275,7 @@ void DFontPreviewListView::initConnections()
                 scrollTo(currentIndex());
             } else {
                 m_currentSelectedRow = -1;
-                if (count > 1) {
+                if (selectionModel()->selectedIndexes().count() > 1) {
                     scrollTo(selectionModel()->selectedIndexes().first());
                 }
             }

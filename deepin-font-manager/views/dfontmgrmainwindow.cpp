@@ -148,7 +148,7 @@ void DFontMgrMainWindow::initConnections()
     QObject::connect(m_fontPreviewListView, SIGNAL(onLoadFontsStatus(int)),
                      this, SLOT(onLoadStatus(int)));
 
-    connect(m_fontPreviewListView, &DFontPreviewListView::rowCountChanged, this, &DFontMgrMainWindow::onFontListViewRowCountChanged, Qt::UniqueConnection);
+    connect(m_fontPreviewListView, &DFontPreviewListView::rowCountChanged, this, &DFontMgrMainWindow::onFontListViewRowCountChanged, Qt::DirectConnection);
 
     // Add Font button event
     QObject::connect(d->addFontButton, &DIconButton::clicked, this,
