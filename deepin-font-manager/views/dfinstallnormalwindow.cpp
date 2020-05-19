@@ -226,13 +226,13 @@ void DFInstallNormalWindow::initConnections()
 
     connect(m_signalManager, &SignalManager::sendInstallMessage, this, [ = ](const QStringList & m_finishFileList) {
         getInstallMessage = true;
-        getNoSameFilesCount(m_finishFileList);
+//        getNoSameFilesCount(m_finishFileList);
         checkShowMessage();
     }, Qt::QueuedConnection);
 
     connect(m_signalManager, &SignalManager::sendReInstallMessage, this, [ = ](const QStringList & m_finishFileList) {
         getReInstallMessage = true;
-        getNoSameFilesCount(m_finishFileList);
+//        getNoSameFilesCount(m_finishFileList);
         checkShowMessage();
     }, Qt::UniqueConnection);
 
@@ -410,11 +410,11 @@ void DFInstallNormalWindow::checkShowMessage()
 //        m_installFinishSent = false;
 //        m_installAdded = false;
 
-        emit m_signalManager->showInstallFloatingMessage(m_installedFilesFontinfo.count());
-        m_outfileList.clear();
-        if (m_installedFilesFontinfo.count() > 0) {
+        emit m_signalManager->installOver();
+        if (m_outfileList.count() > 0) {
             emit m_signalManager->closeInstallDialog();
         }
+        m_outfileList.clear();
         //ut000442 bug25822 通过log推测此窗口提前关闭导致的问题,因为没有必现步骤,检查逻辑暂时没发现问题,暂时通过添加延迟来进行解决
         QTimer::singleShot(50, this, [ = ]() {
             this->close();
@@ -434,16 +434,16 @@ void DFInstallNormalWindow::checkShowMessage()
     emit m_signalManager->setIsJustInstalled();
 }
 
-void DFInstallNormalWindow::getNoSameFilesCount(const QStringList &filesList)
-{
-    DFontInfo fontInfo;
-    foreach (auto it, filesList) {
-        fontInfo = m_fontInfoManager->getFontInfo(it, true);
-        if (!m_installedFilesFontinfo.contains(fontInfo)) {
-            m_installedFilesFontinfo.append(fontInfo);
-        }
-    }
-}
+//void DFInstallNormalWindow::getNoSameFilesCount(const QStringList &filesList)
+//{
+//    DFontInfo fontInfo;
+//    foreach (auto it, filesList) {
+//        fontInfo = m_fontInfoManager->getFontInfo(it, true);
+//        if (!m_installedFilesFontinfo.contains(fontInfo)) {
+//            m_installedFilesFontinfo.append(fontInfo);
+//        }
+//    }
+//}
 
 void DFInstallNormalWindow::resizeEvent(QResizeEvent *event)
 {

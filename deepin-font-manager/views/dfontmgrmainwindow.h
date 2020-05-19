@@ -161,6 +161,7 @@ protected:
     bool m_isFromSys = false;
     bool m_isPopInstallErrorDialog = false;
     bool m_isNoResultViewShow = false;
+    bool m_isInstallOver = false;
 
     //Stand shortcut
     //Implement by DTK                       //Close window       --> Alt+F4

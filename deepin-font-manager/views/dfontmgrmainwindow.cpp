@@ -258,18 +258,21 @@ void DFontMgrMainWindow::initConnections()
 
     connect(m_signalManager, &SignalManager::requestInstallAdded, this, [ = ]() {
 //        ut000442 安装少量字体时,会出现闪屏现象,通过加短暂延迟解决.
-
         QTimer::singleShot(50, this, [ = ]() {
             m_fontLoadingSpinner->spinnerStop();
-            //            m_fontPreviewListView->show();
+//            m_fontPreviewListView->show();
             m_fontLoadingSpinner->hide();
             m_isNoResultViewShow = false;
             onFontListViewRowCountChanged();
+            if (m_isInstallOver) {
+                int cnt = 0;
+                int systemCnt = 0;
+                m_fontPreviewListView->selectedFontsNum(&cnt, &systemCnt);
+                emit m_signalManager->showInstallFloatingMessage(cnt);
+                m_isInstallOver = false;
+            }
 //            d->stateBar->show();
-
         });
-
-
     }, Qt::UniqueConnection);
 
     //调节右下角字体大小显示label显示内容/*UT000539*/((修改之前请沟通)!)*
@@ -286,13 +289,16 @@ void DFontMgrMainWindow::initConnections()
     connect(m_signalManager, &SignalManager::hideInstallErrorDialog, this, [ = ] {
         m_isPopInstallErrorDialog = false;
     });
+
     connect(m_signalManager, &SignalManager::refreshFocus, [ = ]() {
         QTimer::singleShot(50, [ = ]() {
 
             this->m_fontPreviewListView->setFocus(Qt::MouseFocusReason);
         });
     });
-
+    connect(m_signalManager, &SignalManager::installOver, this, [ = ] {
+        m_isInstallOver = true;
+    });
 }
 
 void DFontMgrMainWindow::initShortcuts()
@@ -1019,7 +1025,7 @@ void DFontMgrMainWindow::installFont(const QStringList &files)
     }
 
 
-
+    m_fontPreviewListView->clearSelection();
     m_dfNormalInstalldlg = new DFInstallNormalWindow(m_installFiles, this);
 
     if (m_isQuickMode) {
@@ -1627,6 +1633,8 @@ void DFontMgrMainWindow::waitForInsert(bool deleting)
         emit m_signalManager->showInstallFloatingMessage(0);
         return;
     }
+
+    m_fontPreviewListView->clearSelection();
     m_dfNormalInstalldlg = new DFInstallNormalWindow(m_installFiles, this);
 
     if (m_isQuickMode) {
