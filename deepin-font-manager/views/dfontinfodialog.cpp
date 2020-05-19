@@ -18,6 +18,8 @@
 #include <DTipLabel>
 #include <QBitmap>
 
+#define NAME_TITLE_WIDTH 300
+
 DFontInfoDialog::DFontInfoDialog(DFontPreviewItemData *fontInfo, QWidget *parent)
     : DFontBaseDialog(parent)
     , m_fontInfo(fontInfo)
@@ -29,30 +31,50 @@ DFontInfoDialog::DFontInfoDialog(DFontPreviewItemData *fontInfo, QWidget *parent
     this->move(m_faCenter - this->rect().center());
 }
 
+/*用于nametitle的宽度和字符串长度判断， UT000539 */
 QString DFontInfoDialog::AutoFeed(QString text)
 {
     QFont m_CurrentFont = this->font();
     QFontMetrics fm(m_CurrentFont);
     int n_TextSize = fm.width(text);
     int count  = 0;
-    if (n_TextSize > 300) {
+    if (n_TextSize > NAME_TITLE_WIDTH) {
         int n_position = 0;
         long n_curSumWidth = 0;
         for (int i = 0; i < text.size(); i++) {
             n_curSumWidth += fm.width(text.at(i));
-            if (n_curSumWidth >= 300 * (count + 1)) {
+            if (n_curSumWidth >= NAME_TITLE_WIDTH * (count + 1)) {
                 n_position = i;
                 text.insert(n_position, "\n");
                 count++;
             }
-            if (count > 2) {//超过两行，设置后7位前省略号/*UT000539((修改之前请沟通)!)*/r
-                QString s = text.right(6);
-                text.remove(n_position - 7, text.size());
-                text.append("...").append(s);
+            if (count == 2) {
+                QString thirdLine = text.right(text.size() - n_position);
+                text.remove(thirdLine);
+                thirdLine = adaptiveLengthForNameTitle(fm, thirdLine, NAME_TITLE_WIDTH);
+                text.append(thirdLine);
+                break;
             }
         }
     }
     return text;
+}
+
+/*用于nametitle的第三行判断，由AutoFeed调用 UT000539 fix bug 26967*/
+QString DFontInfoDialog::adaptiveLengthForNameTitle(QFontMetrics fm, QString thirdLineText, int lineWidth)
+{
+    if (fm.width(thirdLineText) > lineWidth) {
+        QString s = thirdLineText.right(6);
+        int width = 0;
+        for (int i = 0; i < thirdLineText.size(); i++) {
+            width += fm.width(thirdLineText.at(i));
+            if (width > (lineWidth - (fm.width(s) + fm.width("...")))) {
+                thirdLineText.remove(i, thirdLineText.size());
+                thirdLineText.append("...").append(s);
+                break;
+            }
+        }
+    } return thirdLineText;
 }
 
 void DFontInfoDialog::initUI()
@@ -228,7 +250,7 @@ void DFontInfoDialog::initConnections()
 
     connect(m_signalManager, &SignalManager::sizeChange, this, [ = ](int height) {
 
-        //repaint m_fontFileName/*UT000539((修改之前请沟通)!)*/
+        //repaint m_fontFileName/*UT000539*/
         m_fontFileName->clear();//clear option will reset m_fontFileName's all attributes but faster
         //reset color on m_fontFileName's font
         DPalette pa = DApplicationHelper::instance()->palette(m_fontFileName);

@@ -94,7 +94,7 @@ void DFInstallErrorListDelegate::drawFontName(QPainter *painter, const QStyleOpt
 //                                                           fontFileNameRect.width(),
 //                                                           Qt::TextShowMnemonic);
 
-    //Automatically truncates and adds ellipsis based on the font width /*UT000539*/((修改之前请沟通)!)*
+    //Automatically truncates and adds ellipsis based on the font width /*UT000539*/
     //QString elidedFontFileNameText = fontMetric.elidedText(strFontFileName, Qt::ElideRight, 235);
     //ut000442 Optimize the adaptive effect here 20200421
     QString elidedFontFileNameText;

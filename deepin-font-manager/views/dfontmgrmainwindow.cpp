@@ -194,7 +194,7 @@ void DFontMgrMainWindow::initConnections()
         QString fontSizeText;
         fontSizeText.sprintf(FMT_FONT_SIZE, value);
 //        d->fontSizeLabel->setText(fontSizeText);
-        //调节右下角字体大小显示label显示内容/*UT000539*/((修改之前请沟通)!)*
+        //调节右下角字体大小显示label显示内容/*UT000539*/
         autoLabelWidth(fontSizeText, d->fontSizeLabel, d->fontSizeLabel->fontMetrics());
         onFontSizeChanged(value);
     });
@@ -275,7 +275,7 @@ void DFontMgrMainWindow::initConnections()
         });
     }, Qt::UniqueConnection);
 
-    //调节右下角字体大小显示label显示内容/*UT000539*/((修改之前请沟通)!)*
+    //调节右下角字体大小显示label显示内容/*UT000539*/
     connect(qApp, &DApplication::fontChanged, this, [ = ]() {
         int size = d->fontScaleSlider->value();
         QString fontSize = QString::number(size) + "px";
@@ -869,7 +869,7 @@ void DFontMgrMainWindow::initStateBar()
     QString defaultFontSize;
     defaultFontSize.sprintf(FMT_FONT_SIZE, DEFAULT_FONT_SIZE);
 
-    //调节右下角字体大小显示label显示内容/*UT000539*/((修改之前请沟通)!)*
+    //调节右下角字体大小显示label显示内容/*UT000539*/
     autoLabelWidth(defaultFontSize, d->fontSizeLabel, d->fontSizeLabel->fontMetrics());
 //    d->fontSizeLabel->setText(defaultFontSize);
 
@@ -1725,7 +1725,7 @@ QStringList DFontMgrMainWindow::checkFilesSpace(const QStringList &files, bool m
 
 }
 
-//弹出删除进度框后执行删除操作((修改之前请沟通)!)*
+//弹出删除进度框后执行删除操作/*UT000539*/*
 void DFontMgrMainWindow::startToDelete()
 {
     QStringList uninstallFonts = m_fontPreviewListView->selectedFonts(nullptr, nullptr);
@@ -1739,7 +1739,7 @@ void DFontMgrMainWindow::startToDelete()
     m_fontManager->start();
 }
 
-//调节右下角字体大小显示label显示内容/*UT000539*/((修改之前请沟通)!)*
+//调节右下角字体大小显示label显示内容/*UT000539*/
 void DFontMgrMainWindow::autoLabelWidth(QString text, DLabel *lab, QFontMetrics fm)
 {
     QString str = text;

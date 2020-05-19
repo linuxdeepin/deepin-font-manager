@@ -27,6 +27,7 @@ public:
 protected:
     void initUI();
     void initConnections();
+    QString adaptiveLengthForNameTitle(QFontMetrics fm, QString thirdText, int lineWidth);
     void resizeEvent(QResizeEvent *event) override;
     void insertContents();
 signals:
