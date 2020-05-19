@@ -131,7 +131,7 @@ QSize DNoFocusDelegate::sizeHint(const QStyleOptionViewItem &option,
         return QSize(option.rect.width(), 36);
     }
 }
-//adjust length/*UT000539(勿删勿动!)*/
+//adjust length/*UT000539((修改之前请沟通)!)*/
 QString DNoFocusDelegate::adjustLength(QString &titleName, QFont &font) const
 {
     QFontMetrics fontMetric(font);
@@ -224,7 +224,7 @@ void DSplitListWidget::currentChanged(const QModelIndex &current, const QModelIn
     qDebug() << "varUserData" << varUserData << endl;
     int realIndex = m_titleStringIndexMap.value(varUserData.toString());
 
-    /*用于判断切换菜单后scrolltotop、nofocus...539(勿删勿动!)*/
+    /*用于判断切换菜单后scrolltotop、nofocus...539((修改之前请沟通)!)*/
     Q_EMIT m_signalManager->changeView();
     emit onListWidgetItemClicked(realIndex);
 }
@@ -238,7 +238,7 @@ void DSplitListWidget::mouseMoveEvent(QMouseEvent *event)
     return;
 }
 
-//hover for helper on leftListview /*UT000539(勿删勿动!)*/
+//hover for helper on leftListview /*UT000539((修改之前请沟通)!)*/
 bool DNoFocusDelegate::helpEvent(QHelpEvent *event, QAbstractItemView *view
                                  , const QStyleOptionViewItem &option, const QModelIndex &index)
 {

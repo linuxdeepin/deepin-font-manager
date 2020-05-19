@@ -38,9 +38,9 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
     //    connect(m_signalManager, &SignalManager::refreshCurRect, this, &DFontPreviewListView::refreshRect);
     //    connect(m_signalManager, &SignalManager::setIsJustInstalled, this, [ = ]() {
     //        m_isJustInstalled = true;
-    //    });//勿删
+    //    });//(修改之前请沟通)
 
-    /*切换listview后，scrolltotop UT000539(勿删勿动)*/
+    /*切换listview后，scrolltotop UT000539((修改之前请沟通))*/
     connect(m_signalManager, &SignalManager::changeView, this, [ = ]() {
         scrollToTop();
         isSelectedNow = false;
@@ -262,22 +262,24 @@ void DFontPreviewListView::initConnections()
     //            &DFontPreviewListView::onListViewShowContextMenu, Qt::ConnectionType::QueuedConnection);
 
     connect(m_signalManager, &SignalManager::currentFontGroup, this, &DFontPreviewListView::updateCurrentFontGroup);
+
+    /*UT000539 设置focus状态、设置选中状态 (修改之前请沟通)*/
     connect(m_signalManager, &SignalManager::refreshFocus, [ = ](int count) {
         if (selectionModel()->selectedIndexes().isEmpty())
             return;
-
-        if (1 == count) {
-            setCurrentSelected(selectionModel()->selectedIndexes().first().row());
-        } else {
-            m_currentSelectedRow = -1;
-            QTimer::singleShot(50, [ = ]() {
-                if (selectionModel()->selectedIndexes().count() > 0) {
-                    scrollTo(selectionModel()->selectedIndexes().first());
-                    setFocus(Qt::MouseFocusReason);
-                }
-            });
-        }
         m_isJustInstalled = true;
+        QTimer::singleShot(50, [ = ]() {
+            setFocus(Qt::MouseFocusReason);
+            if (1 == count) {
+                setCurrentSelected(selectionModel()->selectedIndexes().first().row());
+                scrollTo(currentIndex());
+            } else {
+                m_currentSelectedRow = -1;
+                if (count > 1) {
+                    scrollTo(selectionModel()->selectedIndexes().first());
+                }
+            }
+        });
 
     });
 
@@ -404,7 +406,7 @@ void DFontPreviewListView::selectFonts(const QStringList &fileList, bool isFirst
         Q_EMIT SignalManager::instance()->requestInstallAdded();
         //        Q_EMIT m_signalManager->refreshFocus();
     }
-    /*用于安装后刷新聚焦、安装后focus for ctrl+a UT000539(勿删勿动！)*/
+    /*用于安装后刷新聚焦、安装后focus for ctrl+a UT000539((修改之前请沟通))*/
     Q_EMIT m_signalManager->refreshFocus(fileList.size());
 
     //    Q_EMIT DFontManager::instance()->batchInstall("onlyprogress", 100);
@@ -477,7 +479,7 @@ void DFontPreviewListView::mouseMoveEvent(QMouseEvent *event)
     QRect collectIconRect = getCollectionIconRect(rect);
 
     DFontPreviewItemData itemData = qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(modelIndex));
-    clearHoverState();///*UT000539(勿删勿动!)*/
+    clearHoverState();///*UT000539((修改之前请沟通)!)*/
     if (collectIconRect.contains(clickPoint)) {
         //        if (itemData.collectIconStatus != IconHover) {
         itemData.collectIconStatus = IconHover;
@@ -503,7 +505,7 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
     if (event->button() == Qt::LeftButton) {
         m_bLeftMouse = true;
         m_bRightMous = false;
-        /*UT000539(勿删勿动!)*/
+        /*UT000539((修改之前请沟通)!)*/
         if (QApplication::keyboardModifiers() == Qt::ShiftModifier) {
             qDebug() << "______________shift_index__________" << m_currentSelectedRow;
             if (-1 != m_currentSelectedRow) {
@@ -588,7 +590,7 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
 
     if (collectIconRect.contains(clickPoint)) {
         if (itemData.collectIconStatus != IconPress) {
-            if (Qt::LeftButton == event->button()) {//取消press状态/*UT000539(勿删勿动!)*/
+            if (Qt::LeftButton == event->button()) {//取消press状态/*UT000539((修改之前请沟通)!)*/
                 itemData.collectIconStatus = IconPress;
             }
             m_fontPreviewProxyModel->setData(modelIndex, QVariant::fromValue(itemData), Qt::DisplayRole);
@@ -1208,7 +1210,7 @@ QModelIndexList DFontPreviewListView::selectedIndex(int *deleteCnt, int *systemC
     return list;
 }
 
-//字体变化设置选中行居中UT000539(勿删勿动!)*/
+//字体变化设置选中行居中UT000539((修改之前请沟通)!)*/
 void DFontPreviewListView::scrollWithTheSelected()
 {
     QModelIndexList indexes = selectionModel()->selectedIndexes();

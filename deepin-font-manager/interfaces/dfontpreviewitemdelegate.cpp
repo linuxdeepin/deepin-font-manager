@@ -71,7 +71,7 @@ void DFontPreviewItemDelegate::paintForegroundFontName(QPainter *painter, const 
     QRect fontNameRect = QRect(option.rect.x() + FONT_NAME_LEFT_MARGIN, option.rect.y() + FONT_NAME_TOP_MARGIN,
                                option.rect.width() - 20, FONT_NAME_HEIGHT);
 
-    QFontMetrics mt(nameFont);//特殊图案字体下截断字体名称/*UT000539(勿删勿动!)*/
+    QFontMetrics mt(nameFont);//特殊图案字体下截断字体名称/*UT000539((修改之前请沟通)!)*/
     QString elidedText = mt.elidedText(itemData.strFontName, Qt::ElideRight, option.rect.width() - 120, Qt::TextShowMnemonic);
     painter->drawText(fontNameRect, Qt::AlignLeft | Qt::AlignVCenter, elidedText);
 }

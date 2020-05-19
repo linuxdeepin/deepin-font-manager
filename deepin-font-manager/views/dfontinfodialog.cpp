@@ -45,7 +45,7 @@ QString DFontInfoDialog::AutoFeed(QString text)
                 text.insert(n_position, "\n");
                 count++;
             }
-            if (count > 2) {//超过两行，设置后7位前省略号/*UT000539(勿删勿动!)*/r
+            if (count > 2) {//超过两行，设置后7位前省略号/*UT000539((修改之前请沟通)!)*/r
                 QString s = text.right(6);
                 text.remove(n_position - 7, text.size());
                 text.append("...").append(s);
@@ -228,7 +228,7 @@ void DFontInfoDialog::initConnections()
 
     connect(m_signalManager, &SignalManager::sizeChange, this, [ = ](int height) {
 
-        //repaint m_fontFileName/*UT000539(勿删勿动!)*/
+        //repaint m_fontFileName/*UT000539((修改之前请沟通)!)*/
         m_fontFileName->clear();//clear option will reset m_fontFileName's all attributes but faster
         //reset color on m_fontFileName's font
         DPalette pa = DApplicationHelper::instance()->palette(m_fontFileName);
