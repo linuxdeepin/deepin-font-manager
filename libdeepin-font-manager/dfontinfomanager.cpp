@@ -46,6 +46,8 @@ DWIDGET_USE_NAMESPACE
 static QList<DFontInfo> dataList;
 static DFontInfoManager *INSTANCE = nullptr;
 
+const QString FONT_DIR = QDir::homePath() + "/.local/share/fonts/";
+
 inline bool isSystemFont(QString filePath)
 {
     if (filePath.contains("/usr/share/fonts/")) {
@@ -136,19 +138,52 @@ QStringList DFontInfoManager::getAllFontPath() const
 
     QString output = process.readAllStandardOutput();
     QStringList lines = output.split(QChar('\n'));
-
     for (QString line : lines) {
         QString filePath = line.remove(QChar(':')).simplified();
         if (filePath.length() > 0 && !pathList.contains(filePath)) {
             pathList << filePath;
         }
     }
+    //pathList << "/home/lx777/.local/share/fonts/Unifont Sample/unifontsample(1).ttf";
 
     /*qSort(pathList.begin(), pathList.end(), [](const QString & s1, const QString & s2) {
         return s1 < s2;
     });*/
 
+    QStringList dirlist = getDirPathOfSplDir(FONT_DIR);
+    foreach (QString str, dirlist) {
+        QStringList namelist = getFileNames(str);
+        for (int i = 0; i < namelist.count(); i++) {
+            QString filepath = str + "/" +  namelist.at(i);
+            if (!pathList.contains(filepath)) {
+                pathList << filepath;
+            }
+        }
+    }
     return pathList;
+}
+
+QStringList DFontInfoManager::getDirPathOfSplDir(QString dirPath)const
+{
+    QStringList dirPaths;
+    QDir splDir(dirPath);
+    QFileInfoList fileInfoListInSplDir = splDir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot);
+    QFileInfo tempFileInfo;
+    foreach (tempFileInfo, fileInfoListInSplDir) {
+        dirPaths << tempFileInfo.absoluteFilePath();
+    }
+    return dirPaths;
+}
+
+
+QStringList DFontInfoManager::getFileNames(const QString &path)const
+{
+    QDir dir(path);
+    QStringList nameFilters;
+    nameFilters << "*.ttf" << "*.ttc" << "*.otf";
+    QStringList files = dir.entryList(nameFilters, QDir::Files | QDir::Readable, QDir::Name);
+    return files;
+
 }
 
 QStringList DFontInfoManager::getAllChineseFontPath() const
@@ -313,6 +348,7 @@ DFontInfo DFontInfoManager::getFontInfo(const QString &filePath, bool force)
     if (!fontInfo.fullname.isEmpty() && !fontInfo.isSystemFont) {
         fontInfo.familyName = fontInfo.fullname.replace(QRegExp(QString(" " + fontInfo.styleName + "$")), "");
     }
+
     if (fontInfo.familyName.trimmed().length() < 1) {
         fontInfo.familyName = QString::fromLatin1(m_face->family_name);
     }

@@ -95,6 +95,11 @@ public:
     bool isFontInstalled(DFontInfo &data);
     void getDefaultPreview(DFontInfo &data);
 
+    //获取指定文件夹下所有的子文件夹
+    QStringList getDirPathOfSplDir(QString dirPath)const;
+    //获取文件夹下的字体文件
+    QStringList getFileNames(const QString &path)const;
+
 private:
 //    QMap<QString, DFontInfo> m_fontInfoMap;
 //    FT_Library m_library;
