@@ -116,6 +116,8 @@ void DFontPreview::paintEvent(QPaintEvent *e)
 
     // if we don't have lowercase/uppercase/punctuation text in the face
     // we omit it directly, and render a random text below.
+
+    /*根据获取的新point进行绘制 UT000539 fix bug 27030*/
     if (checkFontContainText(m_face, lowerTextStock)) {
         const int lowerWidth = metrics.width(lowerTextStock);
         const int lowerHeight = metrics.height();
@@ -284,6 +286,7 @@ QString DFontPreview::buildCharlistForFace(FT_Face face, int length)
     return retval;
 }
 
+/*返回绘制起始point UT000539 fix bug 27030*/
 QPoint DFontPreview::adjustPreviewFontBaseLinePoint(const QRect &fontPreviewRect, const QFontMetrics &previewFontMetrics) const
 {
     Q_UNUSED(previewFontMetrics);
