@@ -62,6 +62,7 @@ protected:
     DFMDBManager *m_dbManager {nullptr};
     QList<DFontPreviewItemData> m_fontModelList;
     QList<DFontPreviewItemData> m_diffFontModelList;
+    QMap<QString, int> m_fontIdMap;
     DFontPreviewListView *m_view;
     QFileSystemWatcher *m_fsWatcher;
     QMutex *m_mutex;

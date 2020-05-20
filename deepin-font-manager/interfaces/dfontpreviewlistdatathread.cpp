@@ -153,6 +153,7 @@ void DFontPreviewListDataThread::removePathWatcher(const QString &path)
     if (m_fsWatcher == nullptr)
         return;
     m_fsWatcher->removePath(path);
+    m_fontIdMap.remove(path);
 }
 
 void DFontPreviewListDataThread::onFileDeleted(const QStringList &files)
@@ -242,11 +243,15 @@ int DFontPreviewListDataThread::insertFontItemData(const QString &filePath,
     itemData.fontInfo.isInstalled = true;
 
     /* Bug#16821 UT000591  添加字体后需要加入到Qt的字体数据库中，否则无法使用*/
+
 //    qDebug() << "1" << itemData.fontInfo.filePath << endl;
     //ut000442 这里不能直接传路径,需要传字体文件名,传路径会导致偶现这个函数耗时变长
-    int appFontId = QFontDatabase::addApplicationFont(itemData.fontInfo.filePath.split("/").last());
-//    int appFontId = QFontDatabase::addApplicationFont(itemData.fontInfo.filePath);
-//    qDebug() << "2" << endl;
+    //下面写法无效返回appFontId为-1，要传入全路径
+//    int appFontId = QFontDatabase::addApplicationFont(itemData.fontInfo.filePath.split("/").last());
+    int appFontId = QFontDatabase::addApplicationFont(itemData.fontInfo.filePath);
+    m_fontIdMap.insert(itemData.fontInfo.filePath, appFontId);
+//    qDebug() << "2" << appFontId << endl;
+
     //中文字体
     if (itemData.fontInfo.isSystemFont && itemData.isChineseFont) {
         QStringList fontFamilyList = QFontDatabase::applicationFontFamilies(appFontId);

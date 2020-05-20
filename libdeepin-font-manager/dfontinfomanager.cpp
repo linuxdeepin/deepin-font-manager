@@ -84,7 +84,6 @@ QString getDefaultPreviewText(FT_Face face)
     if (face == nullptr || face->num_charmaps == 0)
         return previewTxt;
 
-    previewTxt = FTM_DEFAULT_PREVIEW_TEXT;
     if (DFontPreview::checkFontContainText(face, FTM_DEFAULT_PREVIEW_TEXT))
         return FTM_DEFAULT_PREVIEW_TEXT;
 

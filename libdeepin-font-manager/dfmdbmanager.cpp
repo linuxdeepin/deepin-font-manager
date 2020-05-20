@@ -143,6 +143,7 @@ QStringList DFMDBManager::getInstalledFontsPath()
 {
     return m_sqlUtil->getInstalledFontsPath();
 }
+
 QString DFMDBManager::isFontInfoExist(const DFontInfo &newFileFontInfo)
 {
     QList<QMap<QString, QString>> recordList;
