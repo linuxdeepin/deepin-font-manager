@@ -104,7 +104,7 @@ void DFontPreview::paintEvent(QPaintEvent *e)
         font.setWeight(QFont::Black);
     }
 
-    const int padding = 20;
+    const int padding = 30;
     const int x = 35;
     int y = 10;
     int fontSize = 25;
@@ -119,24 +119,26 @@ void DFontPreview::paintEvent(QPaintEvent *e)
     if (checkFontContainText(m_face, lowerTextStock)) {
         const int lowerWidth = metrics.width(lowerTextStock);
         const int lowerHeight = metrics.height();
-        painter.drawText(QRect(x, y + padding, lowerWidth, lowerHeight), Qt::AlignLeft, lowerTextStock);
+        QPoint baseLinePoint = adjustPreviewFontBaseLinePoint(QRect(x, y + padding, lowerWidth, lowerHeight), metrics);
+        painter.drawText(baseLinePoint.x(), baseLinePoint.y(), lowerTextStock);
         y += lowerHeight;
     }
 
     if (checkFontContainText(m_face, upperTextStock)) {
         const int upperWidth = metrics.width(upperTextStock);
         const int upperHeight = metrics.height();
-        painter.drawText(QRect(x, y + padding, upperWidth, upperHeight), Qt::AlignLeft, upperTextStock);
+        QPoint baseLinePoint = adjustPreviewFontBaseLinePoint(QRect(x, y + padding, upperWidth, upperHeight), metrics);
+        painter.drawText(baseLinePoint.x(), baseLinePoint.y(), upperTextStock);
         y += upperHeight;
     }
 
     if (checkFontContainText(m_face, punctuationTextStock)) {
         const int punWidth = metrics.width(punctuationTextStock);
         int punHeight = metrics.height();
-        painter.drawText(QRect(x, y + padding, punWidth, punHeight), Qt::AlignLeft, punctuationTextStock);
+        QPoint baseLinePoint = adjustPreviewFontBaseLinePoint(QRect(x, y + padding, punWidth, punHeight), metrics);
+        painter.drawText(baseLinePoint.x(), baseLinePoint.y(), punctuationTextStock);
         y += punHeight;
     }
-
     for (int i = 0; i < 20; ++i) {
         fontSize += 3;
         font.setPointSize(fontSize);
@@ -149,10 +151,10 @@ void DFontPreview::paintEvent(QPaintEvent *e)
         if (y + sampleHeight >= rect().height() - padding * 2)
             break;
 
-        painter.drawText(QRect(x, y + padding * 2, sampleWidth, sampleHeight), Qt::AlignLeft, sampleString);
+        QPoint baseLinePoint = adjustPreviewFontBaseLinePoint(QRect(x, y + padding * 2, sampleWidth, sampleHeight), met);
+        painter.drawText(baseLinePoint.x(), baseLinePoint.y(), sampleString);
         y += sampleHeight + padding;
     }
-
     QWidget::paintEvent(e);
 }
 
@@ -280,4 +282,14 @@ QString DFontPreview::buildCharlistForFace(FT_Face face, int length)
     }
 
     return retval;
+}
+
+QPoint DFontPreview::adjustPreviewFontBaseLinePoint(const QRect &fontPreviewRect, const QFontMetrics &previewFontMetrics) const
+{
+    Q_UNUSED(previewFontMetrics);
+    int commonFontDescent = fontPreviewRect.height() / 4;
+    int baseLineX = fontPreviewRect.x();
+    int baseLineY = fontPreviewRect.bottom() - commonFontDescent;
+
+    return QPoint(baseLineX, baseLineY);
 }

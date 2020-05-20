@@ -47,6 +47,7 @@ public:
 protected:
     void paintEvent(QPaintEvent *);
 
+    QPoint adjustPreviewFontBaseLinePoint(const QRect &fontPreviewRect, const QFontMetrics &previewFontMetrics) const;
 private:
     void initContents();
     QString getSampleString();
