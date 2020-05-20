@@ -1155,7 +1155,7 @@ void DFontMgrMainWindow::onSearchTextChanged(const QString &currStr)
 //    m_fontPreviewListView->scrollToTop();
 }
 
-void DFontMgrMainWindow::onPreviewTextChanged1(const QString &text)
+void DFontMgrMainWindow::onPreviewTextChanged(const QString &text)
 {
     bool isEmpty = text.isEmpty();
     m_previewText = text;
