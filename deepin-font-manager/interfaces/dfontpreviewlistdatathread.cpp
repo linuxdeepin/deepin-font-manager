@@ -243,13 +243,13 @@ int DFontPreviewListDataThread::insertFontItemData(const QString &filePath,
     itemData.fontInfo.isInstalled = true;
 
     /* Bug#16821 UT000591  添加字体后需要加入到Qt的字体数据库中，否则无法使用*/
-
-//    qDebug() << "1" << itemData.fontInfo.filePath << endl;
-
+    qDebug() << "addApplicationFont s"  << endl;
     int appFontId = QFontDatabase::addApplicationFont(itemData.fontInfo.filePath);
-    qDebug() << appFontId << endl;
+    qDebug() << "addApplicationFont e"  << endl;
+
+
+//    qDebug() << appFontId << endl;
     m_fontIdMap.insert(itemData.fontInfo.filePath, appFontId);
-//    qDebug() << "2" << appFontId << endl;
 
     //中文字体
     if (itemData.fontInfo.isSystemFont && itemData.isChineseFont) {
@@ -345,14 +345,14 @@ void DFontPreviewListDataThread::refreshFontListData(bool isStartup,  bool isFir
         int maxFontId = m_dbManager->getCurrMaxFontId();
         QList<QString> diffFilePathList = diffSet.toList();
         int index = maxFontId + 1;
+        qDebug() << "insertFontItemData" << "s" << endl;
         foreach (QString filePath, diffFilePathList) {
             if (m_dbManager->isSystemFont(filePath) || installFont.contains(filePath)) {
                 bool isEnabled = (isStartup && installFont.contains(filePath)) ? false : true;
-//                qDebug() << __func__ << "s" << endl;
                 index = insertFontItemData(filePath, index, chineseFontPathList, monoSpaceFontPathList, isStartup, isEnabled);
-//                qDebug() << __func__ << "e" << endl;
             }
         }
+        qDebug() << "insertFontItemData" << "s" << endl;
         m_dbManager->commitAddFontInfo();
     }
     if (!isStartup && !installFont.isEmpty()) {
