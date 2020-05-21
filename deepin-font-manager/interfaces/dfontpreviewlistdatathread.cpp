@@ -246,9 +246,10 @@ int DFontPreviewListDataThread::insertFontItemData(const QString &filePath,
 
 //    qDebug() << "1" << itemData.fontInfo.filePath << endl;
     //ut000442 这里不能直接传路径,需要传字体文件名,传路径会导致偶现这个函数耗时变长
-    //下面写法无效返回appFontId为-1，要传入全路径
 //    int appFontId = QFontDatabase::addApplicationFont(itemData.fontInfo.filePath.split("/").last());
+
     int appFontId = QFontDatabase::addApplicationFont(itemData.fontInfo.filePath);
+    qDebug() << appFontId << endl;
     m_fontIdMap.insert(itemData.fontInfo.filePath, appFontId);
 //    qDebug() << "2" << appFontId << endl;
 

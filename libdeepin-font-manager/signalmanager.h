@@ -17,7 +17,7 @@ signals:
     void sendInstallMessage(const QStringList &m_finishFileList);
     void sendReInstallMessage(const QStringList &m_finishFileList);
     void startToInsert();
-    void installOver();
+    void installOver(int successInstallCount);
     void finishFontInstall(const QStringList &fileList, bool isNeedCheckPopErrdialog = false);
     void trigerCollect(bool favorite);
     void sizeChange(int height);

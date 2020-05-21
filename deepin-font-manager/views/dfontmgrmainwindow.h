@@ -154,6 +154,7 @@ protected:
     int m_abandonFilesCount = 0;
     QString m_previewText;
     int m_leftIndex {0};
+    int m_successInstallCount = 0;
 
     bool m_searchTextStatusIsEmpty = true;
     bool m_isDeleting = false;

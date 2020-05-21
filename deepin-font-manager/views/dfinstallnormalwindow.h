@@ -44,7 +44,7 @@ protected:
     bool ifNeedShowExceptionWindow() const;
     bool isSystemFont(DFontInfo &f);
     void checkShowMessage();
-//    void getNoSameFilesCount(const QStringList &filesList);
+    void getNoSameFilesCount(const QStringList &filesList);
 
     void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
     void paintEvent(QPaintEvent *event) override;

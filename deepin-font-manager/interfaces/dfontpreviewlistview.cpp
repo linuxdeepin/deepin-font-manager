@@ -100,7 +100,7 @@ void DFontPreviewListView::refreshFontListData(const QStringList &installFont)
         m_dataThread->addPathWatcher(filePath);
 
         /* Bug#16821 UT000591  添加字体后需要加入到Qt的字体数据库中，否则无法使用*/
-        QFontDatabase::addApplicationFont(filePath);
+//        QFontDatabase::addApplicationFont(filePath);
     }
     Q_EMIT itemsSelected(installFont);
 }

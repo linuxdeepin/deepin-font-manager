@@ -265,15 +265,15 @@ void DFontMgrMainWindow::initConnections()
             m_isNoResultViewShow = false;
             onFontListViewRowCountChanged();
             if (m_isInstallOver) {
-                int cnt = 0;
-                int systemCnt = 0;
-                m_fontPreviewListView->selectedFontsNum(&cnt, &systemCnt);
-                emit m_signalManager->showInstallFloatingMessage(cnt);
+//                int cnt = 0;
+//                int systemCnt = 0;
+//                m_fontPreviewListView->selectedFontsNum(&cnt, &systemCnt);
+                emit m_signalManager->showInstallFloatingMessage(m_successInstallCount);
                 m_isInstallOver = false;
             }
 //            d->stateBar->show();
         });
-    }, Qt::UniqueConnection);
+    });
 
     //调节右下角字体大小显示label显示内容/*UT000539*/
     connect(qApp, &DApplication::fontChanged, this, [ = ]() {
@@ -296,8 +296,9 @@ void DFontMgrMainWindow::initConnections()
             this->m_fontPreviewListView->setFocus(Qt::MouseFocusReason);
         });
     });
-    connect(m_signalManager, &SignalManager::installOver, this, [ = ] {
+    connect(m_signalManager, &SignalManager::installOver, this, [ = ](int successInstallCount) {
         m_isInstallOver = true;
+        m_successInstallCount = successInstallCount;
     });
 }
 

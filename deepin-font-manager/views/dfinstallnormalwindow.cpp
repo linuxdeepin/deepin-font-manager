@@ -226,13 +226,13 @@ void DFInstallNormalWindow::initConnections()
 
     connect(m_signalManager, &SignalManager::sendInstallMessage, this, [ = ](const QStringList & m_finishFileList) {
         getInstallMessage = true;
-//        getNoSameFilesCount(m_finishFileList);
+        getNoSameFilesCount(m_finishFileList);
         checkShowMessage();
     }, Qt::QueuedConnection);
 
     connect(m_signalManager, &SignalManager::sendReInstallMessage, this, [ = ](const QStringList & m_finishFileList) {
         getReInstallMessage = true;
-//        getNoSameFilesCount(m_finishFileList);
+        getNoSameFilesCount(m_finishFileList);
         checkShowMessage();
     }, Qt::UniqueConnection);
 
@@ -410,7 +410,7 @@ void DFInstallNormalWindow::checkShowMessage()
 //        m_installFinishSent = false;
 //        m_installAdded = false;
 
-        emit m_signalManager->installOver();
+        emit m_signalManager->installOver(m_installedFilesFontinfo.count());
         if (m_outfileList.count() > 0) {
             emit m_signalManager->closeInstallDialog();
         }
@@ -434,16 +434,16 @@ void DFInstallNormalWindow::checkShowMessage()
     emit m_signalManager->setIsJustInstalled();
 }
 
-//void DFInstallNormalWindow::getNoSameFilesCount(const QStringList &filesList)
-//{
-//    DFontInfo fontInfo;
-//    foreach (auto it, filesList) {
-//        fontInfo = m_fontInfoManager->getFontInfo(it, true);
-//        if (!m_installedFilesFontinfo.contains(fontInfo)) {
-//            m_installedFilesFontinfo.append(fontInfo);
-//        }
-//    }
-//}
+void DFInstallNormalWindow::getNoSameFilesCount(const QStringList &filesList)
+{
+    DFontInfo fontInfo;
+    foreach (auto it, filesList) {
+        fontInfo = m_fontInfoManager->getFontInfo(it, true);
+        if (!m_installedFilesFontinfo.contains(fontInfo)) {
+            m_installedFilesFontinfo.append(fontInfo);
+        }
+    }
+}
 
 void DFInstallNormalWindow::resizeEvent(QResizeEvent *event)
 {
