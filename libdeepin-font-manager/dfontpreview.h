@@ -44,10 +44,15 @@ public:
 
     QFontDatabase fontDatabase;
 
+    bool m_needScroll = false;
+    int viewWidth = 1204;
+    int currentMaxWidth = 1;
 protected:
     void paintEvent(QPaintEvent *);
 
     QPoint adjustPreviewFontBaseLinePoint(const QRect &fontPreviewRect, const QFontMetrics &previewFontMetrics) const;
+    void isNeedScroll(int width);
+
 private:
     void initContents();
     QString getSampleString();

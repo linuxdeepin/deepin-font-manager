@@ -500,13 +500,11 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
 {
     QPoint clickPoint = event->pos();
     QModelIndex modelIndex = indexAt(clickPoint);
-    qDebug() << "______________modelIndex__________" << modelIndex.row();
     if (event->button() == Qt::LeftButton) {
         m_bLeftMouse = true;
         m_bRightMous = false;
         /*UT000539*/
         if (QApplication::keyboardModifiers() == Qt::ShiftModifier) {
-            qDebug() << "______________shift_index__________" << m_currentSelectedRow;
             if (-1 != m_currentSelectedRow) {
                 if (m_currentSelectedRow < modelIndex.row()) {
                     selectionModel()->clear();

@@ -27,10 +27,12 @@
 #include <QScreen>
 #include <QDebug>
 #include <QFile>
+#include "dfontwidget.h"
 
 static const QString lowerTextStock = "abcdefghijklmnopqrstuvwxyz";
 static const QString upperTextStock = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 static const QString punctuationTextStock = "0123456789.:,;(*!?')";
+static const int textWidth = 1204;
 static QString sampleString = nullptr;
 static QString styleName = nullptr;
 static QHash<QString, QString> contents = {};
@@ -71,6 +73,7 @@ void DFontPreview::setFileUrl(const QString &url)
 
 void DFontPreview::paintEvent(QPaintEvent *e)
 {
+    currentMaxWidth = 1;
     if (m_error != 0)
         return;
 
@@ -120,6 +123,7 @@ void DFontPreview::paintEvent(QPaintEvent *e)
     /*根据获取的新point进行绘制 UT000539 fix bug 27030*/
     if (checkFontContainText(m_face, lowerTextStock)) {
         const int lowerWidth = metrics.width(lowerTextStock);
+        isNeedScroll(lowerWidth);
         const int lowerHeight = metrics.height();
         QPoint baseLinePoint = adjustPreviewFontBaseLinePoint(QRect(x, y + padding, lowerWidth, lowerHeight), metrics);
         painter.drawText(baseLinePoint.x(), baseLinePoint.y(), lowerTextStock);
@@ -128,6 +132,7 @@ void DFontPreview::paintEvent(QPaintEvent *e)
 
     if (checkFontContainText(m_face, upperTextStock)) {
         const int upperWidth = metrics.width(upperTextStock);
+        isNeedScroll(upperWidth);
         const int upperHeight = metrics.height();
         QPoint baseLinePoint = adjustPreviewFontBaseLinePoint(QRect(x, y + padding, upperWidth, upperHeight), metrics);
         painter.drawText(baseLinePoint.x(), baseLinePoint.y(), upperTextStock);
@@ -136,6 +141,7 @@ void DFontPreview::paintEvent(QPaintEvent *e)
 
     if (checkFontContainText(m_face, punctuationTextStock)) {
         const int punWidth = metrics.width(punctuationTextStock);
+        isNeedScroll(punWidth);
         int punHeight = metrics.height();
         QPoint baseLinePoint = adjustPreviewFontBaseLinePoint(QRect(x, y + padding, punWidth, punHeight), metrics);
         painter.drawText(baseLinePoint.x(), baseLinePoint.y(), punctuationTextStock);
@@ -148,6 +154,7 @@ void DFontPreview::paintEvent(QPaintEvent *e)
 
         QFontMetrics met(font);
         int sampleWidth = met.width(sampleString);
+        isNeedScroll(sampleWidth);
         int sampleHeight = met.height();
 
         if (y + sampleHeight >= rect().height() - padding * 2)
@@ -157,7 +164,26 @@ void DFontPreview::paintEvent(QPaintEvent *e)
         painter.drawText(baseLinePoint.x(), baseLinePoint.y(), sampleString);
         y += sampleHeight + padding;
     }
+    /*判断是否需要滚动条 UT000539*/
+    if (currentMaxWidth > viewWidth) {
+        setFixedWidth(currentMaxWidth);
+        m_needScroll = true;
+    } else {
+        setFixedWidth(qApp->primaryScreen()->geometry().width() / 1.5);
+        m_needScroll = false;
+    }
     QWidget::paintEvent(e);
+}
+
+/*判断text宽度是否超过当前宽度 UT000539*/
+void DFontPreview::isNeedScroll(int width)
+{
+    if (width > textWidth) {
+        m_needScroll = true;
+    }
+    if (width > currentMaxWidth) {
+        currentMaxWidth = width;
+    }
 }
 
 void DFontPreview::initContents()

@@ -21,10 +21,15 @@
 #define DFONTWIDGET_H
 
 #include <QWidget>
+#include <DScrollArea>
 #include <QStackedLayout>
 #include "dspinner.h"
 #include "dfontpreview.h"
 #include "dfontloadthread.h"
+#include <DApplication>
+#include <QScreen>
+#include <QGuiApplication>
+#include <QScrollBar>
 
 DWIDGET_USE_NAMESPACE
 
@@ -38,15 +43,19 @@ public:
 
     void setFileUrl(const QString &url);
 
+protected:
+
 private:
     void handleFinished(const QByteArray &data);
 
 private:
     QStackedLayout *m_layout;
     DFontPreview *m_preview;
+    DScrollArea *m_area;
     DFontLoadThread *m_thread;
     DSpinner *m_spinner;
     QString m_filePath;
+    QTimer *timer;
 };
 
 #endif

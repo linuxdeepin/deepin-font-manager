@@ -25,7 +25,8 @@ DFontWidget::DFontWidget(QWidget *parent)
       m_layout(new QStackedLayout(this)),
       m_preview(new DFontPreview(this)),
       m_thread(new DFontLoadThread(this)),
-      m_spinner(new DSpinner(this))
+      m_spinner(new DSpinner(this)),
+      timer(new QTimer(this))
 {
     QWidget *spinnerPage = new QWidget;
     QVBoxLayout *spinnerLayout = new QVBoxLayout(spinnerPage);
@@ -33,9 +34,27 @@ DFontWidget::DFontWidget(QWidget *parent)
     spinnerLayout->addWidget(m_spinner, 0, Qt::AlignCenter);
 
     m_layout->addWidget(spinnerPage);
-    m_layout->addWidget(m_preview);
+
+    /*增加滚动条功能 UT000539*/
+    m_area = new DScrollArea(this);
+    m_area->setVerticalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAlwaysOff);
+    m_area->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+    m_area->setWidgetResizable(true);
+    m_area->setWidget(m_preview);
+
+    QPalette pal = palette();
+    pal.setColor(QPalette::Background, QColor(0x00, 0xff, 0x00, 0x00));
+    m_area->setPalette(pal);
+    setPalette(pal);
+
+    m_area->setFrameShape(QFrame::Shape::NoFrame);
+
+    m_layout->addWidget(m_area);
 
     connect(m_thread, &DFontLoadThread::loadFinished, this, &DFontWidget::handleFinished);
+
+    m_area->setFixedSize(qApp->primaryScreen()->geometry().width() / 1.5,
+                         qApp->primaryScreen()->geometry().height() / 1.5 + 20);
 }
 
 DFontWidget::~DFontWidget()
@@ -65,4 +84,15 @@ void DFontWidget::handleFinished(const QByteArray &data)
     m_preview->setFileUrl(m_filePath);
     m_layout->setCurrentIndex(1);
     m_spinner->stop();
+    /*恢复滚动条初始位 UT000539*/
+//    QTimer::singleShot(50, [ = ]() {
+//        if (m_preview->m_needScroll == true) {
+//            if (m_area->horizontalScrollBarPolicy() != Qt::ScrollBarPolicy::ScrollBarAsNeeded)
+//                m_area->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+    m_area->horizontalScrollBar()->setSliderPosition(0);
+//        } else if (m_preview->m_needScroll == false) {
+//            if (m_area->horizontalScrollBarPolicy() != Qt::ScrollBarPolicy::ScrollBarAlwaysOff)
+//                m_area->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+//        }
+//    });
 }
