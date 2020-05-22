@@ -33,7 +33,6 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
     connect(this, &DFontPreviewListView::multiItemsAdded, this, &DFontPreviewListView::onMultiItemsAdded);
     connect(this, &DFontPreviewListView::itemRemoved, this, &DFontPreviewListView::onItemRemoved);
     connect(this, &DFontPreviewListView::itemRemovedFromSys, this, &DFontPreviewListView::onItemRemovedFromSys);
-    connect(m_signalManager, &SignalManager::freshListView, this, &DFontPreviewListView::setSelectedFalse);
     //    connect(m_signalManager, &SignalManager::prevFontChanged, this, &DFontPreviewListView::scrollWithTheSelected);
     //    connect(m_signalManager, &SignalManager::refreshCurRect, this, &DFontPreviewListView::refreshRect);
     //    connect(m_signalManager, &SignalManager::setIsJustInstalled, this, [ = ]() {
@@ -274,8 +273,9 @@ void DFontPreviewListView::initConnections()
             if (1 == count) {
                 setCurrentSelected(selectionModel()->selectedIndexes().first().row());
                 scrollTo(currentIndex());
-            } else {
+            } else if (count != 1) {
                 m_currentSelectedRow = -1;
+                isSelectedNow = false;
                 if (selectionModel()->selectedIndexes().count() > 1) {
                     scrollTo(selectionModel()->selectedIndexes().first());
                 }
@@ -1240,11 +1240,3 @@ void DFontPreviewListView::refreshRect()
     sortModelIndexList(indexes);
     m_curRect = visualRect(indexes.last());
 }
-
-void DFontPreviewListView::setSelectedFalse()
-{
-    isSelectedNow = false;
-    m_currentSelectedRow = -1;
-    scrollToTop();
-}
-

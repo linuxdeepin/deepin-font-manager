@@ -290,12 +290,6 @@ void DFontMgrMainWindow::initConnections()
         m_isPopInstallErrorDialog = false;
     });
 
-    connect(m_signalManager, &SignalManager::refreshFocus, [ = ]() {
-        QTimer::singleShot(50, [ = ]() {
-
-            this->m_fontPreviewListView->setFocus(Qt::MouseFocusReason);
-        });
-    });
     connect(m_signalManager, &SignalManager::installOver, this, [ = ](int successInstallCount) {
         m_isInstallOver = true;
         m_successInstallCount = successInstallCount;
@@ -1658,7 +1652,7 @@ void DFontMgrMainWindow::onPreviewTextChanged()
             filterModel->setData(modelIndex, QVariant(m_previewFontSize), Dtk::UserRole + 2);
 //        filterModel->setEditStatus(m_searchTextStatusIsEmpty);
     }
-    emit m_signalManager->freshListView();
+//    emit m_signalManager->freshListView();
 }
 
 qint64 DFontMgrMainWindow::getDiskSpace(bool m_bInstall)
