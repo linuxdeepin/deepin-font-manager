@@ -82,6 +82,7 @@ public:
     bool isAtListviewTop();
     QString getPreviewTextWithSize(int *fontSize = nullptr);
     void setCurrentSelected(int indexRow);
+    static bool misdelete;//是否是删除操作
 protected:
     void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected) override;
 

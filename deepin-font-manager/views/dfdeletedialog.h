@@ -33,6 +33,9 @@ protected:
 signals:
     void requestDelete();
 
+    //是否执行删除操作信号
+    void signal_delete(bool isdelete);
+
 private slots:
     void setTheme();
 

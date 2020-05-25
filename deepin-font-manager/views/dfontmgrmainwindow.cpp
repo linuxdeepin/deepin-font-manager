@@ -1385,6 +1385,12 @@ void DFontMgrMainWindow::delCurrentFont()
     m_isDeleting = true;
     DFDeleteDialog *confirmDelDlg = new DFDeleteDialog(this, deleteCnt, systemCnt, this);
 
+    //是否执行删除操作
+    connect(confirmDelDlg, &DFDeleteDialog::signal_delete, this, [this](bool isdelete) {
+        DFontPreviewListView::misdelete = isdelete;
+    });
+
+
     /* Bug#19111 恢复标记位，不用考虑用户操作 UT00591 */
     connect(confirmDelDlg, &DFDeleteDialog::closed, this, [this]() {
         m_isDeleting = false;

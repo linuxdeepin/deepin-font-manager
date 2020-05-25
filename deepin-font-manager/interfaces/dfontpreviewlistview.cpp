@@ -16,6 +16,8 @@
 
 DWIDGET_USE_NAMESPACE
 
+bool DFontPreviewListView::misdelete = false;
+
 DFontPreviewListView::DFontPreviewListView(QWidget *parent)
     : DListView(parent)
     , m_bLoadDataFinish(false)
@@ -1026,7 +1028,9 @@ void DFontPreviewListView::updateChangedDir(const QString &path)
             enableFont(itemData.fontInfo.filePath);
             DFMDBManager::instance()->deleteFontInfo(itemData);
             Q_EMIT itemRemovedFromSys(itemData);
-            m_dataThread->removeFontData(itemData);
+            if (!misdelete) {
+                m_dataThread->removeFontData(itemData);
+            }
             m_dataThread->removePathWatcher(filePathInfo.filePath());
         }
     }
@@ -1075,6 +1079,7 @@ void DFontPreviewListView::deleteCurFonts(const QStringList &files)
     DFMDBManager::instance()->commitDeleteFontInfo();
     //    emit SignalManager::instance()->updateUninstallDialog(QString("test"), delCnt, files.size());
     emit SignalManager::instance()->closeUninstallDialog();
+    misdelete = false;
     enableFonts();
     updateFont();
     //    DFontInfoManager::instance()->removeFontInfo();
@@ -1102,7 +1107,9 @@ void DFontPreviewListView::changeFontFile(const QString &path, bool force)
             enableFont(itemData.fontInfo.filePath);
             DFMDBManager::instance()->deleteFontInfo(itemData);
             Q_EMIT itemRemoved(itemData);
-            m_dataThread->removeFontData(itemData);
+            if (!misdelete) {
+                m_dataThread->removeFontData(itemData);
+            }
             m_dataThread->removePathWatcher(filePath);
             if (!isDir)
                 break;

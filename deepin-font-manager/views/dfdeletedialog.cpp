@@ -68,10 +68,12 @@ void DFDeleteDialog::initUI()
 void DFDeleteDialog::initConnections()
 {
     connect(m_cancelBtn, &DPushButton::clicked, this, [ = ]() {
+        signal_delete(false);
         reject();
         close();
     });
     connect(m_confirmBtn, &DPushButton::clicked, this, [ = ]() {
+        emit signal_delete(true);
         if (m_deleting)
             return;
         m_deleting = true;
