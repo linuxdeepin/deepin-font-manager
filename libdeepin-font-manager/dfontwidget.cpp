@@ -25,8 +25,7 @@ DFontWidget::DFontWidget(QWidget *parent)
       m_layout(new QStackedLayout(this)),
       m_preview(new DFontPreview(this)),
       m_thread(new DFontLoadThread(this)),
-      m_spinner(new DSpinner(this)),
-      timer(new QTimer(this))
+      m_spinner(new DSpinner(this))
 {
     QWidget *spinnerPage = new QWidget;
     QVBoxLayout *spinnerLayout = new QVBoxLayout(spinnerPage);
@@ -84,15 +83,6 @@ void DFontWidget::handleFinished(const QByteArray &data)
     m_preview->setFileUrl(m_filePath);
     m_layout->setCurrentIndex(1);
     m_spinner->stop();
-    /*恢复滚动条初始位 UT000539*/
-//    QTimer::singleShot(50, [ = ]() {
-//        if (m_preview->m_needScroll == true) {
-//            if (m_area->horizontalScrollBarPolicy() != Qt::ScrollBarPolicy::ScrollBarAsNeeded)
-//                m_area->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     m_area->horizontalScrollBar()->setSliderPosition(0);
-//        } else if (m_preview->m_needScroll == false) {
-//            if (m_area->horizontalScrollBarPolicy() != Qt::ScrollBarPolicy::ScrollBarAlwaysOff)
-//                m_area->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-//        }
-//    });
+
 }

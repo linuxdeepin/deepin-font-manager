@@ -51,7 +51,7 @@ protected:
     void paintEvent(QPaintEvent *);
 
     QPoint adjustPreviewFontBaseLinePoint(const QRect &fontPreviewRect, const QFontMetrics &previewFontMetrics) const;
-    void isNeedScroll(int width);
+    void isNeedScroll(const int width);
 
 private:
     void initContents();

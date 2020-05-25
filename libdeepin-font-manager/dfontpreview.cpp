@@ -176,10 +176,12 @@ void DFontPreview::paintEvent(QPaintEvent *e)
 }
 
 /*判断text宽度是否超过当前宽度 UT000539*/
-void DFontPreview::isNeedScroll(int width)
+void DFontPreview::isNeedScroll(const int width)
 {
-    if (width > textWidth) {
-        m_needScroll = true;
+    if (m_needScroll == false) {
+        if (width > textWidth) {
+            m_needScroll = true;
+        }
     }
     if (width > currentMaxWidth) {
         currentMaxWidth = width;

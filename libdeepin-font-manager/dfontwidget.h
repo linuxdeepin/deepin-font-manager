@@ -55,7 +55,6 @@ private:
     DFontLoadThread *m_thread;
     DSpinner *m_spinner;
     QString m_filePath;
-    QTimer *timer;
 };
 
 #endif
