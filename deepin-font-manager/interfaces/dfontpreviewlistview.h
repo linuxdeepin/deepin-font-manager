@@ -127,6 +127,8 @@ private:
     bool isSelectedNow = false;
     bool m_isJustInstalled = false;
 
+    int m_selectAfterDel = -1;/*539 删除后的选中位置*/
+
 signals:
     //用于DFontPreviewListView内部使用的信号
     void onClickEnableButton(const QModelIndexList &index, bool setValue, bool isFromActiveFont = false);

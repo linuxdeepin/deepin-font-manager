@@ -35,6 +35,9 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
     connect(this, &DFontPreviewListView::multiItemsAdded, this, &DFontPreviewListView::onMultiItemsAdded);
     connect(this, &DFontPreviewListView::itemRemoved, this, &DFontPreviewListView::onItemRemoved);
     connect(this, &DFontPreviewListView::itemRemovedFromSys, this, &DFontPreviewListView::onItemRemovedFromSys);
+    connect(m_signalManager, &SignalManager::cancelDel, this, [ = ] {
+        m_selectAfterDel = -1;
+    });
     //    connect(m_signalManager, &SignalManager::prevFontChanged, this, &DFontPreviewListView::scrollWithTheSelected);
     //    connect(m_signalManager, &SignalManager::refreshCurRect, this, &DFontPreviewListView::refreshRect);
     //    connect(m_signalManager, &SignalManager::setIsJustInstalled, this, [ = ]() {
@@ -1085,6 +1088,19 @@ void DFontPreviewListView::deleteCurFonts(const QStringList &files)
     //    DFontInfoManager::instance()->removeFontInfo();
     Q_EMIT rowCountChanged();
     qDebug() << __FUNCTION__ << " after delete " << m_dataThread->getFontModelList().size() << m_fontPreviewProxyModel->rowCount()  << m_fontPreviewProxyModel->sourceModel()->rowCount();
+    /*UT000539 删除后刷新选中*/
+    if (m_selectAfterDel != -1) {
+        QModelIndex modelIndex = m_fontPreviewProxyModel->index(m_selectAfterDel, 0);
+        if (modelIndex.isValid()) {
+            selectionModel()->select(modelIndex, QItemSelectionModel::Select);
+            setCurrentSelected(m_selectAfterDel);
+        } else {
+            QModelIndex modelIndex = m_fontPreviewProxyModel->index(m_selectAfterDel - 1, 0);
+            selectionModel()->select(modelIndex, QItemSelectionModel::Select);
+            setCurrentSelected(m_selectAfterDel - 1);
+        }
+        isSelectedNow = true;
+    }
 }
 
 void DFontPreviewListView::changeFontFile(const QString &path, bool force)
@@ -1159,6 +1175,11 @@ QStringList DFontPreviewListView::selectedFonts(int *deleteCnt, int *systemCnt)
 void DFontPreviewListView::selectedFontsNum(int *deleteCnt, int *systemCnt)
 {
     QModelIndexList list = selectedIndexes();
+
+    /*539 记录删除的位置*/
+    sortModelIndexList(list);
+    m_selectAfterDel = list.last().row();
+    qDebug() << "llllllllllllllllllllllllll" << m_selectAfterDel;
 
     int deleteNum = 0;
     int systemNum = 0;

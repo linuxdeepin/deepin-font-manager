@@ -53,6 +53,7 @@ private:
     DPushButton *m_cancelBtn;
     DWarningButton *m_confirmBtn;
     DFontMgrMainWindow *m_mainWindow;
+    SignalManager *m_signalManager = SignalManager::instance();
     int m_deleteCnt;
     int m_systemCnt;
     int m_old_width {0};

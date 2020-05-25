@@ -35,6 +35,7 @@ signals:
     void freshListView();
     void refreshFocus(int count);
     void changeView();
+    void cancelDel();/*删除确认取消*/
 private:
     explicit SignalManager(QObject *parent = nullptr);
 
