@@ -1061,13 +1061,13 @@ void DFontPreviewListView::deleteCurFonts(const QStringList &files)
 {
     qDebug() << __FUNCTION__ << " before delete " << m_dataThread->getFontModelList().size() << m_fontPreviewProxyModel->rowCount()  << m_fontPreviewProxyModel->sourceModel()->rowCount();
     QList<DFontPreviewItemData> fontInfoList = m_dataThread->getFontModelList();
-    qDebug() << fontInfoList.size() << __FUNCTION__ << files.size() << "lllllla" << files;
+    qDebug() << fontInfoList.size() << __FUNCTION__ << files.size();
     int delCnt = 0;
     for (int i = 0; i < fontInfoList.size(); ++i) {
         DFontPreviewItemData itemData = fontInfoList.at(i);
         QString filePath = itemData.fontInfo.filePath;
         QFileInfo filePathInfo(filePath);
-        qDebug() << "aaaad" << filePath;        //如果字体文件已经不存在，则从t_manager表中删除
+        //如果字体文件已经不存在，则从t_manager表中删除
         if (files.contains(filePath)) {
             //删除字体之前启用字体，防止下次重新安装后就被禁用
             enableFont(itemData.fontInfo.filePath);
