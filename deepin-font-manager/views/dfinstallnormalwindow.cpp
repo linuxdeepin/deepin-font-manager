@@ -42,6 +42,9 @@ DFInstallNormalWindow::~DFInstallNormalWindow()
     m_outfileList.clear();
     m_errorList.clear();
     m_AllSysFilesPsname.clear();
+    m_installedFontsPSname.clear();
+    m_installedFontsFamilyname.clear();
+    m_halfInstalledFiles.clear();
 }
 
 void DFInstallNormalWindow::initUI()
@@ -168,19 +171,30 @@ void DFInstallNormalWindow::initConnections()
                 if (index >= 0) {
                     file = file.left(index);
                 }
-
                 if (!m_outfileList.contains(file))
                     m_outfileList << file;
+
+                DFontInfo fontInfo = m_fontInfoManager->getFontInfo(file);
+                QString familyName = fontInfo.familyName;
+                QString psName = fontInfo.psname;
+                QString styleName = fontInfo.styleName;
+                if (!psName.compare("")) {
+                    m_installedFontsPSname.append(familyName + styleName);
+                } else {
+                    m_installedFontsPSname.append(psName + styleName);
+                }
+                m_installedFontsFamilyname.append(familyName + styleName);
+
             }
 
 //            emit finishFontInstall(m_outfileList);
         }
-        qDebug() << __func__ << "S" << endl;
-        if (state == 0) {
-            emit m_signalManager->finishFontInstall(m_outfileList, true);
-        } else if (state == 1) {
-            emit m_signalManager->finishFontInstall(m_outfileList, false);
-        }
+//        qDebug() << __func__ << "S" << endl;
+//        if (state == 0) {
+//            emit m_signalManager->finishFontInstall(m_outfileList, true);
+//        } else if (state == 1) {
+//            emit m_signalManager->finishFontInstall(m_outfileList, false);
+//        }
 //        qDebug() << __FUNCTION__ << " installed file list ++++  " << fileList << state;
         emit  m_signalManager->sendInstallMessage(fileList);
 
@@ -218,7 +232,7 @@ void DFInstallNormalWindow::initConnections()
                     m_outfileList << file;
             }
 //            emit finishFontInstall(m_outfileList);
-            emit m_signalManager->finishFontInstall(m_outfileList);
+//            emit m_signalManager->finishFontInstall(m_outfileList);
         }
         emit  m_signalManager->sendReInstallMessage(fileList);
 
@@ -237,15 +251,15 @@ void DFInstallNormalWindow::initConnections()
     }, Qt::UniqueConnection);
 
 
-    connect(m_signalManager, &SignalManager::showInstallErrorDialog, this, [ = ]() {
-        if (ifNeedShowExceptionWindow() && !m_popedInstallErrorDialg) {
-            qDebug() << "need reinstall+++++++++++++++++++++++++++++++" << endl;
-            showInstallErrDlg();
-        } else {
-            qDebug() << "no need reinstall+++++++++++++++++++++++++++++++" << endl;
-            emit  m_signalManager->sendReInstallMessage(QStringList());
-        }
-    }, Qt::UniqueConnection);
+//    connect(m_signalManager, &SignalManager::showInstallErrorDialog, this, [ = ]() {
+//        if (ifNeedShowExceptionWindow() && !m_popedInstallErrorDialg) {
+//            qDebug() << "need reinstall+++++++++++++++++++++++++++++++" << endl;
+//            showInstallErrDlg();
+//        } else {
+//            qDebug() << "no need reinstall+++++++++++++++++++++++++++++++" << endl;
+//            emit  m_signalManager->sendReInstallMessage(QStringList());
+//        }
+//    }, Qt::UniqueConnection);
 
 
     connect(DFontPreviewListDataThread::instance(), &DFontPreviewListDataThread::requestBatchReInstallContinue, this, &DFInstallNormalWindow::batchReInstallContinue);
@@ -279,7 +293,7 @@ void DFInstallNormalWindow::getAllSysfiles()
 
 //字体文件过滤器，过滤后得到需要新安装的字体，重复安装字体，损毁字体，系统字体
 //过滤后进行安装
-void DFInstallNormalWindow::verifyFontFiles()
+void DFInstallNormalWindow::verifyFontFiles(bool isHalfwayInstall)
 {
     DFontInfo fontInfo;
     QList<DFontInfo> fontInfos;
@@ -290,6 +304,7 @@ void DFInstallNormalWindow::verifyFontFiles()
     m_newInstallFiles.clear();
     m_systemFiles.clear();
     m_errorList.clear();
+//    m_halfInstalledFiles.clear();
 
     foreach (auto it, m_installFiles) {
         fontInfo = m_fontInfoManager->getFontInfo(it, true);
@@ -316,8 +331,29 @@ void DFInstallNormalWindow::verifyFontFiles()
 #endif
         } else if (!fontInfos.contains(fontInfo)) {
             fontInfos.append(fontInfo);
-            m_newInstallFiles.append(it);
-
+            if (!isHalfwayInstall) {
+                m_newInstallFiles.append(it);
+            } else {
+                if (!fontInfo.psname.compare("")) {
+                    if (m_installedFontsPSname.contains(fontInfo.familyName + fontInfo.styleName) ||
+                            m_installedFontsFamilyname.contains(fontInfo.familyName + fontInfo.styleName)) {
+                        if (!m_halfInstalledFiles.contains(it)) {
+                            m_halfInstalledFiles.append(it);
+                        }
+                    } else {
+                        m_newInstallFiles.append(it);
+                    }
+                } else {
+                    if (m_installedFontsPSname.contains(fontInfo.psname + fontInfo.styleName) ||
+                            m_installedFontsFamilyname.contains(fontInfo.familyName + fontInfo.styleName)) {
+                        if (!m_halfInstalledFiles.contains(it)) {
+                            m_halfInstalledFiles.append(it);
+                        }
+                    } else {
+                        m_newInstallFiles.append(it);
+                    }
+                }
+            }
 #ifdef QT_QML_DEBUG
 //            qDebug() << __FUNCTION__ << " (" << it << " :New file)";
 #endif
@@ -397,7 +433,7 @@ void DFInstallNormalWindow::checkShowMessage()
     if (getInstallMessage == true && getReInstallMessage == true) {
         qDebug() << "ReInstall over" << endl;
 //        if (!m_installFinishSent) {
-//        emit m_signalManager->finishFontInstall(m_outfileList);
+        emit m_signalManager->finishFontInstall(m_outfileList);
 //            m_installFinishSent = true;
 //        }
     }
@@ -422,15 +458,15 @@ void DFInstallNormalWindow::checkShowMessage()
 
     }
 
-//    if (getInstallMessage == true && m_popedInstallErrorDialg == false) {
-//        if (ifNeedShowExceptionWindow()) {
-//            qDebug() << "need reinstall+++++++++++++++++++++++++++++++" << endl;
-//            showInstallErrDlg();
-//        } else {
-//            qDebug() << "no need reinstall+++++++++++++++++++++++++++++++" << endl;
-//            emit  m_signalManager->sendReInstallMessage(0);
-//        }
-//    }
+    if (getInstallMessage == true && m_popedInstallErrorDialg == false) {
+        if (ifNeedShowExceptionWindow()) {
+            qDebug() << "need reinstall " << endl;
+            showInstallErrDlg();
+        } else {
+            qDebug() << "no need reinstall" << endl;
+            emit  m_signalManager->sendReInstallMessage(QStringList());
+        }
+    }
     emit m_signalManager->setIsJustInstalled();
 }
 
@@ -444,6 +480,7 @@ void DFInstallNormalWindow::getNoSameFilesCount(const QStringList &filesList)
         }
     }
 }
+
 
 void DFInstallNormalWindow::resizeEvent(QResizeEvent *event)
 {
@@ -527,6 +564,7 @@ void DFInstallNormalWindow::batchInstall()
 //        qDebug() << " Prepare install file: " << it + "|" + familyName;
     }
 
+    qDebug() << installListWithFamliyName << endl;
     m_fontManager->setType(DFontManager::Install);
     m_fontManager->setInstallFileList(installListWithFamliyName);
     m_fontManager->setSystemFontCount(systemFontCount);
@@ -540,7 +578,7 @@ void DFInstallNormalWindow::batchReInstall()
     QStringList installList;
 
     if (m_installState == InstallState::reinstall) {
-        if (m_installedFiles.size() > 0) {
+        if (m_installFiles.size() > 0) {
             QStringList filesInstalled;
             foreach (auto it, m_installFiles) {
                 installList.append(it);
@@ -585,18 +623,18 @@ void DFInstallNormalWindow::batchReInstall()
 void DFInstallNormalWindow::batchHalfwayInstall(const QStringList &filelist)
 {
     m_installFiles = filelist;
-    verifyFontFiles();
+    verifyFontFiles(true);
 
-    if (m_errorList.count() > 0) {
-        emit m_signalManager->updateInstallErrorListview(m_errorList);
-    }
+    qDebug() << m_halfInstalledFiles.count() << endl;
+//    if (m_errorList.count() > 0) {
+    emit m_signalManager->updateInstallErrorListview(m_errorList, m_halfInstalledFiles);
+//    }
 
     QStringList installListWithFamliyName;
     foreach (auto it, m_newInstallFiles) {
         DFontInfo fontInfo = m_fontInfoManager->getFontInfo(it);
         QString familyName = fontInfo.familyName;
         installListWithFamliyName.append(it + "|" + familyName);
-
         //        qDebug() << " Prepare install file: " << it + "|" + familyName;
     }
 

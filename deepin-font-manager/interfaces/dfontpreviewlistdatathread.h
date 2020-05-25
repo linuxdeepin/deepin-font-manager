@@ -25,7 +25,7 @@ public:
     //从fontconfig配置文件同步字体启用/禁用状态数据
     void syncFontEnableDisableStatusData(const QStringList &disableFontPathList);
 
-    void refreshFontListData(bool isStartup = false, bool isFirstInstall = false, const QStringList &list = QStringList());
+    void refreshFontListData(bool isStartup = false, const QStringList &list = QStringList());
     void removeFontData(const DFontPreviewItemData &removeItemData);
 
     int insertFontItemData(const QString &filePath,
@@ -53,7 +53,7 @@ public slots:
     void addPathWatcher(const QString &path);
     void removePathWatcher(const QString &path);
     void onFileDeleted(const QStringList &files);
-    void onFileAdded(const QStringList &files, bool isFirstInstall = false);
+    void onFileAdded(const QStringList &files);
     void forceDeleteFiles(const QStringList &files);
 
 protected:

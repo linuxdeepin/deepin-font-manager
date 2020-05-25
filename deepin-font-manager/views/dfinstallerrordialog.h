@@ -88,7 +88,7 @@ signals:
 
 public slots:
     void onListItemClicked(QModelIndex index);
-    void addData(QStringList &errorFileList);
+    void addData(QStringList &errorFileList, QStringList &halfInstalledFilelist);
     void onControlButtonClicked(int btnIndex);
 };
 

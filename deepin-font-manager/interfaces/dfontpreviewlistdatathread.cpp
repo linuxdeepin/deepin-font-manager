@@ -66,7 +66,7 @@ void DFontPreviewListDataThread::doWork()
         //从fontconfig配置文件同步字体启用/禁用状态数据
         syncFontEnableDisableStatusData(disableFontList);
         qDebug() << __func__ << "S" << endl;
-        refreshFontListData(true, false, disableFontList);
+        refreshFontListData(true, disableFontList);
 
         m_view->onFinishedDataLoad();
         return;
@@ -165,12 +165,12 @@ void DFontPreviewListDataThread::onFileDeleted(const QStringList &files)
 //    qDebug() << __FUNCTION__ << files.size() << " end ";
 }
 
-void DFontPreviewListDataThread::onFileAdded(const QStringList &files, bool isFirstInstall)
+void DFontPreviewListDataThread::onFileAdded(const QStringList &files)
 {
     if (files.isEmpty()) {
-        if (isFirstInstall) {
-            Q_EMIT SignalManager::instance()->showInstallErrorDialog();
-        }
+//        if (isFirstInstall) {
+//            Q_EMIT SignalManager::instance()->showInstallErrorDialog();
+//        }
         return;
     }
 
@@ -178,7 +178,7 @@ void DFontPreviewListDataThread::onFileAdded(const QStringList &files, bool isFi
     if (m_mutex != nullptr)
         QMutexLocker locker(m_mutex);
     qDebug() << __func__ << "S" << endl;
-    refreshFontListData(false, isFirstInstall, files);
+    refreshFontListData(false, files);
 }
 
 QList<DFontPreviewItemData> DFontPreviewListDataThread::getFontModelList()
@@ -286,7 +286,7 @@ int DFontPreviewListDataThread::insertFontItemData(const QString &filePath,
     return (index + 1);
 }
 
-void DFontPreviewListDataThread::refreshFontListData(bool isStartup,  bool isFirstInstall, const QStringList &installFont)
+void DFontPreviewListDataThread::refreshFontListData(bool isStartup, const QStringList &installFont)
 {
     qDebug() << __FUNCTION__ << " begin";
     DFontInfoManager *fontInfoMgr = DFontInfoManager::instance();
@@ -357,7 +357,7 @@ void DFontPreviewListDataThread::refreshFontListData(bool isStartup,  bool isFir
     }
     if (!isStartup && !installFont.isEmpty()) {
         Q_EMIT m_view->multiItemsAdded(m_diffFontModelList);
-        Q_EMIT m_view->itemsSelected(installFont, isFirstInstall);
+        Q_EMIT m_view->itemsSelected(installFont);
     } else {
         Q_EMIT m_view->multiItemsAdded(m_fontModelList);
     }

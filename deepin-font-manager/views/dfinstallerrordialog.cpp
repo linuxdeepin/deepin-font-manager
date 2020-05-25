@@ -336,7 +336,7 @@ void DFInstallErrorDialog::onListItemClicked(QModelIndex index)
     resetContinueInstallBtnStatus();
 }
 
-void DFInstallErrorDialog::addData(QStringList &errorFileList)
+void DFInstallErrorDialog::addData(QStringList &errorFileList, QStringList &halfInstalledFilelist)
 {
     DFontInfo fontInfo;
     DFontInfoManager *fontInfoManager = DFontInfoManager::instance();
@@ -379,6 +379,21 @@ void DFInstallErrorDialog::addData(QStringList &errorFileList)
 //            qDebug() << "verifyFontFiles->" << it << " :new file";
         }
     }
+    if (halfInstalledFilelist.size() > 0) {
+        foreach (auto it, halfInstalledFilelist) {
+            QFileInfo fileInfo(it);
+            DFInstallErrorItemModel itemModel;
+            itemModel.bSelectable = true;
+            //默认勾选已安装字体
+            itemModel.bChecked = true;
+            itemModel.strFontFileName = fileInfo.fileName();
+            itemModel.strFontFilePath = fileInfo.filePath();
+            itemModel.strFontInstallStatus = DApplication::translate("DFInstallErrorDialog", "Same version installed");
+            m_updateInstallErrorFontModelList.push_back(itemModel);
+
+        }
+    }
+
     m_installErrorListView->addErrorListData(m_updateInstallErrorFontModelList);
 
 }

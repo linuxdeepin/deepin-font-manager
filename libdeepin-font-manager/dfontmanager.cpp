@@ -289,11 +289,10 @@ void DFontManager::doInstall(const QStringList &fileList, bool reinstall)
 
         }
     }
-    qDebug() << __func__ << "process" << endl;
+
     QProcess process;
-    qDebug() << __func__ << "1" << endl;
+
     process.start("fc-cache");
-    qDebug() << __func__ << "2" << endl;
     process.waitForFinished(100);
 
 //    if (!reinstall) {
@@ -302,7 +301,6 @@ void DFontManager::doInstall(const QStringList &fileList, bool reinstall)
 //            filename = fileList.last();
 ////        Q_EMIT batchInstall(filename, 96);
 //    }
-    qDebug() << __func__ << "e" << endl;
 }
 
 void DFontManager::doUninstall(const QStringList &fileList)

@@ -154,7 +154,7 @@ public slots:
     void onListViewItemCollectionBtnClicked(const QModelIndexList &index, bool setValue, bool isFromCollectFont = false);
     void onListViewShowContextMenu(const QModelIndex &index);
     void onFinishedDataLoad();
-    void selectFonts(const QStringList &fileList, bool isFirstInstall = false);
+    void selectFonts(const QStringList &fileList);
     void selectFont(const QString &file);
     void onItemAdded(const DFontPreviewItemData &itemData);
     void onMultiItemsAdded(const QList<DFontPreviewItemData> &data);

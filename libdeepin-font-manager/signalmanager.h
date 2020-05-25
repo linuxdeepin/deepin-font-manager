@@ -18,7 +18,7 @@ signals:
     void sendReInstallMessage(const QStringList &m_finishFileList);
     void startToInsert();
     void installOver(int successInstallCount);
-    void finishFontInstall(const QStringList &fileList, bool isNeedCheckPopErrdialog = false);
+    void finishFontInstall(const QStringList &fileList);
     void trigerCollect(bool favorite);
     void sizeChange(int height);
     void currentFontGroup(int currentFontGroup);
@@ -27,7 +27,7 @@ signals:
     void requestInstallAdded();
     void popInstallErrorDialog();
     void hideInstallErrorDialog();
-    void updateInstallErrorListview(QStringList &errorFileList);
+    void updateInstallErrorListview(QStringList &errorFileList, QStringList &halfInstalledFiles);
     void installDuringPopErrorDialog(const QStringList &fileList);
     void setIsJustInstalled();
     void closeInstallDialog();

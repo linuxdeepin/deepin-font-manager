@@ -132,7 +132,7 @@ public slots:
     void onFontSizeChanged(int fontSize);
 
     void onLeftSiderBarItemClicked(int index);
-    void onFontInstallFinished(const QStringList &fileList, bool isFirstInstall = false);
+    void onFontInstallFinished(const QStringList &fileList);
 
     void onFontListViewRowCountChanged();
 

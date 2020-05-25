@@ -89,7 +89,7 @@ bool DFontPreviewListView::isListDataLoadFinished()
 void DFontPreviewListView::refreshFontListData(const QStringList &installFont)
 {
     qDebug() << __func__ << "S" << endl;
-    m_dataThread->refreshFontListData(false, false, installFont);
+    m_dataThread->refreshFontListData(false, installFont);
 
     QList<DFontPreviewItemData> diffFontInfoList = m_dataThread->getDiffFontModelList();
     for (int i = 0; i < diffFontInfoList.size(); ++i) {
@@ -357,7 +357,7 @@ bool DFontPreviewListView::isDeleting()
     return false;
 }
 
-void DFontPreviewListView::selectFonts(const QStringList &fileList, bool isFirstInstall)
+void DFontPreviewListView::selectFonts(const QStringList &fileList)
 {
     //    Q_EMIT DFontManager::instance()->batchInstall("onlyprogress", 98);
     if (fileList.isEmpty())
@@ -397,14 +397,7 @@ void DFontPreviewListView::selectFonts(const QStringList &fileList, bool isFirst
     //    if (mw)
     //        Q_EMIT mw->requestUpdatePreview();
 
-    if (isFirstInstall) {
-        Q_EMIT SignalManager::instance()->showInstallErrorDialog();
-        Q_EMIT SignalManager::instance()->requestInstallAdded();
-        //        Q_EMIT m_signalManager->refreshFocus();
-    } else {
-        Q_EMIT SignalManager::instance()->requestInstallAdded();
-        //        Q_EMIT m_signalManager->refreshFocus();
-    }
+    Q_EMIT SignalManager::instance()->requestInstallAdded();
     /*用于安装后刷新聚焦、安装后focus for ctrl+a UT000539*/
     Q_EMIT m_signalManager->refreshFocus(fileList.size());
 

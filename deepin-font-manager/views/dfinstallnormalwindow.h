@@ -8,6 +8,7 @@
 #include "signalmanager.h"
 
 #include <QStringList>
+#include <QHash>
 #include <QTimer>
 
 #include <DDialog>
@@ -40,11 +41,12 @@ protected:
     void getAllSysfiles();
     void initVerifyTimer();
 
-    void verifyFontFiles();
+    void verifyFontFiles(bool isHalfwayInstall = false);
     bool ifNeedShowExceptionWindow() const;
     bool isSystemFont(DFontInfo &f);
     void checkShowMessage();
     void getNoSameFilesCount(const QStringList &filesList);
+
 
     void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
     void paintEvent(QPaintEvent *event) override;
@@ -67,6 +69,10 @@ signals:
 private:
     enum InstallState { Install, reinstall, damaged };
 
+    QStringList m_AllSysFilesPsname;
+    QStringList m_AllSysFilesfamilyName;
+
+
     QStringList m_installFiles;
     QStringList m_installedFiles;
     QStringList m_newInstallFiles;
@@ -74,9 +80,12 @@ private:
     QStringList m_systemFiles;
     QStringList m_outfileList;
     QStringList m_errorList;
-    QStringList m_AllSysFilesPsname;
-    QStringList m_AllSysFilesfamilyName;
     QStringList m_finishInstallFiles;
+
+
+    QStringList m_installedFontsPSname;
+    QStringList m_installedFontsFamilyname;
+    QStringList m_halfInstalledFiles;
 
     QList<DFontInfo> m_installedFilesFontinfo;
 

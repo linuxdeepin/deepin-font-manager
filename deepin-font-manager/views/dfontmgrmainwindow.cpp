@@ -1215,12 +1215,12 @@ void DFontMgrMainWindow::onLeftSiderBarItemClicked(int index)
     qDebug() << "onFontListViewRowCountChanged e" << endl;
 }
 
-void DFontMgrMainWindow::onFontInstallFinished(const QStringList &fileList, bool isFirstInstall)
+void DFontMgrMainWindow::onFontInstallFinished(const QStringList &fileList)
 {
     Q_D(DFontMgrMainWindow);
 
     m_fontPreviewListView->updateFont(false);
-    Q_EMIT m_fontPreviewListView->requestAdded(fileList, isFirstInstall);
+    Q_EMIT m_fontPreviewListView->requestAdded(fileList);
     d->textInputEdit->textChanged(d->textInputEdit->text());
     if (!fileList.isEmpty()) {
         showInstalledFiles();
