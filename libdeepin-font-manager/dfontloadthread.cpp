@@ -43,6 +43,8 @@ void DFontLoadThread::run()
         QByteArray fileContent = file.readAll();
 
         emit loadFinished(fileContent);
+    } else {
+        emit loadFinished(QByteArray());
     }
 
     file.close();

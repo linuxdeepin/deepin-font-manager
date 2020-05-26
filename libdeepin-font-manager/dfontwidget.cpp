@@ -25,7 +25,8 @@ DFontWidget::DFontWidget(QWidget *parent)
       m_layout(new QStackedLayout(this)),
       m_preview(new DFontPreview(this)),
       m_thread(new DFontLoadThread(this)),
-      m_spinner(new DSpinner(this))
+      m_spinner(new DSpinner(this)),
+      m_lab(new QLabel(tr("字体已损坏"), this))/*UT000539 暂时固定文本，确认文案后修改*/
 {
     QWidget *spinnerPage = new QWidget;
     QVBoxLayout *spinnerLayout = new QVBoxLayout(spinnerPage);
@@ -52,6 +53,10 @@ DFontWidget::DFontWidget(QWidget *parent)
 
     connect(m_thread, &DFontLoadThread::loadFinished, this, &DFontWidget::handleFinished);
 
+    connect(qApp, &DApplication::fontChanged, this, [ = ]() {
+        m_lab->setFont(DApplication::font());
+    });
+
     m_area->setFixedSize(qApp->primaryScreen()->geometry().width() / 1.5,
                          qApp->primaryScreen()->geometry().height() / 1.5 + 20);
 }
@@ -75,14 +80,22 @@ void DFontWidget::setFileUrl(const QString &url)
 
 void DFontWidget::handleFinished(const QByteArray &data)
 {
+    /*UT000539 字体损坏弹出提示隐藏view*/
     if (m_preview->fontDatabase.addApplicationFontFromData(data) == -1) {
         m_spinner->stop();
+        m_spinner->hide();
+        m_preview->hide();
+        m_lab->setFont(DApplication::font());
+        m_lab->move(this->geometry().center() - m_lab->rect().center());
+        m_lab->show();
         return;
     }
-
+    if (m_lab->isVisible())
+        m_lab->hide();
     m_preview->setFileUrl(m_filePath);
     m_layout->setCurrentIndex(1);
     m_spinner->stop();
+    m_preview->show();
     m_area->horizontalScrollBar()->setSliderPosition(0);
 
 }
