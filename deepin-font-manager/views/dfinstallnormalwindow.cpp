@@ -635,13 +635,12 @@ void DFInstallNormalWindow::batchHalfwayInstall(const QStringList &filelist)
 
     qDebug() << m_newHalfInstalledFiles.count() << "*" << m_oldHalfInstalledFiles.count() << endl;
     m_halfInstalledFiles.append(m_newHalfInstalledFiles);
-    qDebug() << "14564654654654654" << endl;
 
     if (m_errorList.count() + m_newHalfInstalledFiles.count() > 0) {
         emit m_signalManager->updateInstallErrorListview(m_errorList, m_halfInstalledFiles, m_newHalfInstalledFiles, m_oldHalfInstalledFiles);
     }
 
-    qDebug() << "221321324654654" << endl;
+
     QStringList installListWithFamliyName;
     foreach (auto it, m_newInstallFiles) {
         DFontInfo fontInfo = m_fontInfoManager->getFontInfo(it);
@@ -649,7 +648,7 @@ void DFInstallNormalWindow::batchHalfwayInstall(const QStringList &filelist)
         installListWithFamliyName.append(it + "|" + familyName);
         //        qDebug() << " Prepare install file: " << it + "|" + familyName;
     }
-    qDebug() << "38798789789798" << endl;
+
     m_fontManager->setType(DFontManager::HalfwayInstall);
     m_fontManager->setInstallFileList(installListWithFamliyName);
 //        m_fontManager->setSystemFontCount(systemFontCount);
