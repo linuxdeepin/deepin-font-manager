@@ -239,6 +239,8 @@ int DFontPreviewListDataThread::insertFontItemData(const QString &filePath,
     itemData.isCollected = false;
     itemData.isChineseFont = chineseFontPathList.contains(filePath);
     itemData.isMonoSpace = monoSpaceFontPathList.contains(filePath);
+    //当前的字体大小
+    itemData.iFontSize = DFontPreviewListView::mfontsize;
 
     itemData.fontInfo.isInstalled = true;
 

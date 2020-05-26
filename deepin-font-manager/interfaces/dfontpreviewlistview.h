@@ -83,6 +83,7 @@ public:
     QString getPreviewTextWithSize(int *fontSize = nullptr);
     void setCurrentSelected(int indexRow);
     static bool misdelete;//是否是删除操作
+    static int mfontsize;//当前字号的大小
 protected:
     void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected) override;
 
