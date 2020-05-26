@@ -173,27 +173,44 @@ void DFontPreviewListView::onMultiItemsAdded(const QList<DFontPreviewItemData> &
 
 void DFontPreviewListView::onItemRemoved(const DFontPreviewItemData &itemData)
 {
+
+    /*UT000539 删除后刷新选中*/
+
     if (m_fontPreviewProxyModel == nullptr)
         return;
 
     deleteFontModelIndex(itemData.fontInfo.filePath);
 
-    QItemSelectionModel *selection_model = selectionModel();
-    selection_model->reset();
+//    QItemSelectionModel *selection_model = selectionModel();
+//    selection_model->reset();
 
-    QModelIndex index = currModelIndex();
-    int row = index.row();
-    m_bListviewAtButtom = isAtListviewBottom();
-    m_bListviewAtTop = isAtListviewTop();
-    if (row >= m_fontPreviewProxyModel->rowCount()) {
-        //        if (!m_bListviewAtTop)
-        index = index.siblingAtRow(row - 1);
+//    QModelIndex index = currModelIndex();
+//    int row = index.row();
+//    m_bListviewAtButtom = isAtListviewBottom();
+//    m_bListviewAtTop = isAtListviewTop();
+//    if (row >= m_fontPreviewProxyModel->rowCount()) {
+//        //        if (!m_bListviewAtTop)
+//        index = index.siblingAtRow(row - 1);
+//    }
+//    if (m_bListviewAtButtom && !m_bListviewAtTop) {
+//        if (row != 0)
+//            index = index.siblingAtRow(row - 1);
+//    } else {
+    /*UT000539 刷新删除后选中状态*/
+    if (m_selectAfterDel != -1) {
+        QModelIndex modelIndex = m_fontPreviewProxyModel->index(m_selectAfterDel, 0);
+        if (modelIndex.isValid() && !isAtListviewBottom()) {
+            setCurrentIndex(modelIndex);
+        } else {
+            if (currentIndex().row() != m_selectAfterDel) {
+                QModelIndex modelIndex1 = m_fontPreviewProxyModel->index(m_selectAfterDel - 1, 0);
+                setCurrentIndex(modelIndex1);
+            } else {
+                setCurrentIndex(modelIndex);
+            }
+        }
+        isSelectedNow = true;
     }
-    if (m_bListviewAtButtom && !m_bListviewAtTop) {
-        if (row != 0)
-            index = index.siblingAtRow(row - 1);
-    }
-    setCurrentIndex(index);
 }
 
 void DFontPreviewListView::onItemRemovedFromSys(const DFontPreviewItemData &itemData)
@@ -1088,19 +1105,6 @@ void DFontPreviewListView::deleteCurFonts(const QStringList &files)
     //    DFontInfoManager::instance()->removeFontInfo();
     Q_EMIT rowCountChanged();
     qDebug() << __FUNCTION__ << " after delete " << m_dataThread->getFontModelList().size() << m_fontPreviewProxyModel->rowCount()  << m_fontPreviewProxyModel->sourceModel()->rowCount();
-    /*UT000539 删除后刷新选中*/
-    if (m_selectAfterDel != -1) {
-        QModelIndex modelIndex = m_fontPreviewProxyModel->index(m_selectAfterDel, 0);
-        if (modelIndex.isValid()) {
-            selectionModel()->select(modelIndex, QItemSelectionModel::Select);
-            setCurrentSelected(m_selectAfterDel);
-        } else {
-            QModelIndex modelIndex = m_fontPreviewProxyModel->index(m_selectAfterDel - 1, 0);
-            selectionModel()->select(modelIndex, QItemSelectionModel::Select);
-            setCurrentSelected(m_selectAfterDel - 1);
-        }
-        isSelectedNow = true;
-    }
 }
 
 void DFontPreviewListView::changeFontFile(const QString &path, bool force)
@@ -1178,8 +1182,9 @@ void DFontPreviewListView::selectedFontsNum(int *deleteCnt, int *systemCnt)
 
     /*539 记录删除的位置*/
     sortModelIndexList(list);
-    m_selectAfterDel = list.last().row();
-    qDebug() << "llllllllllllllllllllllllll" << m_selectAfterDel;
+    if (list.count() > 0)
+        m_selectAfterDel = list.last().row();
+    qDebug() << "_____________deleteRow_____________" << m_selectAfterDel;
 
     int deleteNum = 0;
     int systemNum = 0;
