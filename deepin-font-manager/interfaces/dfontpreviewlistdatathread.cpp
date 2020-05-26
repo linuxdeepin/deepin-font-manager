@@ -84,7 +84,7 @@ void DFontPreviewListDataThread::doWork()
     }
 
     for (QString &filePath : disableFontList) {
-        index = insertFontItemData(filePath, index, chineseFontPathList, monoSpaceFontPathList, true, false);
+        index =  insertFontItemData(filePath, index, chineseFontPathList, monoSpaceFontPathList, true, false);
     }
 
     Q_EMIT m_view->multiItemsAdded(m_fontModelList);

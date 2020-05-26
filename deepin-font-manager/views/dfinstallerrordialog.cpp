@@ -69,11 +69,13 @@ DFInstallErrorDialog::DFInstallErrorDialog(QWidget *parent, const QStringList &e
 
 DFInstallErrorDialog::~DFInstallErrorDialog()
 {
+    qDebug() << __func__ << "start" << endl;
     emit m_signalManager->hideInstallErrorDialog();
     m_errorInstallFiles.clear();
     m_systemFilesPsname.clear();
     m_systemFilesFamilyname.clear();
     m_installErrorFontModelList.clear();
+    qDebug() << __func__ << "end" << endl;
 }
 
 void DFInstallErrorDialog::initData()
@@ -336,11 +338,14 @@ void DFInstallErrorDialog::onListItemClicked(QModelIndex index)
     resetContinueInstallBtnStatus();
 }
 
-void DFInstallErrorDialog::addData(QStringList &errorFileList, QStringList &halfInstalledFilelist)
+void DFInstallErrorDialog::addData(QStringList &errorFileList, QStringList &halfInstalledFilelist,
+                                   QStringList &addHalfInstalledFiles, QStringList &oldHalfInstalledFiles)
 {
     DFontInfo fontInfo;
     DFontInfoManager *fontInfoManager = DFontInfoManager::instance();
     QList<DFInstallErrorItemModel> m_updateInstallErrorFontModelList;
+    QStringList m_halfInstalledFilelist;
+
     m_installErrorFontModelList.clear();
     foreach (auto it, errorFileList) {
         fontInfo = fontInfoManager->getFontInfo(it);
@@ -390,11 +395,14 @@ void DFInstallErrorDialog::addData(QStringList &errorFileList, QStringList &half
             itemModel.strFontFilePath = fileInfo.filePath();
             itemModel.strFontInstallStatus = DApplication::translate("DFInstallErrorDialog", "Same version installed");
             m_updateInstallErrorFontModelList.push_back(itemModel);
-
         }
     }
 
     m_installErrorListView->addErrorListData(m_updateInstallErrorFontModelList);
+    m_installErrorListView->checkScrollToIndex(addHalfInstalledFiles, oldHalfInstalledFiles, errorFileList);
+    addHalfInstalledFiles.append(oldHalfInstalledFiles);
+    addHalfInstalledFiles.append(errorFileList);
+    m_installErrorListView->setSelectStatus(addHalfInstalledFiles);
 
 }
 

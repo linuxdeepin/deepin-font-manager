@@ -49,6 +49,9 @@ public:
     void initErrorListData();
     void initDelegate();
     void addErrorListData(QList<DFInstallErrorItemModel> installErrorFontModelList);
+    void checkScrollToIndex(QStringList &addHalfInstalledFiles, QStringList &oldHalfInstalledFiles, QStringList &errorFileList);
+    void scrollToIndex(QString &filePath);
+    void setSelectStatus(QStringList &HalfInstalledFiles);
     QStandardItemModel *getErrorListSourceModel();
 
 private:
@@ -58,6 +61,7 @@ private:
     QStandardItemModel *m_errorListSourceModel;
     QList<DFInstallErrorItemModel> m_installErrorFontModelList;
     QList<QString> m_errorFontlist;
+    int beforeSelectRow = 0;
 
     bool m_bLeftMouse;
 

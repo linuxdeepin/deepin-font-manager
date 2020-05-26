@@ -340,17 +340,19 @@ void DFInstallErrorListView::addErrorListData(QList<DFInstallErrorItemModel> ins
 {
     m_errorListSourceModel->clear();
     this->setModel(m_errorListSourceModel);
-//    m_installErrorFontModelList.append(installErrorFontModelList);
+
+    QList<DFInstallErrorItemModel> m_newErrorFontModel;
     DFontInfo fontInfo;
+
     foreach (auto it, installErrorFontModelList) {
         fontInfo = m_fontInfoManager->getFontInfo(it.strFontFilePath, true);
         QString str = fontInfo.familyName + fontInfo.styleName;
         if (!m_errorFontlist.contains(fontInfo.familyName + fontInfo.styleName)) {
-            m_installErrorFontModelList.append(it);
+            m_newErrorFontModel.append(it);
             m_errorFontlist.append(fontInfo.familyName + fontInfo.styleName);
         }
     }
-
+    m_installErrorFontModelList.append(m_newErrorFontModel);
 
 //    QSet<QVariant> m_installErrorFontModelSet;
 
@@ -362,26 +364,89 @@ void DFInstallErrorListView::addErrorListData(QList<DFInstallErrorItemModel> ins
 
 
     for (int i = 0; i < m_installErrorFontModelList.size(); i++) {
-
         QStandardItem *item = new QStandardItem;
         DFInstallErrorItemModel itemModel = m_installErrorFontModelList.at(i);
         item->setData(QVariant::fromValue(itemModel), Qt::DisplayRole);
-
         m_errorListSourceModel->appendRow(item);
     }
 
     this->setModel(m_errorListSourceModel);
+}
 
-    //设置默认选中第一行
-    QModelIndex firstRowModelIndex = m_errorListSourceModel->index(0, 0);
-
-    DFInstallErrorItemModel itemModel =
-        qvariant_cast<DFInstallErrorItemModel>(m_errorListSourceModel->data(firstRowModelIndex));
-
-    if (itemModel.bSelectable) {
-        selectionModel()->select(firstRowModelIndex, QItemSelectionModel::Select);
+void DFInstallErrorListView::checkScrollToIndex(QStringList &addHalfInstalledFiles, QStringList &oldHalfInstalledFiles, QStringList &errorFileList)
+{
+    if (addHalfInstalledFiles.count() > 0) {
+        scrollToIndex(addHalfInstalledFiles.first());
+    } else if (addHalfInstalledFiles.count() == 0 && oldHalfInstalledFiles.count() != 0) {
+        scrollToIndex(oldHalfInstalledFiles.first());
+    } else if (addHalfInstalledFiles.count() == 0  && oldHalfInstalledFiles.count() == 0 && errorFileList.count() > 0) {
+        scrollToIndex(errorFileList.first());
+    } else {
+        QModelIndex modelIndex = m_errorListSourceModel->index(beforeSelectRow, 0);
+        scrollTo(modelIndex);
     }
 }
+
+void DFInstallErrorListView::scrollToIndex(QString &filePath)
+{
+    DFontInfo fontinfo = m_fontInfoManager->getFontInfo(filePath);
+    QString file;
+    if (!fontinfo.psname.compare("")) {
+        file = fontinfo.familyName + fontinfo.styleName;
+    } else {
+        file = fontinfo.psname + fontinfo.styleName;
+    }
+
+
+    for (int i = 0; i < m_errorListSourceModel->rowCount(); i++) {
+        QModelIndex modelIndex = m_errorListSourceModel->index(i, 0);
+        QVariant varModel = m_errorListSourceModel->data(modelIndex, Qt::DisplayRole);
+        DFInstallErrorItemModel itemData = varModel.value<DFInstallErrorItemModel>();
+//            qDebug() << itemData.strFontFilePath << "!!!!!!!!!!!!" << endl;
+        DFontInfo info =  m_fontInfoManager->getFontInfo(itemData.strFontFilePath);
+        QString fileName;
+        if (!info.psname.compare("")) {
+            fileName = info.familyName + info.styleName;
+        } else {
+            fileName = info.psname + info.styleName;
+        }
+        if (file == fileName) {
+            scrollTo(modelIndex);
+        }
+    }
+}
+
+void DFInstallErrorListView::setSelectStatus(QStringList &HalfInstalledFiles)
+{
+    foreach (auto it, HalfInstalledFiles) {
+        DFontInfo fontinfo = m_fontInfoManager->getFontInfo(it);
+        QString file;
+        if (!fontinfo.psname.compare("")) {
+            file = fontinfo.familyName + fontinfo.styleName;
+        } else {
+            file = fontinfo.psname + fontinfo.styleName;
+        }
+
+        for (int i = 0; i < m_errorListSourceModel->rowCount(); i++) {
+            QModelIndex modelIndex = m_errorListSourceModel->index(i, 0);
+            QVariant varModel = m_errorListSourceModel->data(modelIndex, Qt::DisplayRole);
+            DFInstallErrorItemModel itemData = varModel.value<DFInstallErrorItemModel>();
+            DFontInfo info =  m_fontInfoManager->getFontInfo(itemData.strFontFilePath);
+            QString fileName;
+            if (!info.psname.compare("")) {
+                fileName = info.familyName + info.styleName;
+            } else {
+                fileName = info.psname + info.styleName;
+            }
+            if (file == fileName) {
+                if (itemData.bSelectable) {
+                    selectionModel()->select(modelIndex, QItemSelectionModel::Select);
+                }
+            }
+        }
+    }
+}
+
 
 QStandardItemModel *DFInstallErrorListView::getErrorListSourceModel()
 {

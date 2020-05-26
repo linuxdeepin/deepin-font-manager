@@ -86,6 +86,8 @@ private:
     QStringList m_installedFontsPSname;
     QStringList m_installedFontsFamilyname;
     QStringList m_halfInstalledFiles;
+    QStringList m_newHalfInstalledFiles;
+    QStringList m_oldHalfInstalledFiles;
 
     QList<DFontInfo> m_installedFilesFontinfo;
 

@@ -34,6 +34,7 @@ DFInstallNormalWindow::DFInstallNormalWindow(const QStringList &files, QWidget *
 
 DFInstallNormalWindow::~DFInstallNormalWindow()
 {
+    qDebug() << __func__ << "start" << endl;
     m_installFiles.clear();
     m_installedFiles.clear();
     m_newInstallFiles.clear();
@@ -45,6 +46,7 @@ DFInstallNormalWindow::~DFInstallNormalWindow()
     m_installedFontsPSname.clear();
     m_installedFontsFamilyname.clear();
     m_halfInstalledFiles.clear();
+    qDebug() << __func__ << "end" << endl;
 }
 
 void DFInstallNormalWindow::initUI()
@@ -304,6 +306,8 @@ void DFInstallNormalWindow::verifyFontFiles(bool isHalfwayInstall)
     m_newInstallFiles.clear();
     m_systemFiles.clear();
     m_errorList.clear();
+    m_newHalfInstalledFiles.clear();
+    m_oldHalfInstalledFiles.clear();
 //    m_halfInstalledFiles.clear();
 
     foreach (auto it, m_installFiles) {
@@ -338,7 +342,9 @@ void DFInstallNormalWindow::verifyFontFiles(bool isHalfwayInstall)
                     if (m_installedFontsPSname.contains(fontInfo.familyName + fontInfo.styleName) ||
                             m_installedFontsFamilyname.contains(fontInfo.familyName + fontInfo.styleName)) {
                         if (!m_halfInstalledFiles.contains(it)) {
-                            m_halfInstalledFiles.append(it);
+                            m_newHalfInstalledFiles.append(it);
+                        } else {
+                            m_oldHalfInstalledFiles.append(it);
                         }
                     } else {
                         m_newInstallFiles.append(it);
@@ -347,7 +353,9 @@ void DFInstallNormalWindow::verifyFontFiles(bool isHalfwayInstall)
                     if (m_installedFontsPSname.contains(fontInfo.psname + fontInfo.styleName) ||
                             m_installedFontsFamilyname.contains(fontInfo.familyName + fontInfo.styleName)) {
                         if (!m_halfInstalledFiles.contains(it)) {
-                            m_halfInstalledFiles.append(it);
+                            m_newHalfInstalledFiles.append(it);
+                        } else {
+                            m_oldHalfInstalledFiles.append(it);
                         }
                     } else {
                         m_newInstallFiles.append(it);
@@ -625,10 +633,11 @@ void DFInstallNormalWindow::batchHalfwayInstall(const QStringList &filelist)
     m_installFiles = filelist;
     verifyFontFiles(true);
 
-    qDebug() << m_halfInstalledFiles.count() << endl;
-//    if (m_errorList.count() > 0) {
-    emit m_signalManager->updateInstallErrorListview(m_errorList, m_halfInstalledFiles);
-//    }
+    qDebug() << m_newHalfInstalledFiles.count() << "*" << m_oldHalfInstalledFiles.count() << endl;
+    m_halfInstalledFiles.append(m_newHalfInstalledFiles);
+    if (m_errorList.count() + m_newHalfInstalledFiles.count() > 0) {
+        emit m_signalManager->updateInstallErrorListview(m_errorList, m_halfInstalledFiles, m_newHalfInstalledFiles, m_oldHalfInstalledFiles);
+    }
 
     QStringList installListWithFamliyName;
     foreach (auto it, m_newInstallFiles) {
@@ -674,7 +683,7 @@ void DFInstallNormalWindow::onCancelInstall()
 //    qDebug() << "cancel reinstall" << totalInstallFont << endl;
     emit m_signalManager->sendReInstallMessage(QStringList());
 //    if (totalInstallFont > 0)
-    Q_EMIT SignalManager::instance()->requestInstallAdded();
+//    Q_EMIT SignalManager::instance()->requestInstallAdded();
 //ut000442 后面添加了关闭这个框的逻辑，不需要在这里关闭。
 //    this->accept();
 }

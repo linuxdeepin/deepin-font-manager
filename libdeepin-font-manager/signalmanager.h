@@ -27,7 +27,8 @@ signals:
     void requestInstallAdded();
     void popInstallErrorDialog();
     void hideInstallErrorDialog();
-    void updateInstallErrorListview(QStringList &errorFileList, QStringList &halfInstalledFiles);
+    void updateInstallErrorListview(QStringList &errorFileList, QStringList &halfInstalledFiles,
+                                    QStringList &addHalfInstalledFiles, QStringList &oldHalfInstalledFiles);
     void installDuringPopErrorDialog(const QStringList &fileList);
     void setIsJustInstalled();
     void closeInstallDialog();
