@@ -347,6 +347,7 @@ void DFInstallErrorDialog::addData(QStringList &errorFileList, QStringList &half
     QStringList m_halfInstalledFilelist;
 
     m_installErrorFontModelList.clear();
+    qDebug() << "@@@@" << endl;
     foreach (auto it, errorFileList) {
         fontInfo = fontInfoManager->getFontInfo(it);
 
@@ -384,6 +385,7 @@ void DFInstallErrorDialog::addData(QStringList &errorFileList, QStringList &half
 //            qDebug() << "verifyFontFiles->" << it << " :new file";
         }
     }
+    qDebug() << "#####" << endl;
     if (halfInstalledFilelist.size() > 0) {
         foreach (auto it, halfInstalledFilelist) {
             QFileInfo fileInfo(it);
@@ -397,12 +399,14 @@ void DFInstallErrorDialog::addData(QStringList &errorFileList, QStringList &half
             m_updateInstallErrorFontModelList.push_back(itemModel);
         }
     }
-
+    qDebug() << "%%%%%" << endl;
     m_installErrorListView->addErrorListData(m_updateInstallErrorFontModelList);
     m_installErrorListView->checkScrollToIndex(addHalfInstalledFiles, oldHalfInstalledFiles, errorFileList);
+    qDebug() << "((((((((((" << endl;
     addHalfInstalledFiles.append(oldHalfInstalledFiles);
     addHalfInstalledFiles.append(errorFileList);
     m_installErrorListView->setSelectStatus(addHalfInstalledFiles);
+    qDebug() << "^^^^^^" << endl;
 
 }
 

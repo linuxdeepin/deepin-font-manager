@@ -418,6 +418,7 @@ void DFInstallErrorListView::scrollToIndex(QString &filePath)
 
 void DFInstallErrorListView::setSelectStatus(QStringList &HalfInstalledFiles)
 {
+    QStringList str;
     foreach (auto it, HalfInstalledFiles) {
         DFontInfo fontinfo = m_fontInfoManager->getFontInfo(it);
         QString file;
@@ -426,22 +427,22 @@ void DFInstallErrorListView::setSelectStatus(QStringList &HalfInstalledFiles)
         } else {
             file = fontinfo.psname + fontinfo.styleName;
         }
-
-        for (int i = 0; i < m_errorListSourceModel->rowCount(); i++) {
-            QModelIndex modelIndex = m_errorListSourceModel->index(i, 0);
-            QVariant varModel = m_errorListSourceModel->data(modelIndex, Qt::DisplayRole);
-            DFInstallErrorItemModel itemData = varModel.value<DFInstallErrorItemModel>();
-            DFontInfo info =  m_fontInfoManager->getFontInfo(itemData.strFontFilePath);
-            QString fileName;
-            if (!info.psname.compare("")) {
-                fileName = info.familyName + info.styleName;
-            } else {
-                fileName = info.psname + info.styleName;
-            }
-            if (file == fileName) {
-                if (itemData.bSelectable) {
-                    selectionModel()->select(modelIndex, QItemSelectionModel::Select);
-                }
+        str << file;
+    }
+    for (int i = 0; i < m_errorListSourceModel->rowCount(); i++) {
+        QModelIndex modelIndex = m_errorListSourceModel->index(i, 0);
+        QVariant varModel = m_errorListSourceModel->data(modelIndex, Qt::DisplayRole);
+        DFInstallErrorItemModel itemData = varModel.value<DFInstallErrorItemModel>();
+        DFontInfo info =  m_fontInfoManager->getFontInfo(itemData.strFontFilePath);
+        QString fileName;
+        if (!info.psname.compare("")) {
+            fileName = info.familyName + info.styleName;
+        } else {
+            fileName = info.psname + info.styleName;
+        }
+        if (str.contains(fileName)) {
+            if (itemData.bSelectable) {
+                selectionModel()->select(modelIndex, QItemSelectionModel::Select);
             }
         }
     }
