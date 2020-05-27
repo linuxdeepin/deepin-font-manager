@@ -558,7 +558,7 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
         if (event->button() == Qt::RightButton) {
             m_bRightMous = true;
             //DMenu *rightMenu = m_rightMenu;
-            //在当前鼠标位置显示
+            //在当前鼠标位置显示 `
             if (!modelIndex.isValid()) {
                 return;
             }
@@ -569,6 +569,9 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
                 if (!this->selectedIndexes().contains(modelIndex)) {
                     this->setCurrentIndex(modelIndex);
                 }
+                DFontPreviewItemData itemData = qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(modelIndex));
+                itemData.collectIconStatus =  IconNormal;
+                m_fontPreviewProxyModel->setData(modelIndex, QVariant::fromValue(itemData), Qt::DisplayRole);
                 m_rightMenu->exec(QCursor::pos());
                 return;
             }
