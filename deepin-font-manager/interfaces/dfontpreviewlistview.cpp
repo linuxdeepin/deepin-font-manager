@@ -1103,7 +1103,10 @@ void DFontPreviewListView::deleteCurFonts(const QStringList &files)
     }
     DFMDBManager::instance()->commitDeleteFontInfo();
     //    emit SignalManager::instance()->updateUninstallDialog(QString("test"), delCnt, files.size());
-    emit SignalManager::instance()->closeUninstallDialog();
+    QTimer::singleShot(50, [ = ]() {
+        emit SignalManager::instance()->closeUninstallDialog();
+    });
+
     misdelete = false;
     enableFonts();
     updateFont();
