@@ -660,25 +660,27 @@ void DFontPreviewListView::mouseReleaseEvent(QMouseEvent *event)
     QRect checkboxRealRect = QRect(rect.left() + 25, rect.top() + 10 - 5, checkBoxSize, checkBoxSize);
     QRect collectIconRect = getCollectionIconRect(rect);
 
-    if (checkboxRealRect.contains(clickPoint)) {
-        //触发启用/禁用字体
-        //        emit onClickEnableButton(indexList, !itemData.isEnabled);
-        if (m_currentFontGroup != FontGroup::ActiveFont) {
-            onListViewItemEnableBtnClicked(indexList, !itemData.isEnabled);
-        } else {
-            onListViewItemEnableBtnClicked(indexList, !itemData.isEnabled, true);
+    if (event->button() == Qt::LeftButton) {/*539 排除右键点击效果*/
+        if (checkboxRealRect.contains(clickPoint)) {
+            //触发启用/禁用字体
+            //        emit onClickEnableButton(indexList, !itemData.isEnabled);
+            if (m_currentFontGroup != FontGroup::ActiveFont) {
+                onListViewItemEnableBtnClicked(indexList, !itemData.isEnabled);
+            } else {
+                onListViewItemEnableBtnClicked(indexList, !itemData.isEnabled, true);
+            }
+
+
+        } else if (collectIconRect.contains(clickPoint)) {
+            //触发收藏/取消收藏
+            //        emit onClickCollectionButton(modelIndex);
+            if (m_currentFontGroup != FontGroup::CollectFont) {
+                onListViewItemCollectionBtnClicked(indexList, !itemData.isCollected);
+            } else {
+                onListViewItemCollectionBtnClicked(indexList, !itemData.isCollected, true);
+            }
+
         }
-
-
-    } else if (collectIconRect.contains(clickPoint)) {
-        //触发收藏/取消收藏
-        //        emit onClickCollectionButton(modelIndex);
-        if (m_currentFontGroup != FontGroup::CollectFont) {
-            onListViewItemCollectionBtnClicked(indexList, !itemData.isCollected);
-        } else {
-            onListViewItemCollectionBtnClicked(indexList, !itemData.isCollected, true);
-        }
-
     }
 
 
