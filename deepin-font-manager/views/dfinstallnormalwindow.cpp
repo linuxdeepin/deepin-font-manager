@@ -173,8 +173,8 @@ void DFInstallNormalWindow::initConnections()
                 if (index >= 0) {
                     file = file.left(index);
                 }
-                if (!m_outfileList.contains(file))
-                    m_outfileList << file;
+//                if (!m_outfileList.contains(file))
+//                    m_outfileList << file;
 
                 DFontInfo fontInfo = m_fontInfoManager->getFontInfo(file);
                 QString familyName = fontInfo.familyName;
@@ -230,8 +230,8 @@ void DFInstallNormalWindow::initConnections()
                     file = file.left(index);
                 }
 
-                if (!m_outfileList.contains(file))
-                    m_outfileList << file;
+//                if (!m_outfileList.contains(file))
+//                    m_outfileList << file;
             }
 //            emit finishFontInstall(m_outfileList);
 //            emit m_signalManager->finishFontInstall(m_outfileList);
@@ -485,6 +485,7 @@ void DFInstallNormalWindow::getNoSameFilesCount(const QStringList &filesList)
         fontInfo = m_fontInfoManager->getFontInfo(it, true);
         if (!m_installedFilesFontinfo.contains(fontInfo)) {
             m_installedFilesFontinfo.append(fontInfo);
+            m_outfileList.append(fontInfo.filePath);
         }
     }
 }
