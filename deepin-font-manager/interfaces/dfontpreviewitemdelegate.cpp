@@ -170,7 +170,14 @@ QFont DFontPreviewItemDelegate::adjustPreviewFont(const QString &fontFamilyName,
 void DFontPreviewItemDelegate::paintForegroundPreviewContent(QPainter *painter, const QString &content, const QRect &fontPreviewRect, const QFont &previewFont) const
 {
     QFontMetrics fontMetric(previewFont);
-    QString elidedText = fontMetric.elidedText(content, Qt::ElideRight, fontPreviewRect.width(), Qt::TextShowMnemonic);
+    QString elidedText;
+    //安装新的字体时，因为设置了默认的内容，当预览框内容不为空时，应该显示预览框内容，而不是默认的内容
+    if (!DFontPreviewListView::mcurtext.isEmpty()) {
+        elidedText = fontMetric.elidedText(DFontPreviewListView::mcurtext, Qt::ElideRight, fontPreviewRect.width(), Qt::TextShowMnemonic);
+    } else {
+        elidedText = fontMetric.elidedText(content, Qt::ElideRight, fontPreviewRect.width(), Qt::TextShowMnemonic);
+    }
+
     QPoint baseLinePoint = adjustPreviewFontBaseLinePoint(fontPreviewRect, fontMetric);
     /* 使用baseline规则绘制预览文字，这样不用考虑特殊字体 UT000591 */
     //    painter->drawText(fontPreviewRect, Qt::AlignLeft | Qt::AlignVCenter, elidedText);

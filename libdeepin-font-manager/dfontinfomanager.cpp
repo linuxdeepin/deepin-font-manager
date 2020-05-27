@@ -32,7 +32,6 @@
 #include <fontconfig/fontconfig.h>
 #include <ft2build.h>
 #include <iconv.h>
-
 #include <DApplication>
 
 DWIDGET_USE_NAMESPACE

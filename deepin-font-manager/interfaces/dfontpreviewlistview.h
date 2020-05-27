@@ -84,6 +84,7 @@ public:
     void setCurrentSelected(int indexRow);
     static bool misdelete;//是否是删除操作
     static int mfontsize;//当前字号的大小
+    static QString mcurtext;//当前显示内容
 protected:
     void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected) override;
 

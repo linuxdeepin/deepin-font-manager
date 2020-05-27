@@ -931,7 +931,7 @@ void DFontMgrMainWindow::handleAddFontEvent()
         }
     }
 
-    //DFontPreviewListView::mfontsize = d->fontScaleSlider->value();
+    m_previewText = d->textInputEdit->text();
     Q_EMIT fileSelected(filelist);
 }
 
@@ -1153,6 +1153,7 @@ void DFontMgrMainWindow::onSearchTextChanged(const QString &currStr)
 
 void DFontMgrMainWindow::onPreviewTextChanged(const QString &text)
 {
+    DFontPreviewListView::mcurtext = text;
     bool isEmpty = text.isEmpty();
     m_previewText = text;
 
