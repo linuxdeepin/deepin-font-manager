@@ -70,7 +70,7 @@ public:
     void selectedFontsNum(int *deleteCnt, int *systemCnt);
     QModelIndexList selectedIndex(int *deleteCnt, int *systemCnt);
     void deleteFontModelIndex(const QString &filePath, bool isFromSys = false);
-    void updateFont(bool nofont = true);
+    void updateFont();
     inline bool isDeleting();
     QMutex *getMutex();
     void enableFont(const QString &filePath);
@@ -122,6 +122,7 @@ private:
     QMutex m_mutex;
     QStringList m_enableFontList;
     QStringList m_disableFontList;
+    QMap<QString, int> m_fontIdMap;
     FontGroup m_currentFontGroup;
 
     QRect m_curRect;

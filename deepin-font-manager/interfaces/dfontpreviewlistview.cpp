@@ -68,6 +68,7 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
         connect(mw, &DFontMgrMainWindow::requestDeleted, this, [ = ](const QStringList files) {
         qDebug() << " requestDeleted";
         Q_EMIT requestDeleted(files);
+        updateFont();
     });
     initFontListData();
 
@@ -162,10 +163,17 @@ void DFontPreviewListView::onMultiItemsAdded(const QList<DFontPreviewItemData> &
         qDebug() << __FUNCTION__ << "insertRows fail";
         return;
     }
+//    updateFont();
     qDebug() << __FUNCTION__ << "rows = " << sourceModel->rowCount();
     for (DFontPreviewItemData itemData : data) {
         QModelIndex index = sourceModel->index(rows + i,   0);
         //        qDebug() << __FUNCTION__ << index;
+        if (itemData.isEnabled) {
+            int appFontId = QFontDatabase::addApplicationFont(itemData.fontInfo.filePath);
+            QStringList families = QFontDatabase::applicationFontFamilies(appFontId);
+            itemData.fontInfo.qfamilyName = (families.isEmpty()) ? itemData.fontInfo.familyName : families.first();
+            m_fontIdMap.insert(itemData.fontInfo.filePath, appFontId);
+        }
         res = sourceModel->setData(index, QVariant::fromValue(itemData), Qt::DisplayRole);
         if (!res)
             qDebug() << __FUNCTION__ << "setData fail";
@@ -182,6 +190,7 @@ void DFontPreviewListView::onItemRemoved(const DFontPreviewItemData &itemData)
         return;
 
     deleteFontModelIndex(itemData.fontInfo.filePath);
+    m_fontIdMap.remove(itemData.fontInfo.filePath);
 
 //    QItemSelectionModel *selection_model = selectionModel();
 //    selection_model->reset();
@@ -222,6 +231,7 @@ void DFontPreviewListView::onItemRemovedFromSys(const DFontPreviewItemData &item
 
     qDebug() << __FUNCTION__ << ", path " << itemData.fontInfo.filePath << QThread::currentThreadId();
     deleteFontModelIndex(itemData.fontInfo.filePath, true);
+    m_fontIdMap.remove(itemData.fontInfo.filePath);
 
     QItemSelectionModel *selection_model = selectionModel();
     selection_model->select(currModelIndex(), QItemSelectionModel::Select);
@@ -359,17 +369,20 @@ void DFontPreviewListView::deleteFontModelIndex(const QString &filePath, bool is
     }
 }
 
-void DFontPreviewListView::updateFont(bool nofont)
+// nofont: true没有字体 false有字体
+void DFontPreviewListView::updateFont()
 {
-    if (!nofont) {
-        m_fontPreviewItemDelegate->setNoFont(nofont);
-        return;
-    }
-
     QStringList fonts = DFontInfoManager::instance()->getAllFontPath();
+    qDebug() << __FUNCTION__ << fonts.size();
     if (fonts.isEmpty()) {
         QFontDatabase::removeAllApplicationFonts();
-        m_fontPreviewItemDelegate->setNoFont(nofont);
+        m_fontPreviewItemDelegate->setNoFont(true);
+    } else {
+        QFontDatabase::removeAllApplicationFonts();
+        for (QString &fontPath : fonts) {
+            QFontDatabase::addApplicationFont(fontPath);
+        }
+        m_fontPreviewItemDelegate->setNoFont(false);
     }
 }
 
@@ -788,6 +801,7 @@ void DFontPreviewListView::enableFonts()
 
     DFMXmlWrapper::deleteNodeWithTextList(fontConfigPath, "pattern", m_enableFontList);
     m_enableFontList.clear();
+    updateFont();
 }
 
 void DFontPreviewListView::disableFonts()
@@ -805,6 +819,7 @@ void DFontPreviewListView::disableFonts()
 
     DFMXmlWrapper::addPatternNodesWithTextList(fontConfigPath, "rejectfont", m_disableFontList);
     m_disableFontList.clear();
+    updateFont();
 }
 
 void DFontPreviewListView::toSetCurrentIndex(QModelIndexList &itemIndexesNew)
@@ -882,7 +897,6 @@ void DFontPreviewListView::onListViewItemEnableBtnClicked(const QModelIndexList 
         if (!fi.exists())
             continue;
         itemData.isEnabled = setValue;
-        itemData.isPreviewEnabled = setValue;
 
         //        qDebug() << __FUNCTION__ << "familyName" << itemData.fontInfo.familyName << endl;
 
@@ -1063,7 +1077,7 @@ void DFontPreviewListView::updateChangedDir(const QString &path)
     }
     DFMDBManager::instance()->commitDeleteFontInfo();
     enableFonts();
-    updateFont();
+//    updateFont();
 
     Q_EMIT rowCountChanged();
     //    qDebug() << __FUNCTION__ << path << " end ";
@@ -1111,8 +1125,7 @@ void DFontPreviewListView::deleteCurFonts(const QStringList &files)
 
     misdelete = false;
     enableFonts();
-    updateFont();
-    //    DFontInfoManager::instance()->removeFontInfo();
+
     Q_EMIT rowCountChanged();
     qDebug() << __FUNCTION__ << " after delete " << m_dataThread->getFontModelList().size() << m_fontPreviewProxyModel->rowCount()  << m_fontPreviewProxyModel->sourceModel()->rowCount();
 }

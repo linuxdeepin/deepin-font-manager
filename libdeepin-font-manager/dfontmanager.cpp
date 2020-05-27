@@ -79,25 +79,24 @@ void DFontManager::setUnInstallFile(const QStringList &filePath)
 
 void DFontManager::handleInstallOutput()
 {
-// unused code
+    /*    QProcess *process = dynamic_cast<QProcess *>(sender());
+        qDebug() << process->processId();
+        QString output = process->readAllStandardOutput();
 
-//    QProcess *process = dynamic_cast<QProcess *>(sender());
-//    qDebug() << process->processId();
-//    QString output = process->readAllStandardOutput();
+        // single file installation.
+        if (m_instFileList.count() == 1) {
+            emit installPositionChanged(output);
+        } else {
+            // FIXME(Rekols): this operation is required under the Loongson platform.
+            for (const QString &line : output.split("\n")) {
+                QJsonDocument document = QJsonDocument::fromJson(line.toUtf8());
+                QJsonObject object = document.object();
+                m_installOutList << object.value("TargetPath").toString();
 
-//    // single file installation.
-//    if (m_instFileList.count() == 1) {
-//        emit installPositionChanged(output);
-//    } else {
-//        // FIXME(Rekols): this operation is required under the Loongson platform.
-//        for (const QString &line : output.split("\n")) {
-//            QJsonDocument document = QJsonDocument::fromJson(line.toUtf8());
-//            QJsonObject object = document.object();
-
-//            emit batchInstall(object.value("FilePath").toString(),
-//                              object.value("Percent").toDouble());
-//        }
-//    }
+                emit batchInstall(object.value("FilePath").toString(),
+                                  object.value("Percent").toDouble());
+            }
+        }*/
 }
 
 void DFontManager::handleReInstallOutput()
@@ -149,27 +148,39 @@ void DFontManager::run()
 
 bool DFontManager::doCmd(const QString &program, const QStringList &arguments)
 {
+//    QProcess *process = new QProcess;
     int failed = false;
     qDebug() << "QProcess start";
     qDebug() << m_type << endl;
     switch (m_type) {
     case Install:
+        /*connect(process, SIGNAL(readyReadStandardOutput()), this,
+                SLOT(handleInstallOutput()));*/
         doInstall(arguments);
         break;
 
     case ReInstall:
+        /*connect(process, SIGNAL(readyReadStandardOutput()), this,
+                SLOT(handleReInstallOutput()));*/
         doInstall(arguments, true);
         break;
     case HalfwayInstall:
         doInstall(arguments);
         break;
     case UnInstall:
+        /*connect(process, SIGNAL(readyReadStandardOutput()), this,
+                SLOT(handleUnInstallOutput()));*/
         doUninstall(arguments);
-        break;
-    default:
         break;
     }
 
+    /*    connect(process, SIGNAL(finished(int)), this, SLOT(handleProcessFinished(int)));
+
+        process->start(program, arguments);
+        process->waitForFinished(-1);
+
+        failed |= process->exitCode();
+    */
     return !failed;
 }
 
@@ -186,7 +197,6 @@ void DFontManager::handleInstall(bool isHalfwayInstall)
         } else {
             Q_EMIT installFinished(InstallStatus::HalfwayInstallSuccess, m_installOutList);
         }
-
     } else {
         // For:unathorized exit
 
@@ -293,7 +303,7 @@ void DFontManager::doInstall(const QStringList &fileList, bool reinstall)
     QProcess process;
 
     process.start("fc-cache");
-    process.waitForFinished(100);
+    process.waitForFinished();
 
 //    if (!reinstall) {
 //        QString filename;
@@ -337,7 +347,7 @@ void DFontManager::doUninstall(const QStringList &fileList)
 
     QProcess process;
     process.start("fc-cache");
-    process.waitForFinished(100);
+    process.waitForFinished();
 
     QThread::msleep(30);
     Q_EMIT uninstallFinished();

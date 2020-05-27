@@ -29,11 +29,13 @@ const int FONT_PREVIEW_RIGHT_MARGIN = COLLECT_ICON_SIZE + COLLECT_ICON_RIGHT_MAR
 const int FONT_PREVIEW_TOP_MARGIN = 27;
 const int FONT_PREVIEW_BOTTOM_MARGIN = 10;
 
+bool DFontPreviewItemDelegate::m_hasFont = true;
+int DFontPreviewItemDelegate::m_delayCnt = 0;
 
 DFontPreviewItemDelegate::DFontPreviewItemDelegate(QAbstractItemView *parent)
     : DStyledItemDelegate(parent)
     , m_parentView(parent)
-    , m_hasFont(true)
+//    , m_hasFont(true)
 {
 }
 
@@ -167,39 +169,54 @@ QFont DFontPreviewItemDelegate::adjustPreviewFont(const QString &fontFamilyName,
     return font;
 }
 
-void DFontPreviewItemDelegate::paintForegroundPreviewContent(QPainter *painter, const QString &content, const QRect &fontPreviewRect, const QFont &previewFont) const
-{
-    QFontMetrics fontMetric(previewFont);
-    QString elidedText;
-    //安装新的字体时，因为设置了默认的内容，当预览框内容不为空时，应该显示预览框内容，而不是默认的内容
-    if (!DFontPreviewListView::mcurtext.isEmpty()) {
-        elidedText = fontMetric.elidedText(DFontPreviewListView::mcurtext, Qt::ElideRight, fontPreviewRect.width(), Qt::TextShowMnemonic);
-    } else {
-        elidedText = fontMetric.elidedText(content, Qt::ElideRight, fontPreviewRect.width(), Qt::TextShowMnemonic);
-    }
-
-    QPoint baseLinePoint = adjustPreviewFontBaseLinePoint(fontPreviewRect, fontMetric);
-    /* 使用baseline规则绘制预览文字，这样不用考虑特殊字体 UT000591 */
-    //    painter->drawText(fontPreviewRect, Qt::AlignLeft | Qt::AlignVCenter, elidedText);
-    painter->drawText(baseLinePoint.x(), baseLinePoint.y(), elidedText);
-}
-
 void DFontPreviewItemDelegate::paintForegroundPreviewFont(QPainter *painter, const QStyleOptionViewItem &option, const DFontPreviewItemData &itemData, int fontPixelSize, QString &fontPreviewText) const
 {
+    qint64 start = QDateTime::currentMSecsSinceEpoch();
     QFont previewFont;
-    if (itemData.isPreviewEnabled) {
-        previewFont = adjustPreviewFont(itemData.fontInfo.familyName, itemData.fontInfo.styleName, fontPixelSize);
+    if (itemData.isPreviewEnabled && itemData.isEnabled) {
+        previewFont = adjustPreviewFont(itemData.fontInfo.qfamilyName, itemData.fontInfo.styleName, fontPixelSize);
         previewFont.setPixelSize(fontPixelSize);
         painter->setFont(previewFont);
+        qDebug() << __FUNCTION__ << " self preview" << painter->font().exactMatch();
+        if (!painter->font().exactMatch() && painter->fontInfo().family() != itemData.fontInfo.familyName)
+            return;
     } else {
         previewFont.setPixelSize(fontPixelSize);
         painter->setFont(previewFont);
-        fontPreviewText = FTM_DEFAULT_PREVIEW_TEXT;
     }
+    qDebug() << __FUNCTION__ << itemData.strFontName << painter->font().family() << painter->fontInfo().family();
+    if (painter->fontInfo().family().isEmpty())
+        return;
 
     QRect fontPreviewRect = adjustPreviewRect(option.rect);
     painter->setPen(QPen(option.palette.color(DPalette::Text)));
-    paintForegroundPreviewContent(painter, fontPreviewText, fontPreviewRect, previewFont);
+
+    QFontMetrics fontMetric(previewFont);
+    qDebug() << __FUNCTION__ << previewFont.family() << painter->fontInfo().family();
+    QString elidedText = fontMetric.elidedText(fontPreviewText, Qt::ElideRight, fontPreviewRect.width(), Qt::TextShowMnemonic);
+    QPoint baseLinePoint = adjustPreviewFontBaseLinePoint(fontPreviewRect, fontMetric);
+    /* 使用baseline规则绘制预览文字，这样不用考虑特殊字体 UT000591 */
+    //    painter->drawText(fontPreviewRect, Qt::AlignLeft | Qt::AlignVCenter, elidedText);
+//    painter->drawText(baseLinePoint.x(), baseLinePoint.y(), fontPreviewRect.width(), fontPreviewRect.height(), Qt::AlignLeft | Qt::AlignVCenter, elidedText);
+//    painter->drawText(fontPreviewRect, Qt::AlignLeft | Qt::AlignVertical_Mask, elidedText);
+    painter->drawText(baseLinePoint.x(), baseLinePoint.y(), elidedText);
+    qint64 end = QDateTime::currentMSecsSinceEpoch();
+    qint64 delta = end - start;
+    if (delta >= 500) {
+        m_delayCnt++;
+        qDebug() << __FUNCTION__ << "draw " << itemData.strFontName << fontPreviewText << " spent " << delta << " will update first";
+        if (m_delayCnt > 1) {
+            //delay多次，强制不画预览字体，防止卡顿
+            setNoFont(true);
+        } else {
+            //第一次delay，需要刷新字体
+            DFontPreviewListView *listWidget = qobject_cast<DFontPreviewListView *> (m_parentView);
+            if (listWidget != nullptr)
+                listWidget->updateFont();
+        }
+    } else {
+        m_delayCnt = 0;
+    }
 }
 
 void DFontPreviewItemDelegate::paintBackground(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
@@ -246,7 +263,8 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
         DFontPreviewItemData itemData = index.data(Qt::DisplayRole).value<DFontPreviewItemData>();
         int fontPixelSize = (index.data(Dtk::UserRole + 2).isNull()) ? itemData.iFontSize : index.data(Dtk::UserRole + 2).toInt();
         fontPixelSize = (fontPixelSize <= 0) ? FTM_DEFAULT_PREVIEW_FONTSIZE : fontPixelSize;
-        QString fontPreviewContent = index.data(Dtk::UserRole + 1).toString().isEmpty() ? itemData.fontInfo.defaultPreview : index.data(Dtk::UserRole + 1).toString();
+        QString fontPreview = itemData.isPreviewEnabled ? itemData.fontInfo.defaultPreview : FTM_DEFAULT_PREVIEW_TEXT;
+        QString fontPreviewContent = index.data(Dtk::UserRole + 1).toString().isEmpty() ? fontPreview : index.data(Dtk::UserRole + 1).toString();
 
         if ((fontPreviewContent.isEmpty() || 0 == fontPixelSize) && itemData.strFontName.isEmpty()) {
             painter->restore();

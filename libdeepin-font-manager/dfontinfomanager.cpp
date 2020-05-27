@@ -20,7 +20,6 @@
 #include "dfontinfomanager.h"
 #include "dfmdbmanager.h"
 #include "dfontpreview.h"
-#include "dfreetypeutil.h"
 #include "freetype/freetype.h"
 
 #include <QDebug>
@@ -86,13 +85,15 @@ QString getDefaultPreviewText(FT_Face face)
     if (DFontPreview::checkFontContainText(face, FTM_DEFAULT_PREVIEW_TEXT))
         return FTM_DEFAULT_PREVIEW_TEXT;
 
-    if (previewTxt != FTM_DEFAULT_PREVIEW_EN_TEXT && DFontPreview::checkFontContainText(face, FTM_DEFAULT_PREVIEW_EN_TEXT))
+    if (FTM_DEFAULT_PREVIEW_TEXT != FTM_DEFAULT_PREVIEW_EN_TEXT && DFontPreview::checkFontContainText(face, FTM_DEFAULT_PREVIEW_EN_TEXT))
         return FTM_DEFAULT_PREVIEW_EN_TEXT;
 
     if (DFontPreview::checkFontContainText(face, FTM_DEFAULT_PREVIEW_DIGIT_TEXT))
         return FTM_DEFAULT_PREVIEW_DIGIT_TEXT;
 
-    return DFontPreview::buildCharlistForFace(face, FTM_DEFAULT_PREVIEW_TEXT.size());
+    return DFontPreview::buildCharlistForFace(face, 36);
+    //返回默认的预览文字
+    return previewTxt;
 }
 
 DFontInfoManager *DFontInfoManager::instance()
@@ -350,9 +351,9 @@ DFontInfo DFontInfoManager::getFontInfo(const QString &filePath, bool force)
     if (fontInfo.familyName.trimmed().length() < 1) {
         fontInfo.familyName = QString::fromLatin1(m_face->family_name);
     }
-    if (fontInfo.familyName.trimmed().length() < 1) {
-        fontInfo.familyName = QString::fromUtf8(DFreeTypeUtil::getFontFamilyName(m_face));
-    }
+//    if (fontInfo.familyName.trimmed().length() < 1) {
+//        fontInfo.familyName = QString::fromUtf8(DFreeTypeUtil::getFontFamilyName(m_face));
+//    }
 
     //default preview text
     fontInfo.defaultPreview = getDefaultPreviewText(m_face);
@@ -395,6 +396,7 @@ QString DFontInfoManager::getDefaultPreview(const QString &filePath)
         m_library = nullptr;
         return defaultPreview;
     }
+    FT_Set_Pixel_Sizes(m_face, 0, 30);
     defaultPreview = getDefaultPreviewText(m_face);
     FT_Done_Face(m_face);
     FT_Done_FreeType(m_library);
@@ -440,4 +442,5 @@ void DFontInfoManager::getDefaultPreview(DFontInfo &data)
         }
     }
     data.defaultPreview = getDefaultPreview(data.filePath);
+    qDebug() << __FUNCTION__ << data.filePath << data.defaultPreview;
 }

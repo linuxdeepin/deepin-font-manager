@@ -153,7 +153,6 @@ void DFontPreviewListDataThread::removePathWatcher(const QString &path)
     if (m_fsWatcher == nullptr)
         return;
     m_fsWatcher->removePath(path);
-    m_fontIdMap.remove(path);
 }
 
 void DFontPreviewListDataThread::onFileDeleted(const QStringList &files)
@@ -244,17 +243,13 @@ int DFontPreviewListDataThread::insertFontItemData(const QString &filePath,
 
     itemData.fontInfo.isInstalled = true;
 
-    /* Bug#16821 UT000591  添加字体后需要加入到Qt的字体数据库中，否则无法使用*/
-    qDebug() << "addApplicationFont s"  << endl;
-    int appFontId = QFontDatabase::addApplicationFont(itemData.fontInfo.filePath);
-    qDebug() << "addApplicationFont e"  << endl;
-
-
-//    qDebug() << appFontId << endl;
-    m_fontIdMap.insert(itemData.fontInfo.filePath, appFontId);
-
     //中文字体
     if (itemData.fontInfo.isSystemFont && itemData.isChineseFont) {
+        /* Bug#16821 UT000591  添加字体后需要加入到Qt的字体数据库中，否则无法使用*/
+        qDebug() << "addApplicationFont s"  << endl;
+        int appFontId = QFontDatabase::addApplicationFont(itemData.fontInfo.filePath);
+        qDebug() << "addApplicationFont e"  << appFontId << itemData.strFontName << endl;
+
         QStringList fontFamilyList = QFontDatabase::applicationFontFamilies(appFontId);
         if (fontFamilyList.size() > 1) {
             ++index;
@@ -273,6 +268,10 @@ int DFontPreviewListDataThread::insertFontItemData(const QString &filePath,
         } else {
             m_dbManager->addFontInfo(itemData);
             m_fontModelList.append(itemData);
+        }
+
+        if (!itemData.isEnabled) {
+            QFontDatabase::removeApplicationFont(appFontId);
         }
     } else {
         m_dbManager->addFontInfo(itemData);

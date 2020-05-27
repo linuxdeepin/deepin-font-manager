@@ -55,6 +55,7 @@ struct DFontPreviewItemData {
         fontInfo.isError = false;
         fontInfo.isSystemFont = true;
         fontInfo.defaultPreview = "";
+        fontInfo.qfamilyName = "";
 
         strFontName = "";
         strFontFileName = "";
@@ -91,6 +92,7 @@ struct DFontPreviewItemData {
         fontInfo.psname = other.fontInfo.psname;
         fontInfo.trademark = other.fontInfo.trademark;
         fontInfo.defaultPreview = other.fontInfo.defaultPreview;
+        fontInfo.qfamilyName = other.fontInfo.qfamilyName;
 
         strFontName = other.strFontName;
         strFontFileName = other.strFontFileName;

@@ -24,7 +24,7 @@
 #include <QMap>
 
 #include <ft2build.h>
-#include FT_FREETYPE_H
+//#include FT_FREETYPE_H
 
 struct DFontInfo {
     QString filePath;
@@ -42,6 +42,7 @@ struct DFontInfo {
     //add default preview text
 //    int previewSettings;
     QString defaultPreview;
+    QString qfamilyName;
 
 
     bool isInstalled {false};

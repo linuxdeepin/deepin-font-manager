@@ -288,7 +288,7 @@ bool DFontPreview::checkFontContainText(FT_Face face, const QString &text)
     return retval;
 }
 
-QString DFontPreview::buildCharlistForFace(FT_Face face, int length)
+QString DFontPreview::buildCharlistForFace(FT_Face face, int length, int maxHeight)
 {
     QString retval;
     if (face == nullptr)
@@ -298,13 +298,27 @@ QString DFontPreview::buildCharlistForFace(FT_Face face, int length)
     unsigned long ch = 0;
     int totalChars = 0;
 
+    if (FT_Load_Char(face, 'a', FT_LOAD_RENDER)) {
+        if (face->glyph->bitmap.rows > 0)
+            qDebug() << __FUNCTION__ <<  "a " << face->glyph->bitmap.rows << face->glyph->bitmap.width;
+    }
     ch = FT_Get_First_Char(face, &glyph);
-    retval.append(QChar(static_cast<int>(ch)));
 
     while (glyph != 0) {
         retval.append(QChar(static_cast<int>(ch)));
         retval = retval.simplified();
         ch = FT_Get_Next_Char(face, ch, &glyph);
+//        if (FT_Load_Char(face, ch, FT_LOAD_RENDER)) {
+        if (FT_Load_Glyph(face, glyph, FT_LOAD_RENDER)) {
+            if (face->glyph->bitmap.rows > 0)
+                qDebug() << __FUNCTION__ << "height " << face->glyph->bitmap.rows << ch;
+            if (face->glyph->metrics.vertBearingX != 0 || face->glyph->metrics.vertBearingY != 0)
+                qDebug() << __FUNCTION__ << " metrics vertBearing XY " << face->glyph->metrics.vertBearingX << face->glyph->metrics.vertBearingY;
+        }
+//        if (FT_Render_Glyph(face->glyph, FT_RENDER_MODE_NORMAL))  {
+//            if (face->glyph->bitmap.rows != 0)
+//                qDebug() << __FUNCTION__ << "height 2 " << face->glyph->bitmap.rows << ch;
+//        }
         totalChars++;
 
         if (retval.count() == length)

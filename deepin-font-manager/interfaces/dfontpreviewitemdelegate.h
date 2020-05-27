@@ -15,7 +15,7 @@ class DFontPreviewItemDelegate : public DStyledItemDelegate
 
 public:
     explicit DFontPreviewItemDelegate(QAbstractItemView *parent = nullptr);
-    void setNoFont(bool noFont);
+    static void setNoFont(bool noFont);
 
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const Q_DECL_OVERRIDE;
     QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const Q_DECL_OVERRIDE;
@@ -32,11 +32,11 @@ private:
     void paintForegroundFontName(QPainter *painter, const QStyleOptionViewItem &option, const DFontPreviewItemData &itemData) const;
     void paintForegroundCollectIcon(QPainter *painter, const QStyleOptionViewItem &option, const DFontPreviewItemData &itemData) const;
     void paintForegroundPreviewFont(QPainter *painter, const QStyleOptionViewItem &option, const DFontPreviewItemData &data, int fontPixelSize, QString &fontPreviewText) const;
-    void paintForegroundPreviewContent(QPainter *painter, const QString &content, const QRect &fontPreviewRect, const QFont &previewFont) const;
     void paintBackground(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
     QAbstractItemView *m_parentView;
-    bool m_hasFont;
+    static bool m_hasFont;
+    static int m_delayCnt;
     QFontDatabase m_fdb;
 };
 

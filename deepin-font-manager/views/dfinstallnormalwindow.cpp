@@ -710,6 +710,7 @@ void DFInstallNormalWindow::onProgressChanged(const QString &familyName, const d
         return;
     }
 
+    qDebug() << __FUNCTION__ << familyName << percent;
     m_currentFontLabel->setText(familyName);
 
     m_progressBar->setValue(static_cast<int>(percent));
