@@ -177,14 +177,14 @@ void DFontPreviewItemDelegate::paintForegroundPreviewFont(QPainter *painter, con
         previewFont = adjustPreviewFont(itemData.fontInfo.qfamilyName, itemData.fontInfo.styleName, fontPixelSize);
         previewFont.setPixelSize(fontPixelSize);
         painter->setFont(previewFont);
-        qDebug() << __FUNCTION__ << " self preview" << painter->font().exactMatch();
+//        qDebug() << __FUNCTION__ << " self preview" << painter->font().exactMatch();
         if (!painter->font().exactMatch() && painter->fontInfo().family() != itemData.fontInfo.familyName)
             return;
     } else {
         previewFont.setPixelSize(fontPixelSize);
         painter->setFont(previewFont);
     }
-    qDebug() << __FUNCTION__ << itemData.strFontName << painter->font().family() << painter->fontInfo().family();
+
     if (painter->fontInfo().family().isEmpty())
         return;
 
@@ -192,7 +192,7 @@ void DFontPreviewItemDelegate::paintForegroundPreviewFont(QPainter *painter, con
     painter->setPen(QPen(option.palette.color(DPalette::Text)));
 
     QFontMetrics fontMetric(previewFont);
-    qDebug() << __FUNCTION__ << previewFont.family() << painter->fontInfo().family();
+
     QString elidedText = fontMetric.elidedText(fontPreviewText, Qt::ElideRight, fontPreviewRect.width(), Qt::TextShowMnemonic);
     QPoint baseLinePoint = adjustPreviewFontBaseLinePoint(fontPreviewRect, fontMetric);
     /* 使用baseline规则绘制预览文字，这样不用考虑特殊字体 UT000591 */

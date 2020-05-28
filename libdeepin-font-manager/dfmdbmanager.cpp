@@ -80,7 +80,6 @@ DFontInfo DFMDBManager::getDFontInfo(const QMap<QString, QString> &record)
     fontInfo.psname = record.value("psname");
     fontInfo.trademark = record.value("trademark");
     DFontInfoManager::instance()->getDefaultPreview(fontInfo);
-    qDebug() << __FUNCTION__ << fontInfo.familyName << fontInfo.defaultPreview;
 
     return fontInfo;
 }

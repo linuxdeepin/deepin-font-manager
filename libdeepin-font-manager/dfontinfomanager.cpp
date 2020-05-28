@@ -442,5 +442,4 @@ void DFontInfoManager::getDefaultPreview(DFontInfo &data)
         }
     }
     data.defaultPreview = getDefaultPreview(data.filePath);
-    qDebug() << __FUNCTION__ << data.filePath << data.defaultPreview;
 }
