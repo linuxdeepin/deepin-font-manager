@@ -1226,7 +1226,6 @@ void DFontMgrMainWindow::onFontInstallFinished(const QStringList &fileList)
 {
     Q_D(DFontMgrMainWindow);
 
-    m_fontPreviewListView->updateFont();
     Q_EMIT m_fontPreviewListView->requestAdded(fileList);
     d->textInputEdit->textChanged(d->textInputEdit->text());
     if (!fileList.isEmpty()) {
@@ -1653,7 +1652,7 @@ void DFontMgrMainWindow::onPreviewTextChanged()
 
     DFontPreviewProxyModel *filterModel = m_fontPreviewListView->getFontPreviewProxyModel();
     int total = filterModel->rowCount();
-//    qDebug() << __FUNCTION__ << "filter Count:" << filterModel->rowCount() << endl;
+    qDebug() << __FUNCTION__ << "filter Count:" << filterModel->rowCount() << endl;
 
     for (int rowIndex = 0; rowIndex < total; rowIndex++) {
         QModelIndex modelIndex = filterModel->index(rowIndex, 0);

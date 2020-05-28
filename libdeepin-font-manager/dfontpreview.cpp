@@ -298,10 +298,6 @@ QString DFontPreview::buildCharlistForFace(FT_Face face, int length, int maxHeig
     unsigned long ch = 0;
     int totalChars = 0;
 
-    if (FT_Load_Char(face, 'a', FT_LOAD_RENDER)) {
-        if (face->glyph->bitmap.rows > 0)
-            qDebug() << __FUNCTION__ <<  "a " << face->glyph->bitmap.rows << face->glyph->bitmap.width;
-    }
     ch = FT_Get_First_Char(face, &glyph);
 
     while (glyph != 0) {

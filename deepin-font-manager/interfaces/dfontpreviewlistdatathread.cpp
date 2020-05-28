@@ -269,10 +269,6 @@ int DFontPreviewListDataThread::insertFontItemData(const QString &filePath,
             m_dbManager->addFontInfo(itemData);
             m_fontModelList.append(itemData);
         }
-
-        if (!itemData.isEnabled) {
-            QFontDatabase::removeApplicationFont(appFontId);
-        }
     } else {
         m_dbManager->addFontInfo(itemData);
         m_fontModelList.append(itemData);

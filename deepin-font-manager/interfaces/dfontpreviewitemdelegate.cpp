@@ -29,19 +29,11 @@ const int FONT_PREVIEW_RIGHT_MARGIN = COLLECT_ICON_SIZE + COLLECT_ICON_RIGHT_MAR
 const int FONT_PREVIEW_TOP_MARGIN = 27;
 const int FONT_PREVIEW_BOTTOM_MARGIN = 10;
 
-bool DFontPreviewItemDelegate::m_hasFont = true;
-int DFontPreviewItemDelegate::m_delayCnt = 0;
 
 DFontPreviewItemDelegate::DFontPreviewItemDelegate(QAbstractItemView *parent)
     : DStyledItemDelegate(parent)
     , m_parentView(parent)
-//    , m_hasFont(true)
 {
-}
-
-void DFontPreviewItemDelegate::setNoFont(bool noFont)
-{
-    m_hasFont = !noFont;
 }
 
 void DFontPreviewItemDelegate::paintForegroundCheckBox(QPainter *painter, const QStyleOptionViewItem &option, const DFontPreviewItemData &itemData) const
@@ -171,19 +163,9 @@ QFont DFontPreviewItemDelegate::adjustPreviewFont(const QString &fontFamilyName,
 
 void DFontPreviewItemDelegate::paintForegroundPreviewFont(QPainter *painter, const QStyleOptionViewItem &option, const DFontPreviewItemData &itemData, int fontPixelSize, QString &fontPreviewText) const
 {
-    qint64 start = QDateTime::currentMSecsSinceEpoch();
-    QFont previewFont;
-    if (itemData.isPreviewEnabled && itemData.isEnabled) {
-        previewFont = adjustPreviewFont(itemData.fontInfo.qfamilyName, itemData.fontInfo.styleName, fontPixelSize);
-        previewFont.setPixelSize(fontPixelSize);
-        painter->setFont(previewFont);
-//        qDebug() << __FUNCTION__ << " self preview" << painter->font().exactMatch();
-        if (!painter->font().exactMatch() && painter->fontInfo().family() != itemData.fontInfo.familyName)
-            return;
-    } else {
-        previewFont.setPixelSize(fontPixelSize);
-        painter->setFont(previewFont);
-    }
+    QFont previewFont = adjustPreviewFont(itemData.fontInfo.familyName, itemData.fontInfo.styleName, fontPixelSize);
+    previewFont.setPixelSize(fontPixelSize);
+    painter->setFont(previewFont);
 
     if (painter->fontInfo().family().isEmpty())
         return;
@@ -200,23 +182,6 @@ void DFontPreviewItemDelegate::paintForegroundPreviewFont(QPainter *painter, con
 //    painter->drawText(baseLinePoint.x(), baseLinePoint.y(), fontPreviewRect.width(), fontPreviewRect.height(), Qt::AlignLeft | Qt::AlignVCenter, elidedText);
 //    painter->drawText(fontPreviewRect, Qt::AlignLeft | Qt::AlignVertical_Mask, elidedText);
     painter->drawText(baseLinePoint.x(), baseLinePoint.y(), elidedText);
-    qint64 end = QDateTime::currentMSecsSinceEpoch();
-    qint64 delta = end - start;
-    if (delta >= 500) {
-        m_delayCnt++;
-        qDebug() << __FUNCTION__ << "draw " << itemData.strFontName << fontPreviewText << " spent " << delta << " will update first";
-        if (m_delayCnt > 1) {
-            //delay多次，强制不画预览字体，防止卡顿
-            setNoFont(true);
-        } else {
-            //第一次delay，需要刷新字体
-            DFontPreviewListView *listWidget = qobject_cast<DFontPreviewListView *> (m_parentView);
-            if (listWidget != nullptr)
-                listWidget->updateFont();
-        }
-    } else {
-        m_delayCnt = 0;
-    }
 }
 
 void DFontPreviewItemDelegate::paintBackground(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
@@ -263,7 +228,7 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
         DFontPreviewItemData itemData = index.data(Qt::DisplayRole).value<DFontPreviewItemData>();
         int fontPixelSize = (index.data(Dtk::UserRole + 2).isNull()) ? itemData.iFontSize : index.data(Dtk::UserRole + 2).toInt();
         fontPixelSize = (fontPixelSize <= 0) ? FTM_DEFAULT_PREVIEW_FONTSIZE : fontPixelSize;
-        QString fontPreview = itemData.isPreviewEnabled ? itemData.fontInfo.defaultPreview : FTM_DEFAULT_PREVIEW_TEXT;
+        QString fontPreview = itemData.fontInfo.defaultPreview;
         QString fontPreviewContent = index.data(Dtk::UserRole + 1).toString().isEmpty() ? fontPreview : index.data(Dtk::UserRole + 1).toString();
 
         if ((fontPreviewContent.isEmpty() || 0 == fontPixelSize) && itemData.strFontName.isEmpty()) {
@@ -273,11 +238,9 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
 
         paintBackground(painter, option, index);
         paintForegroundCheckBox(painter, option, itemData);
-        if (m_hasFont)
-            paintForegroundFontName(painter, option, itemData);
+        paintForegroundFontName(painter, option, itemData);
         paintForegroundCollectIcon(painter, option, itemData);
-        if (m_hasFont)
-            paintForegroundPreviewFont(painter, option, itemData, fontPixelSize, fontPreviewContent);
+        paintForegroundPreviewFont(painter, option, itemData, fontPixelSize, fontPreviewContent);
         painter->restore();
     } else {
         QStyledItemDelegate::paint(painter, option, index);

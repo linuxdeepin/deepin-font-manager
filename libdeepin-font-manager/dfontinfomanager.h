@@ -42,7 +42,7 @@ struct DFontInfo {
     //add default preview text
 //    int previewSettings;
     QString defaultPreview;
-    QString qfamilyName;
+    bool specialPreview;
 
 
     bool isInstalled {false};
@@ -91,7 +91,7 @@ public:
     QStringList getAllMonoSpaceFontPath() const;
     QString getFontType(const QString &filePath);
     DFontInfo getFontInfo(const QString &filePath, bool force = false);
-    QString getDefaultPreview(const QString &filePath);
+    QString getDefaultPreview(const QString &filePath, bool &specialPreview);
     QString getInstFontPath(const QString &originPath, const QString &familyName);
     bool isFontInstalled(DFontInfo &data);
     void getDefaultPreview(DFontInfo &data);

@@ -68,7 +68,6 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
         connect(mw, &DFontMgrMainWindow::requestDeleted, this, [ = ](const QStringList files) {
         qDebug() << " requestDeleted";
         Q_EMIT requestDeleted(files);
-        updateFont();
     });
     initFontListData();
 
@@ -163,17 +162,16 @@ void DFontPreviewListView::onMultiItemsAdded(const QList<DFontPreviewItemData> &
         qDebug() << __FUNCTION__ << "insertRows fail";
         return;
     }
-//    updateFont();
+
     qDebug() << __FUNCTION__ << "rows = " << sourceModel->rowCount();
     for (DFontPreviewItemData itemData : data) {
         QModelIndex index = sourceModel->index(rows + i,   0);
         //        qDebug() << __FUNCTION__ << index;
-        if (itemData.isEnabled) {
-            int appFontId = QFontDatabase::addApplicationFont(itemData.fontInfo.filePath);
-            QStringList families = QFontDatabase::applicationFontFamilies(appFontId);
-            itemData.fontInfo.qfamilyName = (families.isEmpty()) ? itemData.fontInfo.familyName : families.first();
-            m_fontIdMap.insert(itemData.fontInfo.filePath, appFontId);
-        }
+
+        int appFontId = QFontDatabase::addApplicationFont(itemData.fontInfo.filePath);
+        QStringList families = QFontDatabase::applicationFontFamilies(appFontId);
+        m_fontIdMap.insert(itemData.fontInfo.filePath, appFontId);
+
         res = sourceModel->setData(index, QVariant::fromValue(itemData), Qt::DisplayRole);
         if (!res)
             qDebug() << __FUNCTION__ << "setData fail";
@@ -353,23 +351,6 @@ void DFontPreviewListView::deleteFontModelIndex(const QString &filePath, bool is
             m_fontPreviewProxyModel->sourceModel()->removeRow(i);
             break;
         }
-    }
-}
-
-// nofont: true没有字体 false有字体
-void DFontPreviewListView::updateFont()
-{
-    QStringList fonts = DFontInfoManager::instance()->getAllFontPath();
-    qDebug() << __FUNCTION__ << fonts.size();
-    if (fonts.isEmpty()) {
-        QFontDatabase::removeAllApplicationFonts();
-        m_fontPreviewItemDelegate->setNoFont(true);
-    } else {
-        QFontDatabase::removeAllApplicationFonts();
-        for (QString &fontPath : fonts) {
-            QFontDatabase::addApplicationFont(fontPath);
-        }
-        m_fontPreviewItemDelegate->setNoFont(false);
     }
 }
 
@@ -788,7 +769,6 @@ void DFontPreviewListView::enableFonts()
 
     DFMXmlWrapper::deleteNodeWithTextList(fontConfigPath, "pattern", m_enableFontList);
     m_enableFontList.clear();
-    updateFont();
 }
 
 void DFontPreviewListView::disableFonts()
@@ -806,7 +786,6 @@ void DFontPreviewListView::disableFonts()
 
     DFMXmlWrapper::addPatternNodesWithTextList(fontConfigPath, "rejectfont", m_disableFontList);
     m_disableFontList.clear();
-    updateFont();
 }
 
 void DFontPreviewListView::toSetCurrentIndex(QModelIndexList &itemIndexesNew)
@@ -1064,7 +1043,6 @@ void DFontPreviewListView::updateChangedDir(const QString &path)
     }
     DFMDBManager::instance()->commitDeleteFontInfo();
     enableFonts();
-//    updateFont();
 
     Q_EMIT rowCountChanged();
     //    qDebug() << __FUNCTION__ << path << " end ";

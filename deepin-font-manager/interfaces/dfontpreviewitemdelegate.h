@@ -35,9 +35,6 @@ private:
     void paintBackground(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
     QAbstractItemView *m_parentView;
-    static bool m_hasFont;
-    static int m_delayCnt;
-    QFontDatabase m_fdb;
 };
 
 #endif  // DFONTPREVIEWITEMDELEGATE_H

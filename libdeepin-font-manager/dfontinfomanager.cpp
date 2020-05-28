@@ -76,9 +76,10 @@ QString convertToUtf8(char *content, int len)
     return convertedStr;
 }
 
-QString getDefaultPreviewText(FT_Face face)
+QString getDefaultPreviewText(FT_Face face, bool &specialPreview)
 {
     QString previewTxt;
+    specialPreview = false;
     if (face == nullptr || face->num_charmaps == 0)
         return previewTxt;
 
@@ -91,9 +92,8 @@ QString getDefaultPreviewText(FT_Face face)
     if (DFontPreview::checkFontContainText(face, FTM_DEFAULT_PREVIEW_DIGIT_TEXT))
         return FTM_DEFAULT_PREVIEW_DIGIT_TEXT;
 
+    specialPreview = true;
     return DFontPreview::buildCharlistForFace(face, 36);
-    //返回默认的预览文字
-    return previewTxt;
 }
 
 DFontInfoManager *DFontInfoManager::instance()
@@ -356,7 +356,7 @@ DFontInfo DFontInfoManager::getFontInfo(const QString &filePath, bool force)
 //    }
 
     //default preview text
-    fontInfo.defaultPreview = getDefaultPreviewText(m_face);
+    fontInfo.defaultPreview = getDefaultPreviewText(m_face, fontInfo.specialPreview);
 
     // destroy object.
     FT_Done_Face(m_face);
@@ -379,7 +379,7 @@ DFontInfo DFontInfoManager::getFontInfo(const QString &filePath, bool force)
     return fontInfo;
 }
 
-QString DFontInfoManager::getDefaultPreview(const QString &filePath)
+QString DFontInfoManager::getDefaultPreview(const QString &filePath, bool &specialPreview)
 {
     FT_Library m_library = nullptr;
     FT_Face m_face = nullptr;
@@ -397,7 +397,7 @@ QString DFontInfoManager::getDefaultPreview(const QString &filePath)
         return defaultPreview;
     }
     FT_Set_Pixel_Sizes(m_face, 0, 30);
-    defaultPreview = getDefaultPreviewText(m_face);
+    defaultPreview = getDefaultPreviewText(m_face, specialPreview);
     FT_Done_Face(m_face);
     FT_Done_FreeType(m_library);
     return defaultPreview;
@@ -441,5 +441,5 @@ void DFontInfoManager::getDefaultPreview(DFontInfo &data)
             return;
         }
     }
-    data.defaultPreview = getDefaultPreview(data.filePath);
+    data.defaultPreview = getDefaultPreview(data.filePath, data.specialPreview);
 }
