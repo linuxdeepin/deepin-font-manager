@@ -214,8 +214,14 @@ void DFontPreviewListView::onItemRemoved(const DFontPreviewItemData &itemData)
             setCurrentIndex(modelIndex);
         } else {
             if (currentIndex().row() != m_selectAfterDel) {
-                QModelIndex modelIndex1 = m_fontPreviewProxyModel->index(m_selectAfterDel - 1, 0);
-                setCurrentIndex(modelIndex1);
+                if (m_selectAfterDel == 0) {
+                    QModelIndex modelIndex1 = m_fontPreviewProxyModel->index(m_selectAfterDel, 0);
+                    setCurrentIndex(modelIndex1);
+                } else {
+                    QModelIndex modelIndex1 = m_fontPreviewProxyModel->index(m_selectAfterDel - 1, 0);
+                    setCurrentIndex(modelIndex1);
+                }
+
             } else {
                 setCurrentIndex(modelIndex);
             }
