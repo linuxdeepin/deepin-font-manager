@@ -117,6 +117,9 @@ void DFontuninstalldialog::initUi()
     m_mainFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     m_mainFrame->setLayout(mainLayout);
 
+    //fixbug:28961 去掉X关闭按钮
+    delete  getCloseButton();
+
     addContent(m_mainFrame);
 
 }
