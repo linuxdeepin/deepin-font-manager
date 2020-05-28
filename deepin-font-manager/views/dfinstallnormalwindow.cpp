@@ -434,36 +434,34 @@ bool DFInstallNormalWindow::isSystemFont(DFontInfo &f)
 
 void DFInstallNormalWindow::checkShowMessage()
 {
-//新安装的字体在安装完成时 getInstallMessage置为true。重复安装的字体安装完成时 getReInstallMessage置为true
-//列表刷新完成后 m_installAdded置为true。三者都为true时表示一次安装过程结束。
+    //新安装的字体在安装完成时 getInstallMessage置为true。重复安装的字体安装完成时 getReInstallMessage置为true
+    //列表刷新完成后 m_installAdded置为true。三者都为true时表示一次安装过程结束。
 
     qDebug() << "Install over" << endl;
-//    qDebug() << getInstallMessage << getReInstallMessage << m_installAdded << m_installFinishSent;
+    //    qDebug() << getInstallMessage << getReInstallMessage << m_installAdded << m_installFinishSent;
     if (getInstallMessage == true && getReInstallMessage == true) {
         qDebug() << "ReInstall over" << endl;
-//        if (!m_installFinishSent) {
-        emit m_signalManager->finishFontInstall(m_outfileList);
-//            m_installFinishSent = true;
-//        }
+        //        if (!m_installFinishSent) {
+
+        //            m_installFinishSent = true;
+        //        }
     }
 
     if (getInstallMessage == true && getReInstallMessage == true/* && m_installAdded*/) {
         qDebug() << "install refresh over";
-//        onProgressChanged(ONLYPROGRESS, 100);
+        //        onProgressChanged(ONLYPROGRESS, 100);
         getInstallMessage = false;
         getReInstallMessage = false;
-//        m_installFinishSent = false;
-//        m_installAdded = false;
-
+        //        m_installFinishSent = false;
+        //        m_installAdded = false;
+        emit m_signalManager->finishFontInstall(m_outfileList);
         emit m_signalManager->installOver(m_installedFilesFontinfo.count());
         if (m_outfileList.count() > 0) {
             emit m_signalManager->closeInstallDialog();
         }
         m_outfileList.clear();
-        //ut000442 bug25822 通过log推测此窗口提前关闭导致的问题,因为没有必现步骤,检查逻辑暂时没发现问题,暂时通过添加延迟来进行解决
-        QTimer::singleShot(50, this, [ = ]() {
-            this->close();
-        });
+
+        this->hide();
 
     }
 
