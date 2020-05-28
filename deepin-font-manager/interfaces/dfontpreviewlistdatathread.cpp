@@ -238,8 +238,6 @@ int DFontPreviewListDataThread::insertFontItemData(const QString &filePath,
     itemData.isCollected = false;
     itemData.isChineseFont = chineseFontPathList.contains(filePath);
     itemData.isMonoSpace = monoSpaceFontPathList.contains(filePath);
-    //当前的字体大小
-    itemData.iFontSize = DFontPreviewListView::mfontsize;
 
     itemData.fontInfo.isInstalled = true;
 
@@ -364,7 +362,6 @@ void DFontPreviewListDataThread::removeFontData(const DFontPreviewItemData &remo
 {
     m_diffFontModelList.clear();
 
-    int removeIndex = -1;
     for (DFontPreviewItemData &itemData : m_fontModelList) {
         if (itemData.fontInfo.filePath == removeItemData.fontInfo.filePath) {
             m_fontModelList.removeOne(itemData);

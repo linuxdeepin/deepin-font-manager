@@ -190,7 +190,6 @@ void DFontMgrMainWindow::initConnections()
     // State bar event
     QObject::connect(d->fontScaleSlider, &DSlider::valueChanged, this, [this, d](int value) {
         m_previewFontSize = value;
-        DFontPreviewListView::mfontsize = d->fontScaleSlider->value();
         QString fontSizeText;
         fontSizeText.sprintf(FMT_FONT_SIZE, value);
 //        d->fontSizeLabel->setText(fontSizeText);
@@ -264,6 +263,7 @@ void DFontMgrMainWindow::initConnections()
             m_fontLoadingSpinner->hide();
             m_isNoResultViewShow = false;
             onFontListViewRowCountChanged();
+            onPreviewTextChanged();
             if (m_isInstallOver) {
 //                int cnt = 0;
 //                int systemCnt = 0;
@@ -1149,17 +1149,12 @@ void DFontMgrMainWindow::onSearchTextChanged(const QString &currStr)
     qDebug() << __FUNCTION__ << "filter Count:" << filterModel->rowCount() << endl;
 
     onFontListViewRowCountChanged();
-
-//    QString previewText = d->textInputEdit->text();
-//    const QString previewText = d->textInputEdit->text();
     onPreviewTextChanged();
 //    m_fontPreviewListView->scrollToTop();
 }
 
 void DFontMgrMainWindow::onPreviewTextChanged(const QString &text)
 {
-    DFontPreviewListView::mcurtext = text;
-    bool isEmpty = text.isEmpty();
     m_previewText = text;
 
     onPreviewTextChanged();

@@ -17,8 +17,6 @@
 DWIDGET_USE_NAMESPACE
 
 bool DFontPreviewListView::misdelete = false;
-int DFontPreviewListView::mfontsize = 30;
-QString DFontPreviewListView::mcurtext = "";
 
 DFontPreviewListView::DFontPreviewListView(QWidget *parent)
     : DListView(parent)
