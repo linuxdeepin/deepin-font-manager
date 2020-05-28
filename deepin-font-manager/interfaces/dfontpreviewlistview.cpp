@@ -192,39 +192,20 @@ void DFontPreviewListView::onItemRemoved(const DFontPreviewItemData &itemData)
     deleteFontModelIndex(itemData.fontInfo.filePath);
     m_fontIdMap.remove(itemData.fontInfo.filePath);
 
-//    QItemSelectionModel *selection_model = selectionModel();
-//    selection_model->reset();
-
-//    QModelIndex index = currModelIndex();
-//    int row = index.row();
-//    m_bListviewAtButtom = isAtListviewBottom();
-//    m_bListviewAtTop = isAtListviewTop();
-//    if (row >= m_fontPreviewProxyModel->rowCount()) {
-//        //        if (!m_bListviewAtTop)
-//        index = index.siblingAtRow(row - 1);
-//    }
-//    if (m_bListviewAtButtom && !m_bListviewAtTop) {
-//        if (row != 0)
-//            index = index.siblingAtRow(row - 1);
-//    } else {
     /*UT000539 刷新删除后选中状态*/
     if (m_selectAfterDel != -1) {
-        QModelIndex modelIndex = m_fontPreviewProxyModel->index(m_selectAfterDel, 0);
-        if (modelIndex.isValid() && !isAtListviewBottom()) {
+        m_bListviewAtButtom = isAtListviewBottom();
+        m_bListviewAtTop = isAtListviewTop();
+        DFontPreviewProxyModel *filterModel = this->getFontPreviewProxyModel();
+        if (m_bListviewAtButtom && !m_bListviewAtTop) {
+            QModelIndex modelIndex = filterModel->index(m_selectAfterDel - 1, 0);
+            setCurrentIndex(modelIndex);
+        } else if (m_selectAfterDel == filterModel->rowCount()) {
+            QModelIndex modelIndex = filterModel->index(m_selectAfterDel - 1, 0);
             setCurrentIndex(modelIndex);
         } else {
-            if (currentIndex().row() != m_selectAfterDel) {
-                if (m_selectAfterDel == 0) {
-                    QModelIndex modelIndex1 = m_fontPreviewProxyModel->index(m_selectAfterDel, 0);
-                    setCurrentIndex(modelIndex1);
-                } else {
-                    QModelIndex modelIndex1 = m_fontPreviewProxyModel->index(m_selectAfterDel - 1, 0);
-                    setCurrentIndex(modelIndex1);
-                }
-
-            } else {
-                setCurrentIndex(modelIndex);
-            }
+            QModelIndex modelIndex = filterModel->index(m_selectAfterDel, 0);
+            setCurrentIndex(modelIndex);
         }
         isSelectedNow = true;
     }

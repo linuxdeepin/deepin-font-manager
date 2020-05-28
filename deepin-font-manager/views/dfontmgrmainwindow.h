@@ -69,6 +69,7 @@ public:
     //Main window Size
     int m_winHight;
     int m_winWidth;
+    void keyPressEvent(QKeyEvent *event)override;
 protected:
     void initData();
     void initUI();

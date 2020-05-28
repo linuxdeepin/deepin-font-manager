@@ -294,6 +294,11 @@ void DFontMgrMainWindow::initConnections()
         m_isInstallOver = true;
         m_successInstallCount = successInstallCount;
     });
+
+    /*UT000539 增加slider press聚焦的判断*/
+    QObject::connect(d->fontScaleSlider, &DSlider::sliderPressed, this, [this, d] {
+        d->fontScaleSlider->setFocus(Qt::MouseFocusReason);
+    });
 }
 
 void DFontMgrMainWindow::initShortcuts()
@@ -1733,4 +1738,21 @@ void DFontMgrMainWindow::autoLabelWidth(QString text, DLabel *lab, QFontMetrics 
         }
     }
     lab->setText(str);
+}
+
+void DFontMgrMainWindow::keyPressEvent(QKeyEvent *event)
+{
+    /*UT000539 判断slider是否聚焦，调整预览字体大小*/
+    D_D(DFontMgrMainWindow);
+    if (Qt::Key_Left == event->key() || Qt::Key_Down == event->key()) {
+        if (d->fontScaleSlider->hasFocus()) {
+            d->fontScaleSlider->setValue(d->fontScaleSlider->value() - 1);
+        }
+    }
+    if (Qt::Key_Right == event->key() || Qt::Key_Up == event->key()) {
+        if (d->fontScaleSlider->hasFocus()) {
+            d->fontScaleSlider->setValue(d->fontScaleSlider->value() + 1);
+        }
+    }
+    DWidget::keyPressEvent(event);
 }
