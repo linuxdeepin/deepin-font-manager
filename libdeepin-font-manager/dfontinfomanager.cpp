@@ -32,6 +32,7 @@
 #include <ft2build.h>
 #include <iconv.h>
 #include <DApplication>
+#include<QDirIterator>
 
 DWIDGET_USE_NAMESPACE
 
@@ -44,7 +45,8 @@ DWIDGET_USE_NAMESPACE
 static QList<DFontInfo> dataList;
 static DFontInfoManager *INSTANCE = nullptr;
 
-const QString FONT_DIR = QDir::homePath() + "/.local/share/fonts/";
+const QString FONT_USR_DIR = QDir::homePath() + "/.local/share/fonts/";
+const QString FONT_SYSTEM_DIR = "/usr/share/fonts/";
 
 inline bool isSystemFont(QString filePath)
 {
@@ -149,40 +151,82 @@ QStringList DFontInfoManager::getAllFontPath() const
         return s1 < s2;
     });*/
 
-    QStringList dirlist = getDirPathOfSplDir(FONT_DIR);
-    foreach (QString str, dirlist) {
-        QStringList namelist = getFileNames(str);
-        for (int i = 0; i < namelist.count(); i++) {
-            QString filepath = str + "/" +  namelist.at(i);
-            if (!pathList.contains(filepath)) {
-                pathList << filepath;
-            }
+
+//    QStringList dirlist = getDirPathOfSplDir(FONT_DIR);
+//    foreach (QString str, dirlist) {
+//        QStringList namelist = getFileNames(str);
+//        for (int i = 0; i < namelist.count(); i++) {
+//            QString filepath = str + "/" +  namelist.at(i);
+//            if (!pathList.contains(filepath)) {
+//                pathList << filepath;
+//            }
+//        }
+//    }
+
+    //系统字体文件
+    QStringList systemfilelist = getFileNames(FONT_SYSTEM_DIR);
+    foreach (QString str, systemfilelist) {
+        if (!pathList.contains(str)) {
+            pathList << str;
         }
     }
+
+    //用户字体文件
+    QStringList usrfilelist = getFileNames(FONT_USR_DIR);
+    foreach (QString str, usrfilelist) {
+        if (!pathList.contains(str)) {
+            pathList << str;
+        }
+    }
+
     return pathList;
 }
 
-QStringList DFontInfoManager::getDirPathOfSplDir(QString dirPath)const
-{
-    QStringList dirPaths;
-    QDir splDir(dirPath);
-    QFileInfoList fileInfoListInSplDir = splDir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot);
-    QFileInfo tempFileInfo;
-    foreach (tempFileInfo, fileInfoListInSplDir) {
-        dirPaths << tempFileInfo.absoluteFilePath();
-    }
-    return dirPaths;
-}
+//QStringList DFontInfoManager::getDirPathOfSplDir(QString dirPath)const
+//{
+//    QStringList dirPaths;
+//    QDir splDir(dirPath);
+//    QFileInfoList fileInfoListInSplDir = splDir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot);
+//    QFileInfo tempFileInfo;
+//    foreach (tempFileInfo, fileInfoListInSplDir) {
+//        dirPaths << tempFileInfo.absoluteFilePath();
+//    }
+//    return dirPaths;
+//}
 
 
-QStringList DFontInfoManager::getFileNames(const QString &path)const
+//QStringList DFontInfoManager::getFileNames(const QString &path)const
+//{
+//    QDir dir(path);
+//    QStringList nameFilters;
+//    nameFilters << "*.ttf" << "*.ttc" << "*.otf";
+//    QStringList files = dir.entryList(nameFilters, QDir::Files | QDir::Readable, QDir::Name);
+//    return files;
+
+//}
+
+QStringList DFontInfoManager::getFileNames(QString path)const
 {
+    QStringList string_list;
+    //判断路径是否存在
     QDir dir(path);
-    QStringList nameFilters;
-    nameFilters << "*.ttf" << "*.ttc" << "*.otf";
-    QStringList files = dir.entryList(nameFilters, QDir::Files | QDir::Readable, QDir::Name);
-    return files;
+    if (!dir.exists()) {
+        return string_list;
+    }
 
+    //获取所选文件类型过滤器
+    QStringList filters;
+    filters << "*.ttf" << "*.ttc" << "*.otf";
+
+    //定义迭代器并设置过滤器
+    QDirIterator dir_iterator(path, filters, QDir::Files | QDir::NoSymLinks, QDirIterator::Subdirectories);
+    while (dir_iterator.hasNext()) {
+        dir_iterator.next();
+        QFileInfo file_info = dir_iterator.fileInfo();
+        QString absolute_file_path = file_info.absoluteFilePath();
+        string_list.append(absolute_file_path);
+    }
+    return string_list;
 }
 
 QStringList DFontInfoManager::getAllChineseFontPath() const
