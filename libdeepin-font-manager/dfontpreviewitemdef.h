@@ -14,7 +14,7 @@
 #define FTM_DEFAULT_PREVIEW_EN_TEXT QString("Don't let your dreams be dreams")
 #define FTM_DEFAULT_PREVIEW_DIGIT_TEXT QString("0123456789")
 #define FTM_DEFAULT_PREVIEW_FONTSIZE 30
-#define FTM_PREVIEW_ITEM_HEIGHT (72+2)
+#define FTM_PREVIEW_ITEM_HEIGHT (72+2+10)
 
 typedef enum IconStatus {
     IconHover = 0,

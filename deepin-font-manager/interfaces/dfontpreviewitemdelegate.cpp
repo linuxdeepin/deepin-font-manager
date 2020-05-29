@@ -26,13 +26,13 @@ const int FONT_NAME_LEFT_MARGIN = 50;
 const int FONT_NAME_TOP_MARGIN = 3;
 const int FONT_PREVIEW_LEFT_MARGIN = 50;
 const int FONT_PREVIEW_RIGHT_MARGIN = COLLECT_ICON_SIZE + COLLECT_ICON_RIGHT_MARGIN;
-const int FONT_PREVIEW_TOP_MARGIN = 27;
+const int FONT_PREVIEW_TOP_MARGIN = 30;
 const int FONT_PREVIEW_BOTTOM_MARGIN = 10;
 
 
 DFontPreviewItemDelegate::DFontPreviewItemDelegate(QAbstractItemView *parent)
     : DStyledItemDelegate(parent)
-    , m_parentView(parent)
+    , m_parentView(qobject_cast<DFontPreviewListView *>(parent))
 {
 }
 
@@ -65,6 +65,7 @@ void DFontPreviewItemDelegate::paintForegroundFontName(QPainter *painter, const 
 
     QRect fontNameRect = QRect(option.rect.x() + FONT_NAME_LEFT_MARGIN, option.rect.y() + FONT_NAME_TOP_MARGIN,
                                option.rect.width() - 20, FONT_NAME_HEIGHT);
+    qDebug() << __FUNCTION__ << itemData.strFontName << fontNameRect;
 
     QFontMetrics mt(nameFont);//特殊图案字体下截断字体名称/*UT000539*/
     QString elidedText = mt.elidedText(itemData.strFontName, Qt::ElideRight, option.rect.width() - 120, Qt::TextShowMnemonic);
@@ -161,7 +162,7 @@ QFont DFontPreviewItemDelegate::adjustPreviewFont(const QString &fontFamilyName,
     return font;
 }
 
-void DFontPreviewItemDelegate::paintForegroundPreviewFont(QPainter *painter, const QStyleOptionViewItem &option, const DFontPreviewItemData &itemData, int fontPixelSize, QString &fontPreviewText) const
+void DFontPreviewItemDelegate::paintForegroundPreviewFont(QPainter *painter, const QStyleOptionViewItem &option, const DFontPreviewItemData &itemData, int fontPixelSize, QString &fontPreviewText, const QModelIndex &index) const
 {
     QFont previewFont = adjustPreviewFont(itemData.fontInfo.familyName, itemData.fontInfo.styleName, fontPixelSize);
     previewFont.setPixelSize(fontPixelSize);
@@ -176,12 +177,24 @@ void DFontPreviewItemDelegate::paintForegroundPreviewFont(QPainter *painter, con
     QFontMetrics fontMetric(previewFont);
 
     QString elidedText = fontMetric.elidedText(fontPreviewText, Qt::ElideRight, fontPreviewRect.width(), Qt::TextShowMnemonic);
-    QPoint baseLinePoint = adjustPreviewFontBaseLinePoint(fontPreviewRect, fontMetric);
-    /* 使用baseline规则绘制预览文字，这样不用考虑特殊字体 UT000591 */
-    //    painter->drawText(fontPreviewRect, Qt::AlignLeft | Qt::AlignVCenter, elidedText);
-//    painter->drawText(baseLinePoint.x(), baseLinePoint.y(), fontPreviewRect.width(), fontPreviewRect.height(), Qt::AlignLeft | Qt::AlignVCenter, elidedText);
-//    painter->drawText(fontPreviewRect, Qt::AlignLeft | Qt::AlignVertical_Mask, elidedText);
-    painter->drawText(baseLinePoint.x(), baseLinePoint.y(), elidedText);
+
+    //特殊的字体和部分用户字体超出显示 bug29111
+    QRect boundingRect;
+    painter->drawText(fontPreviewRect, Qt::AlignLeft | Qt::AlignBottom, elidedText, &boundingRect);
+    qDebug() << __FUNCTION__ << itemData.strFontName << fontPreviewRect << boundingRect;
+    DFontPreviewProxyModel *model = (m_parentView != nullptr) ? m_parentView->getFontPreviewProxyModel() : nullptr;
+    if (boundingRect.height() > fontPreviewRect.height() && model->data(index, Dtk::UserRole + 3).isNull()) {
+        if (m_parentView == nullptr)
+            return;
+        if (model == nullptr)
+            return;
+        bool ret = model->setData(index, boundingRect.height() - fontPreviewRect.height(), Dtk::UserRole + 3);
+        qDebug() << __FUNCTION__ << " set bounding height " << boundingRect.height() << ret;
+    }
+
+//    QPoint baseLinePoint = adjustPreviewFontBaseLinePoint(fontPreviewRect, fontMetric);
+//    /* 使用baseline规则绘制预览文字，这样不用考虑特殊字体 UT000591 */
+//    painter->drawText(baseLinePoint.x(), baseLinePoint.y(), elidedText);
 }
 
 void DFontPreviewItemDelegate::paintBackground(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
@@ -240,7 +253,7 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
         paintForegroundCheckBox(painter, option, itemData);
         paintForegroundFontName(painter, option, itemData);
         paintForegroundCollectIcon(painter, option, itemData);
-        paintForegroundPreviewFont(painter, option, itemData, fontPixelSize, fontPreviewContent);
+        paintForegroundPreviewFont(painter, option, itemData, fontPixelSize, fontPreviewContent, index);
         painter->restore();
     } else {
         QStyledItemDelegate::paint(painter, option, index);
@@ -254,11 +267,14 @@ QSize DFontPreviewItemDelegate::sizeHint(const QStyleOptionViewItem &option, con
 {
     DFontPreviewItemData data = index.data(Qt::DisplayRole).value<DFontPreviewItemData>();
     int fontSize = (false == index.data(Dtk::UserRole + 2).isNull()) ? index.data(Dtk::UserRole + 2).toInt() : data.iFontSize;
+    int height = index.data(Dtk::UserRole + 3).isNull() ? 0 : index.data(Dtk::UserRole + 3).toInt();
 
     int itemHeight = FTM_PREVIEW_ITEM_HEIGHT;
     if (fontSize > 30) {
         itemHeight += static_cast<int>(((fontSize - 30) + 1) * 1.5);
     }
+
+    itemHeight += height;
     return QSize(option.rect.width(), itemHeight);
 }
 

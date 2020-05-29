@@ -9,6 +9,7 @@
 
 DWIDGET_USE_NAMESPACE
 
+class DFontPreviewListView;
 class DFontPreviewItemDelegate : public DStyledItemDelegate
 {
     Q_OBJECT
@@ -31,10 +32,10 @@ private:
     void paintForegroundCheckBox(QPainter *painter, const QStyleOptionViewItem &option, const DFontPreviewItemData &itemData) const;
     void paintForegroundFontName(QPainter *painter, const QStyleOptionViewItem &option, const DFontPreviewItemData &itemData) const;
     void paintForegroundCollectIcon(QPainter *painter, const QStyleOptionViewItem &option, const DFontPreviewItemData &itemData) const;
-    void paintForegroundPreviewFont(QPainter *painter, const QStyleOptionViewItem &option, const DFontPreviewItemData &data, int fontPixelSize, QString &fontPreviewText) const;
+    void paintForegroundPreviewFont(QPainter *painter, const QStyleOptionViewItem &option, const DFontPreviewItemData &data, int fontPixelSize, QString &fontPreviewText, const QModelIndex &index) const;
     void paintBackground(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
-    QAbstractItemView *m_parentView;
+    DFontPreviewListView *m_parentView;
 };
 
 #endif  // DFONTPREVIEWITEMDELEGATE_H
