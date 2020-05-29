@@ -1150,7 +1150,7 @@ void DFontMgrMainWindow::onSearchTextChanged(const QString &currStr)
 
     onFontListViewRowCountChanged();
     onPreviewTextChanged();
-//    m_fontPreviewListView->scrollToTop();
+    m_fontPreviewListView->scrollToTop();
 }
 
 void DFontMgrMainWindow::onPreviewTextChanged(const QString &text)
