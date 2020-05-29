@@ -17,6 +17,7 @@ class DFontBaseDialog : public DAbstractDialog
     Q_OBJECT
 public:
     explicit DFontBaseDialog(QWidget *parent = nullptr);
+    ~DFontBaseDialog();
 
     void addContent(QWidget *content);
     void setIconPixmap(const QPixmap &iconPixmap);

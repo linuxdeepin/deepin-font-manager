@@ -19,10 +19,6 @@ DFontuninstalldialog::DFontuninstalldialog(DFontMgrMainWindow *win, QWidget *par
 
 DFontuninstalldialog::~DFontuninstalldialog()
 {
-    if (qApp->activeWindow() == this) {
-        qApp->setActiveWindow(m_mainWindow);
-        hide();
-    }
 }
 
 void DFontuninstalldialog::setValue(const QString &fontName, int index, int totalCount)

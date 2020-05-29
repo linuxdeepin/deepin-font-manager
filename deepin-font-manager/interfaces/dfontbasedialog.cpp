@@ -2,6 +2,7 @@
 #include "globaldef.h"
 
 #include <QVBoxLayout>
+#include <QApplication>
 
 #include <DFontSizeManager>
 
@@ -13,6 +14,14 @@ DFontBaseDialog::DFontBaseDialog(QWidget *parent)
     setAttribute(Qt::WA_DeleteOnClose);
     initUI();
     InitConnections();
+}
+
+DFontBaseDialog::~DFontBaseDialog()
+{
+    if (qApp->activeWindow() == this) {
+        qApp->setActiveWindow(nullptr);
+        hide();
+    }
 }
 
 void DFontBaseDialog::initUI()
