@@ -21,12 +21,12 @@ const int COLLECT_ICON_SIZE = 24;
 const int COLLECT_ICON_RIGHT_MARGIN = 15;
 const int COLLECT_ICON_TOP_MARGIN = 10;
 
-const int FONT_NAME_HEIGHT = 27;
+const int FONT_NAME_HEIGHT = 30;
 const int FONT_NAME_LEFT_MARGIN = 50;
 const int FONT_NAME_TOP_MARGIN = 3;
 const int FONT_PREVIEW_LEFT_MARGIN = 50;
 const int FONT_PREVIEW_RIGHT_MARGIN = COLLECT_ICON_SIZE + COLLECT_ICON_RIGHT_MARGIN;
-const int FONT_PREVIEW_TOP_MARGIN = 30;
+const int FONT_PREVIEW_TOP_MARGIN = FONT_NAME_HEIGHT + FONT_NAME_TOP_MARGIN;
 const int FONT_PREVIEW_BOTTOM_MARGIN = 10;
 
 
@@ -191,7 +191,6 @@ void DFontPreviewItemDelegate::paintForegroundPreviewFont(QPainter *painter, con
         bool ret = model->setData(index, boundingRect.height() - fontPreviewRect.height(), Dtk::UserRole + 3);
         qDebug() << __FUNCTION__ << " set bounding height " << boundingRect.height() << ret;
     }
-
 //    QPoint baseLinePoint = adjustPreviewFontBaseLinePoint(fontPreviewRect, fontMetric);
 //    /* 使用baseline规则绘制预览文字，这样不用考虑特殊字体 UT000591 */
 //    painter->drawText(baseLinePoint.x(), baseLinePoint.y(), elidedText);
