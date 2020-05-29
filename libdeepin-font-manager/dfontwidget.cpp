@@ -85,7 +85,7 @@ void DFontWidget::handleFinished(const QByteArray &data)
         m_spinner->stop();
         m_spinner->hide();
         m_preview->hide();
-        m_lab->setText(DApplication::translate("preview", "Font damaged"));
+        m_lab->setText(DApplication::translate("fontpreview", "Broken file"));
         m_lab->setFont(DApplication::font());
         m_lab->move(this->geometry().center() - m_lab->rect().center());
         m_lab->show();
