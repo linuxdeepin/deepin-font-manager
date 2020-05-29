@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="en" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="en">
 <context>
     <name>Category</name>
     <message>
@@ -132,11 +134,11 @@
     </message>
     <message>
         <source>Failed to install %1 fonts. There is not enough disk space.</source>
-        <translation>Failed to install %1 fonts. There is not enough disk space.</translation>
+        <translation type="vanished">Failed to install %1 fonts. There is not enough disk space.</translation>
     </message>
     <message>
         <source>Failed to install 1 font. There is not enough disk space.</source>
-        <translation>Failed to install 1 font. There is not enough disk space.</translation>
+        <translation type="vanished">Failed to install 1 font. There is not enough disk space.</translation>
     </message>
 </context>
 <context>

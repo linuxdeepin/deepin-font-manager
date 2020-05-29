@@ -26,7 +26,7 @@ DFontWidget::DFontWidget(QWidget *parent)
       m_preview(new DFontPreview(this)),
       m_thread(new DFontLoadThread(this)),
       m_spinner(new DSpinner(this)),
-      m_lab(new QLabel(tr("字体已损坏"), this))/*UT000539 暂时固定文本，确认文案后修改*/
+      m_lab(new QLabel(this))/*UT000539 暂时固定文本，确认文案后修改*/
 {
     QWidget *spinnerPage = new QWidget;
     QVBoxLayout *spinnerLayout = new QVBoxLayout(spinnerPage);
@@ -85,6 +85,7 @@ void DFontWidget::handleFinished(const QByteArray &data)
         m_spinner->stop();
         m_spinner->hide();
         m_preview->hide();
+        m_lab->setText(DApplication::translate("preview", "Font damaged"));
         m_lab->setFont(DApplication::font());
         m_lab->move(this->geometry().center() - m_lab->rect().center());
         m_lab->show();

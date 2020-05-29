@@ -63,7 +63,22 @@ isEmpty(INCLUDE_INSTALL_DIR) {
     includes.path = $$INCLUDE_INSTALL_DIR/deepin-font-manager
 }
 
+!system($$PWD/translate_generation.sh): error("Failed to generate translation")
+!system(deepin-policy-ts-convert policy2ts com.deepin.pkexec.font-install.policy.tmp policy-install-translation): message("Failed policy to ts")
+!system(deepin-policy-ts-convert policy2ts com.deepin.pkexec.font-uninstall.policy.tmp policy-uninstall-translation): message("Failed policy to ts")
+!system(deepin-policy-ts-convert ts2policy com.deepin.pkexec.font-install.policy.tmp policy-install-translation com.deepin.pkexec.font-install.policy) {
+    system(cp com.deepin.pkexec.font-install.policy.tmp com.deepin.pkexec.font-install.policy)
+}
+!system(deepin-policy-ts-convert ts2policy com.deepin.pkexec.font-uninstall.policy.tmp policy-uninstall-translation com.deepin.pkexec.font-uninstall.policy) {
+    system(cp com.deepin.pkexec.font-uninstall.policy.tmp com.deepin.pkexec.font-uninstall.policy)
+}
+
+translations.path = /usr/share/deepin-font-manager/translations
+translations.files = $$PWD/translations/*.qm
+
 contents_file.path = /usr/share/deepin-font-manager/
 contents_file.files += $$PWD/CONTENTS.txt
 
-INSTALLS += target includes contents_file
+INSTALLS += target includes contents_file  policy translations
+
+TRANSLATIONS += translations/deepin-font-manager.ts
