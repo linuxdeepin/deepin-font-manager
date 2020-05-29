@@ -1,29 +1,16 @@
 [main]
 host = https://www.transifex.com
-
 minimum_perc = 80
 mode = developer
 
 [deepin-font-manager.deepin-font-manager]
-file_filter = deepin-font-manager/translations/deepin-font-manager_<lang>.ts
-source_file = deepin-font-manager/translations/deepin-font-manager.ts
-source_lang = en
+file_filter = translations/deepin-font-manager_<lang>.ts
+source_file = translations/deepin-font-manager.ts
+source_lang = en_US
 type = QT
 
 [deepin-font-manager.deepin-font-manager-desktop]
-file_filter = deepin-font-manager/translations/desktop/desktop_<lang>.ts
-source_file = deepin-font-manager/translations/desktop/desktop.ts
-source_lang = en
-type = QT
-
-[deepin-font-manager.policy-install]
-file_filter = deepin-font-manager/policy-install-translation/policy_<lang>.ts
-source_file = deepin-font-manager/policy-install-translation/policy.ts
-source_lang = en
-type = QT
-
-[deepin-font-manager.policy-uninstall]
-file_filter = deepin-font-manager/policy-uninstall-translation/policy_<lang>.ts
-source_file = deepin-font-manager/policy-uninstall-translation/policy.ts
+file_filter = translations/desktop/desktop_<lang>.ts
+source_file = translations/desktop/desktop.ts
 source_lang = en
 type = QT

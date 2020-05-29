@@ -66,18 +66,9 @@ SOURCES += main.cpp \
     views/dfontuninstalldialog.cpp \
     views/dfontinfoscrollarea.cpp
 
-RESOURCES += deepin-font-manager.qrc \
-    bmp.qrc
-TRANSLATIONS += translations/deepin-font-manager.ts
+RESOURCES += ../deepin-font-manager-assets/deepin-font-manager.qrc
+TRANSLATIONS += ../translations/deepin-font-manager.ts
 
-!system(deepin-policy-ts-convert policy2ts com.deepin.pkexec.font-install.policy.tmp policy-install-translation): message("Failed policy to ts")
-!system(deepin-policy-ts-convert policy2ts com.deepin.pkexec.font-uninstall.policy.tmp policy-uninstall-translation): message("Failed policy to ts")
-!system(deepin-policy-ts-convert ts2policy com.deepin.pkexec.font-install.policy.tmp policy-install-translation com.deepin.pkexec.font-install.policy) {
-    system(cp com.deepin.pkexec.font-install.policy.tmp com.deepin.pkexec.font-install.policy)
-}
-!system(deepin-policy-ts-convert ts2policy com.deepin.pkexec.font-uninstall.policy.tmp policy-uninstall-translation com.deepin.pkexec.font-uninstall.policy) {
-    system(cp com.deepin.pkexec.font-uninstall.policy.tmp com.deepin.pkexec.font-uninstall.policy)
-}
 
 isEmpty(BINDIR):BINDIR=/usr/bin
 isEmpty(APPDIR):APPDIR=/usr/share/applications
@@ -87,19 +78,15 @@ target.path = $$INSTROOT$$BINDIR
 desktop.path = $$INSTROOT$$APPDIR
 desktop.files = $$PWD/deepin-font-manager.desktop
 
-policy.path = /usr/share/polkit-1/actions
-policy.files = com.deepin.pkexec.font-install.policy \
-               com.deepin.pkexec.font-uninstall.policy
-
 # Automating generation .qm files from .ts files
 !system($$PWD/translate_generation.sh): error("Failed to generate translation")
 
 translations.path = /usr/share/deepin-font-manager/translations
-translations.files = $$PWD/translations/*.qm
+translations.files = $$PWD/../translations/*.qm
 
 icon_files.path = /usr/share/icons/hicolor/scalable/apps
-icon_files.files = $$PWD/images/deepin-font-manager.svg
+icon_files.files = $$PWD/../deepin-font-manager-assets/deepin-font-manager.svg
 
-INSTALLS += target desktop policy translations icon_files
+INSTALLS += target desktop translations icon_files
 
 DISTFILES +=
