@@ -291,7 +291,8 @@ void DFontPreviewListView::initConnections()
                 setCurrentSelected(selectionModel()->selectedIndexes().first().row());
                 scrollTo(currentIndex());
             } else if (count != 1) {
-                m_currentSelectedRow = -1;
+//                m_currentSelectedRow = -1;
+                setCurrentSelected(selectionModel()->selectedIndexes().first().row());
                 isSelectedNow = false;
                 if (selectionModel()->selectedIndexes().count() > 1) {
                     scrollTo(selectionModel()->selectedIndexes().first());
@@ -494,6 +495,8 @@ void DFontPreviewListView::mouseMoveEvent(QMouseEvent *event)
 
 void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
 {
+
+    DListView::mousePressEvent(event);// 获取鼠标在点击窗体上的坐标
     QPoint clickPoint = event->pos();
     QModelIndex modelIndex = indexAt(clickPoint);
     if (event->button() == Qt::LeftButton) {
@@ -502,11 +505,12 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
         /*UT000539*/
         if (QApplication::keyboardModifiers() == Qt::ShiftModifier) {
             if (-1 != m_currentSelectedRow) {
-                if (m_currentSelectedRow < modelIndex.row()) {
+                if (modelIndex.row() == -1) {
+                    return;
+                } else if (m_currentSelectedRow < modelIndex.row()) {
                     selectionModel()->clear();
                     for (int i = m_currentSelectedRow; i <= modelIndex.row(); i++) {
                         QModelIndex modelIndex1 = m_fontPreviewProxyModel->index(i, 0);
-
                         selectionModel()->select(modelIndex1, QItemSelectionModel::Select);
                     }
                 } else if (m_currentSelectedRow > modelIndex.row()) {
@@ -528,7 +532,6 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
                 }
             }
         } else {
-
             m_currentSelectedRow = modelIndex.row();
             isSelectedNow = true;
         }
@@ -559,7 +562,6 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
         }
 
     }
-
 
     if (m_fontPreviewItemModel && m_fontPreviewItemModel->rowCount() == 0) {
         return;
@@ -602,9 +604,9 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
     }
 
     //    mouseMoveEvent(event)
-    DListView::mousePressEvent(event);// 获取鼠标在点击窗体上的坐标
-}
 
+
+}
 void DFontPreviewListView::mouseReleaseEvent(QMouseEvent *event)
 {
 
@@ -661,7 +663,6 @@ void DFontPreviewListView::mouseReleaseEvent(QMouseEvent *event)
 
         }
     }
-
 
     //ut000442 bug20343 鼠标点击右侧爱心时不移动，松开时再次获取此时鼠标位置的item，再去判断鼠标点击
     //点还在不在爱心上，这样就能正确显示相应效果。
