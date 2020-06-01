@@ -95,7 +95,7 @@ void DFontInfoDialog::initUI()
     m_mainFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     // Font logo
-    m_fontLogo = new FontIconText(":/images/font-info-logo.svg", this);
+    m_fontLogo = new FontIconText("://font-info-logo.svg", this);
     QFileInfo fileInfo(m_fontInfo->fontInfo.filePath);
     QString suffix = fileInfo.suffix().toLower();
     if (!suffix.compare("ttf")) {

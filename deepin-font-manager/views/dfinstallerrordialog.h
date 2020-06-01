@@ -41,12 +41,12 @@ public:
                                   const QStringList &systemFontFileListPsname = QStringList(),
                                   const QStringList &systemFontFileListFamilyname = QStringList()
                                  );
-    ~DFInstallErrorDialog();
+    ~DFInstallErrorDialog()Q_DECL_OVERRIDE;
 
     void initData();
     void initUI();
 
-    void resizeEvent(QResizeEvent *event);
+    void resizeEvent(QResizeEvent *event)Q_DECL_OVERRIDE;
 
     void initMainFrame();
     void initTitleBar();
