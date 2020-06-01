@@ -1360,11 +1360,11 @@ void DFontMgrMainWindow::onShowMessage(int successCount)
 
     if (successCount == 1) {
         messageA = DApplication::translate("DFontMgrMainWindow", "%1 font installed").arg(successCount);
-        DMessageManager::instance()->sendMessage(this, QIcon(":/images/ok.svg"), messageA);
+        DMessageManager::instance()->sendMessage(this, QIcon("://ok.svg"), messageA);
 
     } else if (successCount > 1) {
         messageA = DApplication::translate("DFontMgrMainWindow", "%1 fonts installed").arg(successCount);
-        DMessageManager::instance()->sendMessage(this, QIcon(":/images/ok.svg"), messageA);
+        DMessageManager::instance()->sendMessage(this, QIcon("://ok.svg"), messageA);
     }
 }
 
@@ -1435,17 +1435,17 @@ void DFontMgrMainWindow::showExportFontMessage(int successCount, int abandonFile
     if (abandonFilesCount == 0) {
         if (successCount == 1) {
             message = DApplication::translate("Main", "The font exported to your desktop");
-            DMessageManager::instance()->sendMessage(this, QIcon(":/images/ok.svg"), message);
+            DMessageManager::instance()->sendMessage(this, QIcon("://ok.svg"), message);
         } else {
             message = DApplication::translate("Main", "%1 fonts exported to your desktop").arg(successCount);
-            DMessageManager::instance()->sendMessage(this, QIcon(":/images/ok.svg"), message);
+            DMessageManager::instance()->sendMessage(this, QIcon("://ok.svg"), message);
         }
     } else if (abandonFilesCount == 1) {
         message = DApplication::translate("Main", "Failed to export 1 font. There is not enough disk space.");
-        DMessageManager::instance()->sendMessage(this, QIcon(":/images/exception-logo.svg"), message);
+        DMessageManager::instance()->sendMessage(this, QIcon("://exception-logo.svg"), message);
     } else if (abandonFilesCount > 1) {
         message = DApplication::translate("Main", "Failed to export %1 fonts. There is not enough disk space.").arg(abandonFilesCount);
-        DMessageManager::instance()->sendMessage(this, QIcon(":/images/exception-logo.svg"), message);
+        DMessageManager::instance()->sendMessage(this, QIcon("://exception-logo.svg"), message);
     }
 
 }

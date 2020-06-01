@@ -160,7 +160,7 @@ void DFInstallErrorDialog::initMainFrame()
 
 void DFInstallErrorDialog::initTitleBar()
 {
-    setIconPixmap(Utils::renderSVG(":/images/exception-logo.svg", QSize(32, 32)));
+    setIconPixmap(Utils::renderSVG("://exception-logo.svg", QSize(32, 32)));
     setTitle(DApplication::translate("ExceptionWindow", "Font Verification"));
 }
 

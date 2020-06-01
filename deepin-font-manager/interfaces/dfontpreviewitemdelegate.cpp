@@ -93,10 +93,10 @@ void DFontPreviewItemDelegate::paintForegroundCollectIcon(QPainter *painter, con
     QString strImageSrc;
     QPixmap pixmap;
     if (itemData.isCollected) {
-        strImageSrc = QString(":/images/%1collection_%2.svg").arg(strImgPrefix).arg(iconStatus);
+        strImageSrc = QString("://%1collection_%2.svg").arg(strImgPrefix).arg(iconStatus);
         pixmap = Utils::renderSVG(strImageSrc, QSize(COLLECT_ICON_SIZE, COLLECT_ICON_SIZE));
     } else {
-        strImageSrc = QString(":/images/%1uncollection_%2.svg").arg(strImgPrefix).arg(iconStatus);
+        strImageSrc = QString("://%1uncollection_%2.svg").arg(strImgPrefix).arg(iconStatus);
         pixmap = Utils::renderSVG(strImageSrc, QSize(COLLECT_ICON_SIZE, COLLECT_ICON_SIZE));
     }
 

@@ -51,10 +51,10 @@ void DFInstallErrorListDelegate::drawCheckBoxIcon(QPainter *painter, QRect bgRec
 //    QRect checkboxRect = QRect(bgRect.left() + 0, bgRect.top(), checkBoxSize - 4, checkBoxSize - 4);
     DGuiApplicationHelper::ColorType themeType = DGuiApplicationHelper::instance()->themeType();
     if (themeType == DGuiApplicationHelper::LightType) {
-        QImage checkBox(":/images/checkbox_unchecked_light.svg");
+        QImage checkBox("://checkbox_unchecked_light.svg");
         painter->drawImage(checkboxRect, checkBox);
     } else {
-        QImage checkBox(":/images/checkbox_unchecked_dark.svg");
+        QImage checkBox("://checkbox_unchecked_dark.svg");
         painter->drawImage(checkboxRect, checkBox);
     }
 }
