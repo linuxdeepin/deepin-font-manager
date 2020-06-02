@@ -12,9 +12,13 @@ DFontuninstalldialog::DFontuninstalldialog(DFontMgrMainWindow *win, QWidget *par
 {
     initUi();
 
-    repaint();
+//    repaint();
 
     setMainwindow(win);
+
+    QTimer::singleShot(500, this, [ = ] {
+        update();
+    });
 }
 
 DFontuninstalldialog::~DFontuninstalldialog()

@@ -151,6 +151,7 @@ signals:
     void itemsSelected(const QStringList &files, bool isFirstInstall = false);
     void itemSelected(const QString &file);
     void rowCountChanged();
+    void deleteFinished();
 
 public slots:
 

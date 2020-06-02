@@ -68,13 +68,11 @@ void DFDeleteDialog::initUI()
 void DFDeleteDialog::initConnections()
 {
     connect(m_cancelBtn, &DPushButton::clicked, this, [ = ]() {
-        emit signal_delete(false);
         reject();
         close();
         emit m_signalManager->cancelDel();
     });
     connect(m_confirmBtn, &DPushButton::clicked, this, [ = ]() {
-        emit signal_delete(true);
         if (m_deleting)
             return;
         m_deleting = true;
@@ -82,13 +80,11 @@ void DFDeleteDialog::initConnections()
         close();
     });
 
-    connect(this, &DFDeleteDialog::closed, this, [ = ]() {
-        if (m_deleting) {
-            emit SignalManager::instance()->popUninstallDialog();//弹出删除进度框
-        } else if (m_mainWindow != nullptr) {
-            m_mainWindow->setDeleteFinish();
-        }
-    });
+//    connect(this, &DFDeleteDialog::closed, this, [ = ]() {
+//        if (m_mainWindow != nullptr) {
+//            m_mainWindow->setDeleteFinish();
+//        }
+//    });
     connect(qApp, &DApplication::fontChanged, this, &DFDeleteDialog::onFontChanged);
 
     connect(DApplicationHelper::instance(), &DApplicationHelper::themeTypeChanged, this, &DFDeleteDialog::setTheme);
