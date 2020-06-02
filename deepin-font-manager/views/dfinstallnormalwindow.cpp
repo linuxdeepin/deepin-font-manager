@@ -636,7 +636,7 @@ void DFInstallNormalWindow::batchHalfwayInstall(const QStringList &filelist)
     qDebug() << m_newHalfInstalledFiles.count() << "*" << m_oldHalfInstalledFiles.count() << endl;
     m_halfInstalledFiles.append(m_newHalfInstalledFiles);
 
-    if (m_errorList.count() + m_newHalfInstalledFiles.count() > 0) {
+    if (m_errorList.count() + m_newHalfInstalledFiles.count() + m_oldHalfInstalledFiles.count() > 0) {
         emit m_signalManager->updateInstallErrorListview(m_errorList, m_halfInstalledFiles, m_newHalfInstalledFiles, m_oldHalfInstalledFiles);
     }
 
