@@ -28,6 +28,7 @@
 #include <QDebug>
 #include <QFile>
 #include "dfontwidget.h"
+#include <freetype/ttnameid.h>
 
 static const QString lowerTextStock = "abcdefghijklmnopqrstuvwxyz";
 static const QString upperTextStock = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -288,7 +289,7 @@ bool DFontPreview::checkFontContainText(FT_Face face, const QString &text)
     return retval;
 }
 
-QString DFontPreview::buildCharlistForFace(FT_Face face, int length, int maxHeight)
+QString DFontPreview::buildCharlistForFace(FT_Face face, int length, short *maxHeight, short *count)
 {
     QString retval;
     if (face == nullptr)
@@ -296,7 +297,9 @@ QString DFontPreview::buildCharlistForFace(FT_Face face, int length, int maxHeig
 
     unsigned int glyph = 0;
     unsigned long ch = 0;
-    int totalChars = 0;
+    short totalChars = 0;
+
+    short height = face->height;
 
     ch = FT_Get_First_Char(face, &glyph);
 
@@ -305,12 +308,16 @@ QString DFontPreview::buildCharlistForFace(FT_Face face, int length, int maxHeig
         retval = retval.simplified();
         ch = FT_Get_Next_Char(face, ch, &glyph);
 //        if (FT_Load_Char(face, ch, FT_LOAD_RENDER)) {
-        if (FT_Load_Glyph(face, glyph, FT_LOAD_RENDER)) {
-            if (face->glyph->bitmap.rows > 0)
-                qDebug() << __FUNCTION__ << "height " << face->glyph->bitmap.rows << ch;
-            if (face->glyph->metrics.vertBearingX != 0 || face->glyph->metrics.vertBearingY != 0)
-                qDebug() << __FUNCTION__ << " metrics vertBearing XY " << face->glyph->metrics.vertBearingX << face->glyph->metrics.vertBearingY;
-        }
+//        if (FT_Load_Glyph(face, glyph, FT_LOAD_RENDER) == 0) {
+//            qDebug() << __FUNCTION__ << " glyph format = " << face->glyph->format;
+//            if (face->glyph->bitmap.rows > 0)
+//                qDebug() << __FUNCTION__ << "height " << face->glyph->bitmap.rows << ch;
+//            if (face->glyph->metrics.vertBearingX != 0 || face->glyph->metrics.vertBearingY != 0)
+//                qDebug() << __FUNCTION__ << " metrics vertBearing XY " << face->glyph->metrics.vertBearingX << face->glyph->metrics.vertBearingY << face->glyph->metrics.height;
+//            if (height < face->glyph->metrics.height)
+//                height = face->glyph->metrics.height;
+//    }
+
 //        if (FT_Render_Glyph(face->glyph, FT_RENDER_MODE_NORMAL))  {
 //            if (face->glyph->bitmap.rows != 0)
 //                qDebug() << __FUNCTION__ << "height 2 " << face->glyph->bitmap.rows << ch;
@@ -320,6 +327,11 @@ QString DFontPreview::buildCharlistForFace(FT_Face face, int length, int maxHeig
         if (retval.count() == length)
             break;
     }
+
+    if (maxHeight != nullptr)
+        *maxHeight = height;//face->bbox.yMax - face->bbox.yMin;
+    if (count != nullptr)
+        *count = totalChars;
 
     return retval;
 }

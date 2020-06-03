@@ -65,7 +65,8 @@ void DFontPreviewItemDelegate::paintForegroundFontName(QPainter *painter, const 
 
     QRect fontNameRect = QRect(option.rect.x() + FONT_NAME_LEFT_MARGIN, option.rect.y() + FONT_NAME_TOP_MARGIN,
                                option.rect.width() - 20, FONT_NAME_HEIGHT);
-//    qDebug() << __FUNCTION__ << itemData.strFontName << fontNameRect;
+
+//    qDebug() << __FUNCTION__ << itemData.strFontName << fontNameRect << itemData.fontInfo.specialPreviewHeight;
 
     QFontMetrics mt(nameFont);//特殊图案字体下截断字体名称/*UT000539*/
     QString elidedText = mt.elidedText(itemData.strFontName, Qt::ElideRight, option.rect.width() - 120, Qt::TextShowMnemonic);
@@ -175,25 +176,30 @@ void DFontPreviewItemDelegate::paintForegroundPreviewFont(QPainter *painter, con
     painter->setPen(QPen(option.palette.color(DPalette::Text)));
 
     QFontMetrics fontMetric(previewFont);
+//    qDebug()    << __FUNCTION__  << itemData.strFontName  << itemData.fontInfo.specialPreviewHeight << fontMetric.width(fontPreviewText);
 
     QString elidedText = fontMetric.elidedText(fontPreviewText, Qt::ElideRight, fontPreviewRect.width(), Qt::TextShowMnemonic);
 
     //特殊的字体和部分用户字体超出显示 bug29111
-    QRect boundingRect;
-    painter->drawText(fontPreviewRect, Qt::AlignLeft | Qt::AlignBottom, elidedText, &boundingRect);
+//    QRect boundingRect;
+//    painter->drawText(fontPreviewRect, Qt::AlignLeft | Qt::AlignBottom, elidedText, &boundingRect);
 //    qDebug() << __FUNCTION__ << itemData.strFontName << fontPreviewRect << boundingRect;
-    DFontPreviewProxyModel *model = (m_parentView != nullptr) ? m_parentView->getFontPreviewProxyModel() : nullptr;
-    if (boundingRect.height() > fontPreviewRect.height() && model->data(index, Dtk::UserRole + 3).isNull()) {
-        if (m_parentView == nullptr)
-            return;
-        if (model == nullptr)
-            return;
-        bool ret = model->setData(index, boundingRect.height() - fontPreviewRect.height(), Dtk::UserRole + 3);
+//    DFontPreviewProxyModel *model = (m_parentView != nullptr) ? m_parentView->getFontPreviewProxyModel() : nullptr;
+//    if (boundingRect.height() > fontPreviewRect.height() && model->data(index, Dtk::UserRole + 3).isNull()) {
+//        if (m_parentView == nullptr)
+//            return;
+//        if (model == nullptr)
+//            return;
+//        bool ret = model->setData(index, boundingRect.height() - fontPreviewRect.height(), Dtk::UserRole + 3);
 //        qDebug() << __FUNCTION__ << " set bounding height " << boundingRect.height() << ret;
-    }
-//    QPoint baseLinePoint = adjustPreviewFontBaseLinePoint(fontPreviewRect, fontMetric);
-//    /* 使用baseline规则绘制预览文字，这样不用考虑特殊字体 UT000591 */
-//    painter->drawText(baseLinePoint.x(), baseLinePoint.y(), elidedText);
+//    }
+    QPoint baseLinePoint = adjustPreviewFontBaseLinePoint(fontPreviewRect, fontMetric);
+    /* 使用baseline规则绘制预览文字，这样不用考虑特殊字体 UT000591 */
+//    if (itemData.fontInfo.fontLayoutDirection == FONT_LAYOUT_VERTICAL) {
+//        painter->drawText(fontPreviewRect, Qt::AlignLeft | Qt::AlignVCenter, elidedText);
+//    } else {
+    painter->drawText(baseLinePoint.x(), baseLinePoint.y(), elidedText);
+//    }
 }
 
 void DFontPreviewItemDelegate::paintBackground(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
@@ -258,7 +264,6 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
         QStyledItemDelegate::paint(painter, option, index);
     }
 
-
     /* Bug#21463 UT000591 */
     QFont::cleanup();
 }
@@ -267,11 +272,15 @@ QSize DFontPreviewItemDelegate::sizeHint(const QStyleOptionViewItem &option, con
 {
     DFontPreviewItemData data = index.data(Qt::DisplayRole).value<DFontPreviewItemData>();
     int fontSize = (false == index.data(Dtk::UserRole + 2).isNull()) ? index.data(Dtk::UserRole + 2).toInt() : data.iFontSize;
-    int height = index.data(Dtk::UserRole + 3).isNull() ? 0 : index.data(Dtk::UserRole + 3).toInt();
+    int height = (data.fontInfo.specialPreviewHeight > 0) ? (data.fontInfo.specialPreviewHeight) : 0;//index.data(Dtk::UserRole + 3).isNull() ? 0 : index.data(Dtk::UserRole + 3).toInt();
+
+    //qDebug() << __FUNCTION__ << data.strFontName << data.fontInfo.specialPreviewHeight << height;
 
     int itemHeight = FTM_PREVIEW_ITEM_HEIGHT;
     if (fontSize > 30) {
         itemHeight += static_cast<int>(((fontSize - 30) + 1) * 1.5);
+        if (height > 0)
+            height *= 1.2;
     }
 
     itemHeight += height;

@@ -40,7 +40,7 @@ public:
 
     static bool checkFontContainText(FT_Face face, const QString &text);
 
-    static QString buildCharlistForFace(FT_Face face, int length, int maxHeight = 0);
+    static QString buildCharlistForFace(FT_Face face, int length, short *maxHeight = nullptr, short *count = nullptr);
 
     QFontDatabase fontDatabase;
 

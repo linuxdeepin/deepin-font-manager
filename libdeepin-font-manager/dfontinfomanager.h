@@ -26,6 +26,8 @@
 #include <ft2build.h>
 //#include FT_FREETYPE_H
 
+const char FONT_LAYOUT_HORIZONTAL = 0;
+const char FONT_LAYOUT_VERTICAL = 1;
 struct DFontInfo {
     QString filePath;
     QString familyName;
@@ -42,7 +44,9 @@ struct DFontInfo {
     //add default preview text
 //    int previewSettings;
     QString defaultPreview;
-    bool specialPreview;
+    short specialPreviewHeight;
+    short fontLayoutDirection; //0: vertical; 1: horizontal
+    short charCount;
 
 
     bool isInstalled {false};
@@ -91,10 +95,11 @@ public:
     QStringList getAllMonoSpaceFontPath() const;
     QString getFontType(const QString &filePath);
     DFontInfo getFontInfo(const QString &filePath, bool force = false);
-    QString getDefaultPreview(const QString &filePath, bool &specialPreview);
+    QString getDefaultPreview(const QString &filePath, short &height, short &count);
     QString getInstFontPath(const QString &originPath, const QString &familyName);
     bool isFontInstalled(DFontInfo &data);
     void getDefaultPreview(DFontInfo &data);
+    void calcFontHeight(DFontInfo &data);
 
 //    //获取指定文件夹下所有的子文件夹
 //    QStringList getDirPathOfSplDir(QString dirPath)const;

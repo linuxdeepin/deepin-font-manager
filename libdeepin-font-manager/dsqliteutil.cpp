@@ -433,7 +433,7 @@ trademark) values( \
     QVariantList fullnameList;
     QVariantList psnameList;
     QVariantList trademarkList;
-    for (DFontPreviewItemData item : fontList) {
+    for (const DFontPreviewItemData &item : fontList) {
         fontNameList << escapeString(item.strFontName);
         isEnabledList << QString::number(item.isEnabled);
         isCollectedList << QString::number(item.isCollected);
@@ -479,24 +479,6 @@ trademark) values( \
         qDebug() << __FUNCTION__ << "true";
     }
 
-    fontNameList.clear();
-    isEnabledList.clear();
-    isCollectedList.clear();
-    isChineseList.clear();
-    isMonoSpaceList.clear();
-    filePathList.clear();
-    familyNameList.clear();
-    styleNameList.clear();
-    typeList.clear();
-    versionList.clear();
-    copyrightList.clear();
-    descriptionList.clear();
-    sysVersionList.clear();
-    isInstalledList.clear();
-    isErrorList.clear();
-    fullnameList.clear();
-    psnameList.clear();
-    trademarkList.clear();
     finish();
 }
 
@@ -539,7 +521,7 @@ void DSqliteUtil::updateFontInfo(const QList<DFontPreviewItemData> &fontList, co
 
     QVariantList keyList;
     QVariantList filePathList;
-    for (DFontPreviewItemData item : fontList) {
+    for (const DFontPreviewItemData &item : fontList) {
         if (key == "isEnabled") {
             keyList << QString::number(item.isEnabled);
         } else if (key == "isCollected") {
