@@ -258,6 +258,7 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
         QStyledItemDelegate::paint(painter, option, index);
     }
 
+
     /* Bug#21463 UT000591 */
     QFont::cleanup();
 }

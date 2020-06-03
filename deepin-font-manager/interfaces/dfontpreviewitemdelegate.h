@@ -23,7 +23,6 @@ public:
 
 protected:
     bool eventFilter(QObject *object, QEvent *event) override;
-
 private:
     QRect adjustPreviewRect(const QRect bgRect) const;
     QFont adjustPreviewFont(const QString &fontFamilyName, const QString &fontStyleName, const int &fontSize) const;

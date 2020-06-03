@@ -35,7 +35,7 @@ struct DFontPreviewItemData {
 
     bool isChineseFont;       //是否中文字体
     bool isMonoSpace;         //是否等宽字体
-
+    bool isCanDisable;
     IconStatus collectIconStatus;
 
     DFontPreviewItemData()
@@ -65,7 +65,7 @@ struct DFontPreviewItemData {
         isPreviewEnabled = false;
         isCollected = false;
         strFontId = "";
-
+        isCanDisable = true;
         isChineseFont = false;
         isMonoSpace = false;
 
@@ -105,6 +105,7 @@ struct DFontPreviewItemData {
 
         isChineseFont = other.isChineseFont;
         isMonoSpace = other.isMonoSpace;
+        isCanDisable = other.isCanDisable;
 
         collectIconStatus = other.collectIconStatus;
     }

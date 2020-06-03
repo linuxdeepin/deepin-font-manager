@@ -5,31 +5,31 @@
     <name>Category</name>
     <message>
         <source>All Fonts</source>
-        <translation>All Fonts</translation>
+        <translation type="vanished">All Fonts</translation>
     </message>
     <message>
         <source>System</source>
-        <translation>System</translation>
+        <translation type="vanished">System</translation>
     </message>
     <message>
         <source>User</source>
-        <translation>User</translation>
+        <translation type="vanished">User</translation>
     </message>
     <message>
         <source>Favorites</source>
-        <translation>Favorites</translation>
+        <translation type="vanished">Favorites</translation>
     </message>
     <message>
         <source>Active</source>
-        <translation>Active</translation>
+        <translation type="vanished">Active</translation>
     </message>
     <message>
         <source>Chinese</source>
-        <translation>Chinese</translation>
+        <translation type="vanished">Chinese</translation>
     </message>
     <message>
         <source>Monospaced</source>
-        <translation>Monospaced</translation>
+        <translation type="vanished">Monospaced</translation>
     </message>
 </context>
 <context>
@@ -40,11 +40,11 @@
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Cancel</translation>
+        <translation type="vanished">Cancel</translation>
     </message>
     <message>
         <source>Confirm</source>
-        <translation>Confirm</translation>
+        <translation type="vanished">Confirm</translation>
     </message>
 </context>
 <context>
@@ -55,70 +55,70 @@
     </message>
     <message>
         <source>Same version installed</source>
-        <translation>Same version installed</translation>
+        <translation type="vanished">Same version installed</translation>
     </message>
     <message>
         <source>System Font</source>
-        <translation>System Font</translation>
+        <translation type="vanished">System Font</translation>
     </message>
 </context>
 <context>
     <name>DFontMgrMainWindow</name>
     <message>
         <source>Ctrl+Shift+/</source>
-        <translation>Ctrl+Shift+/</translation>
+        <translation type="vanished">Ctrl+Shift+/</translation>
     </message>
     <message>
         <source>PgUp</source>
-        <translation>PgUp</translation>
+        <translation type="vanished">PgUp</translation>
     </message>
     <message>
         <source>PgDown</source>
-        <translation>PgDown</translation>
+        <translation type="vanished">PgDown</translation>
     </message>
     <message>
         <source>Ctrl+Alt+F</source>
-        <translation>Ctrl+Alt+F</translation>
+        <translation type="vanished">Ctrl+Alt+F</translation>
     </message>
     <message>
         <source>Ctrl+F</source>
-        <translation>Ctrl+F</translation>
+        <translation type="vanished">Ctrl+F</translation>
     </message>
     <message>
         <source>Ctrl+O</source>
-        <translation>Ctrl+O</translation>
+        <translation type="vanished">Ctrl+O</translation>
     </message>
     <message>
         <source>Ctrl+K</source>
-        <translation>Ctrl+K</translation>
+        <translation type="vanished">Ctrl+K</translation>
     </message>
     <message>
         <source>Ctrl+Shift+K</source>
-        <translation>Ctrl+Shift+K</translation>
+        <translation type="vanished">Ctrl+Shift+K</translation>
     </message>
     <message>
         <source>Alt+Return</source>
-        <translation>Alt+Return</translation>
+        <translation type="vanished">Alt+Return</translation>
     </message>
     <message>
         <source>Fonts</source>
-        <translation>Fonts</translation>
+        <translation type="vanished">Fonts</translation>
     </message>
     <message>
         <source>Ctrl+=</source>
-        <translation>Ctrl+=</translation>
+        <translation type="vanished">Ctrl+=</translation>
     </message>
     <message>
         <source>Ctrl+-</source>
-        <translation>Ctrl+-</translation>
+        <translation type="vanished">Ctrl+-</translation>
     </message>
     <message>
         <source>Ctrl+0</source>
-        <translation>Ctrl+0</translation>
+        <translation type="vanished">Ctrl+0</translation>
     </message>
     <message>
         <source>%1 font installed</source>
-        <translation>%1 font installed</translation>
+        <translation type="vanished">%1 font installed</translation>
     </message>
     <message>
         <source>The other one system font has already been installed</source>
@@ -130,7 +130,7 @@
     </message>
     <message>
         <source>%1 fonts installed</source>
-        <translation>%1 fonts installed</translation>
+        <translation type="vanished">%1 fonts installed</translation>
     </message>
     <message>
         <source>Failed to install %1 fonts. There is not enough disk space.</source>
@@ -145,15 +145,15 @@
     <name>DeleteConfirmDailog</name>
     <message>
         <source>Are you sure you want to delete this font?</source>
-        <translation>Are you sure you want to delete this font?</translation>
+        <translation type="vanished">Are you sure you want to delete this font?</translation>
     </message>
     <message>
         <source>This font will not be available to applications</source>
-        <translation>This font will not be available to applications</translation>
+        <translation type="vanished">This font will not be available to applications</translation>
     </message>
     <message>
         <source>These fonts will not be available to applications</source>
-        <translation>These fonts will not be available to applications</translation>
+        <translation type="vanished">These fonts will not be available to applications</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -173,29 +173,29 @@
     </message>
     <message>
         <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
-        <translation>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</translation>
+        <translation type="vanished">These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</translation>
     </message>
     <message>
         <source>This font will not be available to applications, and the other %1 system fonts cannot be deleted</source>
-        <translation>This font will not be available to applications, and the other %1 system fonts cannot be deleted</translation>
+        <translation type="vanished">This font will not be available to applications, and the other %1 system fonts cannot be deleted</translation>
     </message>
     <message>
         <source>Are you sure you want to delete %1 fonts?</source>
-        <translation>Are you sure you want to delete %1 fonts?</translation>
+        <translation type="vanished">Are you sure you want to delete %1 fonts?</translation>
     </message>
 </context>
 <context>
     <name>Dfuninstalldialog</name>
     <message>
         <source>Deleting fonts, please wait...</source>
-        <translation>Deleting fonts, please wait...</translation>
+        <translation type="vanished">Deleting fonts, please wait...</translation>
     </message>
 </context>
 <context>
     <name>ExceptionWindow</name>
     <message>
         <source>Font Verification</source>
-        <translation>Font Verification</translation>
+        <translation type="vanished">Font Verification</translation>
     </message>
     <message>
         <source>Broken file</source>
@@ -207,11 +207,11 @@
     </message>
     <message>
         <source>Exit</source>
-        <translation>Exit</translation>
+        <translation type="vanished">Exit</translation>
     </message>
     <message>
         <source>Continue</source>
-        <translation>Continue</translation>
+        <translation type="vanished">Continue</translation>
     </message>
     <message>
         <source>No need to install system fonts again</source>
@@ -219,222 +219,222 @@
     </message>
     <message>
         <source>No fonts to be installed</source>
-        <translation>No fonts to be installed</translation>
+        <translation type="vanished">No fonts to be installed</translation>
     </message>
 </context>
 <context>
     <name>Font</name>
     <message>
         <source>Don&apos;t let your dreams be dreams</source>
-        <translation>Don&apos;t let your dreams be dreams</translation>
+        <translation type="vanished">Don&apos;t let your dreams be dreams</translation>
     </message>
 </context>
 <context>
     <name>FontDetailDailog</name>
     <message>
         <source>Basic info</source>
-        <translation>Basic info</translation>
+        <translation type="vanished">Basic info</translation>
     </message>
     <message>
         <source>Style</source>
-        <translation>Style</translation>
+        <translation type="vanished">Style</translation>
     </message>
     <message>
         <source>Type</source>
-        <translation>Type</translation>
+        <translation type="vanished">Type</translation>
     </message>
     <message>
         <source>Version</source>
-        <translation>Version</translation>
+        <translation type="vanished">Version</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation>Description</translation>
+        <translation type="vanished">Description</translation>
     </message>
     <message>
         <source>Unknown</source>
-        <translation>Unknown</translation>
+        <translation type="vanished">Unknown</translation>
     </message>
     <message>
         <source>Full name</source>
-        <translation>Full name</translation>
+        <translation type="vanished">Full name</translation>
     </message>
     <message>
         <source>Ps name</source>
-        <translation>Ps name</translation>
+        <translation type="vanished">Ps name</translation>
     </message>
     <message>
         <source>Trademark</source>
-        <translation>Trademark</translation>
+        <translation type="vanished">Trademark</translation>
     </message>
 </context>
 <context>
     <name>Main</name>
     <message>
         <source>Font Manager</source>
-        <translation>Font Manager</translation>
+        <translation type="vanished">Font Manager</translation>
     </message>
     <message>
         <source>Font Manager helps users install and manage fonts.</source>
-        <translation>Font Manager helps users install and manage fonts.</translation>
+        <translation type="vanished">Font Manager helps users install and manage fonts.</translation>
     </message>
     <message>
         <source>Loading fonts, please wait...</source>
-        <translation>Loading fonts, please wait...</translation>
+        <translation type="vanished">Loading fonts, please wait...</translation>
     </message>
     <message>
         <source>The font exported to your desktop</source>
-        <translation>The font exported to your desktop</translation>
+        <translation type="vanished">The font exported to your desktop</translation>
     </message>
     <message>
         <source>%1 fonts exported to your desktop</source>
-        <translation>%1 fonts exported to your desktop</translation>
+        <translation type="vanished">%1 fonts exported to your desktop</translation>
     </message>
     <message>
         <source>Failed to export 1 font. There is not enough disk space.</source>
-        <translation>Failed to export 1 font. There is not enough disk space.</translation>
+        <translation type="vanished">Failed to export 1 font. There is not enough disk space.</translation>
     </message>
     <message>
         <source>Failed to export %1 fonts. There is not enough disk space.</source>
-        <translation>Failed to export %1 fonts. There is not enough disk space.</translation>
+        <translation type="vanished">Failed to export %1 fonts. There is not enough disk space.</translation>
     </message>
 </context>
 <context>
     <name>Menu</name>
     <message>
         <source>Add font</source>
-        <translation>Add font</translation>
+        <translation type="vanished">Add font</translation>
     </message>
     <message>
         <source>Enable</source>
-        <translation>Enable</translation>
+        <translation type="vanished">Enable</translation>
     </message>
     <message>
         <source>Disable</source>
-        <translation>Disable</translation>
+        <translation type="vanished">Disable</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>Delete</translation>
+        <translation type="vanished">Delete</translation>
     </message>
     <message>
         <source>Favorite</source>
-        <translation>Favorite</translation>
+        <translation type="vanished">Favorite</translation>
     </message>
     <message>
         <source>Unfavorite</source>
-        <translation>Unfavorite</translation>
+        <translation type="vanished">Unfavorite</translation>
     </message>
     <message>
         <source>Details</source>
-        <translation>Details</translation>
+        <translation type="vanished">Details</translation>
     </message>
     <message>
         <source>Display in file manager</source>
-        <translation>Display in file manager</translation>
+        <translation type="vanished">Display in file manager</translation>
     </message>
     <message>
         <source>Export</source>
-        <translation>Export</translation>
+        <translation type="vanished">Export</translation>
     </message>
 </context>
 <context>
     <name>MessageManager</name>
     <message>
         <source>deactivated</source>
-        <translation>deactivated</translation>
+        <translation type="vanished">deactivated</translation>
     </message>
     <message>
         <source>The fonts have been deactivated</source>
-        <translation>The fonts have been deactivated</translation>
+        <translation type="vanished">The fonts have been deactivated</translation>
     </message>
 </context>
 <context>
     <name>NormalInstallWindow</name>
     <message>
         <source>Install Font</source>
-        <translation>Install Font</translation>
+        <translation type="vanished">Install Font</translation>
     </message>
     <message>
         <source>Verifying...</source>
-        <translation>Verifying...</translation>
+        <translation type="vanished">Verifying...</translation>
     </message>
 </context>
 <context>
     <name>QuickInstallWindow</name>
     <message>
         <source>Unknown</source>
-        <translation>Unknown</translation>
+        <translation type="vanished">Unknown</translation>
     </message>
     <message>
         <source>Broken file</source>
-        <translation>Broken file</translation>
+        <translation type="vanished">Broken file</translation>
     </message>
     <message>
         <source>Installed</source>
-        <translation>Installed</translation>
+        <translation type="vanished">Installed</translation>
     </message>
     <message>
         <source>Not Installed</source>
-        <translation>Not Installed</translation>
+        <translation type="vanished">Not Installed</translation>
     </message>
     <message>
         <source>Install Font</source>
-        <translation>Install Font</translation>
+        <translation type="vanished">Install Font</translation>
     </message>
 </context>
 <context>
     <name>SearchBar</name>
     <message>
         <source>Search</source>
-        <translation>Search</translation>
+        <translation type="vanished">Search</translation>
     </message>
     <message>
         <source>No search results</source>
-        <translation>No search results</translation>
+        <translation type="vanished">No search results</translation>
     </message>
     <message>
         <source>No fonts</source>
-        <translation>No fonts</translation>
+        <translation type="vanished">No fonts</translation>
     </message>
 </context>
 <context>
     <name>Shortcut</name>
     <message>
         <source>Help</source>
-        <translation>Help</translation>
+        <translation type="vanished">Help</translation>
     </message>
     <message>
         <source>Display shortcuts</source>
-        <translation>Display shortcuts</translation>
+        <translation type="vanished">Display shortcuts</translation>
     </message>
     <message>
         <source>Page up</source>
-        <translation>Page up</translation>
+        <translation type="vanished">Page up</translation>
     </message>
     <message>
         <source>Page down</source>
-        <translation>Page down</translation>
+        <translation type="vanished">Page down</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>Delete</translation>
+        <translation type="vanished">Delete</translation>
     </message>
     <message>
         <source>Add font</source>
-        <translation>Add font</translation>
+        <translation type="vanished">Add font</translation>
     </message>
     <message>
         <source>Favorite</source>
-        <translation>Favorite</translation>
+        <translation type="vanished">Favorite</translation>
     </message>
     <message>
         <source>Unfavorite</source>
-        <translation>Unfavorite</translation>
+        <translation type="vanished">Unfavorite</translation>
     </message>
     <message>
         <source>Font info</source>
-        <translation>Font info</translation>
+        <translation type="vanished">Font info</translation>
     </message>
 </context>
 <context>
@@ -480,7 +480,7 @@
     <name>StateBar</name>
     <message>
         <source>Input preview text</source>
-        <translation>Input preview text</translation>
+        <translation type="vanished">Input preview text</translation>
     </message>
 </context>
 </TS>

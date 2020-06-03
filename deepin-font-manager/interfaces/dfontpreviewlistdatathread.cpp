@@ -310,6 +310,11 @@ void DFontPreviewListDataThread::refreshFontListData(bool isStartup, const QStri
 
     QSet<QString> dbFilePathSet;
     for (DFontPreviewItemData &itemData : fontInfoList) {
+        if (itemData.fontInfo.isSystemFont) {
+            if (itemData.fontInfo.familyName.startsWith("CESI") || itemData.fontInfo.familyName.contains("Mono")) {
+                itemData.isCanDisable = false;
+            }
+        }
         if (isStartup) {
             QString filePath = itemData.fontInfo.filePath.trimmed();
             QFileInfo filePathInfo(filePath);
@@ -332,7 +337,6 @@ void DFontPreviewListDataThread::refreshFontListData(bool isStartup, const QStri
             addPathWatcher(filePath);
         }
     }
-
     DFMDBManager::instance()->commitDeleteFontInfo();
     m_view->enableFonts();
 

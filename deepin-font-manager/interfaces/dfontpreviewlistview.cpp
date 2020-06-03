@@ -659,7 +659,8 @@ void DFontPreviewListView::mouseReleaseEvent(QMouseEvent *event)
             //触发启用/禁用字体
             //        emit onClickEnableButton(indexList, !itemData.isEnabled);
             if (m_currentFontGroup != FontGroup::ActiveFont) {
-                onListViewItemEnableBtnClicked(indexList, !itemData.isEnabled);
+                if (itemData.isCanDisable)
+                    onListViewItemEnableBtnClicked(indexList, !itemData.isEnabled);
             } else {
                 onListViewItemEnableBtnClicked(indexList, !itemData.isEnabled, true);
             }
@@ -799,7 +800,7 @@ void DFontPreviewListView::disableFonts()
     DFMXmlWrapper::addPatternNodesWithTextList(fontConfigPath, "rejectfont", m_disableFontList);
     m_disableFontList.clear();
 }
-
+//设置收藏页面删除后的选中
 void DFontPreviewListView::toSetCurrentIndex(QModelIndexList &itemIndexesNew)
 {
     m_bListviewAtButtom = isAtListviewBottom();
@@ -820,9 +821,49 @@ void DFontPreviewListView::toSetCurrentIndex(QModelIndexList &itemIndexesNew)
     }
 }
 
+//设置激活页面删除后的选中
+void DFontPreviewListView::toSetCurrentIndex(QModelIndexList &itemIndexesNew, int count, int size)
+{
+    m_bListviewAtButtom = isAtListviewBottom();
+    m_bListviewAtTop = isAtListviewTop();
+    int i = itemIndexesNew.last().row();
+
+    DFontPreviewProxyModel *filterModel = this->getFontPreviewProxyModel();
+    if ((m_bListviewAtButtom && !m_bListviewAtTop)/* || m_bListviewAtButtom*/) {
+        if (count == 0) {//激活页面禁用字体未成功
+            QModelIndex modelIndex = filterModel->index(i, 0);
+            setCurrentIndex(modelIndex);
+        } else {
+            QModelIndex modelIndex = filterModel->index(i - 1, 0);
+            setCurrentIndex(modelIndex);
+        }
+    } else if (m_bListviewAtTop && !m_bListviewAtButtom) {
+        QModelIndex modelIndex = filterModel->index(i, 0);
+        if (modelIndex.isValid()) {
+            setCurrentIndex(modelIndex);
+        } else {
+            QModelIndex modelIndexUp = filterModel->index(i - 1, 0);
+            setCurrentIndex(modelIndexUp);
+        }
+    } else {
+        if (i < size) {
+            QModelIndex modelIndex = filterModel->index(i, 0);
+            setCurrentIndex(modelIndex);
+        } else if (i == size) {
+            if (count == 0) {
+                QModelIndex modelIndex = filterModel->index(size, 0);
+                setCurrentIndex(modelIndex);
+            } else {
+                QModelIndex modelIndex = filterModel->index(size - 1, 0);
+                setCurrentIndex(modelIndex);
+            }
+        }
+    }
+}
+
 bool DFontPreviewListView::isAtListviewBottom()
 {
-    if (this->verticalScrollBar()->value() == this->verticalScrollBar()->maximum()) {
+    if (this->verticalScrollBar()->value() >= this->verticalScrollBar()->maximum() - 50) {
         return true;
     } else {
         return false;
@@ -831,7 +872,7 @@ bool DFontPreviewListView::isAtListviewBottom()
 
 bool DFontPreviewListView::isAtListviewTop()
 {
-    if (this->verticalScrollBar()->value() == this->verticalScrollBar()->minimum()) {
+    if (this->verticalScrollBar()->value() <= this->verticalScrollBar()->minimum() + 50) {
         return true;
     } else {
         return false;
@@ -855,6 +896,9 @@ void DFontPreviewListView::setCurrentSelected(int indexRow)
 
 void DFontPreviewListView::onListViewItemEnableBtnClicked(const QModelIndexList &itemIndexes, bool setValue, bool isFromActiveFont)
 {
+    bool needShowTips = false;
+    int count = 0;
+    int size = this->count();
     QMutexLocker locker(&m_mutex);
     QString fontName;
     QModelIndexList itemIndexesNew = itemIndexes;
@@ -865,6 +909,7 @@ void DFontPreviewListView::onListViewItemEnableBtnClicked(const QModelIndexList 
     //        qDebug() << itemIndexes[i].row() << endl;
     //        itemIndexesNew.append(itemIndexes[itemIndexes.count() - 1 - i]);
     //    }
+
 
     for (QModelIndex index : itemIndexesNew) {
         //        DFontPreviewItemData itemData =
@@ -877,13 +922,18 @@ void DFontPreviewListView::onListViewItemEnableBtnClicked(const QModelIndexList 
         itemData.isEnabled = setValue;
 
         //        qDebug() << __FUNCTION__ << "familyName" << itemData.fontInfo.familyName << endl;
-
-        if (setValue) {
-            enableFont(itemData.fontInfo.filePath);
+        if (!itemData.isCanDisable) {
+            needShowTips = true;
+            continue;
         } else {
-            if (index == itemIndexes[0])
-                fontName = itemData.strFontName;
-            disableFont(itemData.fontInfo.filePath);
+            if (setValue) {
+                enableFont(itemData.fontInfo.filePath);
+            } else {
+                if (index == itemIndexes[0])
+                    fontName = itemData.strFontName;
+                disableFont(itemData.fontInfo.filePath);
+                count++;
+            }
         }
 
         DFMDBManager::instance()->updateFontInfo(itemData, "isEnabled");
@@ -902,20 +952,27 @@ void DFontPreviewListView::onListViewItemEnableBtnClicked(const QModelIndexList 
     }
 
     if (isFromActiveFont == true) {
-        toSetCurrentIndex(itemIndexesNew);
+        toSetCurrentIndex(itemIndexesNew, count, size);
     }
 
 
     QString message;
-    if (itemIndexes.size() == 1) {
-        message = QString("%1 %2").arg(fontName).arg(DApplication::translate("MessageManager", "deactivated"));
-    } else if (itemIndexes.size() > 1) {
-        //            message = tr("The fonts have been deactivated");
-        message = DApplication::translate("MessageManager", "The fonts have been deactivated");
+    if (needShowTips) {
+        //不可禁用字体
+        if (count >= 1) {
+            Q_EMIT rowCountChanged();
+        }
+        message = DApplication::translate("MessageManager", "部分系统字体不允许被禁用");
+    } else {
+        if (count == 1) {
+            message = QString("%1 %2").arg(fontName).arg(DApplication::translate("MessageManager", "deactivated"));
+        } else if (count > 1) {
+            message = DApplication::translate("MessageManager", "The fonts have been deactivated");
+        }
+        Q_EMIT rowCountChanged();
     }
-    /* Bug#18083 UT000591 禁用提示与导出提示位置相同 */
-    DMessageManager::instance()->sendMessage(this->m_parentWidget, QIcon("://ok.svg"), message);
-    Q_EMIT rowCountChanged();
+    if (count > 0)//禁用字体大于零
+        DMessageManager::instance()->sendMessage(this->m_parentWidget, QIcon("://ok.svg"), message);
 }
 
 void DFontPreviewListView::onListViewItemCollectionBtnClicked(const QModelIndexList &index, bool setValue, bool isFromCollectFont)
@@ -923,7 +980,6 @@ void DFontPreviewListView::onListViewItemCollectionBtnClicked(const QModelIndexL
     QMutexLocker locker(&m_mutex);
     QModelIndexList itemIndexesNew = index;
     sortModelIndexList(itemIndexesNew);
-
     for (QModelIndex index : itemIndexesNew) {
         DFontPreviewItemData itemData =
             qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(index));

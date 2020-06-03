@@ -77,6 +77,7 @@ public:
     void enableFonts();
     void disableFonts();
     void toSetCurrentIndex(QModelIndexList &itemIndexesNew);
+    void toSetCurrentIndex(QModelIndexList &itemIndexesNew, int count, int size);
     bool isAtListviewBottom();
     bool isAtListviewTop();
     QString getPreviewTextWithSize(int *fontSize = nullptr);
