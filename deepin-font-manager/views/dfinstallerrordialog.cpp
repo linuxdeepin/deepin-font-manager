@@ -335,6 +335,9 @@ void DFInstallErrorDialog::onListItemClicked(QModelIndex index)
     resetContinueInstallBtnStatus();
 }
 
+
+/*参数1 正常筛选后筛选出的错误字体  参数2 字体验证框弹出过程中安装的所有字体
+  参数3 新添加到字体验证框中的字体  参数4 之前添加到字体验证框中的字体   */
 void DFInstallErrorDialog::addData(QStringList &errorFileList, QStringList &halfInstalledFilelist,
                                    QStringList &addHalfInstalledFiles, QStringList &oldHalfInstalledFiles)
 {
@@ -408,7 +411,6 @@ void DFInstallErrorDialog::addData(QStringList &errorFileList, QStringList &half
 
 void DFInstallErrorDialog::onControlButtonClicked(int btnIndex)
 {
-
     if (0 == btnIndex) {
         //退出安装
         emit onCancelInstall();

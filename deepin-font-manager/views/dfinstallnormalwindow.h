@@ -28,7 +28,7 @@ class DFInstallNormalWindow : public DFontBaseDialog
     Q_OBJECT
 public:
     DFInstallNormalWindow(const QStringList &files = QStringList(), QWidget *parent = nullptr);
-    ~DFInstallNormalWindow();
+    ~DFInstallNormalWindow()Q_DECL_OVERRIDE;
 
     void setSkipException(bool skip);
     void breakInstalltion();
@@ -52,10 +52,13 @@ protected:
     void paintEvent(QPaintEvent *event) override;
 protected slots:
     void batchInstall();
-    void batchReInstall();
+    void batchReInstall(QStringList reinstallFiles);
     void batchHalfwayInstall(const QStringList &filelist);
     void batchReInstallContinue();
+
     void onProgressChanged(const QString &familyName, const double &percent);
+    void onInstallFinished(int state, QStringList fileList);
+    void onReInstallFinished(int state, QStringList fileList);
 
     void onCancelInstall();
     void onContinueInstall(const QStringList &continueInstallFontFileList);
@@ -82,8 +85,6 @@ private:
     QStringList m_errorList;
     QStringList m_finishInstallFiles;
 
-
-    QStringList m_installedFontsPSname;
     QStringList m_installedFontsFamilyname;
     QStringList m_halfInstalledFiles;
     QStringList m_newHalfInstalledFiles;

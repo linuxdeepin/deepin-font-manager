@@ -373,6 +373,8 @@ void DFInstallErrorListView::addErrorListData(QList<DFInstallErrorItemModel> ins
     this->setModel(m_errorListSourceModel);
 }
 
+
+//字体验证框中的滚动
 void DFInstallErrorListView::checkScrollToIndex(QStringList &addHalfInstalledFiles, QStringList &oldHalfInstalledFiles, QStringList &errorFileList)
 {
     if (addHalfInstalledFiles.count() > 0) {
@@ -397,7 +399,6 @@ void DFInstallErrorListView::scrollToIndex(QString &filePath)
         file = fontinfo.psname + fontinfo.styleName;
     }
 
-
     for (int i = 0; i < m_errorListSourceModel->rowCount(); i++) {
         QModelIndex modelIndex = m_errorListSourceModel->index(i, 0);
         QVariant varModel = m_errorListSourceModel->data(modelIndex, Qt::DisplayRole);
@@ -416,6 +417,7 @@ void DFInstallErrorListView::scrollToIndex(QString &filePath)
     }
 }
 
+//设置选中效果
 void DFInstallErrorListView::setSelectStatus(QStringList &HalfInstalledFiles)
 {
     QStringList str;
@@ -448,7 +450,6 @@ void DFInstallErrorListView::setSelectStatus(QStringList &HalfInstalledFiles)
     }
 }
 
-
 QStandardItemModel *DFInstallErrorListView::getErrorListSourceModel()
 {
     return m_errorListSourceModel;
@@ -480,7 +481,6 @@ void DFInstallErrorListView::setSelection(const QRect &rect, QItemSelectionModel
         }
 
         if (selectionPoint.x() < FTM_ERROR_ITEM_FONTNAME_LEFT) {
-
             emit onClickErrorListItem(modelIndex);
         }
     }
