@@ -217,9 +217,16 @@ void DFontPreviewListView::onItemRemovedFromSys(const DFontPreviewItemData &item
     m_fontIdMap.remove(itemData.fontInfo.filePath);
 
     QItemSelectionModel *selection_model = selectionModel();
+    //如果是删除多项，就要清空选中。
+    selection_model->clearSelection();
+    m_bListviewAtButtom = isAtListviewBottom();
+    m_bListviewAtTop = isAtListviewTop();
     if (currModelIndex().row() == this->count()) {
         QModelIndex modelIndex = m_fontPreviewItemModel->index(this->count() - 1, 0);
         selection_model->select(modelIndex, QItemSelectionModel::Select);
+    } else  if (m_bListviewAtButtom && !m_bListviewAtTop) {
+        QModelIndex modelIndexbottom = m_fontPreviewItemModel->index(currModelIndex().row() - 1, 0);
+        selection_model->select(modelIndexbottom, QItemSelectionModel::Select);
     } else {
         selection_model->select(currModelIndex(), QItemSelectionModel::Select);
     }
