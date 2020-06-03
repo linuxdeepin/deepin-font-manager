@@ -217,7 +217,13 @@ void DFontPreviewListView::onItemRemovedFromSys(const DFontPreviewItemData &item
     m_fontIdMap.remove(itemData.fontInfo.filePath);
 
     QItemSelectionModel *selection_model = selectionModel();
-    selection_model->select(currModelIndex(), QItemSelectionModel::Select);
+    if (currModelIndex().row() == this->count()) {
+        QModelIndex modelIndex = m_fontPreviewItemModel->index(this->count() - 1, 0);
+        selection_model->select(modelIndex, QItemSelectionModel::Select);
+    } else {
+        selection_model->select(currModelIndex(), QItemSelectionModel::Select);
+    }
+
 }
 
 void DFontPreviewListView::updateCurrentFontGroup(int currentFontGroup)
