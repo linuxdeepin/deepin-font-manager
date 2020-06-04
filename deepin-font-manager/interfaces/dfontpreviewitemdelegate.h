@@ -34,6 +34,9 @@ private:
     void paintForegroundPreviewFont(QPainter *painter, const QStyleOptionViewItem &option, const DFontPreviewItemData &data, int fontPixelSize, QString &fontPreviewText, const QModelIndex &index) const;
     void paintBackground(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
+    //设置字体 UT000794
+    void setfont(QFont &font, QString fontStyleName) const;
+
     DFontPreviewListView *m_parentView;
 };
 

@@ -140,7 +140,13 @@ QFont DFontPreviewItemDelegate::adjustPreviewFont(const QString &fontFamilyName,
     QFont font = QFont(fontFamilyName);
     font.setPixelSize(fontSize);
     font.setItalic(fontStyleName.contains("Italic"));
+    //设置字体 ut000794
+    setfont(font, fontStyleName);
+    return font;
+}
 
+void DFontPreviewItemDelegate::setfont(QFont &font, QString fontStyleName) const
+{
     if (fontStyleName.contains("Regular")) {
         font.setWeight(QFont::Normal);
     } else if (fontStyleName.contains("Bold")) {
@@ -159,8 +165,28 @@ QFont DFontPreviewItemDelegate::adjustPreviewFont(const QString &fontFamilyName,
         font.setWeight(QFont::DemiBold);
     } else if (fontStyleName.contains("Black")) {
         font.setWeight(QFont::Black);
+    } else if (fontStyleName.contains("AnyStretch")) {
+        font.setStretch(QFont::AnyStretch);
+    } else if (fontStyleName.contains("UltraCondensed")) {
+        font.setStretch(QFont::UltraCondensed);
+    } else if (fontStyleName.contains("ExtraCondensed")) {
+        font.setStretch(QFont::ExtraCondensed);
+    } else if (fontStyleName.contains("Condensed")) {
+        font.setStretch(QFont::Condensed);
+    } else if (fontStyleName.contains("SemiCondensed")) {
+        font.setStretch(QFont::SemiCondensed);
+    } else if (fontStyleName.contains("Unstretched")) {
+        font.setStretch(QFont::Unstretched);
+    } else if (fontStyleName.contains("SemiExpanded")) {
+        font.setStretch(QFont::SemiExpanded);
+    } else if (fontStyleName.contains("Expanded")) {
+        font.setStretch(QFont::Expanded);
+    } else if (fontStyleName.contains("ExtraExpanded")) {
+        font.setStretch(QFont::ExtraExpanded);
+    } else if (fontStyleName.contains("UltraExpanded")) {
+        font.setStretch(QFont::UltraExpanded);
     }
-    return font;
+
 }
 
 void DFontPreviewItemDelegate::paintForegroundPreviewFont(QPainter *painter, const QStyleOptionViewItem &option, const DFontPreviewItemData &itemData, int fontPixelSize, QString &fontPreviewText, const QModelIndex &index) const
