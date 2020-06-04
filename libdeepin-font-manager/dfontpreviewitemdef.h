@@ -55,6 +55,7 @@ struct DFontPreviewItemData {
         fontInfo.isError = false;
         fontInfo.isSystemFont = true;
         fontInfo.defaultPreview = "";
+        fontInfo.previewLang = FONT_LANG_NONE;
         fontInfo.specialPreviewHeight = 0;
         fontInfo.fontLayoutDirection = FONT_LAYOUT_HORIZONTAL;
         fontInfo.charCount = 0;
@@ -95,6 +96,7 @@ struct DFontPreviewItemData {
         fontInfo.psname = other.fontInfo.psname;
         fontInfo.trademark = other.fontInfo.trademark;
         fontInfo.defaultPreview = other.fontInfo.defaultPreview;
+        fontInfo.previewLang = other.fontInfo.previewLang;
         fontInfo.specialPreviewHeight = other.fontInfo.specialPreviewHeight;
         fontInfo.fontLayoutDirection = other.fontInfo.fontLayoutDirection;
         fontInfo.charCount = other.fontInfo.charCount;

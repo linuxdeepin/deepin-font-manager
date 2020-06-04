@@ -78,16 +78,24 @@ QString convertToUtf8(char *content, int len)
     return convertedStr;
 }
 
-QString getDefaultPreviewText(FT_Face face, short &height, short &count)
+QString getDefaultPreviewText(FT_Face face, short &lang, short &height, short &count)
 {
     QString previewTxt;
     height = 0;
+
     if (face == nullptr || face->num_charmaps == 0)
         return previewTxt;
 
-    if (DFontPreview::checkFontContainText(face, FTM_DEFAULT_PREVIEW_TEXT))
-        return FTM_DEFAULT_PREVIEW_TEXT;
+    lang = FONT_LANG_NONE;
 
+    //first check chinese preview
+    if (DFontPreview::checkFontContainText(face, FTM_DEFAULT_PREVIEW_CN_TEXT)) {
+        lang = FONT_LANG_CHINESE;
+        if (FTM_DEFAULT_PREVIEW_TEXT == FTM_DEFAULT_PREVIEW_CN_TEXT)
+            return FTM_DEFAULT_PREVIEW_TEXT;
+    }
+
+    //not support chinese preview, than check english preview
     if (FTM_DEFAULT_PREVIEW_TEXT != FTM_DEFAULT_PREVIEW_EN_TEXT && DFontPreview::checkFontContainText(face, FTM_DEFAULT_PREVIEW_EN_TEXT))
         return FTM_DEFAULT_PREVIEW_EN_TEXT;
 
@@ -401,7 +409,7 @@ DFontInfo DFontInfoManager::getFontInfo(const QString &filePath, bool force)
 //    }
 
     //default preview text
-    fontInfo.defaultPreview = getDefaultPreviewText(m_face, fontInfo.specialPreviewHeight, fontInfo.charCount);
+    fontInfo.defaultPreview = getDefaultPreviewText(m_face, fontInfo.previewLang, fontInfo.specialPreviewHeight, fontInfo.charCount);
     calcFontHeight(fontInfo);
 //    if (fontInfo.specialPreviewHeight > 0)
 //        qDebug() << __FUNCTION__ << fontInfo.filePath << fontInfo.specialPreviewHeight;
@@ -427,7 +435,7 @@ DFontInfo DFontInfoManager::getFontInfo(const QString &filePath, bool force)
     return fontInfo;
 }
 
-QString DFontInfoManager::getDefaultPreview(const QString &filePath, short &height, short &count)
+QString DFontInfoManager::getDefaultPreview(const QString &filePath, short &preivewLang, short &height, short &count)
 {
     FT_Library m_library = nullptr;
     FT_Face m_face = nullptr;
@@ -445,7 +453,7 @@ QString DFontInfoManager::getDefaultPreview(const QString &filePath, short &heig
         return defaultPreview;
     }
 //    FT_Set_Pixel_Sizes(m_face, 0, 30);
-    defaultPreview = getDefaultPreviewText(m_face, height, count);
+    defaultPreview = getDefaultPreviewText(m_face, preivewLang, height, count);
     FT_Done_Face(m_face);
     FT_Done_FreeType(m_library);
     return defaultPreview;
@@ -486,13 +494,14 @@ void DFontInfoManager::getDefaultPreview(DFontInfo &data)
     for (DFontInfo &item : dataList) {
         if (data == item) {
             data.defaultPreview = item.defaultPreview;
+            data.previewLang = item.previewLang;
             data.specialPreviewHeight = item.specialPreviewHeight;
             data.charCount = item.charCount;
             calcFontHeight(data);
             return;
         }
     }
-    data.defaultPreview = getDefaultPreview(data.filePath, data.specialPreviewHeight, data.charCount);
+    data.defaultPreview = getDefaultPreview(data.filePath, data.previewLang, data.specialPreviewHeight, data.charCount);
     calcFontHeight(data);
 }
 

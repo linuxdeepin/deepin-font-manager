@@ -28,6 +28,9 @@
 
 const char FONT_LAYOUT_HORIZONTAL = 0;
 const char FONT_LAYOUT_VERTICAL = 1;
+const short FONT_LANG_NONE = 0;
+const short FONT_LANG_CHINESE = 1;
+const short FONT_LANG_ENGLISH = 2;
 struct DFontInfo {
     QString filePath;
     QString familyName;
@@ -42,8 +45,8 @@ struct DFontInfo {
     QString psname;
     QString trademark;
     //add default preview text
-//    int previewSettings;
     QString defaultPreview;
+    short previewLang; //0: none; 1: Chinese; 2: English; others...
     short specialPreviewHeight;
     short fontLayoutDirection; //0: vertical; 1: horizontal
     short charCount;
@@ -52,21 +55,6 @@ struct DFontInfo {
     bool isInstalled {false};
     bool isError {false};
     bool isSystemFont {true};  // Default is system font
-
-//    ~DFontInfo()
-//    {
-//        filePath.clear();
-//        familyName.clear();
-//        styleName.clear();
-//        type.clear();
-//        version.clear();
-//        copyright.clear();
-//        description.clear();
-//        sysVersion.clear();
-//        fullname.clear();
-//        psname.clear();
-//        trademark.clear();
-//    }
 
     bool operator==(const DFontInfo &info)
     {
@@ -95,7 +83,7 @@ public:
     QStringList getAllMonoSpaceFontPath() const;
     QString getFontType(const QString &filePath);
     DFontInfo getFontInfo(const QString &filePath, bool force = false);
-    QString getDefaultPreview(const QString &filePath, short &height, short &count);
+    QString getDefaultPreview(const QString &filePath, short &preivewLang, short &height, short &count);
     QString getInstFontPath(const QString &originPath, const QString &familyName);
     bool isFontInstalled(DFontInfo &data);
     void getDefaultPreview(DFontInfo &data);
