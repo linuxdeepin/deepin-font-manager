@@ -333,6 +333,7 @@ DFontInfo DFontInfoManager::getFontInfo(const QString &filePath, bool force)
 //    }
 
     fontInfo.styleName = QString::fromLatin1(m_face->style_name);
+
     fontInfo.type = getFontType(filePath);
 
     if (FT_IS_SFNT(m_face)) {

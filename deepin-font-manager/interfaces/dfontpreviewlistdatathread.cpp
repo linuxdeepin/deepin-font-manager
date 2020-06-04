@@ -229,6 +229,9 @@ int DFontPreviewListDataThread::insertFontItemData(const QString &filePath,
         itemData.fontInfo = fontInfoMgr->getFontInfo(filePath);
     }
 
+    checkStyleName(itemData.fontInfo);
+
+
     if (itemData.fontInfo.styleName.length() > 0) {
         itemData.strFontName =
             QString("%1-%2").arg(itemData.fontInfo.familyName).arg(itemData.fontInfo.styleName);
@@ -376,6 +379,48 @@ void DFontPreviewListDataThread::removeFontData(const DFontPreviewItemData &remo
         if (itemData.fontInfo.filePath == removeItemData.fontInfo.filePath) {
             m_fontModelList.removeOne(itemData);
             return;
+        }
+    }
+}
+
+void DFontPreviewListDataThread::checkStyleName(DFontInfo &f)
+{
+    QStringList str;
+    str << "Regular" << "Bold" << "Light" << "Thin" << "ExtraLight" << "ExtraBold" << "Medium" << "DemiBold" << "Black";
+//有些字体文件因为不规范导致的stylename为空，通过psname来判断该字体的stylename。这种情况下Psname也为空的情况极其罕见所以没有进行处理
+    if (!str.contains(f.styleName)) {
+        if (f.psname != "") {
+            if (f.psname.contains("Regular")) {
+                f.styleName = "Regular";
+                return;
+            } else if (f.psname.contains("Bold")) {
+                f.styleName = "Bold";
+                return;
+            } else if (f.psname.contains("Light")) {
+                f.styleName = "Light";
+                return;
+            } else if (f.psname.contains("Thin")) {
+                f.styleName = "Thin";
+                return;
+            } else if (f.psname.contains("Thin")) {
+                f.styleName = "Thin";
+                return;
+            } else if (f.psname.contains("ExtraLight")) {
+                f.styleName = "ExtraLight";
+                return;
+            } else if (f.psname.contains("ExtraBold")) {
+                f.styleName = "ExtraBold";
+                return;
+            } else if (f.psname.contains("Medium")) {
+                f.styleName = "Medium";
+                return;
+            } else if (f.psname.contains("DemiBold")) {
+                f.styleName = "DemiBold";
+                return;
+            } else if (f.psname.contains("Black")) {
+                f.styleName = "Black";
+                return;
+            }
         }
     }
 }

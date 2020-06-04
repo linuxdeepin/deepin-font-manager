@@ -27,6 +27,8 @@ public:
 
     void refreshFontListData(bool isStartup = false, const QStringList &list = QStringList());
     void removeFontData(const DFontPreviewItemData &removeItemData);
+    void checkStyleName(DFontInfo &f);
+
 
     int insertFontItemData(const QString &filePath,
                            int index,

@@ -963,7 +963,7 @@ void DFontPreviewListView::onListViewItemEnableBtnClicked(const QModelIndexList 
         if (count >= 1) {
             Q_EMIT rowCountChanged();
         }
-        message = DApplication::translate("MessageManager", "部分系统字体不允许被禁用");
+        message = DApplication::translate("MessageManager", "Some fonts are not allowed to be disabled");
     } else {
         if (count == 1) {
             message = QString("%1 %2").arg(fontName).arg(DApplication::translate("MessageManager", "deactivated"));
