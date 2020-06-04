@@ -80,11 +80,12 @@ void DFDeleteDialog::initConnections()
         close();
     });
 
-//    connect(this, &DFDeleteDialog::closed, this, [ = ]() {
-//        if (m_mainWindow != nullptr) {
-//            m_mainWindow->setDeleteFinish();
-//        }
-//    });
+    //弹出字体删除框时，点击取消，DFontMgrMainWindow中的m_fIsDeleting置为false，如m_fIsDeleting不置为false,则再次点击删除时，字体删除框不会弹出 UT000794
+    connect(this, &DFDeleteDialog::closed, this, [ = ]() {
+        if (m_mainWindow != nullptr) {
+            m_mainWindow->setDeleteFinish();
+        }
+    });
     connect(qApp, &DApplication::fontChanged, this, &DFDeleteDialog::onFontChanged);
 
     connect(DApplicationHelper::instance(), &DApplicationHelper::themeTypeChanged, this, &DFDeleteDialog::setTheme);
