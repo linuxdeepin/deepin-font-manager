@@ -663,7 +663,8 @@ void DFontPreviewListView::mouseReleaseEvent(QMouseEvent *event)
                 if (itemData.isCanDisable)
                     onListViewItemEnableBtnClicked(indexList, !itemData.isEnabled);
             } else {
-                onListViewItemEnableBtnClicked(indexList, !itemData.isEnabled, true);
+                if (itemData.isCanDisable)
+                    onListViewItemEnableBtnClicked(indexList, !itemData.isEnabled, true);
             }
 
 
@@ -920,19 +921,23 @@ void DFontPreviewListView::onListViewItemEnableBtnClicked(const QModelIndexList 
         QFileInfo fi(itemData.fontInfo.filePath);
         if (!fi.exists())
             continue;
-        itemData.isEnabled = setValue;
+//        itemData.isEnabled = setValue;
 
         //        qDebug() << __FUNCTION__ << "familyName" << itemData.fontInfo.familyName << endl;
-        if (!itemData.isCanDisable) {
-            needShowTips = true;
-            continue;
+
+
+        if (setValue) {
+            enableFont(itemData.fontInfo.filePath);
+            itemData.isEnabled = setValue;
         } else {
-            if (setValue) {
-                enableFont(itemData.fontInfo.filePath);
+            if (!itemData.isCanDisable) {
+                needShowTips = true;
             } else {
-                if (index == itemIndexes[0])
+                if (index == itemIndexes[0]) {
                     fontName = itemData.strFontName;
+                }
                 disableFont(itemData.fontInfo.filePath);
+                itemData.isEnabled = setValue;
                 count++;
             }
         }

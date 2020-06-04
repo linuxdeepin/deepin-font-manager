@@ -201,9 +201,9 @@ void DFontMenuManager::onRightKeyMenuPopup(DFontPreviewItemData fontData, bool h
         }
         enableOrDisableAction->setText(DApplication::translate("Menu", "Disable"));
     } else {
-        if (fontData.isCanDisable) {
-            enableOrDisableAction->setEnabled(true);
-            enableOrDisableAction->setText(DApplication::translate("Menu", "Enable"));
-        }
+//        if (fontData.isCanDisable) {
+        enableOrDisableAction->setEnabled(true);
+        enableOrDisableAction->setText(DApplication::translate("Menu", "Enable"));
+//        }
     }
 }

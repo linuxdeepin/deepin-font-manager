@@ -31,7 +31,7 @@ DFontWidget::DFontWidget(QWidget *parent)
 {
 
     QTranslator translator;
-    translator.load("deepin-font-manager.qm");
+    translator.load("../translations/deepin-font-manager_zh_CN.qm");
     qApp->installTranslator(&translator);
 
     QWidget *spinnerPage = new QWidget;
@@ -91,7 +91,8 @@ void DFontWidget::handleFinished(const QByteArray &data)
         m_spinner->stop();
         m_spinner->hide();
         m_preview->hide();
-        m_lab->setText(DApplication::translate("DFInstallErrorDialog", "Broken file"));
+//        m_lab->setText(DApplication::translate("DFInstallErrorDialog", "Broken file"));
+        m_lab->setText("文件已损坏");
         m_lab->setFont(DApplication::font());
         m_lab->move(this->geometry().center() - m_lab->rect().center());
         m_lab->show();

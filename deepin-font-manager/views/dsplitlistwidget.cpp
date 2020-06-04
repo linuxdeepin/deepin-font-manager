@@ -30,6 +30,7 @@ void DNoFocusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
 {
     if (index.isValid()) {
         painter->save();
+        painter->setFont(DApplication::font());
         painter->setRenderHint(QPainter::Antialiasing, true);
 
         QVariant varDisplay = index.data(Qt::DisplayRole);

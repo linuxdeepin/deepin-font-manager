@@ -8,6 +8,7 @@ static DFontPreviewListDataThread *INSTANCE = nullptr;
 const QString FONTS_DIR = QDir::homePath() + "/.local/share/fonts/";
 const QString FONTS_UP_DIR = QDir::homePath() + "/.local/share/";
 
+
 DFontPreviewListDataThread *DFontPreviewListDataThread::instance(DFontPreviewListView *view)
 {
     if (!INSTANCE) {
@@ -26,6 +27,7 @@ DFontPreviewListDataThread::DFontPreviewListDataThread(DFontPreviewListView *vie
     : m_view(view)
     , m_fsWatcher(nullptr)
     , m_mutex(nullptr)
+    , cantDisabledMonoList(nullptr)
 {
     if (view != nullptr)
         m_mutex = view->getMutex();
@@ -33,6 +35,7 @@ DFontPreviewListDataThread::DFontPreviewListDataThread(DFontPreviewListView *vie
 //    QTimer::singleShot(50, this, [this]() {
     m_dbManager = DFMDBManager::instance();
     moveToThread(&mThread);
+    setCantDisabledMonoList();
     QObject::connect(&mThread, SIGNAL(started()), this, SLOT(doWork()));
     connect(m_view, &DFontPreviewListView::requestDeleted, this, &DFontPreviewListDataThread::onFileDeleted, Qt::QueuedConnection);
     connect(m_view, &DFontPreviewListView::requestAdded, this, &DFontPreviewListDataThread::onFileAdded/*, Qt::QueuedConnection*/);
@@ -75,6 +78,7 @@ void DFontPreviewListDataThread::doWork()
 
     QStringList chineseFontPathList = fontInfoMgr->getAllChineseFontPath();
     QStringList monoSpaceFontPathList = fontInfoMgr->getAllMonoSpaceFontPath();
+
     QStringList strAllFontList = fontInfoMgr->getAllFontPath();
     qDebug() << "strAllFontList.size()" << strAllFontList.size() << endl;
     int index = 0;
@@ -130,6 +134,11 @@ void DFontPreviewListDataThread::updateChangedFile(const QString &path)
 void DFontPreviewListDataThread::updateChangedDir(const QString &path)
 {
     m_view->updateChangedDir(path);
+}
+
+void DFontPreviewListDataThread::setCantDisabledMonoList()
+{
+    cantDisabledMonoList << "Noto Mono-Regular" << "Noto Sans Mono-Regular" << "Noto Sans Mono-Bold";
 }
 
 void DFontPreviewListDataThread::addPathWatcher(const QString &path)
@@ -249,6 +258,11 @@ int DFontPreviewListDataThread::insertFontItemData(const QString &filePath,
     itemData.isMonoSpace = monoSpaceFontPathList.contains(filePath);
 
     itemData.fontInfo.isInstalled = true;
+    if (itemData.fontInfo.isSystemFont) {
+        if (itemData.strFontName.startsWith("CESI") || cantDisabledMonoList.contains(itemData.strFontName)) {
+            itemData.isCanDisable = false;
+        }
+    }
 
     //中文字体
     if (itemData.fontInfo.isSystemFont && itemData.isChineseFont) {
@@ -315,7 +329,7 @@ void DFontPreviewListDataThread::refreshFontListData(bool isStartup, const QStri
     for (DFontPreviewItemData &itemData : fontInfoList) {
 
         if (itemData.fontInfo.isSystemFont) {
-            if (itemData.fontInfo.familyName.startsWith("CESI") || itemData.fontInfo.familyName.contains("Mono")) {
+            if (itemData.strFontName.startsWith("CESI") || cantDisabledMonoList.contains(itemData.strFontName)) {
                 itemData.isCanDisable = false;
             }
         }

@@ -51,7 +51,7 @@
     <name>DFInstallErrorDialog</name>
     <message>
         <source>Broken file</source>
-        <translation>Broken file</translation>
+        <translation type="vanished">Broken file</translation>
     </message>
     <message>
         <source>Same version installed</source>
