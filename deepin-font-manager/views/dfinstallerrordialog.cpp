@@ -405,7 +405,7 @@ void DFInstallErrorDialog::addData(QStringList &errorFileList, QStringList &half
     addHalfInstalledFiles.append(oldHalfInstalledFiles);
     addHalfInstalledFiles.append(errorFileList);
     m_installErrorListView->setSelectStatus(addHalfInstalledFiles);
-
+    resetContinueInstallBtnStatus();
 
 }
 
