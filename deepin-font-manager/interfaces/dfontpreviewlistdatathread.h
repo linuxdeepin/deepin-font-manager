@@ -24,11 +24,11 @@ public:
 
     //从fontconfig配置文件同步字体启用/禁用状态数据
     void syncFontEnableDisableStatusData(const QStringList &disableFontPathList);
-
     void refreshFontListData(bool isStartup = false, const QStringList &list = QStringList());
     void removeFontData(const DFontPreviewItemData &removeItemData);
     void checkStyleName(DFontInfo &f);
 
+    bool checkChineseStyleName(const QString fontFamilyName);
 
     int insertFontItemData(const QString &filePath,
                            int index,

@@ -231,8 +231,8 @@ int DFontPreviewListDataThread::insertFontItemData(const QString &filePath,
 
     checkStyleName(itemData.fontInfo);
 
-
-    if (itemData.fontInfo.styleName.length() > 0) {
+    if (itemData.fontInfo.styleName.length() > 0 && !itemData.fontInfo.familyName.contains(itemData.fontInfo.styleName) &&
+            checkChineseStyleName(itemData.fontInfo.familyName)) {
         itemData.strFontName =
             QString("%1-%2").arg(itemData.fontInfo.familyName).arg(itemData.fontInfo.styleName);
     } else {
@@ -313,6 +313,7 @@ void DFontPreviewListDataThread::refreshFontListData(bool isStartup, const QStri
 
     QSet<QString> dbFilePathSet;
     for (DFontPreviewItemData &itemData : fontInfoList) {
+
         if (itemData.fontInfo.isSystemFont) {
             if (itemData.fontInfo.familyName.startsWith("CESI") || itemData.fontInfo.familyName.contains("Mono")) {
                 itemData.isCanDisable = false;
@@ -386,43 +387,61 @@ void DFontPreviewListDataThread::removeFontData(const DFontPreviewItemData &remo
 void DFontPreviewListDataThread::checkStyleName(DFontInfo &f)
 {
     QStringList str;
-    str << "Regular" << "Bold" << "Light" << "Thin" << "ExtraLight" << "ExtraBold" << "Medium" << "DemiBold" << "Black";
+    str << "Regular" << "Bold" << "Light" << "Thin" << "ExtraLight" << "ExtraBold" << "Medium" << "DemiBold" << "Black"
+        << "AnyStretch" << "UltraCondensed" << "ExtraCondensed" << "Condensed" << "SemiCondensed" << "Unstretched" << "SemiExpanded" << "Expanded"
+        << "ExtraExpanded" << "UltraExpanded";
 //有些字体文件因为不规范导致的stylename为空，通过psname来判断该字体的stylename。这种情况下Psname也为空的情况极其罕见所以没有进行处理
     if (!str.contains(f.styleName)) {
         if (f.psname != "") {
             if (f.psname.contains("Regular")) {
                 f.styleName = "Regular";
-                return;
             } else if (f.psname.contains("Bold")) {
                 f.styleName = "Bold";
-                return;
             } else if (f.psname.contains("Light")) {
                 f.styleName = "Light";
-                return;
             } else if (f.psname.contains("Thin")) {
                 f.styleName = "Thin";
-                return;
-            } else if (f.psname.contains("Thin")) {
-                f.styleName = "Thin";
-                return;
             } else if (f.psname.contains("ExtraLight")) {
                 f.styleName = "ExtraLight";
-                return;
             } else if (f.psname.contains("ExtraBold")) {
                 f.styleName = "ExtraBold";
-                return;
             } else if (f.psname.contains("Medium")) {
                 f.styleName = "Medium";
-                return;
             } else if (f.psname.contains("DemiBold")) {
                 f.styleName = "DemiBold";
-                return;
-            } else if (f.psname.contains("Black")) {
-                f.styleName = "Black";
-                return;
+            } else if (f.psname.contains("AnyStretch")) {
+                f.styleName = "AnyStretch";
+            } else if (f.psname.contains("UltraCondensed")) {
+                f.styleName = "UltraCondensed";
+            } else if (f.psname.contains("ExtraCondensed")) {
+                f.styleName = "ExtraCondensed";
+            } else if (f.psname.contains("Condensed")) {
+                f.styleName = "Condensed";
+            } else if (f.psname.contains("SemiCondensed")) {
+                f.styleName = "SemiCondensed";
+            } else if (f.psname.contains("Unstretched")) {
+                f.styleName = "Unstretched";
+            } else if (f.psname.contains("SemiExpanded")) {
+                f.styleName = "SemiExpanded";
+            } else if (f.psname.contains("Expanded")) {
+                f.styleName = "Expanded";
+            } else if (f.psname.contains("ExtraExpanded")) {
+                f.styleName = "ExtraExpanded";
+            } else if (f.psname.contains("UltraExpanded")) {
+                f.styleName = "UltraExpanded";
             }
         }
     }
+}
+
+
+//有些字体不规范，familyname为中文且包含了字体的style信息，按照正常显示就会有异常。在此进行过滤，这种情况下只用familyname做为显示内容
+bool DFontPreviewListDataThread::checkChineseStyleName(const QString fontFamilyName)
+{
+    if (fontFamilyName.contains("粗体") || fontFamilyName.contains("常规体") || fontFamilyName.contains("细体") || fontFamilyName.contains("黑体")) {
+        return false;
+    }
+    return true;
 }
 
 void DFontPreviewListDataThread::syncFontEnableDisableStatusData(const QStringList &disableFontPathList)
