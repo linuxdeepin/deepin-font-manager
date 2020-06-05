@@ -1752,11 +1752,15 @@ void DFontMgrMainWindow::keyPressEvent(QKeyEvent *event)
     if (Qt::Key_Left == event->key() || Qt::Key_Down == event->key()) {
         if (d->fontScaleSlider->hasFocus()) {
             d->fontScaleSlider->setValue(d->fontScaleSlider->value() - 1);
+        } else if (Qt::Key_Left == event->key() && m_fontPreviewListView->hasFocus()) {
+            d->leftSiderBar->setFocus(Qt::MouseFocusReason);
         }
     }
     if (Qt::Key_Right == event->key() || Qt::Key_Up == event->key()) {
         if (d->fontScaleSlider->hasFocus()) {
             d->fontScaleSlider->setValue(d->fontScaleSlider->value() + 1);
+        } else if (Qt::Key_Right == event->key() && d->leftSiderBar->hasFocus()) {
+            m_fontPreviewListView->setFocus(Qt::MouseFocusReason);
         }
     }
     DWidget::keyPressEvent(event);

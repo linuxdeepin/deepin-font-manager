@@ -757,6 +757,39 @@ void DFontPreviewListView::keyPressEvent(QKeyEvent *event)
     } else if ((event->modifiers() == Qt::ControlModifier) && (event->key() == Qt::Key_Home)) {
         scrollToTop();
     } else {
+        if (event->key() == Qt::Key_Up || event->key() == Qt::Key_Down) {
+            QModelIndexList list = selectedIndexes();
+            if (QApplication::keyboardModifiers() == Qt::ShiftModifier || list.count() < 1 || QApplication::keyboardModifiers() == Qt::CTRL) {
+                DListView::keyPressEvent(event);
+                return;
+            }
+            if (event->key() == Qt::Key_Up) {
+                if (isAtListviewTop()) {
+                    if (list.last().row() == 0) {
+                        QModelIndex modelIndex = m_fontPreviewProxyModel->index(this->count() - 1, 0);
+                        setCurrentIndex(modelIndex);
+                        return;
+                    }
+                } else {
+                    if (list.last().row() == 0) {
+                        scrollToTop();
+                        return;
+                    }
+                }
+            } else if (event->key() == Qt::Key_Down) {
+                if (isAtListviewBottom()) {
+                    if (list.last().row() == this->count() - 1) {
+                        QModelIndex modelIndex = m_fontPreviewProxyModel->index(0, 0);
+                        setCurrentIndex(modelIndex);
+                        return;
+                    }
+                } else {
+                    if (list.last().row() == this->count() - 1) {
+                        scrollToBottom();
+                    }
+                }
+            }
+        }
         DListView::keyPressEvent(event);
     }
 }
