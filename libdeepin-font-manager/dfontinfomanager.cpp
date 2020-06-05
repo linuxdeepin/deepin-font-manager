@@ -420,6 +420,8 @@ DFontInfo DFontInfoManager::getFontInfo(const QString &filePath, bool force)
     FT_Done_FreeType(m_library);
     m_library = nullptr;
 
+    checkStyleName(fontInfo);
+
     DFMDBManager *dbManager = DFMDBManager::instance();
     if (dbManager->getRecordCount() > 0) {
         fontInfo.sysVersion = fontInfo.version;
@@ -523,4 +525,55 @@ void DFontInfoManager::calcFontHeight(DFontInfo &data)
         data.specialPreviewHeight =  10;
         data.fontLayoutDirection = FONT_LAYOUT_HORIZONTAL;
     }
+}
+
+void DFontInfoManager::checkStyleName(DFontInfo &f)
+{
+    QStringList str;
+    str << "Regular" << "Bold" << "Light" << "Thin" << "ExtraLight" << "ExtraBold" << "Medium" << "DemiBold" << "Black"
+        << "AnyStretch" << "UltraCondensed" << "ExtraCondensed" << "Condensed" << "SemiCondensed" << "Unstretched" << "SemiExpanded" << "Expanded"
+        << "ExtraExpanded" << "UltraExpanded";
+//有些字体文件因为不规范导致的stylename为空，通过psname来判断该字体的stylename。这种情况下Psname也为空的情况极其罕见所以没有进行处理
+    if (!str.contains(f.styleName)) {
+        if (f.psname != "") {
+            if (f.psname.contains("Regular")) {
+                f.styleName = "Regular";
+            } else if (f.psname.contains("Bold")) {
+                f.styleName = "Bold";
+            } else if (f.psname.contains("Light")) {
+                f.styleName = "Light";
+            } else if (f.psname.contains("Thin")) {
+                f.styleName = "Thin";
+            } else if (f.psname.contains("ExtraLight")) {
+                f.styleName = "ExtraLight";
+            } else if (f.psname.contains("ExtraBold")) {
+                f.styleName = "ExtraBold";
+            } else if (f.psname.contains("Medium")) {
+                f.styleName = "Medium";
+            } else if (f.psname.contains("DemiBold")) {
+                f.styleName = "DemiBold";
+            } else if (f.psname.contains("AnyStretch")) {
+                f.styleName = "AnyStretch";
+            } else if (f.psname.contains("UltraCondensed")) {
+                f.styleName = "UltraCondensed";
+            } else if (f.psname.contains("ExtraCondensed")) {
+                f.styleName = "ExtraCondensed";
+            } else if (f.psname.contains("Condensed")) {
+                f.styleName = "Condensed";
+            } else if (f.psname.contains("SemiCondensed")) {
+                f.styleName = "SemiCondensed";
+            } else if (f.psname.contains("Unstretched")) {
+                f.styleName = "Unstretched";
+            } else if (f.psname.contains("SemiExpanded")) {
+                f.styleName = "SemiExpanded";
+            } else if (f.psname.contains("Expanded")) {
+                f.styleName = "Expanded";
+            } else if (f.psname.contains("ExtraExpanded")) {
+                f.styleName = "ExtraExpanded";
+            } else if (f.psname.contains("UltraExpanded")) {
+                f.styleName = "UltraExpanded";
+            }
+        }
+    }
+
 }

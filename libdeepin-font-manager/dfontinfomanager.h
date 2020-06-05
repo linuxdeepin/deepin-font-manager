@@ -88,6 +88,7 @@ public:
     bool isFontInstalled(DFontInfo &data);
     void getDefaultPreview(DFontInfo &data);
     void calcFontHeight(DFontInfo &data);
+    void checkStyleName(DFontInfo &f);
 
 //    //获取指定文件夹下所有的子文件夹
 //    QStringList getDirPathOfSplDir(QString dirPath)const;
