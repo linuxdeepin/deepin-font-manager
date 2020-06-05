@@ -135,11 +135,10 @@ QPoint DFontPreviewItemDelegate::adjustPreviewFontBaseLinePoint(const QRect &fon
     return QPoint(baseLineX, baseLineY);
 }
 
-QFont DFontPreviewItemDelegate::adjustPreviewFont(const QString &fontFamilyName, const QString &fontStyleName, const int &fontSize) const
+QFont DFontPreviewItemDelegate::adjustPreviewFont(const int appFontId, /*const QString &fontFamilyName,*/ const QString &fontStyleName, const int &fontSize) const
 {
-    QFont font = QFont(fontFamilyName);
-    //QFontDatabase fontDatabase;
-    //QFont font(fontDatabase.applicationFontFamilies(0).first());
+    QFontDatabase fontDatabase;
+    QFont font = QFont(fontDatabase.applicationFontFamilies(appFontId).first());
     font.setPixelSize(fontSize);
     font.setItalic(fontStyleName.contains("Italic"));
     //设置字体 ut000794
@@ -193,7 +192,7 @@ void DFontPreviewItemDelegate::setfont(QFont &font, QString fontStyleName) const
 
 void DFontPreviewItemDelegate::paintForegroundPreviewFont(QPainter *painter, const QStyleOptionViewItem &option, const DFontPreviewItemData &itemData, int fontPixelSize, QString &fontPreviewText, const QModelIndex &index) const
 {
-    QFont previewFont = adjustPreviewFont(itemData.fontInfo.familyName, itemData.fontInfo.styleName, fontPixelSize);
+    QFont previewFont = adjustPreviewFont(itemData.appFontId, /*itemData.fontInfo.familyName,*/ itemData.fontInfo.styleName, fontPixelSize);
     previewFont.setPixelSize(fontPixelSize);
     painter->setFont(previewFont);
 

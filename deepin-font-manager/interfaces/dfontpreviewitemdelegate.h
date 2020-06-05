@@ -25,7 +25,7 @@ protected:
     bool eventFilter(QObject *object, QEvent *event) override;
 private:
     QRect adjustPreviewRect(const QRect bgRect) const;
-    QFont adjustPreviewFont(const QString &fontFamilyName, const QString &fontStyleName, const int &fontSize) const;
+    QFont adjustPreviewFont(const int appFontId,/* const QString &fontFamilyName,*/ const QString &fontStyleName, const int &fontSize) const;
     QPoint adjustPreviewFontBaseLinePoint(const QRect &fontPreviewRect, const QFontMetrics &previewFontMetrics) const;
 
     void paintForegroundCheckBox(QPainter *painter, const QStyleOptionViewItem &option, const DFontPreviewItemData &itemData) const;

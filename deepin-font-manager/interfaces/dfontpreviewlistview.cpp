@@ -163,14 +163,18 @@ void DFontPreviewListView::onMultiItemsAdded(const QList<DFontPreviewItemData> &
 
     qDebug() << __FUNCTION__ << "rows = " << sourceModel->rowCount();
     for (const DFontPreviewItemData &itemData : data) {
+        DFontPreviewItemData itemdatanew = itemData;
         QModelIndex index = sourceModel->index(rows + i,   0);
         //        qDebug() << __FUNCTION__ << index;
 
         int appFontId = QFontDatabase::addApplicationFont(itemData.fontInfo.filePath);
+        itemdatanew.appFontId = appFontId;
+
+
         QStringList families = QFontDatabase::applicationFontFamilies(appFontId);
         m_fontIdMap.insert(itemData.fontInfo.filePath, appFontId);
 
-        res = sourceModel->setData(index, QVariant::fromValue(itemData), Qt::DisplayRole);
+        res = sourceModel->setData(index, QVariant::fromValue(itemdatanew), Qt::DisplayRole);
         qDebug() << __FUNCTION__ << itemData.strFontName << itemData.fontInfo.specialPreviewHeight;
         if (!res)
             qDebug() << __FUNCTION__ << "setData fail";
