@@ -175,7 +175,6 @@ void DFontPreviewListView::onMultiItemsAdded(const QList<DFontPreviewItemData> &
         m_fontIdMap.insert(itemData.fontInfo.filePath, appFontId);
 
         res = sourceModel->setData(index, QVariant::fromValue(itemdatanew), Qt::DisplayRole);
-        qDebug() << __FUNCTION__ << itemData.strFontName << itemData.fontInfo.specialPreviewHeight;
         if (!res)
             qDebug() << __FUNCTION__ << "setData fail";
         i++;

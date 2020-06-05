@@ -6,10 +6,11 @@
 #include <QMetaType>
 #include <QString>
 #include <QDebug>
-//#include <DApplication>
+#include <DApplication>
 
 //#define FTM_DEFAULT_PREVIEW_TEXT QString(tr("Don't let your dreams be dreams"))
-#define FTM_DEFAULT_PREVIEW_TEXT  QString(DApplication::translate("Font", "Don't let your dreams be dreams"))
+#define FTM_DEFAULT_PREVIEW_TEXT QString(DTK_WIDGET_NAMESPACE::DApplication::translate("Font", "Don't let your dreams be dreams"))
+#define FTM_DEFAULT_PREVIEW_LENGTH (FTM_DEFAULT_PREVIEW_TEXT.size())
 #define FTM_DEFAULT_PREVIEW_CN_TEXT QString("因理想而出生，为责任而成长")
 #define FTM_DEFAULT_PREVIEW_EN_TEXT QString("Don't let your dreams be dreams")
 #define FTM_DEFAULT_PREVIEW_DIGIT_TEXT QString("0123456789")
@@ -26,7 +27,7 @@ struct DFontPreviewItemData {
     DFontInfo fontInfo;       //字体信息
     QString strFontName;      //字体名称
     QString strFontFileName;  //字体文件名称
-    int iFontSize;            //字体大小
+    qint8 iFontSize;          //字体大小
 //    QString strFontPreview;   //字体预览内容
     bool isEnabled;           //是否启用
     bool isPreviewEnabled;    //是否启用(用于预览字体delegate,由于启用/禁用字体不是及时生效,需要该字段保存启用历史状态)
@@ -36,8 +37,8 @@ struct DFontPreviewItemData {
     bool isChineseFont;       //是否中文字体
     bool isMonoSpace;         //是否等宽字体
     bool isCanDisable;
-    int appFontId;
     IconStatus collectIconStatus;
+    int appFontId;
 
     DFontPreviewItemData()
     {
@@ -57,9 +58,6 @@ struct DFontPreviewItemData {
         fontInfo.isSystemFont = true;
         fontInfo.defaultPreview = "";
         fontInfo.previewLang = FONT_LANG_NONE;
-        fontInfo.specialPreviewHeight = 0;
-        fontInfo.fontLayoutDirection = FONT_LAYOUT_HORIZONTAL;
-        fontInfo.charCount = 0;
 
         strFontName = "";
         strFontFileName = "";
@@ -99,9 +97,6 @@ struct DFontPreviewItemData {
         fontInfo.trademark = other.fontInfo.trademark;
         fontInfo.defaultPreview = other.fontInfo.defaultPreview;
         fontInfo.previewLang = other.fontInfo.previewLang;
-        fontInfo.specialPreviewHeight = other.fontInfo.specialPreviewHeight;
-        fontInfo.fontLayoutDirection = other.fontInfo.fontLayoutDirection;
-        fontInfo.charCount = other.fontInfo.charCount;
 
         strFontName = other.strFontName;
         strFontFileName = other.strFontFileName;

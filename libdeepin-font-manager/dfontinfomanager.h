@@ -23,14 +23,14 @@
 #include <QObject>
 #include <QMap>
 
-#include <ft2build.h>
+//#include <ft2build.h>
 //#include FT_FREETYPE_H
 
-const char FONT_LAYOUT_HORIZONTAL = 0;
-const char FONT_LAYOUT_VERTICAL = 1;
-const short FONT_LANG_NONE = 0;
-const short FONT_LANG_CHINESE = 1;
-const short FONT_LANG_ENGLISH = 2;
+const qint8 FONT_LANG_NONE = 0;
+const qint8 FONT_LANG_CHINESE = 1;
+const qint8 FONT_LANG_ENGLISH = 2;
+const qint8 FONT_LANG_DIGIT = 4;
+
 struct DFontInfo {
     QString filePath;
     QString familyName;
@@ -46,10 +46,7 @@ struct DFontInfo {
     QString trademark;
     //add default preview text
     QString defaultPreview;
-    short previewLang; //0: none; 1: Chinese; 2: English; others...
-    short specialPreviewHeight;
-    short fontLayoutDirection; //0: vertical; 1: horizontal
-    short charCount;
+    qint8 previewLang; //0: none; 1: Chinese; 2: English; others...
 
 
     bool isInstalled {false};
@@ -83,11 +80,10 @@ public:
     QStringList getAllMonoSpaceFontPath() const;
     QString getFontType(const QString &filePath);
     DFontInfo getFontInfo(const QString &filePath, bool force = false);
-    QString getDefaultPreview(const QString &filePath, short &preivewLang, short &height, short &count);
+    QString getDefaultPreview(const QString &filePath, qint8 &preivewLang);
     QString getInstFontPath(const QString &originPath, const QString &familyName);
     bool isFontInstalled(DFontInfo &data);
     void getDefaultPreview(DFontInfo &data);
-    void calcFontHeight(DFontInfo &data);
     void checkStyleName(DFontInfo &f);
 
 //    //获取指定文件夹下所有的子文件夹

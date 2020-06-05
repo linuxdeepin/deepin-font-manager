@@ -28,7 +28,9 @@
 #include <QDebug>
 #include <QFile>
 #include "dfontwidget.h"
-#include <freetype/ttnameid.h>
+
+#include <fontconfig/fontconfig.h>
+#include <fontconfig/fcfreetype.h>
 
 static const QString lowerTextStock = "abcdefghijklmnopqrstuvwxyz";
 static const QString upperTextStock = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -289,49 +291,60 @@ bool DFontPreview::checkFontContainText(FT_Face face, const QString &text)
     return retval;
 }
 
-QString DFontPreview::buildCharlistForFace(FT_Face face, int length, short *maxHeight, short *count)
+QString DFontPreview::buildCharlistForFace(FT_Face face, int length)
 {
     QString retval;
     if (face == nullptr)
         return retval;
 
-    unsigned int glyph = 0;
-    unsigned long ch = 0;
-    short totalChars = 0;
+    FcCharSet *fcs = nullptr;
+    FcChar32 count = 0;
 
-    short height = face->height;
+    fcs = FcFreeTypeCharSet(face, nullptr);
 
-    ch = FT_Get_First_Char(face, &glyph);
+    count = FcCharSetCount(fcs);
+    qDebug() << __FUNCTION__ << " total count = " << count;
 
-    while (glyph != 0) {
-        retval.append(QChar(static_cast<int>(ch)));
-        retval = retval.simplified();
-        ch = FT_Get_Next_Char(face, ch, &glyph);
-//        if (FT_Load_Char(face, ch, FT_LOAD_RENDER)) {
-//        if (FT_Load_Glyph(face, glyph, FT_LOAD_RENDER) == 0) {
-//            qDebug() << __FUNCTION__ << " glyph format = " << face->glyph->format;
-//            if (face->glyph->bitmap.rows > 0)
-//                qDebug() << __FUNCTION__ << "height " << face->glyph->bitmap.rows << ch;
-//            if (face->glyph->metrics.vertBearingX != 0 || face->glyph->metrics.vertBearingY != 0)
-//                qDebug() << __FUNCTION__ << " metrics vertBearing XY " << face->glyph->metrics.vertBearingX << face->glyph->metrics.vertBearingY << face->glyph->metrics.height;
-//            if (height < face->glyph->metrics.height)
-//                height = face->glyph->metrics.height;
-//    }
+    QList<uint> ucs4List;
+    if (count > 0) {
+        FcChar32 ucs4, pos, map[FC_CHARSET_MAP_SIZE];
+        int retCount = 0;
+        uint unicode = 0;
 
-//        if (FT_Render_Glyph(face->glyph, FT_RENDER_MODE_NORMAL))  {
-//            if (face->glyph->bitmap.rows != 0)
-//                qDebug() << __FUNCTION__ << "height 2 " << face->glyph->bitmap.rows << ch;
-//        }
-        totalChars++;
+        for (ucs4 = FcCharSetFirstPage(fcs, map, &pos);
+                ucs4 != FC_CHARSET_DONE;
+                ucs4 = FcCharSetNextPage(fcs, map, &pos)) {
+            for (uint i = 0; i < FC_CHARSET_MAP_SIZE; i++) {
+                if (map[i] == 0)
+                    continue;
+                for (uint j = 0; j < 32; j++) {
+                    if ((map[i] & (1 << j)) == 0)
+                        continue;
 
-        if (retval.count() == length)
-            break;
+                    unicode = ucs4 + i * 32 + j;
+                    ucs4List << unicode;
+                    retCount++;
+                }
+            }
+        }
+
+        int len = (length > retCount) ? retCount : length;
+
+        uint firstChar = ucs4List[len - 1];
+        int index = 0;
+        for (int i = len - 2; i >= 0; i--) {
+            if (firstChar - ucs4List[i] > static_cast<uint>((len - 1 - i) + len - 1)) {
+                index = i + 1;
+                break;
+            }
+        }
+
+        for (int i = index; i < retCount && i < index + length; i++) {
+            retval += QString::fromUcs4(&ucs4List[i], 1);
+        }
     }
 
-    if (maxHeight != nullptr)
-        *maxHeight = height;//face->bbox.yMax - face->bbox.yMin;
-    if (count != nullptr)
-        *count = totalChars;
+    FcCharSetDestroy(fcs);
 
     return retval;
 }
