@@ -85,26 +85,28 @@ QString getDefaultPreviewText(FT_Face face, qint8 &lang)
     if (face == nullptr || face->num_charmaps == 0)
         return previewTxt;
 
+    lang = FONT_LANG_NONE;
+    QString language = QLocale::system().name();
+
     //first check chinese preview
     if (DFontPreview::checkFontContainText(face, FTM_DEFAULT_PREVIEW_CN_TEXT)) {
         lang = FONT_LANG_CHINESE;
-        if (FTM_DEFAULT_PREVIEW_TEXT == FTM_DEFAULT_PREVIEW_CN_TEXT)
-            return FTM_DEFAULT_PREVIEW_TEXT;
+        if (language.startsWith("zh_")) {
+            return previewTxt;
+        }
     }
 
     //not support chinese preview, than check english preview
     if (DFontPreview::checkFontContainText(face, FTM_DEFAULT_PREVIEW_EN_TEXT)) {
-        lang = FONT_LANG_ENGLISH;
-        if (FTM_DEFAULT_PREVIEW_TEXT == FTM_DEFAULT_PREVIEW_EN_TEXT)
-            return FTM_DEFAULT_PREVIEW_EN_TEXT;
+        lang |= FONT_LANG_ENGLISH;
+        return previewTxt;
     }
 
     if (DFontPreview::checkFontContainText(face, FTM_DEFAULT_PREVIEW_DIGIT_TEXT)) {
         lang = FONT_LANG_DIGIT;
-        return FTM_DEFAULT_PREVIEW_DIGIT_TEXT;
+        return previewTxt;
     }
 
-    lang = FONT_LANG_NONE;
     return DFontPreview::buildCharlistForFace(face, FTM_DEFAULT_PREVIEW_LENGTH);
 }
 
@@ -132,7 +134,7 @@ void DFontInfoManager::refreshList()
         dataList.clear();
     }
 
-    for (auto path : getAllFontPath()) {
+    for (auto &path : getAllFontPath()) {
         DFontInfo fontInfo = getFontInfo(path, true);
         fontInfo.isSystemFont = isSystemFont(path);
         dataList << fontInfo;
@@ -149,7 +151,7 @@ QStringList DFontInfoManager::getAllFontPath() const
 
     QString output = process.readAllStandardOutput();
     QStringList lines = output.split(QChar('\n'));
-    for (QString line : lines) {
+    for (QString &line : lines) {
         QString filePath = line.remove(QChar(':')).simplified();
         if (filePath.length() > 0 && !pathList.contains(filePath)) {
             pathList << filePath;
@@ -249,7 +251,7 @@ QStringList DFontInfoManager::getAllChineseFontPath() const
     QString output = process.readAllStandardOutput();
     QStringList lines = output.split(QChar('\n'));
 
-    for (QString line : lines) {
+    for (QString &line : lines) {
         QString filePath = line.split(QChar(':')).first().simplified();
         if (filePath.length() > 0) {
             pathList << filePath;
@@ -270,7 +272,7 @@ QStringList DFontInfoManager::getAllMonoSpaceFontPath() const
     QString output = process.readAllStandardOutput();
     QStringList lines = output.split(QChar('\n'));
 
-    for (QString line : lines) {
+    for (QString &line : lines) {
         QString filePath = line.split(QChar(':')).first().simplified();
         if (filePath.length() > 0) {
             pathList << filePath;

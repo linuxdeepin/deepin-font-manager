@@ -493,7 +493,7 @@ void DSqliteUtil::deleteFontInfo(const QList<DFontPreviewItemData> &fontList, co
     m_query->prepare(sql);
 
     QVariantList filePathList;
-    for (DFontPreviewItemData item : fontList) {
+    for (const DFontPreviewItemData &item : fontList) {
         if (item.fontInfo.filePath.isEmpty())
             continue;
         //转义字符 ' -> ''

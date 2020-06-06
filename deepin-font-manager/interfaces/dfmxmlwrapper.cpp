@@ -272,7 +272,7 @@ bool DFMXmlWrapper::addNodesWithTextList(const QString &fileName, const QString 
     QDomElement parentNode;
     getNodeByName(rootEle, parentNodeName, parentNode);
 
-    for (QString lastNodeText : lastNodeTextList) {
+    for (const QString &lastNodeText : lastNodeTextList) {
         QDomElement currParentNode = parentNode;
         for (int i = 0; i < nodeNameList.size(); i++) {
 
@@ -512,7 +512,7 @@ bool DFMXmlWrapper::deleteNodeWithTextList(const QString &fileName, const QStrin
         }
     }
 
-    for (QDomNode removeNode : removeNodeList) {
+    for (QDomNode &removeNode : removeNodeList) {
         if (removeNode.isElement()) {
             QDomNode parentNode = removeNode.parentNode();
             if (parentNode.isElement()) {

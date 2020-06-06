@@ -254,7 +254,7 @@ int DFontPreviewListDataThread::insertFontItemData(const QString &filePath,
     itemData.isEnabled = isEnabled;
     itemData.isPreviewEnabled = true;
     itemData.isCollected = false;
-    itemData.isChineseFont = chineseFontPathList.contains(filePath) && (itemData.fontInfo.previewLang == FONT_LANG_CHINESE);
+    itemData.isChineseFont = chineseFontPathList.contains(filePath) && (itemData.fontInfo.previewLang & FONT_LANG_CHINESE);
     itemData.isMonoSpace = monoSpaceFontPathList.contains(filePath);
 
     itemData.fontInfo.isInstalled = true;

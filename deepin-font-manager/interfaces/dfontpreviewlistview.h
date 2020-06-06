@@ -121,7 +121,6 @@ private:
     QMutex m_mutex;
     QStringList m_enableFontList;
     QStringList m_disableFontList;
-    QMap<QString, int> m_fontIdMap;
     FontGroup m_currentFontGroup;
 
     QRect m_curRect;
@@ -146,7 +145,7 @@ signals:
     void requestDeleted(const QStringList &files);
     void requestAdded(const QStringList &files, bool isFirstInstall = false);
     void itemAdded(const DFontPreviewItemData &data);
-    void multiItemsAdded(const QList<DFontPreviewItemData> &data);
+    void multiItemsAdded(QList<DFontPreviewItemData> &data);
     void itemRemoved(const DFontPreviewItemData &data);
     void itemRemovedFromSys(const DFontPreviewItemData &data);
     void itemsSelected(const QStringList &files, bool isFirstInstall = false);
@@ -163,7 +162,7 @@ public slots:
     void selectFonts(const QStringList &fileList);
     void selectFont(const QString &file);
     void onItemAdded(const DFontPreviewItemData &itemData);
-    void onMultiItemsAdded(const QList<DFontPreviewItemData> &data);
+    void onMultiItemsAdded(QList<DFontPreviewItemData> &data);
     void onItemRemoved(const DFontPreviewItemData &itemData);
     void onItemRemovedFromSys(const DFontPreviewItemData &itemData);
     void updateCurrentFontGroup(int currentFontGroup);

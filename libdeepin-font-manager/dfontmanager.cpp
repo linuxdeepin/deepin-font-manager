@@ -253,7 +253,7 @@ void DFontManager::doInstall(const QStringList &fileList, bool reinstall)
     QString targetDir = "";
 
     m_installOutList.clear();
-    for (QString file : fileList) {
+    for (const QString &file : fileList) {
         QStringList fileParamList = file.split("|");
         QString filePathOrig = fileParamList.at(0);
         QString familyName = fileParamList.at(1);
@@ -316,7 +316,7 @@ void DFontManager::doInstall(const QStringList &fileList, bool reinstall)
 void DFontManager::doUninstall(const QStringList &fileList)
 {
     Q_EMIT uninstalling();
-    for (QString file : fileList) {
+    for (const QString &file : fileList) {
         QFileInfo openFile(file);
 
         QDir fileDir(openFile.path());

@@ -1434,7 +1434,7 @@ void DFontMgrMainWindow::exportFont()
     QDir dir(desktopPath);
     if (!dir.exists())
         dir.mkpath(desktopPath);
-    for (QString file : m_exportFiles) {
+    for (QString &file : m_exportFiles) {
         QFile::copy(file, desktopPath + QFileInfo(file).fileName());
     }
     showExportFontMessage(m_exportFiles.count(), files.count() - m_exportFiles.count());

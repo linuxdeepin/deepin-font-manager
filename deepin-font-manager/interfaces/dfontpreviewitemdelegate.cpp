@@ -133,10 +133,10 @@ QPoint DFontPreviewItemDelegate::adjustPreviewFontBaseLinePoint(const QRect &fon
     return QPoint(baseLineX, baseLineY);
 }
 
-QFont DFontPreviewItemDelegate::adjustPreviewFont(const int appFontId, /*const QString &fontFamilyName,*/ const QString &fontStyleName, const int &fontSize) const
+QFont DFontPreviewItemDelegate::adjustPreviewFont(const int appFontId, const QString &fontFamilyName, const QString &fontStyleName, const int &fontSize) const
 {
-    QFontDatabase fontDatabase;
-    QFont font = QFont(fontDatabase.applicationFontFamilies(appFontId).first());
+    QString familyName = QFontDatabase::applicationFontFamilies(appFontId).isEmpty() ? fontFamilyName : QFontDatabase::applicationFontFamilies(appFontId).first();
+    QFont font = QFont(familyName);
     font.setPixelSize(fontSize);
     font.setItalic(fontStyleName.contains("Italic"));
     //设置字体 ut000794
@@ -190,7 +190,7 @@ void DFontPreviewItemDelegate::setfont(QFont &font, QString fontStyleName) const
 
 void DFontPreviewItemDelegate::paintForegroundPreviewFont(QPainter *painter, const QStyleOptionViewItem &option, const DFontPreviewItemData &itemData, int fontPixelSize, QString &fontPreviewText) const
 {
-    QFont previewFont = adjustPreviewFont(itemData.appFontId, /*itemData.fontInfo.familyName,*/ itemData.fontInfo.styleName, fontPixelSize);
+    QFont previewFont = adjustPreviewFont(itemData.appFontId, itemData.fontInfo.familyName, itemData.fontInfo.styleName, fontPixelSize);
     previewFont.setPixelSize(fontPixelSize);
     painter->setFont(previewFont);
 
@@ -255,6 +255,15 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
         int fontPixelSize = (index.data(Dtk::UserRole + 2).isNull()) ? itemData.iFontSize : index.data(Dtk::UserRole + 2).toInt();
         fontPixelSize = (fontPixelSize <= 0) ? FTM_DEFAULT_PREVIEW_FONTSIZE : fontPixelSize;
         QString fontPreview = itemData.fontInfo.defaultPreview;
+        if (fontPreview.isEmpty()) {
+            if (itemData.fontInfo.previewLang == FONT_LANG_CHINESE) {
+                fontPreview = FTM_DEFAULT_PREVIEW_CN_TEXT;
+            } else if (itemData.fontInfo.previewLang & FONT_LANG_ENGLISH) {
+                fontPreview = FTM_DEFAULT_PREVIEW_EN_TEXT;
+            } else {
+                fontPreview = FTM_DEFAULT_PREVIEW_DIGIT_TEXT;
+            }
+        }
         QString fontPreviewContent = index.data(Dtk::UserRole + 1).toString().isEmpty() ? fontPreview : index.data(Dtk::UserRole + 1).toString();
 
         if ((fontPreviewContent.isEmpty() || 0 == fontPixelSize) && itemData.strFontName.isEmpty()) {
