@@ -1188,7 +1188,8 @@ void DFontPreviewListView::deleteCurFonts(const QStringList &files)
     QList<DFontPreviewItemData> fontInfoList = m_dataThread->getFontModelList();
     qDebug() << fontInfoList.size() << __FUNCTION__ << files.size();
     int delCnt = 0;
-    for (int i = 0; i < fontInfoList.size(); ++i) {
+    int total = fontInfoList.size();
+    for (int i = 0; i < total; ++i) {
         DFontPreviewItemData itemData = fontInfoList.at(i);
         QString filePath = itemData.fontInfo.filePath;
         QFileInfo filePathInfo(filePath);

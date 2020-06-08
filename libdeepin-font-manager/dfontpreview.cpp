@@ -291,6 +291,26 @@ bool DFontPreview::checkFontContainText(FT_Face face, const QString &text)
     return retval;
 }
 
+//if it is special symbol (return value is true) it will be filtered and not show up in preview text
+bool isSpecialSymbol(uint ucs4)
+{
+    if ((ucs4 >= 0x610 && ucs4 <= 0x615) || (ucs4 >= 0x64B && ucs4 <= 0x65E)  //Kufi
+            || (ucs4 >= 0x21 && ucs4 <= 0x30) || (ucs4 >= 0x7E && ucs4 <= 0xBB) || (ucs4 >= 0x300 && ucs4 <= 0x36F)
+            || (ucs4 >= 0x64B && ucs4 <= 0x655) || (ucs4 >= 0x670 && ucs4 <= 0x700) //Syriac
+            || (ucs4 == 0x2D) || (ucs4 >= 0x591 && ucs4 <= 0x5C7) //hebrew
+            || (ucs4 == 0x25CC) || (ucs4 >= 0xA980 && ucs4 <= 0xA983)
+            || (ucs4 == 0x374 || ucs4 == 0x375)
+            || (ucs4 >= 0x1801 && ucs4 <= 0x1805) || (ucs4 >= 0x2025 && ucs4 <= 0x2026)
+            || (ucs4 >= 0x3001 && ucs4 <= 0x301B)
+            || (ucs4 >= 0x1B00 && ucs4 <= 0x1B04) //balinese
+            || (ucs4 >= 0x1B80 && ucs4 <= 0x1B82) || (ucs4 >= 0x1BA1 && ucs4 <= 0x1BAD) //sundanese
+            || (ucs4 >= 0x11180 && ucs4 <= 0x11182) //sharada
+            || (ucs4 >= 0xFE20 && ucs4 <= 0xFE2F) // caucasian
+            || (ucs4  >= 0x10A01 && ucs4 <= 0x10A0F) || (ucs4 >= 0x10A38 && ucs4 <= 0x10A3F)) // kharoshthi
+        return true;
+    return false;
+}
+
 QString DFontPreview::buildCharlistForFace(FT_Face face, int length)
 {
     QString retval;
@@ -339,8 +359,13 @@ QString DFontPreview::buildCharlistForFace(FT_Face face, int length)
             }
         }
 
-        for (int i = index; i < retCount && i < index + length; i++) {
+        QString outStr;
+
+        for (int i = index; len > 0 && i < retCount - index; i++) {
+            if (isSpecialSymbol(ucs4List.at(i)))
+                continue;
             retval += QString::fromUcs4(&ucs4List[i], 1);
+            len--;
         }
     }
 

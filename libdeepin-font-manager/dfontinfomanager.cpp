@@ -498,6 +498,7 @@ void DFontInfoManager::getDefaultPreview(DFontInfo &data)
             return;
         }
     }
+
     data.defaultPreview = getDefaultPreview(data.filePath, data.previewLang);
 }
 
