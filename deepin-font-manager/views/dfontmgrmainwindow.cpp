@@ -1293,7 +1293,8 @@ void DFontMgrMainWindow::onFontListViewRowCountChanged()
                 m_isNoResultViewShow = false;
             }
             d->leftSiderBar->setFocus();
-            m_noInstallListView->show();
+            if (m_fontPreviewListView->isHidden())
+                m_noInstallListView->show();
             break;
         }
         return;
@@ -1329,7 +1330,8 @@ void DFontMgrMainWindow::onLoadStatus(int type)
             if (m_leftIndex >= 0) {
                 onLeftSiderBarItemClicked(m_leftIndex);
             }
-            m_fontPreviewListView->show();
+            if (!m_noInstallListView->isVisible())//弹出之前判断是否已有无结果view 539 31107
+                m_fontPreviewListView->show();
             waitForInsert(false);
             break;
         default:
@@ -1759,8 +1761,15 @@ void DFontMgrMainWindow::keyPressEvent(QKeyEvent *event)
     if (Qt::Key_Right == event->key() || Qt::Key_Up == event->key()) {
         if (d->fontScaleSlider->hasFocus()) {
             d->fontScaleSlider->setValue(d->fontScaleSlider->value() + 1);
+            //右击切换到previewlistview后判断是否应该选中首个 539
         } else if (Qt::Key_Right == event->key() && d->leftSiderBar->hasFocus()) {
             m_fontPreviewListView->setFocus(Qt::MouseFocusReason);
+            if (0 == m_fontPreviewListView->selectionModel()->selectedIndexes().count()) {
+                DFontPreviewProxyModel *filterModel = m_fontPreviewListView->getFontPreviewProxyModel();
+                QModelIndex modelIndex = filterModel->index(0, 0);
+                if (modelIndex.isValid())
+                    m_fontPreviewListView->setCurrentIndex(modelIndex);
+            }
         }
     }
     DWidget::keyPressEvent(event);
