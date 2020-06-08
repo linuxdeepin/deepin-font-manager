@@ -25,7 +25,7 @@ DFInstallNormalWindow::DFInstallNormalWindow(const QStringList &files, QWidget *
 
 {
 //    setWindowOpacity(0.5);
-    qDebug() << __FUNCTION__ << "install files " << files;
+//    qDebug() << __FUNCTION__ << "install files " << files;
     initUI();
     getAllSysfiles();
     verifyFontFiles();
@@ -114,6 +114,8 @@ void DFInstallNormalWindow::initVerifyTimer()
 {
     m_verifyTimer->setSingleShot(true);
     m_verifyTimer->setTimerType(Qt::PreciseTimer);
+    //这里设置了个定时器，不知道作用是什么，这个定时器导致了安装的开始部分出现卡顿现象，
+    //现在将这个定时器的时间缩短，没有发现问题
     m_verifyTimer->start(VERIFY_DELYAY_TIME);
 }
 

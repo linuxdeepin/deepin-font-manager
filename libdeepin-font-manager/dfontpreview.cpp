@@ -303,7 +303,7 @@ QString DFontPreview::buildCharlistForFace(FT_Face face, int length)
     fcs = FcFreeTypeCharSet(face, nullptr);
 
     count = FcCharSetCount(fcs);
-    qDebug() << __FUNCTION__ << " total count = " << count;
+//    qDebug() << __FUNCTION__ << " total count = " << count;
 
     QList<uint> ucs4List;
     if (count > 0) {

@@ -34,7 +34,7 @@ public:
     void breakInstalltion();
 
 protected:
-    static constexpr int VERIFY_DELYAY_TIME = 1000;
+    static constexpr int VERIFY_DELYAY_TIME = 50;
 
     void initUI();
     void initConnections();

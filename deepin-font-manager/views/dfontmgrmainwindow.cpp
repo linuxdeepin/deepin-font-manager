@@ -1009,7 +1009,7 @@ void DFontMgrMainWindow::handleMenuEvent(QAction *action)
 
 void DFontMgrMainWindow::installFont(const QStringList &files)
 {
-    qDebug() << __FUNCTION__ << files;
+//    qDebug() << __FUNCTION__ << files;
 
 //    qint64 m_currentDiskSpace = getDiskSpace();
 //    if (m_currentDiskSpace == 0)
@@ -1243,7 +1243,7 @@ void DFontMgrMainWindow::onFontListViewRowCountChanged()
 
     unsigned int bShow = 0;
     DFontPreviewProxyModel *filterModel = m_fontPreviewListView->getFontPreviewProxyModel();
-    qDebug() << " filter count " << filterModel->rowCount();
+//    qDebug() << " filter count " << filterModel->rowCount();
     if (0 == filterModel->rowCount()) {
         if (m_searchTextStatusIsEmpty) {
             bShow = 2;

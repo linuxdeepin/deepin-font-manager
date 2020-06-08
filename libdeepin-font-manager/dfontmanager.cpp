@@ -59,6 +59,7 @@ void DFontManager::setType(Type type)
 
 void DFontManager::setInstallFileList(const QStringList &list)
 {
+    qDebug() << __FUNCTION__ << "start" << endl;
     if (!m_instFileList.isEmpty()) {
         m_instFileList.clear();
     }
@@ -126,7 +127,7 @@ void DFontManager::handleUnInstallOutput()
 
 void DFontManager::run()
 {
-    qDebug() << m_type << endl;
+    qDebug() << __FUNCTION__ << "start" << m_type << endl;
     switch (m_type) {
     case Install:
         handleInstall();
@@ -300,10 +301,13 @@ void DFontManager::doInstall(const QStringList &fileList, bool reinstall)
         }
     }
 
-    QProcess process;
+//    QProcess process;
 
-    process.start("fc-cache");
-    process.waitForFinished();
+//    process.start("fc-cache");
+//    process.waitForFinished(50);
+
+    //之前使用了waitforfinished这个函数，这个函数造成了没有必要的堵塞，导致后面流程受阻，现在换成下面这个函数，暂时没有发现问题。
+    QProcess::startDetached("fc-cache");
 
 //    if (!reinstall) {
 //        QString filename;
