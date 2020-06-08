@@ -1293,8 +1293,7 @@ void DFontMgrMainWindow::onFontListViewRowCountChanged()
                 m_isNoResultViewShow = false;
             }
             d->leftSiderBar->setFocus();
-            if (m_fontPreviewListView->isHidden())
-                m_noInstallListView->show();
+            m_noInstallListView->show();
             break;
         }
         return;
