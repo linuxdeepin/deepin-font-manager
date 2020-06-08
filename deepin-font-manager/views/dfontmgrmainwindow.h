@@ -163,6 +163,7 @@ protected:
     bool m_isPopInstallErrorDialog = false;
     bool m_isNoResultViewShow = false;
     bool m_isInstallOver = false;
+    bool m_openfirst = true;//是否是第一次打开软件
 
     //Stand shortcut
     //Implement by DTK                       //Close window       --> Alt+F4

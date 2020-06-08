@@ -106,7 +106,6 @@ DFontMgrMainWindow::~DFontMgrMainWindow()
 void DFontMgrMainWindow::initData()
 {
     D_D(DFontMgrMainWindow);
-
     //Initialize app Theme
     QVariant theme;
     theme = d->settingsQsPtr->value(FTM_THEME_KEY);
@@ -1310,6 +1309,7 @@ void DFontMgrMainWindow::onFontListViewRowCountChanged()
 // 1 完成加载
 void DFontMgrMainWindow::onLoadStatus(int type)
 {
+    D_D(DFontMgrMainWindow);
     if (0 == type || 1 == type) {
         switch (type) {
         case 0:
@@ -1332,6 +1332,13 @@ void DFontMgrMainWindow::onLoadStatus(int type)
             if (!m_noInstallListView->isVisible())//弹出之前判断是否已有无结果view 539 31107
                 m_fontPreviewListView->show();
             waitForInsert(false);
+            //第一次打开软件，正在加载数据时，搜索框的内容不为空，为做此操作 ut000794
+            if (m_openfirst) {
+                if (!d->searchFontEdit->text().isEmpty()) {
+                    emit d->searchFontEdit->textChanged(d->searchFontEdit->text());
+                }
+                m_openfirst = false;
+            }
             break;
         default:
             break;
