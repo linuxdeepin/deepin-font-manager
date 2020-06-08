@@ -214,20 +214,37 @@ void DFontPreviewListView::onItemRemovedFromSys(const DFontPreviewItemData &item
     QFontDatabase::removeApplicationFont(itemData.appFontId);
     deleteFontModelIndex(itemData.fontInfo.filePath, true);
 
-    QItemSelectionModel *selection_model = selectionModel();
-    //如果是删除多项，就要清空选中。
-    selection_model->clearSelection();
-    m_bListviewAtButtom = isAtListviewBottom();
-    m_bListviewAtTop = isAtListviewTop();
-    if (currModelIndex().row() == this->count()) {
-        QModelIndex modelIndex = m_fontPreviewItemModel->index(this->count() - 1, 0);
-        selection_model->select(modelIndex, QItemSelectionModel::Select);
-    } else  if (m_bListviewAtButtom && !m_bListviewAtTop) {
-        QModelIndex modelIndexbottom = m_fontPreviewItemModel->index(currModelIndex().row() - 1, 0);
-        selection_model->select(modelIndexbottom, QItemSelectionModel::Select);
-    } else {
-        selection_model->select(currModelIndex(), QItemSelectionModel::Select);
+    if (m_selectAfterDel != -1) {
+        m_bListviewAtButtom = isAtListviewBottom();
+        m_bListviewAtTop = isAtListviewTop();
+        DFontPreviewProxyModel *filterModel = this->getFontPreviewProxyModel();
+        if (m_bListviewAtButtom && !m_bListviewAtTop) {
+            QModelIndex modelIndex = filterModel->index(m_selectAfterDel - 1, 0);
+            setCurrentIndex(modelIndex);
+        } else if (m_selectAfterDel == filterModel->rowCount()) {
+            QModelIndex modelIndex = filterModel->index(m_selectAfterDel - 1, 0);
+            setCurrentIndex(modelIndex);
+        } else {
+            QModelIndex modelIndex = filterModel->index(m_selectAfterDel, 0);
+            setCurrentIndex(modelIndex);
+        }
+        isSelectedNow = true;
     }
+//    QItemSelectionModel *selection_model = selectionModel();
+//    //如果是删除多项，就要清空选中。
+//    selection_model->clearSelection();
+//    m_bListviewAtButtom = isAtListviewBottom();
+//    m_bListviewAtTop = isAtListviewTop();
+//    if (currModelIndex().row() == this->count()) {
+//        QModelIndex modelIndex = m_fontPreviewItemModel->index(this->count() - 1, 0);
+//        selection_model->select(modelIndex, QItemSelectionModel::Select);
+//    } else  if (m_bListviewAtButtom && !m_bListviewAtTop) {
+//        QModelIndex modelIndexbottom = m_fontPreviewItemModel->index(currModelIndex().row() - 1, 0);
+//        selection_model->select(modelIndexbottom, QItemSelectionModel::Select);
+//    } else {
+//        selection_model->select(currModelIndex(), QItemSelectionModel::Select);
+//    }
+
 
 }
 
