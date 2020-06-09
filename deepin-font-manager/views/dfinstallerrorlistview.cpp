@@ -126,6 +126,8 @@ void DFInstallErrorListDelegate::drawFontName(QPainter *painter, const QStyleOpt
 void DFInstallErrorListDelegate::drawFontStyle(QPainter *painter, const QStyleOptionViewItem &option,
                                                DFInstallErrorItemModel itemModel, QRect bgRect, bool bSelectable) const
 {
+    Q_UNUSED(option);
+    Q_UNUSED(bSelectable);
     int statusLabelMaxWidth = 160;
     QColor penColor;
     QRect installStatusRect = QRect(bgRect.left() + (bgRect.width() - statusLabelMaxWidth) - 10,

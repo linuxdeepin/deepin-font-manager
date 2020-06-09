@@ -392,6 +392,7 @@ void DFInstallNormalWindow::paintEvent(QPaintEvent *event)
 
 void DFInstallNormalWindow::closeEvent(QCloseEvent *event)
 {
+    Q_UNUSED(event);
     qDebug() << __FUNCTION__;
 //    getInstallMessage = false;
 //    getReInstallMessage = false;

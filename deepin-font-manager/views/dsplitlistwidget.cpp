@@ -216,6 +216,7 @@ void DSplitListWidget::initListData()
 
 void DSplitListWidget::currentChanged(const QModelIndex &current, const QModelIndex &previous)
 {
+    Q_UNUSED(previous);
     if (current.row() < 0 || FTM_SPLIT_LINE_INDEX == current.row()) {
         return;
     }

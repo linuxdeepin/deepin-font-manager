@@ -26,9 +26,9 @@ DFontPreviewListDataThread *DFontPreviewListDataThread::instance()
 DFontPreviewListDataThread::DFontPreviewListDataThread(DFontPreviewListView *view)
     : m_view(view)
     , m_fsWatcher(nullptr)
-    , m_mutex(nullptr)
     , cantDisabledMonoList(nullptr)
 {
+    m_mutex = nullptr;
     if (view != nullptr)
         m_mutex = view->getMutex();
 

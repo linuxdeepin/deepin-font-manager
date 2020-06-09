@@ -149,6 +149,7 @@ void DFontManager::run()
 
 bool DFontManager::doCmd(const QString &program, const QStringList &arguments)
 {
+    Q_UNUSED(program);
 //    QProcess *process = new QProcess;
     int failed = false;
     qDebug() << "QProcess start";
@@ -248,6 +249,7 @@ void DFontManager::setSystemFontCount(int systemFontCount)
 // install fileList fonts
 void DFontManager::doInstall(const QStringList &fileList, bool reinstall)
 {
+    Q_UNUSED(reinstall);
     qDebug() << __func__ << "s" << endl;
 
     QString target = "";

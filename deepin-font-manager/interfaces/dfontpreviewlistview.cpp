@@ -363,6 +363,7 @@ void DFontPreviewListView::sortModelIndexList(QModelIndexList &sourceList)
 
 void DFontPreviewListView::deleteFontModelIndex(const QString &filePath, bool isFromSys)
 {
+    Q_UNUSED(isFromSys);
     qDebug() << __FUNCTION__ << "m_fontPreviewProxyModel rowcount = " << m_fontPreviewProxyModel->rowCount();
     if (m_fontPreviewItemModel && m_fontPreviewItemModel->rowCount() == 0) {
         return;
@@ -1144,6 +1145,7 @@ void DFontPreviewListView::updateChangedDir(const QString &path)
 {
     //no different between "share" or "fonts" dir
     //    qDebug() << __FUNCTION__ << path << " begin ";
+    Q_UNUSED(path);
     QMutexLocker locker(&m_mutex);
     QList<DFontPreviewItemData> fontInfoList = m_dataThread->getFontModelList();
     //    qDebug() << fontInfoList.size();

@@ -1529,6 +1529,7 @@ void DFontMgrMainWindow::dropEvent(QDropEvent *event)
 
 void DFontMgrMainWindow::resizeEvent(QResizeEvent *event)
 {
+    Q_UNUSED(event);
     if (0 == int(QWidget::windowState())) {
         m_winHight = geometry().height();
         m_winWidth = geometry().width();

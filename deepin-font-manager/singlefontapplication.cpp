@@ -114,6 +114,7 @@ void SingleFontApplication::activateWindow()
 
                     m_qspMainWnd->show();
                     DFontMgrMainWindow *mw = qobject_cast<DFontMgrMainWindow *>(m_qspMainWnd.get());
+                    Q_UNUSED(mw);
 //                    mw->setFileList(fileList);
                 } else {
                     m_qspMainWnd->setWindowState(Qt::WindowActive);
@@ -179,6 +180,7 @@ void SingleFontApplication::slotBatchInstallFonts()
 
 void SingleFontApplication::onFontInstallFinished(const QStringList &fileList)
 {
+    Q_UNUSED(fileList);
     m_selectedFiles.clear();
 }
 

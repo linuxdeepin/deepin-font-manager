@@ -303,7 +303,7 @@ DFontInfo DFontInfoManager::getFontInfo(const QString &filePath, bool force)
 //    } else if (!force) {
 //        qDebug() << __FUNCTION__ << " not found " << filePath;
 //    }
-
+    Q_UNUSED(force);
     FT_Library m_library = nullptr;
     FT_Face m_face = nullptr;
 

@@ -105,6 +105,7 @@ void dfontinfoscrollarea::createLabel(QGridLayout *layout, const int &index, con
 //增加内容信息frame/*539*/
 DFrame *dfontinfoscrollarea::addTitleFrame(const QString &sData, const QString &objName)
 {
+    Q_UNUSED(objName);
     DFrame *m_textShowFrame = new DFrame(this);
     QString ts = elideText(sData, this->font(), INFO_VISIBLE_WIDTH);
 
@@ -141,6 +142,7 @@ DFrame *dfontinfoscrollarea::addTitleFrame(const QString &sData, const QString &
 //重绘信息页面/*539(勿删勿动!)*/
 void dfontinfoscrollarea::paintEvent(QPaintEvent *event)
 {
+    Q_UNUSED(event);
     int m_totalHeight = 0;
     for (auto plabeliter : pLabelMap) {
         if (!plabeliter.first) {
