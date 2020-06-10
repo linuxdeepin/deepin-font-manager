@@ -33,6 +33,7 @@ signals:
     void setIsJustInstalled();
     void closeInstallDialog();
     void showInstallErrorDialog();
+    void setSpliteWidgetScrollEnable(bool isInstalling);
     void freshListView();
     void refreshFocus(int count);
     void changeView();

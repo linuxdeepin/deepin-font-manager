@@ -995,7 +995,7 @@ void DFontMgrMainWindow::installFont(const QStringList &files)
 
     m_fontPreviewListView->clearSelection();
     m_dfNormalInstalldlg = new DFInstallNormalWindow(m_installFiles, this);
-
+    emit m_signalManager->setSpliteWidgetScrollEnable(true);//开始安装
     if (m_isQuickMode) {
         m_dfNormalInstalldlg->setSkipException(true);
     }
@@ -1618,6 +1618,7 @@ void DFontMgrMainWindow::hideSpinner()
             m_isInstallOver = false;
         }
         //            d->stateBar->show();
+        emit m_signalManager->setSpliteWidgetScrollEnable(false);//安装刷新完成后启用菜单滚动功能
     });
 }
 

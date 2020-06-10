@@ -414,6 +414,7 @@ void DFInstallErrorDialog::onControlButtonClicked(int btnIndex)
     if (0 == btnIndex) {
         //退出安装
         emit onCancelInstall();
+        emit m_signalManager->setSpliteWidgetScrollEnable(false);//设置菜单滚动可用
         this->close();
     } else {
         //继续安装

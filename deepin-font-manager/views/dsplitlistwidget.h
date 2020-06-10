@@ -56,12 +56,15 @@ public:
     QMap<QString, int> m_titleStringIndexMap;
     QStandardItemModel *m_categoryItemModell;
 
-
+    bool m_refreshFinished = true;
 signals:
     void onListWidgetItemClicked(int index);
+public slots:
+    void setRefreshFinished(bool isInstalling);
 protected:
     void mouseMoveEvent(QMouseEvent *event) override;
     void mousePressEvent(QMouseEvent *event)override;
+    void wheelEvent(QWheelEvent *event);
 };
 
 Q_DECLARE_METATYPE(DSplitListWidget::FontGroup)

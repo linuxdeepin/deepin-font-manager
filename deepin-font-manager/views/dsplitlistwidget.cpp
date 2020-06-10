@@ -174,6 +174,7 @@ DSplitListWidget::DSplitListWidget(QWidget *parent)
     this->setMouseTracking(true);
     this->installEventFilter(this);
     initListData();
+    connect(m_signalManager, &SignalManager::setSpliteWidgetScrollEnable, this, &DSplitListWidget::setRefreshFinished);
 }
 
 DSplitListWidget::~DSplitListWidget() {}
@@ -239,6 +240,59 @@ void DSplitListWidget::mouseMoveEvent(QMouseEvent *event)
     }
     return;
 }
+
+void DSplitListWidget::setRefreshFinished(bool isInstalling)
+{
+    if (isInstalling) {
+        m_refreshFinished = false;
+    } else {
+        m_refreshFinished = true;
+    }
+}
+
+void DSplitListWidget::wheelEvent(QWheelEvent *event)
+{
+    if (!m_refreshFinished)
+        return;
+    int now = selectedIndexes().last().row();
+    int next = now;
+    if (event->delta() > 0) {
+        if (now > 0) {
+            if (now == 6) {
+                next = now - 2;
+            } else {
+                next = now - 1;
+            }
+        } else {
+            return;
+        }
+    } else {
+        if (now < this->count() - 1) {
+            if (now == 4) {
+                next = now + 2;
+            } else {
+                next = now + 1;
+            }
+        } else {
+            return;
+        }
+    }
+    if (next == now) {
+        return;
+    } else {
+        this->setModel(m_categoryItemModell);
+        QStandardItem *item = m_categoryItemModell->item(next);
+        QModelIndex modelIndex = m_categoryItemModell->indexFromItem(item);
+        setCurrentIndex(modelIndex);
+        Q_EMIT m_signalManager->changeView();
+        if (next > 5) {
+            emit  onListWidgetItemClicked(next - 1);
+        } else {
+            emit  onListWidgetItemClicked(next);
+        }
+    }
+}
+
 
 //hover for helper on leftListview /*UT000539*/
 bool DNoFocusDelegate::helpEvent(QHelpEvent *event, QAbstractItemView *view
