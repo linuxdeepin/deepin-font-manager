@@ -8,14 +8,25 @@
 class DFontSpinnerWidget : public Dtk::Widget::DWidget
 {
 public:
-    explicit DFontSpinnerWidget(QWidget *parent = nullptr);
+    enum SpinnerStyles {
+        Load,
+        Delete,
+    };
+
+
+public:
+    explicit DFontSpinnerWidget(QWidget *parent = nullptr,  SpinnerStyles styles = SpinnerStyles::Load);
     void initUI();
 
     void spinnerStart();
     void spinnerStop();
     ~DFontSpinnerWidget();
 
+    void setStyles(SpinnerStyles styles);
+
 private:
+
+    SpinnerStyles m_Styles;
     Dtk::Widget::DSpinner *m_spinner = nullptr;
     QLabel *m_label = nullptr;
 };

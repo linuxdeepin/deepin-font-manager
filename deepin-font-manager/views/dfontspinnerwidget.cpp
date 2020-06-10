@@ -6,8 +6,9 @@
 
 DWIDGET_USE_NAMESPACE
 
-DFontSpinnerWidget::DFontSpinnerWidget(QWidget *parent) : DWidget(parent)
+DFontSpinnerWidget::DFontSpinnerWidget(QWidget *parent,  SpinnerStyles styles) : DWidget(parent)
 {
+//    setStyles(styles);
     initUI();
 }
 
@@ -37,6 +38,15 @@ DFontSpinnerWidget::~DFontSpinnerWidget()
 {
 }
 
+void DFontSpinnerWidget::setStyles(SpinnerStyles styles)
+{
+    m_Styles = styles;
+    if (m_Styles == SpinnerStyles::Load) {
+        m_label->setText(DApplication::translate("Main", "Loading fonts, please wait..."));
+    } else if (m_Styles == SpinnerStyles::Delete) {
+        m_label->setText(DApplication::translate("Main", "Deleting fonts, please wait..."));
+    }
+}
 void DFontSpinnerWidget::spinnerStart()
 {
     m_spinner->start();

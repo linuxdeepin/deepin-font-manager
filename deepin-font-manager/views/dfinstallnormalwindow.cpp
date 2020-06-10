@@ -172,9 +172,9 @@ void DFInstallNormalWindow::getAllSysfiles()
     if (allFontInfo.isEmpty())
         allFontInfo = DFMDBManager::instance()->getAllFontInfo();
     for (auto font : allFontInfo) {
-        if (font.fontInfo.filePath.contains("/usr/share/")) {
+        if (Q_UNLIKELY(font.fontInfo.filePath.contains("/usr/share/"))) {
             QString systemFilePsname;
-            if (!font.fontInfo.psname.compare("")) {
+            if (Q_UNLIKELY(!font.fontInfo.psname.compare(""))) {
                 systemFilePsname.append(font.fontInfo.familyName).append(font.fontInfo.styleName);
             } else {
                 systemFilePsname.append(font.fontInfo.psname).append(font.fontInfo.styleName);
@@ -207,7 +207,7 @@ void DFInstallNormalWindow::verifyFontFiles(bool isHalfwayInstall)
 
     foreach (auto it, m_installFiles) {
         fontInfo = m_fontInfoManager->getFontInfo(it, true);
-        if (fontInfo.isError) {
+        if (Q_UNLIKELY(fontInfo.isError)) {
             m_damagedFiles.append(it);
 
 #ifdef QT_QML_DEBUG

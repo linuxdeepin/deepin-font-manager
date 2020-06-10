@@ -44,6 +44,10 @@ public:
         Light,
         FollowSystem,
     };
+    enum SpinnerStyles {
+        Load,
+        Delete,
+    };
 
     void setQuickInstallMode(bool isQuick);
     void hideQucikInstallWindow();
@@ -96,6 +100,9 @@ protected:
     void showExportFontMessage(int successCount, int abandonFilesCount);
     void showAllShortcut();
     void showInstalledFiles();
+    void showSpinner(SpinnerStyles styles);
+    void hideSpinner();
+
     void waitForInsert(bool deleting = true);
     void onPreviewTextChanged();
     qint64 getDiskSpace(bool m_bInstall = true);
@@ -109,6 +116,7 @@ protected:
     DListView *m_noResultListView;
     DListView *m_noInstallListView;
     DFontSpinnerWidget *m_fontLoadingSpinner {nullptr};
+    DFontSpinnerWidget *m_fontDeletingSpinner{nullptr};
     DFontuninstalldialog *m_fontUninstallDialog = nullptr;
     DFMDBManager *m_dbManager {nullptr};
     void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;

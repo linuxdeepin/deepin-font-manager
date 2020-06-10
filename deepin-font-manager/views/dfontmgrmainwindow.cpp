@@ -236,46 +236,10 @@ void DFontMgrMainWindow::initConnections()
             &DFontMgrMainWindow::onFontInstallFinished);
 
     connect(m_signalManager, &SignalManager::closeInstallDialog, this, [ = ] {
-//        if (m_loadingSpinner == nullptr)
-//        {
-//            m_loadingSpinner = new DSpinner(this);
-//            m_loadingSpinner->show();
-//            m_loadingSpinner->setFixedSize(32, 32);
-//            m_loadingSpinner->move((this->width() - m_loadingSpinner->width()) / 2 + (m_loadingSpinner->width() * 2.5),
-//                                   (this->height() - m_loadingSpinner->height()) / 2);
-//            //        s->move(); waitForInstallSpinner->move((this->width() - waitForInstallSpinner->width()) / 2 +
-//            //        (waitForInstallSpinner->width() * 2.5), (this->height() - waitForInstallSpinner->height()) / 2);
-//            m_loadingSpinner->start();
-//        }
-
-        m_noInstallListView->hide();
-        m_fontPreviewListView->hide();
-        m_noResultListView->hide();
-        d->stateBar->hide();
-        m_fontLoadingSpinner->show();
-        m_fontLoadingSpinner->spinnerStart();
-
+        showSpinner(DFontMgrMainWindow::Load);
     });
 
-    connect(m_signalManager, &SignalManager::requestInstallAdded, this, [ = ]() {
-//        ut000442 安装少量字体时,会出现闪屏现象,通过加短暂延迟解决.
-        QTimer::singleShot(50, this, [ = ]() {
-            m_fontLoadingSpinner->spinnerStop();
-//            m_fontPreviewListView->show();
-            m_fontLoadingSpinner->hide();
-            m_isNoResultViewShow = false;
-            onFontListViewRowCountChanged();
-            onPreviewTextChanged();
-            if (m_isInstallOver) {
-//                int cnt = 0;
-//                int systemCnt = 0;
-//                m_fontPreviewListView->selectedFontsNum(&cnt, &systemCnt);
-                emit m_signalManager->showInstallFloatingMessage(m_successInstallCount);
-                m_isInstallOver = false;
-            }
-//            d->stateBar->show();
-        });
-    });
+    connect(m_signalManager, &SignalManager::requestInstallAdded, this, &DFontMgrMainWindow::hideSpinner);
 
     //调节右下角字体大小显示label显示内容/*UT000539*/
     connect(qApp, &DApplication::fontChanged, this, [ = ]() {
@@ -635,6 +599,7 @@ void DFontMgrMainWindow::initMainVeiws()
 
     d->mainWndSpliter = new DSplitter(Qt::Horizontal, this);
     m_fontLoadingSpinner = new DFontSpinnerWidget(this);
+//    m_fontDeletingSpinner = new DFontSpinnerWidget(this);
     // For Debug
     // d->mainWndSpliter->setStyleSheet("QSplitter::handle { background-color: red }");
 
@@ -1614,6 +1579,46 @@ void DFontMgrMainWindow::showInstalledFiles()
 
     d->leftSiderBar->setCurrentIndex(d->leftSiderBar->model()->index(DSplitListWidget::UserFont, 0));
     onLeftSiderBarItemClicked(DSplitListWidget::UserFont);
+}
+
+
+//通过styles来决定标签显示内容
+void DFontMgrMainWindow::showSpinner(DFontMgrMainWindow::SpinnerStyles styles)
+{
+    D_D(DFontMgrMainWindow);
+
+    m_noInstallListView->hide();
+    m_fontPreviewListView->hide();
+    m_noResultListView->hide();
+    d->stateBar->hide();
+    if (styles == DFontMgrMainWindow::Load) {
+        m_fontLoadingSpinner->setStyles(DFontSpinnerWidget::Load);
+    } else if (styles == DFontMgrMainWindow::Delete) {
+        m_fontLoadingSpinner->setStyles(DFontSpinnerWidget::Delete);
+    }
+    m_fontLoadingSpinner->show();
+    m_fontLoadingSpinner->spinnerStart();
+}
+
+void DFontMgrMainWindow::hideSpinner()
+{
+    //        ut000442 安装少量字体时,会出现闪屏现象,通过加短暂延迟解决.
+    QTimer::singleShot(50, this, [ = ]() {
+        m_fontLoadingSpinner->spinnerStop();
+        //            m_fontPreviewListView->show();
+        m_fontLoadingSpinner->hide();
+        m_isNoResultViewShow = false;
+        onFontListViewRowCountChanged();
+        onPreviewTextChanged();
+        if (m_isInstallOver) {
+            //                int cnt = 0;
+            //                int systemCnt = 0;
+            //                m_fontPreviewListView->selectedFontsNum(&cnt, &systemCnt);
+            emit m_signalManager->showInstallFloatingMessage(m_successInstallCount);
+            m_isInstallOver = false;
+        }
+        //            d->stateBar->show();
+    });
 }
 
 void DFontMgrMainWindow::waitForInsert(bool deleting)
