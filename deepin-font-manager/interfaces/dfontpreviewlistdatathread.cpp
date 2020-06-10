@@ -452,7 +452,7 @@ void DFontPreviewListDataThread::checkStyleName(DFontInfo &f)
 //有些字体不规范，familyname为中文且包含了字体的style信息，按照正常显示就会有异常。在此进行过滤，这种情况下只用familyname做为显示内容
 bool DFontPreviewListDataThread::checkChineseStyleName(const QString fontFamilyName)
 {
-    if (fontFamilyName.contains("粗体") || fontFamilyName.contains("常规体") || fontFamilyName.contains("细体") || fontFamilyName.contains("黑体")) {
+    if (fontFamilyName.contains("粗体") || fontFamilyName.contains("常规") || fontFamilyName.contains("细体") || fontFamilyName.contains("黑体")) {
         return false;
     }
     return true;
