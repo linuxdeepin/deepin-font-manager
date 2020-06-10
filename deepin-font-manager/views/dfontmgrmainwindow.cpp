@@ -1216,7 +1216,7 @@ void DFontMgrMainWindow::onFontListViewRowCountChanged()
         }
     }
     bool isSpinnerHidden = m_fontLoadingSpinner->isHidden();
-    qDebug() << __FUNCTION__ << isSpinnerHidden << bShow;
+//    qDebug() << __FUNCTION__ << isSpinnerHidden << bShow;
     switch (bShow) {
     case 0:
         while (isSpinnerHidden) {

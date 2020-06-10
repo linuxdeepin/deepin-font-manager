@@ -1215,7 +1215,7 @@ void DFontPreviewListView::updateChangedDir(const QString &path)
     Q_UNUSED(path);
     QMutexLocker locker(&m_mutex);
     QList<DFontPreviewItemData> fontInfoList = m_dataThread->getFontModelList();
-    qDebug() << __FUNCTION__ << fontInfoList.size();
+//    qDebug() << __FUNCTION__ << fontInfoList.size();
     for (int i = 0; i < fontInfoList.size(); ++i) {
         DFontPreviewItemData itemData = fontInfoList.at(i);
         QFileInfo filePathInfo(itemData.fontInfo.filePath);
