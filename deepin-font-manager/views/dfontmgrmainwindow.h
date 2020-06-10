@@ -67,7 +67,17 @@ public:
 //        m_fileList = list;
 //    }
     void startToDelete();
-    inline bool isPreviewTextEmpty();
+    inline DSplitListWidget::FontGroup currentFontGroup()
+    {
+        return filterGroup;
+    }
+
+    inline void stopLoading()
+    {
+        m_fontLoadingSpinner->spinnerStop();
+        m_fontLoadingSpinner->hide();
+    }
+
     QString getPreviewTextWithSize(int *fontSize = nullptr);
 
     //Main window Size

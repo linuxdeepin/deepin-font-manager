@@ -8,14 +8,14 @@
 #include "dfmdbmanager.h"
 #include "signalmanager.h"
 #include <QScrollBar>
-#include <DListView>
+#include <QListView>
 
 #include <QMouseEvent>
 #include <QSortFilterProxyModel>
 
 DWIDGET_USE_NAMESPACE
 
-class DFontPreviewListView : public DListView
+class DFontPreviewListView : public QListView
 {
     Q_OBJECT
 public:
@@ -89,6 +89,7 @@ protected:
 
 private:
     void initConnections();
+    int count() const;
 
     inline QRect getCollectionIconRect(QRect visualRect);
 
@@ -152,6 +153,7 @@ signals:
     void itemSelected(const QString &file);
     void rowCountChanged();
     void deleteFinished();
+    void requestUpdateModel();
 
 public slots:
 
@@ -166,6 +168,7 @@ public slots:
     void onItemRemoved(const DFontPreviewItemData &itemData);
     void onItemRemovedFromSys(const DFontPreviewItemData &itemData);
     void updateCurrentFontGroup(int currentFontGroup);
+    void updateModel();
 };
 
 #endif  // DFONTPREVIEWLISTVIEW_H

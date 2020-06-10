@@ -45,6 +45,7 @@ signals:
     void requestForceDeleteFiles(const QStringList &files);
     void requestBatchReInstallContinue();
     void requestRemoveFileWatchers(const QStringList &files);
+    void requestAutoDirWatchers();
 
 protected slots:
     void doWork();
@@ -59,6 +60,7 @@ public slots:
     void onFileAdded(const QStringList &files);
     void forceDeleteFiles(const QStringList &files);
     void onRemoveFileWatchers(const QStringList &files);
+    void onAutoDirWatchers();
     void setCantDisabledMonoList();
 
 protected:

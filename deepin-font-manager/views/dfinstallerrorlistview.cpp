@@ -315,7 +315,7 @@ void DFInstallErrorListView::initErrorListData()
         item->setData(QVariant::fromValue(itemModel), Qt::DisplayRole);
         m_errorListSourceModel->appendRow(item);
 
-        fontInfo = m_fontInfoManager->getFontInfo(itemModel.strFontFilePath, true);
+        fontInfo = m_fontInfoManager->getFontInfo(itemModel.strFontFilePath);
         m_errorFontlist.append(fontInfo.familyName + fontInfo.styleName);
     }
 
@@ -347,7 +347,7 @@ void DFInstallErrorListView::addErrorListData(QList<DFInstallErrorItemModel> ins
     DFontInfo fontInfo;
 
     foreach (auto it, installErrorFontModelList) {
-        fontInfo = m_fontInfoManager->getFontInfo(it.strFontFilePath, true);
+        fontInfo = m_fontInfoManager->getFontInfo(it.strFontFilePath);
         QString str = fontInfo.familyName + fontInfo.styleName;
         if (!m_errorFontlist.contains(fontInfo.familyName + fontInfo.styleName)) {
             m_newErrorFontModel.append(it);

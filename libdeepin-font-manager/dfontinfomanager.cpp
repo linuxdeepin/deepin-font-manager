@@ -135,7 +135,7 @@ void DFontInfoManager::refreshList()
     }
 
     for (auto &path : getAllFontPath()) {
-        DFontInfo fontInfo = getFontInfo(path, true);
+        DFontInfo fontInfo = getFontInfo(path);
         fontInfo.isSystemFont = isSystemFont(path);
         dataList << fontInfo;
     }
@@ -296,14 +296,13 @@ QString DFontInfoManager::getFontType(const QString &filePath)
     }
 }
 
-DFontInfo DFontInfoManager::getFontInfo(const QString &filePath, bool force)
+DFontInfo DFontInfoManager::getFontInfo(const QString &filePath)
 {
 //    if (!force && m_fontInfoMap.contains(filePath)) {
 //        return m_fontInfoMap.value(filePath);
 //    } else if (!force) {
 //        qDebug() << __FUNCTION__ << " not found " << filePath;
 //    }
-    Q_UNUSED(force);
     FT_Library m_library = nullptr;
     FT_Face m_face = nullptr;
 

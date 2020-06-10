@@ -30,6 +30,7 @@ DSqliteUtil::~DSqliteUtil()
     }
 
     m_db.close();
+    QSqlDatabase::removeDatabase("font_manager");
 }
 
 bool DSqliteUtil::createConnection(const QString &database)

@@ -10,6 +10,7 @@ class DFontPreviewProxyModel : public QSortFilterProxyModel
 
 public:
     explicit DFontPreviewProxyModel(QObject *parent = nullptr);
+    ~DFontPreviewProxyModel();
 
     bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const override;
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;

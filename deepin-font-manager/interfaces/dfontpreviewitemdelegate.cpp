@@ -12,6 +12,7 @@
 #include <DLog>
 #include <DCheckBox>
 #include <DLabel>
+#include <DFontSizeManager>
 
 DWIDGET_USE_NAMESPACE
 
@@ -31,7 +32,7 @@ const int FONT_PREVIEW_BOTTOM_MARGIN = 10;
 
 
 DFontPreviewItemDelegate::DFontPreviewItemDelegate(QAbstractItemView *parent)
-    : DStyledItemDelegate(parent)
+    : QStyledItemDelegate(parent)
     , m_parentView(qobject_cast<DFontPreviewListView *>(parent))
 {
 }

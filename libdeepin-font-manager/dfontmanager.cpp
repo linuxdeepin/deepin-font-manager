@@ -147,9 +147,8 @@ void DFontManager::run()
     }
 }
 
-bool DFontManager::doCmd(const QString &program, const QStringList &arguments)
+bool DFontManager::doCmd(const QStringList &arguments)
 {
-    Q_UNUSED(program);
 //    QProcess *process = new QProcess;
     int failed = false;
     qDebug() << "QProcess start";
@@ -190,7 +189,7 @@ void DFontManager::handleInstall(bool isHalfwayInstall)
 {
     //if (doCmd("pkexec", QStringList() << "dfont-install" << m_instFileList)) {
 
-    if (doCmd("dfont-install", QStringList() << m_instFileList)) {
+    if (doCmd(QStringList() << m_instFileList)) {
         if (m_instFileList.count() == 1) {
             // emit installFinished();
         }
@@ -212,7 +211,7 @@ void DFontManager::handleInstall(bool isHalfwayInstall)
 void DFontManager::handleUnInstall()
 {
     qDebug() << "waitForFinished";
-    if (doCmd("dfont-uninstall", QStringList() << m_uninstFile)) {
+    if (doCmd(QStringList() << m_uninstFile)) {
         emit uninstallFinished();
 
         emit uninstallFontFinished(m_uninstFile);
@@ -224,7 +223,7 @@ void DFontManager::handleUnInstall()
 void DFontManager::handleReInstall()
 {
 
-    if (doCmd("dfont-install", QStringList() << m_instFileList)) {
+    if (doCmd(QStringList() << m_instFileList)) {
         if (m_instFileList.count() == 1) {
             // emit installFinished();
         }

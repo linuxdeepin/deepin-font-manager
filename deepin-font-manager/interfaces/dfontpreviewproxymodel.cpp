@@ -13,6 +13,11 @@ DFontPreviewProxyModel::DFontPreviewProxyModel(QObject *parent)
 {
 }
 
+DFontPreviewProxyModel::~DFontPreviewProxyModel()
+{
+    qDebug() << __FUNCTION__;
+}
+
 void DFontPreviewProxyModel::setFilterGroup(int filterGroup)
 {
     m_useSystemFilter = false;
@@ -153,7 +158,7 @@ int DFontPreviewProxyModel::rowCount(const QModelIndex &parent) const
     Q_UNUSED(parent)
 
     int filterRowCount = QSortFilterProxyModel::rowCount();
-    //qDebug() << "filterRowCount" << filterRowCount;
+//    qDebug() << "filterRowCount" << filterRowCount;
 
 //    unsigned int bShow = 0;
 //    if (0 == filterRowCount) {

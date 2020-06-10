@@ -41,6 +41,7 @@ DFontPreviewListDataThread::DFontPreviewListDataThread(DFontPreviewListView *vie
     connect(m_view, &DFontPreviewListView::requestAdded, this, &DFontPreviewListDataThread::onFileAdded/*, Qt::QueuedConnection*/);
     connect(this, &DFontPreviewListDataThread::requestForceDeleteFiles, this, &DFontPreviewListDataThread::forceDeleteFiles);
     connect(this, &DFontPreviewListDataThread::requestRemoveFileWatchers, this, &DFontPreviewListDataThread::onRemoveFileWatchers, Qt::BlockingQueuedConnection);
+    connect(this, &DFontPreviewListDataThread::requestAutoDirWatchers, this, &DFontPreviewListDataThread::onAutoDirWatchers, Qt::BlockingQueuedConnection);
     mThread.start();
 //    });
 }
@@ -117,6 +118,9 @@ void DFontPreviewListDataThread::initFileSystemWatcher()
 
     connect(m_fsWatcher, &QFileSystemWatcher::directoryChanged,
     this, [ = ](const QString & path) {
+        QFileInfo f(path);
+        if (!f.isDir())
+            return ;
 //        qDebug() << "directoryChanged" << path;
         updateChangedDir(path);
 
@@ -221,6 +225,15 @@ void DFontPreviewListDataThread::forceDeleteFiles(const QStringList &files)
 void DFontPreviewListDataThread::onRemoveFileWatchers(const QStringList &files)
 {
     m_fsWatcher->removePaths(files);
+    //remove extra
+    m_fsWatcher->removePath(FONTS_DIR);
+    m_fsWatcher->removePath(FONTS_UP_DIR);
+}
+
+void DFontPreviewListDataThread::onAutoDirWatchers()
+{
+    m_fsWatcher->addPath(FONTS_DIR);
+    m_fsWatcher->addPath(FONTS_UP_DIR);
 }
 
 int DFontPreviewListDataThread::insertFontItemData(const QString &filePath,
@@ -233,7 +246,7 @@ int DFontPreviewListDataThread::insertFontItemData(const QString &filePath,
     DFontPreviewItemData itemData;
     QFileInfo filePathInfo(filePath);
     if (isStartup) {
-        itemData.fontInfo = fontInfoMgr->getFontInfo(filePath, true);
+        itemData.fontInfo = fontInfoMgr->getFontInfo(filePath);
     } else {
         itemData.fontInfo = fontInfoMgr->getFontInfo(filePath);
     }

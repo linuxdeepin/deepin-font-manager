@@ -70,7 +70,7 @@ protected:
     void run();
 
 private:
-    bool doCmd(const QString &program, const QStringList &arguments);
+    bool doCmd(const QStringList &arguments);
     void handleInstall(bool isHalfwayInstall = false);
     void handleUnInstall();
     void handleReInstall();

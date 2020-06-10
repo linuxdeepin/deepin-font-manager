@@ -206,7 +206,7 @@ void DFInstallNormalWindow::verifyFontFiles(bool isHalfwayInstall)
 //    m_halfInstalledFiles.clear();
 
     foreach (auto it, m_installFiles) {
-        fontInfo = m_fontInfoManager->getFontInfo(it, true);
+        fontInfo = m_fontInfoManager->getFontInfo(it);
         if (Q_UNLIKELY(fontInfo.isError)) {
             m_damagedFiles.append(it);
 
@@ -368,7 +368,7 @@ void DFInstallNormalWindow::getNoSameFilesCount(const QStringList &filesList)
 {
     DFontInfo fontInfo;
     foreach (auto it, filesList) {
-        fontInfo = m_fontInfoManager->getFontInfo(it, true);
+        fontInfo = m_fontInfoManager->getFontInfo(it);
         if (!m_installedFilesFontinfo.contains(fontInfo)) {
             m_installedFilesFontinfo.append(fontInfo);
             m_outfileList.append(fontInfo.filePath);

@@ -223,8 +223,8 @@ void DFontMgrMainWindow::initConnections()
     QObject::connect(d->leftSiderBar, SIGNAL(onListWidgetItemClicked(int)), this,
                      SLOT(onLeftSiderBarItemClicked(int)));
 
-    QObject::connect(m_fontManager, SIGNAL(uninstallFontFinished(const QStringList &)), this,
-                     SIGNAL(requestDeleted(const QStringList &)));
+//    QObject::connect(m_fontManager, SIGNAL(uninstallFontFinished(const QStringList &)), this,
+//                     SIGNAL(requestDeleted(const QStringList &)));
     QObject::connect(m_signalManager, &SignalManager::showInstallFloatingMessage, this, &DFontMgrMainWindow::onShowMessage);
 //    connect(this, &DFontMgrMainWindow::requestUpdatePreview, [ = ] {
 //        QString previewText = d->textInputEdit->text();
@@ -262,7 +262,7 @@ void DFontMgrMainWindow::initConnections()
     });
 
     /*UT000539 增加slider press聚焦的判断*/
-    QObject::connect(d->fontScaleSlider, &DSlider::sliderPressed, this, [this, d] {
+    QObject::connect(d->fontScaleSlider, &DSlider::sliderPressed, [ = ] {
         d->fontScaleSlider->setFocus(Qt::MouseFocusReason);
     });
 }
@@ -1156,8 +1156,6 @@ void DFontMgrMainWindow::showFontFilePostion()
 
 void DFontMgrMainWindow::onLeftSiderBarItemClicked(int index)
 {
-    Q_D(DFontMgrMainWindow);
-
     if (!m_fontPreviewListView->isListDataLoadFinished()) {
         //save index to update
         m_leftIndex = index;
@@ -1207,6 +1205,8 @@ void DFontMgrMainWindow::onFontListViewRowCountChanged()
 
     unsigned int bShow = 0;
     DFontPreviewProxyModel *filterModel = m_fontPreviewListView->getFontPreviewProxyModel();
+    if (filterModel == nullptr)
+        return;
 //    qDebug() << " filter count " << filterModel->rowCount();
     if (0 == filterModel->rowCount()) {
         if (m_searchTextStatusIsEmpty) {
@@ -1216,6 +1216,7 @@ void DFontMgrMainWindow::onFontListViewRowCountChanged()
         }
     }
     bool isSpinnerHidden = m_fontLoadingSpinner->isHidden();
+    qDebug() << __FUNCTION__ << isSpinnerHidden << bShow;
     switch (bShow) {
     case 0:
         while (isSpinnerHidden) {
@@ -1370,9 +1371,7 @@ void DFontMgrMainWindow::delCurrentFont()
         //force delete all fonts
         //disable file system watcher
         Q_EMIT DFontPreviewListDataThread::instance(m_fontPreviewListView)->requestRemoveFileWatchers(uninstallFonts);
-        m_fontManager->setType(DFontManager::UnInstall);
-        m_fontManager->setUnInstallFile(uninstallFonts);
-        m_fontManager->start();
+        Q_EMIT requestDeleted(uninstallFonts);
     });
 
     /* Bug#19111 恢复标记位，不用考虑用户操作 UT00591 */
@@ -1494,18 +1493,12 @@ void DFontMgrMainWindow::dropEvent(QDropEvent *event)
 
 void DFontMgrMainWindow::resizeEvent(QResizeEvent *event)
 {
-    Q_UNUSED(event);
+    Q_UNUSED(event)
     if (0 == int(QWidget::windowState())) {
         m_winHight = geometry().height();
         m_winWidth = geometry().width();
     }
 
-}
-
-bool DFontMgrMainWindow::isPreviewTextEmpty()
-{
-    Q_D(DFontMgrMainWindow);
-    return d->textInputEdit->text().isEmpty();
 }
 
 QString DFontMgrMainWindow::getPreviewTextWithSize(int *fontSize)

@@ -79,7 +79,7 @@ public:
     QStringList getAllChineseFontPath() const;
     QStringList getAllMonoSpaceFontPath() const;
     QString getFontType(const QString &filePath);
-    DFontInfo getFontInfo(const QString &filePath, bool force = false);
+    DFontInfo getFontInfo(const QString &filePath);
     QString getDefaultPreview(const QString &filePath, qint8 &preivewLang);
     QString getInstFontPath(const QString &originPath, const QString &familyName);
     bool isFontInstalled(DFontInfo &data);

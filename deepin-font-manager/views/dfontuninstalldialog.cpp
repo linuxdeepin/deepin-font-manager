@@ -61,7 +61,7 @@ void DFontuninstalldialog::setMainwindow(DFontMgrMainWindow *win)
 
     if (m_mainWindow != nullptr) {
         //start to delete
-        m_mainWindow->startToDelete();
+//        m_mainWindow->startToDelete();
     }
 }
 

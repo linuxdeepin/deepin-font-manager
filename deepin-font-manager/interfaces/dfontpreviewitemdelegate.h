@@ -5,12 +5,12 @@
 
 #include <QFontDatabase>
 
-#include <DStyledItemDelegate>
+#include <QStyledItemDelegate>
 
-DWIDGET_USE_NAMESPACE
+//DWIDGET_USE_NAMESPACE
 
 class DFontPreviewListView;
-class DFontPreviewItemDelegate : public DStyledItemDelegate
+class DFontPreviewItemDelegate : public QStyledItemDelegate
 {
     Q_OBJECT
 
