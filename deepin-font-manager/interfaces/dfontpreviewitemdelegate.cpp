@@ -35,6 +35,7 @@ DFontPreviewItemDelegate::DFontPreviewItemDelegate(QAbstractItemView *parent)
     : QStyledItemDelegate(parent)
     , m_parentView(qobject_cast<DFontPreviewListView *>(parent))
 {
+    parent->viewport()->installEventFilter(this);
 }
 
 void DFontPreviewItemDelegate::paintForegroundCheckBox(QPainter *painter, const QStyleOptionViewItem &option, const DFontPreviewItemData &itemData) const

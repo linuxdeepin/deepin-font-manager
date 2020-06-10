@@ -373,6 +373,23 @@ void DFontPreviewListView::updateModel()
     qDebug() << __FUNCTION__ << "end";
     Q_EMIT m_dataThread->requestAutoDirWatchers();
 
+    /*UT000539 刷新删除后选中状态*/
+    if (m_selectAfterDel != -1) {
+        m_bListviewAtButtom = isAtListviewBottom();
+        m_bListviewAtTop = isAtListviewTop();
+        DFontPreviewProxyModel *filterModel = this->getFontPreviewProxyModel();
+        if (m_bListviewAtButtom && !m_bListviewAtTop) {
+            QModelIndex modelIndex = filterModel->index(m_selectAfterDel - 1, 0);
+            setCurrentIndex(modelIndex);
+        } else if (m_selectAfterDel == filterModel->rowCount()) {
+            QModelIndex modelIndex = filterModel->index(m_selectAfterDel - 1, 0);
+            setCurrentIndex(modelIndex);
+        } else {
+            QModelIndex modelIndex = filterModel->index(m_selectAfterDel, 0);
+            setCurrentIndex(modelIndex);
+        }
+        isSelectedNow = true;
+    }
 
     QFontDatabase::removeAllApplicationFonts();
     DFontManager::instance()->setType(DFontManager::UnInstall);
