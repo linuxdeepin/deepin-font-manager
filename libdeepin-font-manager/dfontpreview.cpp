@@ -282,7 +282,7 @@ bool DFontPreview::checkFontContainText(FT_Face face, const QString &text)
     }
 
     for (auto ch : text) {
-        if (!FT_Get_Char_Index(face, ch.unicode())) {
+        if (!FT_Get_Char_Index(face, ch.unicode()) && ch != "，") {
             retval = false;
             break;
         }
