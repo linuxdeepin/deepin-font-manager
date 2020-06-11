@@ -319,9 +319,11 @@ void DFontPreviewListView::initConnections()
             if (1 == count) {
                 setCurrentSelected(selectionModel()->selectedIndexes().first().row());
                 scrollTo(currentIndex());
-            } else if (count != 1) {
+            } else if (count > 1) {
 //                m_currentSelectedRow = -1;
-                setCurrentSelected(selectionModel()->selectedIndexes().first().row());
+                if (selectedIndexes().count() > 0) {
+                    setCurrentSelected(selectedIndexes().first().row());
+                }
                 isSelectedNow = false;
                 if (selectionModel()->selectedIndexes().count() > 1) {
                     scrollTo(selectionModel()->selectedIndexes().first());
@@ -488,8 +490,8 @@ void DFontPreviewListView::selectFonts(const QStringList &fileList)
     }
 
     QModelIndex cur = currModelIndex();
-    if (cur.isValid())
-        scrollTo(cur);
+//    if (cur.isValid())
+//        scrollTo(cur);
 
     if (selection.size() == 1)
         setCurrentIndex(cur);
@@ -532,8 +534,8 @@ void DFontPreviewListView::selectFont(const QString &file)
 
     QModelIndex cur = currModelIndex();
 
-    if (cur.isValid())
-        scrollTo(cur);
+//    if (cur.isValid())
+//        scrollTo(cur);
 
     selection_model->reset();
     setCurrentIndex(cur);

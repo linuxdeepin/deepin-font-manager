@@ -157,7 +157,6 @@ QString DFMDBManager::isFontInfoExist(const DFontInfo &newFileFontInfo)
 
     if (recordList.size() > 0) {
         QString result = recordList.first().value("filePath");
-
         return result;
     }
 

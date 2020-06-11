@@ -8,6 +8,7 @@ DWIDGET_USE_NAMESPACE
 
 DFontSpinnerWidget::DFontSpinnerWidget(QWidget *parent,  SpinnerStyles styles) : DWidget(parent)
 {
+    Q_UNUSED(styles)
 //    setStyles(styles);
     initUI();
 }
