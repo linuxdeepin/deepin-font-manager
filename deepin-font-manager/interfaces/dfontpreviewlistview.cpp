@@ -373,6 +373,7 @@ void DFontPreviewListView::updateModel()
 
     QList<DFontPreviewItemData> modelist = m_dataThread->getFontModelList();
     onMultiItemsAdded(modelist);
+    emit m_signalManager->fontSizeRequestToSlider();//设置预览大小
     qDebug() << __FUNCTION__ << "end";
     Q_EMIT m_dataThread->requestAutoDirWatchers();
 

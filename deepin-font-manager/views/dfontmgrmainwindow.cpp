@@ -265,6 +265,12 @@ void DFontMgrMainWindow::initConnections()
     QObject::connect(d->fontScaleSlider, &DSlider::sliderPressed, [ = ] {
         d->fontScaleSlider->setFocus(Qt::MouseFocusReason);
     });
+
+    connect(m_signalManager, &SignalManager::fontSizeRequestToSlider, this, [ = ] {
+        m_previewFontSize = d->fontScaleSlider->value();
+        if (30 != m_previewFontSize)
+            onFontSizeChanged(d->fontScaleSlider->value());
+    });
 }
 
 void DFontMgrMainWindow::initShortcuts()

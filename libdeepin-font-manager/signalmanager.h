@@ -38,6 +38,7 @@ signals:
     void refreshFocus(int count);
     void changeView();
     void cancelDel();/*删除确认取消*/
+    void fontSizeRequestToSlider();
 private:
     explicit SignalManager(QObject *parent = nullptr);
 
