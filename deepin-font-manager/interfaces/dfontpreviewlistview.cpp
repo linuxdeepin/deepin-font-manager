@@ -367,6 +367,7 @@ void DFontPreviewListView::updateModel()
 
     if (mw)
         m_fontPreviewProxyModel->setFilterGroup(mw->currentFontGroup());
+    QFontDatabase::removeAllApplicationFonts();
 
     QList<DFontPreviewItemData> modelist = m_dataThread->getFontModelList();
     onMultiItemsAdded(modelist);
@@ -391,7 +392,7 @@ void DFontPreviewListView::updateModel()
         isSelectedNow = true;
     }
 
-    QFontDatabase::removeAllApplicationFonts();
+
     DFontManager::instance()->setType(DFontManager::UnInstall);
     DFontManager::instance()->setUnInstallFile(uninstallFonts);
     DFontManager::instance()->start();
