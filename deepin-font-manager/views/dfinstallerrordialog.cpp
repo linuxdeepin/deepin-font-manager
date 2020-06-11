@@ -59,6 +59,7 @@ DFInstallErrorDialog::DFInstallErrorDialog(QWidget *parent, const QStringList &e
 {
 //    setWindowOpacity(0.3); //Debug
     initData();
+
     initUI();
     emit m_signalManager->popInstallErrorDialog();
     connect(m_signalManager, &SignalManager::updateInstallErrorListview, this, &DFInstallErrorDialog::addData);
@@ -75,6 +76,7 @@ DFInstallErrorDialog::~DFInstallErrorDialog()
     m_systemFilesPsname.clear();
     m_systemFilesFamilyname.clear();
     m_installErrorFontModelList.clear();
+    m_NeedSelectFiles.clear();
     qDebug() << __func__ << "end" << endl;
 }
 
@@ -83,6 +85,8 @@ void DFInstallErrorDialog::initData()
     DFontInfo fontInfo;
     DFontInfoManager *fontInfoManager = DFontInfoManager::instance();
     m_installErrorFontModelList.clear();
+
+
     foreach (auto it, m_errorInstallFiles) {
         fontInfo = fontInfoManager->getFontInfo(it);
 
@@ -104,7 +108,7 @@ void DFInstallErrorDialog::initData()
             itemModel.strFontFileName = fileInfo.fileName();
             itemModel.strFontFilePath = fileInfo.filePath();
             itemModel.strFontInstallStatus = DApplication::translate("DFInstallErrorDialog", "Same version installed");
-
+            m_NeedSelectFiles.append(it);
             m_installErrorFontModelList.push_back(itemModel);
         } else if (isSystemFont(fontInfo)) {
             QFileInfo fileInfo(it);
@@ -120,6 +124,7 @@ void DFInstallErrorDialog::initData()
 //            qDebug() << "verifyFontFiles->" << it << " :new file";
         }
     }
+
 }
 
 void DFInstallErrorDialog::initUI()
@@ -127,6 +132,7 @@ void DFInstallErrorDialog::initUI()
     initMainFrame();
     initTitleBar();
     initInstallErrorFontViews();
+
     connect(this, &DFInstallErrorDialog::closeBtnClicked, this, &DFInstallErrorDialog::onCancelInstall);
 }
 
@@ -280,6 +286,8 @@ void DFInstallErrorDialog::initInstallErrorFontViews()
     m_mainLayout->addWidget(m_installErrorListView);
     m_mainLayout->addWidget(btnFrame);
     m_mainLayout->addStretch();
+
+    m_installErrorListView->setSelectStatus(m_NeedSelectFiles);
 
     connect(m_installErrorListView, SIGNAL(onClickErrorListItem(QModelIndex)), this,
             SLOT(onListItemClicked(QModelIndex)));
