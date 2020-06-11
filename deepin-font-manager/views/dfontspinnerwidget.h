@@ -11,6 +11,7 @@ public:
     enum SpinnerStyles {
         Load,
         Delete,
+        NoLabel,
     };
 
 

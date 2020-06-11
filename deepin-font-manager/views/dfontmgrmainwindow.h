@@ -44,10 +44,6 @@ public:
         Light,
         FollowSystem,
     };
-    enum SpinnerStyles {
-        Load,
-        Delete,
-    };
 
     void setQuickInstallMode(bool isQuick);
     void hideQucikInstallWindow();
@@ -110,7 +106,7 @@ protected:
     void showExportFontMessage(int successCount, int abandonFilesCount);
     void showAllShortcut();
     void showInstalledFiles();
-    void showSpinner(SpinnerStyles styles);
+    void showSpinner(DFontSpinnerWidget::SpinnerStyles styles);
     void hideSpinner();
 
     void waitForInsert(bool deleting = true);
@@ -157,6 +153,7 @@ public slots:
 
     void onLoadStatus(int type);
     void onShowMessage(int totalCount);
+    void onShowSpinner(bool bShow);
 
 protected:
     // For quick install mode

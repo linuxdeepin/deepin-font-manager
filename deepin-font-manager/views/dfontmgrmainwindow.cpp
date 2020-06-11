@@ -223,8 +223,8 @@ void DFontMgrMainWindow::initConnections()
     QObject::connect(d->leftSiderBar, SIGNAL(onListWidgetItemClicked(int)), this,
                      SLOT(onLeftSiderBarItemClicked(int)));
 
-//    QObject::connect(m_fontManager, SIGNAL(uninstallFontFinished(const QStringList &)), this,
-//                     SIGNAL(requestDeleted(const QStringList &)));
+    QObject::connect(m_fontManager, SIGNAL(uninstallFontFinished(const QStringList &)), this,
+                     SIGNAL(requestDeleted(const QStringList &)));
     QObject::connect(m_signalManager, &SignalManager::showInstallFloatingMessage, this, &DFontMgrMainWindow::onShowMessage);
 //    connect(this, &DFontMgrMainWindow::requestUpdatePreview, [ = ] {
 //        QString previewText = d->textInputEdit->text();
@@ -236,7 +236,7 @@ void DFontMgrMainWindow::initConnections()
             &DFontMgrMainWindow::onFontInstallFinished);
 
     connect(m_signalManager, &SignalManager::closeInstallDialog, this, [ = ] {
-        showSpinner(DFontMgrMainWindow::Load);
+        showSpinner(DFontSpinnerWidget::Load);
     });
 
     connect(m_signalManager, &SignalManager::requestInstallAdded, this, &DFontMgrMainWindow::hideSpinner);
@@ -1351,6 +1351,19 @@ void DFontMgrMainWindow::onShowMessage(int successCount)
     }
 }
 
+void DFontMgrMainWindow::onShowSpinner(bool bShow)
+{
+    if (bShow) {
+        showSpinner(DFontSpinnerWidget::NoLabel);
+    } else {
+        m_fontLoadingSpinner->spinnerStop();
+        m_fontLoadingSpinner->hide();
+        m_isNoResultViewShow = false;
+        onFontListViewRowCountChanged();
+        onPreviewTextChanged();
+    }
+}
+
 void DFontMgrMainWindow::delCurrentFont()
 {
     qDebug() << __FUNCTION__ << m_fIsDeleting;
@@ -1377,7 +1390,9 @@ void DFontMgrMainWindow::delCurrentFont()
         //force delete all fonts
         //disable file system watcher
         Q_EMIT DFontPreviewListDataThread::instance(m_fontPreviewListView)->requestRemoveFileWatchers(uninstallFonts);
-        Q_EMIT requestDeleted(uninstallFonts);
+        DFontManager::instance()->setType(DFontManager::UnInstall);
+        DFontManager::instance()->setUnInstallFile(uninstallFonts);
+        DFontManager::instance()->start();
     });
 
     /* Bug#19111 恢复标记位，不用考虑用户操作 UT00591 */
@@ -1582,7 +1597,7 @@ void DFontMgrMainWindow::showInstalledFiles()
 
 
 //通过styles来决定标签显示内容
-void DFontMgrMainWindow::showSpinner(DFontMgrMainWindow::SpinnerStyles styles)
+void DFontMgrMainWindow::showSpinner(DFontSpinnerWidget::SpinnerStyles styles)
 {
     D_D(DFontMgrMainWindow);
 
@@ -1590,11 +1605,9 @@ void DFontMgrMainWindow::showSpinner(DFontMgrMainWindow::SpinnerStyles styles)
     m_fontPreviewListView->hide();
     m_noResultListView->hide();
     d->stateBar->hide();
-    if (styles == DFontMgrMainWindow::Load) {
-        m_fontLoadingSpinner->setStyles(DFontSpinnerWidget::Load);
-    } else if (styles == DFontMgrMainWindow::Delete) {
-        m_fontLoadingSpinner->setStyles(DFontSpinnerWidget::Delete);
-    }
+
+    m_fontLoadingSpinner->setStyles(styles);
+
     m_fontLoadingSpinner->show();
     m_fontLoadingSpinner->spinnerStart();
 }

@@ -37,6 +37,9 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
     connect(this, &DFontPreviewListView::itemRemoved, this, &DFontPreviewListView::onItemRemoved);
     connect(this, &DFontPreviewListView::itemRemovedFromSys, this, &DFontPreviewListView::onItemRemovedFromSys);
     connect(this, &DFontPreviewListView::requestUpdateModel, this, &DFontPreviewListView::updateModel);
+    DFontMgrMainWindow *mw = qobject_cast<DFontMgrMainWindow *>(m_parentWidget);
+    if (mw)
+        connect(this, &DFontPreviewListView::requestShowSpinner, mw, &DFontMgrMainWindow::onShowSpinner, Qt::BlockingQueuedConnection);
     connect(m_signalManager, &SignalManager::cancelDel, this, [ = ] {
         m_selectAfterDel = -1;
     });
@@ -63,7 +66,6 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
     setUpdatesEnabled(true);
     setSelectionMode(QAbstractItemView::ExtendedSelection);
 
-    DFontMgrMainWindow *mw = qobject_cast<DFontMgrMainWindow *>(m_parentWidget);
     if (mw)
         connect(mw, &DFontMgrMainWindow::requestDeleted, this, [ = ](const QStringList files) {
         qDebug() << " requestDeleted";
@@ -375,7 +377,6 @@ void DFontPreviewListView::updateModel()
     onMultiItemsAdded(modelist);
     emit m_signalManager->fontSizeRequestToSlider();//设置预览大小
     qDebug() << __FUNCTION__ << "end";
-    Q_EMIT m_dataThread->requestAutoDirWatchers();
 
     /*UT000539 刷新删除后选中状态*/
     if (m_selectAfterDel != -1) {
@@ -395,10 +396,6 @@ void DFontPreviewListView::updateModel()
         isSelectedNow = true;
     }
 
-
-    DFontManager::instance()->setType(DFontManager::UnInstall);
-    DFontManager::instance()->setUnInstallFile(uninstallFonts);
-    DFontManager::instance()->start();
     qDebug() << __FUNCTION__ << " delete fonts cost " << QDateTime::currentMSecsSinceEpoch() - start << "ms";
 }
 
@@ -1288,10 +1285,10 @@ void DFontPreviewListView::deleteCurFonts(const QStringList &files)
     enableFonts();
 
     Q_EMIT requestUpdateModel();
+    m_dataThread->onAutoDirWatchers();
 
     Q_EMIT rowCountChanged();
     Q_EMIT deleteFinished();
-//    qDebug() << __FUNCTION__ << " after delete " << m_dataThread->getFontModelList().size() << m_fontPreviewProxyModel->rowCount()  << m_fontPreviewProxyModel->sourceModel()->rowCount();
 }
 
 void DFontPreviewListView::changeFontFile(const QString &path, bool force)

@@ -15,7 +15,6 @@ DFontPreviewProxyModel::DFontPreviewProxyModel(QObject *parent)
 
 DFontPreviewProxyModel::~DFontPreviewProxyModel()
 {
-    qDebug() << __FUNCTION__;
 }
 
 void DFontPreviewProxyModel::setFilterGroup(int filterGroup)
