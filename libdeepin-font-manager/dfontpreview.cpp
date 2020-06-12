@@ -292,8 +292,17 @@ bool DFontPreview::checkFontContainText(FT_Face face, const QString &text)
 }
 
 //if it is special symbol (return value is true) it will be filtered and not show up in preview text
-bool isSpecialSymbol(uint ucs4)
+bool isSpecialSymbol(FT_Face face, uint ucs4)
 {
+    unsigned int glyph = FT_Get_Char_Index(face, ucs4);
+    int err;
+
+    err = FT_Load_Glyph(face, glyph, FT_LOAD_NO_SCALE);
+
+    if (err == 0 && face->glyph->metrics.width == 0 && face->glyph->metrics.height == 0) {
+        return true;
+    }
+
     if ((ucs4 >= 0x610 && ucs4 <= 0x615) || (ucs4 >= 0x64B && ucs4 <= 0x65E)  //Kufi
             || (ucs4 >= 0x21 && ucs4 <= 0x30) || (ucs4 >= 0x7E && ucs4 <= 0xBB) || (ucs4 >= 0x300 && ucs4 <= 0x36F)
             || (ucs4 >= 0x64B && ucs4 <= 0x655) || (ucs4 >= 0x670 && ucs4 <= 0x700) //Syriac
@@ -362,7 +371,7 @@ QString DFontPreview::buildCharlistForFace(FT_Face face, int length)
         QString outStr;
 
         for (int i = index; len > 0 && i < retCount - index; i++) {
-            if (isSpecialSymbol(ucs4List.at(i)))
+            if (isSpecialSymbol(face, ucs4List.at(i)))
                 continue;
             retval += QString::fromUcs4(&ucs4List[i], 1);
             len--;

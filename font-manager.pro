@@ -13,4 +13,5 @@ SUBDIRS += \
 
 deepin-font-manager.depends = libdeepin-font-manager
 deepin-font-preview-plugin.depends = libdeepin-font-manager
-dfont-install.depends = libdeepin-font-manager
+#dfont-install.depends = libdeepin-font-manager
+CMAKE_CXX_FLAGS += -Wall -Wextra
