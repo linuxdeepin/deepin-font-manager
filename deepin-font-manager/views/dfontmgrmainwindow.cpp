@@ -269,7 +269,11 @@ void DFontMgrMainWindow::initConnections()
     connect(m_signalManager, &SignalManager::fontSizeRequestToSlider, this, [ = ] {
         m_previewFontSize = d->fontScaleSlider->value();
         if (30 != m_previewFontSize)
-            onFontSizeChanged(d->fontScaleSlider->value());
+            onFontSizeChanged(m_previewFontSize);
+        if (!d->searchFontEdit->text().isEmpty())
+        {
+            onSearchTextChanged(d->searchFontEdit->text());
+        }
     });
 }
 
