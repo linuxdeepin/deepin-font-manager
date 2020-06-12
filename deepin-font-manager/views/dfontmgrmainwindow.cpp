@@ -274,6 +274,13 @@ void DFontMgrMainWindow::initConnections()
         {
             onSearchTextChanged(d->searchFontEdit->text());
         }
+        m_isDeleting = false;
+        //删除过程中安装字体，删除过后要继续安装
+        qDebug() << "m_waitForInstall" << m_waitForInstall;
+        if (m_waitForInstall.count() > 0)
+        {
+            installFont(m_waitForInstall);
+        }
     });
 }
 
@@ -1399,10 +1406,10 @@ void DFontMgrMainWindow::delCurrentFont()
         DFontManager::instance()->start();
     });
 
-    /* Bug#19111 恢复标记位，不用考虑用户操作 UT00591 */
-    connect(confirmDelDlg, &DFDeleteDialog::closed, this, [this]() {
-        m_isDeleting = false;
-    });
+    /* Bug#19111 恢复标记位，不用考虑用户操作 UT00591 */  //ut000794
+    //connect(confirmDelDlg, &DFDeleteDialog::closed, this, [this]() {
+    //m_isDeleting = false;
+    // });
 
 //    confirmDelDlg->move((this->width() - confirmDelDlg->width() - 230 + mapToGlobal(QPoint(0, 0)).x()), (mapToGlobal(QPoint(0, 0)).y() + 180));
     confirmDelDlg->move(this->geometry().center() - confirmDelDlg->rect().center());

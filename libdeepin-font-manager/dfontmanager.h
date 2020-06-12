@@ -47,6 +47,7 @@ public:
 
     bool getIsWaiting() const;
 
+
 private slots:
     void handleInstallOutput();
     void handleReInstallOutput();
