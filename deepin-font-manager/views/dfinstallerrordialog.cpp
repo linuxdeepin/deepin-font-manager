@@ -339,6 +339,7 @@ void DFInstallErrorDialog::onListItemClicked(QModelIndex index)
         qvariant_cast<DFInstallErrorItemModel>(m_installErrorListView->getErrorListSourceModel()->data(index));
     itemModel.bChecked = !itemModel.bChecked;
     m_installErrorListView->getErrorListSourceModel()->setData(index, QVariant::fromValue(itemModel), Qt::DisplayRole);
+    m_installErrorListView->updateErrorFontModelList(index.row(), itemModel);
 
     resetContinueInstallBtnStatus();
 }
@@ -407,6 +408,8 @@ void DFInstallErrorDialog::addData(QStringList &errorFileList, QStringList &half
             m_updateInstallErrorFontModelList.push_back(itemModel);
         }
     }
+
+//    m_installErrorListView->getErrorListSourceModel();
 
     m_installErrorListView->addErrorListData(m_updateInstallErrorFontModelList);
     m_installErrorListView->checkScrollToIndex(addHalfInstalledFiles, oldHalfInstalledFiles, errorFileList);

@@ -52,6 +52,7 @@ public:
     void checkScrollToIndex(QStringList &addHalfInstalledFiles, QStringList &oldHalfInstalledFiles, QStringList &errorFileList);
     void scrollToIndex(QString &filePath);
     void setSelectStatus(QStringList &HalfInstalledFiles);
+    void updateErrorFontModelList(int index, DFInstallErrorItemModel m_currentItemModel);
     QStandardItemModel *getErrorListSourceModel();
 
 private:

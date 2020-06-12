@@ -445,11 +445,21 @@ void DFInstallErrorListView::setSelectStatus(QStringList &HalfInstalledFiles)
             fileName = info.psname + info.styleName;
         }
         if (str.contains(fileName)) {
+            if (!itemData.bChecked) {
+                itemData.bChecked = true;
+                updateErrorFontModelList(i, itemData);
+                m_errorListSourceModel->setData(modelIndex, QVariant::fromValue(itemData), Qt::DisplayRole);
+            }
             if (itemData.bSelectable) {
                 selectionModel()->select(modelIndex, QItemSelectionModel::Select);
             }
         }
     }
+}
+
+void DFInstallErrorListView::updateErrorFontModelList(int index, DFInstallErrorItemModel m_currentItemModel)
+{
+    m_installErrorFontModelList.replace(index, m_currentItemModel);
 }
 
 QStandardItemModel *DFInstallErrorListView::getErrorListSourceModel()
