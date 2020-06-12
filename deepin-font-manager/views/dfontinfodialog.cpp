@@ -179,6 +179,7 @@ void DFontInfoDialog::initUI()
     scrollArea->setFrameShape(QFrame::Shape::NoFrame);
 
     fontinfoArea = new dfontinfoscrollarea(m_fontInfo);
+    fontinfoArea->setFixedWidth(290);
     scrollArea->setWidget(fontinfoArea);
     scrollArea->setWidgetResizable(true);
     scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAlwaysOff);
@@ -293,4 +294,3 @@ void DFontInfoDialog::resizeEvent(QResizeEvent *event)
     DFontBaseDialog::resizeEvent(event);
 
 }
-
