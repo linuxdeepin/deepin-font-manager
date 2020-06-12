@@ -55,7 +55,7 @@ public:
 
 
     void setRightContextMenu(QMenu *rightMenu);
-
+    QTimer *m_timerOfFreshed;//判断删除后是否刷新
     QModelIndex currModelIndex();
     DFontPreviewItemData currModelData();
     DFontPreviewProxyModel *getFontPreviewProxyModel();
@@ -82,6 +82,10 @@ public:
     bool isAtListviewTop();
     QString getPreviewTextWithSize(int *fontSize = nullptr);
     void setCurrentSelected(int indexRow);
+    void isNeedScrollToBottom();
+    void cancelDel();
+    void viewChanged();
+    void refreshFocuses(int count);
     static bool misdelete;//是否是删除操作
 
 protected:
