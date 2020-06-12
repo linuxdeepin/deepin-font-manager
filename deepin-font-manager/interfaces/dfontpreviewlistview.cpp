@@ -1028,6 +1028,7 @@ void DFontPreviewListView::onListViewItemEnableBtnClicked(const QModelIndexList 
     //        itemIndexesNew.append(itemIndexes[itemIndexes.count() - 1 - i]);
     //    }
 
+    QList<DFontPreviewItemData> modelist = m_dataThread->getFontModelList();
 
     for (QModelIndex &index : itemIndexesNew) {
         //        DFontPreviewItemData itemData =
@@ -1041,7 +1042,7 @@ void DFontPreviewListView::onListViewItemEnableBtnClicked(const QModelIndexList 
 
         //        qDebug() << __FUNCTION__ << "familyName" << itemData.fontInfo.familyName << endl;
 
-
+        int idx = modelist.indexOf(itemData);
         if (setValue) {
             enableFont(itemData.fontInfo.filePath);
             itemData.isEnabled = setValue;
@@ -1057,7 +1058,7 @@ void DFontPreviewListView::onListViewItemEnableBtnClicked(const QModelIndexList 
                 count++;
             }
         }
-
+        m_dataThread->updateItemStatus(idx, itemData);//更新状态
         DFMDBManager::instance()->updateFontInfo(itemData, "isEnabled");
 
         m_fontPreviewProxyModel->setData(index, QVariant::fromValue(itemData), Qt::DisplayRole);
@@ -1103,13 +1104,15 @@ void DFontPreviewListView::onListViewItemCollectionBtnClicked(const QModelIndexL
     QMutexLocker locker(&m_mutex);
     QModelIndexList itemIndexesNew = index;
     sortModelIndexList(itemIndexesNew);
+    QList<DFontPreviewItemData> modelist = m_dataThread->getFontModelList();
     for (QModelIndex &index : itemIndexesNew) {
         DFontPreviewItemData itemData =
             qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(index));
         itemData.isCollected = setValue;
         //        DFMDBManager::instance()->updateFontInfoByFontId(itemData.strFontId, "isCollected", QString::number(itemData.isCollected));
         DFMDBManager::instance()->updateFontInfo(itemData, "isCollected");
-
+        int idx = modelist.indexOf(itemData);
+        m_dataThread->updateItemStatus(idx, itemData);//更新状态
         m_fontPreviewProxyModel->setData(index, QVariant::fromValue(itemData), Qt::DisplayRole);
     }
     if (isFromCollectFont == true) {

@@ -203,6 +203,12 @@ QList<DFontPreviewItemData> DFontPreviewListDataThread::getFontModelList()
     return QList<DFontPreviewItemData>();
 }
 
+//更新itemDataList的itemData状态
+void DFontPreviewListDataThread::updateItemStatus(int index, DFontPreviewItemData itemData)
+{
+    m_fontModelList.replace(index, itemData);
+}
+
 QList<DFontPreviewItemData> DFontPreviewListDataThread::getDiffFontModelList() const
 {
     return m_diffFontModelList;

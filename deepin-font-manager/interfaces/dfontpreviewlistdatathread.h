@@ -40,6 +40,7 @@ public:
     QList<DFontPreviewItemData> getDiffFontModelList() const;
     void setMutex(QMutex *mutex);
 
+    void updateItemStatus(int index, DFontPreviewItemData itemData);
 signals:
     void resultReady();
     void requestForceDeleteFiles(const QStringList &files);
