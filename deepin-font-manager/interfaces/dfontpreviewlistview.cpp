@@ -661,6 +661,7 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
                 DFontPreviewItemData itemData = qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(modelIndex));
                 itemData.collectIconStatus =  IconNormal;
                 m_fontPreviewProxyModel->setData(modelIndex, QVariant::fromValue(itemData), Qt::DisplayRole);
+                Q_EMIT m_signalManager->refreshFocus(this->selectedIndexes().count());
                 m_rightMenu->exec(QCursor::pos());
                 return;
             }
