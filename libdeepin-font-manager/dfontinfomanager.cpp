@@ -508,7 +508,7 @@ void DFontInfoManager::checkStyleName(DFontInfo &f)
         << "AnyStretch" << "UltraCondensed" << "ExtraCondensed" << "Condensed" << "SemiCondensed" << "Unstretched" << "SemiExpanded" << "Expanded"
         << "ExtraExpanded" << "UltraExpanded";
 //有些字体文件因为不规范导致的stylename为空，通过psname来判断该字体的stylename。
-    if (!str.contains(f.styleName)) {
+    if (f.styleName.contains("?")) {
         if (f.psname != "") {
             if (f.psname.contains("Regular")) {
                 f.styleName = "Regular";
@@ -546,15 +546,13 @@ void DFontInfoManager::checkStyleName(DFontInfo &f)
                 f.styleName = "ExtraExpanded";
             } else if (f.psname.contains("UltraExpanded")) {
                 f.styleName = "UltraExpanded";
+            } else {
+                f.styleName = "Unknown";
             }
         }
-        //有些字体及其特殊，解析获得的信息中获取不到任何有关stylename的信息，对于这种字体，stylename设置为Unknown
-        if (!str.contains(f.styleName)) {
-            f.styleName = "Unknown";
-        }
+//        //有些字体及其特殊，解析获得的信息中获取不到任何有关stylename的信息，对于这种字体，stylename设置为Unknown
+//        if (!str.contains(f.styleName)) {
+//            f.styleName = "Unknown";
+//        }
     }
-//    //有些字体及其特殊，解析获得的信息中获取不到任何有关stylename的信息，对于这种字体，stylename设置为Unknown
-//    if (!str.contains(f.styleName)) {
-//        f.styleName = "Unknown";
-//    }
 }
