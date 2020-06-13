@@ -407,6 +407,9 @@ void DFontPreviewListView::updateModel()
 
     if (m_bListviewAtButtom)
         m_timerOfFreshed->start(2);
+//删除之后设置焦点
+    Q_EMIT m_signalManager->refreshFocus(1);
+
 }
 
 QRect DFontPreviewListView::getCollectionIconRect(QRect visualRect)
@@ -661,6 +664,8 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
                 DFontPreviewItemData itemData = qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(modelIndex));
                 itemData.collectIconStatus =  IconNormal;
                 m_fontPreviewProxyModel->setData(modelIndex, QVariant::fromValue(itemData), Qt::DisplayRole);
+
+                //鼠标右击时,重新设置焦点
                 Q_EMIT m_signalManager->refreshFocus(this->selectedIndexes().count());
                 m_rightMenu->exec(QCursor::pos());
                 return;
