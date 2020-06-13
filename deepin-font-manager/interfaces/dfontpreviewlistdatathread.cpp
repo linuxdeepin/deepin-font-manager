@@ -466,11 +466,12 @@ void DFontPreviewListDataThread::checkStyleName(DFontInfo &f)
                 f.styleName = "UltraExpanded";
             }
         }
+        //有些字体及其特殊，解析获得的信息中获取不到任何有关stylename的信息，对于这种字体，stylename设置为Unknown
+        if (!str.contains(f.styleName)) {
+            f.styleName = "Unknown";
+        }
     }
-//有些字体及其特殊，解析获得的信息中获取不到任何有关stylename的信息，对于这种字体，stylename设置为Unknown
-    if (!str.contains(f.styleName)) {
-        f.styleName = "Unknown";
-    }
+
 }
 
 

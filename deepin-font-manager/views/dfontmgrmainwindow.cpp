@@ -236,7 +236,13 @@ void DFontMgrMainWindow::initConnections()
             &DFontMgrMainWindow::onFontInstallFinished);
 
     connect(m_signalManager, &SignalManager::closeInstallDialog, this, [ = ] {
-        showSpinner(DFontSpinnerWidget::Load);
+//        if (m_dfNormalInstalldlg->isVisible())
+//        {
+//            m_dfNormalInstalldlg->deleteLater();
+//        }
+
+//        showSpinner(DFontSpinnerWidget::Load);
+
     });
 
     connect(m_signalManager, &SignalManager::requestInstallAdded, this, &DFontMgrMainWindow::hideSpinner);
@@ -259,6 +265,15 @@ void DFontMgrMainWindow::initConnections()
     connect(m_signalManager, &SignalManager::installOver, this, [ = ](int successInstallCount) {
         m_isInstallOver = true;
         m_successInstallCount = successInstallCount;
+
+        if (m_dfNormalInstalldlg->isVisible()) {
+            m_dfNormalInstalldlg->deleteLater();
+        }
+        if (successInstallCount > 0) {
+            showSpinner(DFontSpinnerWidget::Load);
+        }
+
+
     });
 
     /*UT000539 增加slider press聚焦的判断*/
@@ -1029,6 +1044,7 @@ void DFontMgrMainWindow::installFont(const QStringList &files)
 
 //    Dtk::Widget::moveToCenter(m_dfNormalInstalldlg);
     m_dfNormalInstalldlg->exec();
+//    m_dfNormalInstalldlg->setModal(true);
 
     //Clear installtion flag when NormalInstalltion window is closed
     m_fIsInstalling = false;

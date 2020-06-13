@@ -156,6 +156,7 @@ void DFontPreviewListView::onMultiItemsAdded(QList<DFontPreviewItemData> &data)
     //    qDebug() << __FUNCTION__ << data.size() << rows;
 
     int i = 0;
+    qDebug() << "start" << endl;
     bool res = sourceModel->insertRows(rows, data.size());
     if (!res) {
         qDebug() << __FUNCTION__ << "insertRows fail";

@@ -345,11 +345,11 @@ void DFInstallNormalWindow::checkShowMessage()
         //        m_installAdded = false;
         emit m_signalManager->finishFontInstall(m_outfileList);
         emit m_signalManager->installOver(m_installedFilesFontinfo.count());
-        if (m_outfileList.count() > 0) {
-            emit m_signalManager->closeInstallDialog();
-        }
+//        if (m_outfileList.count() > 0) {
+//        emit m_signalManager->closeInstallDialog();
+//        }
         m_outfileList.clear();
-        this->hide();
+//        this->hide();
     }
 
     if (getInstallMessage == true && m_popedInstallErrorDialg == false) {
