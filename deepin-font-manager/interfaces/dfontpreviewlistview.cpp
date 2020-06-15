@@ -337,17 +337,19 @@ void DFontPreviewListView::refreshFocuses(bool isJustInstalled, int count)
     m_isJustInstalled = true;
     QTimer::singleShot(50, [ = ]() {
         setFocus(Qt::MouseFocusReason);
-        if (1 == count) {
-            setCurrentSelected(selectionModel()->selectedIndexes().first().row());
-            scrollTo(currentIndex());
-        } else if (count > 1) {
-//                m_currentSelectedRow = -1;
-            if (selectedIndexes().count() > 0) {
-                setCurrentSelected(selectedIndexes().first().row());
-            }
-            isSelectedNow = false;
-            if (selectionModel()->selectedIndexes().count() > 1) {
-                scrollTo(selectionModel()->selectedIndexes().first());
+        if (isJustInstalled) {
+            if (1 == count) {
+                setCurrentSelected(selectionModel()->selectedIndexes().first().row());
+                scrollTo(currentIndex());
+            } else if (count > 1) {
+                //                m_currentSelectedRow = -1;
+                if (selectedIndexes().count() > 0) {
+                    setCurrentSelected(selectedIndexes().first().row());
+                }
+                isSelectedNow = false;
+                if (selectionModel()->selectedIndexes().count() > 1) {
+                    scrollTo(selectionModel()->selectedIndexes().first());
+                }
             }
         }
     });
