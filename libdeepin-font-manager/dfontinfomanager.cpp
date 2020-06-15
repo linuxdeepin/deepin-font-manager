@@ -57,7 +57,7 @@ inline bool isSystemFont(QString filePath)
     }
 }
 
-QString convertToUtf8(char *content, int len)
+QString convertToUtf8(unsigned char *content, unsigned int len)
 {
     QString convertedStr = "";
 
@@ -68,8 +68,8 @@ QString convertToUtf8(char *content, int len)
 
     // UTF16BE to UTF8.
     iconv_t code = iconv_open("UTF-8", "UTF-16BE");
-    iconv(code, &content, &inputBufferSize, &outputBuffer, &outputBufferSize);
-    int actuallyUsed = outputBuffer - backupPtr;
+    iconv(code, reinterpret_cast<char **>(&content), &inputBufferSize, &outputBuffer, &outputBufferSize);
+    int actuallyUsed = static_cast<int>(outputBuffer - backupPtr);
 
     convertedStr = QString::fromUtf8(QByteArray(backupPtr, actuallyUsed));
     iconv_close(code);
@@ -350,9 +350,9 @@ DFontInfo DFontInfoManager::getFontInfo(const QString &filePath)
 
     if (FT_IS_SFNT(m_face)) {
         FT_SfntName sname;
-        const int count = FT_Get_Sfnt_Name_Count(m_face);
+        const unsigned int count = FT_Get_Sfnt_Name_Count(m_face);
 
-        for (int i = 0; i < count; ++i) {
+        for (unsigned int i = 0; i < count; ++i) {
             if (FT_Get_Sfnt_Name(m_face, i, &sname) != 0) {
                 continue;
             }
@@ -370,28 +370,28 @@ DFontInfo DFontInfoManager::getFontInfo(const QString &filePath)
 
             switch (sname.name_id) {
             case TT_NAME_ID_COPYRIGHT:
-                fontInfo.copyright = convertToUtf8((char *)sname.string, sname.string_len).simplified();
+                fontInfo.copyright = convertToUtf8(sname.string, sname.string_len).simplified();
                 break;
 
             case TT_NAME_ID_VERSION_STRING:
-                fontInfo.version = convertToUtf8((char *)sname.string, sname.string_len);
+                fontInfo.version = convertToUtf8(sname.string, sname.string_len);
                 fontInfo.version = fontInfo.version.remove("Version").simplified();
                 break;
 
             case TT_NAME_ID_DESCRIPTION:
-                fontInfo.description = convertToUtf8((char *)sname.string, sname.string_len).simplified();
+                fontInfo.description = convertToUtf8(sname.string, sname.string_len).simplified();
                 break;
 
             case TT_NAME_ID_FULL_NAME:
-                fontInfo.fullname = convertToUtf8((char *)sname.string, sname.string_len).simplified();
+                fontInfo.fullname = convertToUtf8(sname.string, sname.string_len).simplified();
                 break;
 
             case TT_NAME_ID_TRADEMARK:
-                fontInfo.trademark = convertToUtf8((char *)sname.string, sname.string_len).simplified();
+                fontInfo.trademark = convertToUtf8(sname.string, sname.string_len).simplified();
                 break;
 
             case TT_NAME_ID_PS_NAME:
-                fontInfo.psname = convertToUtf8((char *)sname.string, sname.string_len).simplified();
+                fontInfo.psname = convertToUtf8(sname.string, sname.string_len).simplified();
                 break;
 
             default:

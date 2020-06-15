@@ -141,9 +141,6 @@ void DFontManager::run()
     case UnInstall:
         handleUnInstall();
         break;
-
-    default:
-        break;
     }
 }
 

@@ -50,7 +50,7 @@ includes.files += $$PWD/*.h
 isEmpty(PREFIX) {
     PREFIX = /usr
 }
-system($$PWD/../deepin_font_manager/translate_generation.sh): error("Failed to generate translation")
+
 isEmpty(LIB_INSTALL_DIR) {
     target.path = $$[QT_INSTALL_LIBS]
 } else {
@@ -65,12 +65,12 @@ isEmpty(INCLUDE_INSTALL_DIR) {
 
 
 translations.path = /usr/share/deepin-font-manager/translations
-translations.files = $$PWD/translations/*.qm
+translations.files = $$PWD/../translations/*.qm
 
 contents_file.path = /usr/share/deepin-font-manager/
 contents_file.files += $$PWD/CONTENTS.txt
 
-INSTALLS += target includes contents_file  policy translations
+INSTALLS += target includes contents_file translations
 
 TRANSLATIONS += ../translations/deepin-font-manager.ts
 
