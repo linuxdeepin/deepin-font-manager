@@ -30,9 +30,6 @@ public:
 
     QSize sizeHint(const QStyleOptionViewItem &option,
                    const QModelIndex &index) const override;
-
-private:
-    QAbstractItemView *m_parentView;
 };
 
 class DFInstallErrorListView : public DListView

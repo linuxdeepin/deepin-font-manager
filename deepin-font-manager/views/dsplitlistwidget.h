@@ -63,8 +63,8 @@ public slots:
     void setRefreshFinished(bool isInstalling);
 protected:
     void mouseMoveEvent(QMouseEvent *event) override;
-    void mousePressEvent(QMouseEvent *event)override;
-    void wheelEvent(QWheelEvent *event);
+    void mousePressEvent(QMouseEvent *event) override;
+    void wheelEvent(QWheelEvent *event) override;
 };
 
 Q_DECLARE_METATYPE(DSplitListWidget::FontGroup)

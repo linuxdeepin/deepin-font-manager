@@ -170,6 +170,19 @@ void DFontPreviewListView::onMultiItemsAdded(QList<DFontPreviewItemData> &data)
         int appFontId = QFontDatabase::addApplicationFont(itemData.fontInfo.filePath);
         itemData.appFontId = appFontId;
 
+        QString strFontName;
+        if (!QFontDatabase::applicationFontFamilies(appFontId).isEmpty()) {
+            if (QFontDatabase::applicationFontFamilies(appFontId).first() != itemData.fontInfo.familyName) {
+                QString styleName = (itemData.strFontName.split("-").length() > 1) ? itemData.strFontName.split("-").last() : QString();
+                if (styleName.isEmpty()) {
+                    strFontName = QFontDatabase::applicationFontFamilies(appFontId).first();
+                } else {
+                    strFontName = QString("%1-%2").arg(QFontDatabase::applicationFontFamilies(appFontId).first()).arg(styleName);
+                }
+                itemData.strFontName = strFontName;
+            }
+        }
+
         res = sourceModel->setData(index, QVariant::fromValue(itemData), Qt::DisplayRole);
         if (!res)
             qDebug() << __FUNCTION__ << "setData fail";

@@ -17,7 +17,6 @@
 
 DFInstallErrorListDelegate::DFInstallErrorListDelegate(QAbstractItemView *parent)
     : DStyledItemDelegate(parent)
-    , m_parentView(parent)
 {
 }
 
