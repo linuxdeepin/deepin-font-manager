@@ -137,12 +137,15 @@ QPoint DFontPreviewItemDelegate::adjustPreviewFontBaseLinePoint(const QRect &fon
 
 QFont DFontPreviewItemDelegate::adjustPreviewFont(const int appFontId, const QString &fontFamilyName, const QString &fontStyleName, const int &fontSize) const
 {
+
     QString familyName = QFontDatabase::applicationFontFamilies(appFontId).isEmpty() ? fontFamilyName : QFontDatabase::applicationFontFamilies(appFontId).first();
-    QFont font = QFont(familyName);
+    QFont font;
+    font.setFamily(familyName);
+    font.setStyleName(fontStyleName);
     font.setPixelSize(fontSize);
-    font.setItalic(fontStyleName.contains("Italic"));
+//    font.setItalic(fontStyleName.contains("Italic"));
     //设置字体 ut000794
-    setfont(font, fontStyleName);
+//    setfont(font, fontStyleName);
     return font;
 }
 

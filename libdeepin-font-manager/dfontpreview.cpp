@@ -83,32 +83,38 @@ void DFontPreview::paintEvent(QPaintEvent *e)
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing, true);
 
-    QFont font(fontDatabase.applicationFontFamilies(0).first());
+    QFont font;
+    QString familyName = fontDatabase.applicationFontFamilies(0).first();
+    font.setFamily(familyName);
+
+    font.setStyleName(styleName);
     painter.setPen(Qt::black);
 
-    if (styleName.contains("Italic")) {
-        font.setItalic(true);
-    }
+//这里不需要这样进行设置,只需要在上面设置stylename就可以了
 
-    if (styleName.contains("Regular")) {
-        font.setWeight(QFont::Normal);
-    } else if (styleName.contains("Bold")) {
-        font.setWeight(QFont::Bold);
-    } else if (styleName.contains("Light")) {
-        font.setWeight(QFont::Light);
-    } else if (styleName.contains("Thin")) {
-        font.setWeight(QFont::Thin);
-    } else if (styleName.contains("ExtraLight")) {
-        font.setWeight(QFont::ExtraLight);
-    } else if (styleName.contains("ExtraBold")) {
-        font.setWeight(QFont::ExtraBold);
-    } else if (styleName.contains("Medium")) {
-        font.setWeight(QFont::Medium);
-    } else if (styleName.contains("DemiBold")) {
-        font.setWeight(QFont::DemiBold);
-    } else if (styleName.contains("Black")) {
-        font.setWeight(QFont::Black);
-    }
+//    if (styleName.contains("Italic")) {
+//        font.setItalic(true);
+//    }
+
+//    if (styleName.contains("Regular")) {
+//        font.setWeight(QFont::Normal);
+//    } else if (styleName.contains("Bold")) {
+//        font.setWeight(QFont::Bold);
+//    } else if (styleName.contains("Light")) {
+//        font.setWeight(QFont::Light);
+//    } else if (styleName.contains("Thin")) {
+//        font.setWeight(QFont::Thin);
+//    } else if (styleName.contains("ExtraLight")) {
+//        font.setWeight(QFont::ExtraLight);
+//    } else if (styleName.contains("ExtraBold")) {
+//        font.setWeight(QFont::ExtraBold);
+//    } else if (styleName.contains("Medium")) {
+//        font.setWeight(QFont::Medium);
+//    } else if (styleName.contains("DemiBold")) {
+//        font.setWeight(QFont::DemiBold);
+//    } else if (styleName.contains("Black")) {
+//        font.setWeight(QFont::Black);
+//    }
 
     const int padding = 30;
     const int x = 35;

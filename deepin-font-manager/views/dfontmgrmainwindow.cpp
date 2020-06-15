@@ -1011,7 +1011,6 @@ void DFontMgrMainWindow::installFont(const QStringList &files)
 //    qint64 m_currentDiskSpace = getDiskSpace();
 //    if (m_currentDiskSpace == 0)
 //        return;
-
     QStringList m_installFiles = checkFilesSpace(files);
     m_abandonFilesCount = files.count() - m_installFiles.count();
     if (m_installFiles.count() == 0) {
@@ -1019,12 +1018,10 @@ void DFontMgrMainWindow::installFont(const QStringList &files)
         return;
     }
 
-
     if (m_fIsInstalling) {
         qDebug() << "Already exist a installtion flow";
         return;
     }
-
 
     m_fontPreviewListView->clearSelection();
     m_dfNormalInstalldlg = new DFInstallNormalWindow(m_installFiles, this);
@@ -1032,8 +1029,6 @@ void DFontMgrMainWindow::installFont(const QStringList &files)
     if (m_isQuickMode) {
         m_dfNormalInstalldlg->setSkipException(true);
     }
-
-
 
     //Set installtion flag
     /*
