@@ -80,12 +80,14 @@ public:
     void toSetCurrentIndex(QModelIndexList &itemIndexesNew, int count, int size);
     bool isAtListviewBottom();
     bool isAtListviewTop();
+    bool m_IsNeedFocus = false;//是否需要设置聚焦
     QString getPreviewTextWithSize(int *fontSize = nullptr);
     void setCurrentSelected(int indexRow);
     void isNeedScrollToBottom();
     void cancelDel();
     void viewChanged();
     void refreshFocuses(bool isJustInstalled, int count);
+    void setNeedFocus();
     static bool misdelete;//是否是删除操作
 
 protected:

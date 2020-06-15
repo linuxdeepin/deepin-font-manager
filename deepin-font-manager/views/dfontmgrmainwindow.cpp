@@ -893,8 +893,9 @@ void DFontMgrMainWindow::initStateBar()
 
 void DFontMgrMainWindow::handleAddFontEvent()
 {
+    if (m_fontPreviewListView->hasFocus())
+        m_fontPreviewListView->setNeedFocus();
     Q_D(DFontMgrMainWindow);
-
     DFileDialog dialog;
     dialog.setFileMode(DFileDialog::ExistingFiles);
     dialog.setNameFilter(Utils::suffixList());
@@ -1200,7 +1201,6 @@ void DFontMgrMainWindow::onLeftSiderBarItemClicked(int index)
     qDebug() << filterGroup << endl;
 
     DFontPreviewProxyModel *filterModel = m_fontPreviewListView->getFontPreviewProxyModel();
-    m_fontPreviewListView->clearSelection();
     filterModel->setFilterKeyColumn(0);
     filterModel->setFilterGroup(filterGroup);
 //    filterModel->setEditStatus(m_searchTextStatusIsEmpty);
@@ -1209,6 +1209,7 @@ void DFontMgrMainWindow::onLeftSiderBarItemClicked(int index)
     onFontListViewRowCountChanged();
     onPreviewTextChanged();
     qDebug() << "onFontListViewRowCountChanged e" << endl;
+    m_fontPreviewListView->clearSelection();
 }
 
 void DFontMgrMainWindow::onFontInstallFinished(const QStringList &fileList)

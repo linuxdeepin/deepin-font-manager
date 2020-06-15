@@ -21,6 +21,7 @@ bool DFontPreviewListView::misdelete = false;
 DFontPreviewListView::DFontPreviewListView(QWidget *parent)
     : QListView(parent)
     , m_bLoadDataFinish(false)
+    , m_IsNeedFocus(false)
     , m_parentWidget(parent)
     , m_fontPreviewItemModel(new QStandardItemModel())
     , m_dataThread(nullptr)
@@ -343,13 +344,20 @@ void DFontPreviewListView::viewChanged()
     m_currentSelectedRow = -1;
 }
 
+void DFontPreviewListView::setNeedFocus()
+{
+    m_IsNeedFocus = true;
+}
 void DFontPreviewListView::refreshFocuses(bool isJustInstalled, int count)
 {
     if (selectionModel()->selectedIndexes().isEmpty())
         return;
     m_isJustInstalled = true;
     QTimer::singleShot(50, [ = ]() {
-        setFocus(Qt::MouseFocusReason);
+        if (m_IsNeedFocus) {
+            setFocus(Qt::MouseFocusReason);
+            m_IsNeedFocus = false;
+        }
         if (isJustInstalled) {
             if (1 == count) {
                 setCurrentSelected(selectionModel()->selectedIndexes().first().row());
@@ -423,6 +431,7 @@ void DFontPreviewListView::updateModel()
     if (m_bListviewAtButtom)
         m_timerOfFreshed->start(2);
 //删除之后设置焦点
+    m_IsNeedFocus = true;
     Q_EMIT m_signalManager->refreshFocus(false, this->count());
 
 }
@@ -528,6 +537,7 @@ void DFontPreviewListView::selectFonts(const QStringList &fileList)
 
     Q_EMIT SignalManager::instance()->requestInstallAdded();
     /*用于安装后刷新聚焦、安装后focus for ctrl+a UT000539*/
+    m_IsNeedFocus = true;
     Q_EMIT m_signalManager->refreshFocus(true, fileList.size());
 
     //    Q_EMIT DFontManager::instance()->batchInstall("onlyprogress", 100);
@@ -681,6 +691,7 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
                 m_fontPreviewProxyModel->setData(modelIndex, QVariant::fromValue(itemData), Qt::DisplayRole);
 
                 //鼠标右击时,重新设置焦点
+                m_IsNeedFocus = true;
                 Q_EMIT m_signalManager->refreshFocus(false, this->selectedIndexes().count());
                 m_rightMenu->exec(QCursor::pos());
                 return;
@@ -855,7 +866,7 @@ void DFontPreviewListView::setModel(QAbstractItemModel *model)
 void DFontPreviewListView::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end)
 {
     //    qDebug() << __FUNCTION__ << currentIndex() << "begin" << start << " to " << end;
-    selectionModel()->setCurrentIndex(parent, QItemSelectionModel::NoUpdate);
+//    selectionModel()->setCurrentIndex(parent, QItemSelectionModel::NoUpdate);
     QListView::rowsAboutToBeRemoved(parent, start, end);
     //    qDebug() << __FUNCTION__ << currentIndex() << "end";
 }
