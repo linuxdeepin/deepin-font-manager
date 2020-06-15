@@ -38,6 +38,7 @@ public:
     static constexpr int MAX_FONT_SIZE = 60;
     static constexpr int DEFAULT_FONT_SIZE = FTM_DEFAULT_PREVIEW_FONTSIZE;
     static constexpr char const *FMT_FONT_SIZE = "%dpx";
+    static constexpr int PARAM = 1;
 
     enum Theme {
         Dark,

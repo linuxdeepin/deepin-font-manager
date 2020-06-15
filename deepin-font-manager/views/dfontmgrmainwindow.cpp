@@ -909,6 +909,7 @@ void DFontMgrMainWindow::handleAddFontEvent()
         dialog.setDirectory(historyDir);
     }
 
+    emit m_signalManager->refreshFocus(false, PARAM);
     const int mode = dialog.exec();
 
     // save the directory string to config file.

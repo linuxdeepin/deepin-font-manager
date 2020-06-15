@@ -330,7 +330,7 @@ void DFontPreviewListView::viewChanged()
     m_currentSelectedRow = -1;
 }
 
-void DFontPreviewListView::refreshFocuses(int count)
+void DFontPreviewListView::refreshFocuses(bool isJustInstalled, int count)
 {
     if (selectionModel()->selectedIndexes().isEmpty())
         return;
@@ -408,7 +408,7 @@ void DFontPreviewListView::updateModel()
     if (m_bListviewAtButtom)
         m_timerOfFreshed->start(2);
 //删除之后设置焦点
-    Q_EMIT m_signalManager->refreshFocus(1);
+    Q_EMIT m_signalManager->refreshFocus(false, this->count());
 
 }
 
@@ -513,7 +513,7 @@ void DFontPreviewListView::selectFonts(const QStringList &fileList)
 
     Q_EMIT SignalManager::instance()->requestInstallAdded();
     /*用于安装后刷新聚焦、安装后focus for ctrl+a UT000539*/
-    Q_EMIT m_signalManager->refreshFocus(fileList.size());
+    Q_EMIT m_signalManager->refreshFocus(true, fileList.size());
 
     //    Q_EMIT DFontManager::instance()->batchInstall("onlyprogress", 100);
 }
@@ -666,7 +666,7 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
                 m_fontPreviewProxyModel->setData(modelIndex, QVariant::fromValue(itemData), Qt::DisplayRole);
 
                 //鼠标右击时,重新设置焦点
-                Q_EMIT m_signalManager->refreshFocus(this->selectedIndexes().count());
+                Q_EMIT m_signalManager->refreshFocus(false, this->selectedIndexes().count());
                 m_rightMenu->exec(QCursor::pos());
                 return;
             }

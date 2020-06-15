@@ -85,7 +85,7 @@ public:
     void isNeedScrollToBottom();
     void cancelDel();
     void viewChanged();
-    void refreshFocuses(int count);
+    void refreshFocuses(bool isJustInstalled, int count);
     static bool misdelete;//是否是删除操作
 
 protected:
