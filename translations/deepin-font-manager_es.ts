@@ -33,10 +33,6 @@
 <context>
     <name>DFDeleteDialog</name>
     <message>
-        <source>The other %2 system fonts cannot be deleted</source>
-        <translation type="vanished">Las otras %2 fuentes del sistema no pueden ser borradas</translation>
-    </message>
-    <message>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
@@ -53,7 +49,7 @@
     </message>
     <message>
         <source>Same version installed</source>
-        <translation>Misma versión instalada</translation>
+        <translation>La misma versión está instalada</translation>
     </message>
     <message>
         <source>System Font</source>
@@ -119,24 +115,8 @@
         <translation>%1 fuente instalada</translation>
     </message>
     <message>
-        <source>The other one system font has already been installed</source>
-        <translation type="vanished">Otra fuente ya está instalada</translation>
-    </message>
-    <message>
-        <source>The other %2 system fonts have already been installed</source>
-        <translation type="vanished">Otras %2 fuentes ya están instaladas</translation>
-    </message>
-    <message>
         <source>%1 fonts installed</source>
         <translation>%1 fuentes instaladas</translation>
-    </message>
-    <message>
-        <source>Failed to install %1 fonts. There is not enough disk space.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Failed to install 1 font. There is not enough disk space.</source>
-        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -154,22 +134,6 @@
         <translation>Estas fuentes no estarán disponibles para las aplicaciones</translation>
     </message>
     <message>
-        <source>Cancel</source>
-        <translation type="vanished">Cancelar</translation>
-    </message>
-    <message>
-        <source>Confirm</source>
-        <translation type="vanished">Confirmar</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation type="vanished">Borrar</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete %1 fonts</source>
-        <translation type="vanished">¿Está seguro que desea borrar %1 fuentes?</translation>
-    </message>
-    <message>
         <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
         <translation>Estas fuentes no estarán disponibles para las aplicaciones, y las otras %1 fuentes del sistema no pueden ser borradas</translation>
     </message>
@@ -179,7 +143,7 @@
     </message>
     <message>
         <source>Are you sure you want to delete %1 fonts?</source>
-        <translation>¿Estás seguro de que quieres borrar las fuentes de %1?</translation>
+        <translation>¿Está seguro que quiere borrar %1 fuentes?</translation>
     </message>
 </context>
 <context>
@@ -196,24 +160,12 @@
         <translation>Verificación de la fuente</translation>
     </message>
     <message>
-        <source>Broken file</source>
-        <translation type="vanished">Archivo roto</translation>
-    </message>
-    <message>
-        <source>Same version installed</source>
-        <translation type="vanished">Misma versión instalada</translation>
-    </message>
-    <message>
         <source>Exit</source>
         <translation>Salir</translation>
     </message>
     <message>
         <source>Continue</source>
         <translation>Continuar</translation>
-    </message>
-    <message>
-        <source>No need to install system fonts again</source>
-        <translation type="vanished">Innecesario instalar de nuevo las fuentes del sistema</translation>
     </message>
     <message>
         <source>No fonts to be installed</source>
@@ -290,11 +242,11 @@
     </message>
     <message>
         <source>Failed to export 1 font. There is not enough disk space.</source>
-        <translation type="unfinished"/>
+        <translation>La instalación de la fuente falló. El espacio en el disco es insuficiente.</translation>
     </message>
     <message>
         <source>Failed to export %1 fonts. There is not enough disk space.</source>
-        <translation type="unfinished"/>
+        <translation>La exportación de %1 fuentes falló. El espacio en el disco es insuficiente.</translation>
     </message>
 </context>
 <context>
@@ -345,6 +297,10 @@
     <message>
         <source>The fonts have been deactivated</source>
         <translation>Las fuentes han sido desactivadas</translation>
+    </message>
+    <message>
+        <source>Some fonts are not allowed to be disabled</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -436,49 +392,17 @@
     </message>
 </context>
 <context>
-    <name>Shortcuts</name>
-    <message>
-        <source>Help</source>
-        <translation type="vanished">Ayuda</translation>
-    </message>
-    <message>
-        <source>Display shortcuts</source>
-        <translation type="vanished">Mostrar atajos</translation>
-    </message>
-    <message>
-        <source>Page up</source>
-        <translation type="vanished">Página arriba</translation>
-    </message>
-    <message>
-        <source>Page down</source>
-        <translation type="vanished">Página abajo</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation type="vanished">Borrar</translation>
-    </message>
-    <message>
-        <source>Add font</source>
-        <translation type="vanished">Añadir fuente</translation>
-    </message>
-    <message>
-        <source>Favorite</source>
-        <translation type="vanished">Favorito</translation>
-    </message>
-    <message>
-        <source>Unfavorite</source>
-        <translation type="vanished">Quitar favorito</translation>
-    </message>
-    <message>
-        <source>Font info</source>
-        <translation type="vanished">Información de la fuente</translation>
-    </message>
-</context>
-<context>
     <name>StateBar</name>
     <message>
         <source>Input preview text</source>
         <translation>Introducir el texto de la vista previa</translation>
+    </message>
+</context>
+<context>
+    <name>DFontWidget</name>
+    <message>
+        <source>Broken file</source>
+        <translation>Archivo roto</translation>
     </message>
 </context>
 </TS>

@@ -33,10 +33,6 @@
 <context>
     <name>DFDeleteDialog</name>
     <message>
-        <source>The other %2 system fonts cannot be deleted</source>
-        <translation type="vanished">De andre %2 systemskrifttyper kan ikke slettes</translation>
-    </message>
-    <message>
         <source>Cancel</source>
         <translation>Annuller</translation>
     </message>
@@ -119,24 +115,8 @@
         <translation>%1 skrifttype installeret</translation>
     </message>
     <message>
-        <source>The other one system font has already been installed</source>
-        <translation type="vanished">Den anden systemskrifttype er allerede blevet installeret</translation>
-    </message>
-    <message>
-        <source>The other %2 system fonts have already been installed</source>
-        <translation type="vanished">De andre %2 systemskrifttyper er allerede blevet installeret</translation>
-    </message>
-    <message>
         <source>%1 fonts installed</source>
         <translation>%1 skrifttyper installeret</translation>
-    </message>
-    <message>
-        <source>Failed to install %1 fonts. There is not enough disk space.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Failed to install 1 font. There is not enough disk space.</source>
-        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -152,22 +132,6 @@
     <message>
         <source>These fonts will not be available to applications</source>
         <translation>Skrifttyperne vil ikke være tilgængelig for programmer</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="vanished">Annuller</translation>
-    </message>
-    <message>
-        <source>Confirm</source>
-        <translation type="vanished">Bekræft</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation type="vanished">Slet</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete %1 fonts</source>
-        <translation type="vanished">Er du sikker på, at du vil slette %1 skrifttyper?</translation>
     </message>
     <message>
         <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
@@ -196,24 +160,12 @@
         <translation>Verificering af skrifttype</translation>
     </message>
     <message>
-        <source>Broken file</source>
-        <translation type="vanished">Beskadiget fil</translation>
-    </message>
-    <message>
-        <source>Same version installed</source>
-        <translation type="vanished">Samme version er installeret</translation>
-    </message>
-    <message>
         <source>Exit</source>
         <translation>Afslut</translation>
     </message>
     <message>
         <source>Continue</source>
         <translation>Fortsæt</translation>
-    </message>
-    <message>
-        <source>No need to install system fonts again</source>
-        <translation type="vanished">Det er ikke nødvendigt at installere systemets skrifttyper igen</translation>
     </message>
     <message>
         <source>No fonts to be installed</source>
@@ -346,6 +298,10 @@
         <source>The fonts have been deactivated</source>
         <translation>Skrifttyperne er blevet deaktiveret</translation>
     </message>
+    <message>
+        <source>Some fonts are not allowed to be disabled</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>NormalInstallWindow</name>
@@ -436,49 +392,17 @@
     </message>
 </context>
 <context>
-    <name>Shortcuts</name>
-    <message>
-        <source>Help</source>
-        <translation type="vanished">Hjælp</translation>
-    </message>
-    <message>
-        <source>Display shortcuts</source>
-        <translation type="vanished">Vis genveje</translation>
-    </message>
-    <message>
-        <source>Page up</source>
-        <translation type="vanished">Side op</translation>
-    </message>
-    <message>
-        <source>Page down</source>
-        <translation type="vanished">Side ned</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation type="vanished">Slet</translation>
-    </message>
-    <message>
-        <source>Add font</source>
-        <translation type="vanished">Tilføj skrifttype</translation>
-    </message>
-    <message>
-        <source>Favorite</source>
-        <translation type="vanished">Favorit til</translation>
-    </message>
-    <message>
-        <source>Unfavorite</source>
-        <translation type="vanished">Favorit fra</translation>
-    </message>
-    <message>
-        <source>Font info</source>
-        <translation type="vanished">Skrifttypeinformation</translation>
-    </message>
-</context>
-<context>
     <name>StateBar</name>
     <message>
         <source>Input preview text</source>
         <translation>Indtast tekst til forhåndsvisning</translation>
+    </message>
+</context>
+<context>
+    <name>DFontWidget</name>
+    <message>
+        <source>Broken file</source>
+        <translation>Beskadiget fil</translation>
     </message>
 </context>
 </TS>

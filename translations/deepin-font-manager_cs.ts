@@ -33,10 +33,6 @@
 <context>
     <name>DFDeleteDialog</name>
     <message>
-        <source>The other %2 system fonts cannot be deleted</source>
-        <translation type="vanished">Dalších %2 systémových písem nemůže být smazáno</translation>
-    </message>
-    <message>
         <source>Cancel</source>
         <translation>Storno</translation>
     </message>
@@ -96,7 +92,7 @@
     </message>
     <message>
         <source>Alt+Return</source>
-        <translation>Alt+Return</translation>
+        <translation>Alt+Enter</translation>
     </message>
     <message>
         <source>Fonts</source>
@@ -119,24 +115,8 @@
         <translation>Nainstalováno %1 písmo</translation>
     </message>
     <message>
-        <source>The other one system font has already been installed</source>
-        <translation type="vanished">Další systémové písmo už bylo nainstalováno</translation>
-    </message>
-    <message>
-        <source>The other %2 system fonts have already been installed</source>
-        <translation type="vanished">Další %2 systémová písma už byla nainstalována</translation>
-    </message>
-    <message>
         <source>%1 fonts installed</source>
         <translation>Nainstalováno %1 písem</translation>
-    </message>
-    <message>
-        <source>Failed to install %1 fonts. There is not enough disk space.</source>
-        <translation>Nepodařilo se nainstalovat %1 písem. Není dost volného místa na disku</translation>
-    </message>
-    <message>
-        <source>Failed to install 1 font. There is not enough disk space.</source>
-        <translation>Nepodařilo se nainstalovat 1 písmo. Není dost volného místa na disku</translation>
     </message>
 </context>
 <context>
@@ -152,22 +132,6 @@
     <message>
         <source>These fonts will not be available to applications</source>
         <translation>Tato písma nebude dostupná aplikacím</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="vanished">Storno</translation>
-    </message>
-    <message>
-        <source>Confirm</source>
-        <translation type="vanished">Potvrdit</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation type="vanished">Smazat</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete %1 fonts</source>
-        <translation type="vanished">Opravdu chcete smazat %1 písem</translation>
     </message>
     <message>
         <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
@@ -196,24 +160,12 @@
         <translation>Ověření písma</translation>
     </message>
     <message>
-        <source>Broken file</source>
-        <translation type="vanished">Poškozený soubor</translation>
-    </message>
-    <message>
-        <source>Same version installed</source>
-        <translation type="vanished">Nainstalována stejná verze</translation>
-    </message>
-    <message>
         <source>Exit</source>
         <translation>Ukončit</translation>
     </message>
     <message>
         <source>Continue</source>
         <translation>Pokračovat</translation>
-    </message>
-    <message>
-        <source>No need to install system fonts again</source>
-        <translation type="vanished">Není třeba instalovat systémová písma znovu</translation>
     </message>
     <message>
         <source>No fonts to be installed</source>
@@ -346,6 +298,10 @@
         <source>The fonts have been deactivated</source>
         <translation>Písma byla deaktivována</translation>
     </message>
+    <message>
+        <source>Some fonts are not allowed to be disabled</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>NormalInstallWindow</name>
@@ -412,7 +368,7 @@
     </message>
     <message>
         <source>Page down</source>
-        <translation>O stranu dolů</translation>
+        <translation>O stránku dolů</translation>
     </message>
     <message>
         <source>Delete</source>
@@ -432,46 +388,7 @@
     </message>
     <message>
         <source>Font info</source>
-        <translation>Údaje o písmu</translation>
-    </message>
-</context>
-<context>
-    <name>Shortcuts</name>
-    <message>
-        <source>Help</source>
-        <translation type="vanished">Nápověda</translation>
-    </message>
-    <message>
-        <source>Display shortcuts</source>
-        <translation type="vanished">Zobrazit klávesové zkratky</translation>
-    </message>
-    <message>
-        <source>Page up</source>
-        <translation type="vanished">O stranu nahoru</translation>
-    </message>
-    <message>
-        <source>Page down</source>
-        <translation type="vanished">O stránku dolů</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation type="vanished">Smazat</translation>
-    </message>
-    <message>
-        <source>Add font</source>
-        <translation type="vanished">Přidat písmo</translation>
-    </message>
-    <message>
-        <source>Favorite</source>
-        <translation type="vanished">Přidat do oblíbených</translation>
-    </message>
-    <message>
-        <source>Unfavorite</source>
-        <translation type="vanished">Odstranit z oblíbených</translation>
-    </message>
-    <message>
-        <source>Font info</source>
-        <translation type="vanished">Informace o písmu</translation>
+        <translation>Informace o písmu</translation>
     </message>
 </context>
 <context>
@@ -479,6 +396,13 @@
     <message>
         <source>Input preview text</source>
         <translation>Zadejte náhledový text</translation>
+    </message>
+</context>
+<context>
+    <name>DFontWidget</name>
+    <message>
+        <source>Broken file</source>
+        <translation>Poškozený soubor</translation>
     </message>
 </context>
 </TS>

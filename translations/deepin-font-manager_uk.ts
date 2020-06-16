@@ -33,10 +33,6 @@
 <context>
     <name>DFDeleteDialog</name>
     <message>
-        <source>The other %2 system fonts cannot be deleted</source>
-        <translation type="vanished">%2 інших загальносистемних шрифтів не може бути вилучено</translation>
-    </message>
-    <message>
         <source>Cancel</source>
         <translation>Скасувати</translation>
     </message>
@@ -119,24 +115,8 @@
         <translation>Встановлено %1 шрифт</translation>
     </message>
     <message>
-        <source>The other one system font has already been installed</source>
-        <translation type="vanished">Ще один загальносистемний шрифт вже встановлено</translation>
-    </message>
-    <message>
-        <source>The other %2 system fonts have already been installed</source>
-        <translation type="vanished">%2 інших загальносистемних шрифтів вже встановлено</translation>
-    </message>
-    <message>
         <source>%1 fonts installed</source>
         <translation>Встановлено %1 шрифтів</translation>
-    </message>
-    <message>
-        <source>Failed to install %1 fonts. There is not enough disk space.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Failed to install 1 font. There is not enough disk space.</source>
-        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -152,22 +132,6 @@
     <message>
         <source>These fonts will not be available to applications</source>
         <translation>Ці шрифти будуть недоступними для програм</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="vanished">Скасувати</translation>
-    </message>
-    <message>
-        <source>Confirm</source>
-        <translation type="vanished">Підтвердити</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation type="vanished">Вилучення</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete %1 fonts</source>
-        <translation type="vanished">Ви справді хочете вилучити %1 шрифтів?</translation>
     </message>
     <message>
         <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
@@ -196,24 +160,12 @@
         <translation>Перевірка шрифту</translation>
     </message>
     <message>
-        <source>Broken file</source>
-        <translation type="vanished">Пошкоджений файл</translation>
-    </message>
-    <message>
-        <source>Same version installed</source>
-        <translation type="vanished">Уже встановлено ту саму версію</translation>
-    </message>
-    <message>
         <source>Exit</source>
         <translation>Вийти</translation>
     </message>
     <message>
         <source>Continue</source>
         <translation>Продовжити</translation>
-    </message>
-    <message>
-        <source>No need to install system fonts again</source>
-        <translation type="vanished">Немає потреби у повторному встановленні загальносистемного шрифту</translation>
     </message>
     <message>
         <source>No fonts to be installed</source>
@@ -290,11 +242,11 @@
     </message>
     <message>
         <source>Failed to export 1 font. There is not enough disk space.</source>
-        <translation type="unfinished"/>
+        <translation>Не вдалося експортувати один шрифт. На диску недостатньо місця.</translation>
     </message>
     <message>
         <source>Failed to export %1 fonts. There is not enough disk space.</source>
-        <translation type="unfinished"/>
+        <translation>Не вдалося експортувати %1 шрифтів. На диску недостатньо місця.</translation>
     </message>
 </context>
 <context>
@@ -313,7 +265,7 @@
     </message>
     <message>
         <source>Delete</source>
-        <translation>Вилучити</translation>
+        <translation>Вилучення</translation>
     </message>
     <message>
         <source>Favorite</source>
@@ -345,6 +297,10 @@
     <message>
         <source>The fonts have been deactivated</source>
         <translation>Шрифти було деактивовано</translation>
+    </message>
+    <message>
+        <source>Some fonts are not allowed to be disabled</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -436,49 +392,17 @@
     </message>
 </context>
 <context>
-    <name>Shortcuts</name>
-    <message>
-        <source>Help</source>
-        <translation type="vanished">Довідка</translation>
-    </message>
-    <message>
-        <source>Display shortcuts</source>
-        <translation type="vanished">Показати клавіатурні скорочення</translation>
-    </message>
-    <message>
-        <source>Page up</source>
-        <translation type="vanished">На сторінку вище</translation>
-    </message>
-    <message>
-        <source>Page down</source>
-        <translation type="vanished">На сторінку нижче</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation type="vanished">Вилучити</translation>
-    </message>
-    <message>
-        <source>Add font</source>
-        <translation type="vanished">Додати шрифт</translation>
-    </message>
-    <message>
-        <source>Favorite</source>
-        <translation type="vanished">Додати до вибраних</translation>
-    </message>
-    <message>
-        <source>Unfavorite</source>
-        <translation type="vanished">Вилучити із вибраних</translation>
-    </message>
-    <message>
-        <source>Font info</source>
-        <translation type="vanished">Дані щодо шрифту</translation>
-    </message>
-</context>
-<context>
     <name>StateBar</name>
     <message>
         <source>Input preview text</source>
         <translation>Введіть текст для попереднього перегляду</translation>
+    </message>
+</context>
+<context>
+    <name>DFontWidget</name>
+    <message>
+        <source>Broken file</source>
+        <translation>Пошкоджений файл</translation>
     </message>
 </context>
 </TS>

@@ -33,10 +33,6 @@
 <context>
     <name>DFDeleteDialog</name>
     <message>
-        <source>The other %2 system fonts cannot be deleted</source>
-        <translation type="vanished">De andere %2 systeemlettertypen kunnen niet worden verwijderd</translation>
-    </message>
-    <message>
         <source>Cancel</source>
         <translation>Annuleren</translation>
     </message>
@@ -119,24 +115,8 @@
         <translation>Er is %1 lettertype geïnstalleerd</translation>
     </message>
     <message>
-        <source>The other one system font has already been installed</source>
-        <translation type="vanished">Het andere systeemlettertype is al geïnstalleerd</translation>
-    </message>
-    <message>
-        <source>The other %2 system fonts have already been installed</source>
-        <translation type="vanished">De andere %2 systeemlettertypen zijn al geïnstalleerd</translation>
-    </message>
-    <message>
         <source>%1 fonts installed</source>
         <translation>Er zijn %1 lettertypen geïnstalleerd</translation>
-    </message>
-    <message>
-        <source>Failed to install %1 fonts. There is not enough disk space.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Failed to install 1 font. There is not enough disk space.</source>
-        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -152,22 +132,6 @@
     <message>
         <source>These fonts will not be available to applications</source>
         <translation>Deze lettertypen zijn niet beschikbaar in programma&apos;s</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="vanished">Annuleren</translation>
-    </message>
-    <message>
-        <source>Confirm</source>
-        <translation type="vanished">Bevestigen</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation type="vanished">Verwijderen</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete %1 fonts</source>
-        <translation type="vanished">Weet je zeker dat je %1 lettertypen wilt verwijderen?</translation>
     </message>
     <message>
         <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
@@ -196,24 +160,12 @@
         <translation>Lettertypeverificatie</translation>
     </message>
     <message>
-        <source>Broken file</source>
-        <translation type="vanished">Beschadigd bestand</translation>
-    </message>
-    <message>
-        <source>Same version installed</source>
-        <translation type="vanished">Deze versie is al geïnstalleerd</translation>
-    </message>
-    <message>
         <source>Exit</source>
         <translation>Afsluiten</translation>
     </message>
     <message>
         <source>Continue</source>
         <translation>Doorgaan</translation>
-    </message>
-    <message>
-        <source>No need to install system fonts again</source>
-        <translation type="vanished">Je hoeft de systeemlettertypen niet nogmaals te installeren</translation>
     </message>
     <message>
         <source>No fonts to be installed</source>
@@ -290,11 +242,11 @@
     </message>
     <message>
         <source>Failed to export 1 font. There is not enough disk space.</source>
-        <translation type="unfinished"/>
+        <translation>%1 lettertype kan niet worden geëxporteerd omdat er onvoldoende vrije schijfruimte is.</translation>
     </message>
     <message>
         <source>Failed to export %1 fonts. There is not enough disk space.</source>
-        <translation type="unfinished"/>
+        <translation>%1 lettertypen kunnen niet worden geëxporteerd omdat er onvoldoende vrije schijfruimte is.</translation>
     </message>
 </context>
 <context>
@@ -345,6 +297,10 @@
     <message>
         <source>The fonts have been deactivated</source>
         <translation>De lettertypen zijn uitgeschakeld</translation>
+    </message>
+    <message>
+        <source>Some fonts are not allowed to be disabled</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -436,49 +392,17 @@
     </message>
 </context>
 <context>
-    <name>Shortcuts</name>
-    <message>
-        <source>Help</source>
-        <translation type="vanished">Hulp</translation>
-    </message>
-    <message>
-        <source>Display shortcuts</source>
-        <translation type="vanished">Sneltoetsen tonen</translation>
-    </message>
-    <message>
-        <source>Page up</source>
-        <translation type="vanished">Pagina omhoog</translation>
-    </message>
-    <message>
-        <source>Page down</source>
-        <translation type="vanished">Pagina omlaag</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation type="vanished">Verwijderen</translation>
-    </message>
-    <message>
-        <source>Add font</source>
-        <translation type="vanished">Lettertype toevoegen</translation>
-    </message>
-    <message>
-        <source>Favorite</source>
-        <translation type="vanished">Toev. aan favorieten</translation>
-    </message>
-    <message>
-        <source>Unfavorite</source>
-        <translation type="vanished">Verw. uit favorieten</translation>
-    </message>
-    <message>
-        <source>Font info</source>
-        <translation type="vanished">Eigenschappen</translation>
-    </message>
-</context>
-<context>
     <name>StateBar</name>
     <message>
         <source>Input preview text</source>
         <translation>Typ een voorbeeldzin</translation>
+    </message>
+</context>
+<context>
+    <name>DFontWidget</name>
+    <message>
+        <source>Broken file</source>
+        <translation>Beschadigd bestand</translation>
     </message>
 </context>
 </TS>

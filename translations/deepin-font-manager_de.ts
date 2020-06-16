@@ -33,10 +33,6 @@
 <context>
     <name>DFDeleteDialog</name>
     <message>
-        <source>The other %2 system fonts cannot be deleted</source>
-        <translation type="vanished">Die weiteren %2 Sytemschriftarten können nicht gelöscht werden</translation>
-    </message>
-    <message>
         <source>Cancel</source>
         <translation>Abbrechen</translation>
     </message>
@@ -119,24 +115,8 @@
         <translation>Schriftart %1 installiert</translation>
     </message>
     <message>
-        <source>The other one system font has already been installed</source>
-        <translation type="vanished">Die andere Systemschriftart wurde bereits installiert</translation>
-    </message>
-    <message>
-        <source>The other %2 system fonts have already been installed</source>
-        <translation type="vanished">Die anderen %2 Systemschriftarten sind bereits installiert</translation>
-    </message>
-    <message>
         <source>%1 fonts installed</source>
         <translation>%1 Schriftarten installiert</translation>
-    </message>
-    <message>
-        <source>Failed to install %1 fonts. There is not enough disk space.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Failed to install 1 font. There is not enough disk space.</source>
-        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -152,22 +132,6 @@
     <message>
         <source>These fonts will not be available to applications</source>
         <translation>Diese Schriftarten werden nicht für Anwendungen verfügbar sein</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="vanished">Abbrechen</translation>
-    </message>
-    <message>
-        <source>Confirm</source>
-        <translation type="vanished">Bestätigen</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation type="vanished">Löschen</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete %1 fonts</source>
-        <translation type="vanished">Sind Sie sicher, dass Sie %1 Schriftarten löschen möchten?</translation>
     </message>
     <message>
         <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
@@ -196,24 +160,12 @@
         <translation>Überprüfung der Schriftart</translation>
     </message>
     <message>
-        <source>Broken file</source>
-        <translation type="vanished">Beschädigte Datei</translation>
-    </message>
-    <message>
-        <source>Same version installed</source>
-        <translation type="vanished">Gleiche Version installiert</translation>
-    </message>
-    <message>
         <source>Exit</source>
         <translation>Beenden</translation>
     </message>
     <message>
         <source>Continue</source>
         <translation>Fortsetzen</translation>
-    </message>
-    <message>
-        <source>No need to install system fonts again</source>
-        <translation type="vanished">Systemschriftarten müssen nicht erneut installiert werden</translation>
     </message>
     <message>
         <source>No fonts to be installed</source>
@@ -346,6 +298,10 @@
         <source>The fonts have been deactivated</source>
         <translation>Die Schriftarten wurden deaktiviert</translation>
     </message>
+    <message>
+        <source>Some fonts are not allowed to be disabled</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>NormalInstallWindow</name>
@@ -436,49 +392,17 @@
     </message>
 </context>
 <context>
-    <name>Shortcuts</name>
-    <message>
-        <source>Help</source>
-        <translation type="vanished">Hilfe</translation>
-    </message>
-    <message>
-        <source>Display shortcuts</source>
-        <translation type="vanished">Verknüpfungen anzeigen</translation>
-    </message>
-    <message>
-        <source>Page up</source>
-        <translation type="vanished">Bild auf</translation>
-    </message>
-    <message>
-        <source>Page down</source>
-        <translation type="vanished">Bild ab</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation type="vanished">Löschen</translation>
-    </message>
-    <message>
-        <source>Add font</source>
-        <translation type="vanished">Schriftart hinzufügen</translation>
-    </message>
-    <message>
-        <source>Favorite</source>
-        <translation type="vanished">Favorit</translation>
-    </message>
-    <message>
-        <source>Unfavorite</source>
-        <translation type="vanished">Kein Favorit</translation>
-    </message>
-    <message>
-        <source>Font info</source>
-        <translation type="vanished">Schriftartinformationen</translation>
-    </message>
-</context>
-<context>
     <name>StateBar</name>
     <message>
         <source>Input preview text</source>
         <translation>Vorschautext eingeben</translation>
+    </message>
+</context>
+<context>
+    <name>DFontWidget</name>
+    <message>
+        <source>Broken file</source>
+        <translation>Beschädigte Datei</translation>
     </message>
 </context>
 </TS>

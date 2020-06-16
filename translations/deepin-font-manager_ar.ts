@@ -33,10 +33,6 @@
 <context>
     <name>DFDeleteDialog</name>
     <message>
-        <source>The other %2 system fonts cannot be deleted</source>
-        <translation type="vanished">خطوط النظام الـ %2  لا يمكن حذفها</translation>
-    </message>
-    <message>
         <source>Cancel</source>
         <translation>إلغاء</translation>
     </message>
@@ -119,24 +115,8 @@
         <translation>%1 خط مثبت</translation>
     </message>
     <message>
-        <source>The other one system font has already been installed</source>
-        <translation type="vanished">تم تثبيت خط النظام الآخر بالفعل</translation>
-    </message>
-    <message>
-        <source>The other %2 system fonts have already been installed</source>
-        <translation type="vanished">تم تثبيت خط النظام 2% بالفعل</translation>
-    </message>
-    <message>
         <source>%1 fonts installed</source>
         <translation>%1 خط مثبت</translation>
-    </message>
-    <message>
-        <source>Failed to install %1 fonts. There is not enough disk space.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Failed to install 1 font. There is not enough disk space.</source>
-        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -152,22 +132,6 @@
     <message>
         <source>These fonts will not be available to applications</source>
         <translation>هذه الخطوط لن تكون متاحة للبرامج</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="vanished">إلغاء</translation>
-    </message>
-    <message>
-        <source>Confirm</source>
-        <translation type="vanished">تأكيد</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation type="vanished">حذف</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete %1 fonts</source>
-        <translation type="vanished">هل انت متأكد من حذف %1 خط/خطوط؟</translation>
     </message>
     <message>
         <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
@@ -196,24 +160,12 @@
         <translation>التحقق من الخط</translation>
     </message>
     <message>
-        <source>Broken file</source>
-        <translation type="vanished">ملف معطوب</translation>
-    </message>
-    <message>
-        <source>Same version installed</source>
-        <translation type="vanished">نفس الخط مثبت مسبقاً</translation>
-    </message>
-    <message>
         <source>Exit</source>
         <translation>خروج</translation>
     </message>
     <message>
         <source>Continue</source>
         <translation>تأكيد</translation>
-    </message>
-    <message>
-        <source>No need to install system fonts again</source>
-        <translation type="vanished">لا حاجه لتثبيت خطوط النظام مره اخرى</translation>
     </message>
     <message>
         <source>No fonts to be installed</source>
@@ -346,6 +298,10 @@
         <source>The fonts have been deactivated</source>
         <translation>تم تعطيل الخطوط</translation>
     </message>
+    <message>
+        <source>Some fonts are not allowed to be disabled</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>NormalInstallWindow</name>
@@ -436,49 +392,17 @@
     </message>
 </context>
 <context>
-    <name>Shortcuts</name>
-    <message>
-        <source>Help</source>
-        <translation type="vanished">مساعدة</translation>
-    </message>
-    <message>
-        <source>Display shortcuts</source>
-        <translation type="vanished">عرض الإختصارات</translation>
-    </message>
-    <message>
-        <source>Page up</source>
-        <translation type="vanished">أعلى الصفحة</translation>
-    </message>
-    <message>
-        <source>Page down</source>
-        <translation type="vanished">أسفل الصفحة</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation type="vanished">حذف</translation>
-    </message>
-    <message>
-        <source>Add font</source>
-        <translation type="vanished">إضافة خط</translation>
-    </message>
-    <message>
-        <source>Favorite</source>
-        <translation type="vanished">المفضلة</translation>
-    </message>
-    <message>
-        <source>Unfavorite</source>
-        <translation type="vanished">غير المفضلة</translation>
-    </message>
-    <message>
-        <source>Font info</source>
-        <translation type="vanished">معلومات الخط</translation>
-    </message>
-</context>
-<context>
     <name>StateBar</name>
     <message>
         <source>Input preview text</source>
         <translation>أدخل معاينة النص</translation>
+    </message>
+</context>
+<context>
+    <name>DFontWidget</name>
+    <message>
+        <source>Broken file</source>
+        <translation>ملف معطوب</translation>
     </message>
 </context>
 </TS>

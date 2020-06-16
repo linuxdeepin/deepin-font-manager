@@ -33,10 +33,6 @@
 <context>
     <name>DFDeleteDialog</name>
     <message>
-        <source>The other %2 system fonts cannot be deleted</source>
-        <translation type="vanished">其他%2个系统字体不可删除</translation>
-    </message>
-    <message>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
@@ -119,24 +115,8 @@
         <translation>已安装%1个字体</translation>
     </message>
     <message>
-        <source>The other one system font has already been installed</source>
-        <translation type="vanished">其它1个为系统字体，无需安装</translation>
-    </message>
-    <message>
-        <source>The other %2 system fonts have already been installed</source>
-        <translation type="vanished">其它%2个为系统字体，无需安装</translation>
-    </message>
-    <message>
         <source>%1 fonts installed</source>
         <translation>已安装%1个字体</translation>
-    </message>
-    <message>
-        <source>Failed to install %1 fonts. There is not enough disk space.</source>
-        <translation>目标磁盘空间不足，%1 个文件安装失败</translation>
-    </message>
-    <message>
-        <source>Failed to install 1 font. There is not enough disk space.</source>
-        <translation>目标磁盘空间不足，1 个文件安装失败</translation>
     </message>
 </context>
 <context>
@@ -152,22 +132,6 @@
     <message>
         <source>These fonts will not be available to applications</source>
         <translation>删除后这些字体将不可用于其他应用程序</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="vanished">取消</translation>
-    </message>
-    <message>
-        <source>Confirm</source>
-        <translation type="vanished">确定</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation type="vanished">删除</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete %1 fonts</source>
-        <translation type="vanished">您确定要删除这%1个字体吗？</translation>
     </message>
     <message>
         <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
@@ -196,24 +160,12 @@
         <translation>字体验证</translation>
     </message>
     <message>
-        <source>Broken file</source>
-        <translation type="vanished">文件已损坏</translation>
-    </message>
-    <message>
-        <source>Same version installed</source>
-        <translation type="vanished">已安装相同版本</translation>
-    </message>
-    <message>
         <source>Exit</source>
         <translation>退出</translation>
     </message>
     <message>
         <source>Continue</source>
         <translation>继续</translation>
-    </message>
-    <message>
-        <source>No need to install system fonts again</source>
-        <translation type="vanished">系统字体无需安装</translation>
     </message>
     <message>
         <source>No fonts to be installed</source>
@@ -346,6 +298,10 @@
         <source>The fonts have been deactivated</source>
         <translation>字体已被禁用</translation>
     </message>
+    <message>
+        <source>Some fonts are not allowed to be disabled</source>
+        <translation>部分系统字体不允许被禁用</translation>
+    </message>
 </context>
 <context>
     <name>NormalInstallWindow</name>
@@ -436,49 +392,17 @@
     </message>
 </context>
 <context>
-    <name>Shortcuts</name>
-    <message>
-        <source>Help</source>
-        <translation type="vanished">帮助</translation>
-    </message>
-    <message>
-        <source>Display shortcuts</source>
-        <translation type="vanished">显示快捷键</translation>
-    </message>
-    <message>
-        <source>Page up</source>
-        <translation type="vanished">上一页</translation>
-    </message>
-    <message>
-        <source>Page down</source>
-        <translation type="vanished">下一页</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation type="vanished">删除</translation>
-    </message>
-    <message>
-        <source>Add font</source>
-        <translation type="vanished">添加字体</translation>
-    </message>
-    <message>
-        <source>Favorite</source>
-        <translation type="vanished">收藏</translation>
-    </message>
-    <message>
-        <source>Unfavorite</source>
-        <translation type="vanished">取消收藏</translation>
-    </message>
-    <message>
-        <source>Font info</source>
-        <translation type="vanished">字体信息</translation>
-    </message>
-</context>
-<context>
     <name>StateBar</name>
     <message>
         <source>Input preview text</source>
         <translation>输入文本内容进行预览</translation>
+    </message>
+</context>
+<context>
+    <name>DFontWidget</name>
+    <message>
+        <source>Broken file</source>
+        <translation>文件已损坏</translation>
     </message>
 </context>
 </TS>

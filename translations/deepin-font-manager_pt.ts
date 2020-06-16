@@ -33,10 +33,6 @@
 <context>
     <name>DFDeleteDialog</name>
     <message>
-        <source>The other %2 system fonts cannot be deleted</source>
-        <translation type="vanished">As outras %2 fontes do sistema não podem ser eliminadas</translation>
-    </message>
-    <message>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
@@ -119,24 +115,8 @@
         <translation>%1 fonte instalada</translation>
     </message>
     <message>
-        <source>The other one system font has already been installed</source>
-        <translation type="vanished">A outra fonte do sistema já foi instalada</translation>
-    </message>
-    <message>
-        <source>The other %2 system fonts have already been installed</source>
-        <translation type="vanished">As outras %2 fontes do sistema já foram instaladas</translation>
-    </message>
-    <message>
         <source>%1 fonts installed</source>
         <translation>%1 fontes instaladas</translation>
-    </message>
-    <message>
-        <source>Failed to install %1 fonts. There is not enough disk space.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Failed to install 1 font. There is not enough disk space.</source>
-        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -152,22 +132,6 @@
     <message>
         <source>These fonts will not be available to applications</source>
         <translation>Estas fontes não estarão disponíveis para as aplicações</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="vanished">Cancelar</translation>
-    </message>
-    <message>
-        <source>Confirm</source>
-        <translation type="vanished">Confirmar</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation type="vanished">Eliminar</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete %1 fonts</source>
-        <translation type="vanished">Tem a certeza que deseja eliminar as %1 fontes?</translation>
     </message>
     <message>
         <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
@@ -196,24 +160,12 @@
         <translation>Verificação da fonte</translation>
     </message>
     <message>
-        <source>Broken file</source>
-        <translation type="vanished">Ficheiro corrompido</translation>
-    </message>
-    <message>
-        <source>Same version installed</source>
-        <translation type="vanished">Mesma versão instalada</translation>
-    </message>
-    <message>
         <source>Exit</source>
         <translation>Sair</translation>
     </message>
     <message>
         <source>Continue</source>
         <translation>Continuar</translation>
-    </message>
-    <message>
-        <source>No need to install system fonts again</source>
-        <translation type="vanished">Não há necessidade de instalar as fontes do sistema novamente</translation>
     </message>
     <message>
         <source>No fonts to be installed</source>
@@ -290,11 +242,11 @@
     </message>
     <message>
         <source>Failed to export 1 font. There is not enough disk space.</source>
-        <translation type="unfinished"/>
+        <translation>Falha ao exportar 1 fonte. Não há espaço suficiente em disco.</translation>
     </message>
     <message>
         <source>Failed to export %1 fonts. There is not enough disk space.</source>
-        <translation type="unfinished"/>
+        <translation>Falha ao exportar %1 fontes. Não há espaço suficiente em disco.</translation>
     </message>
 </context>
 <context>
@@ -346,6 +298,10 @@
         <source>The fonts have been deactivated</source>
         <translation>As fontes foram desativadas</translation>
     </message>
+    <message>
+        <source>Some fonts are not allowed to be disabled</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>NormalInstallWindow</name>
@@ -362,7 +318,7 @@
     <name>QuickInstallWindow</name>
     <message>
         <source>Unknown</source>
-        <translation>Desconhecido</translation>
+        <translation>Desconhecida</translation>
     </message>
     <message>
         <source>Broken file</source>
@@ -436,49 +392,17 @@
     </message>
 </context>
 <context>
-    <name>Shortcuts</name>
-    <message>
-        <source>Help</source>
-        <translation type="vanished">Ajuda</translation>
-    </message>
-    <message>
-        <source>Display shortcuts</source>
-        <translation type="vanished">Mostrar atalhos</translation>
-    </message>
-    <message>
-        <source>Page up</source>
-        <translation type="vanished">Página para cima</translation>
-    </message>
-    <message>
-        <source>Page down</source>
-        <translation type="vanished">Página para baixo</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation type="vanished">Eliminar</translation>
-    </message>
-    <message>
-        <source>Add font</source>
-        <translation type="vanished">Adicionar fonte</translation>
-    </message>
-    <message>
-        <source>Favorite</source>
-        <translation type="vanished">Adicionar às favoritas</translation>
-    </message>
-    <message>
-        <source>Unfavorite</source>
-        <translation type="vanished">Remover das favoritas</translation>
-    </message>
-    <message>
-        <source>Font info</source>
-        <translation type="vanished">Informação da fonte</translation>
-    </message>
-</context>
-<context>
     <name>StateBar</name>
     <message>
         <source>Input preview text</source>
         <translation>Inserir texto de pré-visualização</translation>
+    </message>
+</context>
+<context>
+    <name>DFontWidget</name>
+    <message>
+        <source>Broken file</source>
+        <translation>Ficheiro corrompido</translation>
     </message>
 </context>
 </TS>

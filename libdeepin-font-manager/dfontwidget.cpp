@@ -20,6 +20,7 @@
 #include "dfontwidget.h"
 #include <QTimer>
 #include <QTranslator>
+#include <QDebug>
 
 DFontWidget::DFontWidget(QWidget *parent)
     : QWidget(parent),
@@ -29,11 +30,10 @@ DFontWidget::DFontWidget(QWidget *parent)
       m_spinner(new DSpinner(this)),
       m_lab(new QLabel(this))//
 {
-
-    QTranslator translator;
-    translator.load("../translations/deepin-font-manager_zh_CN.qm");
-    qApp->installTranslator(&translator);
-
+    QLocale locale;
+    QString translationFile = QString("/usr/share/deepin-font-manager/translations/deepin-font-manager_%1.qm").arg(locale.name());
+    m_translator.load(translationFile);
+    qApp->installTranslator(&m_translator);
     QWidget *spinnerPage = new QWidget;
     QVBoxLayout *spinnerLayout = new QVBoxLayout(spinnerPage);
     m_spinner->setFixedSize(50, 50);
@@ -59,16 +59,17 @@ DFontWidget::DFontWidget(QWidget *parent)
 
     connect(m_thread, &DFontLoadThread::loadFinished, this, &DFontWidget::handleFinished);
 
-    connect(qApp, &DApplication::fontChanged, this, [ = ]() {
+    connect(qApp, &DApplication::fontChanged, [this]() {
         m_lab->setFont(DApplication::font());
     });
 
-    m_area->setFixedSize(qApp->primaryScreen()->geometry().width() / 1.5,
-                         qApp->primaryScreen()->geometry().height() / 1.5 + 20);
+    m_area->setFixedSize(static_cast<int>(qApp->primaryScreen()->geometry().width() / 1.5),
+                         static_cast<int>(qApp->primaryScreen()->geometry().height() / 1.5 + 20));
 }
 
 DFontWidget::~DFontWidget()
 {
+    qApp->removeTranslator(&m_translator);
 }
 
 void DFontWidget::setFileUrl(const QString &url)
@@ -91,8 +92,8 @@ void DFontWidget::handleFinished(const QByteArray &data)
         m_spinner->stop();
         m_spinner->hide();
         m_preview->hide();
-//        m_lab->setText(DApplication::translate("DFInstallErrorDialog", "Broken file"));
-        m_lab->setText("文件已损坏");
+        QString content = DApplication::translate("DFontWidget", "Broken file");
+        m_lab->setText(content);
         m_lab->setFont(DApplication::font());
         m_lab->move(this->geometry().center() - m_lab->rect().center());
         m_lab->show();

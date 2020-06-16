@@ -33,10 +33,6 @@
 <context>
     <name>DFDeleteDialog</name>
     <message>
-        <source>The other %2 system fonts cannot be deleted</source>
-        <translation type="vanished">다른 %2 시스템 글꼴을 삭제할 수 없습니다</translation>
-    </message>
-    <message>
         <source>Cancel</source>
         <translation>취소</translation>
     </message>
@@ -119,24 +115,8 @@
         <translation>%1개 글꼴 설치됨</translation>
     </message>
     <message>
-        <source>The other one system font has already been installed</source>
-        <translation type="vanished">다른 하나의 시스템 글꼴이 이미 설치되어 있습니다</translation>
-    </message>
-    <message>
-        <source>The other %2 system fonts have already been installed</source>
-        <translation type="vanished">다른 %2개의 시스템 글꼴이 이미 설치되어 있습니다</translation>
-    </message>
-    <message>
         <source>%1 fonts installed</source>
         <translation>%1개 글꼴 설치됨</translation>
-    </message>
-    <message>
-        <source>Failed to install %1 fonts. There is not enough disk space.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Failed to install 1 font. There is not enough disk space.</source>
-        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -152,22 +132,6 @@
     <message>
         <source>These fonts will not be available to applications</source>
         <translation>이러한 글꼴은 응용프로그램에서 사용할 수 없습니다</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="vanished">취소</translation>
-    </message>
-    <message>
-        <source>Confirm</source>
-        <translation type="vanished">확인</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation type="vanished">삭제</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete %1 fonts</source>
-        <translation type="vanished">%1 글꼴을 삭제하시겠습니까?</translation>
     </message>
     <message>
         <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
@@ -196,24 +160,12 @@
         <translation>글꼴 확인</translation>
     </message>
     <message>
-        <source>Broken file</source>
-        <translation type="vanished">깨진 파일</translation>
-    </message>
-    <message>
-        <source>Same version installed</source>
-        <translation type="vanished">동일한 버전 설치됨</translation>
-    </message>
-    <message>
         <source>Exit</source>
         <translation>종료</translation>
     </message>
     <message>
         <source>Continue</source>
         <translation>계속</translation>
-    </message>
-    <message>
-        <source>No need to install system fonts again</source>
-        <translation type="vanished">시스템 글꼴을 다시 설치할 필요가 없습니다</translation>
     </message>
     <message>
         <source>No fonts to be installed</source>
@@ -290,11 +242,11 @@
     </message>
     <message>
         <source>Failed to export 1 font. There is not enough disk space.</source>
-        <translation type="unfinished"/>
+        <translation>1개의 글꼴을 내보내지 못했습니다. 디스크 공간이 부족합니다.</translation>
     </message>
     <message>
         <source>Failed to export %1 fonts. There is not enough disk space.</source>
-        <translation type="unfinished"/>
+        <translation>%1개의 글꼴을 내보내지 못했습니다. 디스크 공간이 부족합니다.</translation>
     </message>
 </context>
 <context>
@@ -345,6 +297,10 @@
     <message>
         <source>The fonts have been deactivated</source>
         <translation>글꼴이 비활성화됨</translation>
+    </message>
+    <message>
+        <source>Some fonts are not allowed to be disabled</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -436,49 +392,17 @@
     </message>
 </context>
 <context>
-    <name>Shortcuts</name>
-    <message>
-        <source>Help</source>
-        <translation type="vanished">도움말</translation>
-    </message>
-    <message>
-        <source>Display shortcuts</source>
-        <translation type="vanished">단축키 표시</translation>
-    </message>
-    <message>
-        <source>Page up</source>
-        <translation type="vanished">페이지 위로</translation>
-    </message>
-    <message>
-        <source>Page down</source>
-        <translation type="vanished">페이지 아래로</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation type="vanished">삭제</translation>
-    </message>
-    <message>
-        <source>Add font</source>
-        <translation type="vanished">글꼴 추가</translation>
-    </message>
-    <message>
-        <source>Favorite</source>
-        <translation type="vanished">즐겨찾기</translation>
-    </message>
-    <message>
-        <source>Unfavorite</source>
-        <translation type="vanished">즐겨찾기 해제</translation>
-    </message>
-    <message>
-        <source>Font info</source>
-        <translation type="vanished">글꼴 정보</translation>
-    </message>
-</context>
-<context>
     <name>StateBar</name>
     <message>
         <source>Input preview text</source>
         <translation>미리보기 텍스트 입력</translation>
+    </message>
+</context>
+<context>
+    <name>DFontWidget</name>
+    <message>
+        <source>Broken file</source>
+        <translation>깨진 파일</translation>
     </message>
 </context>
 </TS>

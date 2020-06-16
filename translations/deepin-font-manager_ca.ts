@@ -33,10 +33,6 @@
 <context>
     <name>DFDeleteDialog</name>
     <message>
-        <source>The other %2 system fonts cannot be deleted</source>
-        <translation type="vanished">Les altres %2 lletres del sistema no es poden eliminar.</translation>
-    </message>
-    <message>
         <source>Cancel</source>
         <translation>Cancel·la</translation>
     </message>
@@ -119,24 +115,8 @@
         <translation>%1 lletra instal·lada</translation>
     </message>
     <message>
-        <source>The other one system font has already been installed</source>
-        <translation type="vanished">L&apos;altra lletra del sistema ja s&apos;ha instal·lat.</translation>
-    </message>
-    <message>
-        <source>The other %2 system fonts have already been installed</source>
-        <translation type="vanished">Les altres %2 lletres del sitema ja s&apos;han instal·lat.</translation>
-    </message>
-    <message>
         <source>%1 fonts installed</source>
         <translation>%1 lletres instal·lades</translation>
-    </message>
-    <message>
-        <source>Failed to install %1 fonts. There is not enough disk space.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Failed to install 1 font. There is not enough disk space.</source>
-        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -152,22 +132,6 @@
     <message>
         <source>These fonts will not be available to applications</source>
         <translation>Aquestes lletres no estaran disponibles a les aplicacions.</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="vanished">Cancel·la</translation>
-    </message>
-    <message>
-        <source>Confirm</source>
-        <translation type="vanished">Confirmeu-ho</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation type="vanished">Elimina</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete %1 fonts</source>
-        <translation type="vanished">Segur que voleu eliminar %1 lletres?</translation>
     </message>
     <message>
         <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
@@ -196,24 +160,12 @@
         <translation>Verificació de la lletra</translation>
     </message>
     <message>
-        <source>Broken file</source>
-        <translation type="vanished">Fitxer trencat</translation>
-    </message>
-    <message>
-        <source>Same version installed</source>
-        <translation type="vanished">N&apos;hi ha instal·lada la mateixa versió.</translation>
-    </message>
-    <message>
         <source>Exit</source>
         <translation>Surt</translation>
     </message>
     <message>
         <source>Continue</source>
         <translation>Continua</translation>
-    </message>
-    <message>
-        <source>No need to install system fonts again</source>
-        <translation type="vanished">No cal tornar a instal·lar les lletres del sistema.</translation>
     </message>
     <message>
         <source>No fonts to be installed</source>
@@ -290,11 +242,11 @@
     </message>
     <message>
         <source>Failed to export 1 font. There is not enough disk space.</source>
-        <translation type="unfinished"/>
+        <translation>Ha fallat exportar 1 lletra. No hi ha prou espai de disc.</translation>
     </message>
     <message>
         <source>Failed to export %1 fonts. There is not enough disk space.</source>
-        <translation type="unfinished"/>
+        <translation>Ha fallat exportar 1% lletres. No hi ha prou espai de disc.</translation>
     </message>
 </context>
 <context>
@@ -345,6 +297,10 @@
     <message>
         <source>The fonts have been deactivated</source>
         <translation>Les lletres s&apos;han desactivat.</translation>
+    </message>
+    <message>
+        <source>Some fonts are not allowed to be disabled</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -436,49 +392,17 @@
     </message>
 </context>
 <context>
-    <name>Shortcuts</name>
-    <message>
-        <source>Help</source>
-        <translation type="vanished">Ajuda</translation>
-    </message>
-    <message>
-        <source>Display shortcuts</source>
-        <translation type="vanished">Mostra les dreceres</translation>
-    </message>
-    <message>
-        <source>Page up</source>
-        <translation type="vanished">Pàgina amunt</translation>
-    </message>
-    <message>
-        <source>Page down</source>
-        <translation type="vanished">Pàgina avall</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation type="vanished">Elimina</translation>
-    </message>
-    <message>
-        <source>Add font</source>
-        <translation type="vanished">Afegeix una lletra</translation>
-    </message>
-    <message>
-        <source>Favorite</source>
-        <translation type="vanished">Prefereix</translation>
-    </message>
-    <message>
-        <source>Unfavorite</source>
-        <translation type="vanished">Sense preferència</translation>
-    </message>
-    <message>
-        <source>Font info</source>
-        <translation type="vanished">Informació de la lletra</translation>
-    </message>
-</context>
-<context>
     <name>StateBar</name>
     <message>
         <source>Input preview text</source>
         <translation>Escriviu el text de previsualització.</translation>
+    </message>
+</context>
+<context>
+    <name>DFontWidget</name>
+    <message>
+        <source>Broken file</source>
+        <translation>Fitxer trencat</translation>
     </message>
 </context>
 </TS>

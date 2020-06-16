@@ -30,6 +30,7 @@
 #include <QScreen>
 #include <QGuiApplication>
 #include <QScrollBar>
+#include <QTranslator>
 
 DWIDGET_USE_NAMESPACE
 
@@ -39,7 +40,7 @@ class DFontWidget : public QWidget
 
 public:
     DFontWidget(QWidget *parent = nullptr);
-    ~DFontWidget();
+    ~DFontWidget() override;
 
     void setFileUrl(const QString &url);
 
@@ -56,6 +57,7 @@ private:
     DSpinner *m_spinner;
     QString m_filePath;
     QLabel *m_lab;
+    QTranslator m_translator;
 };
 
 #endif

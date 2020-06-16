@@ -33,10 +33,6 @@
 <context>
     <name>DFDeleteDialog</name>
     <message>
-        <source>The other %2 system fonts cannot be deleted</source>
-        <translation type="vanished">Lain-lain %2 fon sistem tidak dapat dipadamkan</translation>
-    </message>
-    <message>
         <source>Cancel</source>
         <translation>Batal</translation>
     </message>
@@ -119,24 +115,8 @@
         <translation>Fon %1 telah dipasang</translation>
     </message>
     <message>
-        <source>The other one system font has already been installed</source>
-        <translation type="vanished">Satu fon sistem yang lain telah dipasang</translation>
-    </message>
-    <message>
-        <source>The other %2 system fonts have already been installed</source>
-        <translation type="vanished">%2 fon sistem yang lain telah dipasang</translation>
-    </message>
-    <message>
         <source>%1 fonts installed</source>
         <translation>Fon %1 telah dipasang</translation>
-    </message>
-    <message>
-        <source>Failed to install %1 fonts. There is not enough disk space.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Failed to install 1 font. There is not enough disk space.</source>
-        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -152,22 +132,6 @@
     <message>
         <source>These fonts will not be available to applications</source>
         <translation>Fon-fon ini tidak tersedia untuk kegunaan aplikasi</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="vanished">Batal</translation>
-    </message>
-    <message>
-        <source>Confirm</source>
-        <translation type="vanished">Sahkan</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation type="vanished">Padam</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete %1 fonts</source>
-        <translation type="vanished">Anda pasti mahu memadaam %1 fon</translation>
     </message>
     <message>
         <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
@@ -196,24 +160,12 @@
         <translation>Pengesahan Fon</translation>
     </message>
     <message>
-        <source>Broken file</source>
-        <translation type="vanished">Fail rosak</translation>
-    </message>
-    <message>
-        <source>Same version installed</source>
-        <translation type="vanished">Versi serupa telah dipasang</translation>
-    </message>
-    <message>
         <source>Exit</source>
         <translation>Keluar</translation>
     </message>
     <message>
         <source>Continue</source>
         <translation>Teruskan</translation>
-    </message>
-    <message>
-        <source>No need to install system fonts again</source>
-        <translation type="vanished">Tiada perlu memasang fon sistem lagi</translation>
     </message>
     <message>
         <source>No fonts to be installed</source>
@@ -346,6 +298,10 @@
         <source>The fonts have been deactivated</source>
         <translation>Fon telah dinyahaktifkan</translation>
     </message>
+    <message>
+        <source>Some fonts are not allowed to be disabled</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>NormalInstallWindow</name>
@@ -436,49 +392,17 @@
     </message>
 </context>
 <context>
-    <name>Shortcuts</name>
-    <message>
-        <source>Help</source>
-        <translation type="vanished">Bantuan</translation>
-    </message>
-    <message>
-        <source>Display shortcuts</source>
-        <translation type="vanished">Papar pintasan</translation>
-    </message>
-    <message>
-        <source>Page up</source>
-        <translation type="vanished">Halaman ke atas</translation>
-    </message>
-    <message>
-        <source>Page down</source>
-        <translation type="vanished">Halaman ke bawah</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation type="vanished">Padam</translation>
-    </message>
-    <message>
-        <source>Add font</source>
-        <translation type="vanished">Tambah fon</translation>
-    </message>
-    <message>
-        <source>Favorite</source>
-        <translation type="vanished">Kegemaran</translation>
-    </message>
-    <message>
-        <source>Unfavorite</source>
-        <translation type="vanished">Nyahgemar</translation>
-    </message>
-    <message>
-        <source>Font info</source>
-        <translation type="vanished">Maklumat fon</translation>
-    </message>
-</context>
-<context>
     <name>StateBar</name>
     <message>
         <source>Input preview text</source>
         <translation>Masukkan teks pratonton</translation>
+    </message>
+</context>
+<context>
+    <name>DFontWidget</name>
+    <message>
+        <source>Broken file</source>
+        <translation>Fail rosak</translation>
     </message>
 </context>
 </TS>

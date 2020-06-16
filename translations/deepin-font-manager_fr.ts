@@ -33,10 +33,6 @@
 <context>
     <name>DFDeleteDialog</name>
     <message>
-        <source>The other %2 system fonts cannot be deleted</source>
-        <translation type="vanished">Les autres polices système %2 ne peuvent pas être supprimées</translation>
-    </message>
-    <message>
         <source>Cancel</source>
         <translation>Annuler</translation>
     </message>
@@ -119,31 +115,15 @@
         <translation>%1 police installée</translation>
     </message>
     <message>
-        <source>The other one system font has already been installed</source>
-        <translation type="vanished">L&apos;autre police système a déjà été installée</translation>
-    </message>
-    <message>
-        <source>The other %2 system fonts have already been installed</source>
-        <translation type="vanished">Les autres polices système %2 ont déjà été installées</translation>
-    </message>
-    <message>
         <source>%1 fonts installed</source>
         <translation>%1 polices installées</translation>
-    </message>
-    <message>
-        <source>Failed to install %1 fonts. There is not enough disk space.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Failed to install 1 font. There is not enough disk space.</source>
-        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>DeleteConfirmDailog</name>
     <message>
         <source>Are you sure you want to delete this font?</source>
-        <translation>Voulez-vous vraiment supprimer cette police ci?</translation>
+        <translation>Voulez-vous vraiment supprimer cette police?</translation>
     </message>
     <message>
         <source>This font will not be available to applications</source>
@@ -154,32 +134,16 @@
         <translation>Ces polices ne seront pas disponibles pour les applications</translation>
     </message>
     <message>
-        <source>Cancel</source>
-        <translation type="vanished">Annuler</translation>
-    </message>
-    <message>
-        <source>Confirm</source>
-        <translation type="vanished">Confirmer</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation type="vanished">Supprimer</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete %1 fonts</source>
-        <translation type="vanished">Voulez-vous vraiment supprimer les polices %1</translation>
-    </message>
-    <message>
         <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
-        <translation>Ces polices ne seront pas disponibles pour les applications et les autres polices système %1 ne peuvent pas être supprimées</translation>
+        <translation>Ces polices ne seront pas disponibles pour les applications et les %1 autres polices système ne peuvent pas être supprimées</translation>
     </message>
     <message>
         <source>This font will not be available to applications, and the other %1 system fonts cannot be deleted</source>
-        <translation>Cette police ne sera pas disponible pour les applications et les autres polices du système %1 ne peuvent pas être supprimées</translation>
+        <translation>Cette police ne sera pas disponible pour les applications et les %1 autres polices du système ne peuvent pas être supprimées</translation>
     </message>
     <message>
         <source>Are you sure you want to delete %1 fonts?</source>
-        <translation>Voulez-vous vraiment supprimer les polices %1 ?</translation>
+        <translation>Voulez-vous vraiment supprimer %1 polices?</translation>
     </message>
 </context>
 <context>
@@ -196,24 +160,12 @@
         <translation>Vérification des polices</translation>
     </message>
     <message>
-        <source>Broken file</source>
-        <translation type="vanished">Fichier cassé</translation>
-    </message>
-    <message>
-        <source>Same version installed</source>
-        <translation type="vanished">Même version installée</translation>
-    </message>
-    <message>
         <source>Exit</source>
         <translation>Quitter</translation>
     </message>
     <message>
         <source>Continue</source>
         <translation>Continuer</translation>
-    </message>
-    <message>
-        <source>No need to install system fonts again</source>
-        <translation type="vanished">Pas besoin d´installer les polices du système à nouveau</translation>
     </message>
     <message>
         <source>No fonts to be installed</source>
@@ -290,11 +242,11 @@
     </message>
     <message>
         <source>Failed to export 1 font. There is not enough disk space.</source>
-        <translation type="unfinished"/>
+        <translation>Impossible d&apos;exporter 1 police. L&apos;espace disque est insuffisant.</translation>
     </message>
     <message>
         <source>Failed to export %1 fonts. There is not enough disk space.</source>
-        <translation type="unfinished"/>
+        <translation>Impossible d&apos;exporter %1 polices. L&apos;espace disque est insuffisant.</translation>
     </message>
 </context>
 <context>
@@ -329,7 +281,7 @@
     </message>
     <message>
         <source>Display in file manager</source>
-        <translation>Afficher dans le gestionnaire des fichiers</translation>
+        <translation>Afficher dans le gestionnaire de fichiers</translation>
     </message>
     <message>
         <source>Export</source>
@@ -345,6 +297,10 @@
     <message>
         <source>The fonts have been deactivated</source>
         <translation>Les polices ont été désactivées</translation>
+    </message>
+    <message>
+        <source>Some fonts are not allowed to be disabled</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -366,7 +322,7 @@
     </message>
     <message>
         <source>Broken file</source>
-        <translation>Fichier cassé</translation>
+        <translation>Fichier corrompu</translation>
     </message>
     <message>
         <source>Installed</source>
@@ -436,49 +392,17 @@
     </message>
 </context>
 <context>
-    <name>Shortcuts</name>
-    <message>
-        <source>Help</source>
-        <translation type="vanished">Aide</translation>
-    </message>
-    <message>
-        <source>Display shortcuts</source>
-        <translation type="vanished">Afficher les raccourcis</translation>
-    </message>
-    <message>
-        <source>Page up</source>
-        <translation type="vanished">Page précédente</translation>
-    </message>
-    <message>
-        <source>Page down</source>
-        <translation type="vanished">Page suivante</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation type="vanished">Supprimer</translation>
-    </message>
-    <message>
-        <source>Add font</source>
-        <translation type="vanished">Ajouter une police</translation>
-    </message>
-    <message>
-        <source>Favorite</source>
-        <translation type="vanished">Favoris</translation>
-    </message>
-    <message>
-        <source>Unfavorite</source>
-        <translation type="vanished">Défavoris</translation>
-    </message>
-    <message>
-        <source>Font info</source>
-        <translation type="vanished">Information sur la police de caractères</translation>
-    </message>
-</context>
-<context>
     <name>StateBar</name>
     <message>
         <source>Input preview text</source>
         <translation>Saisir un texte d&apos;aperçu</translation>
+    </message>
+</context>
+<context>
+    <name>DFontWidget</name>
+    <message>
+        <source>Broken file</source>
+        <translation>Fichier corrompu</translation>
     </message>
 </context>
 </TS>

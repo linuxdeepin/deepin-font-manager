@@ -33,10 +33,6 @@
 <context>
     <name>DFDeleteDialog</name>
     <message>
-        <source>The other %2 system fonts cannot be deleted</source>
-        <translation type="vanished">Осталих %2 системских фонтова се не могу уклонити</translation>
-    </message>
-    <message>
         <source>Cancel</source>
         <translation>Откажи</translation>
     </message>
@@ -119,24 +115,8 @@
         <translation>%1 фонт инсталиран</translation>
     </message>
     <message>
-        <source>The other one system font has already been installed</source>
-        <translation type="vanished">Преостали системски фонт је већ био инсталиран</translation>
-    </message>
-    <message>
-        <source>The other %2 system fonts have already been installed</source>
-        <translation type="vanished">Осталих %2 системских фонтова су већ били инсталирани</translation>
-    </message>
-    <message>
         <source>%1 fonts installed</source>
         <translation>%1 фонтова инсталирано</translation>
-    </message>
-    <message>
-        <source>Failed to install %1 fonts. There is not enough disk space.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Failed to install 1 font. There is not enough disk space.</source>
-        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -152,22 +132,6 @@
     <message>
         <source>These fonts will not be available to applications</source>
         <translation>Ови фонтови неће бити доступни програмима</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="vanished">Откажи</translation>
-    </message>
-    <message>
-        <source>Confirm</source>
-        <translation type="vanished">Потврди</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation type="vanished">Обриши</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete %1 fonts</source>
-        <translation type="vanished">Заиста желите да обришете %1 фонта/ова</translation>
     </message>
     <message>
         <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
@@ -196,24 +160,12 @@
         <translation>Провера фонта</translation>
     </message>
     <message>
-        <source>Broken file</source>
-        <translation type="vanished">Оштећена датотека</translation>
-    </message>
-    <message>
-        <source>Same version installed</source>
-        <translation type="vanished">Иста верзија је инсталирана</translation>
-    </message>
-    <message>
         <source>Exit</source>
         <translation>Изађи</translation>
     </message>
     <message>
         <source>Continue</source>
         <translation>Настави</translation>
-    </message>
-    <message>
-        <source>No need to install system fonts again</source>
-        <translation type="vanished">Није потребно поново инсталирати системске фонтове</translation>
     </message>
     <message>
         <source>No fonts to be installed</source>
@@ -270,7 +222,7 @@
     <name>Main</name>
     <message>
         <source>Font Manager</source>
-        <translation>Управник фонтова</translation>
+        <translation>Управник Фонтова</translation>
     </message>
     <message>
         <source>Font Manager helps users install and manage fonts.</source>
@@ -290,11 +242,11 @@
     </message>
     <message>
         <source>Failed to export 1 font. There is not enough disk space.</source>
-        <translation type="unfinished"/>
+        <translation>Неуспешан извоз 1 фонта. Недовољно простора на диску.</translation>
     </message>
     <message>
         <source>Failed to export %1 fonts. There is not enough disk space.</source>
-        <translation type="unfinished"/>
+        <translation>Неуспешан извоз %1 фонта/ова. Недовољно простора на диску.</translation>
     </message>
 </context>
 <context>
@@ -345,6 +297,10 @@
     <message>
         <source>The fonts have been deactivated</source>
         <translation>Фонт је деактивиран</translation>
+    </message>
+    <message>
+        <source>Some fonts are not allowed to be disabled</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -436,49 +392,17 @@
     </message>
 </context>
 <context>
-    <name>Shortcuts</name>
-    <message>
-        <source>Help</source>
-        <translation type="vanished">Помоћ</translation>
-    </message>
-    <message>
-        <source>Display shortcuts</source>
-        <translation type="vanished">Прикажи пречице</translation>
-    </message>
-    <message>
-        <source>Page up</source>
-        <translation type="vanished">Страница нагоре</translation>
-    </message>
-    <message>
-        <source>Page down</source>
-        <translation type="vanished"> Страница надоле</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation type="vanished">Обриши</translation>
-    </message>
-    <message>
-        <source>Add font</source>
-        <translation type="vanished">Додај фонт</translation>
-    </message>
-    <message>
-        <source>Favorite</source>
-        <translation type="vanished">Омиљено</translation>
-    </message>
-    <message>
-        <source>Unfavorite</source>
-        <translation type="vanished">Уклони из омиљеног</translation>
-    </message>
-    <message>
-        <source>Font info</source>
-        <translation type="vanished">Подаци фонта</translation>
-    </message>
-</context>
-<context>
     <name>StateBar</name>
     <message>
         <source>Input preview text</source>
         <translation>Унеси текст за преглед</translation>
+    </message>
+</context>
+<context>
+    <name>DFontWidget</name>
+    <message>
+        <source>Broken file</source>
+        <translation>Оштећена датотека</translation>
     </message>
 </context>
 </TS>

@@ -33,10 +33,6 @@
 <context>
     <name>DFDeleteDialog</name>
     <message>
-        <source>The other %2 system fonts cannot be deleted</source>
-        <translation type="vanished">Diğer %2 sistem yazı tipleri silinemez</translation>
-    </message>
-    <message>
         <source>Cancel</source>
         <translation>İptal</translation>
     </message>
@@ -119,24 +115,8 @@
         <translation>%1 yazı tipi kurulu</translation>
     </message>
     <message>
-        <source>The other one system font has already been installed</source>
-        <translation type="vanished">Diğer bir sistem yazı tipi zaten kurulu</translation>
-    </message>
-    <message>
-        <source>The other %2 system fonts have already been installed</source>
-        <translation type="vanished">Diğer %2 sistem yazı tipi zaten kurulu</translation>
-    </message>
-    <message>
         <source>%1 fonts installed</source>
         <translation>%1 yazı tipi kurulu</translation>
-    </message>
-    <message>
-        <source>Failed to install %1 fonts. There is not enough disk space.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Failed to install 1 font. There is not enough disk space.</source>
-        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -152,22 +132,6 @@
     <message>
         <source>These fonts will not be available to applications</source>
         <translation>Bu yazı tipleri uygulamalar tarafından kullanılamaz</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="vanished">İptal</translation>
-    </message>
-    <message>
-        <source>Confirm</source>
-        <translation type="vanished">Onayla</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation type="vanished">Sil</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete %1 fonts</source>
-        <translation type="vanished">%1 yazı tipini silmek istediğinizden emin misiniz?</translation>
     </message>
     <message>
         <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
@@ -196,24 +160,12 @@
         <translation>Yazı Tipi Doğrulaması</translation>
     </message>
     <message>
-        <source>Broken file</source>
-        <translation type="vanished">Bozuk dosya</translation>
-    </message>
-    <message>
-        <source>Same version installed</source>
-        <translation type="vanished">Aynı sürüm kurulu</translation>
-    </message>
-    <message>
         <source>Exit</source>
         <translation>Çıkış</translation>
     </message>
     <message>
         <source>Continue</source>
         <translation>Devam</translation>
-    </message>
-    <message>
-        <source>No need to install system fonts again</source>
-        <translation type="vanished">Sistem yazı tiplerini tekrar yüklemenize gerek yok</translation>
     </message>
     <message>
         <source>No fonts to be installed</source>
@@ -290,11 +242,11 @@
     </message>
     <message>
         <source>Failed to export 1 font. There is not enough disk space.</source>
-        <translation type="unfinished"/>
+        <translation>1 yazı tipi dışa aktarılamadı. Yeterli disk alanı yok.</translation>
     </message>
     <message>
         <source>Failed to export %1 fonts. There is not enough disk space.</source>
-        <translation type="unfinished"/>
+        <translation>%1 yazı tipi dışa aktarılamadı. Yeterli disk alanı yok.</translation>
     </message>
 </context>
 <context>
@@ -317,11 +269,11 @@
     </message>
     <message>
         <source>Favorite</source>
-        <translation>Sık kullanılanlara ekle</translation>
+        <translation>Sık kullanılan</translation>
     </message>
     <message>
         <source>Unfavorite</source>
-        <translation>Sık kullanılanlardan çıkar</translation>
+        <translation>Sık kullanılandan çıkar</translation>
     </message>
     <message>
         <source>Details</source>
@@ -346,12 +298,16 @@
         <source>The fonts have been deactivated</source>
         <translation>Yazı tipleri devre dışı bırakıldı</translation>
     </message>
+    <message>
+        <source>Some fonts are not allowed to be disabled</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>NormalInstallWindow</name>
     <message>
         <source>Install Font</source>
-        <translation>Yazı Tipini Kur</translation>
+        <translation>Yazı Tipi Kur</translation>
     </message>
     <message>
         <source>Verifying...</source>
@@ -436,49 +392,17 @@
     </message>
 </context>
 <context>
-    <name>Shortcuts</name>
-    <message>
-        <source>Help</source>
-        <translation type="vanished">Yardım</translation>
-    </message>
-    <message>
-        <source>Display shortcuts</source>
-        <translation type="vanished">Kısayolları görüntüle</translation>
-    </message>
-    <message>
-        <source>Page up</source>
-        <translation type="vanished">Yukarı</translation>
-    </message>
-    <message>
-        <source>Page down</source>
-        <translation type="vanished">Aşağı</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation type="vanished">Sil</translation>
-    </message>
-    <message>
-        <source>Add font</source>
-        <translation type="vanished">Yazı tipi ekle</translation>
-    </message>
-    <message>
-        <source>Favorite</source>
-        <translation type="vanished">Sık kullanılan</translation>
-    </message>
-    <message>
-        <source>Unfavorite</source>
-        <translation type="vanished">Sık kullanılandan çıkar</translation>
-    </message>
-    <message>
-        <source>Font info</source>
-        <translation type="vanished">Yazı tipi bilgisi</translation>
-    </message>
-</context>
-<context>
     <name>StateBar</name>
     <message>
         <source>Input preview text</source>
         <translation>Önizleme metni gir</translation>
+    </message>
+</context>
+<context>
+    <name>DFontWidget</name>
+    <message>
+        <source>Broken file</source>
+        <translation>Bozuk dosya</translation>
     </message>
 </context>
 </TS>

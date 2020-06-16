@@ -33,10 +33,6 @@
 <context>
     <name>DFDeleteDialog</name>
     <message>
-        <source>The other %2 system fonts cannot be deleted</source>
-        <translation type="vanished">Innych czcionek systemowych %2 nie można usunąć</translation>
-    </message>
-    <message>
         <source>Cancel</source>
         <translation>Anuluj</translation>
     </message>
@@ -119,24 +115,8 @@
         <translation>Zainstalowano czcionkę %1</translation>
     </message>
     <message>
-        <source>The other one system font has already been installed</source>
-        <translation type="vanished">Druga czcionka systemowa została już zainstalowana</translation>
-    </message>
-    <message>
-        <source>The other %2 system fonts have already been installed</source>
-        <translation type="vanished">Pozostałe czcionki systemowe %2 zostały już zainstalowane</translation>
-    </message>
-    <message>
         <source>%1 fonts installed</source>
         <translation>Zainstalowano %1 czcionek</translation>
-    </message>
-    <message>
-        <source>Failed to install %1 fonts. There is not enough disk space.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Failed to install 1 font. There is not enough disk space.</source>
-        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -152,22 +132,6 @@
     <message>
         <source>These fonts will not be available to applications</source>
         <translation>Te czcionki nie będą dostępne dla aplikacji</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="vanished">Anuluj</translation>
-    </message>
-    <message>
-        <source>Confirm</source>
-        <translation type="vanished">Potwierdź</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation type="vanished">Usuń</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete %1 fonts</source>
-        <translation type="vanished">Czy na pewno chcesz usunąć czcionki %1</translation>
     </message>
     <message>
         <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
@@ -196,24 +160,12 @@
         <translation>Weryfikacja czcionki</translation>
     </message>
     <message>
-        <source>Broken file</source>
-        <translation type="vanished">Uszkodzony plik</translation>
-    </message>
-    <message>
-        <source>Same version installed</source>
-        <translation type="vanished">Zainstalowano tę samą wersję</translation>
-    </message>
-    <message>
         <source>Exit</source>
         <translation>Wyjście</translation>
     </message>
     <message>
         <source>Continue</source>
         <translation>Kontynuuj</translation>
-    </message>
-    <message>
-        <source>No need to install system fonts again</source>
-        <translation type="vanished">Nie trzeba ponownie instalować czcionek systemowych</translation>
     </message>
     <message>
         <source>No fonts to be installed</source>
@@ -346,6 +298,10 @@
         <source>The fonts have been deactivated</source>
         <translation>Czcionki zostały dezaktywowane</translation>
     </message>
+    <message>
+        <source>Some fonts are not allowed to be disabled</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>NormalInstallWindow</name>
@@ -436,49 +392,17 @@
     </message>
 </context>
 <context>
-    <name>Shortcuts</name>
-    <message>
-        <source>Help</source>
-        <translation type="vanished">Pomoc</translation>
-    </message>
-    <message>
-        <source>Display shortcuts</source>
-        <translation type="vanished">Wyświetl skróty</translation>
-    </message>
-    <message>
-        <source>Page up</source>
-        <translation type="vanished">Strona w górę</translation>
-    </message>
-    <message>
-        <source>Page down</source>
-        <translation type="vanished">Strona w dół</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation type="vanished">Usuń</translation>
-    </message>
-    <message>
-        <source>Add font</source>
-        <translation type="vanished">Dodaj czcionkę</translation>
-    </message>
-    <message>
-        <source>Favorite</source>
-        <translation type="vanished">Ulubiony</translation>
-    </message>
-    <message>
-        <source>Unfavorite</source>
-        <translation type="vanished">Usuń z ulubionych</translation>
-    </message>
-    <message>
-        <source>Font info</source>
-        <translation type="vanished">Informacje o czcionce</translation>
-    </message>
-</context>
-<context>
     <name>StateBar</name>
     <message>
         <source>Input preview text</source>
         <translation>Wprowadź tekst podglądu</translation>
+    </message>
+</context>
+<context>
+    <name>DFontWidget</name>
+    <message>
+        <source>Broken file</source>
+        <translation>Uszkodzony plik</translation>
     </message>
 </context>
 </TS>

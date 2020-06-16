@@ -33,10 +33,6 @@
 <context>
     <name>DFDeleteDialog</name>
     <message>
-        <source>The other %2 system fonts cannot be deleted</source>
-        <translation type="vanished">Gli altri %2 font di sistema non possono essere eliminati</translation>
-    </message>
-    <message>
         <source>Cancel</source>
         <translation>Annulla</translation>
     </message>
@@ -119,24 +115,8 @@
         <translation>Font %1 installato</translation>
     </message>
     <message>
-        <source>The other one system font has already been installed</source>
-        <translation type="vanished">L&apos;altro font di sistema è già stato installato</translation>
-    </message>
-    <message>
-        <source>The other %2 system fonts have already been installed</source>
-        <translation type="vanished">Gli altri %2 font di sistema sono già stati installati</translation>
-    </message>
-    <message>
         <source>%1 fonts installed</source>
         <translation>Font %1 installato</translation>
-    </message>
-    <message>
-        <source>Failed to install %1 fonts. There is not enough disk space.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Failed to install 1 font. There is not enough disk space.</source>
-        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -152,22 +132,6 @@
     <message>
         <source>These fonts will not be available to applications</source>
         <translation>Questi font non saranno disponibili per le App</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="vanished">Annulla</translation>
-    </message>
-    <message>
-        <source>Confirm</source>
-        <translation type="vanished">Conferma</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation type="vanished">Elimina</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete %1 fonts</source>
-        <translation type="vanished">Sicuro di voler eliminare %1 font?</translation>
     </message>
     <message>
         <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
@@ -196,24 +160,12 @@
         <translation>Verifica font</translation>
     </message>
     <message>
-        <source>Broken file</source>
-        <translation type="vanished">File danneggiato</translation>
-    </message>
-    <message>
-        <source>Same version installed</source>
-        <translation type="vanished">Medesima versione già installata</translation>
-    </message>
-    <message>
         <source>Exit</source>
         <translation>Esci</translation>
     </message>
     <message>
         <source>Continue</source>
         <translation>Continua</translation>
-    </message>
-    <message>
-        <source>No need to install system fonts again</source>
-        <translation type="vanished">Non occorre installare nuovamente i font di sistema</translation>
     </message>
     <message>
         <source>No fonts to be installed</source>
@@ -291,11 +243,11 @@ Localizzazione italiana a cura di Massimo A. Carofano.</translation>
     </message>
     <message>
         <source>Failed to export 1 font. There is not enough disk space.</source>
-        <translation type="unfinished"/>
+        <translation>Esportazione di 1 font fallita per spazio insufficiente.</translation>
     </message>
     <message>
         <source>Failed to export %1 fonts. There is not enough disk space.</source>
-        <translation type="unfinished"/>
+        <translation>Esportazione di %1 font fallita per spazio insufficiente.</translation>
     </message>
 </context>
 <context>
@@ -347,6 +299,10 @@ Localizzazione italiana a cura di Massimo A. Carofano.</translation>
         <source>The fonts have been deactivated</source>
         <translation>I font sono stati disattivati</translation>
     </message>
+    <message>
+        <source>Some fonts are not allowed to be disabled</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>NormalInstallWindow</name>
@@ -367,7 +323,7 @@ Localizzazione italiana a cura di Massimo A. Carofano.</translation>
     </message>
     <message>
         <source>Broken file</source>
-        <translation>File danneggiato</translation>
+        <translation>File corrotto</translation>
     </message>
     <message>
         <source>Installed</source>
@@ -437,49 +393,17 @@ Localizzazione italiana a cura di Massimo A. Carofano.</translation>
     </message>
 </context>
 <context>
-    <name>Shortcuts</name>
-    <message>
-        <source>Help</source>
-        <translation type="vanished">Aiuto</translation>
-    </message>
-    <message>
-        <source>Display shortcuts</source>
-        <translation type="vanished">Visualizza scorciatoie</translation>
-    </message>
-    <message>
-        <source>Page up</source>
-        <translation type="vanished">Pagina su</translation>
-    </message>
-    <message>
-        <source>Page down</source>
-        <translation type="vanished">Pagina giù</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation type="vanished">Elimina</translation>
-    </message>
-    <message>
-        <source>Add font</source>
-        <translation type="vanished">Aggiungi font</translation>
-    </message>
-    <message>
-        <source>Favorite</source>
-        <translation type="vanished">Preferito</translation>
-    </message>
-    <message>
-        <source>Unfavorite</source>
-        <translation type="vanished">Non più preferito</translation>
-    </message>
-    <message>
-        <source>Font info</source>
-        <translation type="vanished">Info font</translation>
-    </message>
-</context>
-<context>
     <name>StateBar</name>
     <message>
         <source>Input preview text</source>
         <translation>Inserisci testo di prova</translation>
+    </message>
+</context>
+<context>
+    <name>DFontWidget</name>
+    <message>
+        <source>Broken file</source>
+        <translation>File corrotto</translation>
     </message>
 </context>
 </TS>

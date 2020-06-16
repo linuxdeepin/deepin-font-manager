@@ -400,4 +400,11 @@
         <translation>Input preview text</translation>
     </message>
 </context>
+<context>
+    <name>DFontWidget</name>
+    <message>
+        <source>Broken file</source>
+        <translation>Broken file</translation>
+    </message>
+</context>
 </TS>

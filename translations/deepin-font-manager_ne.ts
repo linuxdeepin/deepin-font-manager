@@ -33,10 +33,6 @@
 <context>
     <name>DFDeleteDialog</name>
     <message>
-        <source>The other %2 system fonts cannot be deleted</source>
-        <translation type="vanished">अन्य% 2 प्रणाली फन्टहरू मेटाउन सकिदैन</translation>
-    </message>
-    <message>
         <source>Cancel</source>
         <translation>रद्द गर्नुहोस्</translation>
     </message>
@@ -119,24 +115,8 @@
         <translation>% 1 फन्ट स्थापना भयो</translation>
     </message>
     <message>
-        <source>The other one system font has already been installed</source>
-        <translation type="vanished">अर्को एउटा प्रणाली फन्ट पहिले नै स्थापना भइसकेको छ</translation>
-    </message>
-    <message>
-        <source>The other %2 system fonts have already been installed</source>
-        <translation type="vanished">अन्य% 2 प्रणाली फन्टहरू पहिल्यै स्थापना भइसकेको छ</translation>
-    </message>
-    <message>
         <source>%1 fonts installed</source>
         <translation>% 1 फन्ट स्थापना गरियो</translation>
-    </message>
-    <message>
-        <source>Failed to install %1 fonts. There is not enough disk space.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Failed to install 1 font. There is not enough disk space.</source>
-        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -152,22 +132,6 @@
     <message>
         <source>These fonts will not be available to applications</source>
         <translation>यी फन्टहरू अनुप्रयोगहरूमा उपलब्ध हुँदैनन्</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="vanished">रद्द गर्नुहोस्</translation>
-    </message>
-    <message>
-        <source>Confirm</source>
-        <translation type="vanished">पुष्टि गर्नुहोस्</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation type="vanished">हटाउनुहोस्</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete %1 fonts</source>
-        <translation type="vanished">के तपाईं पक्का% 1 फन्टहरू हटाउन चाहानुहुन्छ?</translation>
     </message>
     <message>
         <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
@@ -196,24 +160,12 @@
         <translation>फन्ट प्रमाणीकरण</translation>
     </message>
     <message>
-        <source>Broken file</source>
-        <translation type="vanished">टुक्रिएको फाईल</translation>
-    </message>
-    <message>
-        <source>Same version installed</source>
-        <translation type="vanished">समान संस्करण स्थापना भयो</translation>
-    </message>
-    <message>
         <source>Exit</source>
         <translation>बाहिर निस्कनुहोस्</translation>
     </message>
     <message>
         <source>Continue</source>
         <translation>जारी राख्नुहोस्</translation>
-    </message>
-    <message>
-        <source>No need to install system fonts again</source>
-        <translation type="vanished">फेरि प्रणाली फन्ट स्थापना गर्न आवश्यक छैन</translation>
     </message>
     <message>
         <source>No fonts to be installed</source>
@@ -346,6 +298,10 @@
         <source>The fonts have been deactivated</source>
         <translation>फन्टहरू निस्क्रिय पारिएका छन्</translation>
     </message>
+    <message>
+        <source>Some fonts are not allowed to be disabled</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>NormalInstallWindow</name>
@@ -436,49 +392,17 @@
     </message>
 </context>
 <context>
-    <name>Shortcuts</name>
-    <message>
-        <source>Help</source>
-        <translation type="vanished">मद्दत</translation>
-    </message>
-    <message>
-        <source>Display shortcuts</source>
-        <translation type="vanished">सर्टकट प्रदर्शन गर्नुहोस्</translation>
-    </message>
-    <message>
-        <source>Page up</source>
-        <translation type="vanished">Page up</translation>
-    </message>
-    <message>
-        <source>Page down</source>
-        <translation type="vanished">Page down</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation type="vanished">हटाउनुहोस्</translation>
-    </message>
-    <message>
-        <source>Add font</source>
-        <translation type="vanished">फन्ट थप्नुहोस्</translation>
-    </message>
-    <message>
-        <source>Favorite</source>
-        <translation type="vanished">मनपर्ने</translation>
-    </message>
-    <message>
-        <source>Unfavorite</source>
-        <translation type="vanished">मनपर्ने छैन</translation>
-    </message>
-    <message>
-        <source>Font info</source>
-        <translation type="vanished">फन्ट जानकारी</translation>
-    </message>
-</context>
-<context>
     <name>StateBar</name>
     <message>
         <source>Input preview text</source>
         <translation>इनपुट पूर्वावलोकन पाठ</translation>
+    </message>
+</context>
+<context>
+    <name>DFontWidget</name>
+    <message>
+        <source>Broken file</source>
+        <translation>टुक्रिएको फाईल</translation>
     </message>
 </context>
 </TS>
