@@ -80,7 +80,6 @@ public:
     void toSetCurrentIndex(QModelIndexList &itemIndexesNew, int count, int size);
     bool isAtListviewBottom();
     bool isAtListviewTop();
-    bool m_IsNeedFocus = false;//是否需要设置聚焦
     QString getPreviewTextWithSize(int *fontSize = nullptr);
     void setCurrentSelected(int indexRow);
     void isNeedScrollToBottom();
@@ -88,7 +87,6 @@ public:
     void viewChanged();
     void refreshFocuses(bool isJustInstalled, int count);
     void setNeedFocus();
-    static bool misdelete;//是否是删除操作
 
 protected:
     void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected) override;
@@ -112,6 +110,7 @@ private:
     bool m_bClickCollectionOrEnable = false;
     bool m_bListviewAtButtom = false;
     bool m_bListviewAtTop = false;
+    bool m_IsNeedFocus = false;//是否需要设置聚焦
     QWidget *m_parentWidget;
     QStandardItemModel *m_fontPreviewItemModel {nullptr};
 
