@@ -302,7 +302,7 @@
     </message>
     <message>
         <source>Some fonts are not allowed to be disabled</source>
-        <translation type="unfinished"></translation>
+        <translation>Some fonts are not allowed to be disabled</translation>
     </message>
 </context>
 <context>
