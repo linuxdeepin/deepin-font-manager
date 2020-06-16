@@ -47,8 +47,8 @@ DFontPreview::DFontPreview(QWidget *parent)
 {
     initContents();
 
-    setFixedSize(qApp->primaryScreen()->geometry().width() / 1.5,
-                 qApp->primaryScreen()->geometry().height() / 1.5);
+    setFixedSize(static_cast<int>(qApp->primaryScreen()->geometry().width() / 1.5),
+                 static_cast<int>(qApp->primaryScreen()->geometry().height() / 1.5));
 }
 
 DFontPreview::~DFontPreview()
@@ -69,7 +69,7 @@ void DFontPreview::setFileUrl(const QString &url)
         return;
 
     sampleString = getSampleString().simplified();
-    styleName = (char *) m_face->style_name;
+    styleName = QString(m_face->style_name);
 
     repaint();
 }
@@ -178,7 +178,7 @@ void DFontPreview::paintEvent(QPaintEvent *e)
         setFixedWidth(currentMaxWidth);
         m_needScroll = true;
     } else {
-        setFixedWidth(qApp->primaryScreen()->geometry().width() / 1.5);
+        setFixedWidth(static_cast<int>(qApp->primaryScreen()->geometry().width() / 1.5));
         m_needScroll = false;
     }
     QWidget::paintEvent(e);
