@@ -880,6 +880,7 @@ void DFontPreviewListView::keyPressEvent(QKeyEvent *event)
                 QListView::keyPressEvent(event);
                 return;
             }
+            /*判断当前选中item是否为首个或末尾，首个按上键且在可见时切换至末尾选中，末尾按下键且可见时切换至首个选中 UT000539*/
             if (event->key() == Qt::Key_Up) {
                 if (isAtListviewTop()) {
                     if (list.last().row() == 0) {

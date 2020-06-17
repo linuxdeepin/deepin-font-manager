@@ -1778,15 +1778,15 @@ void DFontMgrMainWindow::keyPressEvent(QKeyEvent *event)
     if (Qt::Key_Left == event->key() || Qt::Key_Down == event->key()) {
         if (d->fontScaleSlider->hasFocus()) {
             d->fontScaleSlider->setValue(d->fontScaleSlider->value() - 1);
-        } else if (Qt::Key_Left == event->key() && m_fontPreviewListView->hasFocus()) {
+        } else if (Qt::Key_Left == event->key() && (m_fontPreviewListView->hasFocus() || m_noInstallListView->hasFocus())) {
             d->leftSiderBar->setFocus(Qt::MouseFocusReason);
         }
     }
     if (Qt::Key_Right == event->key() || Qt::Key_Up == event->key()) {
         if (d->fontScaleSlider->hasFocus()) {
             d->fontScaleSlider->setValue(d->fontScaleSlider->value() + 1);
-            //右击切换到previewlistview后判断是否应该选中首个 539
-        } else if (Qt::Key_Right == event->key() && d->leftSiderBar->hasFocus()) {
+            /*焦点在leftSliderBar同时右侧listview有字体显示时,实现右键切换焦点至previewlistview,切换后选中首个 UT000539*/
+        } else if (Qt::Key_Right == event->key() && d->leftSiderBar->hasFocus() && m_fontPreviewListView->isVisible()) {
             m_fontPreviewListView->setFocus(Qt::MouseFocusReason);
             if (0 == m_fontPreviewListView->selectionModel()->selectedIndexes().count()) {
                 DFontPreviewProxyModel *filterModel = m_fontPreviewListView->getFontPreviewProxyModel();
