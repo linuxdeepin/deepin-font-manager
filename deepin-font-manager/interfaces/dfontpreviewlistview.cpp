@@ -350,28 +350,26 @@ void DFontPreviewListView::refreshFocuses(bool isJustInstalled, int count)
 {
     if (selectionModel()->selectedIndexes().isEmpty())
         return;
-    m_isJustInstalled = true;
-    QTimer::singleShot(50, [ = ]() {
-        if (m_IsNeedFocus) {
-            setFocus(Qt::MouseFocusReason);
-            m_IsNeedFocus = false;
-        }
-        if (isJustInstalled) {
-            if (1 == count) {
-                setCurrentSelected(selectionModel()->selectedIndexes().first().row());
-                scrollTo(currentIndex());
-            } else if (count > 1) {
-                //                m_currentSelectedRow = -1;
-                if (selectedIndexes().count() > 0) {
-                    setCurrentSelected(selectedIndexes().first().row());
-                }
-                isSelectedNow = false;
-                if (selectionModel()->selectedIndexes().count() > 1) {
-                    scrollTo(selectionModel()->selectedIndexes().first());
-                }
+    if (m_IsNeedFocus) {
+        setFocus(Qt::MouseFocusReason);
+        m_IsNeedFocus = false;
+    }
+    if (isJustInstalled) {
+        m_isJustInstalled = true;
+        if (1 == count) {
+            setCurrentSelected(selectionModel()->selectedIndexes().first().row());
+            scrollTo(currentIndex());
+        } else if (count > 1) {
+            //                m_currentSelectedRow = -1;
+            if (selectedIndexes().count() > 0) {
+                setCurrentSelected(selectedIndexes().first().row());
+            }
+            isSelectedNow = false;
+            if (selectionModel()->selectedIndexes().count() > 1) {
+                scrollTo(selectionModel()->selectedIndexes().first());
             }
         }
-    });
+    }
 }
 
 void DFontPreviewListView::updateModel()
@@ -1126,7 +1124,6 @@ void DFontPreviewListView::onListViewItemEnableBtnClicked(const QModelIndexList 
             Q_EMIT rowCountChanged();
         }
         message = DApplication::translate("MessageManager", "Some fonts are not allowed to be disabled");
-//        message = DApplication::translate("MessageManager", "部分系统字体不允许被禁用");
     } else {
         if (count == 1) {
             message = QString("%1 %2").arg(fontName).arg(DApplication::translate("MessageManager", "deactivated"));
