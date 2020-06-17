@@ -56,7 +56,7 @@ private:
     DFontLoadThread *m_thread;
     DSpinner *m_spinner;
     QString m_filePath;
-    QLabel *m_lab;
+    QLabel *m_errMsg;
     QTranslator m_translator;
 };
 

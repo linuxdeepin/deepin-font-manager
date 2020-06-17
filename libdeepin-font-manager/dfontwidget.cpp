@@ -28,7 +28,7 @@ DFontWidget::DFontWidget(QWidget *parent)
       m_preview(new DFontPreview(this)),
       m_thread(new DFontLoadThread(this)),
       m_spinner(new DSpinner(this)),
-      m_lab(new QLabel(this))//
+      m_errMsg(new QLabel(this))
 {
     QLocale locale;
     QString translationFile = QString("/usr/share/deepin-font-manager/translations/deepin-font-manager_%1.qm").arg(locale.name());
@@ -38,6 +38,7 @@ DFontWidget::DFontWidget(QWidget *parent)
     QVBoxLayout *spinnerLayout = new QVBoxLayout(spinnerPage);
     m_spinner->setFixedSize(50, 50);
     spinnerLayout->addWidget(m_spinner, 0, Qt::AlignCenter);
+    spinnerLayout->addWidget(m_errMsg, 0, Qt::AlignCenter);
 
     m_layout->addWidget(spinnerPage);
 
@@ -60,7 +61,7 @@ DFontWidget::DFontWidget(QWidget *parent)
     connect(m_thread, &DFontLoadThread::loadFinished, this, &DFontWidget::handleFinished);
 
     connect(qApp, &DApplication::fontChanged, [this]() {
-        m_lab->setFont(DApplication::font());
+        m_errMsg->setFont(DApplication::font());
     });
 
     m_area->setFixedSize(static_cast<int>(qApp->primaryScreen()->geometry().width() / 1.5),
@@ -93,18 +94,15 @@ void DFontWidget::handleFinished(const QByteArray &data)
         m_spinner->hide();
         m_preview->hide();
         QString content = DApplication::translate("DFontWidget", "Broken file");
-        m_lab->setText(content);
-        m_lab->setFont(DApplication::font());
-        m_lab->move(this->geometry().center() - m_lab->rect().center());
-        m_lab->show();
+        m_errMsg->setText(content);
+        m_errMsg->show();
         return;
     }
-    if (m_lab->isVisible())
-        m_lab->hide();
+    if (m_errMsg->isVisible())
+        m_errMsg->hide();
     m_preview->setFileUrl(m_filePath);
     m_layout->setCurrentIndex(1);
     m_spinner->stop();
     m_preview->show();
     m_area->horizontalScrollBar()->setSliderPosition(0);
-
 }
