@@ -444,7 +444,7 @@ void DFInstallErrorListView::setSelectStatus(QStringList &HalfInstalledFiles)
             fileName = info.psname + info.styleName;
         }
         if (str.contains(fileName)) {
-            if (!itemData.bChecked) {
+            if (!itemData.bChecked && itemData.bSelectable) {
                 itemData.bChecked = true;
                 updateErrorFontModelList(i, itemData);
                 m_errorListSourceModel->setData(modelIndex, QVariant::fromValue(itemData), Qt::DisplayRole);
