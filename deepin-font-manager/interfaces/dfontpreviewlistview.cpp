@@ -773,7 +773,7 @@ void DFontPreviewListView::mouseReleaseEvent(QMouseEvent *event)
     QRect rect = visualRect(modelIndex);
 
     int checkBoxSize = 20 + 10;
-    QRect checkboxRealRect = QRect(rect.left() + 25, rect.top() + 10 - 5, checkBoxSize, checkBoxSize);
+    QRect checkboxRealRect = QRect(rect.left() + 20, rect.top() + 10 - 5, checkBoxSize, checkBoxSize);
     QRect collectIconRect = getCollectionIconRect(rect);
 
     if (event->button() == Qt::LeftButton) {/*539 排除右键点击效果*/
