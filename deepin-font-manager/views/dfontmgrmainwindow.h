@@ -98,7 +98,7 @@ protected:
     void initFontPreviewItemsData();
 
     void handleAddFontEvent();
-    void installFont(const QStringList &files);
+    bool installFont(const QStringList &files);
     void installFontFromSys(const QStringList &files);
     void showFontFilePostion();
     void delCurrentFont();

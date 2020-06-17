@@ -280,7 +280,8 @@ void DFontMgrMainWindow::initConnections()
         qDebug() << "m_waitForInstall" << m_waitForInstall;
         if (m_waitForInstall.count() > 0)
         {
-            installFont(m_waitForInstall);
+            if (installFont(m_waitForInstall))
+                m_waitForInstall.clear();
         }
     });
 }
@@ -991,7 +992,8 @@ void DFontMgrMainWindow::handleMenuEvent(QAction *action)
     }
 }
 
-void DFontMgrMainWindow::installFont(const QStringList &files)
+// return value: true: install success, false: install fail
+bool DFontMgrMainWindow::installFont(const QStringList &files)
 {
 //    qDebug() << __FUNCTION__ << files;
 
@@ -1002,12 +1004,12 @@ void DFontMgrMainWindow::installFont(const QStringList &files)
     m_abandonFilesCount = files.count() - m_installFiles.count();
     if (m_installFiles.count() == 0) {
         emit m_signalManager->showInstallFloatingMessage(0);
-        return;
+        return false;
     }
 
     if (m_fIsInstalling) {
         qDebug() << "Already exist a installtion flow";
-        return;
+        return false;
     }
 
     m_fontPreviewListView->clearSelection();
@@ -1031,6 +1033,7 @@ void DFontMgrMainWindow::installFont(const QStringList &files)
 
     //Clear installtion flag when NormalInstalltion window is closed
     m_fIsInstalling = false;
+    return true;
 }
 
 void DFontMgrMainWindow::installFontFromSys(const QStringList &files)
