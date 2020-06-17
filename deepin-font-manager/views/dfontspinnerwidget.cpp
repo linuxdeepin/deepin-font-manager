@@ -45,7 +45,7 @@ void DFontSpinnerWidget::setStyles(SpinnerStyles styles)
     if (m_Styles == SpinnerStyles::Load) {
         m_label->setText(DApplication::translate("Main", "Loading fonts, please wait..."));
     } else if (m_Styles == SpinnerStyles::Delete) {
-        m_label->setText(DApplication::translate("Main", "Deleting fonts, please wait..."));
+        m_label->setText(DApplication::translate("Dfuninstalldialog", "Deleting fonts, please wait..."));
     } else {
         m_label->setText(QString());
     }

@@ -4,7 +4,6 @@
 #include "dfontpreviewlistview.h"
 #include "dfontmanager.h"
 #include "views/dfontspinnerwidget.h"
-#include "dfontuninstalldialog.h"
 #include "signalmanager.h"
 #include "dsplitlistwidget.h"
 #include "views/dfdeletedialog.h"
@@ -63,7 +62,7 @@ public:
 //    {
 //        m_fileList = list;
 //    }
-    void startToDelete();
+
     inline DSplitListWidget::FontGroup currentFontGroup()
     {
         return filterGroup;
@@ -124,7 +123,6 @@ protected:
     DListView *m_noInstallListView;
     DFontSpinnerWidget *m_fontLoadingSpinner {nullptr};
     DFontSpinnerWidget *m_fontDeletingSpinner{nullptr};
-    DFontuninstalldialog *m_fontUninstallDialog = nullptr;
     DFMDBManager *m_dbManager {nullptr};
     void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
 

@@ -38,7 +38,7 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
     connect(this, &DFontPreviewListView::requestUpdateModel, this, &DFontPreviewListView::updateModel);
     DFontMgrMainWindow *mw = qobject_cast<DFontMgrMainWindow *>(m_parentWidget);
     if (mw)
-        connect(this, &DFontPreviewListView::requestShowSpinner, mw, &DFontMgrMainWindow::onShowSpinner, Qt::BlockingQueuedConnection);
+        connect(this, &DFontPreviewListView::requestShowSpinner, mw, &DFontMgrMainWindow::onShowSpinner);
 
     connect(m_signalManager, &SignalManager::cancelDel, this, &DFontPreviewListView::cancelDel);
     /*切换listview后，scrolltotop UT000539*/
@@ -56,7 +56,7 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
 
     if (mw)
         connect(mw, &DFontMgrMainWindow::requestDeleted, this, [ = ](const QStringList files) {
-        qDebug() << " requestDeleted";
+        qDebug() << " requestDeleted ";
         Q_EMIT requestDeleted(files);
     });
     initFontListData();
@@ -378,8 +378,6 @@ void DFontPreviewListView::updateModel()
     m_bListviewAtTop = isAtListviewTop();
     DFontMgrMainWindow *mw = qobject_cast<DFontMgrMainWindow *>(m_parentWidget);
 
-//    QStringList uninstallFonts = selectedFonts(nullptr, nullptr);
-
     int rowCnt = m_fontPreviewItemModel->rowCount();
     m_fontPreviewItemModel->removeRows(0, rowCnt);
     for (int i = rowCnt; i >= 0; i--) {
@@ -406,6 +404,9 @@ void DFontPreviewListView::updateModel()
 
     QList<DFontPreviewItemData> modelist = m_dataThread->getFontModelList();
     onMultiItemsAdded(modelist);
+
+    Q_EMIT requestShowSpinner(false);
+
     emit m_signalManager->fontSizeRequestToSlider();//设置预览大小
 
     /*UT000539 刷新删除后选中状态*/
@@ -429,7 +430,6 @@ void DFontPreviewListView::updateModel()
 //删除之后设置焦点
     m_IsNeedFocus = true;
     Q_EMIT m_signalManager->refreshFocus(false, this->count());
-
 }
 
 QRect DFontPreviewListView::getCollectionIconRect(QRect visualRect)
@@ -1308,16 +1308,11 @@ void DFontPreviewListView::deleteCurFonts(const QStringList &files)
             DFMDBManager::instance()->deleteFontInfo(itemData);
 //            Q_EMIT itemRemoved(itemData);
             delCnt++;
-            emit SignalManager::instance()->updateUninstallDialog(itemData.fontInfo.filePath.split("/").last(), delCnt, files.size());
             m_dataThread->removeFontData(itemData);
             m_dataThread->removePathWatcher(filePath);
         }
     }
     DFMDBManager::instance()->commitDeleteFontInfo();
-    //    emit SignalManager::instance()->updateUninstallDialog(QString("test"), delCnt, files.size());
-//    QTimer::singleShot(50, [ = ]() {
-//        emit SignalManager::instance()->closeUninstallDialog();
-//    });
 
     enableFonts();
 

@@ -200,20 +200,6 @@ void DFontMgrMainWindow::initConnections()
         onFontSizeChanged(value);
     });
 
-    QObject::connect(m_signalManager, &SignalManager::popUninstallDialog, this, [ this ] {
-//        ut000442 bug21256 改变show和move的顺序解决弹出虚框的问题
-        qDebug() << "pop uninstall progress dialog ";
-//        添加延迟是因为在无窗口特效模式下，弹出之前会有残影，待Dtk那边优化后看情况可以去掉延迟
-        QTimer::singleShot(50, this, [this]()
-        {
-            DFontuninstalldialog *dialog = new DFontuninstalldialog(this);
-            dialog->setModal(true);
-            dialog->show();
-            dialog->move(this->geometry().center() - dialog->rect().center());
-        });
-
-    }, Qt::UniqueConnection);
-
     // Search text changed
     QObject::connect(d->searchFontEdit, SIGNAL(textChanged(const QString &)), this,
                      SLOT(onSearchTextChanged(const QString &)));
@@ -1377,8 +1363,9 @@ void DFontMgrMainWindow::onShowMessage(int successCount)
 
 void DFontMgrMainWindow::onShowSpinner(bool bShow)
 {
+//    qDebug() << __FUNCTION__ << bShow << "begin";
     if (bShow) {
-        showSpinner(DFontSpinnerWidget::NoLabel);
+        showSpinner(DFontSpinnerWidget::Delete);
     } else {
         m_fontLoadingSpinner->spinnerStop();
         m_fontLoadingSpinner->hide();
@@ -1386,6 +1373,7 @@ void DFontMgrMainWindow::onShowSpinner(bool bShow)
         onFontListViewRowCountChanged();
         onPreviewTextChanged();
     }
+//    qDebug() << __FUNCTION__ << bShow << "end";
 }
 
 void DFontMgrMainWindow::delCurrentFont()
@@ -1413,6 +1401,7 @@ void DFontMgrMainWindow::delCurrentFont()
                  << " is system font:" << currItemData.fontInfo.isSystemFont;
         //force delete all fonts
         //disable file system watcher
+        onShowSpinner(true);
         Q_EMIT DFontPreviewListDataThread::instance(m_fontPreviewListView)->requestRemoveFileWatchers(uninstallFonts);
         DFontManager::instance()->setType(DFontManager::UnInstall);
         DFontManager::instance()->setUnInstallFile(uninstallFonts);
@@ -1759,20 +1748,6 @@ QStringList DFontMgrMainWindow::checkFilesSpace(const QStringList &files, bool m
     }
 
     return m_installFiles;
-}
-
-//弹出删除进度框后执行删除操作/*UT000539*/*
-void DFontMgrMainWindow::startToDelete()
-{
-    QStringList uninstallFonts = m_fontPreviewListView->selectedFonts(nullptr, nullptr);
-//    qDebug() << m_uninstallFilePath << endl;
-    DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
-    qDebug() << "Confirm delete:" << currItemData.fontInfo.filePath
-             << " is system font:" << currItemData.fontInfo.isSystemFont;
-    //force delete all fonts
-    m_fontManager->setType(DFontManager::UnInstall);
-    m_fontManager->setUnInstallFile(uninstallFonts);
-    m_fontManager->start();
 }
 
 //调节右下角字体大小显示label显示内容/*UT000539*/
