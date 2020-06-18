@@ -158,7 +158,8 @@ void DFontPreviewListView::onMultiItemsAdded(QList<DFontPreviewItemData> &data)
 
         QString strFontName;
         if (!QFontDatabase::applicationFontFamilies(appFontId).isEmpty()) {
-            if (QFontDatabase::applicationFontFamilies(appFontId).first() != itemData.fontInfo.familyName) {
+            QString familyName = QFontDatabase::applicationFontFamilies(appFontId).first();
+            if (familyName != itemData.fontInfo.familyName && (familyName.count("?") <= itemData.fontInfo.familyName.count("?"))) {
                 QString styleName = (itemData.strFontName.split("-").length() > 1) ? itemData.strFontName.split("-").last() : QString();
                 if (styleName.isEmpty()) {
                     strFontName = QFontDatabase::applicationFontFamilies(appFontId).first();
