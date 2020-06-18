@@ -46,7 +46,7 @@ DFInstallNormalWindow::~DFInstallNormalWindow()
     m_installedFontsFamilyname.clear();
     m_halfInstalledFiles.clear();
     this->hide();
-    qDebug() << __func__ << "end" << endl;
+    qDebug() << __func__ << "end" << this << endl;
 }
 
 void DFInstallNormalWindow::initUI()

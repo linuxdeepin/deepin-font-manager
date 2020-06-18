@@ -133,7 +133,7 @@ void SingleFontApplication::activateWindow()
                                   Q_ARG(QStringList, m_selectedFiles));
 
     } else {
-        qDebug() << "Active quick install window to install file:" << m_selectedFiles;
+        qDebug() << "++++++++++++++++++Active quick install window to install file:" << m_selectedFiles;
         //Hide quick window in normal mode
         if (nullptr != m_qspQuickWnd.get()) {
             m_qspQuickWnd->hide();

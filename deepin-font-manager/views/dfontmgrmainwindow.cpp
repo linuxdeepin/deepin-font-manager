@@ -992,6 +992,7 @@ bool DFontMgrMainWindow::installFont(const QStringList &files)
     }
 
     m_fontPreviewListView->clearSelection();
+    qDebug() << "installFont new DFInstallNormalWindow " << endl;
     m_dfNormalInstalldlg = new DFInstallNormalWindow(m_installFiles, this);
     emit m_signalManager->setSpliteWidgetScrollEnable(true);//开始安装
     if (m_isQuickMode) {
@@ -1289,13 +1290,14 @@ void DFontMgrMainWindow::onLoadStatus(int type)
             if (m_fontPreviewListView->isListDataLoadFinished()) {
                 m_fontLoadingSpinner->hide();
                 m_fontLoadingSpinner->spinnerStop();
+
             }
             if (m_leftIndex >= 0) {
                 onLeftSiderBarItemClicked(m_leftIndex);
             }
             if (!m_noInstallListView->isVisible())//弹出之前判断是否已有无结果view 539 31107
                 m_fontPreviewListView->show();
-            waitForInsert(false);
+            waitForInsert(true);
             //第一次打开软件，正在加载数据时，搜索框的内容不为空，为做此操作 ut000794
             if (m_openfirst) {
                 if (!d->searchFontEdit->text().isEmpty()) {
@@ -1646,6 +1648,7 @@ void DFontMgrMainWindow::waitForInsert(bool deleting)
     }
 
     m_fontPreviewListView->clearSelection();
+    qDebug() << "waitForInsert new DFInstallNormalWindow" << endl;
     m_dfNormalInstalldlg = new DFInstallNormalWindow(m_installFiles, this);
 
     if (m_isQuickMode) {
