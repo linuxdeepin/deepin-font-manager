@@ -188,9 +188,8 @@ protected:
     QShortcut *m_scFindFont      {nullptr};  //Find font          --> Ctrl+F
     QShortcut *m_scDeleteFont    {nullptr};  //Delete font        --> Delete
     QShortcut *m_scAddNewFont    {nullptr};  //Add Font           --> Ctrl+O
-    QShortcut *m_scAddFavFont    {nullptr};  //Add favorite       --> Ctrl+K
-    QShortcut *m_scCancelFavFont {nullptr};  //Cancel favorite    --> Ctrl+Shift+K
-    QShortcut *m_scFontInfo      {nullptr};  //Font information   --> Alt+Enter
+    QShortcut *m_scFontInfo      {nullptr};  //Font information   --> CTRL+I
+    QShortcut *m_scAddOrCancelFavFont   {nullptr};  //Add or cancel favorite    -->.
 
     //is in installing font flow
     //Avoid start multi-NormalInstalltion window

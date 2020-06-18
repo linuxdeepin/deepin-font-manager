@@ -445,57 +445,32 @@ void DFontMgrMainWindow::initShortcuts()
         });
     }
 
-    //Add favorite --> Ctrl+K
-    if (nullptr == m_scAddFavFont) {
-        m_scAddFavFont = new QShortcut(this);
-        m_scAddFavFont->setKey(tr("Ctrl+K"));
-        m_scAddFavFont->setContext(Qt::ApplicationShortcut);
-        m_scAddFavFont->setAutoRepeat(false);
+    //Add or cancel favorite --> .
+    if (nullptr == m_scAddOrCancelFavFont) {
+        m_scAddOrCancelFavFont = new QShortcut(this);
+        m_scAddOrCancelFavFont->setKey(/*tr(".")*/Qt::Key_Period);
+        m_scAddOrCancelFavFont->setContext(Qt::ApplicationShortcut);
+        m_scAddOrCancelFavFont->setAutoRepeat(false);
 
-        connect(m_scAddFavFont, &QShortcut::activated, this, [ = ] {
+        connect(m_scAddOrCancelFavFont, &QShortcut::activated, this, [ = ] {
+
+            DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
             QModelIndexList itemIndexes = m_fontPreviewListView->selectedIndex(nullptr, nullptr);
+
             if (filterGroup != DSplitListWidget::FontGroup::CollectFont)
             {
-                emit m_fontPreviewListView->onClickCollectionButton(itemIndexes, true);
+                emit m_fontPreviewListView->onClickCollectionButton(itemIndexes, !currItemData.isCollected);
             } else
             {
-                return ;
-//                emit m_fontPreviewListView->onClickCollectionButton(itemIndexes, true, true);
+                emit m_fontPreviewListView->onClickCollectionButton(itemIndexes, !currItemData.isCollected, true);
             }
         });
     }
 
-    //Cancel favorite --> Ctrl+Shift+K
-    if (nullptr == m_scCancelFavFont) {
-        m_scCancelFavFont = new QShortcut(this);
-        m_scCancelFavFont->setKey(tr("Ctrl+Shift+K"));
-        m_scCancelFavFont->setContext(Qt::ApplicationShortcut);
-        m_scCancelFavFont->setAutoRepeat(false);
-
-        connect(m_scCancelFavFont, &QShortcut::activated, this, [this] {
-            QModelIndexList itemIndexes = m_fontPreviewListView->selectedIndex(nullptr, nullptr);
-            if (filterGroup != DSplitListWidget::FontGroup::CollectFont)
-            {
-                emit m_fontPreviewListView->onClickCollectionButton(itemIndexes, false);
-            } else
-            {
-                emit m_fontPreviewListView->onClickCollectionButton(itemIndexes, false, true);
-            }
-//            DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
-
-//            if (currItemData.isCollected)
-//            {
-//                QAction *faveriteAction = DFontMenuManager::getInstance()->getActionByMenuAction(
-//                    DFontMenuManager::M_Faverator, DFontMenuManager::MenuType::RightKeyMenu);
-//                faveriteAction->trigger();
-//            }
-        });
-    }
-
-    //Font information --> Alt+Enter
+    //Font information --> CTRL+I
     if (nullptr == m_scFontInfo) {
         m_scFontInfo = new QShortcut(this);
-        m_scFontInfo->setKey(tr("Alt+Return"));
+        m_scFontInfo->setKey(tr("CTRL+I"));
         m_scFontInfo->setContext(Qt::ApplicationShortcut);
         m_scFontInfo->setAutoRepeat(false);
 
@@ -1572,9 +1547,9 @@ void DFontMgrMainWindow::showAllShortcut()
 //        {"Find",               "Ctrl+F"},
         {DApplication::translate("Shortcut", "Delete"), "Delete"},
         {DApplication::translate("Shortcut", "Add font"), "Ctrl+O"},
-        {DApplication::translate("Shortcut", "Favorite"), "Ctrl+K"},
-        {DApplication::translate("Shortcut", "Unfavorite"), "Ctrl+Shift+K"},
-        {DApplication::translate("Shortcut", "Font info"), "Alt+Enter"},
+        {DApplication::translate("Shortcut", "Favorite"), "."},
+        {DApplication::translate("Shortcut", "Unfavorite"), "."},
+        {DApplication::translate("Shortcut", "Font info"), "CTRL+I"},
     };
 
     QJsonObject fontMgrJsonGroup;
