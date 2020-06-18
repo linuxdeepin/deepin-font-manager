@@ -44,9 +44,6 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
     /*切换listview后，scrolltotop UT000539*/
     connect(m_signalManager, &SignalManager::changeView, this, &DFontPreviewListView::viewChanged);
 
-    m_timerOfFreshed = new QTimer();//scrollTo after deleter
-    connect(m_timerOfFreshed, &QTimer::timeout, this, &DFontPreviewListView::isNeedScrollToBottom);
-
     m_dataThread = DFontPreviewListDataThread::instance(this);
 
     //    setAutoScroll(true);
@@ -79,19 +76,6 @@ void DFontPreviewListView::initFontListData()
 bool DFontPreviewListView::isListDataLoadFinished()
 {
     return m_bLoadDataFinish;
-}
-
-void DFontPreviewListView::isNeedScrollToBottom()
-{
-    if (this->count() == m_fontPreviewProxyModel->rowCount()) {
-        if (!isAtListviewBottom() && m_bListviewAtButtom) {
-            scrollToBottom();
-        }
-        m_timerOfFreshed->stop();
-    } else {
-        qDebug() << __FUNCTION__ << count() << m_fontPreviewProxyModel->rowCount();
-    }
-
 }
 
 void DFontPreviewListView::refreshFontListData(const QStringList &installFont)
@@ -369,7 +353,6 @@ void DFontPreviewListView::refreshFocuses(bool isJustInstalled, int count)
             scrollTo(currentIndex());
         } else if (count > 1)
         {
-            //                m_currentSelectedRow = -1;
             if (selectedIndexes().count() > 0) {
                 setCurrentSelected(selectedIndexes().first().row());
             }
@@ -435,8 +418,6 @@ void DFontPreviewListView::updateModel()
         isSelectedNow = true;
     }
 
-    if (m_bListviewAtButtom)
-        m_timerOfFreshed->start(2);
 //删除之后设置焦点
     m_IsNeedFocus = true;
     Q_EMIT m_signalManager->refreshFocus(false, this->count());
