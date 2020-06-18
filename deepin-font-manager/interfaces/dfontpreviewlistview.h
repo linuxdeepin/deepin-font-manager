@@ -37,7 +37,6 @@ public:
     void initDelegate();
 
     bool isListDataLoadFinished();
-    void refreshFontListData(const QStringList &installFont);
 
     void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
     void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;

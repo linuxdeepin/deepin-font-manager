@@ -95,7 +95,6 @@ DFontMgrMainWindow::DFontMgrMainWindow(bool isQuickMode, QWidget *parent)
     initConnections();
     initShortcuts();
     initFontFiles();
-    initFontUninstallDialog();
 }
 
 DFontMgrMainWindow::~DFontMgrMainWindow()
@@ -153,7 +152,9 @@ void DFontMgrMainWindow::initConnections()
 
     connect(m_fontPreviewListView, &DFontPreviewListView::rowCountChanged, this, &DFontMgrMainWindow::onFontListViewRowCountChanged, Qt::UniqueConnection);
     connect(m_fontPreviewListView, &DFontPreviewListView::deleteFinished, this, [ = ]() {
-        setDeleteFinish();
+        QTimer::singleShot(900, this, [this] {
+            setDeleteFinish();
+        });
     });
 
     // Add Font button event
@@ -279,7 +280,7 @@ void DFontMgrMainWindow::initConnections()
         {
             onSearchTextChanged(d->searchFontEdit->text());
         }
-        m_fIsDeleting = false;
+//        m_fIsDeleting = false;
         //删除过程中安装字体，删除过后要继续安装
         qDebug() << "m_waitForInstall" << m_waitForInstall;
         if (m_waitForInstall.count() > 0)
@@ -421,17 +422,19 @@ void DFontMgrMainWindow::initShortcuts()
     }
 
     //Delete font --> Delete
-    if (nullptr == m_scDeleteFont) {
-        m_scDeleteFont = new QShortcut(this);
-        m_scDeleteFont->setKey(Qt::Key_Delete);
-        m_scDeleteFont->setContext(Qt::ApplicationShortcut);
-        m_scDeleteFont->setAutoRepeat(false);
+//    if (nullptr == m_scDeleteFont) {
+//        m_scDeleteFont = new QShortcut(this);
+//        m_scDeleteFont->setKey(Qt::Key_Delete);
+//        m_scDeleteFont->setContext(Qt::ApplicationShortcut);
+//        m_scDeleteFont->setAutoRepeat(false);
 
-        connect(m_scDeleteFont, &QShortcut::activated, this, [this] {
-            //Only can't delete user font
-            delCurrentFont();
-        });
-    }
+//        connect(m_scDeleteFont, &QShortcut::activated, this, [this] {
+//            //Only can't delete user font
+//            //first disable delete shortcut
+////            m_scDeleteFont->setEnabled(false);
+//            delCurrentFont();
+//        }, Qt::UniqueConnection);
+//    }
 
     //Add Font --> Ctrl+O
     if (nullptr == m_scAddNewFont) {
@@ -517,18 +520,6 @@ void DFontMgrMainWindow::initFontFiles()
             }
         }
     }
-}
-
-void DFontMgrMainWindow::initFontUninstallDialog()
-{
-    QObject::connect(m_signalManager, &SignalManager::closeUninstallDialog, this, [ = ] {
-        if (!m_fIsDeleting && m_isFromSys)
-        {
-            waitForInsert();
-            m_isFromSys = false;
-        }
-        m_fIsDeleting = false;
-    }, Qt::UniqueConnection);
 }
 
 void DFontMgrMainWindow::initTileBar()
@@ -1356,7 +1347,7 @@ void DFontMgrMainWindow::onShowSpinner(bool bShow)
         m_fontLoadingSpinner->hide();
         m_isNoResultViewShow = false;
 //      m_fIsDeleting标志位会出现删除过程结束后，未被复位的现象，在这里添加保护，只要删除后加载动画结束，标志位复位
-        m_fIsDeleting = false;
+//        m_fIsDeleting = false;
         onFontListViewRowCountChanged();
         onPreviewTextChanged();
     }
@@ -1785,5 +1776,10 @@ void DFontMgrMainWindow::keyPressEvent(QKeyEvent *event)
             }
         }
     }
+    if (Qt::Key_Delete == event->key()) {
+        qDebug() << "DELETE press pressed";
+        delCurrentFont();
+    }
+
     DWidget::keyPressEvent(event);
 }

@@ -82,7 +82,8 @@ void DFDeleteDialog::initConnections()
 
     //弹出字体删除框时，点击取消，DFontMgrMainWindow中的m_fIsDeleting置为false，如m_fIsDeleting不置为false,则再次点击删除时，字体删除框不会弹出 UT000794
     connect(this, &DFDeleteDialog::closed, this, [ = ]() {
-        if (m_mainWindow != nullptr) {
+        if (m_mainWindow != nullptr && !m_deleting) {
+            qDebug() << "cancel delte";
             m_mainWindow->setDeleteFinish();
         }
     });

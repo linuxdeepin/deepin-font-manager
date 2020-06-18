@@ -78,24 +78,6 @@ bool DFontPreviewListView::isListDataLoadFinished()
     return m_bLoadDataFinish;
 }
 
-void DFontPreviewListView::refreshFontListData(const QStringList &installFont)
-{
-    qDebug() << __func__ << "S" << endl;
-    m_dataThread->refreshFontListData(false, installFont);
-
-    QList<DFontPreviewItemData> diffFontInfoList = m_dataThread->getDiffFontModelList();
-    for (int i = 0; i < diffFontInfoList.size(); ++i) {
-        DFontPreviewItemData itemData = diffFontInfoList.at(i);
-        QString filePath = itemData.fontInfo.filePath;
-        Q_EMIT itemAdded(itemData);
-        m_dataThread->addPathWatcher(filePath);
-
-        /* Bug#16821 UT000591  添加字体后需要加入到Qt的字体数据库中，否则无法使用*/
-        QFontDatabase::addApplicationFont(filePath);
-    }
-    Q_EMIT itemsSelected(installFont);
-}
-
 void DFontPreviewListView::onFinishedDataLoad()
 {
     qDebug() << "onFinishedDataLoad thread id = " << QThread::currentThreadId();
@@ -422,6 +404,10 @@ void DFontPreviewListView::updateModel()
 //删除之后设置焦点
     m_IsNeedFocus = true;
     Q_EMIT m_signalManager->refreshFocus(false, this->count());
+    Q_EMIT rowCountChanged();
+//    qDebug() << __FUNCTION__ << "delete finished";
+    Q_EMIT deleteFinished();
+//    qDebug() << __FUNCTION__ << "delete finished 2";
 }
 
 QRect DFontPreviewListView::getCollectionIconRect(QRect visualRect)
@@ -1311,9 +1297,6 @@ void DFontPreviewListView::deleteCurFonts(const QStringList &files)
 
     Q_EMIT requestUpdateModel();
     m_dataThread->onAutoDirWatchers();
-
-    Q_EMIT rowCountChanged();
-    Q_EMIT deleteFinished();
 }
 
 void DFontPreviewListView::changeFontFile(const QString &path, bool force)
