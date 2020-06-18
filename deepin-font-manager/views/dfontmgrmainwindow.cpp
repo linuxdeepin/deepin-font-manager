@@ -279,7 +279,7 @@ void DFontMgrMainWindow::initConnections()
         {
             onSearchTextChanged(d->searchFontEdit->text());
         }
-        m_isDeleting = false;
+        m_fIsDeleting = false;
         //删除过程中安装字体，删除过后要继续安装
         qDebug() << "m_waitForInstall" << m_waitForInstall;
         if (m_waitForInstall.count() > 0)
@@ -522,12 +522,12 @@ void DFontMgrMainWindow::initFontFiles()
 void DFontMgrMainWindow::initFontUninstallDialog()
 {
     QObject::connect(m_signalManager, &SignalManager::closeUninstallDialog, this, [ = ] {
-        if (!m_isDeleting && m_isFromSys)
+        if (!m_fIsDeleting && m_isFromSys)
         {
             waitForInsert();
             m_isFromSys = false;
         }
-        m_isDeleting = false;
+        m_fIsDeleting = false;
     }, Qt::UniqueConnection);
 }
 
@@ -1024,7 +1024,7 @@ void DFontMgrMainWindow::installFontFromSys(const QStringList &files)
         qDebug() << "Is loading ,quit";
         m_waitForInstall = files;
         return;
-    } else if (m_isDeleting) {
+    } else if (m_fIsDeleting) {
         qDebug() << "Is deleting ,quit";
         m_waitForInstall = files;
         return;
@@ -1297,7 +1297,8 @@ void DFontMgrMainWindow::onLoadStatus(int type)
             }
             if (!m_noInstallListView->isVisible())//弹出之前判断是否已有无结果view 539 31107
                 m_fontPreviewListView->show();
-            waitForInsert(true);
+            //不是删除过程造成的安装等待，安装时也需要对相关标志为进行设置
+            waitForInsert();
             //第一次打开软件，正在加载数据时，搜索框的内容不为空，为做此操作 ut000794
             if (m_openfirst) {
                 if (!d->searchFontEdit->text().isEmpty()) {
@@ -1354,6 +1355,8 @@ void DFontMgrMainWindow::onShowSpinner(bool bShow)
         m_fontLoadingSpinner->spinnerStop();
         m_fontLoadingSpinner->hide();
         m_isNoResultViewShow = false;
+//      m_fIsDeleting标志位会出现删除过程结束后，未被复位的现象，在这里添加保护，只要删除后加载动画结束，标志位复位
+        m_fIsDeleting = false;
         onFontListViewRowCountChanged();
         onPreviewTextChanged();
     }
@@ -1374,7 +1377,7 @@ void DFontMgrMainWindow::delCurrentFont()
         return;
     }
 
-    m_isDeleting = true;
+//    m_isDeleting = true;
     DFDeleteDialog *confirmDelDlg = new DFDeleteDialog(this, deleteCnt, systemCnt, this);
 
     connect(confirmDelDlg, &DFDeleteDialog::accepted, this, [this]() {
@@ -1617,6 +1620,7 @@ void DFontMgrMainWindow::hideSpinner()
         //            m_fontPreviewListView->show();
         m_fontLoadingSpinner->hide();
         m_isNoResultViewShow = false;
+//        m_fIsDeleting = false;
         onFontListViewRowCountChanged();
         onPreviewTextChanged();
         if (m_isInstallOver) {
