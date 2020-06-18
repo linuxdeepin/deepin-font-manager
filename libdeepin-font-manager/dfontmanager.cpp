@@ -299,13 +299,12 @@ void DFontManager::doInstall(const QStringList &fileList, bool reinstall)
         }
     }
 
-//    QProcess process;
+    QProcess process;
+    process.start("fc-cache");
+//waitforfinished这个函数不设置初始值的话会造成阻塞，设置了初始值之后暂时没有发现什么问题
+    process.waitForFinished(50);
 
-//    process.start("fc-cache");
-//    process.waitForFinished(50);
-
-    //之前使用了waitforfinished这个函数，这个函数造成了没有必要的堵塞，导致后面流程受阻，现在换成下面这个函数，暂时没有发现问题。
-    QProcess::startDetached("fc-cache");
+//    QProcess::startDetached("fc-cache");
 
 //    if (!reinstall) {
 //        QString filename;
