@@ -88,7 +88,10 @@ void DFontPreviewListView::isNeedScrollToBottom()
             scrollToBottom();
         }
         m_timerOfFreshed->stop();
+    } else {
+        qDebug() << __FUNCTION__ << count() << m_fontPreviewProxyModel->rowCount();
     }
+
 }
 
 void DFontPreviewListView::refreshFontListData(const QStringList &installFont)
@@ -354,12 +357,18 @@ void DFontPreviewListView::refreshFocuses(bool isJustInstalled, int count)
         setFocus(Qt::MouseFocusReason);
         m_IsNeedFocus = false;
     }
-    if (isJustInstalled) {
+
+    if (!isJustInstalled)
+        return;
+
+    QTimer::singleShot(50, [ = ] {
         m_isJustInstalled = true;
-        if (1 == count) {
+        if (1 == count)
+        {
             setCurrentSelected(selectionModel()->selectedIndexes().first().row());
             scrollTo(currentIndex());
-        } else if (count > 1) {
+        } else if (count > 1)
+        {
             //                m_currentSelectedRow = -1;
             if (selectedIndexes().count() > 0) {
                 setCurrentSelected(selectedIndexes().first().row());
@@ -369,7 +378,7 @@ void DFontPreviewListView::refreshFocuses(bool isJustInstalled, int count)
                 scrollTo(selectionModel()->selectedIndexes().first());
             }
         }
-    }
+    });
 }
 
 void DFontPreviewListView::updateModel()
@@ -415,6 +424,7 @@ void DFontPreviewListView::updateModel()
         if (m_bListviewAtButtom && !m_bListviewAtTop) {
             QModelIndex modelIndex = filterModel->index(m_selectAfterDel - 1, 0);
             setCurrentIndex(modelIndex);
+            scrollToBottom();
         } else if (m_selectAfterDel == filterModel->rowCount()) {
             QModelIndex modelIndex = filterModel->index(m_selectAfterDel - 1, 0);
             setCurrentIndex(modelIndex);
