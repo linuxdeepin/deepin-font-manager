@@ -11,6 +11,7 @@
 #include <QHBoxLayout>
 #include <QShortcut>
 #include <QFileSystemWatcher>
+#include <QDBusConnection>
 
 #include <DApplication>
 #include <DApplicationHelper>
@@ -101,6 +102,9 @@ DFontMgrMainWindow::~DFontMgrMainWindow()
 {
     d_func()->settingsQsPtr->setValue(FTM_MWSIZE_H_KEY, m_winHight);
     d_func()->settingsQsPtr->setValue(FTM_MWSIZE_W_KEY, m_winWidth);
+    //ut000442 bug33870 偶现关闭窗口后,因没有取消dbus服务注册导致的应用无法启动的问题,在这里进行取消
+    QDBusConnection dbus = QDBusConnection::sessionBus();
+    dbus.unregisterService("com.deepin.FontManager");
 }
 
 void DFontMgrMainWindow::initData()
