@@ -172,7 +172,6 @@ protected:
     int m_successInstallCount = 0;
 
     bool m_searchTextStatusIsEmpty = true;
-//    bool m_isDeleting = false;
     bool m_isFromSys = false;
     bool m_isPopInstallErrorDialog = false;
     bool m_isNoResultViewShow = false;

@@ -141,7 +141,7 @@ void DFontPreviewListView::onMultiItemsAdded(QList<DFontPreviewItemData> &data)
         QString strFontName;
         if (!QFontDatabase::applicationFontFamilies(appFontId).isEmpty()) {
             QString familyName = QFontDatabase::applicationFontFamilies(appFontId).first();
-            if (familyName != itemData.fontInfo.familyName && (familyName.count("?") <= itemData.fontInfo.familyName.count("?"))) {
+            if (familyName != itemData.fontInfo.familyName && !familyName.contains(QChar('?'))) {
                 QString styleName = (itemData.strFontName.split("-").length() > 1) ? itemData.strFontName.split("-").last() : QString();
                 if (styleName.isEmpty()) {
                     strFontName = QFontDatabase::applicationFontFamilies(appFontId).first();
@@ -405,9 +405,7 @@ void DFontPreviewListView::updateModel()
     m_IsNeedFocus = true;
     Q_EMIT m_signalManager->refreshFocus(false, this->count());
     Q_EMIT rowCountChanged();
-//    qDebug() << __FUNCTION__ << "delete finished";
     Q_EMIT deleteFinished();
-//    qDebug() << __FUNCTION__ << "delete finished 2";
 }
 
 QRect DFontPreviewListView::getCollectionIconRect(QRect visualRect)

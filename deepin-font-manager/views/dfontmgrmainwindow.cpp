@@ -152,9 +152,7 @@ void DFontMgrMainWindow::initConnections()
 
     connect(m_fontPreviewListView, &DFontPreviewListView::rowCountChanged, this, &DFontMgrMainWindow::onFontListViewRowCountChanged, Qt::UniqueConnection);
     connect(m_fontPreviewListView, &DFontPreviewListView::deleteFinished, this, [ = ]() {
-        QTimer::singleShot(900, this, [this] {
-            setDeleteFinish();
-        });
+        setDeleteFinish();
     });
 
     // Add Font button event
@@ -280,7 +278,7 @@ void DFontMgrMainWindow::initConnections()
         {
             onSearchTextChanged(d->searchFontEdit->text());
         }
-//        m_fIsDeleting = false;
+
         //删除过程中安装字体，删除过后要继续安装
         qDebug() << "m_waitForInstall" << m_waitForInstall;
         if (m_waitForInstall.count() > 0)
@@ -422,19 +420,18 @@ void DFontMgrMainWindow::initShortcuts()
     }
 
     //Delete font --> Delete
-//    if (nullptr == m_scDeleteFont) {
-//        m_scDeleteFont = new QShortcut(this);
-//        m_scDeleteFont->setKey(Qt::Key_Delete);
-//        m_scDeleteFont->setContext(Qt::ApplicationShortcut);
-//        m_scDeleteFont->setAutoRepeat(false);
+    if (nullptr == m_scDeleteFont) {
+        m_scDeleteFont = new QShortcut(this);
+        m_scDeleteFont->setKey(Qt::Key_Delete);
+        m_scDeleteFont->setContext(Qt::ApplicationShortcut);
+        m_scDeleteFont->setAutoRepeat(false);
 
-//        connect(m_scDeleteFont, &QShortcut::activated, this, [this] {
-//            //Only can't delete user font
-//            //first disable delete shortcut
-////            m_scDeleteFont->setEnabled(false);
-//            delCurrentFont();
-//        }, Qt::UniqueConnection);
-//    }
+        connect(m_scDeleteFont, &QShortcut::activated, this, [this] {
+            //Only can't delete user font
+            //first disable delete shortcut
+            delCurrentFont();
+        }, Qt::UniqueConnection);
+    }
 
     //Add Font --> Ctrl+O
     if (nullptr == m_scAddNewFont) {
@@ -1281,7 +1278,6 @@ void DFontMgrMainWindow::onLoadStatus(int type)
             if (m_fontPreviewListView->isListDataLoadFinished()) {
                 m_fontLoadingSpinner->hide();
                 m_fontLoadingSpinner->spinnerStop();
-
             }
             if (m_leftIndex >= 0) {
                 onLeftSiderBarItemClicked(m_leftIndex);
@@ -1346,8 +1342,6 @@ void DFontMgrMainWindow::onShowSpinner(bool bShow)
         m_fontLoadingSpinner->spinnerStop();
         m_fontLoadingSpinner->hide();
         m_isNoResultViewShow = false;
-//      m_fIsDeleting标志位会出现删除过程结束后，未被复位的现象，在这里添加保护，只要删除后加载动画结束，标志位复位
-//        m_fIsDeleting = false;
         onFontListViewRowCountChanged();
         onPreviewTextChanged();
     }
@@ -1368,7 +1362,6 @@ void DFontMgrMainWindow::delCurrentFont()
         return;
     }
 
-//    m_isDeleting = true;
     DFDeleteDialog *confirmDelDlg = new DFDeleteDialog(this, deleteCnt, systemCnt, this);
 
     connect(confirmDelDlg, &DFDeleteDialog::accepted, this, [this]() {
@@ -1385,11 +1378,6 @@ void DFontMgrMainWindow::delCurrentFont()
         DFontManager::instance()->setUnInstallFile(uninstallFonts);
         DFontManager::instance()->start();
     });
-
-    /* Bug#19111 恢复标记位，不用考虑用户操作 UT00591 */  //ut000794
-    //connect(confirmDelDlg, &DFDeleteDialog::closed, this, [this]() {
-    //m_isDeleting = false;
-    // });
 
 //    confirmDelDlg->move((this->width() - confirmDelDlg->width() - 230 + mapToGlobal(QPoint(0, 0)).x()), (mapToGlobal(QPoint(0, 0)).y() + 180));
     confirmDelDlg->move(this->geometry().center() - confirmDelDlg->rect().center());
@@ -1611,7 +1599,6 @@ void DFontMgrMainWindow::hideSpinner()
         //            m_fontPreviewListView->show();
         m_fontLoadingSpinner->hide();
         m_isNoResultViewShow = false;
-//        m_fIsDeleting = false;
         onFontListViewRowCountChanged();
         onPreviewTextChanged();
         if (m_isInstallOver) {
@@ -1775,10 +1762,6 @@ void DFontMgrMainWindow::keyPressEvent(QKeyEvent *event)
                     m_fontPreviewListView->setCurrentIndex(modelIndex);
             }
         }
-    }
-    if (Qt::Key_Delete == event->key()) {
-        qDebug() << "DELETE press pressed";
-        delCurrentFont();
     }
 
     DWidget::keyPressEvent(event);
