@@ -38,7 +38,6 @@ void DNoFocusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
         QFont nameFont = painter->font();
         QString strTitle = adjustLength(iniTitle, nameFont);
 
-
         QStyleOptionViewItem viewOption(option);  //用来在视图中画一个item
 
         DPalette::ColorGroup cg = option.state & QStyle::State_Enabled
@@ -98,8 +97,6 @@ void DNoFocusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
             } else {
                 fontNameRect = QRect(backgroundRect.left() + 10, backgroundRect.top() + 2, backgroundRect.width() - 20, backgroundRect.height() - 7);
             }
-
-
 
             nameFont.setWeight(QFont::Medium);
             nameFont.setPixelSize(DFontSizeManager::instance()->fontPixelSize(DFontSizeManager::T6));

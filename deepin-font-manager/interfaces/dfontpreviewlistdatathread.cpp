@@ -27,12 +27,11 @@ DFontPreviewListDataThread::DFontPreviewListDataThread(DFontPreviewListView *vie
     : m_view(view)
     , m_fsWatcher(nullptr)
     , cantDisabledMonoList(nullptr)
+    , m_mutex(nullptr)
 {
-    m_mutex = nullptr;
     if (view != nullptr)
         m_mutex = view->getMutex();
 
-//    QTimer::singleShot(50, this, [this]() {
     m_dbManager = DFMDBManager::instance();
     moveToThread(&mThread);
     setCantDisabledMonoList();
@@ -43,7 +42,6 @@ DFontPreviewListDataThread::DFontPreviewListDataThread(DFontPreviewListView *vie
     connect(this, &DFontPreviewListDataThread::requestRemoveFileWatchers, this, &DFontPreviewListDataThread::onRemoveFileWatchers, Qt::BlockingQueuedConnection);
     connect(this, &DFontPreviewListDataThread::requestAutoDirWatchers, this, &DFontPreviewListDataThread::onAutoDirWatchers, Qt::BlockingQueuedConnection);
     mThread.start();
-//    });
 }
 
 DFontPreviewListDataThread::~DFontPreviewListDataThread()
@@ -67,7 +65,6 @@ void DFontPreviewListDataThread::doWork()
 
     int recordCount = m_dbManager->getRecordCount();
     if (recordCount > 0) {
-
         //从fontconfig配置文件同步字体启用/禁用状态数据
         syncFontEnableDisableStatusData(disableFontList);
         qDebug() << __func__ << "S" << endl;
