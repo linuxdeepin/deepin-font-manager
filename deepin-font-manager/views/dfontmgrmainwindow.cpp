@@ -1008,18 +1008,26 @@ void DFontMgrMainWindow::installFontFromSys(const QStringList &files)
 {
     this->m_isFromSys = true;
 
+    QStringList m_reduceSameFiles;
+    foreach (auto it, files) {
+        if (!m_reduceSameFiles.contains(it)) {
+            m_reduceSameFiles.append(it);
+        }
+    }
+
+
     if (!m_fontPreviewListView->isListDataLoadFinished()) {
         qDebug() << "Is loading ,quit";
-        m_waitForInstall = files;
+        m_waitForInstall = m_reduceSameFiles;
         return;
     } else if (m_fIsDeleting) {
         qDebug() << "Is deleting ,quit";
-        m_waitForInstall = files;
+        m_waitForInstall = m_reduceSameFiles;
         return;
     } else if (m_isPopInstallErrorDialog) {
-        emit m_signalManager->installDuringPopErrorDialog(files);
+        emit m_signalManager->installDuringPopErrorDialog(m_reduceSameFiles);
     } else {
-        installFont(files);
+        installFont(m_reduceSameFiles);
     }
 }
 
@@ -1630,7 +1638,7 @@ void DFontMgrMainWindow::waitForInsert(bool deleting)
     }
 
     m_fontPreviewListView->clearSelection();
-    qDebug() << "waitForInsert new DFInstallNormalWindow" << endl;
+    qDebug() << "waitForInsert new DFInstallNormalWindow++++++++++" << m_installFiles << endl;
     m_dfNormalInstalldlg = new DFInstallNormalWindow(m_installFiles, this);
 
     if (m_isQuickMode) {
