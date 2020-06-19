@@ -1008,26 +1008,25 @@ void DFontMgrMainWindow::installFontFromSys(const QStringList &files)
 {
     this->m_isFromSys = true;
 
-    QStringList m_reduceSameFiles;
+    QStringList reduceSameFiles;
     foreach (auto it, files) {
-        if (!m_reduceSameFiles.contains(it)) {
-            m_reduceSameFiles.append(it);
+        if (!reduceSameFiles.contains(it)) {
+            reduceSameFiles.append(it);
         }
     }
 
-
     if (!m_fontPreviewListView->isListDataLoadFinished()) {
         qDebug() << "Is loading ,quit";
-        m_waitForInstall = m_reduceSameFiles;
+        m_waitForInstall = reduceSameFiles;
         return;
     } else if (m_fIsDeleting) {
         qDebug() << "Is deleting ,quit";
-        m_waitForInstall = m_reduceSameFiles;
+        m_waitForInstall = reduceSameFiles;
         return;
     } else if (m_isPopInstallErrorDialog) {
-        emit m_signalManager->installDuringPopErrorDialog(m_reduceSameFiles);
+        emit m_signalManager->installDuringPopErrorDialog(reduceSameFiles);
     } else {
-        installFont(m_reduceSameFiles);
+        installFont(reduceSameFiles);
     }
 }
 
