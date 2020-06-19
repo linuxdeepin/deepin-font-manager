@@ -30,6 +30,7 @@ protected:
     QString adaptiveLengthForNameTitle(QFontMetrics fm, QString thirdText, int lineWidth);
     void resizeEvent(QResizeEvent *event) override;
     void insertContents();
+    void keyPressEvent(QKeyEvent *ev) override;
 signals:
 
 public slots:

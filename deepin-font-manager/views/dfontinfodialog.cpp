@@ -294,3 +294,13 @@ void DFontInfoDialog::resizeEvent(QResizeEvent *event)
     DFontBaseDialog::resizeEvent(event);
 
 }
+
+//信息快捷键关闭本窗口
+void DFontInfoDialog::keyPressEvent(QKeyEvent *ev)
+{
+    QDialog::keyPressEvent(ev);
+    if (QApplication::keyboardModifiers() == Qt::ControlModifier && ev->key() == Qt::Key_I) {
+        this->close();
+        deleteLater();
+    }
+}

@@ -1533,7 +1533,7 @@ void DFontMgrMainWindow::showAllShortcut()
         {DApplication::translate("Shortcut", "Add font"), "Ctrl+O"},
         {DApplication::translate("Shortcut", "Favorite"), "."},
         {DApplication::translate("Shortcut", "Unfavorite"), "."},
-        {DApplication::translate("Shortcut", "Font info"), "CTRL+I"},
+        {DApplication::translate("Shortcut", "Font info"), "Ctrl+I"},
     };
 
     QJsonObject fontMgrJsonGroup;
