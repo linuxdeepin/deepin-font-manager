@@ -333,7 +333,8 @@ void DFontPreviewListView::refreshFocuses(bool isJustInstalled, int count)
         if (1 == count)
         {
             setCurrentSelected(selectionModel()->selectedIndexes().first().row());
-            scrollTo(currentIndex());
+//            scrollTo(currentIndex());
+            scrollTo(selectedIndexes().first());
         } else if (count > 1)
         {
             if (selectedIndexes().count() > 0) {
@@ -496,12 +497,12 @@ void DFontPreviewListView::selectFonts(const QStringList &fileList)
         selection_model->select(selection, QItemSelectionModel::Select);
     }
 
-    QModelIndex cur = currModelIndex();
+//    QModelIndex cur = currModelIndex();
 //    if (cur.isValid())
 //        scrollTo(cur);
 
-    if (selection.size() == 1)
-        setCurrentIndex(cur);
+//    if (selection.size() == 1)
+//        setCurrentIndex(cur);
 
     //    DFontMgrMainWindow *mw = qobject_cast<DFontMgrMainWindow *>(m_parentWidget);
     //    if (mw)
