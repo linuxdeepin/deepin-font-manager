@@ -66,6 +66,7 @@ public:
 private:
     void resetContinueInstallBtnStatus();
     void keyPressEvent(QKeyEvent *event) Q_DECL_OVERRIDE;
+    void closeEvent(QCloseEvent *event) override;
 
     QWidget *titleFrame;
     SignalManager *m_signalManager = SignalManager::instance();

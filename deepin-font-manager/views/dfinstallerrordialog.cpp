@@ -327,9 +327,15 @@ void DFInstallErrorDialog::resetContinueInstallBtnStatus()
 void DFInstallErrorDialog::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Escape) {
-        emit onCancelInstall();
+//        emit onCancelInstall();
         this->close();
     }
+}
+
+void DFInstallErrorDialog::closeEvent(QCloseEvent *event)
+{
+    Q_UNUSED(event)
+    emit onCancelInstall();
 }
 
 
@@ -441,6 +447,7 @@ void DFInstallErrorDialog::onControlButtonClicked(int btnIndex)
         m_SystemFontCount = 0;
 
         emit onContinueInstall(continueInstallFontFileList);
-        this->close();
+//        this->close();
+        this->reject();
     }
 }
