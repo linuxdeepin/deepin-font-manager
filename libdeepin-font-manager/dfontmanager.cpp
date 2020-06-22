@@ -256,6 +256,11 @@ void DFontManager::doInstall(const QStringList &fileList, bool reinstall)
         QStringList fileParamList = file.split("|");
         QString filePathOrig = fileParamList.at(0);
         QString familyName = fileParamList.at(1);
+
+        //这里有过familyname中带有 /  的话，创建的目录会多一层，导致与其他不统一，也会造成删除时删除不完全的问题
+        if (familyName.contains("/")) {
+            familyName.replace("/", " ");
+        }
         const QFileInfo info(filePathOrig);
         QString dirName = familyName;
 
@@ -331,7 +336,7 @@ void DFontManager::doUninstall(const QStringList &fileList)
             continue;
         }
 
-        QFile::remove(file);
+        qDebug() << QFile::remove(file);
 
         //Fonts with same family name, different style may be
         //installed in same dir, so only delete dir when it's
