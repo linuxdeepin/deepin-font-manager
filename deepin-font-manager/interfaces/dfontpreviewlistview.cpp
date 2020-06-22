@@ -348,9 +348,9 @@ void DFontPreviewListView::refreshFocuses(bool isJustInstalled, int count)
 
 void DFontPreviewListView::updateModel()
 {
-    int selectedCount = selectedIndexes().count();
     m_bListviewAtButtom = isAtListviewBottom();
     m_bListviewAtTop = isAtListviewTop();
+    bool bottomNeed = false;
     DFontMgrMainWindow *mw = qobject_cast<DFontMgrMainWindow *>(m_parentWidget);
 
     int rowCnt = m_fontPreviewItemModel->rowCount();
@@ -384,6 +384,7 @@ void DFontPreviewListView::updateModel()
 
     emit m_signalManager->fontSizeRequestToSlider();//设置预览大小
 
+
     /*UT000539 刷新删除后选中状态*/
     if (m_selectAfterDel != -1) {
         DFontPreviewProxyModel *filterModel = this->getFontPreviewProxyModel();
@@ -392,9 +393,10 @@ void DFontPreviewListView::updateModel()
                 QModelIndex modelIndex = filterModel->index(m_selectAfterDel, 0);
                 setCurrentIndex(modelIndex);
             } else {
-                QModelIndex modelIndex = filterModel->index(m_selectAfterDel - selectedCount, 0);
+                QModelIndex modelIndex = filterModel->index(m_selectAfterDel - 1, 0);
                 setCurrentIndex(modelIndex);
-                scrollToBottom();
+//                scrollToBottom();
+                bottomNeed = true;
             }
         } else if (m_selectAfterDel == filterModel->rowCount()) {
             QModelIndex modelIndex = filterModel->index(m_selectAfterDel - 1, 0);
@@ -408,15 +410,13 @@ void DFontPreviewListView::updateModel()
     }
 
 //设置选中状态后，spinner再停止，这样才能在后面的函数中scrool到目前选中的位置 bug34622
-    Q_EMIT requestShowSpinner(false);
+    Q_EMIT requestShowSpinner(false, bottomNeed);
 
 //删除之后设置焦点
     m_IsNeedFocus = true;
     Q_EMIT m_signalManager->refreshFocus(false, this->count());
     Q_EMIT rowCountChanged();
     Q_EMIT deleteFinished();
-
-
 }
 
 QRect DFontPreviewListView::getCollectionIconRect(QRect visualRect)
@@ -849,7 +849,8 @@ void DFontPreviewListView::setModel(QAbstractItemModel *model)
 void DFontPreviewListView::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end)
 {
     //    qDebug() << __FUNCTION__ << currentIndex() << "begin" << start << " to " << end;
-    selectionModel()->setCurrentIndex(parent, QItemSelectionModel::NoUpdate);
+    if (selectionModel()->selectedIndexes().count() > 0)
+        selectionModel()->setCurrentIndex(parent, QItemSelectionModel::NoUpdate);
     QListView::rowsAboutToBeRemoved(parent, start, end);
     //    qDebug() << __FUNCTION__ << currentIndex() << "end";
 }

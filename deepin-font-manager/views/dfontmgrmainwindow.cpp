@@ -557,7 +557,7 @@ void DFontMgrMainWindow::initTileFrame()
     d->addFontButton = new DIconButton(DStyle::StandardPixmap::SP_IncreaseElement, this);
     d->addFontButton->setFixedSize(QSize(38, 38));
     d->addFontButton->setFlat(false);
-//    d->addFontButton->setFocusPolicy(Qt::FocusPolicy::NoFocus);
+    d->addFontButton->setFocusPolicy(Qt::FocusPolicy::NoFocus);
 
     titleActionAreaLayout->addWidget(d->addFontButton);
 
@@ -1158,6 +1158,7 @@ void DFontMgrMainWindow::onLeftSiderBarItemClicked(int index)
         return;
     }
 
+
     m_leftIndex = 0;
 
     qDebug() << __FUNCTION__ << index << endl;
@@ -1342,7 +1343,7 @@ void DFontMgrMainWindow::onShowMessage(int successCount)
     }
 }
 
-void DFontMgrMainWindow::onShowSpinner(bool bShow)
+void DFontMgrMainWindow::onShowSpinner(bool bShow, bool bottomNeed)
 {
 //    qDebug() << __FUNCTION__ << bShow << "begin";
     if (bShow) {
@@ -1356,6 +1357,8 @@ void DFontMgrMainWindow::onShowSpinner(bool bShow)
         m_isNoResultViewShow = false;
         onFontListViewRowCountChanged();
         onPreviewTextChanged();
+        if (bottomNeed)
+            m_fontPreviewListView->scrollToBottom();
     }
 //    qDebug() << __FUNCTION__ << bShow << "end";
 }
@@ -1384,7 +1387,7 @@ void DFontMgrMainWindow::delCurrentFont()
                  << " is system font:" << currItemData.fontInfo.isSystemFont;
         //force delete all fonts
         //disable file system watcher
-        onShowSpinner(true);
+        onShowSpinner(true, false);
         Q_EMIT DFontPreviewListDataThread::instance(m_fontPreviewListView)->requestRemoveFileWatchers(uninstallFonts);
         DFontManager::instance()->setType(DFontManager::UnInstall);
         DFontManager::instance()->setUnInstallFile(uninstallFonts);

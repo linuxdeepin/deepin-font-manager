@@ -156,7 +156,7 @@ signals:
     void rowCountChanged();
     void deleteFinished();
     void requestUpdateModel();
-    void requestShowSpinner(bool bShow);
+    void requestShowSpinner(bool bShow, bool bottomNeed);
 
 public slots:
 
