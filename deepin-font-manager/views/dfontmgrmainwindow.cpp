@@ -557,7 +557,7 @@ void DFontMgrMainWindow::initTileFrame()
     d->addFontButton = new DIconButton(DStyle::StandardPixmap::SP_IncreaseElement, this);
     d->addFontButton->setFixedSize(QSize(38, 38));
     d->addFontButton->setFlat(false);
-    d->addFontButton->setFocusPolicy(Qt::FocusPolicy::NoFocus);
+//    d->addFontButton->setFocusPolicy(Qt::FocusPolicy::NoFocus);
 
     titleActionAreaLayout->addWidget(d->addFontButton);
 
@@ -567,8 +567,9 @@ void DFontMgrMainWindow::initTileFrame()
     d->searchFontEdit->setFixedSize(QSize(FTM_SEARCH_BAR_W, FTM_SEARCH_BAR_H));
     d->searchFontEdit->setPlaceHolder(DApplication::translate("SearchBar", "Search"));
 
-    titlebar()->addWidget(d->titleActionArea, Qt::AlignLeft | Qt::AlignVCenter);
     titlebar()->addWidget(d->searchFontEdit, Qt::AlignCenter);
+    titlebar()->addWidget(d->titleActionArea, Qt::AlignLeft | Qt::AlignVCenter);
+
 
     // Debug layout code
 #ifdef FTM_DEBUG_LAYOUT_COLOR
@@ -1085,6 +1086,7 @@ void DFontMgrMainWindow::forceNoramlInstalltionQuitIfNeeded()
 
 void DFontMgrMainWindow::setDeleteFinish()
 {
+
     m_fIsDeleting = false;
 }
 
@@ -1348,6 +1350,9 @@ void DFontMgrMainWindow::onShowSpinner(bool bShow)
     } else {
         m_fontLoadingSpinner->spinnerStop();
         m_fontLoadingSpinner->hide();
+//在删除加载动画结束后，添加listview的滚动逻辑 bug 34622
+        if (m_fontPreviewListView->selectedIndex(nullptr, nullptr).count() > 0)
+            m_fontPreviewListView->scrollTo(m_fontPreviewListView->selectedIndex(nullptr, nullptr).first());
         m_isNoResultViewShow = false;
         onFontListViewRowCountChanged();
         onPreviewTextChanged();

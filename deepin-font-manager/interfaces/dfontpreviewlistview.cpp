@@ -379,7 +379,7 @@ void DFontPreviewListView::updateModel()
     QList<DFontPreviewItemData> modelist = m_dataThread->getFontModelList();
     onMultiItemsAdded(modelist);
 
-    Q_EMIT requestShowSpinner(false);
+
 
     emit m_signalManager->fontSizeRequestToSlider();//设置预览大小
 
@@ -393,6 +393,7 @@ void DFontPreviewListView::updateModel()
         } else if (m_selectAfterDel == filterModel->rowCount()) {
             QModelIndex modelIndex = filterModel->index(m_selectAfterDel - 1, 0);
             setCurrentIndex(modelIndex);
+
         } else {
             QModelIndex modelIndex = filterModel->index(m_selectAfterDel, 0);
             setCurrentIndex(modelIndex);
@@ -400,11 +401,16 @@ void DFontPreviewListView::updateModel()
         isSelectedNow = true;
     }
 
+//设置选中状态后，spinner再停止，这样才能在后面的函数中scrool到目前选中的位置 bug34622
+    Q_EMIT requestShowSpinner(false);
+
 //删除之后设置焦点
     m_IsNeedFocus = true;
     Q_EMIT m_signalManager->refreshFocus(false, this->count());
     Q_EMIT rowCountChanged();
     Q_EMIT deleteFinished();
+
+
 }
 
 QRect DFontPreviewListView::getCollectionIconRect(QRect visualRect)

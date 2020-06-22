@@ -336,7 +336,7 @@ void DFontManager::doUninstall(const QStringList &fileList)
             continue;
         }
 
-        qDebug() << QFile::remove(file);
+        QFile::remove(file);
 
         //Fonts with same family name, different style may be
         //installed in same dir, so only delete dir when it's
