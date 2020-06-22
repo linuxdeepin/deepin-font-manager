@@ -74,6 +74,7 @@ public:
     DFontInfoManager(QObject *parent = nullptr);
     ~DFontInfoManager();
 
+    const QString WPS_SYS_FONTS = "/usr/share/fonts/wps-office/";
     void refreshList();
     QStringList getAllFontPath() const;
     QStringList getAllChineseFontPath() const;
@@ -92,7 +93,7 @@ public:
 //    QStringList getFileNames(const QString &path)const;
 
     //获取文件夹下及子文件夹下所有字体文件
-    QStringList getFileNames(QString path)const;
+    QStringList getFileNames(const QString &path)const;
 
 private:
 //    QMap<QString, DFontInfo> m_fontInfoMap;

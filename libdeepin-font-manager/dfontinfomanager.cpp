@@ -48,7 +48,7 @@ static DFontInfoManager *INSTANCE = nullptr;
 const QString FONT_USR_DIR = QDir::homePath() + "/.local/share/fonts/";
 const QString FONT_SYSTEM_DIR = "/usr/share/fonts/";
 
-inline bool isSystemFont(QString filePath)
+inline bool isSystemFont(const QString &filePath)
 {
     if (filePath.contains("/usr/share/fonts/")) {
         return true;
@@ -153,6 +153,8 @@ QStringList DFontInfoManager::getAllFontPath() const
     QStringList lines = output.split(QChar('\n'));
     for (QString &line : lines) {
         QString filePath = line.remove(QChar(':')).simplified();
+        if (filePath.startsWith(WPS_SYS_FONTS))
+            continue;
         if (filePath.length() > 0 && !pathList.contains(filePath)) {
             pathList << filePath;
         }
@@ -217,7 +219,7 @@ QStringList DFontInfoManager::getAllFontPath() const
 
 //}
 
-QStringList DFontInfoManager::getFileNames(QString path)const
+QStringList DFontInfoManager::getFileNames(const QString &path)const
 {
     QStringList string_list;
     //判断路径是否存在
@@ -236,6 +238,8 @@ QStringList DFontInfoManager::getFileNames(QString path)const
         dir_iterator.next();
         QFileInfo file_info = dir_iterator.fileInfo();
         QString absolute_file_path = file_info.absoluteFilePath();
+        if (absolute_file_path.startsWith(WPS_SYS_FONTS))
+            continue;
         string_list.append(absolute_file_path);
     }
     return string_list;
