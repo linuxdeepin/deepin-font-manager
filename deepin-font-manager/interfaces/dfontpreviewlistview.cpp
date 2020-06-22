@@ -348,6 +348,7 @@ void DFontPreviewListView::refreshFocuses(bool isJustInstalled, int count)
 
 void DFontPreviewListView::updateModel()
 {
+    int selectedCount = selectedIndexes().count();
     m_bListviewAtButtom = isAtListviewBottom();
     m_bListviewAtTop = isAtListviewTop();
     DFontMgrMainWindow *mw = qobject_cast<DFontMgrMainWindow *>(m_parentWidget);
@@ -387,9 +388,14 @@ void DFontPreviewListView::updateModel()
     if (m_selectAfterDel != -1) {
         DFontPreviewProxyModel *filterModel = this->getFontPreviewProxyModel();
         if (m_bListviewAtButtom && !m_bListviewAtTop) {
-            QModelIndex modelIndex = filterModel->index(m_selectAfterDel - 1, 0);
-            setCurrentIndex(modelIndex);
-            scrollToBottom();
+            if (m_selectAfterDel < count() - 12) {
+                QModelIndex modelIndex = filterModel->index(m_selectAfterDel, 0);
+                setCurrentIndex(modelIndex);
+            } else {
+                QModelIndex modelIndex = filterModel->index(m_selectAfterDel - selectedCount, 0);
+                setCurrentIndex(modelIndex);
+                scrollToBottom();
+            }
         } else if (m_selectAfterDel == filterModel->rowCount()) {
             QModelIndex modelIndex = filterModel->index(m_selectAfterDel - 1, 0);
             setCurrentIndex(modelIndex);
@@ -843,7 +849,7 @@ void DFontPreviewListView::setModel(QAbstractItemModel *model)
 void DFontPreviewListView::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end)
 {
     //    qDebug() << __FUNCTION__ << currentIndex() << "begin" << start << " to " << end;
-//    selectionModel()->setCurrentIndex(parent, QItemSelectionModel::NoUpdate);
+    selectionModel()->setCurrentIndex(parent, QItemSelectionModel::NoUpdate);
     QListView::rowsAboutToBeRemoved(parent, start, end);
     //    qDebug() << __FUNCTION__ << currentIndex() << "end";
 }
