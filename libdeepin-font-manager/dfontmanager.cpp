@@ -299,11 +299,11 @@ void DFontManager::doInstall(const QStringList &fileList, bool reinstall)
         }
     }
 
-//    QProcess process;
-//    process.start("fc-cache");
-//    process.waitForFinished(-1);
+    QProcess process;
+    process.start("fc-cache");
+    process.waitForFinished(-1);
 
-    QProcess::startDetached("fc-cache");
+//    QProcess::startDetached("fc-cache");
 
 //    if (!reinstall) {
 //        QString filename;
