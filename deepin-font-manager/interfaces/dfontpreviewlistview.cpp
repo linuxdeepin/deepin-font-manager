@@ -394,19 +394,28 @@ void DFontPreviewListView::updateModel()
             if (m_selectAfterDel < count() - 12) {
                 QModelIndex modelIndex = filterModel->index(m_selectAfterDel, 0);
                 setCurrentIndex(modelIndex);
+                scrollTo(modelIndex);
             } else {
                 QModelIndex modelIndex = filterModel->index(m_selectAfterDel - 1, 0);
                 setCurrentIndex(modelIndex);
 //                scrollToBottom();
+
+//                qDebug() << viewport()->visibleRegion() << endl;
+//                qDebug() << curRect.topLeft() << endl;
+//                if (viewport()->visibleRegion().contains(curRect.topLeft()) || viewport()->visibleRegion().contains(curRect.bottomRight())) {
                 bottomNeed = true;
+//                }
+
             }
         } else if (m_selectAfterDel == filterModel->rowCount()) {
             QModelIndex modelIndex = filterModel->index(m_selectAfterDel - 1, 0);
             setCurrentIndex(modelIndex);
+            scrollTo(modelIndex);
 
         } else {
             QModelIndex modelIndex = filterModel->index(m_selectAfterDel, 0);
             setCurrentIndex(modelIndex);
+            scrollTo(modelIndex);
         }
         isSelectedNow = true;
     }
@@ -416,8 +425,14 @@ void DFontPreviewListView::updateModel()
     Q_EMIT requestShowSpinner(false, true);
     if (currentIndex().row() > -1)
         setCurrentSelected(currentIndex().row());
-    if (bottomNeed)
+    if (bottomNeed) {
         scrollToBottom();
+        QRect curRect = visualRect(currentIndex());
+        if (!viewport()->visibleRegion().contains(curRect.topLeft()) || !viewport()->visibleRegion().contains(curRect.bottomRight())) {
+            scrollTo(currentIndex());
+        }
+
+    }
 //删除之后设置焦点
     m_IsNeedFocus = true;
     Q_EMIT m_signalManager->refreshFocus(false, this->count());
