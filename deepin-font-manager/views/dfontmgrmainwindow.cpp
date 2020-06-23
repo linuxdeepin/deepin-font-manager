@@ -29,7 +29,6 @@
 #include <DWidgetUtil>
 #include <DDesktopServices>
 #include <DMessageManager>
-#include <DSpinner>
 
 #include <unistd.h>
 
@@ -281,11 +280,7 @@ void DFontMgrMainWindow::initConnections()
 
         //删除过程中安装字体，删除过后要继续安装
         qDebug() << "m_waitForInstall" << m_waitForInstall;
-        if (m_waitForInstall.count() > 0)
-        {
-            if (installFont(m_waitForInstall))
-                m_waitForInstall.clear();
-        }
+        waitForInsert();
     });
 }
 
@@ -1343,11 +1338,11 @@ void DFontMgrMainWindow::onShowMessage(int successCount)
     }
 }
 
-void DFontMgrMainWindow::onShowSpinner(bool bShow, bool bottomNeed)
+void DFontMgrMainWindow::onShowSpinner(bool bShow, bool bottomNeed, bool force)
 {
-//    qDebug() << __FUNCTION__ << bShow << "begin";
+    qDebug() << __FUNCTION__ << bShow << "begin";
     if (bShow) {
-        showSpinner(DFontSpinnerWidget::Delete);
+        showSpinner(DFontSpinnerWidget::Delete, force);
     } else {
         m_fontLoadingSpinner->spinnerStop();
         m_fontLoadingSpinner->hide();
@@ -1362,7 +1357,7 @@ void DFontMgrMainWindow::onShowSpinner(bool bShow, bool bottomNeed)
         if (bottomNeed)
             m_fontPreviewListView->scrollToBottom();
     }
-//    qDebug() << __FUNCTION__ << bShow << "end";
+    qDebug() << __FUNCTION__ << bShow << "end";
 }
 
 void DFontMgrMainWindow::delCurrentFont()
@@ -1389,7 +1384,7 @@ void DFontMgrMainWindow::delCurrentFont()
                  << " is system font:" << currItemData.fontInfo.isSystemFont;
         //force delete all fonts
         //disable file system watcher
-        onShowSpinner(true, false);
+        onShowSpinner(true, false, false);
         Q_EMIT DFontPreviewListDataThread::instance(m_fontPreviewListView)->requestRemoveFileWatchers(uninstallFonts);
         DFontManager::instance()->setType(DFontManager::UnInstall);
         DFontManager::instance()->setUnInstallFile(uninstallFonts);
@@ -1593,7 +1588,7 @@ void DFontMgrMainWindow::showInstalledFiles()
 
 
 //通过styles来决定标签显示内容
-void DFontMgrMainWindow::showSpinner(DFontSpinnerWidget::SpinnerStyles styles)
+void DFontMgrMainWindow::showSpinner(DFontSpinnerWidget::SpinnerStyles styles, bool force)
 {
     D_D(DFontMgrMainWindow);
 
@@ -1604,6 +1599,11 @@ void DFontMgrMainWindow::showSpinner(DFontSpinnerWidget::SpinnerStyles styles)
 
     m_fontLoadingSpinner->setStyles(styles);
 
+    if (force) {
+        m_fontLoadingSpinner->spinnerStart();
+        m_fontLoadingSpinner->repaint();
+        return;
+    }
     m_fontLoadingSpinner->show();
     m_fontLoadingSpinner->spinnerStart();
 }
@@ -1613,7 +1613,6 @@ void DFontMgrMainWindow::hideSpinner()
     //        ut000442 安装少量字体时,会出现闪屏现象,通过加短暂延迟解决.
     QTimer::singleShot(50, this, [ = ]() {
         m_fontLoadingSpinner->spinnerStop();
-        //            m_fontPreviewListView->show();
         m_fontLoadingSpinner->hide();
         m_isNoResultViewShow = false;
         onFontListViewRowCountChanged();
@@ -1630,48 +1629,13 @@ void DFontMgrMainWindow::hideSpinner()
     });
 }
 
-void DFontMgrMainWindow::waitForInsert(bool deleting)
+void DFontMgrMainWindow::waitForInsert()
 {
     if (m_waitForInstall.isEmpty())
         return;
 
-//    qint64 m_currentDiskSpace = getDiskSpace();
-//    if (m_currentDiskSpace == 0)
-//        return;
-
-    QStringList m_installFiles = checkFilesSpace(m_waitForInstall);
-    m_abandonFilesCount = m_waitForInstall.count() - m_installFiles.count();
-    if (m_installFiles.count() == 0) {
-        emit m_signalManager->showInstallFloatingMessage(0);
-        return;
-    }
-
-    m_fontPreviewListView->clearSelection();
-    qDebug() << "waitForInsert new DFInstallNormalWindow++++++++++" << m_installFiles << endl;
-    m_dfNormalInstalldlg = new DFInstallNormalWindow(m_installFiles, this);
-
-    if (m_isQuickMode) {
-        m_dfNormalInstalldlg->setSkipException(true);
-    }
-
-
-
-    //Set installtion flag
-    /*
-     * Add font from + ,menu, drag file to main view
-     * to task bar can start a installtion flow, so must
-     * to set flag avoid
-     */
-    if (deleting)
-        m_fIsInstalling = true;
-
-    Dtk::Widget::moveToCenter(m_dfNormalInstalldlg);
-    m_dfNormalInstalldlg->exec();
-
-    //Clear installtion flag when NormalInstalltion window is closed
-    if (deleting)
-        m_fIsInstalling = false;
-    m_waitForInstall.clear();
+    if (installFont(m_waitForInstall))
+        m_waitForInstall.clear();
 }
 
 void DFontMgrMainWindow::onPreviewTextChanged()

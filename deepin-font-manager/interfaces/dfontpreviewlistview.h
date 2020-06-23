@@ -7,6 +7,7 @@
 #include "dfontpreviewproxymodel.h"
 #include "dfmdbmanager.h"
 #include "signalmanager.h"
+#include "../views/dfontspinnerwidget.h"
 #include <QScrollBar>
 #include <QListView>
 
@@ -156,7 +157,7 @@ signals:
     void rowCountChanged();
     void deleteFinished();
     void requestUpdateModel();
-    void requestShowSpinner(bool bShow, bool bottomNeed);
+    void requestShowSpinner(bool bShow, bool bottomNeed, bool force);
 
 public slots:
 

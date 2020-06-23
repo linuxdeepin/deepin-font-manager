@@ -1,4 +1,5 @@
 #include "dfontspinnerwidget.h"
+#include "dfontspinner.h"
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <DApplication>
@@ -15,7 +16,7 @@ DFontSpinnerWidget::DFontSpinnerWidget(QWidget *parent,  SpinnerStyles styles) :
 
 void DFontSpinnerWidget::initUI()
 {
-    m_spinner = new DSpinner(this);
+    m_spinner = new DFontSpinner(this);
     m_spinner->setFixedSize(QSize(32, 32));
     m_label = new QLabel(this);
     m_label->setText(DApplication::translate("Main", "Loading fonts, please wait..."));

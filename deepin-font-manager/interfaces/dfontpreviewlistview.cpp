@@ -377,8 +377,10 @@ void DFontPreviewListView::updateModel()
         m_fontPreviewProxyModel->setFilterGroup(mw->currentFontGroup());
     QFontDatabase::removeAllApplicationFonts();
 
+    Q_EMIT requestShowSpinner(true, bottomNeed, true);
     QList<DFontPreviewItemData> modelist = m_dataThread->getFontModelList();
     onMultiItemsAdded(modelist);
+    Q_EMIT requestShowSpinner(true, bottomNeed, true);
 
 
 
@@ -408,9 +410,10 @@ void DFontPreviewListView::updateModel()
         }
         isSelectedNow = true;
     }
+    Q_EMIT requestShowSpinner(true, bottomNeed, true);
 
 //设置选中状态后，spinner再停止，这样才能在后面的函数中scrool到目前选中的位置 bug34622
-    Q_EMIT requestShowSpinner(false, bottomNeed);
+    Q_EMIT requestShowSpinner(false, bottomNeed, true);
 
 //删除之后设置焦点
     m_IsNeedFocus = true;

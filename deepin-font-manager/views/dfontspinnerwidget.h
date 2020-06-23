@@ -1,10 +1,9 @@
-#ifndef DFONTSPINNERWIDGET_H
-#define DFONTSPINNERWIDGET_H
+#pragma once
 
-#include <DSpinner>
 #include <DWidget>
 #include <QLabel>
 
+class DFontSpinner;
 class DFontSpinnerWidget : public Dtk::Widget::DWidget
 {
 public:
@@ -28,8 +27,6 @@ public:
 private:
 
     SpinnerStyles m_Styles;
-    Dtk::Widget::DSpinner *m_spinner = nullptr;
+    DFontSpinner *m_spinner = nullptr;
     QLabel *m_label = nullptr;
 };
-
-#endif // DFONTSPINNERWIDGET_H

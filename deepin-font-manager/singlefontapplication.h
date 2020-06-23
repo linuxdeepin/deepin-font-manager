@@ -3,7 +3,6 @@
 
 #include <DApplication>
 #include <DMainWindow>
-#include <DSpinner>
 
 #include <QSet>
 

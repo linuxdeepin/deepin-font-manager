@@ -106,10 +106,10 @@ protected:
     void showExportFontMessage(int successCount, int abandonFilesCount);
     void showAllShortcut();
     void showInstalledFiles();
-    void showSpinner(DFontSpinnerWidget::SpinnerStyles styles);
+    void showSpinner(DFontSpinnerWidget::SpinnerStyles styles, bool force = false);
     void hideSpinner();
 
-    void waitForInsert(bool deleting = true);
+    void waitForInsert();
     void onPreviewTextChanged();
     qint64 getDiskSpace(bool m_bInstall = true);
     QStringList checkFilesSpace(const QStringList &files, bool m_bInstall = true);
@@ -152,7 +152,7 @@ public slots:
 
     void onLoadStatus(int type);
     void onShowMessage(int totalCount);
-    void onShowSpinner(bool bShow, bool bottomNeed);
+    void onShowSpinner(bool bShow, bool bottomNeed, bool force);
 
 protected:
     // For quick install mode

@@ -12,7 +12,6 @@
 
 #include <DWidgetUtil>
 #include <DGuiApplicationHelper>
-#include <DSpinner>
 
 #include <sys/types.h>
 #include <unistd.h>
