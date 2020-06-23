@@ -391,21 +391,14 @@ void DFontPreviewListView::updateModel()
     if (m_selectAfterDel != -1) {
         DFontPreviewProxyModel *filterModel = this->getFontPreviewProxyModel();
         if (m_bListviewAtButtom && !m_bListviewAtTop) {
-            if (m_selectAfterDel < count() - 12) {
+            if (m_selectAfterDel < 12 && this->count() > 12) {
                 QModelIndex modelIndex = filterModel->index(m_selectAfterDel, 0);
                 setCurrentIndex(modelIndex);
                 scrollTo(modelIndex);
             } else {
                 QModelIndex modelIndex = filterModel->index(m_selectAfterDel - 1, 0);
                 setCurrentIndex(modelIndex);
-//                scrollToBottom();
-
-//                qDebug() << viewport()->visibleRegion() << endl;
-//                qDebug() << curRect.topLeft() << endl;
-//                if (viewport()->visibleRegion().contains(curRect.topLeft()) || viewport()->visibleRegion().contains(curRect.bottomRight())) {
                 bottomNeed = true;
-//                }
-
             }
         } else if (m_selectAfterDel == filterModel->rowCount()) {
             QModelIndex modelIndex = filterModel->index(m_selectAfterDel - 1, 0);
@@ -974,7 +967,7 @@ void DFontPreviewListView::toSetCurrentIndex(QModelIndexList &itemIndexesNew)
 //    int i = itemIndexesNew.last().row();
     DFontPreviewProxyModel *filterModel = this->getFontPreviewProxyModel();
     if ((m_bListviewAtButtom && !m_bListviewAtTop)/* || m_bListviewAtButtom*/) {
-        if (m_selectAfterDel < this->count() - 12) {
+        if (m_selectAfterDel < 12) {
             QModelIndex modelIndex = filterModel->index(m_selectAfterDel, 0);
             setCurrentIndex(modelIndex);
         } else {
@@ -1008,7 +1001,7 @@ void DFontPreviewListView::toSetCurrentIndex(QModelIndexList &itemIndexesNew, in
             QModelIndex modelIndex = filterModel->index(i, 0);
             setCurrentIndex(modelIndex);
         } else {
-            if (m_selectAfterDel < this->count() - 12) {
+            if (m_selectAfterDel < 12) {
                 QModelIndex modelIndex = filterModel->index(m_selectAfterDel, 0);
                 setCurrentIndex(modelIndex);
             } else {
