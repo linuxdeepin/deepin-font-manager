@@ -950,19 +950,24 @@ void DFontPreviewListView::toSetCurrentIndex(QModelIndexList &itemIndexesNew)
 {
     m_bListviewAtButtom = isAtListviewBottom();
     m_bListviewAtTop = isAtListviewTop();
-    int i = itemIndexesNew.last().row();
+//    int i = itemIndexesNew.last().row();
     DFontPreviewProxyModel *filterModel = this->getFontPreviewProxyModel();
     if ((m_bListviewAtButtom && !m_bListviewAtTop)/* || m_bListviewAtButtom*/) {
-        QModelIndex modelIndex = filterModel->index(i - 1, 0);
-        setCurrentIndex(modelIndex);
-        //            qDebug() << "modelIndex+++++++++++++++++++++++++" << modelIndex << endl;
+        if (m_selectAfterDel < this->count() - 12) {
+            QModelIndex modelIndex = filterModel->index(m_selectAfterDel, 0);
+            setCurrentIndex(modelIndex);
+        } else {
+            QModelIndex modelIndex = filterModel->index(m_selectAfterDel - 1, 0);
+            setCurrentIndex(modelIndex);
+        }
+//        QModelIndex modelIndex = filterModel->index(i - 1, 0);
+//        setCurrentIndex(modelIndex);
     } else if (itemIndexesNew.last().row() == filterModel->rowCount()) {
 
         QModelIndex modelIndex = filterModel->index(itemIndexesNew.last().row() - 1, 0);
         setCurrentIndex(modelIndex);
     } else {
         setCurrentIndex(itemIndexesNew.last());
-        //            qDebug() << "modelIndex+++++++++++++++++++++++++" << itemIndexesNew.last() << endl;
     }
 }
 
@@ -979,8 +984,13 @@ void DFontPreviewListView::toSetCurrentIndex(QModelIndexList &itemIndexesNew, in
             QModelIndex modelIndex = filterModel->index(i, 0);
             setCurrentIndex(modelIndex);
         } else {
-            QModelIndex modelIndex = filterModel->index(i - 1, 0);
-            setCurrentIndex(modelIndex);
+            if (m_selectAfterDel < this->count() - 12) {
+                QModelIndex modelIndex = filterModel->index(m_selectAfterDel, 0);
+                setCurrentIndex(modelIndex);
+            } else {
+                QModelIndex modelIndex = filterModel->index(m_selectAfterDel - 1, 0);
+                setCurrentIndex(modelIndex);
+            }
         }
     } else if (m_bListviewAtTop && !m_bListviewAtButtom) {
         QModelIndex modelIndex = filterModel->index(i, 0);
@@ -1049,7 +1059,7 @@ void DFontPreviewListView::onListViewItemEnableBtnClicked(const QModelIndexList 
     QModelIndexList itemIndexesNew = itemIndexes;
 
     sortModelIndexList(itemIndexesNew);
-
+    m_selectAfterDel = itemIndexesNew.last().row();
     //    for (int i = 0; i < itemIndexes.count(); i++) {
     //        qDebug() << itemIndexes[i].row() << endl;
     //        itemIndexesNew.append(itemIndexes[itemIndexes.count() - 1 - i]);
@@ -1130,6 +1140,7 @@ void DFontPreviewListView::onListViewItemCollectionBtnClicked(const QModelIndexL
     QMutexLocker locker(&m_mutex);
     QModelIndexList itemIndexesNew = index;
     sortModelIndexList(itemIndexesNew);
+    m_selectAfterDel = itemIndexesNew.last().row();
     QList<DFontPreviewItemData> modelist = m_dataThread->getFontModelList();
     for (QModelIndex &index : itemIndexesNew) {
         DFontPreviewItemData itemData =
