@@ -1352,8 +1352,10 @@ void DFontMgrMainWindow::onShowSpinner(bool bShow, bool bottomNeed)
         m_fontLoadingSpinner->spinnerStop();
         m_fontLoadingSpinner->hide();
 //在删除加载动画结束后，添加listview的滚动逻辑 bug 34622
-        if (m_fontPreviewListView->selectedIndex(nullptr, nullptr).count() > 0)
+        if (m_fontPreviewListView->selectedIndex(nullptr, nullptr).count() > 0) {
             m_fontPreviewListView->scrollTo(m_fontPreviewListView->selectedIndex(nullptr, nullptr).first());
+            m_fontPreviewListView->setCurrentSelected(m_fontPreviewListView->currentIndex().row());//设置为shift选中起始位置
+        }
         m_isNoResultViewShow = false;
         onFontListViewRowCountChanged();
         onPreviewTextChanged();

@@ -969,6 +969,9 @@ void DFontPreviewListView::toSetCurrentIndex(QModelIndexList &itemIndexesNew)
     } else {
         setCurrentIndex(itemIndexesNew.last());
     }
+    //设置为shift选中起始位置
+    if (currentIndex().row() > -1)
+        setCurrentSelected(currentIndex().row());
 }
 
 //设置激活页面删除后的选中
@@ -1014,6 +1017,9 @@ void DFontPreviewListView::toSetCurrentIndex(QModelIndexList &itemIndexesNew, in
             }
         }
     }
+    //设置为shift选中起始位置
+    if (currentIndex().row() > -1)
+        setCurrentSelected(currentIndex().row());
 }
 
 bool DFontPreviewListView::isAtListviewBottom()
