@@ -66,7 +66,7 @@ void DFontPreviewListDataThread::doWork()
     QDir dir(fontInfoMgr->WPS_SYS_FONTS);
     if (dir.exists()) {
         for (QFileInfo &fi : dir.entryInfoList()) {
-            QString sufix = fi.suffix();
+            QString sufix = fi.suffix().toLower();
             if ((sufix == "ttf" || sufix == "ttc" || sufix == "otf") && !disableFontList.contains(fi.filePath()))
                 m_view->disableFont(fi.filePath());
         }
