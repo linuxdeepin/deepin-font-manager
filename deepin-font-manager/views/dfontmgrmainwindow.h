@@ -152,7 +152,7 @@ public slots:
 
     void onLoadStatus(int type);
     void onShowMessage(int totalCount);
-    void onShowSpinner(bool bShow, bool bottomNeed, bool force);
+    void onShowSpinner(bool bShow, bool force);
 
 protected:
     // For quick install mode
