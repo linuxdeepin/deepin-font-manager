@@ -160,14 +160,12 @@ void DFontPreviewListView::onMultiItemsAdded(QList<DFontPreviewItemData> &data)
 void DFontPreviewListView::onItemRemoved(const DFontPreviewItemData &itemData)
 {
 
-    /*UT000539 删除后刷新选中*/
     if (m_fontPreviewProxyModel == nullptr)
         return;
 
     QFontDatabase::removeApplicationFont(itemData.appFontId);
     deleteFontModelIndex(itemData.fontInfo.filePath);
 
-    /*UT000539 刷新删除后选中状态*/
     if (m_selectAfterDel != -1) {
         m_bListviewAtButtom = isAtListviewBottom();
         m_bListviewAtTop = isAtListviewTop();
@@ -346,8 +344,24 @@ void DFontPreviewListView::refreshFocuses(bool isJustInstalled, int count)
     });
 }
 
+//获取一页个数
+int DFontPreviewListView::getOnePageCount()
+{
+    const int defaultCount = 12;
+    double height = viewport()->height();
+    const QModelIndex idx = getFontPreviewProxyModel()->index(0, 0);
+    if (!idx.isValid())
+        return defaultCount;
+    const QStyleOptionViewItem option;
+    QSize size = m_fontPreviewItemDelegate->sizeHint(option, idx);
+    double itemHeight = size.height();
+    int  count = ceil(height / itemHeight);
+    return count;
+}
+
 void DFontPreviewListView::updateModel()
 {
+    int param = getOnePageCount();
     m_bListviewAtButtom = isAtListviewBottom();
     m_bListviewAtTop = isAtListviewTop();
     bool bottomNeed = false;
@@ -391,7 +405,7 @@ void DFontPreviewListView::updateModel()
     if (m_selectAfterDel != -1) {
         DFontPreviewProxyModel *filterModel = this->getFontPreviewProxyModel();
         if (m_bListviewAtButtom && !m_bListviewAtTop) {
-            if (m_selectAfterDel < 12 && this->count() > 12) {
+            if (m_selectAfterDel < param) {
                 QModelIndex modelIndex = filterModel->index(m_selectAfterDel, 0);
                 setCurrentIndex(modelIndex);
                 scrollTo(modelIndex);
@@ -962,12 +976,13 @@ void DFontPreviewListView::disableFonts()
 //设置收藏页面删除后的选中
 void DFontPreviewListView::toSetCurrentIndex(QModelIndexList &itemIndexesNew)
 {
+    int param = getOnePageCount();
     m_bListviewAtButtom = isAtListviewBottom();
     m_bListviewAtTop = isAtListviewTop();
 //    int i = itemIndexesNew.last().row();
     DFontPreviewProxyModel *filterModel = this->getFontPreviewProxyModel();
     if ((m_bListviewAtButtom && !m_bListviewAtTop)/* || m_bListviewAtButtom*/) {
-        if (m_selectAfterDel < 12) {
+        if (m_selectAfterDel < param) {
             QModelIndex modelIndex = filterModel->index(m_selectAfterDel, 0);
             setCurrentIndex(modelIndex);
         } else {
@@ -991,6 +1006,7 @@ void DFontPreviewListView::toSetCurrentIndex(QModelIndexList &itemIndexesNew)
 //设置激活页面删除后的选中
 void DFontPreviewListView::toSetCurrentIndex(QModelIndexList &itemIndexesNew, int count, int size)
 {
+    int param = getOnePageCount();
     m_bListviewAtButtom = isAtListviewBottom();
     m_bListviewAtTop = isAtListviewTop();
     int i = itemIndexesNew.last().row();
@@ -1001,7 +1017,7 @@ void DFontPreviewListView::toSetCurrentIndex(QModelIndexList &itemIndexesNew, in
             QModelIndex modelIndex = filterModel->index(i, 0);
             setCurrentIndex(modelIndex);
         } else {
-            if (m_selectAfterDel < 12) {
+            if (m_selectAfterDel < param) {
                 QModelIndex modelIndex = filterModel->index(m_selectAfterDel, 0);
                 setCurrentIndex(modelIndex);
             } else {
