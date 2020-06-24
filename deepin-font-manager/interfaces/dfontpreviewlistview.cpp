@@ -348,14 +348,14 @@ void DFontPreviewListView::refreshFocuses(bool isJustInstalled, int count)
 int DFontPreviewListView::getOnePageCount()
 {
     const int defaultCount = 12;
-    double height = viewport()->height();
+    int height = viewport()->height();
     const QModelIndex idx = getFontPreviewProxyModel()->index(0, 0);
     if (!idx.isValid())
         return defaultCount;
     const QStyleOptionViewItem option;
     QSize size = m_fontPreviewItemDelegate->sizeHint(option, idx);
-    double itemHeight = size.height();
-    int  count = ceil(height / itemHeight);
+    int itemHeight = size.height();
+    int  count = height / itemHeight;
     return count;
 }
 
@@ -646,6 +646,12 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
     QPoint clickPoint = event->pos();
     QModelIndex modelIndex = indexAt(clickPoint);
     if (event->button() == Qt::LeftButton) {
+        DFontPreviewItemData itemData = qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(modelIndex));
+        qDebug() << "itemData.fontInfo.fullname" << itemData.fontInfo.fullname;
+        qDebug() << "itemData.fontInfo.description" << itemData.fontInfo.description;
+        qDebug() << "itemData.fontInfo.copyright" << itemData.fontInfo.copyright;
+        qDebug() << "itemData.iFontSize" << itemData.iFontSize;
+        qDebug() << "itemData.isPreviewEnabled" << itemData.isPreviewEnabled;
         m_bLeftMouse = true;
         m_bRightMous = false;
         /*UT000539*/
