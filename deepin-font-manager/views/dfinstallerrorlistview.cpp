@@ -4,16 +4,18 @@
 
 #include <QPainter>
 #include <QMouseEvent>
+#include <QStandardItemModel>
 
 #include <DLog>
 #include <DStyleHelper>
 #include <DApplication>
 #include <DApplicationHelper>
 #include <DCheckBox>
+#include <DFontSizeManager>
 
 #define FTM_ERROR_ITEM_FONTNAME_LEFT    39
 
-//DFInstallErrorListDelegate
+DWIDGET_USE_NAMESPACE
 
 DFInstallErrorListDelegate::DFInstallErrorListDelegate(QAbstractItemView *parent)
     : DStyledItemDelegate(parent)
@@ -284,11 +286,12 @@ QSize DFInstallErrorListDelegate::sizeHint(const QStyleOptionViewItem &option,
 DFInstallErrorListView::DFInstallErrorListView(const QList<DFInstallErrorItemModel> &installErrorFontModelList,
                                                QWidget *parent)
     : DListView(parent)
+    , m_errorListSourceModel(nullptr)
     , m_installErrorFontModelList(installErrorFontModelList)
 {
-    QWidget *topSpaceWidget = new QWidget;
-    topSpaceWidget->setFixedSize(this->width(), 70 - FTM_TITLE_FIXED_HEIGHT);
-    this->addHeaderWidget(topSpaceWidget);
+//    QWidget *topSpaceWidget = new QWidget;
+//    topSpaceWidget->setFixedSize(this->width(), 70 - FTM_TITLE_FIXED_HEIGHT);
+//    this->addHeaderWidget(topSpaceWidget);
 
     setAutoScroll(true);
     setMouseTracking(true);
@@ -299,13 +302,13 @@ DFInstallErrorListView::DFInstallErrorListView(const QList<DFInstallErrorItemMod
 
 DFInstallErrorListView::~DFInstallErrorListView()
 {
-    m_errorListSourceModel->clear();
+    initModel(false);
     m_installErrorFontModelList.clear();
 }
 
 void DFInstallErrorListView::initErrorListData()
 {
-    m_errorListSourceModel = new QStandardItemModel(this);
+    initModel();
     DFontInfo fontInfo;
     for (int i = 0; i < m_installErrorFontModelList.size(); i++) {
 
@@ -337,20 +340,19 @@ void DFInstallErrorListView::initDelegate()
     this->setItemDelegate(m_errorListItemDelegate);
 }
 
-void DFInstallErrorListView::addErrorListData(QList<DFInstallErrorItemModel> installErrorFontModelList)
+void DFInstallErrorListView::addErrorListData(const QList<DFInstallErrorItemModel> &installErrorFontModelList)
 {
-    m_errorListSourceModel->clear();
-    this->setModel(m_errorListSourceModel);
+    initModel();
 
     QList<DFInstallErrorItemModel> m_newErrorFontModel;
     DFontInfo fontInfo;
 
-    foreach (auto it, installErrorFontModelList) {
+    for (const DFInstallErrorItemModel &it : installErrorFontModelList) {
         fontInfo = m_fontInfoManager->getFontInfo(it.strFontFilePath);
-        QString str = fontInfo.familyName + fontInfo.styleName;
-        if (!m_errorFontlist.contains(fontInfo.familyName + fontInfo.styleName)) {
+        QString str = QString("%1%2").arg(fontInfo.familyName).arg(fontInfo.styleName);
+        if (!m_errorFontlist.contains(str)) {
             m_newErrorFontModel.append(it);
-            m_errorFontlist.append(fontInfo.familyName + fontInfo.styleName);
+            m_errorFontlist.append(str);
         }
     }
     m_installErrorFontModelList.append(m_newErrorFontModel);
@@ -459,6 +461,25 @@ void DFInstallErrorListView::setSelectStatus(QStringList &HalfInstalledFiles)
 void DFInstallErrorListView::updateErrorFontModelList(int index, DFInstallErrorItemModel m_currentItemModel)
 {
     m_installErrorFontModelList.replace(index, m_currentItemModel);
+}
+
+void DFInstallErrorListView::initModel(bool newOne)
+{
+    if (m_errorListSourceModel != nullptr) {
+        int rowCnt = m_errorListSourceModel->rowCount();
+        m_errorListSourceModel->removeRows(0, rowCnt);
+        for (int i = rowCnt; i >= 0; i--) {
+            QStandardItem *item = m_errorListSourceModel->takeItem(i);
+            if (item)
+                delete item;
+        }
+        m_errorListSourceModel->clear();
+        delete m_errorListSourceModel;
+        m_errorListSourceModel = nullptr;
+    }
+
+    if (newOne)
+        m_errorListSourceModel = new QStandardItemModel();
 }
 
 QStandardItemModel *DFInstallErrorListView::getErrorListSourceModel()

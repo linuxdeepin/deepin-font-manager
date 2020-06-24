@@ -32,6 +32,7 @@ public:
                    const QModelIndex &index) const override;
 };
 
+class QStandardItemModel;
 class DFInstallErrorListView : public DListView
 {
     Q_OBJECT
@@ -45,11 +46,12 @@ public:
     void setSelection(const QRect &rect, QItemSelectionModel::SelectionFlags command) override;
     void initErrorListData();
     void initDelegate();
-    void addErrorListData(QList<DFInstallErrorItemModel> installErrorFontModelList);
+    void addErrorListData(const QList<DFInstallErrorItemModel> &installErrorFontModelList);
     void checkScrollToIndex(QStringList &addHalfInstalledFiles, QStringList &oldHalfInstalledFiles, QStringList &errorFileList);
     void scrollToIndex(QString &filePath);
     void setSelectStatus(QStringList &HalfInstalledFiles);
     void updateErrorFontModelList(int index, DFInstallErrorItemModel m_currentItemModel);
+    void initModel(bool newOne = true);
     QStandardItemModel *getErrorListSourceModel();
 
 private:

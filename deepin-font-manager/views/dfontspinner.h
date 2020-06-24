@@ -8,6 +8,7 @@ class DFontSpinner : public QWidget
     Q_OBJECT
 public:
     explicit DFontSpinner(QWidget *parent = nullptr);
+    ~DFontSpinner() override;
 
 public Q_SLOTS:
     void start();

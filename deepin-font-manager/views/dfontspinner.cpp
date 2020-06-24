@@ -48,6 +48,11 @@ DFontSpinner::DFontSpinner(QWidget *parent)
     });
 }
 
+DFontSpinner::~DFontSpinner()
+{
+    delete d_ptr;
+}
+
 void DFontSpinner::start()
 {
     d_ptr->currentDegree += 14;
