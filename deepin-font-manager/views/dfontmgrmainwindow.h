@@ -152,7 +152,7 @@ public slots:
 
     void onLoadStatus(int type);
     void onShowMessage(int totalCount);
-    void onShowSpinner(bool bShow, bool force);
+    void onShowSpinner(bool bShow, bool force, DFontSpinnerWidget::SpinnerStyles style);
 
 protected:
     // For quick install mode

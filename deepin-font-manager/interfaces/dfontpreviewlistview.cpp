@@ -27,6 +27,8 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
     qRegisterMetaType<DFontPreviewItemData>("DFontPreviewItemData");
     qRegisterMetaType<QList<DFontPreviewItemData>>("QList<DFontPreviewItemData> &");
     qRegisterMetaType<QItemSelection>("QItemSelection");
+    qRegisterMetaType<DFontSpinnerWidget::SpinnerStyles>("DFontSpinnerWidget::SpinnerStyles");
+    qRegisterMetaType<qint64>("qint64 &");
     m_fontPreviewItemModel->setColumnCount(1);
     setFrameShape(QFrame::NoFrame);
     connect(this, &DFontPreviewListView::itemsSelected, this, &DFontPreviewListView::selectFonts);
@@ -54,6 +56,7 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
     if (mw)
         connect(mw, &DFontMgrMainWindow::requestDeleted, this, [ = ](const QStringList files) {
         qDebug() << " requestDeleted ";
+        updateSpinner(DFontSpinnerWidget::Delete);
         Q_EMIT requestDeleted(files);
     });
     initFontListData();
@@ -113,13 +116,13 @@ void DFontPreviewListView::onItemAdded(const DFontPreviewItemData &itemData)
     sourceModel->appendRow(item);
 }
 
-void DFontPreviewListView::onMultiItemsAdded(QList<DFontPreviewItemData> &data)
+void DFontPreviewListView::onMultiItemsAdded(QList<DFontPreviewItemData> &data, DFontSpinnerWidget::SpinnerStyles styles)
 {
     if (data.isEmpty())
         return;
     QStandardItemModel *sourceModel = qobject_cast<QStandardItemModel *>(m_fontPreviewProxyModel->sourceModel());
     int rows = sourceModel->rowCount();
-    //    qDebug() << __FUNCTION__ << data.size() << rows;
+    qDebug() << __FUNCTION__ << data.size() << rows;
 
     int i = 0;
     qDebug() << "start" << endl;
@@ -154,7 +157,11 @@ void DFontPreviewListView::onMultiItemsAdded(QList<DFontPreviewItemData> &data)
         if (!res)
             qDebug() << __FUNCTION__ << "setData fail";
         i++;
+        // repaint spinner
+        if (styles != DFontSpinnerWidget::NoLabel)
+            updateSpinner(styles);
     }
+    qDebug() << __FUNCTION__ << "end";
 }
 
 void DFontPreviewListView::onItemRemoved(const DFontPreviewItemData &itemData)
@@ -359,9 +366,22 @@ int DFontPreviewListView::getOnePageCount()
     return count;
 }
 
-void DFontPreviewListView::updateModel()
+void DFontPreviewListView::updateSpinner(DFontSpinnerWidget::SpinnerStyles style, bool force)
 {
+    qint64 curtm = QDateTime::currentMSecsSinceEpoch();
+    //超过500ms刷新
+    if (curtm - m_curTm >= 350) {
+        Q_EMIT requestShowSpinner(true, force, style);
+        m_curTm = QDateTime::currentMSecsSinceEpoch();
+    }
+}
+
+void DFontPreviewListView::updateModel(bool showSpinner)
+{
+    qDebug() << __FUNCTION__ << "=========================" << showSpinner;
     int param = getOnePageCount();
+    if (showSpinner)
+        updateSpinner(DFontSpinnerWidget::Delete);
     m_bListviewAtButtom = isAtListviewBottom();
     m_bListviewAtTop = isAtListviewTop();
     bool bottomNeed = false;
@@ -375,9 +395,13 @@ void DFontPreviewListView::updateModel()
             delete item;
     }
 
+    if (showSpinner)
+        updateSpinner(DFontSpinnerWidget::Delete);
     m_fontPreviewItemModel->clear();
     delete m_fontPreviewItemModel;
     delete m_fontPreviewProxyModel;
+    if (showSpinner)
+        updateSpinner(DFontSpinnerWidget::Delete);
 
     m_fontPreviewItemModel = new QStandardItemModel;
     m_fontPreviewItemModel->setColumnCount(1);
@@ -385,16 +409,23 @@ void DFontPreviewListView::updateModel()
     m_fontPreviewProxyModel->setSourceModel(m_fontPreviewItemModel);
     setModel(m_fontPreviewProxyModel);
 
+    if (showSpinner)
+        updateSpinner(DFontSpinnerWidget::Delete);
     m_fontPreviewProxyModel->setFilterKeyColumn(0);
 
     if (mw)
         m_fontPreviewProxyModel->setFilterGroup(mw->currentFontGroup());
     QFontDatabase::removeAllApplicationFonts();
 
-    Q_EMIT requestShowSpinner(true, true);
+    if (showSpinner)
+        updateSpinner(DFontSpinnerWidget::Delete);
     QList<DFontPreviewItemData> modelist = m_dataThread->getFontModelList();
-    onMultiItemsAdded(modelist);
-    Q_EMIT requestShowSpinner(true, true);
+
+    DFontSpinnerWidget::SpinnerStyles spinnerstyle = (showSpinner) ? DFontSpinnerWidget::Delete : DFontSpinnerWidget::NoLabel;
+    onMultiItemsAdded(modelist, spinnerstyle);
+
+    if (showSpinner)
+        updateSpinner(DFontSpinnerWidget::Delete);
 
 
 
@@ -426,10 +457,11 @@ void DFontPreviewListView::updateModel()
         }
         isSelectedNow = true;
     }
-    Q_EMIT requestShowSpinner(true, true);
+    if (showSpinner)
+        updateSpinner(DFontSpinnerWidget::Delete);
 
 //设置选中状态后，spinner再停止，这样才能在后面的函数中scrool到目前选中的位置 bug34622
-    Q_EMIT requestShowSpinner(false, true);
+    Q_EMIT requestShowSpinner(false, true, DFontSpinnerWidget::Delete);
     if (currentIndex().row() > -1)
         setCurrentSelected(currentIndex().row());
     if (bottomNeed) {
@@ -1329,16 +1361,18 @@ void DFontPreviewListView::deleteFontFiles(const QStringList &files, bool force)
         }
     }
 
-    deleteCurFonts(files);
+    deleteCurFonts(files, force);
 }
 
-void DFontPreviewListView::deleteCurFonts(const QStringList &files)
+void DFontPreviewListView::deleteCurFonts(const QStringList &files, bool force)
 {
     qDebug() << __FUNCTION__ << " before delete " << m_dataThread->getFontModelList().size() << m_fontPreviewProxyModel->rowCount()  << m_fontPreviewProxyModel->sourceModel()->rowCount();
     QList<DFontPreviewItemData> fontInfoList = m_dataThread->getFontModelList();
     qDebug() << fontInfoList.size() << __FUNCTION__ << files.size();
     int delCnt = 0;
     int total = fontInfoList.size();
+    if (!force)
+        updateSpinner(DFontSpinnerWidget::Delete, false);
     for (int i = 0; i < total; ++i) {
         DFontPreviewItemData itemData = fontInfoList.at(i);
         QString filePath = itemData.fontInfo.filePath;
@@ -1358,7 +1392,7 @@ void DFontPreviewListView::deleteCurFonts(const QStringList &files)
 
     enableFonts();
 
-    Q_EMIT requestUpdateModel();
+    Q_EMIT requestUpdateModel(!force);
     m_dataThread->onAutoDirWatchers();
 }
 

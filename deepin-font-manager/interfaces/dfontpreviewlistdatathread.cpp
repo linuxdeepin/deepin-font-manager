@@ -102,7 +102,7 @@ void DFontPreviewListDataThread::doWork()
         index =  insertFontItemData(filePath, index, chineseFontPathList, monoSpaceFontPathList, true, false);
     }
 
-    Q_EMIT m_view->multiItemsAdded(m_fontModelList);
+    Q_EMIT m_view->multiItemsAdded(m_fontModelList, DFontSpinnerWidget::Load);
 
     m_dbManager->commitAddFontInfo();
 
@@ -183,7 +183,7 @@ void DFontPreviewListDataThread::onFileDeleted(const QStringList &files)
     qDebug() << __FUNCTION__ << files.size() << m_mutex;
     if (m_mutex != nullptr)
         QMutexLocker locker(m_mutex);
-    m_view->deleteCurFonts(files);
+    m_view->deleteCurFonts(files, false);
 }
 
 void DFontPreviewListDataThread::onFileAdded(const QStringList &files)
@@ -406,11 +406,12 @@ void DFontPreviewListDataThread::refreshFontListData(bool isStartup, const QStri
         qDebug() << "insertFontItemData" << "s" << endl;
         m_dbManager->commitAddFontInfo();
     }
+
     if (!isStartup && !installFont.isEmpty()) {
-        Q_EMIT m_view->multiItemsAdded(m_diffFontModelList);
+        Q_EMIT m_view->multiItemsAdded(m_diffFontModelList, DFontSpinnerWidget::Load);
         Q_EMIT m_view->itemsSelected(installFont);
     } else {
-        Q_EMIT m_view->multiItemsAdded(m_fontModelList);
+        Q_EMIT m_view->multiItemsAdded(m_fontModelList, DFontSpinnerWidget::Load);
     }
 }
 

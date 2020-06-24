@@ -10,6 +10,7 @@ class DFontSpinnerPrivate : public QObject
 {
 public:
     explicit DFontSpinnerPrivate(DFontSpinner *parent);
+    virtual ~DFontSpinnerPrivate();
 
     QList<QColor> createDefaultIndicatorColorList(QColor color);
 
@@ -27,6 +28,11 @@ DFontSpinnerPrivate::DFontSpinnerPrivate(DFontSpinner *parent)
     : q_ptr(parent)
 {
 
+}
+
+DFontSpinnerPrivate::~DFontSpinnerPrivate()
+{
+    refreshTimer.stop();
 }
 
 DFontSpinner::DFontSpinner(QWidget *parent)

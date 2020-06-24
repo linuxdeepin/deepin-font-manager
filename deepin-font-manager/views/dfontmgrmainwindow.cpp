@@ -1338,11 +1338,11 @@ void DFontMgrMainWindow::onShowMessage(int successCount)
     }
 }
 
-void DFontMgrMainWindow::onShowSpinner(bool bShow, bool force)
+void DFontMgrMainWindow::onShowSpinner(bool bShow, bool force, DFontSpinnerWidget::SpinnerStyles style)
 {
     qDebug() << __FUNCTION__ << bShow << "begin";
     if (bShow) {
-        showSpinner(DFontSpinnerWidget::Delete, force);
+        showSpinner(/*DFontSpinnerWidget::Delete*/style, force);
     } else {
         m_fontLoadingSpinner->spinnerStop();
         m_fontLoadingSpinner->hide();
@@ -1378,7 +1378,7 @@ void DFontMgrMainWindow::delCurrentFont()
                  << " is system font:" << currItemData.fontInfo.isSystemFont;
         //force delete all fonts
         //disable file system watcher
-        onShowSpinner(true, false);
+        onShowSpinner(true, false, DFontSpinnerWidget::Delete);
         Q_EMIT DFontPreviewListDataThread::instance(m_fontPreviewListView)->requestRemoveFileWatchers(uninstallFonts);
         DFontManager::instance()->setType(DFontManager::UnInstall);
         DFontManager::instance()->setUnInstallFile(uninstallFonts);

@@ -10,6 +10,7 @@
 
 #include <DApplication>
 #include <DApplicationHelper>
+#include <DFontSizeManager>
 #include <DLog>
 
 DWIDGET_USE_NAMESPACE

@@ -19,6 +19,6 @@ protected:
     void changeEvent(QEvent *e) override;
 
 private:
-    DFontSpinnerPrivate *const d_ptr;
+    DFontSpinnerPrivate *const d_ptr {nullptr};
     Q_DECLARE_PRIVATE(DFontSpinner)
 };

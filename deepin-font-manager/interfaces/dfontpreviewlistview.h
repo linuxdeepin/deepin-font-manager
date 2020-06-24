@@ -63,7 +63,7 @@ public:
     void updateChangedFile(const QString &path);
     void updateChangedDir(const QString &path);
     void deleteFontFiles(const QStringList &files, bool force = false);
-    void deleteCurFonts(const QStringList &files);
+    void deleteCurFonts(const QStringList &files, bool force = false);
     void changeFontFile(const QString &path, bool force = false);
     QStringList selectedFonts(int *deleteCnt, int *systemCnt);
     void selectedFontsNum(int *deleteCnt, int *systemCnt);
@@ -85,6 +85,8 @@ public:
     void viewChanged();
     void refreshFocuses(bool isJustInstalled, int count);
     void setNeedFocus();
+    void updateSpinner(DFontSpinnerWidget::SpinnerStyles style, bool force = true);
+    qint64 m_curTm {0};
 
 protected:
     void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected) override;
@@ -133,8 +135,8 @@ private:
     bool m_isJustInstalled = false;
 
     int m_selectAfterDel = -1;/*539 删除后的选中位置*/
-
     int getOnePageCount();
+
 signals:
     //用于DFontPreviewListView内部使用的信号
     void onClickEnableButton(const QModelIndexList &index, bool setValue, bool isFromActiveFont = false);
@@ -150,15 +152,15 @@ signals:
     void requestDeleted(const QStringList &files);
     void requestAdded(const QStringList &files, bool isFirstInstall = false);
     void itemAdded(const DFontPreviewItemData &data);
-    void multiItemsAdded(QList<DFontPreviewItemData> &data);
+    void multiItemsAdded(QList<DFontPreviewItemData> &data, DFontSpinnerWidget::SpinnerStyles styles);
     void itemRemoved(const DFontPreviewItemData &data);
     void itemRemovedFromSys(const DFontPreviewItemData &data);
     void itemsSelected(const QStringList &files, bool isFirstInstall = false);
     void itemSelected(const QString &file);
     void rowCountChanged();
     void deleteFinished();
-    void requestUpdateModel();
-    void requestShowSpinner(bool bShow, bool force);
+    void requestUpdateModel(bool showSpinner);
+    void requestShowSpinner(bool bShow, bool force, DFontSpinnerWidget::SpinnerStyles style);
 
 public slots:
 
@@ -169,11 +171,11 @@ public slots:
     void selectFonts(const QStringList &fileList);
     void selectFont(const QString &file);
     void onItemAdded(const DFontPreviewItemData &itemData);
-    void onMultiItemsAdded(QList<DFontPreviewItemData> &data);
+    void onMultiItemsAdded(QList<DFontPreviewItemData> &data, DFontSpinnerWidget::SpinnerStyles styles);
     void onItemRemoved(const DFontPreviewItemData &itemData);
     void onItemRemovedFromSys(const DFontPreviewItemData &itemData);
     void updateCurrentFontGroup(int currentFontGroup);
-    void updateModel();
+    void updateModel(bool showSpinner = true);
 };
 
 #endif  // DFONTPREVIEWLISTVIEW_H
