@@ -300,7 +300,7 @@
     </message>
     <message>
         <source>Some fonts are not allowed to be disabled</source>
-        <translation type="unfinished"/>
+        <translation>일부 글꼴은 비활성화할 수 없음</translation>
     </message>
 </context>
 <context>

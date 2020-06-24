@@ -300,7 +300,7 @@
     </message>
     <message>
         <source>Some fonts are not allowed to be disabled</source>
-        <translation type="unfinished"/>
+        <translation>Jotakin kirjasimia ei voi poistaa käytöstä</translation>
     </message>
 </context>
 <context>

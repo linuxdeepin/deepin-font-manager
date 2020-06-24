@@ -300,7 +300,7 @@
     </message>
     <message>
         <source>Some fonts are not allowed to be disabled</source>
-        <translation type="unfinished"/>
+        <translation>Enkele lettertypen mogen niet worden uitgeschakeld</translation>
     </message>
 </context>
 <context>

@@ -301,7 +301,7 @@ Localizzazione italiana a cura di Massimo A. Carofano.</translation>
     </message>
     <message>
         <source>Some fonts are not allowed to be disabled</source>
-        <translation type="unfinished"/>
+        <translation>Alcuni font non possono essere disattivati</translation>
     </message>
 </context>
 <context>

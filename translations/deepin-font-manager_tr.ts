@@ -300,7 +300,7 @@
     </message>
     <message>
         <source>Some fonts are not allowed to be disabled</source>
-        <translation type="unfinished"/>
+        <translation>Bazı yazı tipleri devre dışı bırakılamıyor</translation>
     </message>
 </context>
 <context>
