@@ -448,7 +448,8 @@ void DFontMgrMainWindow::initShortcuts()
         m_scAddOrCancelFavFont->setAutoRepeat(false);
 
         connect(m_scAddOrCancelFavFont, &QShortcut::activated, this, [ = ] {
-
+            if (!m_fontPreviewListView->currentIndex().isValid())
+                return;
             DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
             QModelIndexList itemIndexes = m_fontPreviewListView->selectedIndex(nullptr, nullptr);
 

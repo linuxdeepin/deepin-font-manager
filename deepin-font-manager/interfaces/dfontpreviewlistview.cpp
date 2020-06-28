@@ -378,10 +378,10 @@ void DFontPreviewListView::updateSpinner(DFontSpinnerWidget::SpinnerStyles style
 
 void DFontPreviewListView::updateModel(bool showSpinner)
 {
-    qDebug() << __FUNCTION__ << "=========================" << showSpinner;
+    Q_UNUSED(showSpinner)
     int param = getOnePageCount();
-    if (showSpinner)
-        updateSpinner(DFontSpinnerWidget::Delete);
+//    if (showSpinner)
+//        updateSpinner(DFontSpinnerWidget::Delete);
     m_bListviewAtButtom = isAtListviewBottom();
     m_bListviewAtTop = isAtListviewTop();
     bool bottomNeed = false;
@@ -395,13 +395,13 @@ void DFontPreviewListView::updateModel(bool showSpinner)
             delete item;
     }
 
-    if (showSpinner)
-        updateSpinner(DFontSpinnerWidget::Delete);
+//    if (showSpinner)
+//        updateSpinner(DFontSpinnerWidget::Delete);
     m_fontPreviewItemModel->clear();
     delete m_fontPreviewItemModel;
     delete m_fontPreviewProxyModel;
-    if (showSpinner)
-        updateSpinner(DFontSpinnerWidget::Delete);
+//    if (showSpinner)
+//        updateSpinner(DFontSpinnerWidget::Delete);
 
     m_fontPreviewItemModel = new QStandardItemModel;
     m_fontPreviewItemModel->setColumnCount(1);
@@ -409,23 +409,32 @@ void DFontPreviewListView::updateModel(bool showSpinner)
     m_fontPreviewProxyModel->setSourceModel(m_fontPreviewItemModel);
     setModel(m_fontPreviewProxyModel);
 
-    if (showSpinner)
-        updateSpinner(DFontSpinnerWidget::Delete);
+//    if (showSpinner)
+//        updateSpinner(DFontSpinnerWidget::Delete);
     m_fontPreviewProxyModel->setFilterKeyColumn(0);
 
     if (mw)
         m_fontPreviewProxyModel->setFilterGroup(mw->currentFontGroup());
-    QFontDatabase::removeAllApplicationFonts();
+//    QFontDatabase::removeAllApplicationFonts();
 
-    if (showSpinner)
-        updateSpinner(DFontSpinnerWidget::Delete);
+//    if (showSpinner)
+//        updateSpinner(DFontSpinnerWidget::Delete);
     QList<DFontPreviewItemData> modelist = m_dataThread->getFontModelList();
 
-    DFontSpinnerWidget::SpinnerStyles spinnerstyle = (showSpinner) ? DFontSpinnerWidget::Delete : DFontSpinnerWidget::NoLabel;
-    onMultiItemsAdded(modelist, spinnerstyle);
+    int rows = m_fontPreviewItemModel->rowCount();
+    m_fontPreviewItemModel->insertRows(rows, modelist.size());
+    int counts = 0;
+    for (DFontPreviewItemData &itemData : modelist) {
+        QModelIndex index = m_fontPreviewItemModel->index(counts,   0);
+        counts++;
+        m_fontPreviewItemModel->setData(index, QVariant::fromValue(itemData), Qt::DisplayRole);
+    }
+    Q_EMIT requestShowSpinner(false, true, DFontSpinnerWidget::Delete);
+//    DFontSpinnerWidget::SpinnerStyles spinnerstyle = (showSpinner) ? DFontSpinnerWidget::Delete : DFontSpinnerWidget::NoLabel;
+//    onMultiItemsAdded(modelist, spinnerstyle);
 
-    if (showSpinner)
-        updateSpinner(DFontSpinnerWidget::Delete);
+//    if (showSpinner)
+//        updateSpinner(DFontSpinnerWidget::Delete);
 
 
 
@@ -459,11 +468,10 @@ void DFontPreviewListView::updateModel(bool showSpinner)
         }
         isSelectedNow = true;
     }
-    if (showSpinner)
-        updateSpinner(DFontSpinnerWidget::Delete);
+//    if (showSpinner)
+//        updateSpinner(DFontSpinnerWidget::Delete);
 
 //设置选中状态后，spinner再停止，这样才能在后面的函数中scrool到目前选中的位置 bug34622
-    Q_EMIT requestShowSpinner(false, true, DFontSpinnerWidget::Delete);
     if (currentIndex().row() > -1)
         setCurrentSelected(currentIndex().row());
     if (bottomNeed) {
@@ -680,12 +688,6 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
     QPoint clickPoint = event->pos();
     QModelIndex modelIndex = indexAt(clickPoint);
     if (event->button() == Qt::LeftButton) {
-        DFontPreviewItemData itemData = qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(modelIndex));
-        qDebug() << "itemData.fontInfo.fullname" << itemData.fontInfo.fullname;
-        qDebug() << "itemData.fontInfo.description" << itemData.fontInfo.description;
-        qDebug() << "itemData.fontInfo.copyright" << itemData.fontInfo.copyright;
-        qDebug() << "itemData.iFontSize" << itemData.iFontSize;
-        qDebug() << "itemData.isPreviewEnabled" << itemData.isPreviewEnabled;
         m_bLeftMouse = true;
         m_bRightMous = false;
         /*UT000539*/
@@ -1388,6 +1390,7 @@ void DFontPreviewListView::deleteCurFonts(const QStringList &files, bool force)
             enableFont(itemData.fontInfo.filePath);
             DFMDBManager::instance()->deleteFontInfo(itemData);
 //            Q_EMIT itemRemoved(itemData);
+            QFontDatabase::removeApplicationFont(itemData.appFontId);
             delCnt++;
             m_dataThread->removeFontData(itemData);
             m_dataThread->removePathWatcher(filePath);
