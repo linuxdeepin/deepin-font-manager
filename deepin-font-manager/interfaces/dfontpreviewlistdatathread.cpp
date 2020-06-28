@@ -62,17 +62,6 @@ void DFontPreviewListDataThread::doWork()
 
     QStringList disableFontList = DFMXmlWrapper::getFontConfigDisableFontPathList();
 
-    //disable wps-office system fonts /usr/share/fonts/wps-office/
-    QDir dir(fontInfoMgr->WPS_SYS_FONTS);
-    if (dir.exists()) {
-        for (QFileInfo &fi : dir.entryInfoList()) {
-            QString sufix = fi.suffix().toLower();
-            if ((sufix == "ttf" || sufix == "ttc" || sufix == "otf") && !disableFontList.contains(fi.filePath()))
-                m_view->disableFont(fi.filePath());
-        }
-        m_view->disableFonts();
-    }
-
     int recordCount = m_dbManager->getRecordCount();
     if (recordCount > 0) {
         //从fontconfig配置文件同步字体启用/禁用状态数据
@@ -97,8 +86,6 @@ void DFontPreviewListDataThread::doWork()
     }
 
     for (QString &filePath : disableFontList) {
-        if (filePath.startsWith(fontInfoMgr->WPS_SYS_FONTS))
-            continue;
         index =  insertFontItemData(filePath, index, chineseFontPathList, monoSpaceFontPathList, true, false);
     }
 
@@ -341,7 +328,7 @@ void DFontPreviewListDataThread::refreshFontListData(bool isStartup, const QStri
     if (isStartup) {
         fontInfoList = m_dbManager->getAllFontInfo();
         for (const QString &filePath : installFont) {
-            if (!strAllFontList.contains(filePath) && !filePath.startsWith(fontInfoMgr->WPS_SYS_FONTS))
+            if (!strAllFontList.contains(filePath))
                 strAllFontList << filePath;
         }
     } else {
@@ -360,8 +347,6 @@ void DFontPreviewListDataThread::refreshFontListData(bool isStartup, const QStri
         }
         if (isStartup) {
             QString filePath = itemData.fontInfo.filePath.trimmed();
-            if (filePath.startsWith(DFontInfoManager::instance()->WPS_SYS_FONTS))
-                continue;
 
             QFileInfo filePathInfo(filePath);
 
@@ -510,11 +495,6 @@ void DFontPreviewListDataThread::syncFontEnableDisableStatusData(const QStringLi
     for (DFontPreviewItemData &fontItemData : fontInfoList) {
         QString keyFilePath = fontItemData.fontInfo.filePath;
 
-        if (keyFilePath.startsWith(DFontInfoManager::instance()->WPS_SYS_FONTS)) {
-            qDebug() << __FUNCTION__ << fontItemData.fontInfo.filePath;
-            DFMDBManager::instance()->deleteFontInfo(fontItemData);
-            continue;
-        }
         if (fontItemData.isEnabled != disableFontMap.value(keyFilePath))
             continue;
 
@@ -530,6 +510,5 @@ void DFontPreviewListDataThread::syncFontEnableDisableStatusData(const QStringLi
         m_dbManager->updateFontInfo(fontItemData, "isEnabled");
     }
 
-    m_dbManager->commitDeleteFontInfo();
     m_dbManager->commitUpdateFontInfo();
 }
