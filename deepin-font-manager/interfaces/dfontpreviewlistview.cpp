@@ -432,6 +432,9 @@ void DFontPreviewListView::updateModel(bool showSpinner)
     emit m_signalManager->fontSizeRequestToSlider();//设置预览大小
 
 
+    qDebug() << getFontPreviewProxyModel()->rowCount() << m_selectAfterDel << endl;
+    qDebug() << getFontPreviewProxyModel()->rowCount() - param << endl;
+
     /*UT000539 刷新删除后选中状态*/
     if (m_selectAfterDel != -1) {
         DFontPreviewProxyModel *filterModel = this->getFontPreviewProxyModel();
@@ -445,11 +448,10 @@ void DFontPreviewListView::updateModel(bool showSpinner)
                 setCurrentIndex(modelIndex);
                 bottomNeed = true;
             }
-        } else if (m_selectAfterDel == filterModel->rowCount()) {
+        } else if (m_selectAfterDel >= filterModel->rowCount() - param && m_selectAfterDel <= filterModel->rowCount()) {
             QModelIndex modelIndex = filterModel->index(m_selectAfterDel - 1, 0);
             setCurrentIndex(modelIndex);
-            scrollTo(modelIndex);
-
+            bottomNeed = true;
         } else {
             QModelIndex modelIndex = filterModel->index(m_selectAfterDel, 0);
             setCurrentIndex(modelIndex);
