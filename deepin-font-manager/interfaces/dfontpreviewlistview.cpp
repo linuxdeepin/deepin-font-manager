@@ -1214,7 +1214,10 @@ void DFontPreviewListView::onListViewItemCollectionBtnClicked(const QModelIndexL
     QMutexLocker locker(&m_mutex);
     QModelIndexList itemIndexesNew = index;
     sortModelIndexList(itemIndexesNew);
-    m_selectAfterDel = itemIndexesNew.last().row();
+    if (itemIndexesNew.count() > 0) {
+        m_selectAfterDel = itemIndexesNew.last().row();
+    }
+
     QList<DFontPreviewItemData> modelist = m_dataThread->getFontModelList();
     for (QModelIndex &index : itemIndexesNew) {
         DFontPreviewItemData itemData =

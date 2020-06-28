@@ -94,15 +94,12 @@ protected:
 private:
     void initConnections();
     int count() const;
-
     inline QRect getCollectionIconRect(QRect visualRect);
-
     void deleteFontModelIndex(const DFontInfo &fontInfo);
-
     void sortModelIndexList(QModelIndexList &sourceList);
-
     void scrollWithTheSelected();
     void refreshRect();
+    int getOnePageCount();
 
     bool m_bLoadDataFinish = false;
     bool m_bLeftMouse = true;
@@ -135,7 +132,7 @@ private:
     bool m_isJustInstalled = false;
 
     int m_selectAfterDel = -1;/*539 删除后的选中位置*/
-    int getOnePageCount();
+
 
 signals:
     //用于DFontPreviewListView内部使用的信号
