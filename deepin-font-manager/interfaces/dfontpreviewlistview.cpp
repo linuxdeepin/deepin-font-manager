@@ -457,10 +457,14 @@ void DFontPreviewListView::updateModel(bool showSpinner)
                 setCurrentIndex(modelIndex);
                 bottomNeed = true;
             }
-        } else if (m_selectAfterDel >= filterModel->rowCount() - param && m_selectAfterDel <= filterModel->rowCount()) {
+        } else if (m_selectAfterDel >= filterModel->rowCount() - param && m_selectAfterDel <= filterModel->rowCount() && !m_bListviewAtTop) {
             QModelIndex modelIndex = filterModel->index(m_selectAfterDel - 1, 0);
             setCurrentIndex(modelIndex);
             bottomNeed = true;
+        } else if (m_selectAfterDel == filterModel->rowCount()) {
+            QModelIndex modelIndex = filterModel->index(m_selectAfterDel - 1, 0);
+            setCurrentIndex(modelIndex);
+            scrollTo(modelIndex);
         } else {
             QModelIndex modelIndex = filterModel->index(m_selectAfterDel, 0);
             setCurrentIndex(modelIndex);
