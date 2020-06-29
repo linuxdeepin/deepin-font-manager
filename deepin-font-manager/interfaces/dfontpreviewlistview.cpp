@@ -457,10 +457,16 @@ void DFontPreviewListView::updateModel(bool showSpinner)
                 setCurrentIndex(modelIndex);
                 bottomNeed = true;
             }
-        } else if (m_selectAfterDel >= filterModel->rowCount() - param && m_selectAfterDel <= filterModel->rowCount() && !m_bListviewAtTop) {
-            QModelIndex modelIndex = filterModel->index(m_selectAfterDel - 1, 0);
-            setCurrentIndex(modelIndex);
-            bottomNeed = true;
+        } else if (m_selectAfterDel >= filterModel->rowCount() - param && m_selectAfterDel <= filterModel->rowCount() && m_selectAfterDel != filterModel->rowCount()) {
+            if (m_selectAfterDel >= 0 && m_selectAfterDel < param) {
+                QModelIndex modelIndex = filterModel->index(m_selectAfterDel, 0);
+                setCurrentIndex(modelIndex);
+                scrollTo(modelIndex);
+            } else {
+                QModelIndex modelIndex = filterModel->index(m_selectAfterDel - 1, 0);
+                setCurrentIndex(modelIndex);
+                bottomNeed = true;
+            }
         } else if (m_selectAfterDel == filterModel->rowCount()) {
             QModelIndex modelIndex = filterModel->index(m_selectAfterDel - 1, 0);
             setCurrentIndex(modelIndex);
@@ -472,6 +478,7 @@ void DFontPreviewListView::updateModel(bool showSpinner)
         }
         isSelectedNow = true;
     }
+
 //    if (showSpinner)
 //        updateSpinner(DFontSpinnerWidget::Delete);
 
@@ -1022,28 +1029,70 @@ void DFontPreviewListView::disableFonts()
 //设置收藏页面删除后的选中
 void DFontPreviewListView::toSetCurrentIndex(QModelIndexList &itemIndexesNew)
 {
+    Q_UNUSED(itemIndexesNew)
+
     int param = getOnePageCount();
     m_bListviewAtButtom = isAtListviewBottom();
     m_bListviewAtTop = isAtListviewTop();
 //    int i = itemIndexesNew.last().row();
     DFontPreviewProxyModel *filterModel = this->getFontPreviewProxyModel();
-    if ((m_bListviewAtButtom && !m_bListviewAtTop)/* || m_bListviewAtButtom*/) {
+//    if ((m_bListviewAtButtom && !m_bListviewAtTop)/* || m_bListviewAtButtom*/) {
+//        if (m_selectAfterDel < param) {
+//            QModelIndex modelIndex = filterModel->index(m_selectAfterDel, 0);
+//            setCurrentIndex(modelIndex);
+//        } else {
+//            QModelIndex modelIndex = filterModel->index(m_selectAfterDel - 1, 0);
+//            setCurrentIndex(modelIndex);
+//        }
+////        QModelIndex modelIndex = filterModel->index(i - 1, 0);
+////        setCurrentIndex(modelIndex);
+//    } else if (itemIndexesNew.last().row() == filterModel->rowCount()) {
+
+//        QModelIndex modelIndex = filterModel->index(itemIndexesNew.last().row() - 1, 0);
+//        setCurrentIndex(modelIndex);
+//    } else {
+//        setCurrentIndex(itemIndexesNew.last());
+//    }
+    bool bottomNeed = false;
+    if (m_bListviewAtButtom && !m_bListviewAtTop) {
         if (m_selectAfterDel < param) {
             QModelIndex modelIndex = filterModel->index(m_selectAfterDel, 0);
             setCurrentIndex(modelIndex);
+            scrollTo(modelIndex);
         } else {
             QModelIndex modelIndex = filterModel->index(m_selectAfterDel - 1, 0);
             setCurrentIndex(modelIndex);
+            bottomNeed = true;
         }
-//        QModelIndex modelIndex = filterModel->index(i - 1, 0);
-//        setCurrentIndex(modelIndex);
-    } else if (itemIndexesNew.last().row() == filterModel->rowCount()) {
-
-        QModelIndex modelIndex = filterModel->index(itemIndexesNew.last().row() - 1, 0);
+    } else if (m_selectAfterDel >= filterModel->rowCount() - param && m_selectAfterDel <= filterModel->rowCount() && m_selectAfterDel != filterModel->rowCount()) {
+        if (m_selectAfterDel >= 0 && m_selectAfterDel < param) {
+            QModelIndex modelIndex = filterModel->index(m_selectAfterDel, 0);
+            setCurrentIndex(modelIndex);
+            scrollTo(modelIndex);
+        } else {
+            QModelIndex modelIndex = filterModel->index(m_selectAfterDel - 1, 0);
+            setCurrentIndex(modelIndex);
+            bottomNeed = true;
+        }
+    } else if (m_selectAfterDel == filterModel->rowCount()) {
+        QModelIndex modelIndex = filterModel->index(m_selectAfterDel - 1, 0);
         setCurrentIndex(modelIndex);
+        scrollTo(modelIndex);
     } else {
-        setCurrentIndex(itemIndexesNew.last());
+        QModelIndex modelIndex = filterModel->index(m_selectAfterDel, 0);
+        setCurrentIndex(modelIndex);
+        scrollTo(modelIndex);
     }
+//    isSelectedNow = true;
+
+    if (bottomNeed) {
+        scrollToBottom();
+        QRect curRect = visualRect(currentIndex());
+        if (!viewport()->visibleRegion().contains(curRect.topLeft()) || !viewport()->visibleRegion().contains(curRect.bottomRight())) {
+            scrollTo(currentIndex());
+        }
+    }
+
     //设置为shift选中起始位置
     if (currentIndex().row() > -1)
         setCurrentSelected(currentIndex().row());
