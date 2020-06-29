@@ -400,9 +400,8 @@ DFontInfo DFontInfoManager::getFontInfo(const QString &filePath)
         }
     }
 
-    if (!fontInfo.fullname.isEmpty() && !fontInfo.isSystemFont) {
+    if (!fontInfo.fullname.isEmpty())
         fontInfo.familyName = fontInfo.fullname.replace(QRegExp(QString(" " + fontInfo.styleName + "$")), "");
-    }
 
     if (fontInfo.familyName.trimmed().length() < 1) {
         fontInfo.familyName = QString::fromLatin1(m_face->family_name);
