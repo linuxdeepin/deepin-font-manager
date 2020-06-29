@@ -24,6 +24,8 @@
 #include <QProcess>
 #include <QFileInfo>
 #include <QDir>
+#include "signalmanager.h"
+
 
 static DFontManager *INSTANCE = nullptr;
 const QString sysDir = QDir::homePath() + "/.local/share/fonts";
@@ -200,6 +202,11 @@ void DFontManager::handleInstall(bool isHalfwayInstall)
 
         Q_EMIT installFinished(127, QStringList());
     }
+
+    if (m_CacheStatus == CacheNow) {
+        doCache();
+    }
+
     //clear
     m_instFileList.clear();
     m_installOutList.clear();
@@ -232,6 +239,8 @@ void DFontManager::handleReInstall()
 
         Q_EMIT reInstallFinished(127, QStringList());
     }
+
+    doCache();
     //clear
     m_instFileList.clear();
     m_installOutList.clear();
@@ -297,25 +306,10 @@ void DFontManager::doInstall(const QStringList &fileList, bool reinstall)
 //            } else {
 
 //            }
-
             // output too fast will crash.
 //            QThread::msleep(10);
-
         }
     }
-
-    QProcess process;
-    process.start("fc-cache");
-    process.waitForFinished(-1);
-
-//    QProcess::startDetached("fc-cache");
-
-//    if (!reinstall) {
-//        QString filename;
-//        if (!fileList.isEmpty())
-//            filename = fileList.last();
-////        Q_EMIT batchInstall(filename, 96);
-//    }
 }
 
 void DFontManager::doUninstall(const QStringList &fileList)
@@ -357,14 +351,26 @@ void DFontManager::doUninstall(const QStringList &fileList)
 //发现开机后先删除字体再安装字体时，偶现安装进程无法启动，修改这里后现象消失
     QProcess::startDetached("fc-cache");
 
-
     QThread::msleep(30);
     Q_EMIT uninstallFinished();
+}
+
+void DFontManager::setCacheStatus(const CacheStatus &CacheStatus)
+{
+    m_CacheStatus = CacheStatus;
 }
 
 bool DFontManager::getIsWaiting() const
 {
     return isWaiting;
+}
+
+void DFontManager::doCache()
+{
+    QProcess process;
+    process.start("fc-cache");
+    process.waitForFinished(-1);
+
 }
 
 void DFontManager::setIsWaiting(bool value)

@@ -261,7 +261,6 @@ void DFontMgrMainWindow::initConnections()
             showSpinner(DFontSpinnerWidget::Load);
         }
 
-
     });
 
     /*UT000539 增加slider press聚焦的判断*/
@@ -423,7 +422,7 @@ void DFontMgrMainWindow::initShortcuts()
 
         connect(m_scDeleteFont, &QShortcut::activated, this, [this] {
             //Only can't delete user font
-            //first disable delete shortcut
+            //first disable delete
             delCurrentFont();
         }, Qt::UniqueConnection);
     }
@@ -1536,7 +1535,7 @@ void DFontMgrMainWindow::showAllShortcut()
         {DApplication::translate("Shortcut", "Page down"), "PageDown"},
 //        {"Resize window",      "Ctrl+Alt+F"},
 //        {"Find",               "Ctrl+F"},
-        {DApplication::translate("Shortcut", "Delete"), "Delete"},
+        {DApplication::translate("Shortcut", "Delete"), "Delet"},
         {DApplication::translate("Shortcut", "Add font"), "Ctrl+O"},
         {DApplication::translate("Shortcut", "Favorite"), "."},
         {DApplication::translate("Shortcut", "Unfavorite"), "."},

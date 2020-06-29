@@ -462,7 +462,16 @@ void DFInstallNormalWindow::batchInstall()
     }
 
     qDebug() << installListWithFamliyName << endl;
+
+    if (ifNeedShowExceptionWindow()) {
+        m_fontManager->setCacheStatus(DFontManager::CacheLater);
+    } else {
+        m_fontManager->setCacheStatus(DFontManager::CacheNow);
+    }
+
     m_fontManager->setType(DFontManager::Install);
+
+
     m_fontManager->setInstallFileList(installListWithFamliyName);
     m_fontManager->setSystemFontCount(systemFontCount);
     this->systemFontCount = 0;
@@ -550,6 +559,7 @@ void DFInstallNormalWindow::batchHalfwayInstall(const QStringList &filelist)
     }
 
     m_fontManager->setType(DFontManager::HalfwayInstall);
+    m_fontManager->setCacheStatus(DFontManager::CacheNow);
     m_fontManager->setInstallFileList(installListWithFamliyName);
 //        m_fontManager->setSystemFontCount(systemFontCount);
     m_fontManager->start();
@@ -582,7 +592,8 @@ void DFInstallNormalWindow::onCancelInstall()
 #endif
 
 //    qDebug() << "cancel reinstall" << totalInstallFont << endl;
-    emit m_signalManager->sendReInstallMessage(QStringList());
+//    emit m_signalManager->sendReInstallMessage(QStringList());
+    emit onContinueInstall(QStringList());
 //    if (totalInstallFont > 0)
 //    Q_EMIT SignalManager::instance()->requestInstallAdded();
 //ut000442 后面添加了关闭这个框的逻辑，不需要在这里关闭。
@@ -604,6 +615,7 @@ void DFInstallNormalWindow::onContinueInstall(const QStringList &continueInstall
 
 void DFInstallNormalWindow::onProgressChanged(const QString &familyName, const double &percent)
 {
+
     if (familyName.isEmpty()) {
         return;
     }

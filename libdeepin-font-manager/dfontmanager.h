@@ -32,6 +32,7 @@ class DFontManager : public QThread
 public:
     enum Type { Install, ReInstall, UnInstall, HalfwayInstall};
     enum InstallStatus {InstallSuccess, HalfwayInstallSuccess, Failed};
+    enum CacheStatus {CacheNow, CacheLater};
     static DFontManager *instance();
     DFontManager(QObject *parent = nullptr);
     ~DFontManager();
@@ -46,7 +47,11 @@ public:
     void setIsWaiting(bool value);
 
     bool getIsWaiting() const;
+    void doCache();
 
+
+
+    void setCacheStatus(const CacheStatus &CacheStatus);
 
 private slots:
     void handleInstallOutput();
@@ -80,12 +85,14 @@ private:
     void doUninstall(const QStringList &fileList);
 
 private:
+    SignalManager *m_signalManager = SignalManager::instance();
     QStringList m_instFileList;
     QStringList m_installOutList;
     QStringList m_uninstFile;
     QString m_reinstFile;
     QString m_sysFile;
     Type m_type;
+    CacheStatus m_CacheStatus;
     int m_systemFontCount = 0;
     bool isWaiting = false;
 };
