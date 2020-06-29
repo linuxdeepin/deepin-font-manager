@@ -1535,7 +1535,7 @@ void DFontMgrMainWindow::showAllShortcut()
         {DApplication::translate("Shortcut", "Page down"), "PageDown"},
 //        {"Resize window",      "Ctrl+Alt+F"},
 //        {"Find",               "Ctrl+F"},
-        {DApplication::translate("Shortcut", "Delete"), "Delet"},
+        {DApplication::translate("Shortcut", "Delete"), "Delete"},
         {DApplication::translate("Shortcut", "Add font"), "Ctrl+O"},
         {DApplication::translate("Shortcut", "Favorite"), "."},
         {DApplication::translate("Shortcut", "Unfavorite"), "."},
