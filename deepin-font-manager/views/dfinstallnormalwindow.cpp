@@ -259,6 +259,7 @@ void DFInstallNormalWindow::verifyFontFiles(bool isHalfwayInstall)
                 }
             }
         }
+
 #ifdef QT_QML_DEBUG
 //            qDebug() << __FUNCTION__ << " (" << it << " :New file)";
 #endif
@@ -420,6 +421,10 @@ void DFInstallNormalWindow::batchInstall()
         foreach (auto it, m_newInstallFiles) {
             installList.append(it);
         }
+    } else {
+        m_fontManager->setCacheStatus(DFontManager::NoNewFonts);
+        Q_EMIT m_signalManager->sendInstallMessage(installList);
+        return;
     }
 
     m_newInstallFiles.clear();
@@ -615,25 +620,15 @@ void DFInstallNormalWindow::onContinueInstall(const QStringList &continueInstall
 
 void DFInstallNormalWindow::onProgressChanged(const QString &familyName, const double &percent)
 {
-
     if (familyName.isEmpty()) {
         return;
     }
 
-    qDebug() << __FUNCTION__ << familyName << percent;
+//    qDebug() << __FUNCTION__ << familyName << percent;
     m_currentFontLabel->setText(familyName);
 
     m_progressBar->setValue(static_cast<int>(percent));
     m_progressBar->setTextVisible(false);
-
-//    qDebug() << QString("font install progress: %1%").arg(percent);
-//    ut000442 fix bug 21562.之前进度条到100的同时关闭这个窗口，导致
-//    用户看不到进度条满的效果。
-//    if (static_cast<int>(percent) == 100) {
-//        QTimer::singleShot(50, this, [this]() {
-//            this->close();
-//        });
-    //    }
 }
 
 void DFInstallNormalWindow::onInstallFinished(int state, QStringList fileList)

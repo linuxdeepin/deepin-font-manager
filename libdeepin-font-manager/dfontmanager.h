@@ -32,7 +32,7 @@ class DFontManager : public QThread
 public:
     enum Type { Install, ReInstall, UnInstall, HalfwayInstall};
     enum InstallStatus {InstallSuccess, HalfwayInstallSuccess, Failed};
-    enum CacheStatus {CacheNow, CacheLater};
+    enum CacheStatus {CacheNow, CacheLater, NoNewFonts};
     static DFontManager *instance();
     DFontManager(QObject *parent = nullptr);
     ~DFontManager();

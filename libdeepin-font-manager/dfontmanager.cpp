@@ -240,7 +240,8 @@ void DFontManager::handleReInstall()
         Q_EMIT reInstallFinished(127, QStringList());
     }
 
-    doCache();
+    if (m_CacheStatus != NoNewFonts || !m_instFileList.isEmpty())
+        doCache();
     //clear
     m_instFileList.clear();
     m_installOutList.clear();
@@ -367,10 +368,11 @@ bool DFontManager::getIsWaiting() const
 
 void DFontManager::doCache()
 {
+    qDebug() << __FUNCTION__;
     QProcess process;
     process.start("fc-cache");
     process.waitForFinished(-1);
-
+    qDebug() << __FUNCTION__ << " finished.";
 }
 
 void DFontManager::setIsWaiting(bool value)
