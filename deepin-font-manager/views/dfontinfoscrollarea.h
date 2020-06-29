@@ -38,8 +38,7 @@ public:
     explicit dfontinfoscrollarea(DFontPreviewItemData *pData, DWidget *parent  = nullptr);
     QString elideText(const QString &text, const QFont &font, int nLabelSize);//
     void updateText();
-
-
+    void autoHeight();
 protected:
     bool eventFilter(QObject *obj, QEvent *e) override;
     SignalManager *m_signalManager = SignalManager::instance();

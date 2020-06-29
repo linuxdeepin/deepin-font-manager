@@ -26,6 +26,7 @@ DFontInfoDialog::DFontInfoDialog(DFontPreviewItemData *fontInfo, QWidget *parent
     , fontinfoArea(nullptr)
 {
     m_faCenter = parent->geometry().center();
+    connect(m_signalManager, &SignalManager::sizeChange, this, &DFontInfoDialog::autoHeight);
     initUI();
     initConnections();
     this->move(m_faCenter - this->rect().center());
@@ -209,6 +210,7 @@ void DFontInfoDialog::initUI()
         paFrame.setColor(DPalette::Base, colorFrame);
         DApplicationHelper::instance()->setPalette(scrollArea->viewport(), paFrame);
     }
+    fontinfoArea->autoHeight();
     // Update font info to UI
 //    updateFontInfo();
 #ifdef FTM_DEBUG_LAYOUT_COLOR
@@ -248,46 +250,6 @@ void DFontInfoDialog::initConnections()
             DApplicationHelper::instance()->setPalette(m_basicInfoFrame, paFrame);
         }
     });
-
-    connect(m_signalManager, &SignalManager::sizeChange, this, [ = ](int height) {
-
-        //repaint m_fontFileName/*UT000539*/
-        m_fontFileName->clear();//clear option will reset m_fontFileName's all attributes but faster
-        //reset color on m_fontFileName's font
-        DPalette pa = DApplicationHelper::instance()->palette(m_fontFileName);
-        pa.setBrush(DPalette::WindowText, pa.color(DPalette::ToolTipText));
-        m_fontFileName->setPalette(pa);
-        m_fontFileName->setText(AutoFeed(m_FileName));
-
-        if (height * 1.1 + 280 < DEFAULT_WINDOW_H) {
-            this->setFixedHeight(static_cast<int>(height * 1.1 + 280));
-//            this->move(m_faCenter - this->rect().center());
-            QPixmap bmp(QSize(280, (static_cast<int>(height * 1.1 + 10))));
-            bmp.fill();
-            QPainter p(&bmp);
-            bmp.setDevicePixelRatio(0);
-            p.setBrush(Qt::black);
-            p.drawRoundedRect(bmp.rect(), 12, 12);
-            p.setRenderHint(QPainter::Antialiasing);
-            scrollArea->viewport()->setMask(bmp);
-            scrollArea->viewport()->setFixedHeight(static_cast<int>(height * 1.1 + 10));
-            scrollArea->setFixedHeight(static_cast<int>(height * 1.1 + 10));
-        } else {
-            this->setFixedHeight(DEFAULT_WINDOW_H);
-//            this->move(m_faCenter - this->rect().center());
-            QPixmap bmp(QSize(280, 375));
-            bmp.fill();
-            QPainter p(&bmp);
-            bmp.setDevicePixelRatio(0);
-            p.setBrush(Qt::black);
-            p.drawRoundedRect(bmp.rect(), 12, 12);
-            p.setRenderHint(QPainter::Antialiasing);
-            scrollArea->viewport()->setMask(bmp);
-            scrollArea->viewport()->setFixedHeight(375);
-            scrollArea->setFixedHeight(375);
-        }
-        //        this->setFixedSize(QSize(DEFAULT_WINDOW_W, height + 300));
-    });
 }
 void DFontInfoDialog::resizeEvent(QResizeEvent *event)
 {
@@ -302,5 +264,44 @@ void DFontInfoDialog::keyPressEvent(QKeyEvent *ev)
     if (QApplication::keyboardModifiers() == Qt::ControlModifier && ev->key() == Qt::Key_I) {
         this->close();
         deleteLater();
+    }
+}
+
+void DFontInfoDialog::autoHeight(int height)
+{
+    //repaint m_fontFileName/*UT000539*/
+    m_fontFileName->clear();//clear option will reset m_fontFileName's all attributes but faster
+    //reset color on m_fontFileName's font
+    DPalette pa = DApplicationHelper::instance()->palette(m_fontFileName);
+    pa.setBrush(DPalette::WindowText, pa.color(DPalette::ToolTipText));
+    m_fontFileName->setPalette(pa);
+    m_fontFileName->setText(AutoFeed(m_FileName));
+
+    if (height * 1.1 + 280 < DEFAULT_WINDOW_H) {
+        this->setFixedHeight(static_cast<int>(height * 1.1 + 280));
+//            this->move(m_faCenter - this->rect().center());
+        QPixmap bmp(QSize(280, (static_cast<int>(height * 1.1 + 10))));
+        bmp.fill();
+        QPainter p(&bmp);
+        bmp.setDevicePixelRatio(0);
+        p.setBrush(Qt::black);
+        p.drawRoundedRect(bmp.rect(), 12, 12);
+        p.setRenderHint(QPainter::Antialiasing);
+        scrollArea->viewport()->setMask(bmp);
+        scrollArea->viewport()->setFixedHeight(static_cast<int>(height * 1.1 + 10));
+        scrollArea->setFixedHeight(static_cast<int>(height * 1.1 + 10));
+    } else {
+        this->setFixedHeight(DEFAULT_WINDOW_H);
+//            this->move(m_faCenter - this->rect().center());
+        QPixmap bmp(QSize(280, 375));
+        bmp.fill();
+        QPainter p(&bmp);
+        bmp.setDevicePixelRatio(0);
+        p.setBrush(Qt::black);
+        p.drawRoundedRect(bmp.rect(), 12, 12);
+        p.setRenderHint(QPainter::Antialiasing);
+        scrollArea->viewport()->setMask(bmp);
+        scrollArea->viewport()->setFixedHeight(375);
+        scrollArea->setFixedHeight(375);
     }
 }

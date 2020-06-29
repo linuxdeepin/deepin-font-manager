@@ -31,6 +31,7 @@ protected:
     void resizeEvent(QResizeEvent *event) override;
     void insertContents();
     void keyPressEvent(QKeyEvent *ev) override;
+    void autoHeight(int height);
 signals:
 
 public slots:

@@ -3,6 +3,7 @@
 #include <DFontSizeManager>
 #include <DApplication>
 #include <DApplicationHelper>
+#include <QTimer>
 
 #define LAEBL_TEXT_WIDTH   165
 #define TITLE_VISIBLE_WIDTH 90
@@ -70,8 +71,10 @@ void dfontinfoscrollarea::initUi()
 bool dfontinfoscrollarea::eventFilter(QObject *obj, QEvent *e)
 {
     if (e->type() == QEvent::FontChange) {
-        qDebug() << __FUNCTION__ << "FontChange";
         updateText();
+        QTimer::singleShot(0, [ = ] {
+            autoHeight();
+        });
     }
     return  DFrame::eventFilter(obj, e);
 }
@@ -143,14 +146,6 @@ DFrame *dfontinfoscrollarea::addTitleFrame(const QString &sData, const QString &
 void dfontinfoscrollarea::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event);
-    int m_totalHeight = 0;
-    for (auto plabeliter : pLabelMap) {
-        if (!plabeliter.first) {
-            continue;
-        }
-        m_totalHeight = m_totalHeight + plabeliter.first->height();
-    }
-    emit m_signalManager->sizeChange(m_totalHeight + 76 + basicLabel->height());
 }
 
 //用于信息页面title名称长度判断/*539*/
@@ -229,4 +224,16 @@ void dfontinfoscrollarea::updateText()
         QString newtext = elideText(text, this->font(), INFO_VISIBLE_WIDTH);
         plabeliter.first->setText(newtext);
     }
+}
+
+void dfontinfoscrollarea::autoHeight()
+{
+    int m_totalHeight = 0;
+    for (auto plabeliter : pLabelMap) {
+        if (!plabeliter.first) {
+            continue;
+        }
+        m_totalHeight = m_totalHeight + plabeliter.first->height();
+    }
+    emit m_signalManager->sizeChange(m_totalHeight + 76 + basicLabel->height());
 }
