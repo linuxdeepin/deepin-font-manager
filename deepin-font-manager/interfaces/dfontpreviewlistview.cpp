@@ -331,24 +331,25 @@ void DFontPreviewListView::refreshFocuses(bool isJustInstalled, int count)
     if (!isJustInstalled)
         return;
 
-    QTimer::singleShot(50, [ = ] {
-        m_isJustInstalled = true;
-        if (1 == count)
-        {
-            setCurrentSelected(selectionModel()->selectedIndexes().first().row());
-//            scrollTo(currentIndex());
-            scrollTo(selectedIndexes().first());
-        } else if (count > 1)
-        {
-            if (selectedIndexes().count() > 0) {
-                setCurrentSelected(selectedIndexes().first().row());
-            }
-            isSelectedNow = false;
-            if (selectionModel()->selectedIndexes().count() > 1) {
-                scrollTo(selectionModel()->selectedIndexes().first());
-            }
-        }
-    });
+//    QTimer::singleShot(50, [ = ] {
+//        m_isJustInstalled = true;
+//        if (1 == count)
+//        {
+//            setCurrentSelected(selectionModel()->selectedIndexes().first().row());
+////            scrollTo(currentIndex());
+//            scrollTo(selectedIndexes().first());
+//        } else if (count > 1)
+//        {
+//            if (selectedIndexes().count() > 0) {
+//                setCurrentSelected(selectedIndexes().first().row());
+//            }
+//            isSelectedNow = false;
+//            if (selectionModel()->selectedIndexes().count() > 1) {
+//                scrollTo(selectionModel()->selectedIndexes().first());
+//            }
+//        }
+//    });
+
 }
 
 //获取一页个数
@@ -594,7 +595,6 @@ void DFontPreviewListView::selectFonts(const QStringList &fileList)
 
 //    if (selection.size() == 1)
 //        setCurrentIndex(cur);
-
     //    DFontMgrMainWindow *mw = qobject_cast<DFontMgrMainWindow *>(m_parentWidget);
     //    if (mw)
     //        Q_EMIT mw->requestUpdatePreview();

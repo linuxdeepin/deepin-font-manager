@@ -1641,6 +1641,22 @@ void DFontMgrMainWindow::hideSpinner()
         m_cacheFinish = false;
         m_installFinish = false;
         m_fIsInstalling = false;
+
+        //安装加载之后之后设置高亮状态以及listview的滚动
+        int count = m_fontPreviewListView->selectedFonts(nullptr, nullptr).count();
+        if (1 == count) {
+            m_fontPreviewListView->setCurrentSelected(m_fontPreviewListView->selectionModel()->selectedIndexes().first().row());
+            //            scrollTo(currentIndex());
+            m_fontPreviewListView->scrollTo(m_fontPreviewListView->selectionModel()->selectedIndexes().first());
+        } else if (count > 1) {
+            if (m_fontPreviewListView->selectionModel()->selectedIndexes().count() > 0) {
+                m_fontPreviewListView->setCurrentSelected(m_fontPreviewListView->selectionModel()->selectedIndexes().first().row());
+            }
+//                    isSelectedNow = false;
+            if (m_fontPreviewListView->selectionModel()->selectedIndexes().count() > 1) {
+                m_fontPreviewListView->scrollTo(m_fontPreviewListView->selectionModel()->selectedIndexes().first());
+            }
+        }
     });
 }
 
