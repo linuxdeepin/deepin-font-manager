@@ -120,11 +120,6 @@ void DFontManager::handleUnInstallOutput()
     QProcess *process = dynamic_cast<QProcess *>(sender());
     qDebug() << process->processId();
     QString output = process->readAllStandardOutput();
-    if (output.toInt() == 0) {
-        emit uninstalling();
-    } else {
-        emit uninstallFinished();
-    }
 }
 
 void DFontManager::run()
@@ -216,8 +211,8 @@ void DFontManager::handleUnInstall()
 {
     qDebug() << "waitForFinished";
     if (doCmd(QStringList() << m_uninstFile)) {
-        emit uninstallFinished();
 
+        qDebug() << __FUNCTION__ << m_uninstFile.size();
         emit uninstallFontFinished(m_uninstFile);
     }
     //clear
@@ -315,7 +310,6 @@ void DFontManager::doInstall(const QStringList &fileList, bool reinstall)
 
 void DFontManager::doUninstall(const QStringList &fileList)
 {
-    Q_EMIT uninstalling();
     for (const QString &file : fileList) {
         QFileInfo openFile(file);
 
@@ -350,10 +344,10 @@ void DFontManager::doUninstall(const QStringList &fileList)
 //    process.waitForFinished();
 
 //发现开机后先删除字体再安装字体时，偶现安装进程无法启动，修改这里后现象消失
-    QProcess::startDetached("fc-cache");
+    bool ret = QProcess::startDetached("fc-cache");
+    qDebug() << __FUNCTION__ << ret;
 
-    QThread::msleep(30);
-    Q_EMIT uninstallFinished();
+//    QThread::msleep(30);
 }
 
 void DFontManager::setCacheStatus(const CacheStatus &CacheStatus)

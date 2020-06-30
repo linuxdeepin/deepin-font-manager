@@ -63,11 +63,9 @@ signals:
     void batchInstall(const QString &filePath, const double &percent);
     void installPositionChanged(const QString &instPath);
     void reinstalling();
-    void uninstalling();
     void installFinished(int state, QStringList fileList);
     void reInstallFinished(int state, QStringList fileList);
     void reinstallFinished();
-    void uninstallFinished();
     void uninstallFontFinished(const QStringList &uninstallIndex);
     void showFloatingMessage(int totalCount);
     void popUninstallDialog();

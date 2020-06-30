@@ -321,6 +321,7 @@ void DFontPreviewListView::setNeedFocus()
 }
 void DFontPreviewListView::refreshFocuses(bool isJustInstalled, int count)
 {
+    Q_UNUSED(count)
     if (selectionModel()->selectedIndexes().isEmpty())
         return;
     if (m_IsNeedFocus) {
@@ -1443,7 +1444,7 @@ void DFontPreviewListView::deleteCurFonts(const QStringList &files, bool force)
             enableFont(itemData.fontInfo.filePath);
             DFMDBManager::instance()->deleteFontInfo(itemData);
 //            Q_EMIT itemRemoved(itemData);
-            qDebug() << itemData.appFontId;
+//            qDebug() << itemData.appFontId;
             QFontDatabase::removeApplicationFont(itemData.appFontId);
             delCnt++;
             m_dataThread->removeFontData(itemData);

@@ -466,7 +466,7 @@ void DFInstallNormalWindow::batchInstall()
 //        qDebug() << " Prepare install file: " << it + "|" + familyName;
     }
 
-    qDebug() << installListWithFamliyName << endl;
+//    qDebug() << installListWithFamliyName << endl;
 
     if (ifNeedShowExceptionWindow()) {
         m_fontManager->setCacheStatus(DFontManager::CacheLater);
@@ -582,7 +582,7 @@ void DFInstallNormalWindow::batchReInstallContinue()
         QString familyName = fontInfo.familyName;
         installListWithFamliyName.append(it + "|" + familyName);
 
-        qDebug() << " Prepare install file: " << it + "|" + familyName;
+//        qDebug() << " Prepare install file: " << it + "|" + familyName;
     }
 
     m_fontManager->setType(DFontManager::ReInstall);
