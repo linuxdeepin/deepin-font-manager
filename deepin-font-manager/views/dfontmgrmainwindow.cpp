@@ -233,7 +233,15 @@ void DFontMgrMainWindow::initConnections()
 
     });
 
-    connect(m_signalManager, &SignalManager::requestInstallAdded, this, &DFontMgrMainWindow::hideSpinner);
+    connect(m_fontManager, &DFontManager::cacheFinish, this, [ = ] {
+        m_cacheFinish = true;
+        hideSpinner();
+    });
+
+    connect(m_signalManager, &SignalManager::requestInstallAdded, this, [ = ] {
+        m_installFinish = true;
+        hideSpinner();
+    });
 
     //调节右下角字体大小显示label显示内容/*UT000539*/
     connect(qApp, &DApplication::fontChanged, this, [ = ]() {
@@ -423,6 +431,9 @@ void DFontMgrMainWindow::initShortcuts()
         connect(m_scDeleteFont, &QShortcut::activated, this, [this] {
             //Only can't delete user font
             //first disable delete
+//            qDebug() << m_cacheFinish << m_installFinish << endl;
+            if (m_cacheFinish || m_installFinish)
+                return;
             delCurrentFont();
         }, Qt::UniqueConnection);
     }
@@ -996,7 +1007,6 @@ bool DFontMgrMainWindow::installFont(const QStringList &files)
 //    m_dfNormalInstalldlg->setModal(true);
 
     //Clear installtion flag when NormalInstalltion window is closed
-    m_fIsInstalling = false;
     return true;
 }
 
@@ -1604,6 +1614,11 @@ void DFontMgrMainWindow::showSpinner(DFontSpinnerWidget::SpinnerStyles styles, b
 
 void DFontMgrMainWindow::hideSpinner()
 {
+
+    if (!m_cacheFinish || !m_installFinish) {
+        return;
+    }
+
     //        ut000442 安装少量字体时,会出现闪屏现象,通过加短暂延迟解决.
     QTimer::singleShot(50, this, [ = ]() {
         m_fontLoadingSpinner->spinnerStop();
@@ -1620,6 +1635,9 @@ void DFontMgrMainWindow::hideSpinner()
         }
         //            d->stateBar->show();
         emit m_signalManager->setSpliteWidgetScrollEnable(false);//安装刷新完成后启用菜单滚动功能
+        m_cacheFinish = false;
+        m_installFinish = false;
+        m_fIsInstalling = false;
     });
 }
 

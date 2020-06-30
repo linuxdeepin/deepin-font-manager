@@ -71,6 +71,7 @@ signals:
     void uninstallFontFinished(const QStringList &uninstallIndex);
     void showFloatingMessage(int totalCount);
     void popUninstallDialog();
+    void cacheFinish();
 
 protected:
     void run();

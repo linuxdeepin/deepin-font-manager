@@ -372,7 +372,8 @@ void DFontManager::doCache()
     QProcess process;
     process.start("fc-cache");
     process.waitForFinished(-1);
-    qDebug() << __FUNCTION__ << " finished.";
+    emit  cacheFinish();
+
 }
 
 void DFontManager::setIsWaiting(bool value)
