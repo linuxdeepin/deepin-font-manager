@@ -330,13 +330,13 @@ void DFInstallNormalWindow::checkShowMessage()
 {
     qDebug() << "Install over" << endl;
     //    qDebug() << getInstallMessage << getReInstallMessage << m_installAdded << m_installFinishSent;
-    if (getInstallMessage == true && getReInstallMessage == true) {
-        qDebug() << "ReInstall over" << endl;
-        //        if (!m_installFinishSent) {
+//    if (getInstallMessage == true && getReInstallMessage == true) {
+//        qDebug() << "ReInstall over" << endl;
+//        //        if (!m_installFinishSent) {
 
-        //            m_installFinishSent = true;
-        //        }
-    }
+//        //            m_installFinishSent = true;
+//        //        }
+//    }
 
     if (getInstallMessage == true && getReInstallMessage == true/* && m_installAdded*/) {
         qDebug() << "install refresh over";
@@ -564,7 +564,7 @@ void DFInstallNormalWindow::batchHalfwayInstall(const QStringList &filelist)
     }
 
     m_fontManager->setType(DFontManager::HalfwayInstall);
-    m_fontManager->setCacheStatus(DFontManager::CacheNow);
+    m_fontManager->setCacheStatus(DFontManager::CacheLater);
     m_fontManager->setInstallFileList(installListWithFamliyName);
 //        m_fontManager->setSystemFontCount(systemFontCount);
     m_fontManager->start();

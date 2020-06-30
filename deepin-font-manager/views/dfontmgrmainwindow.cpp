@@ -267,6 +267,9 @@ void DFontMgrMainWindow::initConnections()
         }
         if (successInstallCount > 0) {
             showSpinner(DFontSpinnerWidget::Load);
+        } else {
+//      成功安装的字体数目为0时,在这里将安装标志位复位
+            m_fIsInstalling = false;
         }
 
     });
