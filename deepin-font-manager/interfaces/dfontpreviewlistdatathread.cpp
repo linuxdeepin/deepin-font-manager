@@ -512,3 +512,8 @@ void DFontPreviewListDataThread::syncFontEnableDisableStatusData(const QStringLi
 
     m_dbManager->commitUpdateFontInfo();
 }
+
+void DFontPreviewListDataThread::updateFontId(int pos, int id)
+{
+    m_fontModelList[pos].appFontId = id;
+}

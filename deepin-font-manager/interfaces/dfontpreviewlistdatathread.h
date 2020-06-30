@@ -41,6 +41,7 @@ public:
     void setMutex(QMutex *mutex);
 
     void updateItemStatus(int index, DFontPreviewItemData itemData);
+    void updateFontId(int pos, int id);
 signals:
     void resultReady();
     void requestForceDeleteFiles(const QStringList &files);

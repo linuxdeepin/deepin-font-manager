@@ -138,7 +138,7 @@ void DFontPreviewListView::onMultiItemsAdded(QList<DFontPreviewItemData> &data, 
 
         int appFontId = QFontDatabase::addApplicationFont(itemData.fontInfo.filePath);
         itemData.appFontId = appFontId;
-
+        m_dataThread->updateFontId(rows + i, appFontId);
         QString strFontName;
         if (!QFontDatabase::applicationFontFamilies(appFontId).isEmpty()) {
             QString familyName = QFontDatabase::applicationFontFamilies(appFontId).first();
@@ -1443,6 +1443,7 @@ void DFontPreviewListView::deleteCurFonts(const QStringList &files, bool force)
             enableFont(itemData.fontInfo.filePath);
             DFMDBManager::instance()->deleteFontInfo(itemData);
 //            Q_EMIT itemRemoved(itemData);
+            qDebug() << itemData.appFontId;
             QFontDatabase::removeApplicationFont(itemData.appFontId);
             delCnt++;
             m_dataThread->removeFontData(itemData);
