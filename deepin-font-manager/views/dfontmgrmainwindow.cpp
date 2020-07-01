@@ -1226,7 +1226,7 @@ void DFontMgrMainWindow::onFontListViewRowCountChanged()
 //    qDebug() << __FUNCTION__ << isSpinnerHidden << bShow;
     switch (bShow) {
     case 0:
-        while (isSpinnerHidden) {
+        if (isSpinnerHidden) {
             m_fontPreviewListView->show();
             m_noResultListView->hide();
             m_isNoResultViewShow = false;
@@ -1234,12 +1234,11 @@ void DFontMgrMainWindow::onFontListViewRowCountChanged()
             if (m_noInstallListView->isVisible()) {
                 m_noInstallListView->hide();
             }
-            break;
         }
         return;
     case 1:
         if (!m_isNoResultViewShow) {
-            while (isSpinnerHidden) {
+            if (!m_fIsInstalling) {
                 m_fontPreviewListView->hide();
                 QTimer::singleShot(5, [ = ]() {
                     m_noResultListView->show();
@@ -1249,7 +1248,6 @@ void DFontMgrMainWindow::onFontListViewRowCountChanged()
                 if (m_noInstallListView->isVisible()) {
                     m_noInstallListView->hide();
                 }
-                break;
             }
             return;
         } else {
@@ -1257,7 +1255,7 @@ void DFontMgrMainWindow::onFontListViewRowCountChanged()
         }
 
     case 2:
-        while (isSpinnerHidden) {
+        if (isSpinnerHidden) {
             m_fontPreviewListView->hide();
             d->stateBar->hide();
             if (m_noResultListView->isVisible()) {
@@ -1266,7 +1264,6 @@ void DFontMgrMainWindow::onFontListViewRowCountChanged()
             }
             d->leftSiderBar->setFocus();
             m_noInstallListView->show();
-            break;
         }
         return;
     default:
@@ -1603,7 +1600,6 @@ void DFontMgrMainWindow::showInstalledFiles()
 void DFontMgrMainWindow::showSpinner(DFontSpinnerWidget::SpinnerStyles styles, bool force)
 {
     D_D(DFontMgrMainWindow);
-
     m_noInstallListView->hide();
     m_fontPreviewListView->hide();
     m_noResultListView->hide();
@@ -1622,18 +1618,14 @@ void DFontMgrMainWindow::showSpinner(DFontSpinnerWidget::SpinnerStyles styles, b
 
 void DFontMgrMainWindow::hideSpinner()
 {
-
     if (!m_cacheFinish || !m_installFinish) {
         return;
     }
-
     //        ut000442 安装少量字体时,会出现闪屏现象,通过加短暂延迟解决.
     QTimer::singleShot(50, this, [ = ]() {
         m_fontLoadingSpinner->spinnerStop();
         m_fontLoadingSpinner->hide();
         m_isNoResultViewShow = false;
-        onFontListViewRowCountChanged();
-        onPreviewTextChanged();
         if (m_isInstallOver) {
             //                int cnt = 0;
             //                int systemCnt = 0;
@@ -1647,6 +1639,8 @@ void DFontMgrMainWindow::hideSpinner()
         m_installFinish = false;
         m_fIsInstalling = false;
 
+        onFontListViewRowCountChanged();
+        onPreviewTextChanged();
         //安装加载之后之后设置高亮状态以及listview的滚动
         int count = m_fontPreviewListView->selectedFonts(nullptr, nullptr).count();
         if (1 == count) {
