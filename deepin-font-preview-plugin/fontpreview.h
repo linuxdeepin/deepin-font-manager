@@ -29,8 +29,8 @@ class FontPreview : public DFMFilePreview
     Q_OBJECT
 
 public:
-    explicit FontPreview(QObject* parent = 0);
-    ~FontPreview();
+    explicit FontPreview(QObject *parent = nullptr);
+    ~FontPreview()Q_DECL_OVERRIDE;
 
     DUrl fileUrl() const Q_DECL_OVERRIDE;
     bool setFileUrl(const DUrl &url) Q_DECL_OVERRIDE;
