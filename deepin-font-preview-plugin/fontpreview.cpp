@@ -45,7 +45,13 @@ bool FontPreview::setFileUrl(const DUrl &url)
 
     m_url = url;
     m_previewWidget->setFileUrl(url.toLocalFile());
-    m_title = url.toString().split("/").last();
+    m_title = url.toString();
+    qDebug() << __FUNCTION__ << m_title << url.toLocalFile();
+
+    if (!m_title.split("/").isEmpty()) {
+        m_title = m_title.split("/").last();
+        qDebug() << __FUNCTION__ << m_title;
+    }
 
     Q_EMIT titleChanged();
 
