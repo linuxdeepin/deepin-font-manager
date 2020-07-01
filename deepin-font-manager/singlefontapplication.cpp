@@ -155,8 +155,12 @@ void SingleFontApplication::activateWindow()
 
             m_qspMainWnd->show();
         } else {
-            m_qspMainWnd->setWindowState(Qt::WindowActive);
-            m_qspMainWnd->activateWindow(); // Reactive main window
+            bool IsWindowMax = reinterpret_cast<DFontMgrMainWindow *>(
+                                   m_qspMainWnd.get())->m_IsWindowMax;
+            if (IsWindowMax == true) {
+                m_qspMainWnd->setWindowState(Qt::WindowMaximized);
+            }
+            m_qspMainWnd->activateWindow();
             //m_qspMainWnd->resize(DEFAULT_WINDOWS_WIDTH, DEFAULT_WINDOWS_HEIGHT);
         }
         //For: Drag files on task bar app icon

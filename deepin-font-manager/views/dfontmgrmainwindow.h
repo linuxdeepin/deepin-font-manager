@@ -45,6 +45,7 @@ public:
         FollowSystem,
     };
 
+
     void setQuickInstallMode(bool isQuick);
     void hideQucikInstallWindow();
     void InitQuickWindowIfNeeded();
@@ -79,6 +80,7 @@ public:
     //Main window Size
     int m_winHight;
     int m_winWidth;
+    bool m_IsWindowMax = false;
     void keyPressEvent(QKeyEvent *event)override;
 protected:
     void initData();
@@ -179,6 +181,8 @@ protected:
     bool m_openfirst = true;//是否是第一次打开软件
     bool m_cacheFinish = false;
     bool m_installFinish = false;
+
+
 
     //Stand shortcut
     //Implement by DTK                       //Close window       --> Alt+F4

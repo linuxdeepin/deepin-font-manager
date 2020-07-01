@@ -43,6 +43,9 @@
 #define FTM_MWSIZE_H_KEY "FontManagerSizeH"
 #define FTM_MWSIZE_W_KEY "FontManagerSizeW"
 
+//Font Manager MainWindow Status
+#define FTM_MWSTATUS_KEY "FontManagerStatus"
+
 //Deepin manaul binary name
 #define DEEPIN_MANUAL_NAME "dman"
 

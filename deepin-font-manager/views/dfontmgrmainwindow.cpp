@@ -100,6 +100,7 @@ DFontMgrMainWindow::~DFontMgrMainWindow()
 {
     d_func()->settingsQsPtr->setValue(FTM_MWSIZE_H_KEY, m_winHight);
     d_func()->settingsQsPtr->setValue(FTM_MWSIZE_W_KEY, m_winWidth);
+    d_func()->settingsQsPtr->setValue(FTM_MWSTATUS_KEY, m_IsWindowMax);
     //ut000442 bug33870 偶现关闭窗口后,因没有取消dbus服务注册导致的应用无法启动的问题,在这里进行取消
     QDBusConnection dbus = QDBusConnection::sessionBus();
     dbus.unregisterService("com.deepin.FontManager");
@@ -123,7 +124,7 @@ void DFontMgrMainWindow::initData()
 
     m_winHight = d->settingsQsPtr->value(FTM_MWSIZE_H_KEY).toInt();
     m_winWidth = d->settingsQsPtr->value(FTM_MWSIZE_W_KEY).toInt();
-
+    m_IsWindowMax = d->settingsQsPtr->value(FTM_MWSTATUS_KEY).toInt();
     qDebug() << __FUNCTION__ << "init theme = " << colorType;
 
     DGuiApplicationHelper::instance()->setPaletteType(colorType);
@@ -1513,9 +1514,12 @@ void DFontMgrMainWindow::dropEvent(QDropEvent *event)
 void DFontMgrMainWindow::resizeEvent(QResizeEvent *event)
 {
     Q_UNUSED(event)
-    if (0 == int(QWidget::windowState())) {
+    if (Qt::WindowMaximized != int(QWidget::windowState())) {
         m_winHight = geometry().height();
         m_winWidth = geometry().width();
+        m_IsWindowMax = false;
+    } else {
+        m_IsWindowMax = true;
     }
 
 }
