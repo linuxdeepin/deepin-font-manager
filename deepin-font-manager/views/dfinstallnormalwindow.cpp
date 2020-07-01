@@ -726,13 +726,18 @@ void DFInstallNormalWindow::showInstallErrDlg()
     m_popedInstallErrorDialg = true;
 
     m_pexceptionDlg = new DFInstallErrorDialog(this, m_errorList, m_AllSysFilesPsname, m_AllSysFilesfamilyName);
-
+    m_pexceptionDlg->setParent(this);
     connect(m_pexceptionDlg, &DFInstallErrorDialog::onCancelInstall, this,
             &DFInstallNormalWindow::onCancelInstall);
     connect(m_pexceptionDlg, &DFInstallErrorDialog::onContinueInstall, this,
             &DFInstallNormalWindow::onContinueInstall);
 
+    qDebug() << geometry().center() << "+" << m_pexceptionDlg->rect().center() << endl;
+
+//    m_pexceptionDlg->move(geometry().center() - m_pexceptionDlg->rect().center());
+    m_pexceptionDlg->move(geometry().center() - m_pexceptionDlg->rect().center());
     m_pexceptionDlg->exec();
+
 }
 
 void DFInstallNormalWindow::setSkipException(bool skip)

@@ -264,7 +264,8 @@ void DFontMgrMainWindow::initConnections()
         m_successInstallCount = successInstallCount;
 
         if (m_dfNormalInstalldlg->isVisible()) {
-            m_dfNormalInstalldlg->deleteLater();
+//            m_dfNormalInstalldlg->deleteLater();
+            m_dfNormalInstalldlg->hide();
         }
         if (successInstallCount > 0) {
             showSpinner(DFontSpinnerWidget::Load);
@@ -1006,7 +1007,7 @@ bool DFontMgrMainWindow::installFont(const QStringList &files)
      */
     m_fIsInstalling = true;
 
-//    Dtk::Widget::moveToCenter(m_dfNormalInstalldlg);
+    Dtk::Widget::moveToCenter(m_dfNormalInstalldlg);
     m_dfNormalInstalldlg->exec();
 //    m_dfNormalInstalldlg->setModal(true);
 
