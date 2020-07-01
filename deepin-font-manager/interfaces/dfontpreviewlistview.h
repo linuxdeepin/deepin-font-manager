@@ -71,6 +71,7 @@ public:
     void deleteFontModelIndex(const QString &filePath, bool isFromSys = false);
     inline bool isDeleting();
     QMutex *getMutex();
+    QMenu *m_rightMenu {nullptr};
     void enableFont(const QString &filePath);
     void disableFont(const QString &filePath);
     void enableFonts();
@@ -113,7 +114,6 @@ private:
 
     DFontPreviewItemDelegate *m_fontPreviewItemDelegate {nullptr};
     SignalManager *m_signalManager = SignalManager::instance();
-    QMenu *m_rightMenu {nullptr};
 
     QModelIndex m_currModelIndex;
     DFontPreviewProxyModel *m_fontPreviewProxyModel {nullptr};
