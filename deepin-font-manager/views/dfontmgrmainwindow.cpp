@@ -1231,10 +1231,10 @@ void DFontMgrMainWindow::onFontListViewRowCountChanged()
         if (!m_isNoResultViewShow) {
             if (!m_fIsInstalling) {
                 m_fontPreviewListView->hide();
-                QTimer::singleShot(5, [ = ]() {
-                    m_noResultListView->show();
-                    m_isNoResultViewShow = true;
-                });
+//                QTimer::singleShot(5, [ = ]() {
+                m_noResultListView->show();
+                m_isNoResultViewShow = true;
+//                });
                 d->stateBar->hide();
                 if (m_noInstallListView->isVisible()) {
                     m_noInstallListView->hide();
