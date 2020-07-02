@@ -435,7 +435,6 @@ void DFontMgrMainWindow::initShortcuts()
         connect(m_scDeleteFont, &QShortcut::activated, this, [this] {
             //Only can't delete user font
             //first disable delete
-//            qDebug() << m_cacheFinish << m_installFinish << endl;
             if (m_cacheFinish || m_installFinish)
                 return;
             delCurrentFont();
@@ -975,11 +974,6 @@ void DFontMgrMainWindow::handleMenuEvent(QAction *action)
 // return value: true: install success, false: install fail
 bool DFontMgrMainWindow::installFont(const QStringList &files)
 {
-//    qDebug() << __FUNCTION__ << files;
-
-//    qint64 m_currentDiskSpace = getDiskSpace();
-//    if (m_currentDiskSpace == 0)
-//        return;
     QStringList m_installFiles = checkFilesSpace(files);
     m_abandonFilesCount = files.count() - m_installFiles.count();
     if (m_installFiles.count() == 0) {
@@ -1109,7 +1103,7 @@ void DFontMgrMainWindow::onSearchTextChanged(const QString &currStr)
 
 //    QString strSearchFontName = currStr;
     const QString strSearchFontName = currStr;
-    qDebug() << strSearchFontName << endl;
+    qDebug() << "SearchFontName:" << strSearchFontName << endl;
 
     m_searchTextStatusIsEmpty = strSearchFontName.isEmpty();
 
@@ -1176,17 +1170,15 @@ void DFontMgrMainWindow::onLeftSiderBarItemClicked(int index)
     filterGroup = qvariant_cast<DSplitListWidget::FontGroup>(index);
     emit m_signalManager->currentFontGroup(filterGroup);
 
-    qDebug() << filterGroup << endl;
+    qDebug() << "filterGroup" << filterGroup << endl;
 
     DFontPreviewProxyModel *filterModel = m_fontPreviewListView->getFontPreviewProxyModel();
     filterModel->setFilterKeyColumn(0);
     filterModel->setFilterGroup(filterGroup);
 //    filterModel->setEditStatus(m_searchTextStatusIsEmpty);
 
-    qDebug() << "onFontListViewRowCountChanged s" << endl;
     onFontListViewRowCountChanged();
     onPreviewTextChanged();
-    qDebug() << "onFontListViewRowCountChanged e" << endl;
     m_fontPreviewListView->clearSelection();
 }
 
@@ -1215,7 +1207,6 @@ void DFontMgrMainWindow::onFontListViewRowCountChanged()
     DFontPreviewProxyModel *filterModel = m_fontPreviewListView->getFontPreviewProxyModel();
     if (filterModel == nullptr)
         return;
-//    qDebug() << " filter count " << filterModel->rowCount();
     if (0 == filterModel->rowCount()) {
         if (m_searchTextStatusIsEmpty) {
             bShow = 2;
@@ -1224,7 +1215,6 @@ void DFontMgrMainWindow::onFontListViewRowCountChanged()
         }
     }
     bool isSpinnerHidden = m_fontLoadingSpinner->isHidden();
-//    qDebug() << __FUNCTION__ << isSpinnerHidden << bShow;
     switch (bShow) {
     case 0:
         if (isSpinnerHidden) {
@@ -1369,7 +1359,7 @@ void DFontMgrMainWindow::onShowSpinner(bool bShow, bool force, DFontSpinnerWidge
 
 void DFontMgrMainWindow::delCurrentFont()
 {
-    qDebug() << __FUNCTION__ << m_fIsDeleting;
+    qDebug() << __FUNCTION__ << "m_fIsDeleting:" << m_fIsDeleting;
     if (m_fIsDeleting)
         return;
     m_fIsDeleting = true;
@@ -1385,7 +1375,6 @@ void DFontMgrMainWindow::delCurrentFont()
 
     connect(confirmDelDlg, &DFDeleteDialog::accepted, this, [this]() {
         QStringList uninstallFonts = m_fontPreviewListView->selectedFonts(nullptr, nullptr);
-        //    qDebug() << m_uninstallFilePath << endl;
         DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
         qDebug() << "Confirm delete:" << currItemData.fontInfo.filePath
                  << " is system font:" << currItemData.fontInfo.isSystemFont;
@@ -1459,7 +1448,6 @@ void DFontMgrMainWindow::dragEnterEvent(QDragEnterEvent *event)
     if (event->mimeData()->hasUrls()) {
         QList<QUrl> dragFiles = event->mimeData()->urls();
 
-        qDebug() << dragFiles;
         if (dragFiles.size() == 1) {
             //For one-drag check MIME,ignore non-font file
             if (Utils::isFontMimeType(dragFiles[0].path())) {
@@ -1698,7 +1686,7 @@ qint64 DFontMgrMainWindow::getDiskSpace(bool m_bInstall)
     QStorageInfo storage;
     if (m_bInstall) {
         storage = QStorageInfo(QDir::homePath());
-        qDebug() << storage.bytesAvailable();
+        qDebug() << __FUNCTION__ << "storage.bytesAvailable:" << storage.bytesAvailable();
     } else {
         QString desktopPath = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
         storage = QStorageInfo(desktopPath);

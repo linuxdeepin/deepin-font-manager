@@ -221,7 +221,6 @@ void DSplitListWidget::currentChanged(const QModelIndex &current, const QModelIn
 
     QStandardItem *item = m_categoryItemModell->item(current.row());
     QVariant varUserData = item->data(Qt::DisplayRole).value<QVariant>();
-    qDebug() << "varUserData" << varUserData << endl;
     int realIndex = m_titleStringIndexMap.value(varUserData.toString());
 
     /*用于判断切换菜单后scrolltotop、nofocus...539*/

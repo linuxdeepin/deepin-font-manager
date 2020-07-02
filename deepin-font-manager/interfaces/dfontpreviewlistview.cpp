@@ -55,7 +55,6 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
 
     if (mw)
         connect(mw, &DFontMgrMainWindow::requestDeleted, this, [ = ](const QStringList files) {
-        qDebug() << " requestDeleted ";
         updateSpinner(DFontSpinnerWidget::Delete);
         Q_EMIT requestDeleted(files);
     });
@@ -83,7 +82,6 @@ void DFontPreviewListView::onFinishedDataLoad()
 {
     qDebug() << "onFinishedDataLoad thread id = " << QThread::currentThreadId();
     QList<DFontPreviewItemData> fontInfoList = m_dataThread->getFontModelList();
-    //qDebug() << fontInfoList.size();
     for (int i = 0; i < fontInfoList.size(); ++i) {
         DFontPreviewItemData itemData = fontInfoList.at(i);
         QString filePath = itemData.fontInfo.filePath;
@@ -125,7 +123,6 @@ void DFontPreviewListView::onMultiItemsAdded(QList<DFontPreviewItemData> &data, 
     qDebug() << __FUNCTION__ << data.size() << rows;
 
     int i = 0;
-    qDebug() << "start" << endl;
     bool res = sourceModel->insertRows(rows, data.size());
     if (!res) {
         qDebug() << __FUNCTION__ << "insertRows fail";
@@ -442,10 +439,6 @@ void DFontPreviewListView::updateModel(bool showSpinner)
 
     emit m_signalManager->fontSizeRequestToSlider();//设置预览大小
 
-
-    qDebug() << getFontPreviewProxyModel()->rowCount() << m_selectAfterDel << endl;
-    qDebug() << getFontPreviewProxyModel()->rowCount() - param << endl;
-
     /*UT000539 刷新删除后选中状态*/
     if (m_selectAfterDel != -1) {
         DFontPreviewProxyModel *filterModel = this->getFontPreviewProxyModel();
@@ -616,7 +609,6 @@ void DFontPreviewListView::selectFont(const QString &file)
         QModelIndex index = getFontPreviewProxyModel()->index(i, 0);
         DFontPreviewItemData itemData =
             qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(index));
-        //        qDebug() << __FUNCTION__ << itemData.fontInfo.filePath;
         if (!file.compare(itemData.fontInfo.filePath)) {
             QModelIndex left = m_fontPreviewProxyModel->index(index.row(), 0);
             QModelIndex right = m_fontPreviewProxyModel->index(index.row(), m_fontPreviewProxyModel->columnCount() - 1);
@@ -653,7 +645,6 @@ QMutex *DFontPreviewListView::getMutex()
 
 void DFontPreviewListView::selectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
 {
-    //    qDebug() << __FUNCTION__ << selected << " deselected " << deselected;
     QListView::selectionChanged(selected, deselected);
 }
 
@@ -677,11 +668,8 @@ void DFontPreviewListView::mouseMoveEvent(QMouseEvent *event)
     DFontPreviewItemData itemData = qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(modelIndex));
     clearHoverState();///*UT000539*/
     if (collectIconRect.contains(clickPoint)) {
-        //        if (itemData.collectIconStatus != IconHover) {
         itemData.collectIconStatus = IconHover;
         m_fontPreviewProxyModel->setData(modelIndex, QVariant::fromValue(itemData), Qt::DisplayRole);
-        //        }
-        //        qDebug() << "+++++++++++++" << itemData.strFontName << endl;
         m_hoverModelIndex = modelIndex;
     } else {
         if (itemData.collectIconStatus != IconNormal) {
@@ -931,11 +919,9 @@ void DFontPreviewListView::setModel(QAbstractItemModel *model)
 
 void DFontPreviewListView::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end)
 {
-    //    qDebug() << __FUNCTION__ << currentIndex() << "begin" << start << " to " << end;
     if (selectionModel()->selectedIndexes().count() > 0)
         selectionModel()->setCurrentIndex(parent, QItemSelectionModel::NoUpdate);
     QListView::rowsAboutToBeRemoved(parent, start, end);
-    //    qDebug() << __FUNCTION__ << currentIndex() << "end";
 }
 
 void DFontPreviewListView::keyPressEvent(QKeyEvent *event)
@@ -1398,7 +1384,6 @@ void DFontPreviewListView::updateChangedDir(const QString &path)
         QFileInfo filePathInfo(itemData.fontInfo.filePath);
         //如果字体文件已经不存在，则从t_manager表中删除
         if (!filePathInfo.exists()) {
-            //            qDebug() << __FUNCTION__ << " begin to delete font " << itemData.fontInfo.filePath;
             //删除字体之前启用字体，防止下次重新安装后就被禁用
             enableFont(itemData.fontInfo.filePath);
             DFMDBManager::instance()->deleteFontInfo(itemData);
@@ -1411,7 +1396,6 @@ void DFontPreviewListView::updateChangedDir(const QString &path)
     enableFonts();
 
     Q_EMIT rowCountChanged();
-    //    qDebug() << __FUNCTION__ << path << " end ";
 }
 
 void DFontPreviewListView::deleteFontFiles(const QStringList &files, bool force)
@@ -1444,8 +1428,6 @@ void DFontPreviewListView::deleteCurFonts(const QStringList &files, bool force)
             //删除字体之前启用字体，防止下次重新安装后就被禁用
             enableFont(itemData.fontInfo.filePath);
             DFMDBManager::instance()->deleteFontInfo(itemData);
-//            Q_EMIT itemRemoved(itemData);
-//            qDebug() << itemData.appFontId;
             QFontDatabase::removeApplicationFont(itemData.appFontId);
             delCnt++;
             m_dataThread->removeFontData(itemData);
@@ -1535,7 +1517,7 @@ void DFontPreviewListView::selectedFontsNum(int *deleteCnt, int *systemCnt)
     sortModelIndexList(list);
     if (list.count() > 0)
         m_selectAfterDel = list.last().row();
-    qDebug() << "_____________deleteRow_____________" << m_selectAfterDel;
+    qDebug() << __FUNCTION__ << "__deleteRow__" << m_selectAfterDel;
 
     int deleteNum = 0;
     int systemNum = 0;
@@ -1591,7 +1573,6 @@ void DFontPreviewListView::scrollWithTheSelected()
     if (indexes.isEmpty())
         return;
 
-    qDebug() << "__________m_isJustInstalled_______" << m_isJustInstalled;
     if (this->visibleRegion().contains(m_curRect.topLeft()) || this->visibleRegion().contains(m_curRect.bottomLeft())) {
         if (m_isJustInstalled) {
             if (m_curRect.center().y() < 156) {
@@ -1604,7 +1585,6 @@ void DFontPreviewListView::scrollWithTheSelected()
         } else {
             scrollTo(indexes.last());
         }
-        qDebug() << __FUNCTION__ << "scroll to selectionModel";
     } return;//if selecteditems is not in this visibleRegion then return
 }
 

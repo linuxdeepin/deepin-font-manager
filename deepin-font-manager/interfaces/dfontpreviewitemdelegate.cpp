@@ -206,7 +206,7 @@ void DFontPreviewItemDelegate::paintForegroundPreviewFont(QPainter *painter, con
     painter->setPen(QPen(option.palette.color(DPalette::Text)));
 
     QFontMetrics fontMetric(previewFont);
-//    qDebug()    << __FUNCTION__  << itemData.strFontName  << itemData.fontInfo.specialPreviewHeight << fontMetric.width(fontPreviewText);
+
     QString elidedText = fontMetric.elidedText(fontPreviewText, Qt::ElideRight, fontPreviewRect.width(), Qt::TextShowMnemonic);
 
     QPoint baseLinePoint = adjustPreviewFontBaseLinePoint(fontPreviewRect, fontMetric);

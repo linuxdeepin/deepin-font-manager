@@ -66,7 +66,6 @@ void DFontPreviewListDataThread::doWork()
     if (recordCount > 0) {
         //从fontconfig配置文件同步字体启用/禁用状态数据
         syncFontEnableDisableStatusData(disableFontList);
-        qDebug() << __func__ << "S" << endl;
         refreshFontListData(true, disableFontList);
 
         m_view->onFinishedDataLoad();
@@ -381,14 +380,12 @@ void DFontPreviewListDataThread::refreshFontListData(bool isStartup, const QStri
         int maxFontId = m_dbManager->getCurrMaxFontId();
         QList<QString> diffFilePathList = diffSet.toList();
         int index = maxFontId + 1;
-        qDebug() << "insertFontItemData" << "s" << endl;
         foreach (QString filePath, diffFilePathList) {
             if (m_dbManager->isSystemFont(filePath) || installFont.contains(filePath)) {
                 bool isEnabled = (isStartup && installFont.contains(filePath)) ? false : true;
                 index = insertFontItemData(filePath, index, chineseFontPathList, monoSpaceFontPathList, isStartup, isEnabled);
             }
         }
-        qDebug() << "insertFontItemData" << "s" << endl;
         m_dbManager->commitAddFontInfo();
     }
 
