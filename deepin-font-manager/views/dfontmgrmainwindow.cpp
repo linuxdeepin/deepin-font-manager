@@ -264,8 +264,7 @@ void DFontMgrMainWindow::initConnections()
         m_successInstallCount = successInstallCount;
 
         if (m_dfNormalInstalldlg->isVisible()) {
-//            m_dfNormalInstalldlg->deleteLater();
-            m_dfNormalInstalldlg->hide();
+            m_dfNormalInstalldlg->deleteLater();
         }
         if (successInstallCount > 0) {
             showSpinner(DFontSpinnerWidget::Load);
