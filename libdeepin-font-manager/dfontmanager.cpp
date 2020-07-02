@@ -80,48 +80,6 @@ void DFontManager::setUnInstallFile(const QStringList &filePath)
     m_uninstFile = filePath;
 }
 
-void DFontManager::handleInstallOutput()
-{
-    /*    QProcess *process = dynamic_cast<QProcess *>(sender());
-        qDebug() << process->processId();
-        QString output = process->readAllStandardOutput();
-
-        // single file installation.
-        if (m_instFileList.count() == 1) {
-            emit installPositionChanged(output);
-        } else {
-            // FIXME(Rekols): this operation is required under the Loongson platform.
-            for (const QString &line : output.split("\n")) {
-                QJsonDocument document = QJsonDocument::fromJson(line.toUtf8());
-                QJsonObject object = document.object();
-                m_installOutList << object.value("TargetPath").toString();
-
-                emit batchInstall(object.value("FilePath").toString(),
-                                  object.value("Percent").toDouble());
-            }
-        }*/
-}
-
-void DFontManager::handleReInstallOutput()
-{
-    QProcess *process = dynamic_cast<QProcess *>(sender());
-    qDebug() << process->processId();
-    QString output = process->readAllStandardOutput();
-    // 0 is installing.
-    if (output.toInt() == 0) {
-        emit reinstalling();
-    } else {
-        emit reinstallFinished();
-    }
-}
-
-void DFontManager::handleUnInstallOutput()
-{
-    QProcess *process = dynamic_cast<QProcess *>(sender());
-    qDebug() << process->processId();
-    QString output = process->readAllStandardOutput();
-}
-
 void DFontManager::run()
 {
     qDebug() << __FUNCTION__ << "start" << m_type << endl;
@@ -141,61 +99,37 @@ void DFontManager::run()
     }
 }
 
-bool DFontManager::doCmd(const QStringList &arguments)
+void DFontManager::doCmd(const QStringList &arguments)
 {
-//    QProcess *process = new QProcess;
-    int failed = false;
     qDebug() << "QProcess start";
     qDebug() << m_type << endl;
     switch (m_type) {
     case Install:
-        /*connect(process, SIGNAL(readyReadStandardOutput()), this,
-                SLOT(handleInstallOutput()));*/
         doInstall(arguments);
         break;
 
     case ReInstall:
-        /*connect(process, SIGNAL(readyReadStandardOutput()), this,
-                SLOT(handleReInstallOutput()));*/
         doInstall(arguments, true);
         break;
     case HalfwayInstall:
         doInstall(arguments);
         break;
     case UnInstall:
-        /*connect(process, SIGNAL(readyReadStandardOutput()), this,
-                SLOT(handleUnInstallOutput()));*/
         doUninstall(arguments);
         break;
     }
-
-    /*    connect(process, SIGNAL(finished(int)), this, SLOT(handleProcessFinished(int)));
-
-        process->start(program, arguments);
-        process->waitForFinished(-1);
-
-        failed |= process->exitCode();
-    */
-    return !failed;
 }
 
 void DFontManager::handleInstall(bool isHalfwayInstall)
 {
-    //if (doCmd("pkexec", QStringList() << "dfont-install" << m_instFileList)) {
-
-    if (doCmd(QStringList() << m_instFileList)) {
-        if (m_instFileList.count() == 1) {
-            // emit installFinished();
-        }
-        if (!isHalfwayInstall) {
-            Q_EMIT installFinished(InstallStatus::InstallSuccess, m_installOutList);
-        } else {
-            Q_EMIT installFinished(InstallStatus::HalfwayInstallSuccess, m_installOutList);
-        }
+    doCmd(QStringList() << m_instFileList);
+    if (m_instFileList.count() == 1) {
+        // emit installFinished();
+    }
+    if (!isHalfwayInstall) {
+        Q_EMIT installFinished(InstallStatus::InstallSuccess, m_installOutList);
     } else {
-        // For:unathorized exit
-
-        Q_EMIT installFinished(127, QStringList());
+        Q_EMIT installFinished(InstallStatus::HalfwayInstallSuccess, m_installOutList);
     }
 
     if (m_CacheStatus == CacheNow) {
@@ -210,30 +144,21 @@ void DFontManager::handleInstall(bool isHalfwayInstall)
 void DFontManager::handleUnInstall()
 {
     qDebug() << "waitForFinished";
-    if (doCmd(QStringList() << m_uninstFile)) {
-
-        qDebug() << __FUNCTION__ << m_uninstFile.size();
-        emit uninstallFontFinished(m_uninstFile);
-    }
+    doCmd(QStringList() << m_uninstFile);
+//        qDebug() << __FUNCTION__ << m_uninstFile.size();
+//        emit uninstallFontFinished(m_uninstFile);
     //clear
     m_uninstFile.clear();
 }
 
 void DFontManager::handleReInstall()
 {
-
-    if (doCmd(QStringList() << m_instFileList)) {
-        if (m_instFileList.count() == 1) {
-            // emit installFinished();
-        }
-
-        emit reInstallFinished(0, m_installOutList);
-//        qDebug() << "ASDASDasd" << endl;
-    } else {
-        // For:unathorized exit
-
-        Q_EMIT reInstallFinished(127, QStringList());
+    doCmd(QStringList() << m_instFileList);
+    if (m_instFileList.count() == 1) {
+        // emit installFinished();
     }
+
+    emit reInstallFinished(0, m_installOutList);
 
     if (m_CacheStatus != NoNewFonts || !m_instFileList.isEmpty())
         doCache();
@@ -285,10 +210,6 @@ void DFontManager::doInstall(const QStringList &fileList, bool reinstall)
         const int count = fileList.count() - 1;
 
         if (fileList.count() == 1) {
-//            qDebug() << __FUNCTION__ << target.toUtf8().data();
-//            if (!reinstall)
-//                Q_EMIT installPositionChanged(target.toUtf8().data());
-//            QThread::msleep(50);
             //  ut000442 之前安装一个字体时没有安装进度条,在此添加
             Q_EMIT batchInstall(familyName, 100);
 
@@ -296,14 +217,7 @@ void DFontManager::doInstall(const QStringList &fileList, bool reinstall)
             QString filePath = filePathOrig;
             double percent = currentIndex / double(count) * 100;
 
-//            qDebug() << __FUNCTION__ << filePath << ", " << percent;
-//            if (!reinstall) {
             Q_EMIT batchInstall(familyName, percent);
-//            } else {
-
-//            }
-            // output too fast will crash.
-//            QThread::msleep(10);
         }
     }
 }
@@ -339,25 +253,23 @@ void DFontManager::doUninstall(const QStringList &fileList)
 #endif
     }
 
+    //修复删除时间有时候长的问题, 35479
+    Q_EMIT uninstallFontFinished(m_uninstFile);
+    qDebug() << __FUNCTION__ << m_uninstFile.size();
+
 //    QProcess process;
 //    process.start("fc-cache");
 //    process.waitForFinished();
 
 //发现开机后先删除字体再安装字体时，偶现安装进程无法启动，修改这里后现象消失
     bool ret = QProcess::startDetached("fc-cache");
+    Q_EMIT uninstallFcCacheFinish();
     qDebug() << __FUNCTION__ << ret;
-
-//    QThread::msleep(30);
 }
 
 void DFontManager::setCacheStatus(const CacheStatus &CacheStatus)
 {
     m_CacheStatus = CacheStatus;
-}
-
-bool DFontManager::getIsWaiting() const
-{
-    return isWaiting;
 }
 
 void DFontManager::doCache()
@@ -368,17 +280,4 @@ void DFontManager::doCache()
     process.waitForFinished(-1);
     emit  cacheFinish();
 
-}
-
-void DFontManager::setIsWaiting(bool value)
-{
-    isWaiting = value;
-}
-
-void DFontManager::handleProcessFinished(int exitCode)
-{
-    QProcess *process = dynamic_cast<QProcess *>(sender());
-    qDebug() << process->processId();
-    qDebug() << exitCode << endl;
-    process->deleteLater();
 }

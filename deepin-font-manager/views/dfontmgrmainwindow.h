@@ -45,17 +45,24 @@ public:
         FollowSystem,
     };
 
+    enum DeleteStatus {
+        UnDeleting = 0,
+        Delete_Cacheing = 1,
+        Delete_Deleting = 2,
+        Deleting = Delete_Cacheing | Delete_Deleting,
+    };
 
     void setQuickInstallMode(bool isQuick);
     void hideQucikInstallWindow();
     void InitQuickWindowIfNeeded();
     void forceNoramlInstalltionQuitIfNeeded();
     void setDeleteFinish();
+    void cancelDelete();
     inline DFontManager *getFontManager()
     {
         return m_fontManager;
     }
-    inline bool isDeleting()
+    inline qint8 isDeleting()
     {
         return m_fIsDeleting;
     }
@@ -148,6 +155,7 @@ public slots:
 
     void onLeftSiderBarItemClicked(int index);
     void onFontInstallFinished(const QStringList &fileList);
+    void onUninstallFcCacheFinish();
 
     void onFontListViewRowCountChanged();
 
@@ -200,7 +208,7 @@ protected:
     bool                    m_fIsInstalling {false};
     //is it in uninstalling font flow
     //Avoid start multi delete confirm dialog
-    volatile bool m_fIsDeleting {false};
+    volatile qint8 m_fIsDeleting {UnDeleting};
 //    QStringList m_fileList;
     QStringList m_waitForInstall;
     DFInstallNormalWindow  *m_dfNormalInstalldlg {nullptr};

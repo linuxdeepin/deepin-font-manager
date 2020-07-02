@@ -44,38 +44,22 @@ public:
 
     void setSystemFontCount(int systemFontCount);
 
-    void setIsWaiting(bool value);
-
-    bool getIsWaiting() const;
     void doCache();
-
-
-
     void setCacheStatus(const CacheStatus &CacheStatus);
-
-private slots:
-    void handleInstallOutput();
-    void handleReInstallOutput();
-    void handleUnInstallOutput();
-    void handleProcessFinished(int exitCode);
 
 signals:
     void batchInstall(const QString &filePath, const double &percent);
-    void installPositionChanged(const QString &instPath);
-    void reinstalling();
     void installFinished(int state, QStringList fileList);
     void reInstallFinished(int state, QStringList fileList);
-    void reinstallFinished();
     void uninstallFontFinished(const QStringList &uninstallIndex);
-    void showFloatingMessage(int totalCount);
-    void popUninstallDialog();
+    void uninstallFcCacheFinish();
     void cacheFinish();
 
 protected:
     void run();
 
 private:
-    bool doCmd(const QStringList &arguments);
+    void doCmd(const QStringList &arguments);
     void handleInstall(bool isHalfwayInstall = false);
     void handleUnInstall();
     void handleReInstall();
@@ -93,7 +77,6 @@ private:
     Type m_type;
     CacheStatus m_CacheStatus;
     int m_systemFontCount = 0;
-    bool isWaiting = false;
 };
 
 #endif

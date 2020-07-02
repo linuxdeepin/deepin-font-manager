@@ -214,6 +214,7 @@ void DFontMgrMainWindow::initConnections()
 
     QObject::connect(m_fontManager, SIGNAL(uninstallFontFinished(const QStringList &)), this,
                      SIGNAL(requestDeleted(const QStringList &)));
+    QObject::connect(m_fontManager, &DFontManager::uninstallFcCacheFinish, this, &DFontMgrMainWindow::onUninstallFcCacheFinish);
     QObject::connect(m_signalManager, &SignalManager::showInstallFloatingMessage, this, &DFontMgrMainWindow::onShowMessage);
 //    connect(this, &DFontMgrMainWindow::requestUpdatePreview, [ = ] {
 //        QString previewText = d->textInputEdit->text();
@@ -1091,8 +1092,13 @@ void DFontMgrMainWindow::forceNoramlInstalltionQuitIfNeeded()
 
 void DFontMgrMainWindow::setDeleteFinish()
 {
+    m_fIsDeleting &= ~Delete_Deleting;
+    qDebug() << __FUNCTION__ << m_fIsDeleting;
+}
 
-    m_fIsDeleting = false;
+void DFontMgrMainWindow::cancelDelete()
+{
+    m_fIsDeleting = UnDeleting;
 }
 
 void DFontMgrMainWindow::onSearchTextChanged(const QString &currStr)
@@ -1191,6 +1197,12 @@ void DFontMgrMainWindow::onFontInstallFinished(const QStringList &fileList)
     if (!fileList.isEmpty()) {
         showInstalledFiles();
     }
+}
+
+void DFontMgrMainWindow::onUninstallFcCacheFinish()
+{
+    m_fIsDeleting &= ~Delete_Cacheing;
+    qDebug() << __FUNCTION__ << m_fIsDeleting;
 }
 
 /* 判断FontListView的结果并显示对应状态
@@ -1359,15 +1371,15 @@ void DFontMgrMainWindow::onShowSpinner(bool bShow, bool force, DFontSpinnerWidge
 
 void DFontMgrMainWindow::delCurrentFont()
 {
-    qDebug() << __FUNCTION__ << "m_fIsDeleting:" << m_fIsDeleting;
-    if (m_fIsDeleting)
+    qDebug() << __FUNCTION__ << m_fIsDeleting;
+    if (m_fIsDeleting > UnDeleting)
         return;
-    m_fIsDeleting = true;
+    m_fIsDeleting = Deleting;
     int deleteCnt = 0;
     int systemCnt = 0;
     m_fontPreviewListView->selectedFontsNum(&deleteCnt, &systemCnt);
     if (deleteCnt < 1) {
-        m_fIsDeleting = false;
+        m_fIsDeleting = UnDeleting;
         return;
     }
 

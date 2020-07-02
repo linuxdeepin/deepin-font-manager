@@ -84,7 +84,7 @@ void DFDeleteDialog::initConnections()
     connect(this, &DFDeleteDialog::closed, this, [ = ]() {
         if (m_mainWindow != nullptr && !m_deleting) {
             qDebug() << "cancel delte";
-            m_mainWindow->setDeleteFinish();
+            m_mainWindow->cancelDelete();
         }
     });
     connect(qApp, &DApplication::fontChanged, this, &DFDeleteDialog::onFontChanged);
