@@ -162,6 +162,13 @@ void DFInstallNormalWindow::initConnections()
     connect(DFontPreviewListDataThread::instance(), &DFontPreviewListDataThread::requestBatchReInstallContinue,
             this, &DFInstallNormalWindow::batchReInstallContinue);
 
+//    connect(this, &DFInstallNormalWindow::closeBtnClicked, this, [ = ] {
+//        emit m_signalManager->installOver(0);
+////        m_fontManager->setCacheStatus(DFontManager::NoneedCache);
+////        reject();
+////        close();
+//    });
+
     initVerifyTimer();
 }
 
@@ -396,6 +403,13 @@ void DFInstallNormalWindow::closeEvent(QCloseEvent *event)
 {
     Q_UNUSED(event);
     qDebug() << __FUNCTION__;
+    m_fontManager->setCacheStatus(DFontManager::NoneedCache);
+    emit m_signalManager->installOver(0);
+
+    m_fontManager->stop();
+//    m_fontManager->requestInterruption();
+//    m_fontManager->quit();
+//    m_fontManager->wait();
 //    getInstallMessage = false;
 //    getReInstallMessage = false;
 //    static bool flag = true;
@@ -590,7 +604,7 @@ void DFInstallNormalWindow::batchReInstallContinue()
     m_fontManager->start();
 }
 
-void DFInstallNormalWindow::onCancelInstall()
+void DFInstallNormalWindow:: onCancelInstall()
 {
 #ifdef QT_QML_DEBUG
     qDebug() << __FUNCTION__ << " called";
@@ -760,6 +774,7 @@ void DFInstallNormalWindow::breakInstalltion()
 void DFInstallNormalWindow::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Escape) {
+//        m_fontManager->setCacheStatus(DFontManager::NoneedCache);
         reject();
         close();
     }

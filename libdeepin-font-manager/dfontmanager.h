@@ -32,7 +32,7 @@ class DFontManager : public QThread
 public:
     enum Type { Install, ReInstall, UnInstall, HalfwayInstall};
     enum InstallStatus {InstallSuccess, HalfwayInstallSuccess, Failed};
-    enum CacheStatus {CacheNow, CacheLater, NoNewFonts};
+    enum CacheStatus {CacheNow, CacheLater, NoNewFonts, NoneedCache};
     static DFontManager *instance();
     DFontManager(QObject *parent = nullptr);
     ~DFontManager();
@@ -46,6 +46,7 @@ public:
 
     void doCache();
     void setCacheStatus(const CacheStatus &CacheStatus);
+    void stop();
 
 signals:
     void batchInstall(const QString &filePath, const double &percent);
@@ -74,6 +75,7 @@ private:
     QStringList m_uninstFile;
     QString m_reinstFile;
     QString m_sysFile;
+    bool m_IsNeedStop = false;
     Type m_type;
     CacheStatus m_CacheStatus;
     int m_systemFontCount = 0;

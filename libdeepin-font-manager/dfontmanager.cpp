@@ -182,7 +182,13 @@ void DFontManager::doInstall(const QStringList &fileList, bool reinstall)
     QString targetDir = "";
 
     m_installOutList.clear();
+    m_IsNeedStop = false;
+
     for (const QString &file : fileList) {
+
+        if (m_IsNeedStop == true)
+            return;
+
         QStringList fileParamList = file.split("|");
         QString filePathOrig = fileParamList.at(0);
         QString familyName = fileParamList.at(1);
@@ -270,6 +276,11 @@ void DFontManager::doUninstall(const QStringList &fileList)
 void DFontManager::setCacheStatus(const CacheStatus &CacheStatus)
 {
     m_CacheStatus = CacheStatus;
+}
+
+void DFontManager::stop()
+{
+    m_IsNeedStop = true;
 }
 
 void DFontManager::doCache()

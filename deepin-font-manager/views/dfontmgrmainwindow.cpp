@@ -271,6 +271,7 @@ void DFontMgrMainWindow::initConnections()
             showSpinner(DFontSpinnerWidget::Load);
         } else {
 //      成功安装的字体数目为0时,在这里将安装标志位复位
+            qDebug() << __func__ << "install finish" << endl;
             m_fIsInstalling = false;
         }
 
@@ -1638,6 +1639,7 @@ void DFontMgrMainWindow::hideSpinner()
         emit m_signalManager->setSpliteWidgetScrollEnable(false);//安装刷新完成后启用菜单滚动功能
         m_cacheFinish = false;
         m_installFinish = false;
+        qDebug() << __func__ << "install finish" << endl;
         m_fIsInstalling = false;
 
         onFontListViewRowCountChanged();
