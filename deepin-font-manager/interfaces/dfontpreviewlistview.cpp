@@ -751,6 +751,7 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
                 if (!this->selectedIndexes().contains(modelIndex)) {
                     this->setCurrentIndex(modelIndex);
                 }
+                setCurrentSelected(modelIndex.row());//右键index设置为shift起始位置
                 DFontPreviewItemData itemData = qvariant_cast<DFontPreviewItemData>(m_fontPreviewProxyModel->data(modelIndex));
                 itemData.collectIconStatus =  IconNormal;
                 m_fontPreviewProxyModel->setData(modelIndex, QVariant::fromValue(itemData), Qt::DisplayRole);

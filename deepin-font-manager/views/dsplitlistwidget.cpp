@@ -340,5 +340,10 @@ void DSplitListWidget::mousePressEvent(QMouseEvent *event)
     if (Qt::RightButton == event->button() || Qt::MiddleButton == event->button()) {
         return;
     }
+    QPoint clickPoint = event->pos();
+    QModelIndex modelIndex = indexAt(clickPoint);
+
+    if (modelIndex.row() == currentIndex().row())
+        return;
     DListView::mousePressEvent(event);
 }
