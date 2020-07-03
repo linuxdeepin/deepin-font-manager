@@ -132,7 +132,7 @@ void DFontManager::handleInstall(bool isHalfwayInstall)
         Q_EMIT installFinished(InstallStatus::HalfwayInstallSuccess, m_installOutList);
     }
 
-    if (m_CacheStatus == CacheNow) {
+    if (m_CacheStatus == CacheNow && !m_IsNeedStop) {
         doCache();
     }
 
@@ -185,9 +185,9 @@ void DFontManager::doInstall(const QStringList &fileList, bool reinstall)
     m_IsNeedStop = false;
 
     for (const QString &file : fileList) {
-
-        if (m_IsNeedStop == true)
-            return;
+        if (m_IsNeedStop) {
+            break;
+        }
 
         QStringList fileParamList = file.split("|");
         QString filePathOrig = fileParamList.at(0);
@@ -226,6 +226,30 @@ void DFontManager::doInstall(const QStringList &fileList, bool reinstall)
             Q_EMIT batchInstall(familyName, percent);
         }
     }
+
+    //delete installed fonts to prevent next time install take long time
+    if (!m_IsNeedStop) {
+        return;
+    }
+
+    for (const QString &file : fileList) {
+        QStringList fileParamList = file.split("|");
+        QString filePathOrig = fileParamList.at(0);
+        QString familyName = fileParamList.at(1);
+        //这里有过familyname中带有 /  的话，创建的目录会多一层，导致与其他不统一，也会造成删除时删除不完全的问题
+        if (familyName.contains("/")) {
+            familyName.replace("/", " ");
+        }
+        const QFileInfo info(filePathOrig);
+        QString dirName = familyName;
+        target = QString("%1/%2/%3").arg(sysDir).arg(dirName).arg(info.fileName());
+        QFile::remove(target);
+        QDir fileDir(QFileInfo(target).path());
+        if (fileDir.isEmpty()) {
+            fileDir.removeRecursively();
+        }
+    }
+    Q_EMIT m_signalManager->cancelInstall();
 }
 
 void DFontManager::doUninstall(const QStringList &fileList)

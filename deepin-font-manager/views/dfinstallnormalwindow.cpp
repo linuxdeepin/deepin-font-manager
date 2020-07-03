@@ -402,7 +402,6 @@ void DFInstallNormalWindow::closeEvent(QCloseEvent *event)
 {
     Q_UNUSED(event);
     qDebug() << __FUNCTION__;
-    emit m_signalManager->installOver(0);
 
     m_fontManager->stop();
 }

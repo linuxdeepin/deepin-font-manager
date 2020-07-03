@@ -277,6 +277,12 @@ void DFontMgrMainWindow::initConnections()
 
     });
 
+    connect(m_signalManager, &SignalManager::cancelInstall, this, [ = ]() {
+        m_isInstallOver = true;
+        m_successInstallCount = 0;
+        m_fIsInstalling = false;
+    });
+
     /*UT000539 增加slider press聚焦的判断*/
     QObject::connect(d->fontScaleSlider, &DSlider::sliderPressed, [ = ] {
         d->fontScaleSlider->setFocus(Qt::MouseFocusReason);
