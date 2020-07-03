@@ -164,7 +164,6 @@ void DFInstallNormalWindow::initConnections()
 
 //    connect(this, &DFInstallNormalWindow::closeBtnClicked, this, [ = ] {
 //        emit m_signalManager->installOver(0);
-////        m_fontManager->setCacheStatus(DFontManager::NoneedCache);
 ////        reject();
 ////        close();
 //    });
@@ -403,27 +402,9 @@ void DFInstallNormalWindow::closeEvent(QCloseEvent *event)
 {
     Q_UNUSED(event);
     qDebug() << __FUNCTION__;
-    m_fontManager->setCacheStatus(DFontManager::NoneedCache);
     emit m_signalManager->installOver(0);
 
     m_fontManager->stop();
-//    m_fontManager->requestInterruption();
-//    m_fontManager->quit();
-//    m_fontManager->wait();
-//    getInstallMessage = false;
-//    getReInstallMessage = false;
-//    static bool flag = true;
-//    if (flag) {
-//        event->accept();
-//        // TODO: close dfontmanager thread and emit signal to update font show.
-////        if (m_fontManager) {
-////            m_fontManager->requestInterruption();
-////            m_fontManager->quit();
-////            m_fontManager->wait();
-////        }
-//    } else {
-//        event->accept();
-//    }
 }
 void DFInstallNormalWindow::batchInstall()
 {
@@ -604,7 +585,7 @@ void DFInstallNormalWindow::batchReInstallContinue()
     m_fontManager->start();
 }
 
-void DFInstallNormalWindow:: onCancelInstall()
+void DFInstallNormalWindow::onCancelInstall()
 {
 #ifdef QT_QML_DEBUG
     qDebug() << __FUNCTION__ << " called";
@@ -774,7 +755,6 @@ void DFInstallNormalWindow::breakInstalltion()
 void DFInstallNormalWindow::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Escape) {
-//        m_fontManager->setCacheStatus(DFontManager::NoneedCache);
         reject();
         close();
     }
