@@ -1520,7 +1520,7 @@ void DFontMgrMainWindow::dropEvent(QDropEvent *event)
 void DFontMgrMainWindow::resizeEvent(QResizeEvent *event)
 {
     Q_UNUSED(event)
-    if (Qt::WindowMaximized != QWidget::windowState()) {
+    if (Qt::WindowMaximized != int(QWidget::windowState())) {
         m_winHight = geometry().height();
         m_winWidth = geometry().width();
         m_IsWindowMax = false;
