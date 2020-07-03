@@ -445,8 +445,18 @@ void DFontPreviewListView::updateModel(bool showSpinner)
         if (m_bListviewAtButtom && !m_bListviewAtTop) {
             if (m_selectAfterDel < param) {
                 QModelIndex modelIndex = filterModel->index(m_selectAfterDel, 0);
-                setCurrentIndex(modelIndex);
-                scrollTo(modelIndex);
+
+                if (modelIndex.isValid()) {
+                    setCurrentIndex(modelIndex);
+                    scrollTo(modelIndex);
+                } else {
+                    QModelIndex modelIndex = filterModel->index(m_selectAfterDel - 1, 0);
+                    if (modelIndex.isValid()) {
+                        setCurrentIndex(modelIndex);
+                        scrollTo(modelIndex);
+                    }
+                }
+
             } else {
                 QModelIndex modelIndex = filterModel->index(m_selectAfterDel - 1, 0);
                 setCurrentIndex(modelIndex);
