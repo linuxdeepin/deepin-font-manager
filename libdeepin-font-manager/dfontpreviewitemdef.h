@@ -10,9 +10,10 @@
 
 //#define FTM_DEFAULT_PREVIEW_TEXT QString(tr("Don't let your dreams be dreams"))
 #define FTM_DEFAULT_PREVIEW_TEXT QString(DTK_WIDGET_NAMESPACE::DApplication::translate("Font", "Don't let your dreams be dreams"))
-#define FTM_DEFAULT_PREVIEW_LENGTH (FTM_DEFAULT_PREVIEW_TEXT.size())
 #define FTM_DEFAULT_PREVIEW_CN_TEXT QString("因理想而出生，为责任而成长")
 #define FTM_DEFAULT_PREVIEW_EN_TEXT QString("Don't let your dreams be dreams")
+#define FTM_DEFAULT_PREVIEW_LENGTH (15)
+#define FTM_DEFAULT_PREVIEW_EN_LENGTH (FTM_DEFAULT_PREVIEW_EN_TEXT.size())
 #define FTM_DEFAULT_PREVIEW_DIGIT_TEXT QString("0123456789")
 #define FTM_DEFAULT_PREVIEW_FONTSIZE 30
 #define FTM_PREVIEW_ITEM_HEIGHT (72+2+10)

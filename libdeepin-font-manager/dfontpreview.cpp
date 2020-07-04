@@ -18,6 +18,8 @@
  */
 
 #include "dfontpreview.h"
+#include "dfontwidget.h"
+
 #include <QApplication>
 #include <QGuiApplication>
 #include <QDesktopWidget>
@@ -27,7 +29,6 @@
 #include <QScreen>
 #include <QDebug>
 #include <QFile>
-#include "dfontwidget.h"
 
 #include <fontconfig/fontconfig.h>
 #include <fontconfig/fcfreetype.h>
@@ -41,9 +42,9 @@ static QString styleName = nullptr;
 static QHash<QString, QString> contents = {};
 
 DFontPreview::DFontPreview(QWidget *parent)
-    : QWidget(parent),
-      m_library(nullptr),
-      m_face(nullptr)
+    : QWidget(parent)
+    , m_library(nullptr)
+    , m_face(nullptr)
 {
     initContents();
 
@@ -89,32 +90,6 @@ void DFontPreview::paintEvent(QPaintEvent *e)
 
     font.setStyleName(styleName);
     painter.setPen(Qt::black);
-
-//这里不需要这样进行设置,只需要在上面设置stylename就可以了
-
-//    if (styleName.contains("Italic")) {
-//        font.setItalic(true);
-//    }
-
-//    if (styleName.contains("Regular")) {
-//        font.setWeight(QFont::Normal);
-//    } else if (styleName.contains("Bold")) {
-//        font.setWeight(QFont::Bold);
-//    } else if (styleName.contains("Light")) {
-//        font.setWeight(QFont::Light);
-//    } else if (styleName.contains("Thin")) {
-//        font.setWeight(QFont::Thin);
-//    } else if (styleName.contains("ExtraLight")) {
-//        font.setWeight(QFont::ExtraLight);
-//    } else if (styleName.contains("ExtraBold")) {
-//        font.setWeight(QFont::ExtraBold);
-//    } else if (styleName.contains("Medium")) {
-//        font.setWeight(QFont::Medium);
-//    } else if (styleName.contains("DemiBold")) {
-//        font.setWeight(QFont::DemiBold);
-//    } else if (styleName.contains("Black")) {
-//        font.setWeight(QFont::Black);
-//    }
 
     const int padding = 30;
     const int x = 35;
@@ -321,6 +296,8 @@ bool isSpecialSymbol(FT_Face face, uint ucs4)
             || (ucs4 >= 0x1B80 && ucs4 <= 0x1B82) || (ucs4 >= 0x1BA1 && ucs4 <= 0x1BAD) //sundanese
             || (ucs4 >= 0x11180 && ucs4 <= 0x11182) //sharada
             || (ucs4 >= 0xFE20 && ucs4 <= 0xFE2F) // caucasian
+            || (ucs4 >= 0x11080 && ucs4 <= 0x11082) //kaithi
+            || ((ucs4 >= 0x11300 && ucs4 <= 0x11303) || (ucs4 >= 0x1CD0 && ucs4 <= 0x1cF9) || (ucs4 == 0x20F0) || (ucs4 >= 0xD800 && ucs4 <= 0xDFFF)) //grantha
             || (ucs4  >= 0x10A01 && ucs4 <= 0x10A0F) || (ucs4 >= 0x10A38 && ucs4 <= 0x10A3F)) // kharoshthi
         return true;
     return false;
@@ -332,6 +309,9 @@ QString DFontPreview::buildCharlistForFace(FT_Face face, int length)
     if (face == nullptr)
         return retval;
 
+    bool specialFont = (INT_MAX == length);
+    if (specialFont)
+        length = 30;
     FcCharSet *fcs = nullptr;
     FcChar32 count = 0;
 
@@ -367,19 +347,31 @@ QString DFontPreview::buildCharlistForFace(FT_Face face, int length)
 
         uint firstChar = ucs4List[len - 1];
         int index = 0;
-        for (int i = len - 2; i >= 0; i--) {
-            if (firstChar - ucs4List[i] > static_cast<uint>((len - 1 - i) + len - 1)) {
-                index = i + 1;
-                break;
+
+        if (static_cast<int>(count) > len) {
+            for (int i = len - 2; i >= 0; i--) {
+                if (firstChar - ucs4List[i] > static_cast<uint>((len - 1 - i) + len - 1)) {
+                    index = i + 1;
+                    break;
+                }
             }
         }
 
+//        qDebug() << __FUNCTION__ << len << index;
         QString outStr;
+        if (len + index > retCount)
+            index = retCount - len;
+        if (index < 0)
+            index = 0;
 
+        if (specialFont)
+            len = 7;
         for (int i = index; len > 0 && i < retCount - index; i++) {
-            if (isSpecialSymbol(face, ucs4List.at(i)))
+            uint w1 = ucs4List.at(i);
+            if (isSpecialSymbol(face, w1))
                 continue;
-            retval += QString::fromUcs4(&ucs4List[i], 1);
+
+            retval += QString::fromUcs4(&w1, 1);
             len--;
         }
     }

@@ -78,7 +78,9 @@ QString convertToUtf8(unsigned char *content, unsigned int len)
     return convertedStr;
 }
 
-QString getDefaultPreviewText(FT_Face face, qint8 &lang)
+QString getDefaultPreviewText(FT_Face face, qint8 &lang, int len = FTM_DEFAULT_PREVIEW_LENGTH);
+
+QString getDefaultPreviewText(FT_Face face, qint8 &lang, int len)
 {
     QString previewTxt;
 
@@ -107,7 +109,7 @@ QString getDefaultPreviewText(FT_Face face, qint8 &lang)
         return previewTxt;
     }
 
-    return DFontPreview::buildCharlistForFace(face, FTM_DEFAULT_PREVIEW_LENGTH);
+    return DFontPreview::buildCharlistForFace(face, len);
 }
 
 DFontInfoManager *DFontInfoManager::instance()
@@ -408,7 +410,11 @@ DFontInfo DFontInfoManager::getFontInfo(const QString &filePath)
     }
 
     //default preview text
-    fontInfo.defaultPreview = getDefaultPreviewText(m_face, fontInfo.previewLang);
+    if (fontInfo.familyName == "Noto Sans Grantha") {
+        fontInfo.defaultPreview = getDefaultPreviewText(m_face, fontInfo.previewLang, INT_MAX);
+    } else {
+        fontInfo.defaultPreview = getDefaultPreviewText(m_face, fontInfo.previewLang);
+    }
 
     // destroy object.
     FT_Done_Face(m_face);
