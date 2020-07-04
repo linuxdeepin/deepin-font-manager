@@ -363,8 +363,15 @@ void DFontPreviewListDataThread::refreshFontListData(bool isStartup, const QStri
             }
         } else {
             QString filePath = itemData.fontInfo.filePath;
-            dbFilePathSet.insert(filePath);
-            addPathWatcher(filePath);
+
+            QFileInfo filePathInfo(filePath);
+
+            if (filePathInfo.exists()) {
+                dbFilePathSet.insert(filePath);
+                addPathWatcher(filePath);
+            } else {
+                qDebug() << __FUNCTION__ << " removed file " << filePath;
+            }
         }
     }
     DFMDBManager::instance()->commitDeleteFontInfo();
@@ -510,7 +517,11 @@ void DFontPreviewListDataThread::syncFontEnableDisableStatusData(const QStringLi
     m_dbManager->commitUpdateFontInfo();
 }
 
-void DFontPreviewListDataThread::updateFontId(int pos, int id)
+void DFontPreviewListDataThread::updateFontId(const DFontPreviewItemData &itemData, int id)
 {
-    m_fontModelList[pos].appFontId = id;
+    if (m_mutex != nullptr)
+        QMutexLocker locker(m_mutex);
+    int index = m_fontModelList.indexOf(itemData);
+    if (index > 0)
+        m_fontModelList[index].appFontId = id;
 }

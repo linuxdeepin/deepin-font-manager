@@ -135,7 +135,7 @@ void DFontPreviewListView::onMultiItemsAdded(QList<DFontPreviewItemData> &data, 
 
         int appFontId = QFontDatabase::addApplicationFont(itemData.fontInfo.filePath);
         itemData.appFontId = appFontId;
-        m_dataThread->updateFontId(rows + i, appFontId);
+        m_dataThread->updateFontId(itemData, appFontId);
         QString strFontName;
         if (!QFontDatabase::applicationFontFamilies(appFontId).isEmpty()) {
             QString familyName = QFontDatabase::applicationFontFamilies(appFontId).first();
@@ -163,7 +163,6 @@ void DFontPreviewListView::onMultiItemsAdded(QList<DFontPreviewItemData> &data, 
 
 void DFontPreviewListView::onItemRemoved(const DFontPreviewItemData &itemData)
 {
-
     if (m_fontPreviewProxyModel == nullptr)
         return;
 
@@ -1384,7 +1383,7 @@ void DFontPreviewListView::updateChangedFile(const QString &path)
 void DFontPreviewListView::updateChangedDir(const QString &path)
 {
     //no different between "share" or "fonts" dir
-    //    qDebug() << __FUNCTION__ << path << " begin ";
+//    qDebug() << __FUNCTION__ << path << " begin ";
     Q_UNUSED(path);
     QMutexLocker locker(&m_mutex);
     QList<DFontPreviewItemData> fontInfoList = m_dataThread->getFontModelList();
@@ -1406,6 +1405,7 @@ void DFontPreviewListView::updateChangedDir(const QString &path)
     enableFonts();
 
     Q_EMIT rowCountChanged();
+//    qDebug() << __FUNCTION__ << "update end";
 }
 
 void DFontPreviewListView::deleteFontFiles(const QStringList &files, bool force)
