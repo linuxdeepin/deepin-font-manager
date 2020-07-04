@@ -297,6 +297,10 @@ bool isSpecialSymbol(FT_Face face, uint ucs4)
             || (ucs4 >= 0x11180 && ucs4 <= 0x11182) //sharada
             || (ucs4 >= 0xFE20 && ucs4 <= 0xFE2F) // caucasian
             || (ucs4 >= 0x11080 && ucs4 <= 0x11082) //kaithi
+            || (ucs4 >= 0x610 && ucs4 <= 0x61A) //arabic
+            || ((ucs4 >= 0x0EB4 && ucs4 <= 0x0EBC) || (ucs4 == 0x0EB1)) //lao
+            || (ucs4 >= 0x11C92 && ucs4 <= 0x11CB6) //marchen
+            || (ucs4 >= 0x1171D && ucs4 <= 0x1172B) //ahom
             || ((ucs4 >= 0x11300 && ucs4 <= 0x11303) || (ucs4 >= 0x1CD0 && ucs4 <= 0x1cF9) || (ucs4 == 0x20F0) || (ucs4 >= 0xD800 && ucs4 <= 0xDFFF)) //grantha
             || (ucs4  >= 0x10A01 && ucs4 <= 0x10A0F) || (ucs4 >= 0x10A38 && ucs4 <= 0x10A3F)) // kharoshthi
         return true;
