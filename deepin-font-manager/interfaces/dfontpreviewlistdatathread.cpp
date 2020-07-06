@@ -196,7 +196,7 @@ QList<DFontPreviewItemData> DFontPreviewListDataThread::getFontModelList()
 }
 
 //更新itemDataList的itemData状态
-void DFontPreviewListDataThread::updateItemStatus(int index, DFontPreviewItemData itemData)
+void DFontPreviewListDataThread::updateItemStatus(int index, const DFontPreviewItemData &itemData)
 {
     m_fontModelList.replace(index, itemData);
 }
@@ -519,8 +519,6 @@ void DFontPreviewListDataThread::syncFontEnableDisableStatusData(const QStringLi
 
 void DFontPreviewListDataThread::updateFontId(const DFontPreviewItemData &itemData, int id)
 {
-    if (m_mutex != nullptr)
-        QMutexLocker locker(m_mutex);
     int index = m_fontModelList.indexOf(itemData);
     if (index > 0)
         m_fontModelList[index].appFontId = id;

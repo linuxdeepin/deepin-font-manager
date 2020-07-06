@@ -118,6 +118,8 @@ void DFontPreviewListView::onMultiItemsAdded(QList<DFontPreviewItemData> &data, 
 {
     if (data.isEmpty())
         return;
+
+    QMutexLocker locker(&m_mutex);
     QStandardItemModel *sourceModel = qobject_cast<QStandardItemModel *>(m_fontPreviewProxyModel->sourceModel());
     int rows = sourceModel->rowCount();
     qDebug() << __FUNCTION__ << data.size() << rows;

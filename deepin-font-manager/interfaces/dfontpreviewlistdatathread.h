@@ -40,7 +40,7 @@ public:
     QList<DFontPreviewItemData> getDiffFontModelList() const;
     void setMutex(QMutex *mutex);
 
-    void updateItemStatus(int index, DFontPreviewItemData itemData);
+    void updateItemStatus(int index, const DFontPreviewItemData &itemData);
     void updateFontId(const DFontPreviewItemData &itemData, int id);
 signals:
     void resultReady();
