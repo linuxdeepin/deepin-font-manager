@@ -272,9 +272,9 @@ int DFontPreviewListDataThread::insertFontItemData(const QString &filePath,
 
     itemData.fontInfo.isInstalled = true;
     if (itemData.fontInfo.isSystemFont) {
-        if (itemData.strFontName.startsWith("CESI") || cantDisabledMonoList.contains(itemData.strFontName)) {
-            itemData.isCanDisable = false;
-        }
+//        if (itemData.strFontName.startsWith("CESI") || cantDisabledMonoList.contains(itemData.strFontName)) {
+        itemData.isCanDisable = false;
+//        }
     }
 
     //中文字体
@@ -340,9 +340,9 @@ void DFontPreviewListDataThread::refreshFontListData(bool isStartup, const QStri
     for (DFontPreviewItemData &itemData : fontInfoList) {
 
         if (itemData.fontInfo.isSystemFont) {
-            if (itemData.strFontName.startsWith("CESI") || cantDisabledMonoList.contains(itemData.strFontName)) {
-                itemData.isCanDisable = false;
-            }
+//            if (itemData.strFontName.startsWith("CESI") || cantDisabledMonoList.contains(itemData.strFontName)) {
+            itemData.isCanDisable = false;
+//            }
         }
         if (isStartup) {
             QString filePath = itemData.fontInfo.filePath.trimmed();

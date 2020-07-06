@@ -1440,6 +1440,8 @@ void DFontPreviewListView::deleteCurFonts(const QStringList &files, bool force)
             //删除字体之前启用字体，防止下次重新安装后就被禁用
             enableFont(itemData.fontInfo.filePath);
             DFMDBManager::instance()->deleteFontInfo(itemData);
+            if (itemData.appFontId == -1)
+                return;
             QFontDatabase::removeApplicationFont(itemData.appFontId);
             delCnt++;
             m_dataThread->removeFontData(itemData);
