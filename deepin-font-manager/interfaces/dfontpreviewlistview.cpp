@@ -758,7 +758,7 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
                 //鼠标右击时,重新设置焦点
                 m_IsNeedFocus = true;
                 Q_EMIT m_signalManager->refreshFocus(false, this->selectedIndexes().count());
-                m_rightMenu->exec(QCursor::pos());
+                m_rightMenu->popup(QCursor::pos());
                 return;
             }
         } else {
