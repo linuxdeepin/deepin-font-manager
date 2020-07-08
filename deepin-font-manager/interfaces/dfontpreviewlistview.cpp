@@ -139,7 +139,8 @@ void DFontPreviewListView::onMultiItemsAdded(QList<DFontPreviewItemData> &data, 
         itemData.appFontId = appFontId;
         m_dataThread->updateFontId(itemData, appFontId);
         QString strFontName;
-        if (!QFontDatabase::applicationFontFamilies(appFontId).isEmpty()) {
+        //非中文系统字体
+        if (!(itemData.fontInfo.isSystemFont && itemData.isChineseFont) && !QFontDatabase::applicationFontFamilies(appFontId).isEmpty()) {
             QString familyName = QFontDatabase::applicationFontFamilies(appFontId).first();
             if (familyName != itemData.fontInfo.familyName && !familyName.contains(QChar('?'))) {
                 QString styleName = (itemData.strFontName.split("-").length() > 1) ? itemData.strFontName.split("-").last() : QString();
