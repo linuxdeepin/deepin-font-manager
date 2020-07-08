@@ -520,6 +520,6 @@ void DFontPreviewListDataThread::syncFontEnableDisableStatusData(const QStringLi
 void DFontPreviewListDataThread::updateFontId(const DFontPreviewItemData &itemData, int id)
 {
     int index = m_fontModelList.indexOf(itemData);
-    if (index > 0)
+    if (index > -1)
         m_fontModelList[index].appFontId = id;
 }

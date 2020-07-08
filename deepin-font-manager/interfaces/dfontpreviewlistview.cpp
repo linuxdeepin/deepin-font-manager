@@ -120,40 +120,44 @@ void DFontPreviewListView::onMultiItemsAdded(QList<DFontPreviewItemData> &data, 
         return;
 
     QMutexLocker locker(&m_mutex);
-    QStandardItemModel *sourceModel = qobject_cast<QStandardItemModel *>(m_fontPreviewProxyModel->sourceModel());
-    int rows = sourceModel->rowCount();
+    int rows = m_fontPreviewItemModel->rowCount();
     qDebug() << __FUNCTION__ << data.size() << rows;
 
     int i = 0;
-    bool res = sourceModel->insertRows(rows, data.size());
+    bool res = m_fontPreviewItemModel->insertRows(rows, data.size());
     if (!res) {
         qDebug() << __FUNCTION__ << "insertRows fail";
         return;
     }
 
-    qDebug() << __FUNCTION__ << "rows = " << sourceModel->rowCount();
+    qDebug() << __FUNCTION__ << "rows = " << m_fontPreviewItemModel->rowCount();
     for (DFontPreviewItemData &itemData : data) {
-        QModelIndex index = sourceModel->index(rows + i,   0);
+        if (itemData.appFontId < 0) {
+            int appFontId = QFontDatabase::addApplicationFont(itemData.fontInfo.filePath);
+            itemData.appFontId = appFontId;
+            m_dataThread->updateFontId(itemData, appFontId);
 
-        int appFontId = QFontDatabase::addApplicationFont(itemData.fontInfo.filePath);
-        itemData.appFontId = appFontId;
-        m_dataThread->updateFontId(itemData, appFontId);
-        QString strFontName;
-        //非中文系统字体
-        if (!(itemData.fontInfo.isSystemFont && itemData.isChineseFont) && !QFontDatabase::applicationFontFamilies(appFontId).isEmpty()) {
-            QString familyName = QFontDatabase::applicationFontFamilies(appFontId).first();
-            if (familyName != itemData.fontInfo.familyName && !familyName.contains(QChar('?'))) {
-                QString styleName = (itemData.strFontName.split("-").length() > 1) ? itemData.strFontName.split("-").last() : QString();
-                if (styleName.isEmpty()) {
-                    strFontName = QFontDatabase::applicationFontFamilies(appFontId).first();
-                } else {
-                    strFontName = QString("%1-%2").arg(QFontDatabase::applicationFontFamilies(appFontId).first()).arg(styleName);
+            QString strFontName;
+            //非中文系统字体
+            if (!(itemData.fontInfo.isSystemFont && itemData.isChineseFont) && !QFontDatabase::applicationFontFamilies(appFontId).isEmpty()) {
+                QString familyName = QFontDatabase::applicationFontFamilies(appFontId).first();
+                if (itemData.fontInfo.familyName.contains(QChar('?')) && !familyName.contains(QChar('?'))) {
+                    int index = m_dataThread->getFontModelList().indexOf(itemData);
+                    QString styleName = (itemData.strFontName.split("-").length() > 1) ? itemData.strFontName.split("-").last() : QString();
+                    if (styleName.isEmpty()) {
+                        strFontName = QFontDatabase::applicationFontFamilies(appFontId).first();
+                    } else {
+                        strFontName = QString("%1-%2").arg(QFontDatabase::applicationFontFamilies(appFontId).first()).arg(styleName);
+                    }
+                    itemData.strFontName = strFontName;
+
+                    m_dataThread->updateItemStatus(index, itemData);
                 }
-                itemData.strFontName = strFontName;
             }
         }
 
-        res = sourceModel->setData(index, QVariant::fromValue(itemData), Qt::DisplayRole);
+        QModelIndex index = m_fontPreviewItemModel->index(rows + i,   0);
+        res = m_fontPreviewItemModel->setData(index, QVariant::fromValue(itemData), Qt::DisplayRole);
         if (!res)
             qDebug() << __FUNCTION__ << "setData fail";
         i++;
@@ -422,18 +426,10 @@ void DFontPreviewListView::updateModel(bool showSpinner)
 //        updateSpinner(DFontSpinnerWidget::Delete);
     QList<DFontPreviewItemData> modelist = m_dataThread->getFontModelList();
 
-    int rows = m_fontPreviewItemModel->rowCount();
-    m_fontPreviewItemModel->insertRows(rows, modelist.size());
-    int counts = 0;
-    for (DFontPreviewItemData &itemData : modelist) {
-        QModelIndex index = m_fontPreviewItemModel->index(counts,   0);
-        counts++;
-        m_fontPreviewItemModel->setData(index, QVariant::fromValue(itemData), Qt::DisplayRole);
-    }
-    Q_EMIT requestShowSpinner(false, true, DFontSpinnerWidget::Delete);
-//    DFontSpinnerWidget::SpinnerStyles spinnerstyle = (showSpinner) ? DFontSpinnerWidget::Delete : DFontSpinnerWidget::NoLabel;
-//    onMultiItemsAdded(modelist, spinnerstyle);
+    DFontSpinnerWidget::SpinnerStyles spinnerstyle = (showSpinner) ? DFontSpinnerWidget::Delete : DFontSpinnerWidget::NoLabel;
+    onMultiItemsAdded(modelist, spinnerstyle);
 
+    Q_EMIT requestShowSpinner(false, true, DFontSpinnerWidget::Delete);
 //    if (showSpinner)
 //        updateSpinner(DFontSpinnerWidget::Delete);
 
