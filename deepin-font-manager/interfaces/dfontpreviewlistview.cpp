@@ -931,8 +931,11 @@ void DFontPreviewListView::setModel(QAbstractItemModel *model)
 
 void DFontPreviewListView::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end)
 {
-    if (selectionModel()->selectedIndexes().count() > 0)
-        selectionModel()->setCurrentIndex(parent, QItemSelectionModel::NoUpdate);
+    if (selectionModel()->selectedIndexes().count() > 0) {
+        if (start == end)
+            selectionModel()->setCurrentIndex(parent, QItemSelectionModel::NoUpdate);
+    }
+
     QListView::rowsAboutToBeRemoved(parent, start, end);
 }
 

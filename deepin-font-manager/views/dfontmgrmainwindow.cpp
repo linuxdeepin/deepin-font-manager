@@ -1176,7 +1176,7 @@ void DFontMgrMainWindow::onLeftSiderBarItemClicked(int index)
         return;
     }
 
-    m_fontPreviewListView->clearSelection();
+
 
     m_leftIndex = 0;
 
@@ -1193,6 +1193,7 @@ void DFontMgrMainWindow::onLeftSiderBarItemClicked(int index)
 
     onFontListViewRowCountChanged();
     onPreviewTextChanged();
+    m_fontPreviewListView->clearSelection();
 }
 
 void DFontMgrMainWindow::onFontInstallFinished(const QStringList &fileList)
