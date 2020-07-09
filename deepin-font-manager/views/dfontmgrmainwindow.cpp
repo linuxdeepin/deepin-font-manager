@@ -187,9 +187,13 @@ void DFontMgrMainWindow::initConnections()
         DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
         int cnt = 0;
         int systemCnt = 0;
-        m_fontPreviewListView->selectedFontsNum(&cnt, &systemCnt);
-
-        DFontMenuManager::getInstance()->onRightKeyMenuPopup(currItemData, (cnt > 0));
+        int exportCnt = 0;
+        int canDisableCnt = 0;
+        bool hasCanDisable = false;
+        m_fontPreviewListView->selectedFontsNum(&cnt, &systemCnt, &exportCnt, &canDisableCnt);
+        if (canDisableCnt > 0)
+            hasCanDisable = true;
+        DFontMenuManager::getInstance()->onRightKeyMenuPopup(currItemData, (cnt > 0), exportCnt, hasCanDisable);
     });
 
     // State bar event
@@ -1177,7 +1181,6 @@ void DFontMgrMainWindow::onLeftSiderBarItemClicked(int index)
     }
 
 
-
     m_leftIndex = 0;
 
     qDebug() << __FUNCTION__ << index << endl;
@@ -1385,12 +1388,13 @@ void DFontMgrMainWindow::delCurrentFont()
     m_fIsDeleting = Deleting;
     int deleteCnt = 0;
     int systemCnt = 0;
-    m_fontPreviewListView->selectedFontsNum(&deleteCnt, &systemCnt);
+    int param = 0;
+    int paramt = 0;
+    m_fontPreviewListView->selectedFontsNum(&deleteCnt, &systemCnt, &param, &paramt);
     if (deleteCnt < 1) {
         m_fIsDeleting = UnDeleting;
         return;
     }
-
     DFDeleteDialog *confirmDelDlg = new DFDeleteDialog(this, deleteCnt, systemCnt, this);
 
     connect(confirmDelDlg, &DFDeleteDialog::accepted, this, [this]() {

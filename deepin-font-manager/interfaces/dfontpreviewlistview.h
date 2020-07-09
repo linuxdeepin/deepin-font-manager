@@ -66,7 +66,7 @@ public:
     void deleteCurFonts(const QStringList &files, bool force = false);
     void changeFontFile(const QString &path, bool force = false);
     QStringList selectedFonts(int *deleteCnt, int *systemCnt);
-    void selectedFontsNum(int *deleteCnt, int *systemCnt);
+    void selectedFontsNum(int *deleteCnt, int *systemCnt, int *exportCnt, int *canDisableCnt);
     QModelIndexList selectedIndex(int *deleteCnt, int *systemCnt);
     void deleteFontModelIndex(const QString &filePath, bool isFromSys = false);
     inline bool isDeleting();

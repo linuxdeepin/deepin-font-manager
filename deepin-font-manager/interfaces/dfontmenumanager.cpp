@@ -156,7 +156,7 @@ QAction *DFontMenuManager::getActionByMenuAction(MenuAction maction, MenuType me
     return action;
 }
 
-void DFontMenuManager::onRightKeyMenuPopup(DFontPreviewItemData fontData, bool hasUser)
+void DFontMenuManager::onRightKeyMenuPopup(DFontPreviewItemData fontData, bool hasUser, int exportCnt, bool hasCanDisable)
 {
     // Disable delete menu for system font
     QAction *delAction = DFontMenuManager::getInstance()->getActionByMenuAction(
@@ -180,7 +180,11 @@ void DFontMenuManager::onRightKeyMenuPopup(DFontPreviewItemData fontData, bool h
 
     // Export menu on system font
     if (nullptr != exportAction && !hasUser) {
-        exportAction->setDisabled(true);
+        if (exportCnt > 0) {
+            exportAction->setDisabled(false);
+        } else {
+            exportAction->setDisabled(true);
+        }
     } else {
         exportAction->setDisabled(false);
     }
@@ -193,17 +197,28 @@ void DFontMenuManager::onRightKeyMenuPopup(DFontPreviewItemData fontData, bool h
     }
 
     // Enable/Disable Menu
+    QString fontName;
+    if (fontData.appFontId != -1)
+        fontName = QFontDatabase::applicationFontFamilies(fontData.appFontId).first();
+    bool isNowSystemFont = false;
+    if (fontName == qApp->font().family())
+        isNowSystemFont = true;
+
     if (nullptr != enableOrDisableAction && fontData.isEnabled) {
-        if (fontData.isCanDisable) {
+        if (fontData.isCanDisable && !isNowSystemFont) {
             enableOrDisableAction->setEnabled(true);
         } else {
-            enableOrDisableAction->setEnabled(false);
+            if (hasCanDisable) {
+                enableOrDisableAction->setEnabled(true);
+            } else {
+                enableOrDisableAction->setEnabled(false);
+            }
         }
         enableOrDisableAction->setText(DApplication::translate("Menu", "Disable"));
     } else {
-//        if (fontData.isCanDisable) {
+
         enableOrDisableAction->setEnabled(true);
         enableOrDisableAction->setText(DApplication::translate("Menu", "Enable"));
-//        }
+
     }
 }

@@ -7,7 +7,7 @@
 #include <QObject>
 #include <QSet>
 #include <QVector>
-
+#include <QFontDatabase>
 #include <DMenu>
 
 DWIDGET_USE_NAMESPACE
@@ -76,7 +76,7 @@ private:
 signals:
 
 public slots:
-    void onRightKeyMenuPopup(DFontPreviewItemData fontData, bool hasUser);
+    void onRightKeyMenuPopup(DFontPreviewItemData fontData, bool hasUser, int exportCnt, bool hasCanDisable);
 };
 
 #endif  // DFONTMENUMANAGER_H

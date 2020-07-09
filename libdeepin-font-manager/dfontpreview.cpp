@@ -51,8 +51,8 @@ DFontPreview::DFontPreview(QWidget *parent)
     initContents();
 
     setFixedSize(FIXED_WIDTH, FIXED_HEIGHT);
-//    setFixedSize(static_cast<int>(qApp->primaryScreen()->geometry().width() / 1.5),
-//                 static_cast<int>(qApp->primaryScreen()->geometry().height() / 1.5));
+    //    setFixedSize(static_cast<int>(qApp->primaryScreen()->geometry().width() / 1.5),
+    //                 static_cast<int>(qApp->primaryScreen()->geometry().height() / 1.5));
 }
 
 DFontPreview::~DFontPreview()
