@@ -1570,10 +1570,11 @@ void DFontPreviewListView::selectedFontsNum(int *deleteCnt, int *systemCnt, int 
                 systemNum++;
             } else if (isNowSystemFont) {
                 applicationFont++;
-            } else if (itemData.isEnabled) {
-                canDiableNum ++;
             } else {
                 deleteNum++;
+                if (itemData.isEnabled) {
+                    canDiableNum ++;
+                }
             }
         }
     }
