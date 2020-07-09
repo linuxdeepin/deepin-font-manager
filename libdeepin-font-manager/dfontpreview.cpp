@@ -37,6 +37,8 @@ static const QString lowerTextStock = "abcdefghijklmnopqrstuvwxyz";
 static const QString upperTextStock = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 static const QString punctuationTextStock = "0123456789.:,;(*!?')";
 static const int textWidth = 1204;
+const int FIXED_WIDTH = 1280;
+const int FIXED_HEIGHT = 720;
 static QString sampleString = nullptr;
 static QString styleName = nullptr;
 static QHash<QString, QString> contents = {};
@@ -48,8 +50,9 @@ DFontPreview::DFontPreview(QWidget *parent)
 {
     initContents();
 
-    setFixedSize(static_cast<int>(qApp->primaryScreen()->geometry().width() / 1.5),
-                 static_cast<int>(qApp->primaryScreen()->geometry().height() / 1.5));
+    setFixedSize(FIXED_WIDTH, FIXED_HEIGHT);
+//    setFixedSize(static_cast<int>(qApp->primaryScreen()->geometry().width() / 1.5),
+//                 static_cast<int>(qApp->primaryScreen()->geometry().height() / 1.5));
 }
 
 DFontPreview::~DFontPreview()
@@ -153,7 +156,8 @@ void DFontPreview::paintEvent(QPaintEvent *e)
         setFixedWidth(currentMaxWidth);
         m_needScroll = true;
     } else {
-        setFixedWidth(static_cast<int>(qApp->primaryScreen()->geometry().width() / 1.5));
+//        setFixedWidth(static_cast<int>(qApp->primaryScreen()->geometry().width() / 1.5));
+        setFixedWidth(FIXED_WIDTH);
         m_needScroll = false;
     }
     QWidget::paintEvent(e);

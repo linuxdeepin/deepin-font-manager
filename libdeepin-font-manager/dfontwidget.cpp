@@ -21,7 +21,8 @@
 #include <QTimer>
 #include <QTranslator>
 #include <QDebug>
-
+const int FIXED_WIDTH = 1280;
+const int FIXED_HEIGHT = 740;
 DFontWidget::DFontWidget(QWidget *parent)
     : QWidget(parent),
       m_layout(new QStackedLayout(this)),
@@ -63,9 +64,9 @@ DFontWidget::DFontWidget(QWidget *parent)
     connect(qApp, &DApplication::fontChanged, [this]() {
         m_errMsg->setFont(DApplication::font());
     });
-
-    m_area->setFixedSize(static_cast<int>(qApp->primaryScreen()->geometry().width() / 1.5),
-                         static_cast<int>(qApp->primaryScreen()->geometry().height() / 1.5 + 20));
+    m_area->setFixedSize(FIXED_WIDTH, FIXED_HEIGHT);
+//    m_area->setFixedSize(static_cast<int>(qApp->primaryScreen()->geometry().width() / 1.5),
+//                         static_cast<int>(qApp->primaryScreen()->geometry().height() / 1.5 + 20));
 }
 
 DFontWidget::~DFontWidget()
