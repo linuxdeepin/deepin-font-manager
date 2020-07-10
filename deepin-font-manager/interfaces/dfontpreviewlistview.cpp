@@ -1265,11 +1265,11 @@ void DFontPreviewListView::onListViewItemEnableBtnClicked(const QModelIndexList 
     if (needShowTips) {
         //不可禁用字体
         if (cannotDisableCnt == 1 && !nowSystemFont.isEmpty()) {
-            message = QString("%1%2").arg(nowSystemFont).arg(DApplication::translate("MessageManager", "正在被使用，无法禁用"));
+            message = DApplication::translate("MessageManager", "%1 is in use, so you cannot disable it").arg(nowSystemFont);
         } else if (cannotDisableCnt > 1 && !nowSystemFont.isEmpty()) {
-            message = "系统字体和系统正在使用的用户字体无法禁用";
+            message = DApplication::translate("MessageManager", "You cannot disable system fonts and the fonts in use");
         } else {
-            message = "系统字体无法禁用";
+            message = DApplication::translate("MessageManager", "You cannot disable system fonts");
         }
     } else {
         if (count == 1) {

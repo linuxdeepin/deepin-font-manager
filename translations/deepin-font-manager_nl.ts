@@ -299,6 +299,18 @@
         <translation>De lettertypen zijn uitgeschakeld</translation>
     </message>
     <message>
+        <source>%1 is in use, so you cannot disable it</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>You cannot disable system fonts and the fonts in use</source>
+        <translation>Je kunt in gebruik zijnde en systeemlettertypen niet uitschakelen</translation>
+    </message>
+    <message>
+        <source>You cannot disable system fonts</source>
+        <translation>Je kunt systeemlettertypen niet uitschakelen</translation>
+    </message>
+    <message>
         <source>Some fonts are not allowed to be disabled</source>
         <translation>Enkele lettertypen mogen niet worden uitgeschakeld</translation>
     </message>

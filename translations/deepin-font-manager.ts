@@ -301,6 +301,18 @@
         <translation>The fonts have been deactivated</translation>
     </message>
     <message>
+        <source>%1 is in use, so you cannot disable it</source>
+        <translation>%1 is in use, so you cannot disable it</translation>
+    </message>
+    <message>
+        <source>You cannot disable system fonts and the fonts in use</source>
+        <translation>You cannot disable system fonts and the fonts in use</translation>
+    </message>
+    <message>
+        <source>You cannot disable system fonts</source>
+        <translation>You cannot disable system fonts</translation>
+    </message>
+    <message>
         <source>Some fonts are not allowed to be disabled</source>
         <translation>Some fonts are not allowed to be disabled</translation>
     </message>

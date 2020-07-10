@@ -299,6 +299,18 @@
         <translation>Шрифти було деактивовано</translation>
     </message>
     <message>
+        <source>%1 is in use, so you cannot disable it</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>You cannot disable system fonts and the fonts in use</source>
+        <translation>Не можна вимикати загальносистемні шрифти або шрифти, які використовуються</translation>
+    </message>
+    <message>
+        <source>You cannot disable system fonts</source>
+        <translation>Не можна вимикати загальносистемні шрифти</translation>
+    </message>
+    <message>
         <source>Some fonts are not allowed to be disabled</source>
         <translation>Деякі шрифти не можна вимикати</translation>
     </message>

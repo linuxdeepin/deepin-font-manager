@@ -299,6 +299,18 @@
         <translation>As fontes foram desativadas</translation>
     </message>
     <message>
+        <source>%1 is in use, so you cannot disable it</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>You cannot disable system fonts and the fonts in use</source>
+        <translation>Não é possível desativar as fontes do sistema e as fontes em utilização</translation>
+    </message>
+    <message>
+        <source>You cannot disable system fonts</source>
+        <translation>Não se pode desativar as fontes do sistema</translation>
+    </message>
+    <message>
         <source>Some fonts are not allowed to be disabled</source>
         <translation>Algumas fontes não podem ser desativadas</translation>
     </message>

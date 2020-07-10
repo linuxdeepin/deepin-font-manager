@@ -299,6 +299,18 @@
         <translation>Шрифты были отключены</translation>
     </message>
     <message>
+        <source>%1 is in use, so you cannot disable it</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>You cannot disable system fonts and the fonts in use</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>You cannot disable system fonts</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <source>Some fonts are not allowed to be disabled</source>
         <translation type="unfinished"/>
     </message>

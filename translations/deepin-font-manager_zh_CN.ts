@@ -299,6 +299,18 @@
         <translation>字体已被禁用</translation>
     </message>
     <message>
+        <source>%1 is in use, so you cannot disable it</source>
+        <translation>%1正在被使用，无法禁用</translation>
+    </message>
+    <message>
+        <source>You cannot disable system fonts and the fonts in use</source>
+        <translation>不可禁用系统字体和使用中的字体</translation>
+    </message>
+    <message>
+        <source>You cannot disable system fonts</source>
+        <translation>不可禁用系统字体</translation>
+    </message>
+    <message>
         <source>Some fonts are not allowed to be disabled</source>
         <translation>部分系统字体不允许被禁用</translation>
     </message>
