@@ -134,16 +134,24 @@
         <translation>Bu yazı tipleri uygulamalar tarafından kullanılamaz</translation>
     </message>
     <message>
-        <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
-        <translation>Bu yazı tipleri uygulamalar tarafından kullanılamaz ve diğer %1 sistem yazı tipleri silinemez</translation>
+        <source>The other %1 system fonts cannot be deleted</source>
+        <translation>Diğer %1 sistem yazı tipleri silinemez</translation>
     </message>
     <message>
-        <source>This font will not be available to applications, and the other %1 system fonts cannot be deleted</source>
-        <translation>Bu yazı tipi uygulamalar tarafından kullanılamaz ve diğer %1 sistem yazı tipleri silinemez</translation>
+        <source>The font &quot;%1&quot; in use cannot be deleted</source>
+        <translation>Kullanımdaki &quot;%1&quot; yazı tipi silinemiyor</translation>
     </message>
     <message>
-        <source>Are you sure you want to delete %1 fonts?</source>
+        <source>The other %1 system fonts and the font &quot;%2&quot; in use cannot be deleted</source>
+        <translation>Diğer %1 sistem yazı tipleri ve kullanımdaki &quot;%2&quot; yazı tipi silinemiyor</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete %1 font(s)?</source>
         <translation>%1 yazı tipini silmek istediğinizden emin misiniz?</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>Sil</translation>
     </message>
 </context>
 <context>
@@ -300,15 +308,15 @@
     </message>
     <message>
         <source>%1 is in use, so you cannot disable it</source>
-        <translation type="unfinished"/>
+        <translation>%1 kullanımda, devre dışı bırakamazsınız</translation>
     </message>
     <message>
         <source>You cannot disable system fonts and the fonts in use</source>
-        <translation type="unfinished"/>
+        <translation>Sistem yazı tiplerini ve kullanılanları devre dışı bırakamazsınız</translation>
     </message>
     <message>
         <source>You cannot disable system fonts</source>
-        <translation type="unfinished"/>
+        <translation>Sistem yazı tiplerini devre dışı bırakamazsınız</translation>
     </message>
     <message>
         <source>Some fonts are not allowed to be disabled</source>

@@ -8,6 +8,7 @@ class DFontSpinnerWidget : public Dtk::Widget::DWidget
 {
 public:
     enum SpinnerStyles {
+        StartupLoad,
         Load,
         Delete,
         NoLabel,

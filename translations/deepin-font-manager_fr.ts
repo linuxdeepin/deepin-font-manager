@@ -134,16 +134,24 @@
         <translation>Ces polices ne seront pas disponibles pour les applications</translation>
     </message>
     <message>
-        <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
-        <translation>Ces polices ne seront pas disponibles pour les applications et les %1 autres polices système ne peuvent pas être supprimées</translation>
+        <source>The other %1 system fonts cannot be deleted</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <source>This font will not be available to applications, and the other %1 system fonts cannot be deleted</source>
-        <translation>Cette police ne sera pas disponible pour les applications et les %1 autres polices du système ne peuvent pas être supprimées</translation>
+        <source>The font &quot;%1&quot; in use cannot be deleted</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <source>Are you sure you want to delete %1 fonts?</source>
-        <translation>Voulez-vous vraiment supprimer %1 polices?</translation>
+        <source>The other %1 system fonts and the font &quot;%2&quot; in use cannot be deleted</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Are you sure you want to delete %1 font(s)?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>Supprimer</translation>
     </message>
 </context>
 <context>

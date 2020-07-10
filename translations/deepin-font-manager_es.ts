@@ -134,16 +134,24 @@
         <translation>Estas fuentes no estarán disponibles para las aplicaciones</translation>
     </message>
     <message>
-        <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
-        <translation>Estas fuentes no estarán disponibles para las aplicaciones, y las otras %1 fuentes del sistema no pueden ser borradas</translation>
+        <source>The other %1 system fonts cannot be deleted</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <source>This font will not be available to applications, and the other %1 system fonts cannot be deleted</source>
-        <translation>Esta fuente no estarán disponibles para las aplicaciones, y las otras %1 fuentes del sistema no pueden ser borradas</translation>
+        <source>The font &quot;%1&quot; in use cannot be deleted</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <source>Are you sure you want to delete %1 fonts?</source>
-        <translation>¿Está seguro que quiere borrar %1 fuentes?</translation>
+        <source>The other %1 system fonts and the font &quot;%2&quot; in use cannot be deleted</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Are you sure you want to delete %1 font(s)?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>Borrar</translation>
     </message>
 </context>
 <context>
@@ -300,15 +308,15 @@
     </message>
     <message>
         <source>%1 is in use, so you cannot disable it</source>
-        <translation type="unfinished"/>
+        <translation>%1 está en uso, por lo que no se puede desactivar</translation>
     </message>
     <message>
         <source>You cannot disable system fonts and the fonts in use</source>
-        <translation type="unfinished"/>
+        <translation>No se pueden desactivar las fuentes del sistema y las fuentes en uso</translation>
     </message>
     <message>
         <source>You cannot disable system fonts</source>
-        <translation type="unfinished"/>
+        <translation>No se pueden desactivar las fuentes del sistema</translation>
     </message>
     <message>
         <source>Some fonts are not allowed to be disabled</source>

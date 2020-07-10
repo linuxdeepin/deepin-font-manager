@@ -76,7 +76,7 @@ private:
 signals:
 
 public slots:
-    void onRightKeyMenuPopup(DFontPreviewItemData fontData, bool hasUser, int exportCnt, bool hasCanDisable);
+    void onRightKeyMenuPopup(const DFontPreviewItemData &fontData, bool hasUser, bool enableDisable, bool hasCurFont);
 };
 
 #endif  // DFONTMENUMANAGER_H

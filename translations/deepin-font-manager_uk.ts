@@ -134,16 +134,24 @@
         <translation>Ці шрифти будуть недоступними для програм</translation>
     </message>
     <message>
-        <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
-        <translation>Ці шрифти будуть недоступними для програм, інші %1 загальносистемних шрифтів не може бути вилучено</translation>
+        <source>The other %1 system fonts cannot be deleted</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <source>This font will not be available to applications, and the other %1 system fonts cannot be deleted</source>
-        <translation>Цей шрифти буде недоступним для програм, інші %1 загальносистемних шрифтів не може бути вилучено</translation>
+        <source>The font &quot;%1&quot; in use cannot be deleted</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <source>Are you sure you want to delete %1 fonts?</source>
-        <translation>Ви справді хочете вилучити %1 шрифтів?</translation>
+        <source>The other %1 system fonts and the font &quot;%2&quot; in use cannot be deleted</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Are you sure you want to delete %1 font(s)?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>Вилучення</translation>
     </message>
 </context>
 <context>
@@ -300,7 +308,7 @@
     </message>
     <message>
         <source>%1 is in use, so you cannot disable it</source>
-        <translation type="unfinished"/>
+        <translation>%1 використано якоюсь програмою — ви не можете його вимкнути</translation>
     </message>
     <message>
         <source>You cannot disable system fonts and the fonts in use</source>

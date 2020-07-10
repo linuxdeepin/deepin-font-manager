@@ -134,16 +134,24 @@
         <translation>यी फन्टहरू अनुप्रयोगहरूमा उपलब्ध हुँदैनन्</translation>
     </message>
     <message>
-        <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
-        <translation>यी फन्टहरू अनुप्रयोगहरूमा उपलब्ध हुँदैन, र अन्य% 1 प्रणाली फन्टहरू हटाउन सकिदैन</translation>
-    </message>
-    <message>
-        <source>This font will not be available to applications, and the other %1 system fonts cannot be deleted</source>
+        <source>The other %1 system fonts cannot be deleted</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <source>Are you sure you want to delete %1 fonts?</source>
+        <source>The font &quot;%1&quot; in use cannot be deleted</source>
         <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>The other %1 system fonts and the font &quot;%2&quot; in use cannot be deleted</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Are you sure you want to delete %1 font(s)?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>हटाउनुहोस्</translation>
     </message>
 </context>
 <context>

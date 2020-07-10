@@ -134,16 +134,24 @@
         <translation>Skrifttyperne vil ikke være tilgængelig for programmer</translation>
     </message>
     <message>
-        <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
-        <translation>Disse skrifttyper vil ikke være tilgængelige for programmer og de andre %1 systemskrifttyper kan ikke slettes</translation>
-    </message>
-    <message>
-        <source>This font will not be available to applications, and the other %1 system fonts cannot be deleted</source>
-        <translation>Skrifttyperne vil ikke være tilgængelige for programmer og de andre %1 systemskrifttyper kan ikke slettes</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete %1 fonts?</source>
+        <source>The other %1 system fonts cannot be deleted</source>
         <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>The font &quot;%1&quot; in use cannot be deleted</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>The other %1 system fonts and the font &quot;%2&quot; in use cannot be deleted</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Are you sure you want to delete %1 font(s)?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>Slet</translation>
     </message>
 </context>
 <context>

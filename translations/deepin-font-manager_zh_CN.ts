@@ -134,16 +134,24 @@
         <translation>删除后这些字体将不可用于其他应用程序</translation>
     </message>
     <message>
-        <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
-        <translation>删除后这些字体将不可用于其他应用程序，无法删除其他%1个系统字体</translation>
+        <source>The other %1 system fonts cannot be deleted</source>
+        <translation>无法删除其他%1个系统字体</translation>
     </message>
     <message>
-        <source>This font will not be available to applications, and the other %1 system fonts cannot be deleted</source>
-        <translation>删除后该字体将不可用于其他应用程序，无法删除其他%1个系统字体</translation>
+        <source>The font &quot;%1&quot; in use cannot be deleted</source>
+        <translation>无法删除正在使用的字体：%1</translation>
     </message>
     <message>
-        <source>Are you sure you want to delete %1 fonts?</source>
+        <source>The other %1 system fonts and the font &quot;%2&quot; in use cannot be deleted</source>
+        <translation>无法删除其他%1个系统字体和正在使用的字体：%2</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete %1 font(s)?</source>
         <translation>您确定要删除这%1个字体吗？</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>删除</translation>
     </message>
 </context>
 <context>

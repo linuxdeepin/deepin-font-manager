@@ -150,7 +150,9 @@ void DFontMgrMainWindow::initConnections()
     QObject::connect(m_fontPreviewListView, SIGNAL(onLoadFontsStatus(int)),
                      this, SLOT(onLoadStatus(int)));
 
-    connect(m_fontPreviewListView, &DFontPreviewListView::rowCountChanged, this, &DFontMgrMainWindow::onFontListViewRowCountChanged, Qt::UniqueConnection);
+    connect(m_fontPreviewListView, &DFontPreviewListView::rowCountChanged, this,
+            &DFontMgrMainWindow::onFontListViewRowCountChanged, Qt::UniqueConnection);
+
     connect(m_fontPreviewListView, &DFontPreviewListView::deleteFinished, this, [ = ]() {
         setDeleteFinish();
     });
@@ -168,6 +170,7 @@ void DFontMgrMainWindow::initConnections()
     [this](const QStringList & files) {
         this->installFontFromSys(files);
     });
+
     // Menu event
     QObject::connect(d->toolBarMenu, &QMenu::triggered, this, &DFontMgrMainWindow::handleMenuEvent);
 
@@ -182,18 +185,17 @@ void DFontMgrMainWindow::initConnections()
     // Right Key menu
     QObject::connect(d->rightKeyMenu, &QMenu::triggered, this,
                      &DFontMgrMainWindow::handleMenuEvent);
+
     // Initialize rigth menu it state
     QObject::connect(d->rightKeyMenu, &QMenu::aboutToShow, this, [ = ]() {
         DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
         int cnt = 0;
         int systemCnt = 0;
-        int exportCnt = 0;
-        int canDisableCnt = 0;
-        bool hasCanDisable = false;
-        m_fontPreviewListView->selectedFontsNum(&cnt, &systemCnt, &exportCnt, &canDisableCnt);
-        if (canDisableCnt > 0)
-            hasCanDisable = true;
-        DFontMenuManager::getInstance()->onRightKeyMenuPopup(currItemData, (cnt > 0), exportCnt, hasCanDisable);
+        int disableCnt = 0;
+        int curCnt = 0;
+        m_fontPreviewListView->selectedFonts(&cnt, &systemCnt, &curCnt, &disableCnt);
+
+        DFontMenuManager::getInstance()->onRightKeyMenuPopup(currItemData, (cnt > 0), (disableCnt > 0), (curCnt > 0));
     });
 
     // State bar event
@@ -473,8 +475,9 @@ void DFontMgrMainWindow::initShortcuts()
         m_scAddOrCancelFavFont->setAutoRepeat(false);
 
         connect(m_scAddOrCancelFavFont, &QShortcut::activated, this, [ = ] {
-            QModelIndexList itemIndexes = m_fontPreviewListView->selectedIndex(nullptr, nullptr);
-            if (!m_fontPreviewListView->isVisible() || itemIndexes.count() == 0)
+            QModelIndexList allItemIndexes;
+            m_fontPreviewListView->selectedFonts(nullptr, nullptr, nullptr, nullptr, nullptr, &allItemIndexes);
+            if (!m_fontPreviewListView->isVisible() || allItemIndexes.count() == 0)
                 return;
             if (m_fontPreviewListView->m_rightMenu->isVisible())
                 m_fontPreviewListView->m_rightMenu->close();
@@ -482,10 +485,10 @@ void DFontMgrMainWindow::initShortcuts()
 
             if (filterGroup != DSplitListWidget::FontGroup::CollectFont)
             {
-                emit m_fontPreviewListView->onClickCollectionButton(itemIndexes, !currItemData.isCollected);
+                emit m_fontPreviewListView->onClickCollectionButton(allItemIndexes, !currItemData.isCollected);
             } else
             {
-                emit m_fontPreviewListView->onClickCollectionButton(itemIndexes, !currItemData.isCollected, true);
+                emit m_fontPreviewListView->onClickCollectionButton(allItemIndexes, !currItemData.isCollected, true);
             }
         });
     }
@@ -950,20 +953,28 @@ void DFontMgrMainWindow::handleMenuEvent(QAction *action)
             break;
             case DFontMenuManager::MenuAction::M_EnableOrDisable: {
                 DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
-                QModelIndexList itemIndexes = m_fontPreviewListView->selectedIndex(nullptr, nullptr);
-                if (filterGroup != DSplitListWidget::FontGroup::ActiveFont) {
-                    emit m_fontPreviewListView->onClickEnableButton(itemIndexes, !currItemData.isEnabled);
-                } else {
-                    emit m_fontPreviewListView->onClickEnableButton(itemIndexes, !currItemData.isEnabled, true);
-                }
+                QModelIndexList itemIndexes;
+                int systemCnt = 0;
+                int currCnt = 0;
+                int disableCnt = 0;
+                m_fontPreviewListView->selectedFonts(nullptr, &systemCnt, &currCnt, &disableCnt, nullptr, nullptr, &itemIndexes);
 
-//                  emit m_fontPreviewListView->onClickEnableButton(currItemData, !currItemData.isEnabled);
+                if (filterGroup != DSplitListWidget::FontGroup::ActiveFont) {
+                    emit m_fontPreviewListView->onClickEnableButton(itemIndexes, systemCnt, currCnt, !currItemData.isEnabled);
+                } else {
+                    emit m_fontPreviewListView->onClickEnableButton(itemIndexes, systemCnt, currCnt, !currItemData.isEnabled, true);
+                }
             }
             break;
             case DFontMenuManager::MenuAction::M_Faverator: {
 //                QModelIndex modelIndex = m_fontPreviewListView->currModelIndex();
                 DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
-                QModelIndexList itemIndexes = m_fontPreviewListView->selectedIndex(nullptr, nullptr);
+                QModelIndexList itemIndexes;
+                int curCnt = 0;
+                m_fontPreviewListView->selectedFonts(nullptr, nullptr, nullptr, &curCnt, nullptr, &itemIndexes);
+
+                if (itemIndexes.isEmpty())
+                    return;
 
                 if (filterGroup != DSplitListWidget::FontGroup::CollectFont) {
                     emit m_fontPreviewListView->onClickCollectionButton(itemIndexes, !currItemData.isCollected);
@@ -1388,17 +1399,17 @@ void DFontMgrMainWindow::delCurrentFont()
     m_fIsDeleting = Deleting;
     int deleteCnt = 0;
     int systemCnt = 0;
-    int param = 0;
-    int paramt = 0;
-    m_fontPreviewListView->selectedFontsNum(&deleteCnt, &systemCnt, &param, &paramt);
+    int curCnt = 0;
+    QStringList uninstallFonts;
+    m_fontPreviewListView->selectedFonts(&deleteCnt, &systemCnt, &curCnt, nullptr, &uninstallFonts);
     if (deleteCnt < 1) {
         m_fIsDeleting = UnDeleting;
         return;
     }
-    DFDeleteDialog *confirmDelDlg = new DFDeleteDialog(this, deleteCnt, systemCnt, this);
 
-    connect(confirmDelDlg, &DFDeleteDialog::accepted, this, [this]() {
-        QStringList uninstallFonts = m_fontPreviewListView->selectedFonts(nullptr, nullptr);
+    DFDeleteDialog *confirmDelDlg = new DFDeleteDialog(this, deleteCnt, systemCnt, curCnt > 0, this);
+
+    connect(confirmDelDlg, &DFDeleteDialog::accepted, this, [ = ]() {
         DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
         qDebug() << "Confirm delete:" << currItemData.fontInfo.filePath
                  << " is system font:" << currItemData.fontInfo.isSystemFont;
@@ -1420,19 +1431,24 @@ void DFontMgrMainWindow::exportFont()
 {
     int cnt = 0;
     int systemCnt = 0;
+    int curCnt = 0;
 
-    QStringList files = m_fontPreviewListView->selectedFonts(&cnt, &systemCnt);
+    QStringList files;
+    m_fontPreviewListView->selectedFonts(&cnt, &systemCnt, &curCnt, nullptr, nullptr, nullptr, nullptr, &files);
 
 //    qint64 m_currentDiskSpace = getDiskSpace(false);
 //    if (m_currentDiskSpace == 0)
 //        return;
+
+    if (curCnt > 0 && !files.contains(m_fontPreviewListView->getCurFontData().fontInfo.filePath))
+        files << m_fontPreviewListView->getCurFontData().fontInfo.filePath;
 
     QStringList m_exportFiles = checkFilesSpace(files, false);
     if (m_exportFiles.count() == 0) {
         showExportFontMessage(0, files.count());
         return;
     }
-    if (cnt < 1)
+    if (files.isEmpty())
         return;
     QString desktopPath = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation) + "/" + tr("Fonts") + "/";
     QDir dir(desktopPath);
@@ -1656,7 +1672,9 @@ void DFontMgrMainWindow::hideSpinner()
         onFontListViewRowCountChanged();
         onPreviewTextChanged();
         //安装加载之后之后设置高亮状态以及listview的滚动
-        int count = m_fontPreviewListView->selectedFonts(nullptr, nullptr).count();
+        QStringList fontList;
+        m_fontPreviewListView->selectedFonts(nullptr, nullptr, nullptr, nullptr, &fontList);
+        int count = fontList.count();
         if (1 == count) {
             m_fontPreviewListView->setCurrentSelected(m_fontPreviewListView->selectionModel()->selectedIndexes().first().row());
             //            scrollTo(currentIndex());

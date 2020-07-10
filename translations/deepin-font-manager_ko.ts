@@ -134,16 +134,24 @@
         <translation>이러한 글꼴은 응용프로그램에서 사용할 수 없습니다</translation>
     </message>
     <message>
-        <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
-        <translation>이러한 글꼴은 응용 프로그램에서 사용할 수 없으며 다른 %1 시스템 글꼴은 삭제할 수 없습니다</translation>
+        <source>The other %1 system fonts cannot be deleted</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <source>This font will not be available to applications, and the other %1 system fonts cannot be deleted</source>
-        <translation>이 글꼴은 응용프로그램에서 사용할 수 없으며 다른 %1 시스템 글꼴은 삭제할 수 없습니다.</translation>
+        <source>The font &quot;%1&quot; in use cannot be deleted</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <source>Are you sure you want to delete %1 fonts?</source>
-        <translation>%1 글꼴을 삭제하시겠습니까?</translation>
+        <source>The other %1 system fonts and the font &quot;%2&quot; in use cannot be deleted</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Are you sure you want to delete %1 font(s)?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>삭제</translation>
     </message>
 </context>
 <context>
@@ -300,15 +308,15 @@
     </message>
     <message>
         <source>%1 is in use, so you cannot disable it</source>
-        <translation type="unfinished"/>
+        <translation>%1이(가) 사용중이므로 사용하지 않도록 설정할 수 없습니다</translation>
     </message>
     <message>
         <source>You cannot disable system fonts and the fonts in use</source>
-        <translation type="unfinished"/>
+        <translation>시스템 글꼴 및 사용중인 글꼴을 비활성화 할 수 없습니다</translation>
     </message>
     <message>
         <source>You cannot disable system fonts</source>
-        <translation type="unfinished"/>
+        <translation>시스템 글꼴을 비활성화 할 수 없습니다</translation>
     </message>
     <message>
         <source>Some fonts are not allowed to be disabled</source>

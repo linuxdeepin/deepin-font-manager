@@ -134,16 +134,24 @@
         <translation>Ови фонтови неће бити доступни програмима</translation>
     </message>
     <message>
-        <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
-        <translation>Ови фонтови неће бити доступни програмима, а осталих %1 системских фонтова се не могу уклонити</translation>
+        <source>The other %1 system fonts cannot be deleted</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <source>This font will not be available to applications, and the other %1 system fonts cannot be deleted</source>
-        <translation>Овиј фонт неће бити доступан програмима, а осталих %1 системских фонтова се не могу уклонити</translation>
+        <source>The font &quot;%1&quot; in use cannot be deleted</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <source>Are you sure you want to delete %1 fonts?</source>
-        <translation>Заиста желите да обришете %1 фонта/ова?</translation>
+        <source>The other %1 system fonts and the font &quot;%2&quot; in use cannot be deleted</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Are you sure you want to delete %1 font(s)?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>Обриши</translation>
     </message>
 </context>
 <context>

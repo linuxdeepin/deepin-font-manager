@@ -134,16 +134,24 @@
         <translation>Nämä kirjasimet eivät ole sovellusten käytettävissä</translation>
     </message>
     <message>
-        <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
-        <translation>Nämä kirjasimet eivät ole sovellusten käytettävissä, eikä muita %1 järjestelmän kirjasimia voi poistaa</translation>
+        <source>The other %1 system fonts cannot be deleted</source>
+        <translation>Muita %1 järjestelmän kirjasimia ei voi poistaa</translation>
     </message>
     <message>
-        <source>This font will not be available to applications, and the other %1 system fonts cannot be deleted</source>
-        <translation>Tämä kirjasin ei ole käytettävissä sovelluksissa, eikä muita %1 järjestelmän kirjasimia voi poistaa</translation>
+        <source>The font &quot;%1&quot; in use cannot be deleted</source>
+        <translation>Käytössä olevaa kirjasinta &quot;%1&quot; ei voi poistaa</translation>
     </message>
     <message>
-        <source>Are you sure you want to delete %1 fonts?</source>
+        <source>The other %1 system fonts and the font &quot;%2&quot; in use cannot be deleted</source>
+        <translation>Muita %1 järjestelmän tai käytössä olevaa kirjasinta &quot;%2&quot; ei voi poistaa</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete %1 font(s)?</source>
         <translation>Haluatko varmasti poistaa %1 kirjasinta?</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>Poista</translation>
     </message>
 </context>
 <context>
@@ -300,7 +308,7 @@
     </message>
     <message>
         <source>%1 is in use, so you cannot disable it</source>
-        <translation type="unfinished"/>
+        <translation>%1 on käytössä, joten et voi poistaa sitä käytöstä</translation>
     </message>
     <message>
         <source>You cannot disable system fonts and the fonts in use</source>

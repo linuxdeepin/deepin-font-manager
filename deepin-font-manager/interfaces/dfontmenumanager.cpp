@@ -156,7 +156,7 @@ QAction *DFontMenuManager::getActionByMenuAction(MenuAction maction, MenuType me
     return action;
 }
 
-void DFontMenuManager::onRightKeyMenuPopup(DFontPreviewItemData fontData, bool hasUser, int exportCnt, bool hasCanDisable)
+void DFontMenuManager::onRightKeyMenuPopup(const DFontPreviewItemData &fontData, bool hasUser, bool enableDisable, bool hasCurFont)
 {
     // Disable delete menu for system font
     QAction *delAction = DFontMenuManager::getInstance()->getActionByMenuAction(
@@ -172,21 +172,17 @@ void DFontMenuManager::onRightKeyMenuPopup(DFontPreviewItemData fontData, bool h
                                          DFontMenuManager::M_EnableOrDisable, DFontMenuManager::MenuType::RightKeyMenu);
 
     // Disable delete menu on system font
-    if (nullptr != delAction && !hasUser) {
-        delAction->setDisabled(true);
-    } else {
+    if (nullptr != delAction && hasUser) {
         delAction->setDisabled(false);
+    } else {
+        delAction->setDisabled(true);
     }
 
     // Export menu on system font
-    if (nullptr != exportAction && !hasUser) {
-        if (exportCnt > 0) {
-            exportAction->setDisabled(false);
-        } else {
-            exportAction->setDisabled(true);
-        }
-    } else {
+    if (nullptr != exportAction && (hasUser || hasCurFont)) {
         exportAction->setDisabled(false);
+    } else {
+        exportAction->setDisabled(true);
     }
 
     // Favarite font Menu
@@ -197,28 +193,15 @@ void DFontMenuManager::onRightKeyMenuPopup(DFontPreviewItemData fontData, bool h
     }
 
     // Enable/Disable Menu
-    QString fontName;
-    if (fontData.appFontId != -1)
-        fontName = QFontDatabase::applicationFontFamilies(fontData.appFontId).first();
-    bool isNowSystemFont = false;
-    if (fontName == qApp->font().family())
-        isNowSystemFont = true;
-
     if (nullptr != enableOrDisableAction && fontData.isEnabled) {
-        if (fontData.isCanDisable && !isNowSystemFont) {
+        if (enableDisable) {
             enableOrDisableAction->setEnabled(true);
         } else {
-            if (hasCanDisable) {
-                enableOrDisableAction->setEnabled(true);
-            } else {
-                enableOrDisableAction->setEnabled(false);
-            }
+            enableOrDisableAction->setEnabled(false);
         }
         enableOrDisableAction->setText(DApplication::translate("Menu", "Disable"));
     } else {
-
         enableOrDisableAction->setEnabled(true);
         enableOrDisableAction->setText(DApplication::translate("Menu", "Enable"));
-
     }
 }

@@ -271,11 +271,6 @@ int DFontPreviewListDataThread::insertFontItemData(const QString &filePath,
     itemData.isMonoSpace = monoSpaceFontPathList.contains(filePath);
 
     itemData.fontInfo.isInstalled = true;
-    if (itemData.fontInfo.isSystemFont) {
-//        if (itemData.strFontName.startsWith("CESI") || cantDisabledMonoList.contains(itemData.strFontName)) {
-        itemData.isCanDisable = false;
-//        }
-    }
 
     //中文字体
     if (itemData.fontInfo.isSystemFont && itemData.isChineseFont) {
@@ -338,12 +333,6 @@ void DFontPreviewListDataThread::refreshFontListData(bool isStartup, const QStri
 
     QSet<QString> dbFilePathSet;
     for (DFontPreviewItemData &itemData : fontInfoList) {
-
-        if (itemData.fontInfo.isSystemFont) {
-//            if (itemData.strFontName.startsWith("CESI") || cantDisabledMonoList.contains(itemData.strFontName)) {
-            itemData.isCanDisable = false;
-//            }
-        }
         if (isStartup) {
             QString filePath = itemData.fontInfo.filePath.trimmed();
 
@@ -355,11 +344,9 @@ void DFontPreviewListDataThread::refreshFontListData(bool isStartup, const QStri
                 addPathWatcher(filePath);
             } else {
                 //如果字体文件已经不存在，则从t_manager表中删除
-                if (!filePathInfo.exists()) {
-                    //删除字体之前启用字体，防止下次重新安装后就被禁用
-                    m_view->enableFont(itemData.fontInfo.filePath);
-                    DFMDBManager::instance()->deleteFontInfo(itemData);
-                }
+                //删除字体之前启用字体，防止下次重新安装后就被禁用
+                m_view->enableFont(itemData.fontInfo.filePath);
+                DFMDBManager::instance()->deleteFontInfo(itemData);
             }
         } else {
             QString filePath = itemData.fontInfo.filePath;
@@ -399,6 +386,8 @@ void DFontPreviewListDataThread::refreshFontListData(bool isStartup, const QStri
     if (!isStartup && !installFont.isEmpty()) {
         Q_EMIT m_view->multiItemsAdded(m_diffFontModelList, DFontSpinnerWidget::Load);
         Q_EMIT m_view->itemsSelected(installFont);
+    } else if (isStartup) {
+        Q_EMIT m_view->multiItemsAdded(m_fontModelList, DFontSpinnerWidget::StartupLoad);
     } else {
         Q_EMIT m_view->multiItemsAdded(m_fontModelList, DFontSpinnerWidget::Load);
     }
@@ -519,6 +508,8 @@ void DFontPreviewListDataThread::syncFontEnableDisableStatusData(const QStringLi
 
 void DFontPreviewListDataThread::updateFontId(const DFontPreviewItemData &itemData, int id)
 {
+    if (id < 0)
+        return;
     int index = m_fontModelList.indexOf(itemData);
     if (index > -1)
         m_fontModelList[index].appFontId = id;

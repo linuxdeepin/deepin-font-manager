@@ -65,9 +65,15 @@ public:
     void deleteFontFiles(const QStringList &files, bool force = false);
     void deleteCurFonts(const QStringList &files, bool force = false);
     void changeFontFile(const QString &path, bool force = false);
-    QStringList selectedFonts(int *deleteCnt, int *systemCnt);
-    void selectedFontsNum(int *deleteCnt, int *systemCnt, int *exportCnt, int *canDisableCnt);
-    QModelIndexList selectedIndex(int *deleteCnt, int *systemCnt);
+    void selectedFonts(int *deleteCnt = nullptr, int *systemCnt = nullptr,
+                       int *curFontCnt = nullptr, int *disableCnt = nullptr,
+                       QStringList *delFontList = nullptr, QModelIndexList *allIndexList = nullptr,
+                       QModelIndexList *disableIndexList = nullptr, QStringList *allMinusSysFontList = nullptr);
+    inline void appendFilePath(QStringList *allFontList, const QString &filePath)
+    {
+        if ((allFontList != nullptr) && (!allFontList->contains(filePath)))
+            *allFontList << filePath;
+    }
     void deleteFontModelIndex(const QString &filePath, bool isFromSys = false);
     inline bool isDeleting();
     QMutex *getMutex();
@@ -87,7 +93,15 @@ public:
     void refreshFocuses(bool isJustInstalled, int count);
     void setNeedFocus();
     void updateSpinner(DFontSpinnerWidget::SpinnerStyles style, bool force = true);
-    qint64 m_curTm {0};
+    inline QString getCurFontStrName()
+    {
+        return QString("%1").arg(m_curFontData.strFontName);
+    }
+
+    inline DFontPreviewItemData getCurFontData()
+    {
+        return m_curFontData;
+    }
 
 protected:
     void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected) override;
@@ -97,6 +111,7 @@ private:
     int count() const;
     inline QRect getCollectionIconRect(QRect visualRect);
     void deleteFontModelIndex(const DFontInfo &fontInfo);
+    bool isCurrentFont(DFontPreviewItemData &itemData);
     void sortModelIndexList(QModelIndexList &sourceList);
     void scrollWithTheSelected();
     void refreshRect();
@@ -124,6 +139,8 @@ private:
     QMutex m_mutex;
     QStringList m_enableFontList;
     QStringList m_disableFontList;
+    QStringList m_currentFont;
+    DFontPreviewItemData m_curFontData;
     FontGroup m_currentFontGroup;
 
     QRect m_curRect;
@@ -132,11 +149,12 @@ private:
     bool m_isJustInstalled = false;
 
     int m_selectAfterDel = -1;/*539 删除后的选中位置*/
+    qint64 m_curTm {0};
 
 
 signals:
     //用于DFontPreviewListView内部使用的信号
-    void onClickEnableButton(const QModelIndexList &index, bool setValue, bool isFromActiveFont = false);
+    void onClickEnableButton(const QModelIndexList &index, int systemCnt, int curCnt, bool setValue, bool isFromActiveFont = false);
     void onClickCollectionButton(const QModelIndexList &index, bool setValue, bool isFromCollectFont = false);
     void onShowContextMenu(const QModelIndex &index);
 
@@ -161,7 +179,7 @@ signals:
 
 public slots:
 
-    void onListViewItemEnableBtnClicked(const QModelIndexList &itemIndexes, bool setValue, bool isFromActiveFont = false);
+    void onListViewItemEnableBtnClicked(const QModelIndexList &itemIndexes, int systemCnt, int curCnt, bool setValue, bool isFromActiveFont = false);
     void onListViewItemCollectionBtnClicked(const QModelIndexList &index, bool setValue, bool isFromCollectFont = false);
     void onListViewShowContextMenu(const QModelIndex &index);
     void onFinishedDataLoad();
@@ -169,6 +187,7 @@ public slots:
     void selectFont(const QString &file);
     void onItemAdded(const DFontPreviewItemData &itemData);
     void onMultiItemsAdded(QList<DFontPreviewItemData> &data, DFontSpinnerWidget::SpinnerStyles styles);
+    void onUpdateCurrentFont();
     void onItemRemoved(const DFontPreviewItemData &itemData);
     void onItemRemovedFromSys(const DFontPreviewItemData &itemData);
     void updateCurrentFontGroup(int currentFontGroup);

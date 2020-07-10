@@ -134,16 +134,24 @@
         <translation>Aquestes lletres no estaran disponibles a les aplicacions.</translation>
     </message>
     <message>
-        <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
-        <translation>Aquestes lletres no estaran disponibles a les aplicacions i les altres %1 lletres del sistema no es poden eliminar.</translation>
+        <source>The other %1 system fonts cannot be deleted</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <source>This font will not be available to applications, and the other %1 system fonts cannot be deleted</source>
-        <translation>Aquesta lletra no estarà disponible a les aplicacions i les altres %1 lletres del sistema no es poden eliminar.</translation>
+        <source>The font &quot;%1&quot; in use cannot be deleted</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <source>Are you sure you want to delete %1 fonts?</source>
-        <translation>Segur que voleu eliminar %1 lletres?</translation>
+        <source>The other %1 system fonts and the font &quot;%2&quot; in use cannot be deleted</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Are you sure you want to delete %1 font(s)?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>Elimina</translation>
     </message>
 </context>
 <context>
@@ -300,15 +308,15 @@
     </message>
     <message>
         <source>%1 is in use, so you cannot disable it</source>
-        <translation type="unfinished"/>
+        <translation>%1 s&apos;usa; per tant, no es pot inhabilitar.</translation>
     </message>
     <message>
         <source>You cannot disable system fonts and the fonts in use</source>
-        <translation type="unfinished"/>
+        <translation>No podeu inhabilitar les lletres del sistema i les que s&apos;usen.</translation>
     </message>
     <message>
         <source>You cannot disable system fonts</source>
-        <translation type="unfinished"/>
+        <translation>No podeu inhabilitar les lletres del sistema.</translation>
     </message>
     <message>
         <source>Some fonts are not allowed to be disabled</source>

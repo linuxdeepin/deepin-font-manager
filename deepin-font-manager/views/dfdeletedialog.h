@@ -18,9 +18,7 @@ class DFDeleteDialog : public DFontBaseDialog
 {
     Q_OBJECT
 public:
-    explicit DFDeleteDialog(DFontMgrMainWindow *win, int deleteCnt = 0, int systemCnt = 0, QWidget *parent = nullptr);
-
-    void setMainwindow(DFontMgrMainWindow *win);
+    explicit DFDeleteDialog(DFontMgrMainWindow *win, int deleteCnt = 0, int systemCnt = 0, bool hasCurrent = false, QWidget *parent = nullptr);
 
     static constexpr int DEFAULT_WINDOW_W = 380;
     static constexpr int DEFAULT_WINDOW_H = 160;
@@ -62,6 +60,7 @@ private:
     int m_w_ht {0};
     int m_count {0};
     bool m_deleting;
+    bool m_hasCurFont;
 };
 
 #endif  // DFDELETEDIALOG_H

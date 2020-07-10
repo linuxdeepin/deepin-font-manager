@@ -81,6 +81,7 @@ public:
     QString getFontType(const QString &filePath);
     DFontInfo getFontInfo(const QString &filePath);
     QString getDefaultPreview(const QString &filePath, qint8 &preivewLang);
+    QStringList getCurrentFontFamily();
     QString getInstFontPath(const QString &originPath, const QString &familyName);
     bool isFontInstalled(DFontInfo &data);
     void getDefaultPreview(DFontInfo &data);

@@ -134,16 +134,24 @@
         <translation>Deze lettertypen zijn niet beschikbaar in programma&apos;s</translation>
     </message>
     <message>
-        <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
-        <translation>Deze lettertypen zijn niet beschikbaar in programma&apos;s - de andere %1 systeemlettertypen kunnen niet worden verwijderd</translation>
+        <source>The other %1 system fonts cannot be deleted</source>
+        <translation>De andere %1 systeemlettertypen kunnen niet worden verwijderd</translation>
     </message>
     <message>
-        <source>This font will not be available to applications, and the other %1 system fonts cannot be deleted</source>
-        <translation>Deze lettertypen zijn niet beschikbaar in programma&apos;s - de andere %1 systeemlettertypen kunnen niet worden verwijderd</translation>
+        <source>The font &quot;%1&quot; in use cannot be deleted</source>
+        <translation>&apos;%1&apos; is in gebruik en kan niet worden verwijderd</translation>
     </message>
     <message>
-        <source>Are you sure you want to delete %1 fonts?</source>
-        <translation>Weet je zeker dat je %1 lettertypen wilt verwijderen?</translation>
+        <source>The other %1 system fonts and the font &quot;%2&quot; in use cannot be deleted</source>
+        <translation>De andere %1 systeemlettertypen en het in gebruik zijnde lettertype &apos;%2&apos; kunnen niet worden verwijderd</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete %1 font(s)?</source>
+        <translation>Weet je zeker dat je %1 lettertype(n) wilt verwijderen?</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>Verwijderen</translation>
     </message>
 </context>
 <context>
@@ -300,7 +308,7 @@
     </message>
     <message>
         <source>%1 is in use, so you cannot disable it</source>
-        <translation type="unfinished"/>
+        <translation>%1 is in gebruik en kan daarom niet worden uitgeschakeld</translation>
     </message>
     <message>
         <source>You cannot disable system fonts and the fonts in use</source>

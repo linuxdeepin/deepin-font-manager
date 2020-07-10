@@ -134,16 +134,24 @@
         <translation>هذه الخطوط لن تكون متاحة للبرامج</translation>
     </message>
     <message>
-        <source>These fonts will not be available to applications, and the other %1 system fonts cannot be deleted</source>
-        <translation>هذه الخطوط لن تكون متاحة للبرامج، وخطوط النظام %1 الاخرى لا يمكن أن تحذف</translation>
+        <source>The other %1 system fonts cannot be deleted</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <source>This font will not be available to applications, and the other %1 system fonts cannot be deleted</source>
-        <translation>هذه الخطوط لن تكون متاحة للبرامج، وخطوط النظام %1 الاخرى لا يمكن حذفها</translation>
+        <source>The font &quot;%1&quot; in use cannot be deleted</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <source>Are you sure you want to delete %1 fonts?</source>
-        <translation>هل انت متأكد من حذف %1 خط/خطوط؟</translation>
+        <source>The other %1 system fonts and the font &quot;%2&quot; in use cannot be deleted</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Are you sure you want to delete %1 font(s)?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>حذف</translation>
     </message>
 </context>
 <context>

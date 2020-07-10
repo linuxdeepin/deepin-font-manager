@@ -62,6 +62,12 @@ public:
     {
         return m_fontManager;
     }
+
+    inline DFontPreviewListView *getPreviewListView()
+    {
+        return m_fontPreviewListView;
+    }
+
     inline qint8 isDeleting()
     {
         return m_fIsDeleting;

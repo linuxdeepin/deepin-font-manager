@@ -38,6 +38,12 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
     connect(this, &DFontPreviewListView::itemRemoved, this, &DFontPreviewListView::onItemRemoved);
     connect(this, &DFontPreviewListView::itemRemovedFromSys, this, &DFontPreviewListView::onItemRemovedFromSys);
     connect(this, &DFontPreviewListView::requestUpdateModel, this, &DFontPreviewListView::updateModel);
+
+    QObject::connect(qApp, &DApplication::fontChanged, [ this ](const QFont & font) {
+        qDebug() << __FUNCTION__ << "Font changed " << m_currentFont << font.family() << font.style();
+        onUpdateCurrentFont();
+    });
+
     DFontMgrMainWindow *mw = qobject_cast<DFontMgrMainWindow *>(m_parentWidget);
     if (mw)
         connect(this, &DFontPreviewListView::requestShowSpinner, mw, &DFontMgrMainWindow::onShowSpinner);
@@ -81,27 +87,6 @@ bool DFontPreviewListView::isListDataLoadFinished()
 void DFontPreviewListView::onFinishedDataLoad()
 {
     qDebug() << "onFinishedDataLoad thread id = " << QThread::currentThreadId();
-    QList<DFontPreviewItemData> fontInfoList = m_dataThread->getFontModelList();
-    for (int i = 0; i < fontInfoList.size(); ++i) {
-        DFontPreviewItemData itemData = fontInfoList.at(i);
-        QString filePath = itemData.fontInfo.filePath;
-        QFileInfo filePathInfo(filePath);
-        //如果字体文件已经不存在，则从t_manager表中删除
-        if (!filePathInfo.exists()) {
-            //删除字体之前启用字体，防止下次重新安装后就被禁用
-            enableFont(itemData.fontInfo.filePath);
-            DFMDBManager::instance()->deleteFontInfo(itemData);
-            continue;
-        } else {
-            //add it to file system watcher
-            m_dataThread->addPathWatcher(filePath);
-        }
-
-        Q_EMIT itemAdded(itemData);
-    }
-    DFMDBManager::instance()->commitDeleteFontInfo();
-    enableFonts();
-
     m_bLoadDataFinish = true;
     emit onLoadFontsStatus(1);
 }
@@ -120,40 +105,55 @@ void DFontPreviewListView::onMultiItemsAdded(QList<DFontPreviewItemData> &data, 
         return;
 
     QMutexLocker locker(&m_mutex);
-    QStandardItemModel *sourceModel = qobject_cast<QStandardItemModel *>(m_fontPreviewProxyModel->sourceModel());
-    int rows = sourceModel->rowCount();
+    int rows = m_fontPreviewItemModel->rowCount();
     qDebug() << __FUNCTION__ << data.size() << rows;
 
     int i = 0;
-    bool res = sourceModel->insertRows(rows, data.size());
+    bool res = m_fontPreviewItemModel->insertRows(rows, data.size());
     if (!res) {
         qDebug() << __FUNCTION__ << "insertRows fail";
         return;
     }
+    QStringList curFont;
+    if (styles == DFontSpinnerWidget::StartupLoad)
+        curFont = DFontInfoManager::instance()->getCurrentFontFamily();
 
-    qDebug() << __FUNCTION__ << "rows = " << sourceModel->rowCount();
+    qDebug() << __FUNCTION__ << "rows = " << m_fontPreviewItemModel->rowCount();
     for (DFontPreviewItemData &itemData : data) {
-        QModelIndex index = sourceModel->index(rows + i,   0);
+        if (itemData.appFontId < 0) {
+            int appFontId = QFontDatabase::addApplicationFont(itemData.fontInfo.filePath);
+//            qDebug() << __FUNCTION__ << " add font " << itemData.fontInfo.familyName << appFontId;
+            QStringList families = QFontDatabase::applicationFontFamilies(appFontId);
+            if (!curFont.isEmpty() && families.contains(curFont.at(1)) && (curFont.at(2) == itemData.fontInfo.styleName)) {
+                m_currentFont = curFont;
+                m_curFontData = itemData;
+                qDebug() << __FUNCTION__ << " found cur font " << curFont << itemData.fontInfo.toString();
+            }
 
-        int appFontId = QFontDatabase::addApplicationFont(itemData.fontInfo.filePath);
-        itemData.appFontId = appFontId;
-        m_dataThread->updateFontId(itemData, appFontId);
-        QString strFontName;
-        //非中文系统字体
-        if (!(itemData.fontInfo.isSystemFont && itemData.isChineseFont) && !QFontDatabase::applicationFontFamilies(appFontId).isEmpty()) {
-            QString familyName = QFontDatabase::applicationFontFamilies(appFontId).first();
-            if (familyName != itemData.fontInfo.familyName && !familyName.contains(QChar('?'))) {
-                QString styleName = (itemData.strFontName.split("-").length() > 1) ? itemData.strFontName.split("-").last() : QString();
-                if (styleName.isEmpty()) {
-                    strFontName = QFontDatabase::applicationFontFamilies(appFontId).first();
-                } else {
-                    strFontName = QString("%1-%2").arg(QFontDatabase::applicationFontFamilies(appFontId).first()).arg(styleName);
+            itemData.appFontId = appFontId;
+            m_dataThread->updateFontId(itemData, appFontId);
+
+            QString strFontName;
+            //非中文系统字体
+            if (!(itemData.fontInfo.isSystemFont && itemData.isChineseFont) && !QFontDatabase::applicationFontFamilies(appFontId).isEmpty()) {
+                QString familyName = QFontDatabase::applicationFontFamilies(appFontId).first();
+                if (itemData.fontInfo.familyName.contains(QChar('?')) && !familyName.contains(QChar('?'))) {
+                    int index = m_dataThread->getFontModelList().indexOf(itemData);
+                    QString styleName = (itemData.strFontName.split("-").length() > 1) ? itemData.strFontName.split("-").last() : QString();
+                    if (styleName.isEmpty()) {
+                        strFontName = QFontDatabase::applicationFontFamilies(appFontId).first();
+                    } else {
+                        strFontName = QString("%1-%2").arg(QFontDatabase::applicationFontFamilies(appFontId).first()).arg(styleName);
+                    }
+                    itemData.strFontName = strFontName;
+
+                    m_dataThread->updateItemStatus(index, itemData);
                 }
-                itemData.strFontName = strFontName;
             }
         }
 
-        res = sourceModel->setData(index, QVariant::fromValue(itemData), Qt::DisplayRole);
+        QModelIndex index = m_fontPreviewItemModel->index(rows + i,   0);
+        res = m_fontPreviewItemModel->setData(index, QVariant::fromValue(itemData), Qt::DisplayRole);
         if (!res)
             qDebug() << __FUNCTION__ << "setData fail";
         i++;
@@ -161,6 +161,7 @@ void DFontPreviewListView::onMultiItemsAdded(QList<DFontPreviewItemData> &data, 
         if (styles != DFontSpinnerWidget::NoLabel)
             updateSpinner(styles);
     }
+
     qDebug() << __FUNCTION__ << "end";
 }
 
@@ -422,18 +423,10 @@ void DFontPreviewListView::updateModel(bool showSpinner)
 //        updateSpinner(DFontSpinnerWidget::Delete);
     QList<DFontPreviewItemData> modelist = m_dataThread->getFontModelList();
 
-    int rows = m_fontPreviewItemModel->rowCount();
-    m_fontPreviewItemModel->insertRows(rows, modelist.size());
-    int counts = 0;
-    for (DFontPreviewItemData &itemData : modelist) {
-        QModelIndex index = m_fontPreviewItemModel->index(counts,   0);
-        counts++;
-        m_fontPreviewItemModel->setData(index, QVariant::fromValue(itemData), Qt::DisplayRole);
-    }
-    Q_EMIT requestShowSpinner(false, true, DFontSpinnerWidget::Delete);
-//    DFontSpinnerWidget::SpinnerStyles spinnerstyle = (showSpinner) ? DFontSpinnerWidget::Delete : DFontSpinnerWidget::NoLabel;
-//    onMultiItemsAdded(modelist, spinnerstyle);
+    DFontSpinnerWidget::SpinnerStyles spinnerstyle = (showSpinner) ? DFontSpinnerWidget::Delete : DFontSpinnerWidget::NoLabel;
+    onMultiItemsAdded(modelist, spinnerstyle);
 
+    Q_EMIT requestShowSpinner(false, true, DFontSpinnerWidget::Delete);
 //    if (showSpinner)
 //        updateSpinner(DFontSpinnerWidget::Delete);
 
@@ -511,6 +504,52 @@ QRect DFontPreviewListView::getCollectionIconRect(QRect visualRect)
 {
     int collectIconSize = 22 + 10;
     return QRect(visualRect.right() - 10 - 33, visualRect.top() + 10 - 5, collectIconSize, collectIconSize);
+}
+
+void DFontPreviewListView::onUpdateCurrentFont()
+{
+    qDebug() << __FUNCTION__ << "begin";
+    QMutexLocker locker(&m_mutex);
+    QStringList curFont = DFontInfoManager::instance()->getCurrentFontFamily();
+
+    if (curFont.isEmpty() || curFont.size() < 3) {
+        qDebug() << __FUNCTION__ << curFont << " is invalid";
+        return;
+    }
+
+    if ((m_currentFont.size() == curFont.size()) && (m_currentFont.at(1) == curFont.at(1)) && (m_currentFont.at(2) == curFont.at(2)))
+        return;
+
+    int index = 0;
+    DFontPreviewItemData prevFontData = m_curFontData;
+    for (DFontPreviewItemData &itemData : m_dataThread->getFontModelList()) {
+        if (QFileInfo(itemData.fontInfo.filePath).fileName() == curFont.at(0)) {
+            int appId = itemData.appFontId;
+            if (appId < 0) {
+                qDebug() << __FUNCTION__ << " add font " << itemData.strFontName << appId;
+                appId = QFontDatabase::addApplicationFont(itemData.fontInfo.filePath);
+                itemData.appFontId = appId;
+                m_dataThread->updateFontId(itemData, appId);
+            }
+            if (appId > -1) {
+                QStringList families = QFontDatabase::applicationFontFamilies(appId);
+                if ((families.contains(curFont.at(1))) && (curFont.at(2) == itemData.fontInfo.styleName)) {
+                    m_curFontData = itemData;
+                    qDebug() << __FUNCTION__ << " found " << curFont << itemData.fontInfo.toString();
+                    break;
+                }
+            }
+        }
+        index++;
+    }
+
+    m_currentFont = curFont;
+    qDebug() << __FUNCTION__ << "end" << m_currentFont;
+}
+
+bool DFontPreviewListView::isCurrentFont(DFontPreviewItemData &itemData)
+{
+    return (itemData == m_curFontData);
 }
 
 // ut000442 对选中字体的索引按照row从大到小进行排序，为了在我的收藏界面和已激活界面进行操作时
@@ -851,11 +890,11 @@ void DFontPreviewListView::mouseReleaseEvent(QMouseEvent *event)
             //触发启用/禁用字体
             //        emit onClickEnableButton(indexList, !itemData.isEnabled);
             if (m_currentFontGroup != FontGroup::ActiveFont) {
-                if (itemData.isCanDisable)
-                    onListViewItemEnableBtnClicked(indexList, !itemData.isEnabled);
+                if (!(itemData.fontInfo.isSystemFont || isCurrentFont(itemData)))
+                    onListViewItemEnableBtnClicked(indexList, 0, 0, !itemData.isEnabled);
             } else {
-                if (itemData.isCanDisable)
-                    onListViewItemEnableBtnClicked(indexList, !itemData.isEnabled, true);
+                if (!(itemData.fontInfo.isSystemFont || isCurrentFont(itemData)))
+                    onListViewItemEnableBtnClicked(indexList, 0, 0, !itemData.isEnabled, true);
             }
 
 
@@ -1180,14 +1219,13 @@ void DFontPreviewListView::setCurrentSelected(int indexRow)
     m_currentSelectedRow = indexRow;
 }
 
-void DFontPreviewListView::onListViewItemEnableBtnClicked(const QModelIndexList &itemIndexes, bool setValue, bool isFromActiveFont)
+void DFontPreviewListView::onListViewItemEnableBtnClicked(const QModelIndexList &itemIndexes, int systemCnt, int curCnt, bool setValue, bool isFromActiveFont)
 {
     bool needShowTips = false;
     int count = 0;
-    int cannotDisableCnt = 0;
     int size = this->count();
     QMutexLocker locker(&m_mutex);
-    QString disabledFontName;
+    QString fontName;
     QModelIndexList itemIndexesNew = itemIndexes;
 
     sortModelIndexList(itemIndexesNew);
@@ -1197,7 +1235,6 @@ void DFontPreviewListView::onListViewItemEnableBtnClicked(const QModelIndexList 
     //        itemIndexesNew.append(itemIndexes[itemIndexes.count() - 1 - i]);
     //    }
 
-    QString nowSystemFont = "";//系统正在使用的用户字体名
     QList<DFontPreviewItemData> modelist = m_dataThread->getFontModelList();
 
     for (QModelIndex &index : itemIndexesNew) {
@@ -1217,28 +1254,16 @@ void DFontPreviewListView::onListViewItemEnableBtnClicked(const QModelIndexList 
             enableFont(itemData.fontInfo.filePath);
             itemData.isEnabled = setValue;
         } else {
-
-            QString fontName;
-            if (itemData.appFontId != -1)
-                fontName = QFontDatabase::applicationFontFamilies(itemData.appFontId).first();
-            bool isNowSystemFont = false;
-            if (fontName == qApp->font().family())
-                isNowSystemFont = true;
-
-            if (!itemData.isCanDisable || isNowSystemFont) {
-                //不可禁用字体
-                if (!itemData.fontInfo.isSystemFont && isNowSystemFont)
-                    nowSystemFont = itemData.fontInfo.familyName;
+            if (systemCnt > 0 || curCnt > 0) {
                 needShowTips = true;
-                cannotDisableCnt++;
-            } else {
-                if (index == itemIndexes[0]) {
-                    disabledFontName = itemData.strFontName;
-                }
-                disableFont(itemData.fontInfo.filePath);
-                itemData.isEnabled = setValue;
-                count++;
             }
+
+            if (index == itemIndexes[0]) {
+                fontName = itemData.strFontName;
+            }
+            disableFont(itemData.fontInfo.filePath);
+            itemData.isEnabled = setValue;
+            count++;
         }
         m_dataThread->updateItemStatus(idx, itemData);//更新状态
         DFMDBManager::instance()->updateFontInfo(itemData, "isEnabled");
@@ -1264,17 +1289,17 @@ void DFontPreviewListView::onListViewItemEnableBtnClicked(const QModelIndexList 
     QString message;
     if (needShowTips) {
         //不可禁用字体
-        if (cannotDisableCnt == 1 && !nowSystemFont.isEmpty()) {
-            message = DApplication::translate("MessageManager", "%1 is in use, so you cannot disable it").arg(nowSystemFont);
-        } else if (cannotDisableCnt > 1 && !nowSystemFont.isEmpty()) {
+        if (curCnt == 1 && systemCnt == 0) {
+            message = DApplication::translate("MessageManager", "%1 is in use, so you cannot disable it").arg(m_curFontData.strFontName);
+        } else if (curCnt > 0 && systemCnt > 0) {
             message = DApplication::translate("MessageManager", "You cannot disable system fonts and the fonts in use");
         } else {
             message = DApplication::translate("MessageManager", "You cannot disable system fonts");
         }
     } else {
-        if (count == 1) {
-            message = QString("%1 %2").arg(disabledFontName).arg(DApplication::translate("MessageManager", "deactivated"));
-        } else if (count > 1) {
+        if (itemIndexes.size() == 1) {
+            message = QString("%1 %2").arg(fontName).arg(DApplication::translate("MessageManager", "deactivated"));
+        } else if (itemIndexes.size() > 1) {
             message = DApplication::translate("MessageManager", "The fonts have been deactivated");
         }
         Q_EMIT rowCountChanged();
@@ -1511,105 +1536,70 @@ void DFontPreviewListView::changeFontFile(const QString &path, bool force)
     }
 }
 
-QStringList DFontPreviewListView::selectedFonts(int *deleteCnt, int *systemCnt)
-{
-    QModelIndexList list = selectedIndexes();
-    QStringList ret;
-    int deleteNum = 0;
-    int systemNum = 0;
-    for (QModelIndex &index : list) {
-        QVariant varModel = m_fontPreviewProxyModel->data(index, Qt::DisplayRole);
-        DFontPreviewItemData itemData = varModel.value<DFontPreviewItemData>();
-        if (!itemData.fontInfo.filePath.isEmpty()) {
-            if (itemData.fontInfo.isSystemFont) {
-                systemNum++;
-            } else {
-                deleteNum++;
-                ret << itemData.fontInfo.filePath;
-            }
-        }
-    }
-
-    if (systemCnt)
-        *systemCnt = systemNum;
-    if (deleteCnt)
-        *deleteCnt = deleteNum;
-
-    qDebug() << __FUNCTION__ << ret.size();
-    return ret;
-}
-
-void DFontPreviewListView::selectedFontsNum(int *deleteCnt, int *systemCnt, int *exportCnt, int *canDisableCnt)
+/**
+ * @brief DFontPreviewListView::selectedFonts
+ * @param deleteCnt : count of deletable fonts (minus system fonts and current font)
+ * @param systemCnt : count of system font
+ * @param curFontCnt : count of current font (0/1)
+ * @param disableCnt : count of can be disabled/enabled fonts
+ * @param delFontList : delete font path list (for delete fonts)
+ * @param allIndexList : all font index list (includes system fonts and current font) (for collect fonts)
+ * @param disableIndexList : can be disabled/enabled font index list (for enable/disable fonts)
+ * @param allMinusSysFontList : all font path list exclude system fonts (for export fonts)
+ */
+void DFontPreviewListView::selectedFonts(int *deleteCnt, int *systemCnt, int *curFontCnt, int *disableCnt,
+                                         QStringList *delFontList, QModelIndexList *allIndexList,
+                                         QModelIndexList *disableIndexList, QStringList *allMinusSysFontList)
 {
     QModelIndexList list = selectedIndexes();
 
     /*539 记录删除的位置*/
-    sortModelIndexList(list);
-    if (list.count() > 0)
-        m_selectAfterDel = list.last().row();
-    qDebug() << __FUNCTION__ << "__deleteRow__" << m_selectAfterDel;
+//    sortModelIndexList(list);
+//    if (list.count() > 0)
+//        m_selectAfterDel = list.last().row();
+//    qDebug() << __FUNCTION__ << "__deleteRow__" << m_selectAfterDel;
 
-    int deleteNum = 0;
-    int systemNum = 0;
-    int applicationFont = 0;
-    int canDiableNum = 0;
-    for (QModelIndex &index : list) {
-
-        QVariant varModel = m_fontPreviewProxyModel->data(index, Qt::DisplayRole);
-        DFontPreviewItemData itemData = varModel.value<DFontPreviewItemData>();
-
-        QString fontName;
-        if (itemData.appFontId != -1)
-            fontName = QFontDatabase::applicationFontFamilies(itemData.appFontId).first();
-        bool isNowSystemFont = false;
-        if (fontName == qApp->font().family())
-            isNowSystemFont = true;
-
-        if (!itemData.fontInfo.filePath.isEmpty()) {
-            if (itemData.fontInfo.isSystemFont) {
-                systemNum++;
-            } else if (isNowSystemFont) {
-                applicationFont++;
-            } else {
-                deleteNum++;
-                if (itemData.isEnabled) {
-                    canDiableNum ++;
-                }
-            }
-        }
-    }
-    *exportCnt = deleteNum + applicationFont;
-    *canDisableCnt = canDiableNum;
-    if (systemCnt)
-        *systemCnt = systemNum;
-    if (deleteCnt)
-        *deleteCnt = deleteNum;
-    list.clear();
-}
-
-QModelIndexList DFontPreviewListView::selectedIndex(int *deleteCnt, int *systemCnt)
-{
-    QModelIndexList list = selectedIndexes();
-    int deleteNum = 0;
-    int systemNum = 0;
+    bool firstEnabled = false;
+    int i = 0;
     for (QModelIndex &index : list) {
         QVariant varModel = m_fontPreviewProxyModel->data(index, Qt::DisplayRole);
         DFontPreviewItemData itemData = varModel.value<DFontPreviewItemData>();
-        if (!itemData.fontInfo.filePath.isEmpty()) {
-            if (itemData.fontInfo.isSystemFont) {
-                systemNum++;
-            } else {
-                deleteNum++;
+        if (itemData.fontInfo.filePath.isEmpty())
+            continue;
+
+        if ((i == 0) && (disableCnt != nullptr))
+            firstEnabled = itemData.isEnabled;
+
+        if (itemData.fontInfo.isSystemFont) {
+            if (systemCnt)
+                *systemCnt += 1;
+        } else if (itemData == m_curFontData) {
+            qDebug() << __FUNCTION__ << " current font " << itemData.strFontName;
+            if (curFontCnt)
+                *curFontCnt += 1;
+            appendFilePath(allMinusSysFontList, itemData.fontInfo.filePath);
+        } else {
+            if (deleteCnt)
+                *deleteCnt += 1;
+
+            appendFilePath(delFontList, itemData.fontInfo.filePath);
+            appendFilePath(allMinusSysFontList, itemData.fontInfo.filePath);
+
+            if ((disableCnt) && (firstEnabled == itemData.isEnabled)) {
+                *disableCnt += 1;
+                if (disableIndexList != nullptr)
+                    *disableIndexList << index;
             }
         }
+
+        i++;
     }
 
-    if (systemCnt)
-        *systemCnt = systemNum;
-    if (deleteCnt)
-        *deleteCnt = deleteNum;
+    if (allIndexList)
+        *allIndexList = list;
 
-    return list;
+    if (delFontList)
+        qDebug() << __FUNCTION__ << delFontList->size();
 }
 
 //字体变化设置选中行居中UT000539 /功能暂时保留，勿删/*/

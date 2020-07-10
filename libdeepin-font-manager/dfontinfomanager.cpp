@@ -463,6 +463,56 @@ QString DFontInfoManager::getDefaultPreview(const QString &filePath, qint8 &prei
     return defaultPreview;
 }
 
+QStringList DFontInfoManager::getCurrentFontFamily()
+{
+    FcPattern *pat = FcPatternCreate();
+    QStringList retStrList;
+    if (!pat)
+        return retStrList;
+
+    FcConfigSubstitute(nullptr, pat, FcMatchPattern);
+    FcDefaultSubstitute(pat);
+    FcFontSet *fs = FcFontSetCreate();
+    if (!fs) {
+        FcPatternDestroy(pat);
+        FcFini();
+        return retStrList;
+    }
+
+    FcResult result;
+    FcPattern *match = FcFontMatch(nullptr, pat, &result);
+    if (match)
+        FcFontSetAdd(fs, match);
+    FcPatternDestroy(pat);
+
+    const FcChar8 *format = reinterpret_cast<const FcChar8 *>("%{=fcmatch}");
+
+    for (int j = 0; j < fs->nfont; j++) {
+        FcPattern *font = FcPatternFilter(fs->fonts[j], nullptr);
+        FcChar8 *s = FcPatternFormat(font, format);
+
+        if (s) {
+            QString str = QString(reinterpret_cast<char *>(s));
+            retStrList = str.split(" \"");
+            int index = 0;
+            for (QString &fontStr : retStrList) {
+                fontStr.remove(QChar('\"'));
+                if (index == 0 && fontStr.endsWith(":"))
+                    fontStr.remove(":");
+                index++;
+            }
+            FcStrFree(s);
+        }
+        FcPatternDestroy(font);
+        if (!retStrList.isEmpty())
+            break;
+    }
+    FcFontSetDestroy(fs);
+    FcFini();
+
+    return retStrList;
+}
+
 QString DFontInfoManager::getInstFontPath(const QString &originPath, const QString &familyName)
 {
     if (isSystemFont(originPath) || originPath.contains("/.local/share/fonts"))
