@@ -1543,6 +1543,14 @@ void DFontMgrMainWindow::dropEvent(QDropEvent *event)
 void DFontMgrMainWindow::resizeEvent(QResizeEvent *event)
 {
     Q_UNUSED(event)
+
+    QScreen *screen = QGuiApplication::primaryScreen();
+    QRect screenRect =  screen->availableVirtualGeometry();
+
+    if (this->rect() == screenRect) {
+        setWindowState(Qt::WindowMaximized);
+    }
+
     if (Qt::WindowMaximized != int(QWidget::windowState())) {
         m_winHight = geometry().height();
         m_winWidth = geometry().width();

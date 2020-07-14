@@ -12,6 +12,7 @@
 #include <DFrame>
 #include <DMainWindow>
 #include <QResizeEvent>
+#include <QScreen>
 
 
 
