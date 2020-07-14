@@ -90,6 +90,7 @@ public:
     void setCurrentSelected(int indexRow);
     void cancelDel();
     void viewChanged();
+    void markPositionBeforeRemoved(bool isDelete, const QModelIndexList &list); //记录移除前位置
     void refreshFocuses(bool isJustInstalled, int count);
     void setNeedFocus();
     void updateSpinner(DFontSpinnerWidget::SpinnerStyles style, bool force = true);

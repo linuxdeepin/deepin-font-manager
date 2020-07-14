@@ -1410,6 +1410,8 @@ void DFontMgrMainWindow::delCurrentFont()
     DFDeleteDialog *confirmDelDlg = new DFDeleteDialog(this, deleteCnt, systemCnt, curCnt > 0, this);
 
     connect(confirmDelDlg, &DFDeleteDialog::accepted, this, [ = ]() {
+
+        m_fontPreviewListView->markPositionBeforeRemoved(true, QModelIndexList()); //记录移除前位置
         DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
         qDebug() << "Confirm delete:" << currItemData.fontInfo.filePath
                  << " is system font:" << currItemData.fontInfo.isSystemFont;

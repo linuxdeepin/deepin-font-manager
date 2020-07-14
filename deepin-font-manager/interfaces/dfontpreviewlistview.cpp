@@ -315,6 +315,21 @@ void DFontPreviewListView::viewChanged()
     m_currentSelectedRow = -1;
 }
 
+//记录移除前位置
+void DFontPreviewListView::markPositionBeforeRemoved(bool isDelete, const QModelIndexList &list)
+{
+    if (isDelete) {
+        Q_UNUSED(list)
+        QModelIndexList deleteFontList = selectedIndexes();
+        if (deleteFontList.count() > 0) {
+            m_selectAfterDel = deleteFontList.first().row();
+        }
+    } else {
+        if (list.count() > 0)
+            m_selectAfterDel = list.first().row();
+    }
+}
+
 void DFontPreviewListView::setNeedFocus()
 {
     m_IsNeedFocus = true;
@@ -1229,7 +1244,7 @@ void DFontPreviewListView::onListViewItemEnableBtnClicked(const QModelIndexList 
     QModelIndexList itemIndexesNew = itemIndexes;
 
     sortModelIndexList(itemIndexesNew);
-    m_selectAfterDel = itemIndexesNew.last().row();
+    markPositionBeforeRemoved(false, itemIndexesNew);//记录禁用前选中位置
     //    for (int i = 0; i < itemIndexes.count(); i++) {
     //        qDebug() << itemIndexes[i].row() << endl;
     //        itemIndexesNew.append(itemIndexes[itemIndexes.count() - 1 - i]);
@@ -1552,12 +1567,6 @@ void DFontPreviewListView::selectedFonts(int *deleteCnt, int *systemCnt, int *cu
                                          QModelIndexList *disableIndexList, QStringList *allMinusSysFontList)
 {
     QModelIndexList list = selectedIndexes();
-
-    /*539 记录删除的位置*/
-//    sortModelIndexList(list);
-//    if (list.count() > 0)
-//        m_selectAfterDel = list.last().row();
-//    qDebug() << __FUNCTION__ << "__deleteRow__" << m_selectAfterDel;
 
     bool firstEnabled = false;
     int i = 0;
