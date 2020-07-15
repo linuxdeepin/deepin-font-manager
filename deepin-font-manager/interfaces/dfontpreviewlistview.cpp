@@ -985,8 +985,15 @@ void DFontPreviewListView::setModel(QAbstractItemModel *model)
 
 void DFontPreviewListView::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end)
 {
-    if (selectionModel()->selectedIndexes().count() > 0)
-        selectionModel()->setCurrentIndex(parent, QItemSelectionModel::NoUpdate);
+    if (selectionModel()->selectedIndexes().count() > 0) {
+        //bug 37050 ut000442 当start与end位置相同时表示这一行是在我的收藏和已激活这个界面分别进行取消搜藏和禁用操作
+        //时，listview一行被移出，这时候需要进行下面的操作，要不然界面会向下滚动。其他操作不需要这个操作，会导致bug现象。
+        if (start == end) {
+            selectionModel()->setCurrentIndex(parent, QItemSelectionModel::NoUpdate);
+        }
+
+    }
+
     QListView::rowsAboutToBeRemoved(parent, start, end);
 }
 
