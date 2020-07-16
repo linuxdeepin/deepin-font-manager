@@ -82,6 +82,7 @@ public:
     void disableFont(const QString &filePath);
     void enableFonts();
     void disableFonts();
+    void updateShiftSelect(const QModelIndex &modelIndex);
     void toSetCurrentIndex(QModelIndexList &itemIndexesNew);
     void toSetCurrentIndex(QModelIndexList &itemIndexesNew, int count, int size);
     bool isAtListviewBottom();

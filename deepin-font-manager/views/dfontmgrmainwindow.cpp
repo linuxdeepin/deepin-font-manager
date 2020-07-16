@@ -188,6 +188,7 @@ void DFontMgrMainWindow::initConnections()
 
     // Initialize rigth menu it state
     QObject::connect(d->rightKeyMenu, &QMenu::aboutToShow, this, [ = ]() {
+        qDebug() << __FUNCTION__ << "about toshow";
         DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
         int cnt = 0;
         int systemCnt = 0;
@@ -196,6 +197,12 @@ void DFontMgrMainWindow::initConnections()
         m_fontPreviewListView->selectedFonts(&cnt, &systemCnt, &curCnt, &disableCnt);
 
         DFontMenuManager::getInstance()->onRightKeyMenuPopup(currItemData, (cnt > 0), (disableCnt > 0), (curCnt > 0));
+        qDebug() << __FUNCTION__ << "about toshow end \n";
+    });
+
+    connect(d->rightKeyMenu, &QMenu::aboutToHide, this, [ = ] {
+        qDebug() << __FUNCTION__ << "about to hide\n\n";
+        m_fontPreviewListView->clearPressState();
     });
 
     // State bar event
@@ -222,10 +229,6 @@ void DFontMgrMainWindow::initConnections()
                      SIGNAL(requestDeleted(const QStringList &)));
     QObject::connect(m_fontManager, &DFontManager::uninstallFcCacheFinish, this, &DFontMgrMainWindow::onUninstallFcCacheFinish);
     QObject::connect(m_signalManager, &SignalManager::showInstallFloatingMessage, this, &DFontMgrMainWindow::onShowMessage);
-//    connect(this, &DFontMgrMainWindow::requestUpdatePreview, [ = ] {
-//        QString previewText = d->textInputEdit->text();
-//        onPreviewTextChanged(previewText);
-//    });
 
     //安装结束后刷新字体列表
     connect(m_signalManager, &SignalManager::finishFontInstall, this,
@@ -479,8 +482,7 @@ void DFontMgrMainWindow::initShortcuts()
             m_fontPreviewListView->selectedFonts(nullptr, nullptr, nullptr, nullptr, nullptr, &allItemIndexes);
             if (!m_fontPreviewListView->isVisible() || allItemIndexes.count() == 0)
                 return;
-            if (m_fontPreviewListView->m_rightMenu->isVisible())
-                m_fontPreviewListView->m_rightMenu->close();
+
             DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
 
             if (filterGroup != DSplitListWidget::FontGroup::CollectFont)
