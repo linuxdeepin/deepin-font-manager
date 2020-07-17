@@ -194,7 +194,8 @@ void DFontMgrMainWindow::initConnections()
         int systemCnt = 0;
         int disableCnt = 0;
         int curCnt = 0;
-        m_fontPreviewListView->selectedFonts(&cnt, &systemCnt, &curCnt, &disableCnt);
+        QModelIndexList indexList;
+        m_fontPreviewListView->selectedFonts(&cnt, &systemCnt, &curCnt, &disableCnt, nullptr, nullptr, &indexList);
 
         DFontMenuManager::getInstance()->onRightKeyMenuPopup(currItemData, (cnt > 0), (disableCnt > 0), (curCnt > 0));
         qDebug() << __FUNCTION__ << "about toshow end \n";
@@ -483,15 +484,12 @@ void DFontMgrMainWindow::initShortcuts()
             if (!m_fontPreviewListView->isVisible() || allItemIndexes.count() == 0)
                 return;
 
-            DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
+            if (m_fontPreviewListView->m_rightMenu->isVisible())
+                m_fontPreviewListView->m_rightMenu->close();
 
-            if (filterGroup != DSplitListWidget::FontGroup::CollectFont)
-            {
-                emit m_fontPreviewListView->onClickCollectionButton(allItemIndexes, !currItemData.isCollected);
-            } else
-            {
-                emit m_fontPreviewListView->onClickCollectionButton(allItemIndexes, !currItemData.isCollected, true);
-            }
+            DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
+            m_fontPreviewListView->onCollectBtnClicked(allItemIndexes, !currItemData.isCollected,
+                                                       filterGroup == DSplitListWidget::FontGroup::CollectFont);
         });
     }
 
@@ -876,8 +874,6 @@ void DFontMgrMainWindow::initStateBar()
 
 void DFontMgrMainWindow::handleAddFontEvent()
 {
-    if (m_fontPreviewListView->hasFocus())
-        m_fontPreviewListView->setNeedFocus();
     Q_D(DFontMgrMainWindow);
     DFileDialog dialog;
     dialog.setFileMode(DFileDialog::ExistingFiles);
@@ -893,7 +889,7 @@ void DFontMgrMainWindow::handleAddFontEvent()
         dialog.setDirectory(historyDir);
     }
 
-    emit m_signalManager->refreshFocus(false, PARAM);
+    m_fontPreviewListView->refreshFocuses();
     const int mode = dialog.exec();
 
     // save the directory string to config file.
@@ -961,11 +957,8 @@ void DFontMgrMainWindow::handleMenuEvent(QAction *action)
                 int disableCnt = 0;
                 m_fontPreviewListView->selectedFonts(nullptr, &systemCnt, &currCnt, &disableCnt, nullptr, nullptr, &itemIndexes);
 
-                if (filterGroup != DSplitListWidget::FontGroup::ActiveFont) {
-                    emit m_fontPreviewListView->onClickEnableButton(itemIndexes, systemCnt, currCnt, !currItemData.isEnabled);
-                } else {
-                    emit m_fontPreviewListView->onClickEnableButton(itemIndexes, systemCnt, currCnt, !currItemData.isEnabled, true);
-                }
+                m_fontPreviewListView->onEnableBtnClicked(itemIndexes, systemCnt, currCnt, !currItemData.isEnabled,
+                                                          filterGroup == DSplitListWidget::FontGroup::ActiveFont);
             }
             break;
             case DFontMenuManager::MenuAction::M_Faverator: {
@@ -975,14 +968,8 @@ void DFontMgrMainWindow::handleMenuEvent(QAction *action)
                 int curCnt = 0;
                 m_fontPreviewListView->selectedFonts(nullptr, nullptr, nullptr, &curCnt, nullptr, &itemIndexes);
 
-                if (itemIndexes.isEmpty())
-                    return;
-
-                if (filterGroup != DSplitListWidget::FontGroup::CollectFont) {
-                    emit m_fontPreviewListView->onClickCollectionButton(itemIndexes, !currItemData.isCollected);
-                } else {
-                    emit m_fontPreviewListView->onClickCollectionButton(itemIndexes, !currItemData.isCollected, true);
-                }
+                m_fontPreviewListView->onCollectBtnClicked(itemIndexes, !currItemData.isCollected,
+                                                           filterGroup == DSplitListWidget::FontGroup::CollectFont);
             }
             break;
             case DFontMenuManager::MenuAction::M_ShowFontPostion:
@@ -1337,6 +1324,7 @@ void DFontMgrMainWindow::onLoadStatus(int type)
                 }
                 m_openfirst = false;
             }
+            m_fontPreviewListView->onUpdateCurrentFont();
             break;
         default:
             break;

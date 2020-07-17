@@ -1,9 +1,8 @@
 #include "dfmdbmanager.h"
 #include "dfontinfomanager.h"
 
-
 #include <QDir>
-#include <DLog>
+
 
 static DFMDBManager *INSTANCE = nullptr;
 

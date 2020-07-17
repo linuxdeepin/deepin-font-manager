@@ -31,10 +31,7 @@
 #include <fontconfig/fontconfig.h>
 #include <ft2build.h>
 #include <iconv.h>
-#include <DApplication>
-#include<QDirIterator>
-
-DWIDGET_USE_NAMESPACE
+#include <QDirIterator>
 
 #include FT_FREETYPE_H
 #include FT_TYPE1_TABLES_H

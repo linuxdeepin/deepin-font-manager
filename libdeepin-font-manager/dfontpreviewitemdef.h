@@ -6,7 +6,6 @@
 #include <QMetaType>
 #include <QString>
 #include <QDebug>
-//#include <DApplication>
 
 //#define FTM_DEFAULT_PREVIEW_TEXT QString(tr("Don't let your dreams be dreams"))
 #define FTM_DEFAULT_PREVIEW_TEXT QString(DTK_WIDGET_NAMESPACE::DApplication::translate("Font", "Don't let your dreams be dreams"))

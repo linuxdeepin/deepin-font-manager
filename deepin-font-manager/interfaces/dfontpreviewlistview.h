@@ -92,8 +92,7 @@ public:
     void cancelDel();
     void viewChanged();
     void markPositionBeforeRemoved(bool isDelete, const QModelIndexList &list); //记录移除前位置
-    void refreshFocuses(bool isJustInstalled, int count);
-    void setNeedFocus();
+    void refreshFocuses();
     void updateSpinner(DFontSpinnerWidget::SpinnerStyles style, bool force = true);
     inline QString getCurFontStrName()
     {
@@ -111,21 +110,19 @@ protected:
 private:
     void initConnections();
     int count() const;
-    inline QRect getCollectionIconRect(QRect visualRect);
+    inline QRect getCollectionIconRect(const QRect &rect);
+    inline QRect getCheckboxRect(const QRect &rect);
     void deleteFontModelIndex(const DFontInfo &fontInfo);
     bool isCurrentFont(DFontPreviewItemData &itemData);
     void sortModelIndexList(QModelIndexList &sourceList);
     void scrollWithTheSelected();
     void refreshRect();
+    void updateSelection();
     int getOnePageCount();
 
     bool m_bLoadDataFinish = false;
-    bool m_bLeftMouse = true;
-    bool m_bRightMous = true;
-    bool m_bClickCollectionOrEnable = false;
     bool m_bListviewAtButtom = false;
     bool m_bListviewAtTop = false;
-    bool m_IsNeedFocus = false;//是否需要设置聚焦
     QWidget *m_parentWidget;
     QStandardItemModel *m_fontPreviewItemModel {nullptr};
 
@@ -147,8 +144,6 @@ private:
 
     QRect m_curRect;
     int m_currentSelectedRow = -1;
-    bool isSelectedNow = false;
-    bool m_isJustInstalled = false;
 
     int m_selectAfterDel = -1;/*539 删除后的选中位置*/
     qint64 m_curTm {0};
@@ -156,8 +151,6 @@ private:
 
 signals:
     //用于DFontPreviewListView内部使用的信号
-    void onClickEnableButton(const QModelIndexList &index, int systemCnt, int curCnt, bool setValue, bool isFromActiveFont = false);
-    void onClickCollectionButton(const QModelIndexList &index, bool setValue, bool isFromCollectFont = false);
     void onShowContextMenu(const QModelIndex &index);
 
     //右键菜单
@@ -173,7 +166,6 @@ signals:
     void itemRemoved(const DFontPreviewItemData &data);
     void itemRemovedFromSys(const DFontPreviewItemData &data);
     void itemsSelected(const QStringList &files, bool isFirstInstall = false);
-    void itemSelected(const QString &file);
     void rowCountChanged();
     void deleteFinished();
     void requestUpdateModel(bool showSpinner);
@@ -181,12 +173,11 @@ signals:
 
 public slots:
 
-    void onListViewItemEnableBtnClicked(const QModelIndexList &itemIndexes, int systemCnt, int curCnt, bool setValue, bool isFromActiveFont = false);
-    void onListViewItemCollectionBtnClicked(const QModelIndexList &index, bool setValue, bool isFromCollectFont = false);
+    void onEnableBtnClicked(const QModelIndexList &itemIndexes, int systemCnt, int curCnt, bool setValue, bool isFromActiveFont = false);
+    void onCollectBtnClicked(const QModelIndexList &index, bool setValue, bool isFromCollectFont = false);
     void onListViewShowContextMenu(const QModelIndex &index);
     void onFinishedDataLoad();
     void selectFonts(const QStringList &fileList);
-    void selectFont(const QString &file);
     void onItemAdded(const DFontPreviewItemData &itemData);
     void onMultiItemsAdded(QList<DFontPreviewItemData> &data, DFontSpinnerWidget::SpinnerStyles styles);
     void onUpdateCurrentFont();

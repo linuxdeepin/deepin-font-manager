@@ -36,7 +36,6 @@ signals:
     void showInstallErrorDialog();
     void setSpliteWidgetScrollEnable(bool isInstalling);
     void freshListView();
-    void refreshFocus(bool isJustInstalled, int count);
     void changeView();
     void cancelDel();/*删除确认取消*/
     void fontSizeRequestToSlider();
