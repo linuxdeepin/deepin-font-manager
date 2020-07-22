@@ -510,6 +510,57 @@ QStringList DFontInfoManager::getCurrentFontFamily()
     return retStrList;
 }
 
+QStringList DFontInfoManager::getFontFamilyStyle(const QString &filePah, QString &styleName)
+{
+    QStringList fontFamilyList;
+    const FcChar8 *format = reinterpret_cast<const FcChar8 *>("%{=fclist}");
+    FcObjectSet *os = FcObjectSetBuild(FC_FAMILY, FC_STYLE, FC_FILE, nullptr);
+    FcPattern *pat = FcPatternCreate();
+    FcFontSet *fs = FcFontList(nullptr, pat, os);
+
+    if (os)
+        FcObjectSetDestroy(os);
+    if (pat)
+        FcPatternDestroy(pat);
+
+    if (fs) {
+        for (int j = 0; j < fs->nfont; j++) {
+            FcChar8 *s;
+
+            s = FcPatternFormat(fs->fonts[j], format);
+            if (s == nullptr)
+                continue;
+
+            QString str = QString(reinterpret_cast<char *>(s));
+            QStringList retStrList = str.split(":");
+            if (retStrList.size() != 3) {
+                continue;
+            }
+            QString fontpath = const_cast<const QString &>(retStrList.at(0));
+            if (fontpath.simplified() == filePah) {
+                qDebug() << __FUNCTION__ << " found " << filePah;
+                QString families = const_cast<const QString &>(retStrList.at(1)).simplified();
+                fontFamilyList = families.split(",");
+                for (QString &fontStr : fontFamilyList) {
+                    fontStr.remove(QChar('\\'));
+                }
+                QString styles = const_cast<const QString &>(retStrList.at(2)).simplified();
+                QStringList styleList = styles.split("=");
+                if (styleList.size() == 2) {
+                    styleName = styleList.at(1);
+                }
+
+                FcStrFree(s);
+                break;
+            }
+        }
+        FcFontSetDestroy(fs);
+    }
+
+    FcFini();
+    return fontFamilyList;
+}
+
 QString DFontInfoManager::getInstFontPath(const QString &originPath, const QString &familyName)
 {
     if (isSystemFont(originPath) || originPath.contains("/.local/share/fonts"))
