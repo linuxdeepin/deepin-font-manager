@@ -121,14 +121,6 @@ void DFontPreviewListView::onMultiItemsAdded(QList<DFontPreviewItemData> &data, 
         if (itemData.appFontId < 0) {
             int appFontId = QFontDatabase::addApplicationFont(itemData.fontInfo.filePath);
 //            qDebug() << __FUNCTION__ << " add font " << itemData.fontInfo.familyName << appFontId;
-            QStringList families = QFontDatabase::applicationFontFamilies(appFontId);
-            if (!curFont.isEmpty() && (families.contains(curFont.at(1)) || (itemData.fontInfo.familyName == curFont.at(1)))
-                    && (curFont.at(2) == itemData.fontInfo.styleName)) {
-                m_currentFont = curFont;
-                m_curFontData = itemData;
-                qDebug() << __FUNCTION__ << " found cur font " << curFont << itemData.fontInfo.toString();
-            }
-
             itemData.appFontId = appFontId;
             m_dataThread->updateFontId(itemData, appFontId);
 
@@ -444,7 +436,6 @@ QRect DFontPreviewListView::getCheckboxRect(const QRect &rect)
 void DFontPreviewListView::onUpdateCurrentFont()
 {
     qDebug() << __FUNCTION__ << "begin";
-    QMutexLocker locker(&m_mutex);
     QStringList curFont = DFontInfoManager::instance()->getCurrentFontFamily();
 
     if (curFont.isEmpty() || curFont.size() < 3) {
@@ -455,31 +446,21 @@ void DFontPreviewListView::onUpdateCurrentFont()
     if ((m_currentFont.size() == curFont.size()) && (m_currentFont.at(1) == curFont.at(1)) && (m_currentFont.at(2) == curFont.at(2)))
         return;
 
-    int index = 0;
     DFontPreviewItemData prevFontData = m_curFontData;
     for (DFontPreviewItemData &itemData : m_dataThread->getFontModelList()) {
-        if (QFileInfo(itemData.fontInfo.filePath).fileName() == curFont.at(0)) {
-            int appId = itemData.appFontId;
-            if (appId < 0) {
-                qDebug() << __FUNCTION__ << " add font " << itemData.strFontName << appId;
-                appId = QFontDatabase::addApplicationFont(itemData.fontInfo.filePath);
-                itemData.appFontId = appId;
-                m_dataThread->updateFontId(itemData, appId);
-            }
-            if (appId > -1) {
-                QStringList families = QFontDatabase::applicationFontFamilies(appId);
-                if ((families.contains(curFont.at(1)) || (itemData.fontInfo.familyName == curFont.at(1)))
-                        && (curFont.at(2) == itemData.fontInfo.styleName)) {
-                    m_currentFont = curFont;
-                    m_curFontData = itemData;
-                    qDebug() << __FUNCTION__ << " found " << curFont << itemData.fontInfo.toString();
-                    break;
-                }
-            }
-        }
-        index++;
-    }
+        if (QFileInfo(itemData.fontInfo.filePath).fileName() != curFont.at(0))
+            continue;
 
+        QString styleName;
+        QStringList families = DFontInfoManager::instance()->getFontFamilyStyle(itemData.fontInfo.filePath, styleName);
+        if ((families.contains(curFont.at(1)) || (itemData.fontInfo.familyName == curFont.at(1)))
+                && (curFont.at(2) == itemData.fontInfo.styleName)) {
+            m_currentFont = curFont;
+            m_curFontData = itemData;
+            qDebug() << __FUNCTION__ << " found " << curFont << itemData.fontInfo.toString();
+            break;
+        }
+    }
     qDebug() << __FUNCTION__ << "end" << m_currentFont;
 }
 
