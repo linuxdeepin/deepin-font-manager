@@ -278,9 +278,7 @@ void DFontPreviewListView::markPositionBeforeRemoved(bool isDelete, const QModel
 /*UT000539 设置focus状态、设置选中状态 */
 void DFontPreviewListView::refreshFocuses()
 {
-    if (selectionModel()->selectedIndexes().isEmpty())
-        return;
-
+    qDebug() << __FUNCTION__;
     setFocus(Qt::MouseFocusReason);
 }
 
@@ -666,6 +664,8 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
             itemData.collectIconStatus =  IconNormal;
             m_fontPreviewProxyModel->setData(modelIndex, QVariant::fromValue(itemData), Qt::DisplayRole);
         }
+
+        onListViewShowContextMenu(modelIndex);
     }
 }
 
@@ -732,8 +732,6 @@ void DFontPreviewListView::mouseReleaseEvent(QMouseEvent *event)
             itemData.collectIconStatus = IconNormal;
             m_fontPreviewProxyModel->setData(modelIndex, QVariant::fromValue(itemData), Qt::DisplayRole);
         }
-    } else if (event->button() == Qt::RightButton)  {
-        onListViewShowContextMenu(modelIndex);
     }
     qDebug() << __FUNCTION__ << " end\n\n";
 }
