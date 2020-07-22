@@ -1160,15 +1160,8 @@ void DFontPreviewListView::onListViewShowContextMenu(const QModelIndex &index)
 {
     Q_UNUSED(index)
 
-    qDebug() << __FUNCTION__ << m_rightMenu->exec(QCursor::pos());
-//    DFontPreviewItemData currItemData = currModelData();
-//    int cnt = 0;
-//    int systemCnt = 0;
-//    int disableCnt = 0;
-//    int curCnt = 0;
-//    selectedFonts(&cnt, &systemCnt, &curCnt, &disableCnt);
-
-//    DFontMenuManager::getInstance()->showRightKeyMenu(currItemData, (cnt > 0), (disableCnt > 0), (curCnt > 0));
+    QAction *action = m_rightMenu->exec(QCursor::pos());
+    qDebug() << __FUNCTION__ << action;
 }
 
 void DFontPreviewListView::setRightContextMenu(QMenu *rightMenu)
