@@ -1699,13 +1699,10 @@ void DFontMgrMainWindow::hideSpinner()
         m_fontLoadingSpinner->hide();
         m_isNoResultViewShow = false;
         if (m_isInstallOver) {
-            //                int cnt = 0;
-            //                int systemCnt = 0;
-            //                m_fontPreviewListView->selectedFontsNum(&cnt, &systemCnt);
             emit m_signalManager->showInstallFloatingMessage(m_successInstallCount);
             m_isInstallOver = false;
         }
-        //            d->stateBar->show();
+
         emit m_signalManager->setSpliteWidgetScrollEnable(false);//安装刷新完成后启用菜单滚动功能
         m_cacheFinish = false;
         m_installFinish = false;
@@ -1726,11 +1723,13 @@ void DFontMgrMainWindow::hideSpinner()
             if (m_fontPreviewListView->selectionModel()->selectedIndexes().count() > 0) {
                 m_fontPreviewListView->setCurrentSelected(m_fontPreviewListView->selectionModel()->selectedIndexes().first().row());
             }
-//                    isSelectedNow = false;
+
             if (m_fontPreviewListView->selectionModel()->selectedIndexes().count() > 1) {
                 m_fontPreviewListView->scrollTo(m_fontPreviewListView->selectionModel()->selectedIndexes().first());
             }
         }
+
+        m_fontPreviewListView->refreshFocuses();
     });
 }
 
