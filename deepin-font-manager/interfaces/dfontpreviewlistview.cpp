@@ -647,6 +647,7 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
         }
 
         onListViewShowContextMenu(modelIndex);
+        refreshFocuses();
     }
 }
 
@@ -860,6 +861,9 @@ void DFontPreviewListView::updateShiftSelect(const QModelIndex &modelIndex)
         } else if (m_currentSelectedRow > modelIndex.row()) {
             begin = modelIndex.row();
         }
+    } else {
+        begin = 0;
+        end = modelIndex.row();
     }
 
     if (begin < 0)
@@ -1345,6 +1349,7 @@ void DFontPreviewListView::selectedFonts(int *deleteCnt, int *systemCnt, int *cu
     QModelIndexList list = selectedIndexes();
 
     bool firstEnabled = false;
+    bool calDisable = ((disableIndexList != nullptr) || (disableCnt != nullptr));
     int i = 0;
     for (QModelIndex &index : list) {
         QVariant varModel = m_fontPreviewProxyModel->data(index, Qt::DisplayRole);
@@ -1352,20 +1357,27 @@ void DFontPreviewListView::selectedFonts(int *deleteCnt, int *systemCnt, int *cu
         if (itemData.fontInfo.filePath.isEmpty())
             continue;
 
-        if ((i == 0) && ((disableIndexList != nullptr) || (disableCnt != nullptr)))
+        if ((i == 0) && calDisable)
             firstEnabled = itemData.isEnabled;
 
         if (itemData.fontInfo.isSystemFont) {
-            if (!firstEnabled) {
-                //系统字体可以启用
-                if (firstEnabled == itemData.isEnabled) {
-                    if (disableCnt)
-                        *disableCnt += 1;
-                    if (disableIndexList)
-                        *disableIndexList << index;
+            //处理启用禁用
+            if (calDisable) {
+                if (!firstEnabled) { //禁用状态
+                    //系统字体可以启用
+                    if (firstEnabled == itemData.isEnabled) {
+                        if (disableCnt)
+                            *disableCnt += 1;
+                        if (disableIndexList)
+                            *disableIndexList << index;
+                    }
+                } else { //启用状态, 系统字体不可禁用
+                    if (systemCnt != nullptr)
+                        *systemCnt += 1;
                 }
-            } else if (systemCnt) {
-                *systemCnt += 1;
+            } else {
+                if (systemCnt != nullptr)
+                    *systemCnt += 1;
             }
         } else if (itemData == m_curFontData) {
             qDebug() << __FUNCTION__ << " current font " << itemData.strFontName;
