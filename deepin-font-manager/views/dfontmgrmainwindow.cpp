@@ -1023,7 +1023,7 @@ bool DFontMgrMainWindow::installFont(const QStringList &files)
         return false;
     }
 
-    m_fontPreviewListView->clearSelection();
+//    m_fontPreviewListView->clearSelection();//取消安装不清空选中状态
     qDebug() << "installFont new DFInstallNormalWindow " << endl;
     m_dfNormalInstalldlg = new DFInstallNormalWindow(m_installFiles, this);
     emit m_signalManager->setSpliteWidgetScrollEnable(true);//开始安装
