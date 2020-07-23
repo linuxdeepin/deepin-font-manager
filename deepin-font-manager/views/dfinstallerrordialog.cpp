@@ -107,6 +107,7 @@ void DFInstallErrorDialog::initData()
             itemModel.bChecked = true;
             itemModel.strFontFileName = fileInfo.fileName();
             itemModel.strFontFilePath = fileInfo.filePath();
+            itemModel.bIsNormalUserFont = true;//SP3--安装验证页面，回车取消/选中--设置字体状态
             itemModel.strFontInstallStatus = DApplication::translate("DFInstallErrorDialog", "Same version installed");
             m_NeedSelectFiles.append(it);
             m_installErrorFontModelList.push_back(itemModel);
@@ -321,9 +322,16 @@ void DFInstallErrorDialog::resetContinueInstallBtnStatus()
 void DFInstallErrorDialog::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Escape) {
-//        emit onCancelInstall();
         this->close();
     }
+    //SP3--安装验证页面，回车取消/选中
+    else if (event->key() == Qt::Key_Return) {
+        if (m_installErrorListView->selectionModel()->selectedIndexes().count() == 1) {
+            onListItemClicked(m_installErrorListView->currentIndex());
+            return;
+        }
+    }
+    QWidget::keyPressEvent(event);
 }
 
 void DFInstallErrorDialog::closeEvent(QCloseEvent *event)
@@ -337,11 +345,13 @@ void DFInstallErrorDialog::onListItemClicked(QModelIndex index)
 {
     DFInstallErrorItemModel itemModel =
         qvariant_cast<DFInstallErrorItemModel>(m_installErrorListView->getErrorListSourceModel()->data(index));
-    itemModel.bChecked = !itemModel.bChecked;
-    m_installErrorListView->getErrorListSourceModel()->setData(index, QVariant::fromValue(itemModel), Qt::DisplayRole);
-    m_installErrorListView->updateErrorFontModelList(index.row(), itemModel);
-
-    resetContinueInstallBtnStatus();
+    //SP3--安装验证页面，回车取消/选中(539)--正常字体可操作
+    if (itemModel.bIsNormalUserFont) {
+        itemModel.bChecked = !itemModel.bChecked;
+        m_installErrorListView->getErrorListSourceModel()->setData(index, QVariant::fromValue(itemModel), Qt::DisplayRole);
+        m_installErrorListView->updateErrorFontModelList(index.row(), itemModel);
+        resetContinueInstallBtnStatus();
+    }
 }
 
 
@@ -377,6 +387,7 @@ void DFInstallErrorDialog::addData(QStringList &errorFileList, QStringList &half
             itemModel.bChecked = true;
             itemModel.strFontFileName = fileInfo.fileName();
             itemModel.strFontFilePath = fileInfo.filePath();
+            itemModel.bIsNormalUserFont = true;//SP3--安装验证页面，回车取消/选中(539)--设置字体状态
             itemModel.strFontInstallStatus = DApplication::translate("DFInstallErrorDialog", "Same version installed");
 
             m_updateInstallErrorFontModelList.push_back(itemModel);

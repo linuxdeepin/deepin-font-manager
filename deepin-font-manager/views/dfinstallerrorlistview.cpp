@@ -517,3 +517,60 @@ void DFInstallErrorListView::setSelection(const QRect &rect, QItemSelectionModel
         }
     }
 }
+
+//SP3--安装验证页面，listview上下键自动跳过异常字体
+bool DFInstallErrorListView::selectNextIndex(int nextIndex)
+{
+    if (nextIndex == currentIndex().row() && selectedIndexes().count() != 0)//循环到当前选中时，结束
+        return true;
+
+    QModelIndex nextModelIndex = m_errorListSourceModel->index(nextIndex, 0);
+    DFInstallErrorItemModel itemModel =
+        qvariant_cast<DFInstallErrorItemModel>(getErrorListSourceModel()->data(nextModelIndex));
+    if (itemModel.bIsNormalUserFont) {
+        if (selectedIndexes().count() == 0)//没有选项则设置并滚动到第一个可选项
+            scrollTo(nextModelIndex);
+        setCurrentIndex(nextModelIndex);
+        return true;
+    } else {
+        return false;
+    }
+    return false;
+}
+
+//SP3--安装验证页面，listview上下键自动跳过异常字体
+void DFInstallErrorListView::keyPressEvent(QKeyEvent *event)
+{
+    if (event->key() == Qt::Key_Up || event->key() == Qt::Key_Down) {
+        if (selectedIndexes().count() == 0) {//没有选中时，设置第一个可选项为选中状态
+            for (int i = 0; i < this->count(); i++) {
+                if (selectNextIndex(i))
+                    break;
+            }
+            return;
+        } else if (selectedIndexes().count() > 1) {//多选时，设置第一个选中项为单独选中
+            setCurrentIndex(selectedIndexes().first());
+            scrollTo(selectedIndexes().first());
+            return;
+        }
+        if (event->key() == Qt::Key_Down) {//循环判断是否可选,如果没有可选则不改变选项
+            for (int i = currentIndex().row() + 1; i <= this->count(); i++) {
+                if (selectNextIndex(i))
+                    return;
+                if (i == (this->count() - 1) || i == this->count())
+                    i = -1;
+            }
+            return;
+        } else {//循环判断是否可选,如果没有可选则不改变选项
+
+            for (int i = currentIndex().row() - 1; i >= -1; i--) {
+                if (selectNextIndex(i))
+                    return;
+                if (i == 0 || i == -1)
+                    i = this->count();
+            }
+            return;
+        }
+    }
+    DListView::keyPressEvent(event);
+}

@@ -69,7 +69,9 @@ signals:
     void onClickErrorListItem(QModelIndex index);
 
 private slots:
-
+protected:
+    void keyPressEvent(QKeyEvent *event);//SP3--安装验证页面，listview上下键自动跳过异常字体
+    bool selectNextIndex(int nextIndex);//SP3--安装验证页面，listview上下键自动跳过异常字体
 };
 
 #endif // DFINSTALLERRORLISTVIEW_H

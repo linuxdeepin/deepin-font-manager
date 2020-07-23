@@ -9,6 +9,7 @@ struct DFInstallErrorItemModel {
     bool bChecked;
     bool bSelectable;
     bool bSystemFont;
+    bool bIsNormalUserFont;//SP3--安装验证页面，回车取消/选中(539)--设置字体状态
     QString strFontFileName;
     QString strFontFilePath;
     QString strFontInstallStatus;
@@ -18,6 +19,7 @@ struct DFInstallErrorItemModel {
         bChecked = false;
         bSelectable = true;
         bSystemFont = false;
+        bIsNormalUserFont = false;//SP3--安装验证页面，回车取消/选中(539)--初始化字体状态
         strFontFileName = "";
         strFontFilePath = "";
         strFontInstallStatus = "";
