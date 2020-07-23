@@ -797,10 +797,30 @@ void DFontPreviewListView::keyPressEvent(QKeyEvent *event)
     } else {
         if (event->key() == Qt::Key_Up || event->key() == Qt::Key_Down) {
             QModelIndexList list = selectedIndexes();
-            if (QApplication::keyboardModifiers() == Qt::ShiftModifier  || QApplication::keyboardModifiers() == Qt::CTRL) {
-                QListView::keyPressEvent(event);
-                return;
+            /*判断当前shift+上下键选中*/
+            if (QApplication::keyboardModifiers() == Qt::ShiftModifier && list.count() > 0) {
+                if (event->key() == Qt::Key_Up) {
+                    sortModelIndexList(list);
+                    if (list.last().row() > 0) {
+                        QModelIndex nextModelIndex = m_fontPreviewProxyModel->index(list.last().row() - 1, 0);
+                        selectionModel()->select(nextModelIndex, QItemSelectionModel::Select);
+                        scrollTo(nextModelIndex);
+                    }
+                    return;
+                } else {
+                    sortModelIndexList(list);
+                    if (list.first().row() < this->count()) {
+                        QModelIndex nextModelIndex = m_fontPreviewProxyModel->index(list.first().row() + 1, 0);
+                        selectionModel()->select(nextModelIndex, QItemSelectionModel::Select);
+                        scrollTo(nextModelIndex);
+                    }
+                    return;
+                }
             }
+            if (QApplication::keyboardModifiers() == Qt::CTRL
+                    && (event->key() == Qt::Key_Up || event->key() == Qt::Key_Down)
+                    && list.count() > 0)
+                return;
             /*判断当前选中item是否为首个或末尾，首个按上键且在可见时切换至末尾选中，末尾按下键且可见时切换至首个选中 UT000539*/
             if (event->key() == Qt::Key_Up) {
                 if (list.count() < 1) {//SP3--空白页面上下键选中判断--上键选中末尾
@@ -837,6 +857,7 @@ void DFontPreviewListView::keyPressEvent(QKeyEvent *event)
                 } else {
                     if (list.last().row() == this->count() - 1) {
                         scrollToBottom();
+                        return;
                     }
                 }
             }
@@ -925,6 +946,9 @@ void DFontPreviewListView::updateShiftSelect(const QModelIndex &modelIndex)
         } else if (m_currentSelectedRow > modelIndex.row()) {
             begin = modelIndex.row();
         }
+    } else {
+        begin = 0;
+        end = modelIndex.row();
     }
 
     if (begin < 0)
