@@ -14,6 +14,10 @@
 // State bar
 #define FTM_SBAR_HEIGHT 56
 
+//Alt+M rightMenuPositionParam //SP3--Alt+M右键菜单--位置参数
+#define POSITION_PARAM_X 158
+#define POSITION_PARAM_Y 50
+
 #define FTM_SBAR_TXT_EDIT_H 44
 #define FTM_SBAR_TXT_EDIT_W 384  // Not used,Expanding now
 

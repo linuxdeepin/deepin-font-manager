@@ -208,6 +208,7 @@ protected:
     QShortcut *m_scAddNewFont    {nullptr};  //Add Font           --> Ctrl+O
     QShortcut *m_scFontInfo      {nullptr};  //Font information   --> CTRL+I
     QShortcut *m_scAddOrCancelFavFont   {nullptr};  //Add or cancel favorite    -->.
+    QShortcut *m_scShowMenu      {nullptr};  //ShowMenu           -->Alt+M//SP3--Alt+M右键菜单
 
     //is in installing font flow
     //Avoid start multi-NormalInstalltion window

@@ -1092,6 +1092,66 @@ QString DFontPreviewListView::getPreviewTextWithSize(int *fontSize)
     return QString(DApplication::translate("Font", "Don't let your dreams be dreams"));
 }
 
+//SP3--Alt+M右键菜单--弹出
+void DFontPreviewListView::onRightMenuShortCutActivated()
+{
+    if (selectedIndexes().count() == 0) {
+        return;
+    }
+    DFontMgrMainWindow *mw = qobject_cast<DFontMgrMainWindow *>(m_parentWidget);
+    QModelIndexList indexes = selectedIndexes();
+    QModelIndex temp;
+    bool flag;
+    for (int i = 0; i < indexes.count() - 1; i++) {//排序选中项
+        flag = false;
+        for (int j = indexes.count() - 1; j > i; j--) {
+            if (indexes[j].row() < indexes[j - 1].row()) {
+                temp = indexes[j];
+                indexes[j] = indexes[j - 1];
+                indexes[j - 1] = temp;
+                flag = true;
+            }
+        }
+        if (!flag)
+            break;
+    }
+    QPoint showMenuPosition;//菜单弹出位置
+    if (selectedIndexes().count() == 1) {
+        QRect curRect = visualRect(selectedIndexes().first());
+        if (!viewport()->visibleRegion().contains(curRect.center())) {//判断选中是否可见
+            scrollTo(selectedIndexes().first());
+            curRect = visualRect(selectedIndexes().first());
+        }
+        showMenuPosition = curRect.center();
+        showMenuPosition = QPoint(showMenuPosition.x() + mw->pos().x() + POSITION_PARAM_X, showMenuPosition.y() + mw->pos().y() + POSITION_PARAM_Y);
+    } else if (selectedIndexes().count() > 1) {
+        bool n_needScroll = true;
+        for (auto idx : indexes) {
+            QRect curRect = visualRect(idx);
+            if (viewport()->visibleRegion().contains(curRect.center())) {//判断选中是否可见,在第一个可见位置弹出
+                setCurrentSelected(idx.row());
+                showMenuPosition = QPoint((curRect.center()).x() + mw->pos().x() + POSITION_PARAM_X, (curRect.center()).y() + mw->pos().y() + POSITION_PARAM_Y);
+                n_needScroll = false;
+                break;
+            }
+        }
+        if (n_needScroll) {
+            scrollTo(indexes.first());
+            setCurrentSelected(indexes.first().row());
+            QPoint n_firstPosCenter = (visualRect(indexes.first())).center();
+            showMenuPosition = QPoint(n_firstPosCenter.x() + mw->pos().x() + POSITION_PARAM_X, n_firstPosCenter.y() + mw->pos().y() + POSITION_PARAM_Y);
+        }
+    }
+    if (!m_rightMenu->isVisible()) {
+        connect(m_rightMenu, &QMenu::aboutToHide, this, [ = ] {
+            clearPressState();
+        });
+        m_IsNeedFocus = true;
+        m_rightMenu->exec(showMenuPosition);
+        return;
+    }
+}
+
 void DFontPreviewListView::setCurrentSelected(int indexRow)
 {
     m_currentSelectedRow = indexRow;

@@ -477,6 +477,24 @@ void DFontMgrMainWindow::initShortcuts()
         }, Qt::UniqueConnection);
     }
 
+    //ShowMenu --> Alt+M//SP3--Alt+M菜单--快捷键
+    if (nullptr == m_scShowMenu) {
+        m_scShowMenu = new QShortcut(this);
+        m_scShowMenu->setKey(tr("Alt+M"));
+        m_scShowMenu->setContext(Qt::ApplicationShortcut);
+        m_scShowMenu->setAutoRepeat(false);
+
+        connect(m_scShowMenu, &QShortcut::activated, this, [this] {
+            if (m_fontPreviewListView->hasFocus())
+            {
+                m_fontPreviewListView->onRightMenuShortCutActivated();
+            } else
+            {
+                return;
+            }
+        }, Qt::UniqueConnection);
+    }
+
     //Add Font --> Ctrl+O
     if (nullptr == m_scAddNewFont) {
         m_scAddNewFont = new QShortcut(this);
@@ -1609,6 +1627,7 @@ void DFontMgrMainWindow::showAllShortcut()
         {DApplication::translate("Shortcut", "Favorite"), "."},
         {DApplication::translate("Shortcut", "Unfavorite"), "."},
         {DApplication::translate("Shortcut", "Font info"), "Ctrl+I"},
+        {DApplication::translate("Shortcut", "右键菜单"), "Alt+M"},//SP3--Alt+M右键菜单
     };
 
     QJsonObject fontMgrJsonGroup;

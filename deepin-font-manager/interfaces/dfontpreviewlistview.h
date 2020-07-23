@@ -109,7 +109,7 @@ public:
 
     bool getIsTabFocus() const;
     void setIsTabFocus(bool IsTabFocus);
-
+    void onRightMenuShortCutActivated();//SP3--Alt+M右键菜单
 protected:
     void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected) override;
 
