@@ -47,7 +47,7 @@ void DFontBaseDialog::initUI()
     m_logoIcon->setPixmap(QIcon::fromTheme("deepin-font-manager").pixmap(QSize(32, 32)));
 
     m_closeButton = new DWindowCloseButton(this);
-    m_closeButton->setFocusPolicy(Qt::NoFocus);
+//    m_closeButton->setFocusPolicy(Qt::NoFocus);//SP3--设置tab顺序--设置close按钮可聚焦(539)
     m_closeButton->setIconSize(QSize(50, 50));
 
     m_tileText = new DLabel(this);

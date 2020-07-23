@@ -1425,17 +1425,34 @@ void DFontPreviewListView::selectedFonts(int *deleteCnt, int *systemCnt, int *cu
         qDebug() << __FUNCTION__ << delFontList->size();
 }
 
-//字体变化设置选中行居中UT000539 /功能暂时保留，勿删/*/
+//SP3--切换至listview，已有选中且不可见，则滚动到第一并记录位置
 void DFontPreviewListView::scrollWithTheSelected()
 {
+    if (0 == selectedIndexes().count()) {
+        QModelIndex modelIndex = getFontPreviewProxyModel()->index(0, 0);
+        if (modelIndex.isValid()) {
+            setCurrentIndex(modelIndex);
+            setCurrentSelected(0);
+        }
+        return;
+    }
     QModelIndexList indexes = selectionModel()->selectedIndexes();
     sortModelIndexList(indexes);
+    bool needScroll = true;
     if (indexes.isEmpty())
         return;
-
-    if (this->visibleRegion().contains(m_curRect.topLeft()) || this->visibleRegion().contains(m_curRect.bottomLeft())) {
+    for (auto idx : indexes) {
+        QRect rect = visualRect(idx);
+        if (this->viewport()->visibleRegion().contains(rect.center())) {
+            needScroll = false;
+            break;
+        }
+    }
+    if (needScroll) {
         scrollTo(indexes.last());
-    } return;//if selecteditems is not in this visibleRegion then return
+        setCurrentSelected(indexes.last().row());
+        indexes.clear();
+    }
 }
 
 //记录下当前选中的位置,用于局中显示UT000539

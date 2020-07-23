@@ -93,6 +93,8 @@ DFontMgrMainWindow::DFontMgrMainWindow(bool isQuickMode, QWidget *parent)
     initUI();
     initConnections();
     initShortcuts();
+    //SP3--设置tab顺序--安装事件过滤器(539)
+    installEventFilters();
     initFontFiles();
 }
 
@@ -140,6 +142,22 @@ void DFontMgrMainWindow::initUI()
     initTileBar();
     initRightKeyMenu();
     initMainVeiws();
+}
+
+//SP3--设置tab顺序--安装事件过滤器(539)
+void DFontMgrMainWindow::installEventFilters()
+{
+    D_D(DFontMgrMainWindow);
+    titlebar()->installEventFilter(this);//标题栏
+    d->leftSiderBar->installEventFilter(this);// 菜单
+    m_fontPreviewListView->installEventFilter(this);//预览区域
+    d->textInputEdit->lineEdit()->installEventFilter(this);//输入框
+    d->addFontButton->installEventFilter(this);//添加按钮
+    d->fontScaleSlider->installEventFilter(this);//滑块
+    d->searchFontEdit->lineEdit()->installEventFilter(this);//输入框
+    d->searchFontEdit->lineEdit()->setFocusPolicy(Qt::ClickFocus);
+    m_noInstallListView->installEventFilter(this);//无字体页面
+    m_noResultListView->installEventFilter(this);//无结果页面
 }
 
 void DFontMgrMainWindow::initConnections()
@@ -663,7 +681,7 @@ void DFontMgrMainWindow::initLeftSideBar()
     leftMainLayout->addWidget(d->leftSiderBar);
     d->leftBarHolder->setLayout(leftMainLayout);
 
-    d->leftSiderBar->setFocus();
+//    d->leftSiderBar->setFocus();//SP3--设置tab顺序--取消初始焦点(539)
 
     // Debug layout code
 #ifdef FTM_DEBUG_LAYOUT_COLOR
@@ -1808,4 +1826,67 @@ void DFontMgrMainWindow::keyPressEvent(QKeyEvent *event)
     }
 
     DWidget::keyPressEvent(event);
+}
+
+//SP3--设置tab顺序(539)
+bool DFontMgrMainWindow::eventFilter(QObject *obj, QEvent *event)
+{
+    D_D(DFontMgrMainWindow);
+    bool isShield_KeyTab = false;
+    if (event->type() == QEvent::KeyPress) {
+        QKeyEvent *keyEvent = dynamic_cast<QKeyEvent *>(event);
+        if (keyEvent->key() == Qt::Key_Tab) {
+            if (obj == d->searchFontEdit->lineEdit()) {
+                setNextTabFocus(obj);
+                DWidget::keyPressEvent(keyEvent);//下个控件为titlebar时需要多执行一次keyPressEvent
+            } else {
+                setNextTabFocus(obj);
+            }
+            isShield_KeyTab = true;
+        } else if (keyEvent->key() == Qt::Key_Down || keyEvent->key() == Qt::Key_Up
+                   || keyEvent->key() == Qt::Key_Left || keyEvent->key() == Qt::Key_Right) {
+            if (obj == d->addFontButton)//添加字体按钮聚焦，屏蔽上下左右键
+                return true;
+        }
+        if (isShield_KeyTab) {
+            return true;
+        } else {
+            return QWidget::eventFilter(obj, event);
+        }
+    }
+    return QWidget::eventFilter(obj, event);
+}
+
+//SP3--设置tab顺序(539)
+void DFontMgrMainWindow::setNextTabFocus(QObject *obj)
+{
+    D_D(DFontMgrMainWindow);
+    //因setTabOrder无法实现功能，所以手动设置顺序
+    if (obj == d->addFontButton) {
+        d->searchFontEdit->lineEdit()->setFocus(Qt::TabFocusReason);
+    } else if (obj == d->searchFontEdit->lineEdit()) {
+        titlebar()->setFocus(Qt::TabFocusReason);
+        d->addFontButton->setFocusPolicy(Qt::ClickFocus);
+    } else if (obj == m_fontPreviewListView) {
+//        m_fontPreviewListView->setFocus(Qt::NoFocusReason);
+        d->textInputEdit->lineEdit()->setFocus(Qt::TabFocusReason);
+    } else if (obj == d->textInputEdit->lineEdit()) {
+        d->fontScaleSlider->setFocus(Qt::TabFocusReason);
+    } else if (obj == d->leftSiderBar) {
+        //如果预览窗口不可见，则直接切换焦点至添加字体按钮
+        if (m_fontPreviewListView->isVisible()) {
+//            m_fontPreviewListView->setIsTabFocus(true);
+            //设置预览窗口焦点
+            m_fontPreviewListView->scrollWithTheSelected();
+            m_fontPreviewListView->setFocus(Qt::TabFocusReason);
+        } else {
+            d->addFontButton->setFocus(Qt::TabFocusReason);
+        }
+    } else if (obj == d->fontScaleSlider) {
+        d->addFontButton->setFocus(Qt::TabFocusReason);
+    }
+    //如果点击设置了无字体页面焦点，则Tab切换至添加字体按钮
+    else {
+        d->addFontButton->setFocus(Qt::TabFocusReason);
+    }
 }

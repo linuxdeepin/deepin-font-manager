@@ -112,7 +112,7 @@ protected:
     void initRightKeyMenu();
     void initFontPreviewListView(QWidget *parent);
     void initFontPreviewItemsData();
-
+    void installEventFilters();//SP3--设置tab顺序(539)
     void handleAddFontEvent();
     bool installFont(const QStringList &files);
     void installFontFromSys(const QStringList &files);
@@ -226,6 +226,8 @@ protected:
 
     Q_DECLARE_PRIVATE_D(qGetPtrHelper(d_ptr), DFontMgrMainWindow)
     void autoLabelWidth(QString text, DLabel *lab, QFontMetrics fm);
+    void setNextTabFocus(QObject *obj);//SP3--设置tab顺序(539)
+    bool eventFilter(QObject *obj, QEvent *event);//SP3--设置tab顺序(539)
 };
 
 #endif  // DFONTMGRMAINWINDOW_H
