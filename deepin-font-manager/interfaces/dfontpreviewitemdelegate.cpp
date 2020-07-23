@@ -63,6 +63,10 @@ void DFontPreviewItemDelegate::paintForegroundFontName(QPainter *painter, const 
     DStyleHelper styleHelper;
     DPalette pa = DApplicationHelper::instance()->palette(m_parentView);
     QColor fillColor = styleHelper.getColor(static_cast<const QStyleOption *>(&option), pa, DPalette::TextTips);
+    //SP3--禁用置灰(539)
+    if (!itemData.isEnabled) {
+        fillColor.setAlphaF(0.6);
+    }
     painter->setPen(QPen(fillColor));
 
     QRect fontNameRect = QRect(option.rect.x() + FONT_NAME_LEFT_MARGIN, option.rect.y() + FONT_NAME_TOP_MARGIN,
@@ -203,7 +207,12 @@ void DFontPreviewItemDelegate::paintForegroundPreviewFont(QPainter *painter, con
         return;
 
     QRect fontPreviewRect = adjustPreviewRect(option.rect);
-    painter->setPen(QPen(option.palette.color(DPalette::Text)));
+//    painter->setPen(QPen(option.palette.color(DPalette::Text)));
+    //SP3--禁用置灰(539)
+    QColor color(option.palette.color(DPalette::Text));
+    if (!itemData.isEnabled)
+        color.setAlphaF(0.6);
+    painter->setPen(QPen(color));
 
     QFontMetrics fontMetric(previewFont);
 

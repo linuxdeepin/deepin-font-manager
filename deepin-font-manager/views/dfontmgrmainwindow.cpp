@@ -681,7 +681,7 @@ void DFontMgrMainWindow::initLeftSideBar()
     leftMainLayout->addWidget(d->leftSiderBar);
     d->leftBarHolder->setLayout(leftMainLayout);
 
-//    d->leftSiderBar->setFocus();//SP3--设置tab顺序--取消初始焦点(539)
+    d->leftSiderBar->setFocus();
 
     // Debug layout code
 #ifdef FTM_DEBUG_LAYOUT_COLOR
