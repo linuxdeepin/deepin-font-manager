@@ -244,18 +244,18 @@ void DFontPreviewItemDelegate::paintBackground(QPainter *painter, const QStyleOp
     }
 
     if (option.state.testFlag(QStyle::State_Selected)) {
-        DStyleHelper styleHelper;
-        QColor fillColor = styleHelper.getColor(static_cast<const QStyleOption *>(&option), DPalette::ToolTipText);
-
-        fillColor.setAlphaF(0.2);
-        painter->setBrush(QBrush(fillColor));
-        painter->fillPath(path, fillColor);
         //如果是通过tab获取到的焦点，绘制tab的选中效果
         if (m_parentView->getIsTabFocus() == true) {
             paintTabFocusBackground(painter, option, bgRect);
+        } else {
+            //不是通过tab获取到的焦点的情况，再去绘制默认的选中状态，避免的tab选中状态时四个角会出现直角的问题
+            DStyleHelper styleHelper;
+            QColor fillColor = styleHelper.getColor(static_cast<const QStyleOption *>(&option), DPalette::ToolTipText);
+
+            fillColor.setAlphaF(0.2);
+            painter->setBrush(QBrush(fillColor));
+            painter->fillPath(path, fillColor);
         }
-
-
     } else {
         DPalette pa = DApplicationHelper::instance()->palette(m_parentView);
         DStyleHelper styleHelper;
