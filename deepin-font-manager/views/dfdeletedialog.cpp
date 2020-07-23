@@ -108,33 +108,25 @@ void DFDeleteDialog::initMessageTitle()
 void DFDeleteDialog::initMessageDetail()
 {
     messageDetail = new DLabel(this);
-    if (m_deleteCnt == 1) {
-        if (m_systemCnt == 0 && !m_hasCurFont) {
+
+    if (m_systemCnt == 0 && !m_hasCurFont) {
+        if (m_deleteCnt == 1) {
             messageDetail->setText(DApplication::translate("DeleteConfirmDailog", "This font will not be available to applications"));
-        } else if (m_systemCnt > 0 && !m_hasCurFont) {
-            messageDetail->setText(DApplication::translate("DeleteConfirmDailog",
-                                                           "The other %1 system fonts cannot be deleted").arg(m_systemCnt));
-        } else if (m_systemCnt == 0 && m_hasCurFont) {
-            messageDetail->setText(DApplication::translate("DeleteConfirmDailog",
-                                                           "The font \"%1\" in use cannot be deleted").arg(m_mainWindow->getPreviewListView()->getCurFontStrName()));
         } else {
-            messageDetail->setText(DApplication::translate("DeleteConfirmDailog",
-                                                           "The other %1 system fonts and the font \"%2\" in use cannot be deleted").arg(m_systemCnt).arg(m_mainWindow->getPreviewListView()->getCurFontStrName()));
-        }
-    } else {
-        if (m_systemCnt == 0 && !m_hasCurFont) {
             messageDetail->setText(DApplication::translate("DeleteConfirmDailog", "These fonts will not be available to applications"));
-        } else if (m_systemCnt > 0 && !m_hasCurFont) {
-            messageDetail->setText(DApplication::translate("DeleteConfirmDailog",
-                                                           "The other %1 system fonts cannot be deleted").arg(m_systemCnt));
-        } else if (m_systemCnt == 0 && m_hasCurFont) {
-            messageDetail->setText(DApplication::translate("DeleteConfirmDailog",
-                                                           "The font %1 in use cannot be deleted").arg(m_mainWindow->getPreviewListView()->getCurFontStrName()));
-        } else {
-            messageDetail->setText(DApplication::translate("DeleteConfirmDailog",
-                                                           "The other %1 system fonts and the font \"%2\" in use cannot be deleted").arg(m_systemCnt).arg(m_mainWindow->getPreviewListView()->getCurFontStrName()));
         }
+    } else if (m_systemCnt > 0 && !m_hasCurFont) {
+        messageDetail->setText(DApplication::translate("DeleteConfirmDailog",
+                                                       "The other %1 system fonts cannot be deleted").arg(m_systemCnt));
+    } else if (m_systemCnt == 0 && m_hasCurFont) {
+        messageDetail->setText(DApplication::translate("DeleteConfirmDailog",
+                                                       "The font \"%1\" in use cannot be deleted").arg(m_mainWindow->getPreviewListView()->getCurFontStrName()));
+    } else {
+        messageDetail->setText(DApplication::translate("DeleteConfirmDailog",
+                                                       "The other %1 system fonts and the font \"%2\" in use cannot be deleted").arg(m_systemCnt)
+                               .arg(m_mainWindow->getPreviewListView()->getCurFontStrName()));
     }
+
     /* Bug#21515 UT000591*/
     messageDetail->setFixedWidth(DEFAULT_WINDOW_W - 22);
     messageDetail->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
@@ -161,7 +153,7 @@ QLayout *DFDeleteDialog::initBottomButtons()
 
     m_confirmBtn = new DWarningButton(this);
     m_confirmBtn->setFixedSize(170, 36);
-    m_confirmBtn->setText(DApplication::translate("DFDeleteDialog", "Delete"));
+    m_confirmBtn->setText(DApplication::translate("DeleteConfirmDailog", "Delete"));
 
     DVerticalLine *verticalSplite = new DVerticalLine(this);
     DPalette pa = DApplicationHelper::instance()->palette(verticalSplite);
