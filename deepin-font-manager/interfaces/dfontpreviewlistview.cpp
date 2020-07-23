@@ -785,12 +785,18 @@ void DFontPreviewListView::keyPressEvent(QKeyEvent *event)
     } else {
         if (event->key() == Qt::Key_Up || event->key() == Qt::Key_Down) {
             QModelIndexList list = selectedIndexes();
-            if (QApplication::keyboardModifiers() == Qt::ShiftModifier || list.count() < 1 || QApplication::keyboardModifiers() == Qt::CTRL) {
+            if (QApplication::keyboardModifiers() == Qt::ShiftModifier  || QApplication::keyboardModifiers() == Qt::CTRL) {
                 QListView::keyPressEvent(event);
                 return;
             }
             /*判断当前选中item是否为首个或末尾，首个按上键且在可见时切换至末尾选中，末尾按下键且可见时切换至首个选中 UT000539*/
             if (event->key() == Qt::Key_Up) {
+                if (list.count() < 1) {//SP3--空白页面上下键选中判断--上键选中末尾
+                    QModelIndex modelIndex = m_fontPreviewProxyModel->index(this->count() - 1, 0);
+                    setCurrentIndex(modelIndex);
+                    setCurrentSelected(modelIndex.row());
+                    return;
+                }
                 if (isAtListviewTop()) {
                     if (list.last().row() == 0) {
                         QModelIndex modelIndex = m_fontPreviewProxyModel->index(this->count() - 1, 0);
@@ -804,6 +810,12 @@ void DFontPreviewListView::keyPressEvent(QKeyEvent *event)
                     }
                 }
             } else if (event->key() == Qt::Key_Down) {
+                if (list.count() < 1) {//SP3--空白页面上下键选中判断--下键选中首个
+                    QModelIndex modelIndex = m_fontPreviewProxyModel->index(0, 0);
+                    setCurrentIndex(modelIndex);
+                    setCurrentSelected(modelIndex.row());
+                    return;
+                }
                 if (isAtListviewBottom()) {
                     if (list.last().row() == this->count() - 1) {
                         QModelIndex modelIndex = m_fontPreviewProxyModel->index(0, 0);
