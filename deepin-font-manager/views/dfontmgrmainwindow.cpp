@@ -893,6 +893,7 @@ void DFontMgrMainWindow::initStateBar()
 void DFontMgrMainWindow::handleAddFontEvent()
 {
     Q_D(DFontMgrMainWindow);
+    bool hasTabFocus = d->addFontButton->hasFocus();//SP3--添加字体按钮取消安装后恢复选中状态--记录选中状态
     DFileDialog dialog;
     dialog.setFileMode(DFileDialog::ExistingFiles);
     dialog.setNameFilter(Utils::suffixList());
@@ -915,6 +916,12 @@ void DFontMgrMainWindow::handleAddFontEvent()
 
     // if click cancel button or close button.
     if (mode != QDialog::Accepted) {
+        //SP3--添加字体按钮取消安装后恢复选中状态
+        if (hasTabFocus) {
+            QTimer::singleShot(10, [ = ] {
+                d->addFontButton->setFocus(Qt::TabFocusReason);
+            });
+        }
         return;
     }
 
