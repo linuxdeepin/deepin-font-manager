@@ -234,6 +234,7 @@ void DFontPreviewItemDelegate::paintBackground(QPainter *painter, const QStyleOp
 
     QPainterPath path;
     path.setFillRule(Qt::WindingFill);
+
     if (0 == index.row()) {
         int radius = 8;
         path.addRoundedRect(bgRect, radius, radius);
@@ -245,9 +246,16 @@ void DFontPreviewItemDelegate::paintBackground(QPainter *painter, const QStyleOp
     if (option.state.testFlag(QStyle::State_Selected)) {
         DStyleHelper styleHelper;
         QColor fillColor = styleHelper.getColor(static_cast<const QStyleOption *>(&option), DPalette::ToolTipText);
+
         fillColor.setAlphaF(0.2);
         painter->setBrush(QBrush(fillColor));
         painter->fillPath(path, fillColor);
+        //如果是通过tab获取到的焦点，绘制tab的选中效果
+        if (m_parentView->getIsTabFocus() == true) {
+            paintTabFocusBackground(painter, option, bgRect);
+        }
+
+
     } else {
         DPalette pa = DApplicationHelper::instance()->palette(m_parentView);
         DStyleHelper styleHelper;
@@ -255,6 +263,77 @@ void DFontPreviewItemDelegate::paintBackground(QPainter *painter, const QStyleOp
         painter->setBrush(QBrush(fillColor));
         painter->fillPath(path, fillColor);
     }
+}
+
+
+//绘制tab选中后的背景效果
+void DFontPreviewItemDelegate::paintTabFocusBackground(QPainter *painter, const QStyleOptionViewItem &option, const QRect &bgRect) const
+{
+    QPainterPath path;
+    painter->setRenderHint(QPainter::Antialiasing, true);
+    const int radius = 8;
+
+    path.moveTo(bgRect.bottomRight() - QPoint(0, radius));
+    path.lineTo(bgRect.topRight() + QPoint(0, radius));
+    path.arcTo(QRect(QPoint(bgRect.topRight() - QPoint(radius * 2, 0)), QSize(radius * 2, radius * 2)), 0, 90);
+    path.lineTo(bgRect.topLeft() + QPoint(radius, 0));
+    path.arcTo(QRect(QPoint(bgRect.topLeft()), QSize(radius * 2, radius * 2)), 90, 90);
+    path.lineTo(bgRect.bottomLeft() - QPoint(0, radius));
+    path.arcTo(QRect(QPoint(bgRect.bottomLeft() - QPoint(0, radius * 2)), QSize(radius * 2, radius * 2)), 180, 90);
+    path.lineTo(bgRect.bottomLeft() + QPoint(radius, 0));
+    path.arcTo(QRect(QPoint(bgRect.bottomRight() - QPoint(radius * 2, radius * 2)), QSize(radius * 2, radius * 2)), 270, 90);
+
+    QPainterPath path2;
+    QPoint path2_bottomRight(bgRect.bottomRight().x() - 2, bgRect.bottomRight().y() - 2);
+    QPoint path2_topRight(bgRect.topRight().x() - 2, bgRect.topRight().y() + 2);
+    QPoint path2_topLeft(bgRect.topLeft().x() + 2, bgRect.topLeft().y() + 2);
+    QPoint path2_bottomLeft(bgRect.bottomLeft().x() + 2, bgRect.bottomLeft().y() - 2);
+    path2.moveTo(path2_bottomRight - QPoint(0, 6));
+    path2.lineTo(path2_topRight + QPoint(0, 6));
+    path2.arcTo(QRect(QPoint(path2_topRight - QPoint(6 * 2, 0)), QSize(6 * 2, 6 * 2)), 0, 90);
+    path2.lineTo(path2_topLeft + QPoint(6, 0));
+    path2.arcTo(QRect(QPoint(path2_topLeft), QSize(6 * 2, 6 * 2)), 90, 90);
+    path2.lineTo(path2_bottomLeft - QPoint(0, 6));
+    path2.arcTo(QRect(QPoint(path2_bottomLeft - QPoint(0, 6 * 2)), QSize(6 * 2, 6 * 2)), 180, 90);
+    path2.lineTo(path2_bottomRight - QPoint(6, 0));
+    path2.arcTo(QRect(QPoint(path2_bottomRight - QPoint(6 * 2, 6 * 2)), QSize(6 * 2, 6 * 2)), 270, 90);
+
+    QPainterPath path3;
+    QPoint path3_bottomRight(bgRect.bottomRight().x() - 3, bgRect.bottomRight().y() - 3);
+    QPoint path3_topRight(bgRect.topRight().x() - 3, bgRect.topRight().y() + 3);
+    QPoint path3_topLeft(bgRect.topLeft().x() + 3, bgRect.topLeft().y() + 3);
+    QPoint path3_bottomLeft(bgRect.bottomLeft().x() + 3, bgRect.bottomLeft().y() - 3);
+    path3.moveTo(path3_bottomRight - QPoint(0, 10));
+    path3.lineTo(path3_topRight + QPoint(0, 10));
+    path3.arcTo(QRect(QPoint(path3_topRight - QPoint(6 * 2, 0)), QSize(6 * 2, 6 * 2)), 0, 90);
+    path3.lineTo(path3_topLeft + QPoint(10, 0));
+    path3.arcTo(QRect(QPoint(path3_topLeft), QSize(6 * 2, 6 * 2)), 90, 90);
+    path3.lineTo(path3_bottomLeft - QPoint(0, 10));
+    path3.arcTo(QRect(QPoint(path3_bottomLeft - QPoint(0, 6 * 2)), QSize(6 * 2, 6 * 2)), 180, 90);
+    path3.lineTo(path3_bottomRight - QPoint(10, 0));
+    path3.arcTo(QRect(QPoint(path3_bottomRight - QPoint(6 * 2, 6 * 2)), QSize(6 * 2, 6 * 2)), 270, 90);
+
+
+    DPalette::ColorGroup cg = option.state & QStyle::State_Enabled
+                              ? DPalette::Normal : DPalette::Disabled;
+    if (cg == DPalette::Normal && !(option.state & QStyle::State_Active)) {
+        cg = DPalette::Inactive;
+    }
+
+    QColor fillColor = option.palette.color(cg, DPalette::Highlight);
+    painter->setBrush(QBrush(fillColor));
+    painter->fillPath(path, painter->brush());
+
+    QColor fillColor2 = option.palette.color(cg, DPalette::Window);
+    painter->setBrush(QBrush(fillColor2));
+    painter->fillPath(path2, painter->brush());
+
+    DStyleHelper styleHelper;
+    QColor fillColor3 = styleHelper.getColor(static_cast<const QStyleOption *>(&option), DPalette::ToolTipText);
+    fillColor3.setAlphaF(0.2);
+    painter->setBrush(QBrush(fillColor3));
+    painter->fillPath(path3, painter->brush());
+
 }
 
 void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,

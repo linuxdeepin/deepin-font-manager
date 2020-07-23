@@ -1822,6 +1822,7 @@ void DFontMgrMainWindow::keyPressEvent(QKeyEvent *event)
             d->fontScaleSlider->setValue(d->fontScaleSlider->value() + 1);
             /*焦点在leftSliderBar同时右侧listview有字体显示时,实现右键切换焦点至previewlistview,切换后选中首个 UT000539*/
         } else if (Qt::Key_Right == event->key() && d->leftSiderBar->hasFocus() && m_fontPreviewListView->isVisible()) {
+            m_fontPreviewListView->setIsTabFocus(true);
             m_fontPreviewListView->setFocus(Qt::MouseFocusReason);
             if (0 == m_fontPreviewListView->selectionModel()->selectedIndexes().count()) {
                 DFontPreviewProxyModel *filterModel = m_fontPreviewListView->getFontPreviewProxyModel();
@@ -1882,7 +1883,7 @@ void DFontMgrMainWindow::setNextTabFocus(QObject *obj)
     } else if (obj == d->leftSiderBar) {
         //如果预览窗口不可见，则直接切换焦点至添加字体按钮
         if (m_fontPreviewListView->isVisible()) {
-//            m_fontPreviewListView->setIsTabFocus(true);
+            m_fontPreviewListView->setIsTabFocus(true);
             //设置预览窗口焦点
             m_fontPreviewListView->scrollWithTheSelected();
             m_fontPreviewListView->setFocus(Qt::TabFocusReason);

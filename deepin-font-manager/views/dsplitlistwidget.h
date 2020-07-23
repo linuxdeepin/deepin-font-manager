@@ -9,6 +9,7 @@
 #include <signalmanager.h>
 DWIDGET_USE_NAMESPACE
 
+class DSplitListWidget;
 class DNoFocusDelegate : public DStyledItemDelegate
 {
 public:
@@ -20,12 +21,16 @@ public:
     QSize sizeHint(const QStyleOptionViewItem &option,
                    const QModelIndex &index) const override;
 
+    // 绘制tab选中之后的背景
+    void paintTabFocusBackground(QPainter *painter, const QStyleOptionViewItem &option,
+                                 const QRect &backgroundRect, const DPalette::ColorGroup cg)const;
+
     QString adjustLength(QString &titleName, QFont &font) const;
 protected:
     bool helpEvent(QHelpEvent *event, QAbstractItemView *view, const QStyleOptionViewItem &option, const QModelIndex &index)override;
 
 private:
-    QAbstractItemView *m_parentView;
+    DSplitListWidget *m_parentView;
     void hideTooltipImmediately();
 
 };
@@ -57,6 +62,19 @@ public:
     QStandardItemModel *m_categoryItemModell;
 
     bool m_refreshFinished = true;
+
+    //判断鼠标有没有点击
+    bool m_IsMouseClicked = false;
+
+    //判断是否通过tab获取的焦点
+    bool m_IsTabFocus = false;
+
+    //判断是否是通过键盘左键获取到的焦点，这种情况下选中效果与tab效果一致
+    bool m_IsLeftFocus = false;
+
+    //判断是否为第一次打开应用设置的焦点
+    bool m_IsFirstFocus = true;
+
 signals:
     void onListWidgetItemClicked(int index);
 public slots:
@@ -65,6 +83,8 @@ protected:
     void mouseMoveEvent(QMouseEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
     void wheelEvent(QWheelEvent *event) override;
+    void keyPressEvent(QKeyEvent *event)override;
+    bool eventFilter(QObject *obj, QEvent *event)override;
 };
 
 Q_DECLARE_METATYPE(DSplitListWidget::FontGroup)

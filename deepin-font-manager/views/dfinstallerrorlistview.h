@@ -8,6 +8,7 @@
 
 DWIDGET_USE_NAMESPACE
 
+class DFInstallErrorListView;
 class DFInstallErrorListDelegate : public DStyledItemDelegate
 {
 private:
@@ -19,6 +20,7 @@ private:
                        DFInstallErrorItemModel itemModel, QRect bgRect, bool bSelectable = true)const;
     void drawSelectStatus(QPainter *painter, const QStyleOptionViewItem &option, QRect bgRect)const;
 
+    void paintTabFocusBackground(QPainter *painter, const QStyleOptionViewItem &option, const QRect &bgRect)const;
     QString lengthAutoFeed(QPainter *painter, QString sourceStr, int m_StatusWidth)const;
 
 
@@ -30,6 +32,9 @@ public:
 
     QSize sizeHint(const QStyleOptionViewItem &option,
                    const QModelIndex &index) const override;
+
+private:
+    DFInstallErrorListView *m_parentView;
 };
 
 class QStandardItemModel;
@@ -44,6 +49,8 @@ public:
 
     void mousePressEvent(QMouseEvent *event) override;
     void setSelection(const QRect &rect, QItemSelectionModel::SelectionFlags command) override;
+    bool eventFilter(QObject *obj, QEvent *event)override;
+
     void initErrorListData();
     void initDelegate();
     void addErrorListData(const QList<DFInstallErrorItemModel> &installErrorFontModelList);
@@ -53,6 +60,10 @@ public:
     void updateErrorFontModelList(int index, DFInstallErrorItemModel m_currentItemModel);
     void initModel(bool newOne = true);
     QStandardItemModel *getErrorListSourceModel();
+    bool getIsTabFocus() const;
+
+    void setIsInstallFocus(bool isInstallFocus);
+    bool getIsInstallFocus() const;
 
 private:
 
@@ -64,6 +75,11 @@ private:
     int beforeSelectRow = 0;
 
     bool m_bLeftMouse;
+    bool m_isMouseClicked = false;
+    bool m_IsTabFocus = false;
+    bool m_isInstallFocus = false;
+
+
 
 signals:
     void onClickErrorListItem(QModelIndex index);

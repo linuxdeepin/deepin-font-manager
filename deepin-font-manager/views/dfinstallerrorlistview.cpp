@@ -19,6 +19,7 @@ DWIDGET_USE_NAMESPACE
 
 DFInstallErrorListDelegate::DFInstallErrorListDelegate(QAbstractItemView *parent)
     : DStyledItemDelegate(parent)
+    , m_parentView(qobject_cast<DFInstallErrorListView *>(parent))
 {
 }
 
@@ -86,10 +87,6 @@ void DFInstallErrorListDelegate::drawFontName(QPainter *painter, const QStyleOpt
                                    checkboxRect.top() - 5,
                                    bgRect.width() - fontNameLeft - m_StatusWidth,
                                    checkboxRect.height() + 15);
-
-
-
-
 //    QString elidedFontFileNameText = fontMetric.elidedText(strFontFileName,
 //                                                           Qt::ElideRight,
 //                                                           fontFileNameRect.width(),
@@ -190,11 +187,95 @@ void DFInstallErrorListDelegate::drawSelectStatus(QPainter *painter, const QStyl
 //        DPalette pa = DApplicationHelper::instance()->palette(m_parentView);//dtk库接口不稳定，更换palette获取方式
         DPalette pa = DApplicationHelper::instance()->applicationPalette();
         DStyleHelper styleHelper;
-        QColor fillColor = styleHelper.getColor(static_cast<const QStyleOption *>(&option), pa, DPalette::ItemBackground);
+        QColor fillColor = styleHelper.getColor(static_cast<const QStyleOption *>(&option), DPalette::ToolTipText);
+        fillColor.setAlphaF(0.2);
         painter->fillPath(path, QBrush(fillColor));
-
+// 如果是因为tab获取到的焦点，绘制tab选中的效果
+        if (m_parentView->getIsTabFocus() == true) {
+            paintTabFocusBackground(painter, option, bgRect);
+        }
     }
 }
+
+void DFInstallErrorListDelegate::paintTabFocusBackground(QPainter *painter, const QStyleOptionViewItem &option, const QRect &bgRect) const
+{
+    painter->setRenderHint(QPainter::Antialiasing, true);
+    const int radius = 8;
+
+    //Highlight绘制区域的路径
+    QPainterPath path;
+    path.moveTo(bgRect.bottomRight() - QPoint(0, radius));
+    path.lineTo(bgRect.topRight() + QPoint(0, radius));
+    path.arcTo(QRect(QPoint(bgRect.topRight() - QPoint(radius * 2, 0)), QSize(radius * 2, radius * 2)), 0, 90);
+    path.lineTo(bgRect.topLeft() + QPoint(radius, 0));
+    path.arcTo(QRect(QPoint(bgRect.topLeft()), QSize(radius * 2, radius * 2)), 90, 90);
+    path.lineTo(bgRect.bottomLeft() - QPoint(0, radius));
+    path.arcTo(QRect(QPoint(bgRect.bottomLeft() - QPoint(0, radius * 2)), QSize(radius * 2, radius * 2)), 180, 90);
+    path.lineTo(bgRect.bottomLeft() + QPoint(radius, 0));
+    path.arcTo(QRect(QPoint(bgRect.bottomRight() - QPoint(radius * 2, radius * 2)), QSize(radius * 2, radius * 2)), 270, 90);
+
+    //窗口色绘制区域的路径
+    QPainterPath path2;
+    QPoint path2_bottomRight(bgRect.bottomRight().x() - 2, bgRect.bottomRight().y() - 2);
+    QPoint path2_topRight(bgRect.topRight().x() - 2, bgRect.topRight().y() + 2);
+    QPoint path2_topLeft(bgRect.topLeft().x() + 2, bgRect.topLeft().y() + 2);
+    QPoint path2_bottomLeft(bgRect.bottomLeft().x() + 2, bgRect.bottomLeft().y() - 2);
+    path2.moveTo(path2_bottomRight - QPoint(0, 6));
+    path2.lineTo(path2_topRight + QPoint(0, 6));
+    path2.arcTo(QRect(QPoint(path2_topRight - QPoint(6 * 2, 0)), QSize(6 * 2, 6 * 2)), 0, 90);
+    path2.lineTo(path2_topLeft + QPoint(6, 0));
+    path2.arcTo(QRect(QPoint(path2_topLeft), QSize(6 * 2, 6 * 2)), 90, 90);
+    path2.lineTo(path2_bottomLeft - QPoint(0, 6));
+    path2.arcTo(QRect(QPoint(path2_bottomLeft  - QPoint(0, 6 * 2)), QSize(6 * 2, 6 * 2)), 180, 90);
+    path2.lineTo(path2_bottomRight - QPoint(6, 0));
+    path2.arcTo(QRect(QPoint(path2_bottomRight - QPoint(6 * 2, 6 * 2)), QSize(6 * 2, 6 * 2)), 270, 90);
+
+    //选中色绘制区域的路径
+    QPainterPath path3;
+    QPoint path3_bottomRight(bgRect.bottomRight().x() - 3, bgRect.bottomRight().y() - 3);
+    QPoint path3_topRight(bgRect.topRight().x() - 3, bgRect.topRight().y() + 3);
+    QPoint path3_topLeft(bgRect.topLeft().x() + 3, bgRect.topLeft().y() + 3);
+    QPoint path3_bottomLeft(bgRect.bottomLeft().x() + 3, bgRect.bottomLeft().y() - 3);
+    path3.moveTo(path3_bottomRight - QPoint(0, 10));
+    path3.lineTo(path3_topRight + QPoint(0, 10));
+    path3.arcTo(QRect(QPoint(path3_topRight - QPoint(6 * 2, 0)), QSize(6 * 2, 6 * 2)), 0, 90);
+    path3.lineTo(path3_topLeft + QPoint(10, 0));
+    path3.arcTo(QRect(QPoint(path3_topLeft), QSize(6 * 2, 6 * 2)), 90, 90);
+    path3.lineTo(path3_bottomLeft - QPoint(0, 10));
+    path3.arcTo(QRect(QPoint(path3_bottomLeft - QPoint(0, 6 * 2)), QSize(6 * 2, 6 * 2)), 180, 90);
+    path3.lineTo(path3_bottomRight - QPoint(10, 0));
+    path3.arcTo(QRect(QPoint(path3_bottomRight - QPoint(6 * 2, 6 * 2)), QSize(6 * 2, 6 * 2)), 270, 90);
+
+
+    DPalette::ColorGroup cg = option.state & QStyle::State_Enabled
+                              ? DPalette::Normal : DPalette::Disabled;
+    if (cg == DPalette::Normal && !(option.state & QStyle::State_Active)) {
+        cg = DPalette::Inactive;
+    }
+
+    //通过绘制三个大小不一的区域，实现设计图中的tab选中的效果
+    QColor fillColor = option.palette.color(cg, DPalette::Highlight);
+    painter->setBrush(QBrush(fillColor));
+    painter->fillPath(path, painter->brush());
+
+    QColor fillColor2 = option.palette.color(cg, DPalette::Window);
+    painter->setBrush(QBrush(fillColor2));
+    painter->fillPath(path2, painter->brush());
+
+    DStyleHelper styleHelper;
+    DPalette pa = DApplicationHelper::instance()->applicationPalette();
+
+//    QColor fillColor3 = styleHelper.getColor(static_cast<const QStyleOption *>(&option), pa, DPalette::ItemBackground);
+//    QColor fillColor3 = styleHelper.getColor(static_cast<const QStyleOption *>(&option), pa, DPalette::TextWarning);
+//    painter->fillPath(path, QBrush(fillColor3));
+//    painter->setBrush(QBrush(Qt::red));
+
+    QColor fillColor3 = styleHelper.getColor(static_cast<const QStyleOption *>(&option), DPalette::ToolTipText);
+    fillColor3.setAlphaF(0.2);
+    painter->setBrush(QBrush(fillColor3));
+    painter->fillPath(path3, painter->brush());
+}
+
 
 QString DFInstallErrorListDelegate::lengthAutoFeed(QPainter *painter, QString sourceStr, int m_StatusWidth) const
 {
@@ -298,12 +379,15 @@ DFInstallErrorListView::DFInstallErrorListView(const QList<DFInstallErrorItemMod
 
     initErrorListData();
     initDelegate();
+
+    installEventFilter(this);
 }
 
 DFInstallErrorListView::~DFInstallErrorListView()
 {
     initModel(false);
     m_installErrorFontModelList.clear();
+
 }
 
 void DFInstallErrorListView::initErrorListData()
@@ -487,8 +571,24 @@ QStandardItemModel *DFInstallErrorListView::getErrorListSourceModel()
     return m_errorListSourceModel;
 }
 
+bool DFInstallErrorListView::getIsTabFocus() const
+{
+    return m_IsTabFocus;
+}
+
+void DFInstallErrorListView::setIsInstallFocus(bool isInstallFocus)
+{
+    m_isInstallFocus = isInstallFocus;
+}
+
+bool DFInstallErrorListView::getIsInstallFocus() const
+{
+    return m_isInstallFocus;
+}
+
 void DFInstallErrorListView::mousePressEvent(QMouseEvent *event)
 {
+    m_isMouseClicked = true;
     if (event->button() == Qt::LeftButton) {
         m_bLeftMouse = true;
     } else {
@@ -497,6 +597,8 @@ void DFInstallErrorListView::mousePressEvent(QMouseEvent *event)
 
     DListView::mousePressEvent(event);
 }
+
+
 
 void DFInstallErrorListView::setSelection(const QRect &rect, QItemSelectionModel::SelectionFlags command)
 {
@@ -511,14 +613,13 @@ void DFInstallErrorListView::setSelection(const QRect &rect, QItemSelectionModel
         if (!itemModel.bSelectable) {
             return;
         }
-
         if (selectionPoint.x() < FTM_ERROR_ITEM_FONTNAME_LEFT) {
             emit onClickErrorListItem(modelIndex);
         }
     }
 }
 
-//SP3--安装验证页面，listview上下键自动跳过异常字体
+
 bool DFInstallErrorListView::selectNextIndex(int nextIndex)
 {
     if (nextIndex == currentIndex().row() && selectedIndexes().count() != 0)//循环到当前选中时，结束
@@ -573,4 +674,26 @@ void DFInstallErrorListView::keyPressEvent(QKeyEvent *event)
         }
     }
     DListView::keyPressEvent(event);
+}
+bool DFInstallErrorListView::eventFilter(QObject *obj, QEvent *event)
+{
+    Q_UNUSED(obj)
+
+//失去焦点时重置各个标志位
+    if (event->type() == QEvent::FocusOut) {
+        m_isMouseClicked = false;
+        m_IsTabFocus = false;
+        m_isInstallFocus = false;
+    }
+
+//获取到焦点时，判断获取焦点的方式，如果不是通过鼠标点击或者安装过程后设置的焦点，就
+//判断为通过tab获取到的焦点。
+    if (event->type() == QEvent::FocusIn) {
+        if (!m_isMouseClicked && !m_isInstallFocus) {
+            m_IsTabFocus = true;
+        }
+    }
+
+    return false;
+
 }

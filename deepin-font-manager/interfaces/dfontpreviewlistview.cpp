@@ -66,6 +66,7 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
 
     initDelegate();
     initConnections();
+    installEventFilter(this);
 }
 
 DFontPreviewListView::~DFontPreviewListView()
@@ -297,6 +298,16 @@ int DFontPreviewListView::getOnePageCount()
     int itemHeight = size.height();
     int  count = height / itemHeight;
     return count;
+}
+
+void DFontPreviewListView::setIsTabFocus(bool IsTabFocus)
+{
+    m_IsTabFocus = IsTabFocus;
+}
+
+bool DFontPreviewListView::getIsTabFocus() const
+{
+    return m_IsTabFocus;
 }
 
 void DFontPreviewListView::updateSpinner(DFontSpinnerWidget::SpinnerStyles style, bool force)
@@ -626,9 +637,10 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
 {
     qDebug() << "\n" << __FUNCTION__ << event->type() << event->button();
     QListView::mousePressEvent(event);
-
     QPoint clickPoint = event->pos();
     QModelIndex modelIndex = indexAt(clickPoint);
+
+    m_isMouseClicked = true;
 
     if ((event->button() == Qt::LeftButton) && modelIndex.isValid()) {
         if (QApplication::keyboardModifiers() == Qt::ShiftModifier) {
@@ -831,6 +843,26 @@ void DFontPreviewListView::keyPressEvent(QKeyEvent *event)
         }
         QListView::keyPressEvent(event);
     }
+}
+
+bool DFontPreviewListView::eventFilter(QObject *obj, QEvent *event)
+{
+    Q_UNUSED(obj)
+
+    if (event->type() == QEvent::FocusOut) {
+        m_isMouseClicked = false;
+        m_IsTabFocus = false;
+    }
+
+    if (event->type() == QEvent::FocusIn) {
+
+//        if (!m_isMouseClicked) {
+//            m_IsTabFocus = true;
+//            qDebug() << "ASD" << endl;
+//        }
+    }
+
+    return false;
 }
 
 void DFontPreviewListView::enableFont(const QString &filePath)

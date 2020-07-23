@@ -53,6 +53,8 @@ public:
     void rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end) Q_DECL_OVERRIDE;
     void keyPressEvent(QKeyEvent *event)Q_DECL_OVERRIDE;
 
+    bool eventFilter(QObject *obj, QEvent *event)override;
+
 
     void setRightContextMenu(QMenu *rightMenu);
     QModelIndex currModelIndex();
@@ -105,6 +107,9 @@ public:
         return m_curFontData;
     }
 
+    bool getIsTabFocus() const;
+    void setIsTabFocus(bool IsTabFocus);
+
 protected:
     void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected) override;
 
@@ -123,6 +128,14 @@ private:
     bool m_bLoadDataFinish = false;
     bool m_bListviewAtButtom = false;
     bool m_bListviewAtTop = false;
+
+
+    bool m_IsNeedFocus = false;//是否需要设置聚焦
+
+    bool m_IsTabFocus = false;
+    bool m_isMouseClicked = false;
+
+
     QWidget *m_parentWidget;
     QStandardItemModel *m_fontPreviewItemModel {nullptr};
 

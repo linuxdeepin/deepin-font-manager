@@ -19,7 +19,7 @@
 
 DNoFocusDelegate::DNoFocusDelegate(QAbstractItemView *parent)
     : DStyledItemDelegate(parent)
-    , m_parentView(parent)
+    , m_parentView(qobject_cast<DSplitListWidget *>(parent))
 {
 
 }
@@ -70,24 +70,7 @@ void DNoFocusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
 
             QRect backgroundRect = QRect(rect.left() + 10, rect.top(), rect.width() - 20, rect.height());
 
-            QPainterPath path;
-            const int radius = 8;
-
-            path.moveTo(backgroundRect.bottomRight() - QPoint(0, radius));
-            path.lineTo(backgroundRect.topRight() + QPoint(0, radius));
-            path.arcTo(QRect(QPoint(backgroundRect.topRight() - QPoint(radius * 2, 0)), QSize(radius * 2, radius * 2)), 0, 90);
-            path.lineTo(backgroundRect.topLeft() + QPoint(radius, 0));
-            path.arcTo(QRect(QPoint(backgroundRect.topLeft()), QSize(radius * 2, radius * 2)), 90, 90);
-            path.lineTo(backgroundRect.bottomLeft() - QPoint(0, radius));
-            path.arcTo(QRect(QPoint(backgroundRect.bottomLeft() - QPoint(0, radius * 2)), QSize(radius * 2, radius * 2)), 180, 90);
-            path.lineTo(backgroundRect.bottomLeft() + QPoint(radius, 0));
-            path.arcTo(QRect(QPoint(backgroundRect.bottomRight() - QPoint(radius * 2, radius * 2)), QSize(radius * 2, radius * 2)), 270, 90);
-
-            if (option.state & QStyle::State_Selected) {
-                QColor fillColor = option.palette.color(cg, DPalette::Highlight);
-                painter->setBrush(QBrush(fillColor));
-                painter->fillPath(path, painter->brush());
-            }
+            paintTabFocusBackground(painter, option, backgroundRect, cg);
 
             //绘制标题
             /* bug#20266 UT000591 */ /*bug 21075 ut000442*/
@@ -110,7 +93,6 @@ void DNoFocusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
                 painter->drawText(fontNameRect, Qt::AlignLeft | Qt::AlignVCenter, strTitle);
             }
         }
-
         painter->restore();
     } else {
         QStyledItemDelegate::paint(painter, option, index);
@@ -127,6 +109,73 @@ QSize DNoFocusDelegate::sizeHint(const QStyleOptionViewItem &option,
         return QSize(option.rect.width(), 24);
     } else {
         return QSize(option.rect.width(), 36);
+    }
+}
+
+void DNoFocusDelegate::paintTabFocusBackground(QPainter *painter, const QStyleOptionViewItem &option, const QRect &backgroundRect, const QPalette::ColorGroup cg) const
+{
+    //绘制左侧列表外部高亮区域的路径
+    QPainterPath path;
+    const int radius = 8;
+    path.moveTo(backgroundRect.bottomRight() - QPoint(0, radius));
+    path.lineTo(backgroundRect.topRight() + QPoint(0, radius));
+    path.arcTo(QRect(QPoint(backgroundRect.topRight() - QPoint(radius * 2, 0)), QSize(radius * 2, radius * 2)), 0, 90);
+    path.lineTo(backgroundRect.topLeft() + QPoint(radius, 0));
+    path.arcTo(QRect(QPoint(backgroundRect.topLeft()), QSize(radius * 2, radius * 2)), 90, 90);
+    path.lineTo(backgroundRect.bottomLeft() - QPoint(0, radius));
+    path.arcTo(QRect(QPoint(backgroundRect.bottomLeft() - QPoint(0, radius * 2)), QSize(radius * 2, radius * 2)), 180, 90);
+    path.lineTo(backgroundRect.bottomLeft() + QPoint(radius, 0));
+    path.arcTo(QRect(QPoint(backgroundRect.bottomRight() - QPoint(radius * 2, radius * 2)), QSize(radius * 2, radius * 2)), 270, 90);
+
+    //绘制左侧列表窗口色区域的路径
+    QPainterPath path2;
+    QPoint path2_bottomRight(backgroundRect.bottomRight().x() - 2, backgroundRect.bottomRight().y() - 2);
+    QPoint path2_topRight(backgroundRect.topRight().x() - 2, backgroundRect.topRight().y() + 2);
+    QPoint path2_topLeft(backgroundRect.topLeft().x() + 2, backgroundRect.topLeft().y() + 2);
+    QPoint path2_bottomLeft(backgroundRect.bottomLeft().x() + 2, backgroundRect.bottomLeft().y() - 2);
+    path2.moveTo(path2_bottomRight - QPoint(0, 6));
+    path2.lineTo(path2_topRight + QPoint(0, 6));
+    path2.arcTo(QRect(QPoint(path2_topRight - QPoint(6 * 2, 0)), QSize(6 * 2, 6 * 2)), 0, 90);
+    path2.lineTo(path2_topLeft + QPoint(6, 0));
+    path2.arcTo(QRect(QPoint(path2_topLeft), QSize(6 * 2, 6 * 2)), 90, 90);
+    path2.lineTo(path2_bottomLeft - QPoint(0, 6));
+    path2.arcTo(QRect(QPoint(path2_bottomLeft - QPoint(0, 6 * 2)), QSize(6 * 2, 6 * 2)), 180, 90);
+    path2.lineTo(path2_bottomRight - QPoint(6, 0));
+    path2.arcTo(QRect(QPoint(path2_bottomRight - QPoint(6 * 2, 6 * 2)), QSize(6 * 2, 6 * 2)), 270, 90);
+
+    //绘制左侧列表内部高亮区域的路径
+    QPainterPath path3;
+    QPoint path3_bottomRight(backgroundRect.bottomRight().x() - 3, backgroundRect.bottomRight().y() - 3);
+    QPoint path3_topRight(backgroundRect.topRight().x() - 3, backgroundRect.topRight().y() + 3);
+    QPoint path3_topLeft(backgroundRect.topLeft().x() + 3, backgroundRect.topLeft().y() + 3);
+    QPoint path3_bottomLeft(backgroundRect.bottomLeft().x() + 3, backgroundRect.bottomLeft().y() - 3);
+    path3.moveTo(path3_bottomRight - QPoint(0, 10));
+    path3.lineTo(path3_topRight + QPoint(0, 10));
+    path3.arcTo(QRect(QPoint(path3_topRight - QPoint(6 * 2, 0)), QSize(6 * 2, 6 * 2)), 0, 90);
+    path3.lineTo(path3_topLeft + QPoint(10, 0));
+    path3.arcTo(QRect(QPoint(path3_topLeft), QSize(6 * 2, 6 * 2)), 90, 90);
+    path3.lineTo(path3_bottomLeft - QPoint(0, 10));
+    path3.arcTo(QRect(QPoint(path3_bottomLeft - QPoint(0, 6 * 2)), QSize(6 * 2, 6 * 2)), 180, 90);
+    path3.lineTo(path3_bottomRight - QPoint(10, 0));
+    path3.arcTo(QRect(QPoint(path3_bottomRight - QPoint(6 * 2, 6 * 2)), QSize(6 * 2, 6 * 2)), 270, 90);
+
+    if (option.state & QStyle::State_Selected) {
+        QColor fillColor = option.palette.color(cg, DPalette::Highlight);
+        painter->setBrush(QBrush(fillColor));
+        painter->fillPath(path, painter->brush());
+
+        if (m_parentView->m_IsTabFocus) {
+            QColor fillColor = option.palette.color(cg, DPalette::Highlight);
+            painter->setBrush(QBrush(fillColor));
+            painter->fillPath(path, painter->brush());
+
+            QColor fillColor2 = option.palette.color(cg, DPalette::Window);
+            painter->setBrush(QBrush(fillColor2));
+            painter->fillPath(path2, painter->brush());
+
+            painter->setBrush(QBrush(fillColor));
+            painter->fillPath(path3, painter->brush());
+        }
     }
 }
 //adjust length/*UT000539*/
@@ -289,6 +338,49 @@ void DSplitListWidget::wheelEvent(QWheelEvent *event)
     }
 }
 
+void DSplitListWidget::keyPressEvent(QKeyEvent *event)
+{
+    if (event->key() == Qt::Key_Up) {
+        if (currentIndex().row() == 0) {
+            QModelIndex modelIndex = m_categoryItemModell->index(7, 0);
+            setCurrentIndex(modelIndex);
+        } else {
+            DListView::keyPressEvent(event);
+        }
+    } else if (event->key() == Qt::Key_Down) {
+        if (currentIndex().row() == 7) {
+            QModelIndex modelIndex = m_categoryItemModell->index(0, 0);
+            setCurrentIndex(modelIndex);
+        } else {
+            DListView::keyPressEvent(event);
+        }
+    } else {
+        DListView::keyPressEvent(event);
+    }
+}
+
+bool DSplitListWidget::eventFilter(QObject *obj, QEvent *event)
+{
+    Q_UNUSED(obj)
+
+//失去焦点的时候对这几个标志位进行复位
+    if (event->type() == QEvent::FocusOut) {
+        m_IsMouseClicked = false;
+        m_IsTabFocus = false;
+        m_IsLeftFocus = false;
+    }
+
+//获取焦点时只要不是通过鼠标点击获取焦点以及不是打开软件自动设置的焦点，就是判断为通过tab获取到的焦点
+    if (event->type() == QEvent::FocusIn) {
+        if (!m_IsMouseClicked /*&& !m_IsLeftFocus*/ && !m_IsFirstFocus) {
+            m_IsTabFocus = true;
+        }
+//        m_IsFristTimeFocus = false;
+        m_IsFirstFocus = false;
+    }
+    return false;
+}
+
 
 //hover for helper on leftListview /*UT000539*/
 bool DNoFocusDelegate::helpEvent(QHelpEvent *event, QAbstractItemView *view
@@ -341,6 +433,12 @@ void DSplitListWidget::mousePressEvent(QMouseEvent *event)
     }
     QPoint clickPoint = event->pos();
     QModelIndex modelIndex = indexAt(clickPoint);
+
+    m_IsMouseClicked = true;
+
+//    if (!hasFocus() && m_IsTabFocus) {
+//        m_IsTabFocus = false;
+//    }
 
     if (modelIndex.row() == currentIndex().row())
         return;
