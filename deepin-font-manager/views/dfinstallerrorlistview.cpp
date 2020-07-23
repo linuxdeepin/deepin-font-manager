@@ -636,7 +636,7 @@ bool DFInstallErrorListView::selectNextIndex(int nextIndex)
     } else {
         return false;
     }
-    return false;
+//    return false;
 }
 
 //SP3--安装验证页面，listview上下键自动跳过异常字体
@@ -686,14 +686,23 @@ bool DFInstallErrorListView::eventFilter(QObject *obj, QEvent *event)
         m_isInstallFocus = false;
     }
 
-//获取到焦点时，判断获取焦点的方式，如果不是通过鼠标点击或者安装过程后设置的焦点，就
-//判断为通过tab获取到的焦点。
+
     if (event->type() == QEvent::FocusIn) {
+        //获取到焦点时，判断获取焦点的方式，如果不是通过鼠标点击或者安装过程后设置的焦点，就
+        //判断为通过tab获取到的焦点。
         if (!m_isMouseClicked && !m_isInstallFocus) {
             m_IsTabFocus = true;
         }
+
+        //没有选中项时，切换到异常字体列表时，默认选中第一个
+        if (selectionModel()->selectedIndexes().count() == 0) {
+            for (int i = 0; i < this->count(); i++) {
+                if (selectNextIndex(i))
+                    break;
+            }
+        }
+
     }
 
     return false;
-
 }

@@ -86,7 +86,7 @@ signals:
 
 private slots:
 protected:
-    void keyPressEvent(QKeyEvent *event);//SP3--安装验证页面，listview上下键自动跳过异常字体
+    void keyPressEvent(QKeyEvent *event)Q_DECL_OVERRIDE;//SP3--安装验证页面，listview上下键自动跳过异常字体
     bool selectNextIndex(int nextIndex);//SP3--安装验证页面，listview上下键自动跳过异常字体
 };
 
