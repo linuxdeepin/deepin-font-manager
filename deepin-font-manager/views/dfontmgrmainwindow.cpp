@@ -1627,7 +1627,6 @@ void DFontMgrMainWindow::showAllShortcut()
         {DApplication::translate("Shortcut", "Favorite"), "."},
         {DApplication::translate("Shortcut", "Unfavorite"), "."},
         {DApplication::translate("Shortcut", "Font info"), "Ctrl+I"},
-        {DApplication::translate("Shortcut", "右键菜单"), "Alt+M"},//SP3--Alt+M右键菜单
     };
 
     QJsonObject fontMgrJsonGroup;
