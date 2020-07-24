@@ -1573,7 +1573,7 @@ void DFontMgrMainWindow::dropEvent(QDropEvent *event)
 
 void DFontMgrMainWindow::resizeEvent(QResizeEvent *event)
 {
-    Q_UNUSED(event)
+//    Q_UNUSED(event)
 
     QScreen *screen = QGuiApplication::primaryScreen();
     QRect screenRect =  screen->availableVirtualGeometry();
@@ -1590,6 +1590,7 @@ void DFontMgrMainWindow::resizeEvent(QResizeEvent *event)
         m_IsWindowMax = true;
     }
 
+    DMainWindow::resizeEvent(event);
 }
 
 QString DFontMgrMainWindow::getPreviewTextWithSize(int *fontSize)
