@@ -164,7 +164,7 @@ void DNoFocusDelegate::paintTabFocusBackground(QPainter *painter, const QStyleOp
         painter->setBrush(QBrush(fillColor));
         painter->fillPath(path, painter->brush());
 
-        if (m_parentView->m_IsTabFocus) {
+        if (m_parentView->IsTabFocus()) {
             QColor fillColor = option.palette.color(cg, DPalette::Highlight);
             painter->setBrush(QBrush(fillColor));
             painter->fillPath(path, painter->brush());
@@ -277,6 +277,16 @@ void DSplitListWidget::currentChanged(const QModelIndex &current, const QModelIn
     emit onListWidgetItemClicked(realIndex);
 }
 
+void DSplitListWidget::setIsHalfWayFocus(bool IsHalfWayFocus)
+{
+    m_IsHalfWayFocus = IsHalfWayFocus;
+}
+
+bool DSplitListWidget::IsTabFocus() const
+{
+    return m_IsTabFocus;
+}
+
 void DSplitListWidget::mouseMoveEvent(QMouseEvent *event)
 {
     Q_UNUSED(event)
@@ -368,11 +378,12 @@ bool DSplitListWidget::eventFilter(QObject *obj, QEvent *event)
         m_IsMouseClicked = false;
         m_IsTabFocus = false;
         m_IsLeftFocus = false;
+        m_IsHalfWayFocus = false;
     }
 
-//获取焦点时只要不是通过鼠标点击获取焦点以及不是打开软件自动设置的焦点，就是判断为通过tab获取到的焦点
+//获取焦点时只要不是通过鼠标点击获取焦点以及不是打开软件自动设置的焦点以及不是其他过程中途设置的焦点，就是判断为通过tab获取到的焦点
     if (event->type() == QEvent::FocusIn) {
-        if (!m_IsMouseClicked /*&& !m_IsLeftFocus*/ && !m_IsFirstFocus) {
+        if (!m_IsMouseClicked /*&& !m_IsLeftFocus*/ && !m_IsFirstFocus && !m_IsHalfWayFocus) {
             m_IsTabFocus = true;
         }
 //        m_IsFristTimeFocus = false;

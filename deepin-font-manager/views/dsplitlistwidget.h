@@ -61,6 +61,14 @@ public:
     QMap<QString, int> m_titleStringIndexMap;
     QStandardItemModel *m_categoryItemModell;
 
+
+    void setIsHalfWayFocus(bool IsHalfWayFocus);
+
+
+
+    bool IsTabFocus() const;
+
+private:
     bool m_refreshFinished = true;
 
     //判断鼠标有没有点击
@@ -74,6 +82,11 @@ public:
 
     //判断是否为第一次打开应用设置的焦点
     bool m_IsFirstFocus = true;
+
+    //判断是否为删除等过程中设置的焦点
+    bool m_IsHalfWayFocus = false;
+
+
 
 signals:
     void onListWidgetItemClicked(int index);

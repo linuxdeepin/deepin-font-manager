@@ -1316,7 +1316,9 @@ void DFontMgrMainWindow::onFontListViewRowCountChanged()
                 m_noResultListView->hide();
                 m_isNoResultViewShow = false;
             }
+            d->leftSiderBar->setIsHalfWayFocus(true);
             d->leftSiderBar->setFocus();
+
             m_noInstallListView->show();
         }
         return;
