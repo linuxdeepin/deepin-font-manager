@@ -123,6 +123,7 @@ private:
     void deleteFontModelIndex(const DFontInfo &fontInfo);
     bool isCurrentFont(DFontPreviewItemData &itemData);
     void sortModelIndexList(QModelIndexList &sourceList);
+    void selectItemAfterRemoved();//设置删除后的选中
     void refreshRect();
     void updateSelection();
     int getOnePageCount();

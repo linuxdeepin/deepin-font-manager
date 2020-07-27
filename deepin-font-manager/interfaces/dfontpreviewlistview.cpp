@@ -261,7 +261,8 @@ void DFontPreviewListView::markPositionBeforeRemoved(bool isDelete, const QModel
         Q_UNUSED(list)
         QModelIndexList deleteFontList = selectedIndexes();
         if (deleteFontList.count() > 0) {
-            m_selectAfterDel = deleteFontList.first().row();
+            sortModelIndexList(deleteFontList);
+            m_selectAfterDel = deleteFontList.last().row();
         }
     } else {
         if (list.count() > 0)
@@ -314,9 +315,6 @@ void DFontPreviewListView::updateSpinner(DFontSpinnerWidget::SpinnerStyles style
 void DFontPreviewListView::updateModel(bool showSpinner)
 {
     Q_UNUSED(showSpinner)
-    m_bListviewAtButtom = isAtListviewBottom();
-    m_bListviewAtTop = isAtListviewTop();
-    bool bottomNeed = false;
     DFontMgrMainWindow *mw = qobject_cast<DFontMgrMainWindow *>(m_parentWidget);
 
     int rowCnt = m_fontPreviewItemModel->rowCount();
@@ -351,64 +349,9 @@ void DFontPreviewListView::updateModel(bool showSpinner)
     //设置预览大小
     emit m_signalManager->fontSizeRequestToSlider();
 
-    //UT000539 刷新删除后选中状态
-    int param = getOnePageCount();
-    if (m_selectAfterDel != -1) {
-        DFontPreviewProxyModel *filterModel = this->getFontPreviewProxyModel();
-        if (m_bListviewAtButtom && !m_bListviewAtTop) {
-            if (m_selectAfterDel < param) {
-                QModelIndex modelIndex = filterModel->index(m_selectAfterDel, 0);
+    //设置删除后的选中
+    selectItemAfterRemoved();
 
-                if (modelIndex.isValid()) {
-                    setCurrentIndex(modelIndex);
-                    scrollTo(modelIndex);
-                } else {
-                    QModelIndex modelIndex = filterModel->index(m_selectAfterDel - 1, 0);
-                    if (modelIndex.isValid()) {
-                        setCurrentIndex(modelIndex);
-                        scrollTo(modelIndex);
-                    }
-                }
-
-            } else {
-                QModelIndex modelIndex = filterModel->index(m_selectAfterDel - 1, 0);
-                setCurrentIndex(modelIndex);
-                bottomNeed = true;
-            }
-        } else if (m_selectAfterDel >= filterModel->rowCount() - param
-                   && m_selectAfterDel <= filterModel->rowCount()
-                   && m_selectAfterDel != filterModel->rowCount()) {
-            if (m_selectAfterDel >= 0 && m_selectAfterDel < param) {
-                QModelIndex modelIndex = filterModel->index(m_selectAfterDel, 0);
-                setCurrentIndex(modelIndex);
-                scrollTo(modelIndex);
-            } else {
-                QModelIndex modelIndex = filterModel->index(m_selectAfterDel - 1, 0);
-                setCurrentIndex(modelIndex);
-                bottomNeed = true;
-            }
-        } else if (m_selectAfterDel == filterModel->rowCount()) {
-            QModelIndex modelIndex = filterModel->index(m_selectAfterDel - 1, 0);
-            setCurrentIndex(modelIndex);
-            scrollTo(modelIndex);
-        } else {
-            QModelIndex modelIndex = filterModel->index(m_selectAfterDel, 0);
-            setCurrentIndex(modelIndex);
-            scrollTo(modelIndex);
-        }
-    }
-
-    //设置选中状态后，spinner再停止，这样才能在后面的函数中scrool到目前选中的位置 bug34622
-    if (currentIndex().row() > -1)
-        setCurrentSelected(currentIndex().row());
-    if (bottomNeed) {
-        scrollToBottom();
-        QRect curRect = visualRect(currentIndex());
-        if (!viewport()->visibleRegion().contains(curRect.topLeft()) || !viewport()->visibleRegion().contains(curRect.bottomRight())) {
-            scrollTo(currentIndex());
-        }
-
-    }
     //删除之后设置焦点
     refreshFocuses();
     Q_EMIT rowCountChanged();
@@ -486,6 +429,55 @@ void DFontPreviewListView::sortModelIndexList(QModelIndexList &sourceList)
         // 判断标志位是否为false，如果为false，说明后面的元素已经有序，就直接return
         if (!flag)
             break;
+    }
+}
+
+/*设置删除后的选中*/
+void DFontPreviewListView::selectItemAfterRemoved()
+{
+    int param = getOnePageCount();
+    if (m_selectAfterDel != -1) {
+        DFontPreviewProxyModel *filterModel = this->getFontPreviewProxyModel();
+        //删除最后一个
+        if (m_selectAfterDel == this->count()) {
+            if (count() > 0)
+                //上移选中
+                setCurrentIndex(filterModel->index(count() - 1, 0));
+            scrollToBottom();
+        } else {
+            //超过一页时
+            if (this->count() > param) {
+                //删除第一页的字体
+                if (m_selectAfterDel <= param) {
+                    setCurrentIndex(filterModel->index(m_selectAfterDel, 0));
+                    if (m_selectAfterDel == param)
+                        scrollToBottom();
+                    else {
+                        scrollToTop();
+                    }
+                }
+                //删除最后一页的字体
+                else if (m_selectAfterDel >= this->count() - param && m_selectAfterDel < this->count()) {//最后一页
+                    setCurrentIndex(filterModel->index(m_selectAfterDel - 1, 0));
+                    scrollToBottom();
+                }
+                //删除中间位置的字体
+                else {
+                    setCurrentIndex(filterModel->index(m_selectAfterDel, 0));
+                }
+            }
+            //只有一页时
+            else {
+                if (m_selectAfterDel <= param) {
+                    if (filterModel->index(m_selectAfterDel, 0).isValid())
+                        setCurrentIndex(filterModel->index(m_selectAfterDel, 0));
+                    else {
+                        setCurrentIndex(filterModel->index(m_selectAfterDel - 1, 0));
+                    }
+                    scrollToTop();
+                }
+            }
+        }
     }
 }
 
