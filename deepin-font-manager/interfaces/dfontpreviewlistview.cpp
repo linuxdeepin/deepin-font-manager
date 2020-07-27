@@ -39,7 +39,9 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
 
     QObject::connect(qApp, &DApplication::fontChanged, [ this ](const QFont & font) {
         qDebug() << __FUNCTION__ << "Font changed " << m_currentFont << font.family() << font.style();
-        onUpdateCurrentFont();
+        QTimer::singleShot(200, [this] {
+            onUpdateCurrentFont();
+        });
     });
 
     DFontMgrMainWindow *mw = qobject_cast<DFontMgrMainWindow *>(m_parentWidget);
