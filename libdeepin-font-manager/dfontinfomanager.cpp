@@ -525,15 +525,14 @@ QStringList DFontInfoManager::getFontFamilyStyle(const QString &filePah, QString
 
     if (fs) {
         for (int j = 0; j < fs->nfont; j++) {
-            FcChar8 *s;
-
-            s = FcPatternFormat(fs->fonts[j], format);
+            FcChar8 *s = FcPatternFormat(fs->fonts[j], format);
             if (s == nullptr)
                 continue;
 
             QString str = QString(reinterpret_cast<char *>(s));
             QStringList retStrList = str.split(":");
             if (retStrList.size() != 3) {
+                FcStrFree(s);
                 continue;
             }
             QString fontpath = const_cast<const QString &>(retStrList.at(0));
@@ -552,6 +551,8 @@ QStringList DFontInfoManager::getFontFamilyStyle(const QString &filePah, QString
 
                 FcStrFree(s);
                 break;
+            }  else {
+                FcStrFree(s);
             }
         }
         FcFontSetDestroy(fs);
