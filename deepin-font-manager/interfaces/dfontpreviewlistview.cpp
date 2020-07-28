@@ -771,10 +771,20 @@ void DFontPreviewListView::rowsAboutToBeRemoved(const QModelIndex &parent, int s
 
 void DFontPreviewListView::keyPressEvent(QKeyEvent *event)
 {
-    if ((event->modifiers() == Qt::ControlModifier) && (event->key() == Qt::Key_End)) {
-        scrollToBottom();
-    } else if ((event->modifiers() == Qt::ControlModifier) && (event->key() == Qt::Key_Home)) {
-        scrollToTop();
+    if (event->key() == Qt::Key_End) {
+        if (event->modifiers() == Qt::ControlModifier) {
+            scrollToBottom();
+            return;
+        }
+        setCurrentIndex(m_fontPreviewProxyModel->index(count() - 1, 0));
+        setCurrentSelected(count() - 1);
+    } else if (event->key() == Qt::Key_Home) {
+        if (event->modifiers() == Qt::ControlModifier) {
+            scrollToTop();
+            return;
+        }
+        setCurrentIndex(m_fontPreviewProxyModel->index(0, 0));
+        setCurrentSelected(0);
     } else {
         if (event->key() == Qt::Key_Up || event->key() == Qt::Key_Down) {
             QModelIndexList list = selectedIndexes();
@@ -788,16 +798,16 @@ void DFontPreviewListView::keyPressEvent(QKeyEvent *event)
                     keyPressEventFilter(list, false, true, true);
                     return;
                 }
-            }
-            if (QApplication::keyboardModifiers() == Qt::CTRL
-                    && (event->key() == Qt::Key_Up || event->key() == Qt::Key_Down)
-                    && list.count() > 0)
+            } else if (QApplication::keyboardModifiers() == Qt::CTRL && list.count() > 0) {
                 return;
+            }
             //判断当前选中item是否为首个或末尾，首个按上键且在可见时切换至末尾选中，末尾按下键且可见时切换至首个选中 UT000539
             if (event->key() == Qt::Key_Up) {
                 keyPressEventFilter(list, true, false, false);
+                return;
             } else if (event->key() == Qt::Key_Down) {
                 keyPressEventFilter(list, false, true, false);
+                return;
             }
         }
         QListView::keyPressEvent(event);
@@ -826,68 +836,64 @@ void DFontPreviewListView::keyPressEventFilter(const QModelIndexList &list, bool
     }
     //上键
     if (isUp) {
+        //相反方向如果有选中，则清空并选中
+        for (auto idx : list) {
+            if (idx.row() > m_currentSelectedRow) {
+                clearSelection();
+                setCurrentIndex(m_fontPreviewProxyModel->index(m_currentSelectedRow, 0));
+                scrollTo(m_fontPreviewProxyModel->index(m_currentSelectedRow, 0));
+                return;
+            }
+        }
         //shift
         if (isShiftModifier) {
-            //相反方向如果有选中，则清空并选中
-            for (auto idx : list) {
-                if (idx.row() > m_currentSelectedRow) {
-                    clearSelection();
-                    setCurrentIndex(m_fontPreviewProxyModel->index(m_currentSelectedRow, 0));
-                    scrollTo(m_fontPreviewProxyModel->index(m_currentSelectedRow, 0));
-                    return;
-                }
-            }
             if (list.last().row() > 0) {
                 QModelIndex nextModelIndex = m_fontPreviewProxyModel->index(list.last().row() - 1, 0);
                 selectionModel()->select(nextModelIndex, QItemSelectionModel::Select);
                 scrollTo(nextModelIndex);
             }
-            return;
-        }
-        if (isAtListviewTop()) {
-            if (list.first().row() == 0) {
-                QModelIndex modelIndex = m_fontPreviewProxyModel->index(this->count() - 1, 0);
-                setCurrentIndex(modelIndex);
-                return;
+        } else if (list.last().row() == 0 && list.count() == 1) {
+            if (isAtListviewTop()) {
+                m_currentSelectedRow = count() - 1;
+                setCurrentIndex(m_fontPreviewProxyModel->index(count() - 1, 0));
+            } else {
+                scrollToTop();
             }
         } else {
-            if (list.first().row() == 0) {
-                scrollToTop();
-                return;
-            }
+            setCurrentIndex(m_fontPreviewProxyModel->index(m_currentSelectedRow - 1, 0));
+            m_currentSelectedRow --;
         }
     }
     //下键
     else if (isDown) {
+        //相反方向如果有选中，则清空并选中
+        for (auto idx : list) {
+            if (idx.row() < m_currentSelectedRow) {
+                clearSelection();
+                setCurrentIndex(m_fontPreviewProxyModel->index(m_currentSelectedRow, 0));
+                scrollTo(m_fontPreviewProxyModel->index(m_currentSelectedRow, 0));
+                return;
+            }
+        }
         //shift
         if (isShiftModifier) {
-            //相反方向如果有选中，则清空并选中
-            for (auto idx : list) {
-                if (idx.row() < m_currentSelectedRow) {
-                    clearSelection();
-                    setCurrentIndex(m_fontPreviewProxyModel->index(m_currentSelectedRow, 0));
-                    scrollTo(m_fontPreviewProxyModel->index(m_currentSelectedRow, 0));
-                    return;
-                }
-            }
             if (list.first().row() < this->count()) {
                 QModelIndex nextModelIndex = m_fontPreviewProxyModel->index(list.first().row() + 1, 0);
                 selectionModel()->select(nextModelIndex, QItemSelectionModel::Select);
                 scrollTo(nextModelIndex);
             }
-            return;
-        }
-        if (isAtListviewBottom()) {
-            if (list.last().row() == this->count() - 1) {
+        } else if (list.last().row() == this->count() - 1 && list.count() == 1) {
+            if (isAtListviewBottom()) {
                 QModelIndex modelIndex = m_fontPreviewProxyModel->index(0, 0);
+                m_currentSelectedRow = 0;
                 setCurrentIndex(modelIndex);
-                return;
+            } else {
+                scrollToBottom();
             }
         } else {
-            if (list.last().row() == this->count() - 1) {
-                scrollToBottom();
-                return;
-            }
+            QModelIndex modelIndex = m_fontPreviewProxyModel->index(m_currentSelectedRow + 1, 0);
+            setCurrentIndex(modelIndex);
+            m_currentSelectedRow ++;
         }
     }
 }
