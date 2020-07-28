@@ -325,7 +325,7 @@ void DFInstallErrorDialog::keyPressEvent(QKeyEvent *event)
         this->close();
     }
     //SP3--安装验证页面，回车取消/选中
-    else if (event->key() == Qt::Key_Return) {
+    else if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter) {
         if (m_installErrorListView->selectionModel()->selectedIndexes().count() == 1) {
             onListItemClicked(m_installErrorListView->currentIndex());
             return;
