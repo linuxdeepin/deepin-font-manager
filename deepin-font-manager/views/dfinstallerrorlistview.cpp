@@ -700,6 +700,10 @@ bool DFInstallErrorListView::eventFilter(QObject *obj, QEvent *event)
                 if (selectNextIndex(i))
                     break;
             }
+        } else {
+            QModelIndex selectIndex = selectionModel()->selectedIndexes().first();
+            selectNextIndex(selectIndex.row());
+            scrollTo(selectIndex);
         }
 
     }
