@@ -995,7 +995,7 @@ void DFontMgrMainWindow::handleMenuEvent(QAction *action)
                 int currCnt = 0;
                 int disableCnt = 0;
                 m_fontPreviewListView->selectedFonts(nullptr, &systemCnt, &currCnt, &disableCnt, nullptr, nullptr, &itemIndexes);
-
+                qDebug() << itemIndexes.count();
                 m_fontPreviewListView->onEnableBtnClicked(itemIndexes, systemCnt, currCnt, !currItemData.isEnabled,
                                                           filterGroup == DSplitListWidget::FontGroup::ActiveFont);
             }

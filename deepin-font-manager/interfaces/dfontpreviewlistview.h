@@ -86,7 +86,6 @@ public:
     void disableFonts();
     void scrollWithTheSelected();//SP3--切换至listview，已有选中且不可见，则滚动到第一并记录位置
     void updateShiftSelect(const QModelIndex &modelIndex);
-    void toSetCurrentIndex(QModelIndexList &itemIndexesNew, int count, int size);
     bool isAtListviewBottom();
     bool isAtListviewTop();
     QString getPreviewTextWithSize(int *fontSize = nullptr);
