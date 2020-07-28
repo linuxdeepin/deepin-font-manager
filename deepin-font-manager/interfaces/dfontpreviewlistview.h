@@ -70,7 +70,7 @@ public:
     void selectedFonts(int *deleteCnt = nullptr, int *systemCnt = nullptr,
                        int *curFontCnt = nullptr, int *disableCnt = nullptr,
                        QStringList *delFontList = nullptr, QModelIndexList *allIndexList = nullptr,
-                       QModelIndexList *disableIndexList = nullptr, QStringList *allMinusSysFontList = nullptr);
+                       QModelIndexList *disableIndexList = nullptr, QStringList *allMinusSysFontList = nullptr, DFontPreviewItemData *curData = nullptr);
     inline void appendFilePath(QStringList *allFontList, const QString &filePath)
     {
         if ((allFontList != nullptr) && (!allFontList->contains(filePath)))
@@ -163,12 +163,6 @@ private:
     //根据按键设置选中
     void keyPressEventFilter(const QModelIndexList &list, bool isUp, bool isDown, bool isShiftModifier);
 signals:
-    //用于DFontPreviewListView内部使用的信号
-    void onShowContextMenu(const QModelIndex &index);
-
-    //右键菜单
-    void onContextMenu(const QModelIndex &index);
-
     //字体列表加载状态
     void onLoadFontsStatus(int type);
 
@@ -188,7 +182,7 @@ public slots:
 
     void onEnableBtnClicked(const QModelIndexList &itemIndexes, int systemCnt, int curCnt, bool setValue, bool isFromActiveFont = false);
     void onCollectBtnClicked(const QModelIndexList &index, bool setValue, bool isFromCollectFont = false);
-    void onListViewShowContextMenu(const QModelIndex &index);
+    void onListViewShowContextMenu();
     void onFinishedDataLoad();
     void selectFonts(const QStringList &fileList);
     void onItemAdded(const DFontPreviewItemData &itemData);
