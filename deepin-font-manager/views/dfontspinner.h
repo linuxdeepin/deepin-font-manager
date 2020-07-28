@@ -20,6 +20,8 @@ protected:
     void changeEvent(QEvent *e) override;
 
 private:
-    DFontSpinnerPrivate *const d_ptr {nullptr};
+// d_ptr与Qobject库中一个protected权限的指针变量重名，导致会出现警告
+//    DFontSpinnerPrivate *const d_ptr {nullptr};
+    DFontSpinnerPrivate *const m_ptr {nullptr};
     Q_DECLARE_PRIVATE(DFontSpinner)
 };

@@ -84,7 +84,7 @@ DFontMgrMainWindow::DFontMgrMainWindow(bool isQuickMode, QWidget *parent)
     , m_previewFontSize(DEFAULT_FONT_SIZE)
     , m_previewText(QString()) //用户输入的预览
     , m_quickInstallWnd(nullptr)
-    , d_ptr(new DFontMgrMainWindowPrivate(this))
+    , m_ptr(new DFontMgrMainWindowPrivate(this))
 {
     // setWindoDSpinnerwOpacity(0.5); //Debug
     // setWindowFlags(windowFlags() | (Qt::FramelessWindowHint | Qt::WindowMaximizeButtonHint));

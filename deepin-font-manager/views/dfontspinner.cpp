@@ -37,32 +37,32 @@ DFontSpinnerPrivate::~DFontSpinnerPrivate()
 
 DFontSpinner::DFontSpinner(QWidget *parent)
     : QWidget(parent)
-    , d_ptr(new DFontSpinnerPrivate(this))
+    , m_ptr(new DFontSpinnerPrivate(this))
 {
-    d_ptr->refreshTimer.setInterval(30);
+    m_ptr->refreshTimer.setInterval(30);
 
-    connect(&d_ptr->refreshTimer, &QTimer::timeout,
+    connect(&m_ptr->refreshTimer, &QTimer::timeout,
     this, [ = ]() {
-        d_ptr->currentDegree += 14;
+        m_ptr->currentDegree += 14;
         update();
     });
 }
 
 DFontSpinner::~DFontSpinner()
 {
-    delete d_ptr;
+    delete m_ptr;
 }
 
 void DFontSpinner::start()
 {
-    d_ptr->currentDegree += 14;
+    m_ptr->currentDegree += 14;
     update();
-    d_ptr->refreshTimer.start();
+    m_ptr->refreshTimer.start();
 }
 
 void DFontSpinner::stop()
 {
-    d_ptr->refreshTimer.stop();
+    m_ptr->refreshTimer.stop();
 }
 
 void DFontSpinner::setBackgroundColor(QColor color)
@@ -75,25 +75,25 @@ void DFontSpinner::setBackgroundColor(QColor color)
 
 void DFontSpinner::paintEvent(QPaintEvent *)
 {
-    if (d_ptr->indicatorColors.isEmpty()) {
+    if (m_ptr->indicatorColors.isEmpty()) {
         for (int i = 0; i < 3; ++i)
-            d_ptr->indicatorColors << d_ptr->createDefaultIndicatorColorList(palette().highlight().color());
+            m_ptr->indicatorColors << m_ptr->createDefaultIndicatorColorList(palette().highlight().color());
     }
 
     QPainter painter(this);
     painter.setRenderHints(QPainter::Antialiasing);
 
-    auto degreeCurrent = d_ptr->currentDegree * 1.0;
+    auto degreeCurrent = m_ptr->currentDegree * 1.0;
 
     auto center = QRectF(rect()).center();
     auto radius = qMin(rect().width(), rect().height()) / 2.0;
     auto indicatorRadius = radius / 2 / 2 * 1.1;
-    auto indicatorDegreeDelta = 360 / d_ptr->indicatorColors.count();
+    auto indicatorDegreeDelta = 360 / m_ptr->indicatorColors.count();
 
-    for (int i = 0; i <  d_ptr->indicatorColors.count(); ++i) {
-        auto colors = d_ptr->indicatorColors.value(i);
+    for (int i = 0; i <  m_ptr->indicatorColors.count(); ++i) {
+        auto colors = m_ptr->indicatorColors.value(i);
         for (int j = 0; j < colors.count(); ++j) {
-            degreeCurrent = d_ptr->currentDegree - j * d_ptr->indicatorShadowOffset + indicatorDegreeDelta * i;
+            degreeCurrent = m_ptr->currentDegree - j * m_ptr->indicatorShadowOffset + indicatorDegreeDelta * i;
             auto x = (radius - indicatorRadius) * qCos(qDegreesToRadians(degreeCurrent));
             auto y = (radius - indicatorRadius) * qSin(qDegreesToRadians(degreeCurrent));
 
@@ -113,7 +113,7 @@ void DFontSpinner::paintEvent(QPaintEvent *)
 void DFontSpinner::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::PaletteChange)
-        d_ptr->indicatorColors.clear();
+        m_ptr->indicatorColors.clear();
 
     QWidget::changeEvent(e);
 }

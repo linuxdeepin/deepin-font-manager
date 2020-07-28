@@ -222,13 +222,13 @@ protected:
 
     QScopedPointer<DFQuickInstallWindow> m_quickInstallWnd;
 
-    QScopedPointer<DFontMgrMainWindowPrivate> d_ptr;
+    QScopedPointer<DFontMgrMainWindowPrivate> m_ptr;
     QString mhistoryDir = ""; //保存上次文件的路径的文件夹
 
-    Q_DECLARE_PRIVATE_D(qGetPtrHelper(d_ptr), DFontMgrMainWindow)
+    Q_DECLARE_PRIVATE_D(qGetPtrHelper(m_ptr), DFontMgrMainWindow)
     void autoLabelWidth(QString text, DLabel *lab, QFontMetrics fm);
     void setNextTabFocus(QObject *obj);//SP3--设置tab顺序(539)
-    bool eventFilter(QObject *obj, QEvent *event);//SP3--设置tab顺序(539)
+    bool eventFilter(QObject *obj, QEvent *event)Q_DECL_OVERRIDE;//SP3--设置tab顺序(539)
 };
 
 #endif  // DFONTMGRMAINWINDOW_H
