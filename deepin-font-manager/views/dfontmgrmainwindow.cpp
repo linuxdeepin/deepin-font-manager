@@ -195,7 +195,7 @@ void DFontMgrMainWindow::initConnections()
         int disableCnt = 0;
         int curCnt = 0;
         QModelIndexList indexList;
-        m_fontPreviewListView->selectedFonts(&cnt, &systemCnt, &curCnt, &disableCnt, nullptr, nullptr, &indexList);
+        m_fontPreviewListView->selectedFonts(&cnt, &systemCnt, &curCnt, &disableCnt, nullptr, nullptr, &indexList, nullptr, &currItemData);
 
         DFontMenuManager::getInstance()->onRightKeyMenuPopup(currItemData, (cnt > 0), (disableCnt > 0), (curCnt > 0));
         qDebug() << __FUNCTION__ << "about toshow end \n";
@@ -480,14 +480,14 @@ void DFontMgrMainWindow::initShortcuts()
 
         connect(m_scAddOrCancelFavFont, &QShortcut::activated, this, [ = ] {
             QModelIndexList allItemIndexes;
-            m_fontPreviewListView->selectedFonts(nullptr, nullptr, nullptr, nullptr, nullptr, &allItemIndexes);
+            DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
+            m_fontPreviewListView->selectedFonts(nullptr, nullptr, nullptr, nullptr, nullptr, &allItemIndexes, nullptr, nullptr, &currItemData);
             if (!m_fontPreviewListView->isVisible() || allItemIndexes.count() == 0)
                 return;
 
             if (m_fontPreviewListView->m_rightMenu->isVisible())
                 m_fontPreviewListView->m_rightMenu->close();
 
-            DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
             m_fontPreviewListView->onCollectBtnClicked(allItemIndexes, !currItemData.isCollected,
                                                        filterGroup == DSplitListWidget::FontGroup::CollectFont);
         });
@@ -955,18 +955,16 @@ void DFontMgrMainWindow::handleMenuEvent(QAction *action)
                 int systemCnt = 0;
                 int currCnt = 0;
                 int disableCnt = 0;
-                m_fontPreviewListView->selectedFonts(nullptr, &systemCnt, &currCnt, &disableCnt, nullptr, nullptr, &itemIndexes);
+                m_fontPreviewListView->selectedFonts(nullptr, &systemCnt, &currCnt, &disableCnt, nullptr, nullptr, &itemIndexes, nullptr, &currItemData);
 
                 m_fontPreviewListView->onEnableBtnClicked(itemIndexes, systemCnt, currCnt, !currItemData.isEnabled,
                                                           filterGroup == DSplitListWidget::FontGroup::ActiveFont);
             }
             break;
             case DFontMenuManager::MenuAction::M_Faverator: {
-//                QModelIndex modelIndex = m_fontPreviewListView->currModelIndex();
                 DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
                 QModelIndexList itemIndexes;
-                int curCnt = 0;
-                m_fontPreviewListView->selectedFonts(nullptr, nullptr, nullptr, &curCnt, nullptr, &itemIndexes);
+                m_fontPreviewListView->selectedFonts(nullptr, nullptr, nullptr, nullptr, nullptr, &itemIndexes, nullptr, nullptr, &currItemData);
 
                 m_fontPreviewListView->onCollectBtnClicked(itemIndexes, !currItemData.isCollected,
                                                            filterGroup == DSplitListWidget::FontGroup::CollectFont);
