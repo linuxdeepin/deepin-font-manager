@@ -158,11 +158,10 @@ private:
 
     QRect m_curRect;
     int m_currentSelectedRow = -1;
-
     int m_selectAfterDel = -1;/*539 删除后的选中位置*/
     qint64 m_curTm {0};
-
-
+    //根据按键设置选中
+    void keyPressEventFilter(const QModelIndexList &list, bool isUp, bool isDown, bool isShiftModifier);
 signals:
     //用于DFontPreviewListView内部使用的信号
     void onShowContextMenu(const QModelIndex &index);

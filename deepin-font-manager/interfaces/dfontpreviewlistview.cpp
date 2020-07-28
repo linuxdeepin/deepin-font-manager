@@ -781,23 +781,14 @@ void DFontPreviewListView::keyPressEvent(QKeyEvent *event)
     } else {
         if (event->key() == Qt::Key_Up || event->key() == Qt::Key_Down) {
             QModelIndexList list = selectedIndexes();
+            sortModelIndexList(list);
             //判断当前shift+上下键选中
             if (QApplication::keyboardModifiers() == Qt::ShiftModifier && list.count() > 0) {
                 if (event->key() == Qt::Key_Up) {
-                    sortModelIndexList(list);
-                    if (list.last().row() > 0) {
-                        QModelIndex nextModelIndex = m_fontPreviewProxyModel->index(list.last().row() - 1, 0);
-                        selectionModel()->select(nextModelIndex, QItemSelectionModel::Select);
-                        scrollTo(nextModelIndex);
-                    }
+                    keyPressEventFilter(list, true, false, true);
                     return;
                 } else {
-                    sortModelIndexList(list);
-                    if (list.first().row() < this->count()) {
-                        QModelIndex nextModelIndex = m_fontPreviewProxyModel->index(list.first().row() + 1, 0);
-                        selectionModel()->select(nextModelIndex, QItemSelectionModel::Select);
-                        scrollTo(nextModelIndex);
-                    }
+                    keyPressEventFilter(list, false, true, true);
                     return;
                 }
             }
@@ -807,48 +798,100 @@ void DFontPreviewListView::keyPressEvent(QKeyEvent *event)
                 return;
             //判断当前选中item是否为首个或末尾，首个按上键且在可见时切换至末尾选中，末尾按下键且可见时切换至首个选中 UT000539
             if (event->key() == Qt::Key_Up) {
-                //SP3--空白页面上下键选中判断--上键选中末尾
-                if (list.count() < 1) {
-                    QModelIndex modelIndex = m_fontPreviewProxyModel->index(this->count() - 1, 0);
-                    setCurrentIndex(modelIndex);
-                    setCurrentSelected(modelIndex.row());
-                    return;
-                }
-                if (isAtListviewTop()) {
-                    if (list.first().row() == 0) {
-                        QModelIndex modelIndex = m_fontPreviewProxyModel->index(this->count() - 1, 0);
-                        setCurrentIndex(modelIndex);
-                        return;
-                    }
-                } else {
-                    if (list.first().row() == 0) {
-                        scrollToTop();
-                        return;
-                    }
-                }
+                keyPressEventFilter(list, true, false, false);
             } else if (event->key() == Qt::Key_Down) {
-                //SP3--空白页面上下键选中判断--下键选中首个
-                if (list.count() < 1) {
-                    QModelIndex modelIndex = m_fontPreviewProxyModel->index(0, 0);
-                    setCurrentIndex(modelIndex);
-                    setCurrentSelected(modelIndex.row());
-                    return;
-                }
-                if (isAtListviewBottom()) {
-                    if (list.last().row() == this->count() - 1) {
-                        QModelIndex modelIndex = m_fontPreviewProxyModel->index(0, 0);
-                        setCurrentIndex(modelIndex);
-                        return;
-                    }
-                } else {
-                    if (list.last().row() == this->count() - 1) {
-                        scrollToBottom();
-                        return;
-                    }
-                }
+                keyPressEventFilter(list, false, true, false);
             }
         }
         QListView::keyPressEvent(event);
+    }
+}
+/*
+ * param:list             :The selected QModelIndexList
+ * param:isUp             :Key_Up pressed
+ * param:isDown           :Key_Down pressed
+ * param:isShiftModifier  :Key_Shift pressed
+ * 根据按键设置选中
+*/
+void DFontPreviewListView::keyPressEventFilter(const QModelIndexList &list, bool isUp, bool isDown, bool isShiftModifier)
+{
+    //SP3--空白页面上下键选中判断
+    if (list.count() < 1) {
+        QModelIndex idx;
+        if (isUp)
+            idx = m_fontPreviewProxyModel->index(this->count() - 1, 0);
+        else if (isDown) {
+            idx = m_fontPreviewProxyModel->index(0, 0);
+        }
+        setCurrentIndex(idx);
+        setCurrentSelected(idx.row());
+        return;
+    }
+    //上键
+    if (isUp) {
+        //shift
+        if (isShiftModifier) {
+            //相反方向如果有选中，则清空并选中
+            for (auto idx : list) {
+                if (idx.row() > m_currentSelectedRow) {
+                    clearSelection();
+                    setCurrentIndex(m_fontPreviewProxyModel->index(m_currentSelectedRow, 0));
+                    scrollTo(m_fontPreviewProxyModel->index(m_currentSelectedRow, 0));
+                    return;
+                }
+            }
+            if (list.last().row() > 0) {
+                QModelIndex nextModelIndex = m_fontPreviewProxyModel->index(list.last().row() - 1, 0);
+                selectionModel()->select(nextModelIndex, QItemSelectionModel::Select);
+                scrollTo(nextModelIndex);
+            }
+            return;
+        }
+        if (isAtListviewTop()) {
+            if (list.first().row() == 0) {
+                QModelIndex modelIndex = m_fontPreviewProxyModel->index(this->count() - 1, 0);
+                setCurrentIndex(modelIndex);
+                return;
+            }
+        } else {
+            if (list.first().row() == 0) {
+                scrollToTop();
+                return;
+            }
+        }
+    }
+    //下键
+    else if (isDown) {
+        //shift
+        if (isShiftModifier) {
+            //相反方向如果有选中，则清空并选中
+            for (auto idx : list) {
+                if (idx.row() < m_currentSelectedRow) {
+                    clearSelection();
+                    setCurrentIndex(m_fontPreviewProxyModel->index(m_currentSelectedRow, 0));
+                    scrollTo(m_fontPreviewProxyModel->index(m_currentSelectedRow, 0));
+                    return;
+                }
+            }
+            if (list.first().row() < this->count()) {
+                QModelIndex nextModelIndex = m_fontPreviewProxyModel->index(list.first().row() + 1, 0);
+                selectionModel()->select(nextModelIndex, QItemSelectionModel::Select);
+                scrollTo(nextModelIndex);
+            }
+            return;
+        }
+        if (isAtListviewBottom()) {
+            if (list.last().row() == this->count() - 1) {
+                QModelIndex modelIndex = m_fontPreviewProxyModel->index(0, 0);
+                setCurrentIndex(modelIndex);
+                return;
+            }
+        } else {
+            if (list.last().row() == this->count() - 1) {
+                scrollToBottom();
+                return;
+            }
+        }
     }
 }
 
@@ -1081,7 +1124,7 @@ void DFontPreviewListView::onEnableBtnClicked(const QModelIndexList &itemIndexes
     //记录禁用前选中位置
     m_bListviewAtButtom = isAtListviewBottom();
     m_bListviewAtTop = isAtListviewTop();
-    //list为选中项，与itemIndexes有区分
+    //list为选中项，与itemIndexes有区别
     QModelIndexList list = selectionModel()->selectedIndexes();
     sortModelIndexList(list);
     qDebug() << list.count();
