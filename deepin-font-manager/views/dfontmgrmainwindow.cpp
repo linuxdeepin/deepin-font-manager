@@ -154,7 +154,6 @@ void DFontMgrMainWindow::installEventFilters()
     d->addFontButton->installEventFilter(this);//添加按钮
     d->fontScaleSlider->installEventFilter(this);//滑块
     d->searchFontEdit->lineEdit()->installEventFilter(this);//输入框
-    d->searchFontEdit->lineEdit()->setFocusPolicy(Qt::ClickFocus);
     m_noInstallListView->installEventFilter(this);//无字体页面
     m_noResultListView->installEventFilter(this);//无结果页面
 }
@@ -1918,13 +1917,15 @@ bool DFontMgrMainWindow::eventFilter(QObject *obj, QEvent *event)
     if (event->type() == QEvent::FocusIn && obj == m_fontPreviewListView) {
         QFocusEvent *keyEvent = dynamic_cast<QFocusEvent *>(event);
         if (keyEvent->reason() == Qt::ActiveWindowFocusReason) {
-            if (keyEvent->reason() == Qt::ActiveWindowFocusReason) {
 //              m_previewListViewTabFocus  = m_fontPreviewListView->getIsTabFocus();
-                m_fontPreviewListView->setIsTabFocus(m_previewListViewTabFocus);
-            }
+            m_fontPreviewListView->setIsTabFocus(m_previewListViewTabFocus);
         }
     }
 
+    //设置searchEdit的tab方式
+    if (event->type() == QEvent::FocusIn && obj == d->searchFontEdit->lineEdit()) {
+        d->searchFontEdit->lineEdit()->setFocusPolicy(Qt::StrongFocus);
+    }
 
     return QWidget::eventFilter(obj, event);
 }
@@ -1939,6 +1940,7 @@ void DFontMgrMainWindow::setNextTabFocus(QObject *obj)
     } else if (obj == d->searchFontEdit->lineEdit()) {
         titlebar()->setFocus(Qt::TabFocusReason);
         d->addFontButton->setFocusPolicy(Qt::ClickFocus);
+        d->searchFontEdit->lineEdit()->setFocusPolicy(Qt::ClickFocus);
     } else if (obj == m_fontPreviewListView) {
         d->textInputEdit->lineEdit()->setFocus(Qt::TabFocusReason);
     } else if (obj == d->textInputEdit->lineEdit()) {
