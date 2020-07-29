@@ -392,7 +392,6 @@ bool DSplitListWidget::eventFilter(QObject *obj, QEvent *event)
 
 //失去焦点的时候对这几个标志位进行复位
     if (event->type() == QEvent::FocusOut) {
-        qDebug() << "4" << endl;
         m_IsMouseClicked = false;
         m_IsTabFocus = false;
         m_IsLeftFocus = false;
@@ -401,9 +400,6 @@ bool DSplitListWidget::eventFilter(QObject *obj, QEvent *event)
 
 //获取焦点时只要不是通过鼠标点击获取焦点以及不是打开软件自动设置的焦点以及不是其他过程中途设置的焦点，就是判断为通过tab获取到的焦点
     if (event->type() == QEvent::FocusIn) {
-
-        qDebug() << "3~~~~~~~" << m_IsHalfWayFocus << endl;
-
         if (!m_IsMouseClicked /*&& !m_IsLeftFocus*/ && !m_IsFirstFocus && !m_IsHalfWayFocus) {
             m_IsTabFocus = true;
         }

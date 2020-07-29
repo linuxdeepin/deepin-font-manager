@@ -1885,9 +1885,12 @@ bool DFontMgrMainWindow::eventFilter(QObject *obj, QEvent *event)
     // bug 39973 焦点因为窗口激活原因移出去之前判断左侧listview的状态，如果为Tabfocus的状态记录下此时的各个状态留
     //到焦点移回来之后给左侧listview重新设置状态。
     if (event->type() == QEvent::FocusOut && obj == d->leftSiderBar) {
-        m_leftListViewTabFocus =  d->leftSiderBar->IsTabFocus();
-        if (m_leftListViewTabFocus) {
-            m_currentStatus =  d->leftSiderBar->getStatus();
+        QFocusEvent *keyEvent = dynamic_cast<QFocusEvent *>(event);
+        if (keyEvent->reason() == Qt::ActiveWindowFocusReason) {
+            m_leftListViewTabFocus =  d->leftSiderBar->IsTabFocus();
+            if (m_leftListViewTabFocus) {
+                m_currentStatus =  d->leftSiderBar->getStatus();
+            }
         }
     }
 
@@ -1904,6 +1907,24 @@ bool DFontMgrMainWindow::eventFilter(QObject *obj, QEvent *event)
             }
         }
     }
+
+    if (event->type() == QEvent::FocusOut && obj == m_fontPreviewListView) {
+        QFocusEvent *keyEvent = dynamic_cast<QFocusEvent *>(event);
+        if (keyEvent->reason() == Qt::ActiveWindowFocusReason) {
+            m_previewListViewTabFocus  = m_fontPreviewListView->getIsTabFocus();
+        }
+    }
+
+    if (event->type() == QEvent::FocusIn && obj == m_fontPreviewListView) {
+        QFocusEvent *keyEvent = dynamic_cast<QFocusEvent *>(event);
+        if (keyEvent->reason() == Qt::ActiveWindowFocusReason) {
+            if (keyEvent->reason() == Qt::ActiveWindowFocusReason) {
+//              m_previewListViewTabFocus  = m_fontPreviewListView->getIsTabFocus();
+                m_fontPreviewListView->setIsTabFocus(m_previewListViewTabFocus);
+            }
+        }
+    }
+
 
     return QWidget::eventFilter(obj, event);
 }

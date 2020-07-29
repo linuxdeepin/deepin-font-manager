@@ -105,7 +105,9 @@ protected:
     void initFontUninstallDialog();
     void initTileBar();
     void initTileFrame();
-    void initMainVeiws();
+    void initMainVeiws();//            if (m_leftListViewTabFocus) {
+    //                m_currentStatus =  d->leftSiderBar->getStatus();
+    //            }
     void initLeftSideBar();
     void initRightFontView();
     void initStateBar();
@@ -196,7 +198,7 @@ protected:
     bool m_installFinish = false;
 
     bool m_leftListViewTabFocus = false;
-
+    bool m_previewListViewTabFocus = false;
 
 
     //Stand shortcut
