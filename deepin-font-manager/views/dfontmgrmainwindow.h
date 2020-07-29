@@ -55,7 +55,11 @@ public:
 
     void setQuickInstallMode(bool isQuick);
     void hideQucikInstallWindow();
-    void InitQuickWindowIfNeeded();
+    void InitQuickWindowIfNeeded();//    QColor fillColor3 = styleHelper.getColor(static_cast<const QStyleOption *>(&option), pa, DPalette::ItemBackground);
+    //    QColor fillColor3 = styleHelper.getColor(static_cast<const QStyleOption *>(&option), pa, DPalette::TextWarning);
+    //    painter->fillPath(path, QBrush(fillColor3));
+    //    painter->setBrush(QBrush(Qt::red));
+
     void forceNoramlInstalltionQuitIfNeeded();
     void setDeleteFinish();
     void cancelDelete();
@@ -131,6 +135,12 @@ protected:
     void onPreviewTextChanged();
     qint64 getDiskSpace(bool m_bInstall = true);
     QStringList checkFilesSpace(const QStringList &files, bool m_bInstall = true);
+
+    void mainwindowFocusOutCheck(QObject *obj, QEvent *event);
+    void mainwindowFocusInCheck(QObject *obj, QEvent *event);
+
+
+
 
     //Add drag install
     void dragEnterEvent(QDragEnterEvent *event) override;

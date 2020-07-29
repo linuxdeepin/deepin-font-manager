@@ -23,6 +23,7 @@ private:
     void paintTabFocusBackground(QPainter *painter, const QStyleOptionViewItem &option, const QRect &bgRect)const;
     QString lengthAutoFeed(QPainter *painter, QString sourceStr, int m_StatusWidth)const;
 
+    void setPaintPath(const QRect &bgRect, QPainterPath &path, const int xDifference, const int yDifference, const int radius)const;
 
 public:
     DFInstallErrorListDelegate(QAbstractItemView *parent = nullptr);

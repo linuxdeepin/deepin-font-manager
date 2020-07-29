@@ -1800,6 +1800,73 @@ QStringList DFontMgrMainWindow::checkFilesSpace(const QStringList &files, bool m
     return m_installFiles;
 }
 
+
+
+/**
+*  @brief  对主窗口中的focusout事件进行检查后对相关控件标志位等进行处理
+*  @param[in]  触发事件的控件
+*  @param[in]  触发事件的控件
+*/
+void DFontMgrMainWindow::mainwindowFocusOutCheck(QObject *obj, QEvent *event)
+{
+    D_D(DFontMgrMainWindow);
+
+    // bug 39973 焦点因为窗口激活原因移出去之前判断左侧listview的状态，如果为Tabfocus的状态记录下此时的各个状态留
+    //到焦点移回来之后给左侧listview重新设置状态。
+    if (obj == d->leftSiderBar) {
+        QFocusEvent *focusEvent = dynamic_cast<QFocusEvent *>(event);
+        if (focusEvent->reason() == Qt::ActiveWindowFocusReason) {
+            m_leftListViewTabFocus =  d->leftSiderBar->IsTabFocus();
+            if (m_leftListViewTabFocus) {
+                m_currentStatus =  d->leftSiderBar->getStatus();
+            }
+        }
+    }
+
+    if (obj == m_fontPreviewListView) {
+        QFocusEvent *focusEvent = dynamic_cast<QFocusEvent *>(event);
+        if (focusEvent->reason() == Qt::ActiveWindowFocusReason) {
+            m_previewListViewTabFocus  = m_fontPreviewListView->getIsTabFocus();
+        }
+    }
+}
+
+/**
+*  @brief  对主窗口中的focusin事件进行检查后对相关控件标志位等进行处理
+*  @param[in]  触发事件的控件
+*  @param[in]  触发事件的控件
+*/
+void DFontMgrMainWindow::mainwindowFocusInCheck(QObject *obj, QEvent *event)
+{
+    D_D(DFontMgrMainWindow);
+
+    //bug 39973 左侧listview因为窗口激活原因获取焦点时，根据之前获取的状态进行判断，并重新给listview
+    //设置状态。
+    if (obj == d->leftSiderBar) {
+        QFocusEvent *focusEvent = dynamic_cast<QFocusEvent *>(event);
+        if (focusEvent->reason() == Qt::ActiveWindowFocusReason) {
+            if (m_leftListViewTabFocus) {
+                d->leftSiderBar->setCurrentStatus(m_currentStatus);
+                m_leftListViewTabFocus = false;
+            } else {
+                d->leftSiderBar->setIsHalfWayFocus(true);
+            }
+        }
+    }
+
+    if (obj == m_fontPreviewListView) {
+        QFocusEvent *focusEvent = dynamic_cast<QFocusEvent *>(event);
+        if (focusEvent->reason() == Qt::ActiveWindowFocusReason) {
+            m_fontPreviewListView->setIsTabFocus(m_previewListViewTabFocus);
+        }
+    }
+
+    //设置searchEdit的tab方式
+    if (obj == d->searchFontEdit->lineEdit()) {
+        d->searchFontEdit->lineEdit()->setFocusPolicy(Qt::StrongFocus);
+    }
+}
+
 /*调节右下角字体大小显示label显示内容 UT000539*/
 void DFontMgrMainWindow::autoLabelWidth(QString text, DLabel *lab, QFontMetrics fm)
 {
@@ -1880,52 +1947,15 @@ bool DFontMgrMainWindow::eventFilter(QObject *obj, QEvent *event)
         }
     }
 
-
-    // bug 39973 焦点因为窗口激活原因移出去之前判断左侧listview的状态，如果为Tabfocus的状态记录下此时的各个状态留
-    //到焦点移回来之后给左侧listview重新设置状态。
-    if (event->type() == QEvent::FocusOut && obj == d->leftSiderBar) {
-        QFocusEvent *keyEvent = dynamic_cast<QFocusEvent *>(event);
-        if (keyEvent->reason() == Qt::ActiveWindowFocusReason) {
-            m_leftListViewTabFocus =  d->leftSiderBar->IsTabFocus();
-            if (m_leftListViewTabFocus) {
-                m_currentStatus =  d->leftSiderBar->getStatus();
-            }
-        }
+    if (event->type() == QEvent::FocusOut) {
+        mainwindowFocusOutCheck(obj, event);
     }
 
-    //bug 39973 左侧listview因为窗口激活原因获取焦点时，根据之前获取的状态进行判断，并重新给listview
-    //设置状态。
-    if (event->type() == QEvent::FocusIn && obj == d->leftSiderBar) {
-        QFocusEvent *keyEvent = dynamic_cast<QFocusEvent *>(event);
-        if (keyEvent->reason() == Qt::ActiveWindowFocusReason) {
-            if (m_leftListViewTabFocus) {
-                d->leftSiderBar->setCurrentStatus(m_currentStatus);
-                m_leftListViewTabFocus = false;
-            } else {
-                d->leftSiderBar->setIsHalfWayFocus(true);
-            }
-        }
+    if (event->type() == QEvent::FocusIn) {
+        mainwindowFocusInCheck(obj, event);
     }
 
-    if (event->type() == QEvent::FocusOut && obj == m_fontPreviewListView) {
-        QFocusEvent *keyEvent = dynamic_cast<QFocusEvent *>(event);
-        if (keyEvent->reason() == Qt::ActiveWindowFocusReason) {
-            m_previewListViewTabFocus  = m_fontPreviewListView->getIsTabFocus();
-        }
-    }
 
-    if (event->type() == QEvent::FocusIn && obj == m_fontPreviewListView) {
-        QFocusEvent *keyEvent = dynamic_cast<QFocusEvent *>(event);
-        if (keyEvent->reason() == Qt::ActiveWindowFocusReason) {
-//              m_previewListViewTabFocus  = m_fontPreviewListView->getIsTabFocus();
-            m_fontPreviewListView->setIsTabFocus(m_previewListViewTabFocus);
-        }
-    }
-
-    //设置searchEdit的tab方式
-    if (event->type() == QEvent::FocusIn && obj == d->searchFontEdit->lineEdit()) {
-        d->searchFontEdit->lineEdit()->setFocusPolicy(Qt::StrongFocus);
-    }
 
     return QWidget::eventFilter(obj, event);
 }

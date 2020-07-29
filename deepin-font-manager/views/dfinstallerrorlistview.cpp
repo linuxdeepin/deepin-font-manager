@@ -170,19 +170,7 @@ void DFInstallErrorListDelegate::drawSelectStatus(QPainter *painter, const QStyl
     QPainterPath path;
     const int radius = 8;
 
-    QPoint path_bottomRight(bgRect.bottomRight().x() - 3, bgRect.bottomRight().y());
-    QPoint path_topRight(bgRect.topRight().x() - 3, bgRect.topRight().y());
-    QPoint path_topLeft(bgRect.topLeft().x() + 3, bgRect.topLeft().y());
-    QPoint path_bottomLeft(bgRect.bottomLeft().x() + 3, bgRect.bottomLeft().y());
-    path.moveTo(path_bottomRight - QPoint(0, radius));
-    path.lineTo(path_topRight + QPoint(0, radius));
-    path.arcTo(QRect(QPoint(path_topRight - QPoint(radius * 2, 0)), QSize(radius * 2, radius * 2)), 0, 90);
-    path.lineTo(path_topLeft + QPoint(radius, 0));
-    path.arcTo(QRect(QPoint(path_topLeft), QSize(radius * 2, radius * 2)), 90, 90);
-    path.lineTo(path_bottomLeft - QPoint(0, radius));
-    path.arcTo(QRect(QPoint(path_bottomLeft  - QPoint(0, radius * 2)), QSize(radius * 2, radius * 2)), 180, 90);
-    path.lineTo(path_bottomRight - QPoint(radius, 0));
-    path.arcTo(QRect(QPoint(path_bottomRight - QPoint(radius * 2, radius * 2)), QSize(radius * 2, radius * 2)), 270, 90);
+    setPaintPath(bgRect, path, 3, 0, radius);
 
     if (option.state & QStyle::State_Selected) {
 //        DPalette pa = DApplicationHelper::instance()->palette(m_parentView);//dtk库接口不稳定，更换palette获取方式
@@ -206,51 +194,15 @@ void DFInstallErrorListDelegate::paintTabFocusBackground(QPainter *painter, cons
 
     //Highlight绘制区域的路径
     QPainterPath path;
-    QPoint path_bottomRight(bgRect.bottomRight().x() - 3, bgRect.bottomRight().y());
-    QPoint path_topRight(bgRect.topRight().x() - 3, bgRect.topRight().y());
-    QPoint path_topLeft(bgRect.topLeft().x() + 3, bgRect.topLeft().y());
-    QPoint path_bottomLeft(bgRect.bottomLeft().x() + 3, bgRect.bottomLeft().y());
-    path.moveTo(path_bottomRight - QPoint(0, radius));
-    path.lineTo(path_topRight + QPoint(0, radius));
-    path.arcTo(QRect(QPoint(path_topRight - QPoint(radius * 2, 0)), QSize(radius * 2, radius * 2)), 0, 90);
-    path.lineTo(path_topLeft + QPoint(radius, 0));
-    path.arcTo(QRect(QPoint(path_topLeft), QSize(radius * 2, radius * 2)), 90, 90);
-    path.lineTo(path_bottomLeft - QPoint(0, radius));
-    path.arcTo(QRect(QPoint(path_bottomLeft  - QPoint(0, radius * 2)), QSize(radius * 2, radius * 2)), 180, 90);
-    path.lineTo(path_bottomRight - QPoint(radius, 0));
-    path.arcTo(QRect(QPoint(path_bottomRight - QPoint(radius * 2, radius * 2)), QSize(radius * 2, radius * 2)), 270, 90);
+    setPaintPath(bgRect, path, 3, 0, radius);
 
     //窗口色绘制区域的路径
     QPainterPath path2;
-    QPoint path2_bottomRight(bgRect.bottomRight().x() - 5, bgRect.bottomRight().y() - 2);
-    QPoint path2_topRight(bgRect.topRight().x() - 5, bgRect.topRight().y() + 2);
-    QPoint path2_topLeft(bgRect.topLeft().x() + 5, bgRect.topLeft().y() + 2);
-    QPoint path2_bottomLeft(bgRect.bottomLeft().x() + 5, bgRect.bottomLeft().y() - 2);
-    path2.moveTo(path2_bottomRight - QPoint(0, 6));
-    path2.lineTo(path2_topRight + QPoint(0, 6));
-    path2.arcTo(QRect(QPoint(path2_topRight - QPoint(6 * 2, 0)), QSize(6 * 2, 6 * 2)), 0, 90);
-    path2.lineTo(path2_topLeft + QPoint(6, 0));
-    path2.arcTo(QRect(QPoint(path2_topLeft), QSize(6 * 2, 6 * 2)), 90, 90);
-    path2.lineTo(path2_bottomLeft - QPoint(0, 6));
-    path2.arcTo(QRect(QPoint(path2_bottomLeft  - QPoint(0, 6 * 2)), QSize(6 * 2, 6 * 2)), 180, 90);
-    path2.lineTo(path2_bottomRight - QPoint(6, 0));
-    path2.arcTo(QRect(QPoint(path2_bottomRight - QPoint(6 * 2, 6 * 2)), QSize(6 * 2, 6 * 2)), 270, 90);
+    setPaintPath(bgRect, path2, 5, 2, 6);
 
     //选中色绘制区域的路径
     QPainterPath path3;
-    QPoint path3_bottomRight(bgRect.bottomRight().x() - 6, bgRect.bottomRight().y() - 3);
-    QPoint path3_topRight(bgRect.topRight().x() - 6, bgRect.topRight().y() + 3);
-    QPoint path3_topLeft(bgRect.topLeft().x() + 6, bgRect.topLeft().y() + 3);
-    QPoint path3_bottomLeft(bgRect.bottomLeft().x() + 6, bgRect.bottomLeft().y() - 3);
-    path3.moveTo(path3_bottomRight - QPoint(0, 10));
-    path3.lineTo(path3_topRight + QPoint(0, 10));
-    path3.arcTo(QRect(QPoint(path3_topRight - QPoint(6 * 2, 0)), QSize(6 * 2, 6 * 2)), 0, 90);
-    path3.lineTo(path3_topLeft + QPoint(10, 0));
-    path3.arcTo(QRect(QPoint(path3_topLeft), QSize(6 * 2, 6 * 2)), 90, 90);
-    path3.lineTo(path3_bottomLeft - QPoint(0, 10));
-    path3.arcTo(QRect(QPoint(path3_bottomLeft - QPoint(0, 6 * 2)), QSize(6 * 2, 6 * 2)), 180, 90);
-    path3.lineTo(path3_bottomRight - QPoint(10, 0));
-    path3.arcTo(QRect(QPoint(path3_bottomRight - QPoint(6 * 2, 6 * 2)), QSize(6 * 2, 6 * 2)), 270, 90);
+    setPaintPath(bgRect, path3, 6, 3, 6);
 
     DPalette::ColorGroup cg = option.state & QStyle::State_Enabled
                               ? DPalette::Normal : DPalette::Disabled;
@@ -269,11 +221,6 @@ void DFInstallErrorListDelegate::paintTabFocusBackground(QPainter *painter, cons
 
     DStyleHelper styleHelper;
     DPalette pa = DApplicationHelper::instance()->applicationPalette();
-
-//    QColor fillColor3 = styleHelper.getColor(static_cast<const QStyleOption *>(&option), pa, DPalette::ItemBackground);
-//    QColor fillColor3 = styleHelper.getColor(static_cast<const QStyleOption *>(&option), pa, DPalette::TextWarning);
-//    painter->fillPath(path, QBrush(fillColor3));
-//    painter->setBrush(QBrush(Qt::red));
 
     QColor fillColor3 = styleHelper.getColor(static_cast<const QStyleOption *>(&option), DPalette::ToolTipText);
     fillColor3.setAlphaF(0.2);
@@ -310,6 +257,32 @@ QString DFInstallErrorListDelegate::lengthAutoFeed(QPainter *painter, QString so
 //    qDebug() << m_TargetStr;
     return m_TargetStr;
 
+}
+
+
+/**
+*  @brief  得到需要绘制区域的路径
+*  @param[in]  bgRect listview一项的区域范围
+*  @param[in]  path 需要绘制区域的路径
+*  @param[in]  xDifference x方向需要变化的数值
+*  @param[in]  yDifference y方向需要变化的数值
+*  @param[in]  radius  圆弧半径
+*/
+void DFInstallErrorListDelegate::setPaintPath(const QRect &bgRect, QPainterPath &path, const int xDifference, const int yDifference, const int radius) const
+{
+    QPoint path3_bottomRight(bgRect.bottomRight().x() - xDifference, bgRect.bottomRight().y() - yDifference);
+    QPoint path3_topRight(bgRect.topRight().x() - xDifference, bgRect.topRight().y() + yDifference);
+    QPoint path3_topLeft(bgRect.topLeft().x() + xDifference, bgRect.topLeft().y() + yDifference);
+    QPoint path3_bottomLeft(bgRect.bottomLeft().x() + xDifference, bgRect.bottomLeft().y() - yDifference);
+    path.moveTo(path3_bottomRight - QPoint(0, 10));
+    path.lineTo(path3_topRight + QPoint(0, 10));
+    path.arcTo(QRect(QPoint(path3_topRight - QPoint(radius * 2, 0)), QSize(radius * 2, radius * 2)), 0, 90);
+    path.lineTo(path3_topLeft + QPoint(10, 0));
+    path.arcTo(QRect(QPoint(path3_topLeft), QSize(radius * 2, radius * 2)), 90, 90);
+    path.lineTo(path3_bottomLeft - QPoint(0, 10));
+    path.arcTo(QRect(QPoint(path3_bottomLeft - QPoint(0, radius * 2)), QSize(radius * 2, radius * 2)), 180, 90);
+    path.lineTo(path3_bottomRight - QPoint(10, 0));
+    path.arcTo(QRect(QPoint(path3_bottomRight - QPoint(radius * 2, radius * 2)), QSize(radius * 2, radius * 2)), 270, 90);
 }
 
 //用于去除选中项的边框
