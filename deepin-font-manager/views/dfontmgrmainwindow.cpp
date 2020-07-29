@@ -1939,7 +1939,7 @@ void DFontMgrMainWindow::setNextTabFocus(QObject *obj)
         d->searchFontEdit->lineEdit()->setFocus(Qt::TabFocusReason);
     } else if (obj == d->searchFontEdit->lineEdit()) {
         titlebar()->setFocus(Qt::TabFocusReason);
-        d->addFontButton->setFocusPolicy(Qt::ClickFocus);
+        d->addFontButton->setFocusPolicy(Qt::NoFocus);
         d->searchFontEdit->lineEdit()->setFocusPolicy(Qt::ClickFocus);
     } else if (obj == m_fontPreviewListView) {
         d->textInputEdit->lineEdit()->setFocus(Qt::TabFocusReason);
