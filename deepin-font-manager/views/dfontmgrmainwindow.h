@@ -195,6 +195,8 @@ protected:
     bool m_cacheFinish = false;
     bool m_installFinish = false;
 
+    bool m_leftListViewTabFocus = false;
+
 
 
     //Stand shortcut
@@ -218,6 +220,9 @@ protected:
     volatile qint8 m_fIsDeleting {UnDeleting};
 //    QStringList m_fileList;
     QStringList m_waitForInstall;
+
+    FocusStatus m_currentStatus;
+
     DFInstallNormalWindow  *m_dfNormalInstalldlg {nullptr};
 
     QScopedPointer<DFQuickInstallWindow> m_quickInstallWnd;

@@ -9,6 +9,13 @@
 #include <signalmanager.h>
 DWIDGET_USE_NAMESPACE
 
+
+struct FocusStatus {
+    bool m_IsMouseClicked {false};
+    bool m_IsFirstFocus{true};
+    bool m_IsHalfWayFocus{false};
+};
+
 class DSplitListWidget;
 class DNoFocusDelegate : public DStyledItemDelegate
 {
@@ -65,8 +72,11 @@ public:
     void setIsHalfWayFocus(bool IsHalfWayFocus);
 
 
-
     bool IsTabFocus() const;
+
+    FocusStatus &getStatus();
+
+    void setCurrentStatus(const FocusStatus &currentStatus);
 
 private:
     bool m_refreshFinished = true;
@@ -86,10 +96,11 @@ private:
     //判断是否为删除等过程中设置的焦点
     bool m_IsHalfWayFocus = false;
 
-
+    FocusStatus m_currentStatus;
 
 signals:
     void onListWidgetItemClicked(int index);
+//    void leftListviewHasFocus();
 public slots:
     void setRefreshFinished(bool isInstalling);
 protected:

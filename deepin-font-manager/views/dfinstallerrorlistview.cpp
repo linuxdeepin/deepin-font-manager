@@ -47,7 +47,6 @@ void DFInstallErrorListDelegate::drawCheckBox(QPainter *painter, DFInstallErrorI
 
 void DFInstallErrorListDelegate::drawCheckBoxIcon(QPainter *painter, QRect bgRect) const
 {
-
     int checkBoxSize = 20;
     QRect checkboxRect = QRect(bgRect.left() + 5, bgRect.top() + 10, checkBoxSize + 10, checkBoxSize + 10);
 //    QRect checkboxRect = QRect(bgRect.left() + 0, bgRect.top(), checkBoxSize - 4, checkBoxSize - 4);
@@ -70,7 +69,6 @@ void DFInstallErrorListDelegate::drawFontName(QPainter *painter, const QStyleOpt
 
     QString strFontFileName = itemModel.strFontFileName;
     QString strStatus = itemModel.strFontInstallStatus;
-
 
     int checkBoxSize = 20;
     QRect checkboxRect = QRect(bgRect.left() + 10, bgRect.top() + 14 + 2, checkBoxSize - 4, checkBoxSize - 4);
@@ -102,7 +100,6 @@ void DFInstallErrorListDelegate::drawFontName(QPainter *painter, const QStyleOpt
     } else {
         elidedFontFileNameText = lengthAutoFeed(painter, strFontFileName, m_StatusWidth);
     }
-
 
     if (option.state & QStyle::State_Selected) {
         QColor penColor = option.palette.color(DPalette::Text);
@@ -246,7 +243,6 @@ void DFInstallErrorListDelegate::paintTabFocusBackground(QPainter *painter, cons
     path3.lineTo(path3_bottomRight - QPoint(10, 0));
     path3.arcTo(QRect(QPoint(path3_bottomRight - QPoint(6 * 2, 6 * 2)), QSize(6 * 2, 6 * 2)), 270, 90);
 
-
     DPalette::ColorGroup cg = option.state & QStyle::State_Enabled
                               ? DPalette::Normal : DPalette::Disabled;
     if (cg == DPalette::Normal && !(option.state & QStyle::State_Active)) {
@@ -275,7 +271,6 @@ void DFInstallErrorListDelegate::paintTabFocusBackground(QPainter *painter, cons
     painter->setBrush(QBrush(fillColor3));
     painter->fillPath(path3, painter->brush());
 }
-
 
 QString DFInstallErrorListDelegate::lengthAutoFeed(QPainter *painter, QString sourceStr, int m_StatusWidth) const
 {
@@ -307,8 +302,6 @@ QString DFInstallErrorListDelegate::lengthAutoFeed(QPainter *painter, QString so
     return m_TargetStr;
 
 }
-
-
 
 //用于去除选中项的边框
 void DFInstallErrorListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
@@ -361,7 +354,6 @@ QSize DFInstallErrorListDelegate::sizeHint(const QStyleOptionViewItem &option,
 
     return QSize(option.rect.width(), 48);
 }
-
 
 //DFInstallErrorListView
 DFInstallErrorListView::DFInstallErrorListView(const QList<DFInstallErrorItemModel> &installErrorFontModelList,
@@ -459,7 +451,6 @@ void DFInstallErrorListView::addErrorListData(const QList<DFInstallErrorItemMode
 
     this->setModel(m_errorListSourceModel);
 }
-
 
 //字体验证框中的滚动
 void DFInstallErrorListView::checkScrollToIndex(QStringList &addHalfInstalledFiles, QStringList &oldHalfInstalledFiles, QStringList &errorFileList)
