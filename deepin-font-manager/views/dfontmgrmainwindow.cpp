@@ -222,9 +222,12 @@ void DFontMgrMainWindow::initConnections()
     connect(d->rightKeyMenu, &QMenu::aboutToHide, this, [ = ] {
         qDebug() << __FUNCTION__ << "about to hide\n\n";
         m_fontPreviewListView->clearPressState();
+        //恢复聚焦状态
         if (m_fontPreviewListView->hasFocus() && m_recoveryTabFocusState == true)
-            //恢复聚焦状态
+        {
             m_fontPreviewListView->setIsTabFocus(true);
+            m_recoveryTabFocusState = false;
+        }
         //检查鼠标是否处于hover状态
         m_fontPreviewListView->checkHoverState();
     });
@@ -976,12 +979,14 @@ void DFontMgrMainWindow::handleMenuEvent(QAction *action)
             // Add menu handler code here
             switch (actionId) {
             case DFontMenuManager::MenuAction::M_AddFont: {
+                m_fontPreviewListView->setIsTabFocus(false);
                 handleAddFontEvent();
             }
             break;
             case DFontMenuManager::MenuAction::M_FontInfo: {
                 DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
                 DFontInfoDialog *fontInfoDlg = new DFontInfoDialog(&currItemData, this);
+                m_fontPreviewListView->setIsTabFocus(false);
                 fontInfoDlg->exec();
             }
             break;
@@ -1015,10 +1020,12 @@ void DFontMgrMainWindow::handleMenuEvent(QAction *action)
             }
             break;
             case DFontMenuManager::MenuAction::M_ShowFontPostion:
+                m_fontPreviewListView->setIsTabFocus(false);
                 showFontFilePostion();
                 break;
             default:
                 qDebug() << "handleMenuEvent->(id=" << actionId << ")";
+                m_fontPreviewListView->setIsTabFocus(false);
                 break;
             }
         }
@@ -1140,6 +1147,7 @@ void DFontMgrMainWindow::forceNoramlInstalltionQuitIfNeeded()
 {
     if (m_fIsInstalling) {
         qDebug() << "In normal installtion flow, force quit!";
+        m_fontPreviewListView->setIsTabFocus(false);
         m_dfNormalInstalldlg->breakInstalltion();
     }
 }
@@ -1147,8 +1155,6 @@ void DFontMgrMainWindow::forceNoramlInstalltionQuitIfNeeded()
 void DFontMgrMainWindow::setDeleteFinish()
 {
     m_fIsDeleting &= ~Delete_Deleting;
-    if (m_recoveryTabFocusState == true)
-        m_fontPreviewListView->setIsTabFocus(true);
     qDebug() << __FUNCTION__ << m_fIsDeleting;
 }
 
