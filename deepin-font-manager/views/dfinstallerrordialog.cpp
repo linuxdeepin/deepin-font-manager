@@ -351,6 +351,7 @@ void DFInstallErrorDialog::onListItemClicked(QModelIndex index)
     //SP3--安装验证页面，回车取消/选中(539)--正常字体可操作
     if (itemModel.bIsNormalUserFont) {
         itemModel.bChecked = !itemModel.bChecked;
+        m_installErrorListView->ifNeedScrollTo(index);
         m_installErrorListView->getErrorListSourceModel()->setData(index, QVariant::fromValue(itemModel), Qt::DisplayRole);
         m_installErrorListView->updateErrorFontModelList(index.row(), itemModel);
         resetContinueInstallBtnStatus();

@@ -646,8 +646,29 @@ void DFInstallErrorListView::keyPressEvent(QKeyEvent *event)
             return;
         }
     }
+    //SP3--安装验证页面，回车取消/选中(539)--正常字体可操作
+    else if (event->key() == Qt::Key_Space) {
+        if (selectedIndexes().count() == 1) {
+            emit onClickErrorListItem(currentIndex());
+            ifNeedScrollTo(currentIndex());
+        }
+        return;
+    }
     DListView::keyPressEvent(event);
 }
+
+/*******************************************************************************
+ 1. @函数:    ifNeedScrollTo(QModelIndex idx)
+ 2. @作者:    UT000539 宁玉闯
+ 3. @参数:    idx:当前选中的QModelIndex
+ 4. @说明:    不可见则滚动到modelindex
+*******************************************************************************/
+void DFInstallErrorListView::ifNeedScrollTo(QModelIndex idx)
+{
+    if (!viewport()->visibleRegion().contains(visualRect(idx).center()))
+        scrollTo(idx);
+}
+
 bool DFInstallErrorListView::eventFilter(QObject *obj, QEvent *event)
 {
     Q_UNUSED(obj)

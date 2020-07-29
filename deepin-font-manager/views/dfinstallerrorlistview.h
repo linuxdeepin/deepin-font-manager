@@ -65,7 +65,8 @@ public:
 
     void setIsInstallFocus(bool isInstallFocus);
     bool getIsInstallFocus() const;
-
+    //不可见则滚动到modelindex
+    void ifNeedScrollTo(QModelIndex idx);
 private:
 
     DFontInfoManager *m_fontInfoManager;
