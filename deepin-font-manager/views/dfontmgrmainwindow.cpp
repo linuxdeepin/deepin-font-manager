@@ -472,6 +472,7 @@ void DFontMgrMainWindow::initShortcuts()
             //first disable delete
             if (m_cacheFinish || m_installFinish)
                 return;
+            m_recoveryTabFocusState = m_fontPreviewListView->getIsTabFocus();
             delCurrentFont();
         }, Qt::UniqueConnection);
     }
@@ -1146,6 +1147,8 @@ void DFontMgrMainWindow::forceNoramlInstalltionQuitIfNeeded()
 void DFontMgrMainWindow::setDeleteFinish()
 {
     m_fIsDeleting &= ~Delete_Deleting;
+    if (m_recoveryTabFocusState == true)
+        m_fontPreviewListView->setIsTabFocus(true);
     qDebug() << __FUNCTION__ << m_fIsDeleting;
 }
 
