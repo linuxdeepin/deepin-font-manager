@@ -170,26 +170,31 @@ void DFInstallErrorListDelegate::drawSelectStatus(QPainter *painter, const QStyl
     QPainterPath path;
     const int radius = 8;
 
-    path.moveTo(bgRect.bottomRight() - QPoint(0, radius));
-    path.lineTo(bgRect.topRight() + QPoint(0, radius));
-    path.arcTo(QRect(QPoint(bgRect.topRight() - QPoint(radius * 2, 0)), QSize(radius * 2, radius * 2)), 0, 90);
-    path.lineTo(bgRect.topLeft() + QPoint(radius, 0));
-    path.arcTo(QRect(QPoint(bgRect.topLeft()), QSize(radius * 2, radius * 2)), 90, 90);
-    path.lineTo(bgRect.bottomLeft() - QPoint(0, radius));
-    path.arcTo(QRect(QPoint(bgRect.bottomLeft() - QPoint(0, radius * 2)), QSize(radius * 2, radius * 2)), 180, 90);
-    path.lineTo(bgRect.bottomLeft() + QPoint(radius, 0));
-    path.arcTo(QRect(QPoint(bgRect.bottomRight() - QPoint(radius * 2, radius * 2)), QSize(radius * 2, radius * 2)), 270, 90);
+    QPoint path_bottomRight(bgRect.bottomRight().x() - 3, bgRect.bottomRight().y());
+    QPoint path_topRight(bgRect.topRight().x() - 3, bgRect.topRight().y());
+    QPoint path_topLeft(bgRect.topLeft().x() + 3, bgRect.topLeft().y());
+    QPoint path_bottomLeft(bgRect.bottomLeft().x() + 3, bgRect.bottomLeft().y());
+    path.moveTo(path_bottomRight - QPoint(0, radius));
+    path.lineTo(path_topRight + QPoint(0, radius));
+    path.arcTo(QRect(QPoint(path_topRight - QPoint(radius * 2, 0)), QSize(radius * 2, radius * 2)), 0, 90);
+    path.lineTo(path_topLeft + QPoint(radius, 0));
+    path.arcTo(QRect(QPoint(path_topLeft), QSize(radius * 2, radius * 2)), 90, 90);
+    path.lineTo(path_bottomLeft - QPoint(0, radius));
+    path.arcTo(QRect(QPoint(path_bottomLeft  - QPoint(0, radius * 2)), QSize(radius * 2, radius * 2)), 180, 90);
+    path.lineTo(path_bottomRight - QPoint(radius, 0));
+    path.arcTo(QRect(QPoint(path_bottomRight - QPoint(radius * 2, radius * 2)), QSize(radius * 2, radius * 2)), 270, 90);
 
     if (option.state & QStyle::State_Selected) {
 //        DPalette pa = DApplicationHelper::instance()->palette(m_parentView);//dtk库接口不稳定，更换palette获取方式
-        DPalette pa = DApplicationHelper::instance()->applicationPalette();
-        DStyleHelper styleHelper;
-        QColor fillColor = styleHelper.getColor(static_cast<const QStyleOption *>(&option), DPalette::ToolTipText);
-        fillColor.setAlphaF(0.2);
-        painter->fillPath(path, QBrush(fillColor));
 // 如果是因为tab获取到的焦点，绘制tab选中的效果
         if (m_parentView->getIsTabFocus() == true) {
             paintTabFocusBackground(painter, option, bgRect);
+        } else {
+            DPalette pa = DApplicationHelper::instance()->applicationPalette();
+            DStyleHelper styleHelper;
+            QColor fillColor = styleHelper.getColor(static_cast<const QStyleOption *>(&option), DPalette::ToolTipText);
+            fillColor.setAlphaF(0.2);
+            painter->fillPath(path, QBrush(fillColor));
         }
     }
 }
@@ -201,22 +206,26 @@ void DFInstallErrorListDelegate::paintTabFocusBackground(QPainter *painter, cons
 
     //Highlight绘制区域的路径
     QPainterPath path;
-    path.moveTo(bgRect.bottomRight() - QPoint(0, radius));
-    path.lineTo(bgRect.topRight() + QPoint(0, radius));
-    path.arcTo(QRect(QPoint(bgRect.topRight() - QPoint(radius * 2, 0)), QSize(radius * 2, radius * 2)), 0, 90);
-    path.lineTo(bgRect.topLeft() + QPoint(radius, 0));
-    path.arcTo(QRect(QPoint(bgRect.topLeft()), QSize(radius * 2, radius * 2)), 90, 90);
-    path.lineTo(bgRect.bottomLeft() - QPoint(0, radius));
-    path.arcTo(QRect(QPoint(bgRect.bottomLeft() - QPoint(0, radius * 2)), QSize(radius * 2, radius * 2)), 180, 90);
-    path.lineTo(bgRect.bottomLeft() + QPoint(radius, 0));
-    path.arcTo(QRect(QPoint(bgRect.bottomRight() - QPoint(radius * 2, radius * 2)), QSize(radius * 2, radius * 2)), 270, 90);
+    QPoint path_bottomRight(bgRect.bottomRight().x() - 3, bgRect.bottomRight().y());
+    QPoint path_topRight(bgRect.topRight().x() - 3, bgRect.topRight().y());
+    QPoint path_topLeft(bgRect.topLeft().x() + 3, bgRect.topLeft().y());
+    QPoint path_bottomLeft(bgRect.bottomLeft().x() + 3, bgRect.bottomLeft().y());
+    path.moveTo(path_bottomRight - QPoint(0, radius));
+    path.lineTo(path_topRight + QPoint(0, radius));
+    path.arcTo(QRect(QPoint(path_topRight - QPoint(radius * 2, 0)), QSize(radius * 2, radius * 2)), 0, 90);
+    path.lineTo(path_topLeft + QPoint(radius, 0));
+    path.arcTo(QRect(QPoint(path_topLeft), QSize(radius * 2, radius * 2)), 90, 90);
+    path.lineTo(path_bottomLeft - QPoint(0, radius));
+    path.arcTo(QRect(QPoint(path_bottomLeft  - QPoint(0, radius * 2)), QSize(radius * 2, radius * 2)), 180, 90);
+    path.lineTo(path_bottomRight - QPoint(radius, 0));
+    path.arcTo(QRect(QPoint(path_bottomRight - QPoint(radius * 2, radius * 2)), QSize(radius * 2, radius * 2)), 270, 90);
 
     //窗口色绘制区域的路径
     QPainterPath path2;
-    QPoint path2_bottomRight(bgRect.bottomRight().x() - 2, bgRect.bottomRight().y() - 2);
-    QPoint path2_topRight(bgRect.topRight().x() - 2, bgRect.topRight().y() + 2);
-    QPoint path2_topLeft(bgRect.topLeft().x() + 2, bgRect.topLeft().y() + 2);
-    QPoint path2_bottomLeft(bgRect.bottomLeft().x() + 2, bgRect.bottomLeft().y() - 2);
+    QPoint path2_bottomRight(bgRect.bottomRight().x() - 5, bgRect.bottomRight().y() - 2);
+    QPoint path2_topRight(bgRect.topRight().x() - 5, bgRect.topRight().y() + 2);
+    QPoint path2_topLeft(bgRect.topLeft().x() + 5, bgRect.topLeft().y() + 2);
+    QPoint path2_bottomLeft(bgRect.bottomLeft().x() + 5, bgRect.bottomLeft().y() - 2);
     path2.moveTo(path2_bottomRight - QPoint(0, 6));
     path2.lineTo(path2_topRight + QPoint(0, 6));
     path2.arcTo(QRect(QPoint(path2_topRight - QPoint(6 * 2, 0)), QSize(6 * 2, 6 * 2)), 0, 90);
@@ -229,10 +238,10 @@ void DFInstallErrorListDelegate::paintTabFocusBackground(QPainter *painter, cons
 
     //选中色绘制区域的路径
     QPainterPath path3;
-    QPoint path3_bottomRight(bgRect.bottomRight().x() - 3, bgRect.bottomRight().y() - 3);
-    QPoint path3_topRight(bgRect.topRight().x() - 3, bgRect.topRight().y() + 3);
-    QPoint path3_topLeft(bgRect.topLeft().x() + 3, bgRect.topLeft().y() + 3);
-    QPoint path3_bottomLeft(bgRect.bottomLeft().x() + 3, bgRect.bottomLeft().y() - 3);
+    QPoint path3_bottomRight(bgRect.bottomRight().x() - 6, bgRect.bottomRight().y() - 3);
+    QPoint path3_topRight(bgRect.topRight().x() - 6, bgRect.topRight().y() + 3);
+    QPoint path3_topLeft(bgRect.topLeft().x() + 6, bgRect.topLeft().y() + 3);
+    QPoint path3_bottomLeft(bgRect.bottomLeft().x() + 6, bgRect.bottomLeft().y() - 3);
     path3.moveTo(path3_bottomRight - QPoint(0, 10));
     path3.lineTo(path3_topRight + QPoint(0, 10));
     path3.arcTo(QRect(QPoint(path3_topRight - QPoint(6 * 2, 0)), QSize(6 * 2, 6 * 2)), 0, 90);

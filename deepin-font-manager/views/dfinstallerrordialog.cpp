@@ -18,6 +18,8 @@
 
 #include "dstyleoption.h"
 
+#define LISTVIEW_LEFT_SPACING 2
+
 DWIDGET_USE_NAMESPACE
 
 DFMSuggestButton::DFMSuggestButton(QWidget *parent)
@@ -276,6 +278,7 @@ void DFInstallErrorDialog::initInstallErrorFontViews()
 
     m_installErrorListView = new DFInstallErrorListView(m_installErrorFontModelList, this);
     m_installErrorListView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    m_installErrorListView->setFixedWidth(width() - LISTVIEW_LEFT_SPACING);
     m_installErrorListView->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
     m_mainLayout->addWidget(m_installErrorListView);
