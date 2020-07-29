@@ -646,14 +646,6 @@ void DFInstallErrorListView::keyPressEvent(QKeyEvent *event)
             return;
         }
     }
-    //SP3--安装验证页面，回车取消/选中(539)--正常字体可操作
-    else if (event->key() == Qt::Key_Space) {
-        if (selectedIndexes().count() == 1) {
-            emit onClickErrorListItem(currentIndex());
-            ifNeedScrollTo(currentIndex());
-        }
-        return;
-    }
     DListView::keyPressEvent(event);
 }
 

@@ -209,7 +209,7 @@ protected:
 
     bool m_leftListViewTabFocus = false;
     bool m_previewListViewTabFocus = false;
-
+    bool m_recoveryTabFocusState = false;
 
     //Stand shortcut
     //Implement by DTK                       //Close window       --> Alt+F4

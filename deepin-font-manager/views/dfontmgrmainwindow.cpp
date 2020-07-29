@@ -205,6 +205,8 @@ void DFontMgrMainWindow::initConnections()
     // Initialize rigth menu it state
     QObject::connect(d->rightKeyMenu, &QMenu::aboutToShow, this, [ = ]() {
         qDebug() << __FUNCTION__ << "about toshow";
+        //记录操作之前有无tab聚焦
+        m_recoveryTabFocusState = m_fontPreviewListView->getIsTabFocus();
         DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
         int cnt = 0;
         int systemCnt = 0;
@@ -220,6 +222,9 @@ void DFontMgrMainWindow::initConnections()
     connect(d->rightKeyMenu, &QMenu::aboutToHide, this, [ = ] {
         qDebug() << __FUNCTION__ << "about to hide\n\n";
         m_fontPreviewListView->clearPressState();
+        if (m_fontPreviewListView->hasFocus() && m_recoveryTabFocusState == true)
+            //恢复聚焦状态
+            m_fontPreviewListView->setIsTabFocus(true);
         //检查鼠标是否处于hover状态
         m_fontPreviewListView->checkHoverState();
     });
@@ -1906,12 +1911,7 @@ void DFontMgrMainWindow::keyPressEvent(QKeyEvent *event)
         } else if (Qt::Key_Right == event->key() && d->leftSiderBar->hasFocus() && m_fontPreviewListView->isVisible()) {
             m_fontPreviewListView->setIsTabFocus(true);
             m_fontPreviewListView->setFocus(Qt::MouseFocusReason);
-            if (0 == m_fontPreviewListView->selectionModel()->selectedIndexes().count()) {
-                DFontPreviewProxyModel *filterModel = m_fontPreviewListView->getFontPreviewProxyModel();
-                QModelIndex modelIndex = filterModel->index(0, 0);
-                if (modelIndex.isValid())
-                    m_fontPreviewListView->setCurrentIndex(modelIndex);
-            }
+            m_fontPreviewListView->scrollWithTheSelected();
         }
     }
 
