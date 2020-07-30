@@ -270,19 +270,19 @@ QString DFInstallErrorListDelegate::lengthAutoFeed(QPainter *painter, QString so
 */
 void DFInstallErrorListDelegate::setPaintPath(const QRect &bgRect, QPainterPath &path, const int xDifference, const int yDifference, const int radius) const
 {
-    QPoint path3_bottomRight(bgRect.bottomRight().x() - xDifference, bgRect.bottomRight().y() - yDifference);
-    QPoint path3_topRight(bgRect.topRight().x() - xDifference, bgRect.topRight().y() + yDifference);
-    QPoint path3_topLeft(bgRect.topLeft().x() + xDifference, bgRect.topLeft().y() + yDifference);
-    QPoint path3_bottomLeft(bgRect.bottomLeft().x() + xDifference, bgRect.bottomLeft().y() - yDifference);
-    path.moveTo(path3_bottomRight - QPoint(0, 10));
-    path.lineTo(path3_topRight + QPoint(0, 10));
-    path.arcTo(QRect(QPoint(path3_topRight - QPoint(radius * 2, 0)), QSize(radius * 2, radius * 2)), 0, 90);
-    path.lineTo(path3_topLeft + QPoint(10, 0));
-    path.arcTo(QRect(QPoint(path3_topLeft), QSize(radius * 2, radius * 2)), 90, 90);
-    path.lineTo(path3_bottomLeft - QPoint(0, 10));
-    path.arcTo(QRect(QPoint(path3_bottomLeft - QPoint(0, radius * 2)), QSize(radius * 2, radius * 2)), 180, 90);
-    path.lineTo(path3_bottomRight - QPoint(10, 0));
-    path.arcTo(QRect(QPoint(path3_bottomRight - QPoint(radius * 2, radius * 2)), QSize(radius * 2, radius * 2)), 270, 90);
+    QPoint path_bottomRight(bgRect.bottomRight().x() - xDifference, bgRect.bottomRight().y() - yDifference);
+    QPoint path_topRight(bgRect.topRight().x() - xDifference, bgRect.topRight().y() + yDifference);
+    QPoint path_topLeft(bgRect.topLeft().x() + xDifference, bgRect.topLeft().y() + yDifference);
+    QPoint path_bottomLeft(bgRect.bottomLeft().x() + xDifference, bgRect.bottomLeft().y() - yDifference);
+    path.moveTo(path_bottomRight - QPoint(0, 10));
+    path.lineTo(path_topRight + QPoint(0, 10));
+    path.arcTo(QRect(QPoint(path_topRight - QPoint(radius * 2, 0)), QSize(radius * 2, radius * 2)), 0, 90);
+    path.lineTo(path_topLeft + QPoint(10, 0));
+    path.arcTo(QRect(QPoint(path_topLeft), QSize(radius * 2, radius * 2)), 90, 90);
+    path.lineTo(path_bottomLeft - QPoint(0, 10));
+    path.arcTo(QRect(QPoint(path_bottomLeft - QPoint(0, radius * 2)), QSize(radius * 2, radius * 2)), 180, 90);
+    path.lineTo(path_bottomRight - QPoint(10, 0));
+    path.arcTo(QRect(QPoint(path_bottomRight - QPoint(radius * 2, radius * 2)), QSize(radius * 2, radius * 2)), 270, 90);
 }
 
 //用于去除选中项的边框

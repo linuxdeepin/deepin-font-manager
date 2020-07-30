@@ -112,52 +112,22 @@ QSize DNoFocusDelegate::sizeHint(const QStyleOptionViewItem &option,
     }
 }
 
+
+
 void DNoFocusDelegate::paintTabFocusBackground(QPainter *painter, const QStyleOptionViewItem &option, const QRect &backgroundRect, const QPalette::ColorGroup cg) const
 {
     //绘制左侧列表外部高亮区域的路径
     QPainterPath path;
     const int radius = 8;
-    path.moveTo(backgroundRect.bottomRight() - QPoint(0, radius));
-    path.lineTo(backgroundRect.topRight() + QPoint(0, radius));
-    path.arcTo(QRect(QPoint(backgroundRect.topRight() - QPoint(radius * 2, 0)), QSize(radius * 2, radius * 2)), 0, 90);
-    path.lineTo(backgroundRect.topLeft() + QPoint(radius, 0));
-    path.arcTo(QRect(QPoint(backgroundRect.topLeft()), QSize(radius * 2, radius * 2)), 90, 90);
-    path.lineTo(backgroundRect.bottomLeft() - QPoint(0, radius));
-    path.arcTo(QRect(QPoint(backgroundRect.bottomLeft() - QPoint(0, radius * 2)), QSize(radius * 2, radius * 2)), 180, 90);
-    path.lineTo(backgroundRect.bottomLeft() + QPoint(radius, 0));
-    path.arcTo(QRect(QPoint(backgroundRect.bottomRight() - QPoint(radius * 2, radius * 2)), QSize(radius * 2, radius * 2)), 270, 90);
+    setPaintPath(backgroundRect, path, 0, 0, radius);
 
     //绘制左侧列表窗口色区域的路径
     QPainterPath path2;
-    QPoint path2_bottomRight(backgroundRect.bottomRight().x() - 2, backgroundRect.bottomRight().y() - 2);
-    QPoint path2_topRight(backgroundRect.topRight().x() - 2, backgroundRect.topRight().y() + 2);
-    QPoint path2_topLeft(backgroundRect.topLeft().x() + 2, backgroundRect.topLeft().y() + 2);
-    QPoint path2_bottomLeft(backgroundRect.bottomLeft().x() + 2, backgroundRect.bottomLeft().y() - 2);
-    path2.moveTo(path2_bottomRight - QPoint(0, 6));
-    path2.lineTo(path2_topRight + QPoint(0, 6));
-    path2.arcTo(QRect(QPoint(path2_topRight - QPoint(6 * 2, 0)), QSize(6 * 2, 6 * 2)), 0, 90);
-    path2.lineTo(path2_topLeft + QPoint(6, 0));
-    path2.arcTo(QRect(QPoint(path2_topLeft), QSize(6 * 2, 6 * 2)), 90, 90);
-    path2.lineTo(path2_bottomLeft - QPoint(0, 6));
-    path2.arcTo(QRect(QPoint(path2_bottomLeft - QPoint(0, 6 * 2)), QSize(6 * 2, 6 * 2)), 180, 90);
-    path2.lineTo(path2_bottomRight - QPoint(6, 0));
-    path2.arcTo(QRect(QPoint(path2_bottomRight - QPoint(6 * 2, 6 * 2)), QSize(6 * 2, 6 * 2)), 270, 90);
+    setPaintPath(backgroundRect, path2, 2, 2, 6);
 
     //绘制左侧列表内部高亮区域的路径
     QPainterPath path3;
-    QPoint path3_bottomRight(backgroundRect.bottomRight().x() - 3, backgroundRect.bottomRight().y() - 3);
-    QPoint path3_topRight(backgroundRect.topRight().x() - 3, backgroundRect.topRight().y() + 3);
-    QPoint path3_topLeft(backgroundRect.topLeft().x() + 3, backgroundRect.topLeft().y() + 3);
-    QPoint path3_bottomLeft(backgroundRect.bottomLeft().x() + 3, backgroundRect.bottomLeft().y() - 3);
-    path3.moveTo(path3_bottomRight - QPoint(0, 10));
-    path3.lineTo(path3_topRight + QPoint(0, 10));
-    path3.arcTo(QRect(QPoint(path3_topRight - QPoint(6 * 2, 0)), QSize(6 * 2, 6 * 2)), 0, 90);
-    path3.lineTo(path3_topLeft + QPoint(10, 0));
-    path3.arcTo(QRect(QPoint(path3_topLeft), QSize(6 * 2, 6 * 2)), 90, 90);
-    path3.lineTo(path3_bottomLeft - QPoint(0, 10));
-    path3.arcTo(QRect(QPoint(path3_bottomLeft - QPoint(0, 6 * 2)), QSize(6 * 2, 6 * 2)), 180, 90);
-    path3.lineTo(path3_bottomRight - QPoint(10, 0));
-    path3.arcTo(QRect(QPoint(path3_bottomRight - QPoint(6 * 2, 6 * 2)), QSize(6 * 2, 6 * 2)), 270, 90);
+    setPaintPath(backgroundRect, path3, 3, 3, 6);
 
     if (option.state & QStyle::State_Selected) {
         QColor fillColor = option.palette.color(cg, DPalette::Highlight);
@@ -178,6 +148,33 @@ void DNoFocusDelegate::paintTabFocusBackground(QPainter *painter, const QStyleOp
         }
     }
 }
+
+/**
+*  @brief  得到需要绘制区域的路径
+*  @param[in]  bgRect listview一项的区域范围
+*  @param[in]  path 需要绘制区域的路径
+*  @param[in]  xDifference x方向需要变化的数值
+*  @param[in]  yDifference y方向需要变化的数值
+*  @param[in]  radius  圆弧半径
+*/
+void DNoFocusDelegate::setPaintPath(const QRect &bgRect, QPainterPath &path, const int xDifference, const int yDifference, const int radius) const
+{
+    QPoint path_bottomRight(bgRect.bottomRight().x() - xDifference, bgRect.bottomRight().y() - yDifference);
+    QPoint path_topRight(bgRect.topRight().x() - xDifference, bgRect.topRight().y() + yDifference);
+    QPoint path_topLeft(bgRect.topLeft().x() + xDifference, bgRect.topLeft().y() + yDifference);
+    QPoint path_bottomLeft(bgRect.bottomLeft().x() + xDifference, bgRect.bottomLeft().y() - yDifference);
+    path.moveTo(path_bottomRight - QPoint(0, 10));
+    path.lineTo(path_topRight + QPoint(0, 10));
+    path.arcTo(QRect(QPoint(path_topRight - QPoint(radius * 2, 0)), QSize(radius * 2, radius * 2)), 0, 90);
+    path.lineTo(path_topLeft + QPoint(10, 0));
+    path.arcTo(QRect(QPoint(path_topLeft), QSize(radius * 2, radius * 2)), 90, 90);
+    path.lineTo(path_bottomLeft - QPoint(0, 10));
+    path.arcTo(QRect(QPoint(path_bottomLeft - QPoint(0, radius * 2)), QSize(radius * 2, radius * 2)), 180, 90);
+    path.lineTo(path_bottomRight - QPoint(10, 0));
+    path.arcTo(QRect(QPoint(path_bottomRight - QPoint(radius * 2, radius * 2)), QSize(radius * 2, radius * 2)), 270, 90);
+}
+
+
 //adjust length/*UT000539*/
 QString DNoFocusDelegate::adjustLength(QString &titleName, QFont &font) const
 {
@@ -198,7 +195,6 @@ QString DNoFocusDelegate::adjustLength(QString &titleName, QFont &font) const
                 if (fontMetric.width("...") > IS_NEED_ELLIPSIS) {
                     finalTitle = m_curTitle;
                 } else {
-
                     finalTitle =   m_curTitle.append("...");
                 }
                 break;
@@ -207,6 +203,7 @@ QString DNoFocusDelegate::adjustLength(QString &titleName, QFont &font) const
             finalTitle = titleName;
         }
     }
+
     return finalTitle;
 }
 

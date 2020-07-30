@@ -30,7 +30,6 @@ const int FONT_PREVIEW_RIGHT_MARGIN = COLLECT_ICON_SIZE + COLLECT_ICON_RIGHT_MAR
 const int FONT_PREVIEW_TOP_MARGIN = FONT_NAME_HEIGHT + FONT_NAME_TOP_MARGIN;
 const int FONT_PREVIEW_BOTTOM_MARGIN = 10;
 
-
 DFontPreviewItemDelegate::DFontPreviewItemDelegate(QAbstractItemView *parent)
     : QStyledItemDelegate(parent)
     , m_parentView(qobject_cast<DFontPreviewListView *>(parent))
@@ -141,7 +140,6 @@ QPoint DFontPreviewItemDelegate::adjustPreviewFontBaseLinePoint(const QRect &fon
 
 QFont DFontPreviewItemDelegate::adjustPreviewFont(const int appFontId, const QString &fontFamilyName, const QString &fontStyleName, const int &fontSize) const
 {
-
     QString familyName = QFontDatabase::applicationFontFamilies(appFontId).isEmpty() ? fontFamilyName : QFontDatabase::applicationFontFamilies(appFontId).first();
     QFont font;
     font.setFamily(familyName);
@@ -265,54 +263,22 @@ void DFontPreviewItemDelegate::paintBackground(QPainter *painter, const QStyleOp
     }
 }
 
-
 //绘制tab选中后的背景效果
 void DFontPreviewItemDelegate::paintTabFocusBackground(QPainter *painter, const QStyleOptionViewItem &option, const QRect &bgRect) const
 {
+    //初始化绘制高亮色区域路径
     QPainterPath path;
     painter->setRenderHint(QPainter::Antialiasing, true);
     const int radius = 8;
+    setPaintPath(bgRect, path, 0, 0, radius);
 
-    path.moveTo(bgRect.bottomRight() - QPoint(0, radius));
-    path.lineTo(bgRect.topRight() + QPoint(0, radius));
-    path.arcTo(QRect(QPoint(bgRect.topRight() - QPoint(radius * 2, 0)), QSize(radius * 2, radius * 2)), 0, 90);
-    path.lineTo(bgRect.topLeft() + QPoint(radius, 0));
-    path.arcTo(QRect(QPoint(bgRect.topLeft()), QSize(radius * 2, radius * 2)), 90, 90);
-    path.lineTo(bgRect.bottomLeft() - QPoint(0, radius));
-    path.arcTo(QRect(QPoint(bgRect.bottomLeft() - QPoint(0, radius * 2)), QSize(radius * 2, radius * 2)), 180, 90);
-    path.lineTo(bgRect.bottomLeft() + QPoint(radius, 0));
-    path.arcTo(QRect(QPoint(bgRect.bottomRight() - QPoint(radius * 2, radius * 2)), QSize(radius * 2, radius * 2)), 270, 90);
-
+    //初始化绘制窗口色区域路径
     QPainterPath path2;
-    QPoint path2_bottomRight(bgRect.bottomRight().x() - 2, bgRect.bottomRight().y() - 2);
-    QPoint path2_topRight(bgRect.topRight().x() - 2, bgRect.topRight().y() + 2);
-    QPoint path2_topLeft(bgRect.topLeft().x() + 2, bgRect.topLeft().y() + 2);
-    QPoint path2_bottomLeft(bgRect.bottomLeft().x() + 2, bgRect.bottomLeft().y() - 2);
-    path2.moveTo(path2_bottomRight - QPoint(0, 6));
-    path2.lineTo(path2_topRight + QPoint(0, 6));
-    path2.arcTo(QRect(QPoint(path2_topRight - QPoint(6 * 2, 0)), QSize(6 * 2, 6 * 2)), 0, 90);
-    path2.lineTo(path2_topLeft + QPoint(6, 0));
-    path2.arcTo(QRect(QPoint(path2_topLeft), QSize(6 * 2, 6 * 2)), 90, 90);
-    path2.lineTo(path2_bottomLeft - QPoint(0, 6));
-    path2.arcTo(QRect(QPoint(path2_bottomLeft - QPoint(0, 6 * 2)), QSize(6 * 2, 6 * 2)), 180, 90);
-    path2.lineTo(path2_bottomRight - QPoint(6, 0));
-    path2.arcTo(QRect(QPoint(path2_bottomRight - QPoint(6 * 2, 6 * 2)), QSize(6 * 2, 6 * 2)), 270, 90);
+    setPaintPath(bgRect, path2, 2, 2, 6);
 
+    //初始化绘制背景色区域路径
     QPainterPath path3;
-    QPoint path3_bottomRight(bgRect.bottomRight().x() - 3, bgRect.bottomRight().y() - 3);
-    QPoint path3_topRight(bgRect.topRight().x() - 3, bgRect.topRight().y() + 3);
-    QPoint path3_topLeft(bgRect.topLeft().x() + 3, bgRect.topLeft().y() + 3);
-    QPoint path3_bottomLeft(bgRect.bottomLeft().x() + 3, bgRect.bottomLeft().y() - 3);
-    path3.moveTo(path3_bottomRight - QPoint(0, 10));
-    path3.lineTo(path3_topRight + QPoint(0, 10));
-    path3.arcTo(QRect(QPoint(path3_topRight - QPoint(6 * 2, 0)), QSize(6 * 2, 6 * 2)), 0, 90);
-    path3.lineTo(path3_topLeft + QPoint(10, 0));
-    path3.arcTo(QRect(QPoint(path3_topLeft), QSize(6 * 2, 6 * 2)), 90, 90);
-    path3.lineTo(path3_bottomLeft - QPoint(0, 10));
-    path3.arcTo(QRect(QPoint(path3_bottomLeft - QPoint(0, 6 * 2)), QSize(6 * 2, 6 * 2)), 180, 90);
-    path3.lineTo(path3_bottomRight - QPoint(10, 0));
-    path3.arcTo(QRect(QPoint(path3_bottomRight - QPoint(6 * 2, 6 * 2)), QSize(6 * 2, 6 * 2)), 270, 90);
-
+    setPaintPath(bgRect, path3, 3, 3, 6);
 
     DPalette::ColorGroup cg = option.state & QStyle::State_Enabled
                               ? DPalette::Normal : DPalette::Disabled;
@@ -333,7 +299,31 @@ void DFontPreviewItemDelegate::paintTabFocusBackground(QPainter *painter, const 
     fillColor3.setAlphaF(0.2);
     painter->setBrush(QBrush(fillColor3));
     painter->fillPath(path3, painter->brush());
+}
 
+/**
+*  @brief  得到需要绘制区域的路径
+*  @param[in]  bgRect listview一项的区域范围
+*  @param[in]  path 需要绘制区域的路径
+*  @param[in]  xDifference x方向需要变化的数值
+*  @param[in]  yDifference y方向需要变化的数值
+*  @param[in]  radius  圆弧半径
+*/
+void DFontPreviewItemDelegate::setPaintPath(const QRect &bgRect, QPainterPath &path, const int xDifference, const int yDifference, const int radius) const
+{
+    QPoint path_bottomRight(bgRect.bottomRight().x() - xDifference, bgRect.bottomRight().y() - yDifference);
+    QPoint path_topRight(bgRect.topRight().x() - xDifference, bgRect.topRight().y() + yDifference);
+    QPoint path_topLeft(bgRect.topLeft().x() + xDifference, bgRect.topLeft().y() + yDifference);
+    QPoint path_bottomLeft(bgRect.bottomLeft().x() + xDifference, bgRect.bottomLeft().y() - yDifference);
+    path.moveTo(path_bottomRight - QPoint(0, 10));
+    path.lineTo(path_topRight + QPoint(0, 10));
+    path.arcTo(QRect(QPoint(path_topRight - QPoint(radius * 2, 0)), QSize(radius * 2, radius * 2)), 0, 90);
+    path.lineTo(path_topLeft + QPoint(10, 0));
+    path.arcTo(QRect(QPoint(path_topLeft), QSize(radius * 2, radius * 2)), 90, 90);
+    path.lineTo(path_bottomLeft - QPoint(0, 10));
+    path.arcTo(QRect(QPoint(path_bottomLeft - QPoint(0, radius * 2)), QSize(radius * 2, radius * 2)), 180, 90);
+    path.lineTo(path_bottomRight - QPoint(10, 0));
+    path.arcTo(QRect(QPoint(path_bottomRight - QPoint(radius * 2, radius * 2)), QSize(radius * 2, radius * 2)), 270, 90);
 }
 
 void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
@@ -356,8 +346,8 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
                 fontPreview = FTM_DEFAULT_PREVIEW_DIGIT_TEXT;
             }
         }
-        QString fontPreviewContent = index.data(Dtk::UserRole + 1).toString().isEmpty() ? fontPreview : index.data(Dtk::UserRole + 1).toString();
 
+        QString fontPreviewContent = index.data(Dtk::UserRole + 1).toString().isEmpty() ? fontPreview : index.data(Dtk::UserRole + 1).toString();
         if ((fontPreviewContent.isEmpty() || 0 == fontPixelSize) && itemData.strFontName.isEmpty()) {
             painter->restore();
             return;

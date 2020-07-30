@@ -31,6 +31,8 @@ public:
     // 绘制tab选中之后的背景
     void paintTabFocusBackground(QPainter *painter, const QStyleOptionViewItem &option,
                                  const QRect &backgroundRect, const DPalette::ColorGroup cg)const;
+    //获取需要绘制区域的路径
+    void setPaintPath(const QRect &bgRect, QPainterPath &path, const int xDifference, const int yDifference, const int radius)const;
 
     QString adjustLength(QString &titleName, QFont &font) const;
 protected:

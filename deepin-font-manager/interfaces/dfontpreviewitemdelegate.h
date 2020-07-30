@@ -36,6 +36,8 @@ private:
     void paintBackground(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
     void paintTabFocusBackground(QPainter *painter, const QStyleOptionViewItem &option, const QRect &bgRect)const;
 
+    //获取需要绘制区域的路径
+    void setPaintPath(const QRect &bgRect, QPainterPath &path, const int xDifference, const int yDifference, const int radius)const;
 
     //设置字体 UT000794
     void setfont(QFont &font, QString fontStyleName) const;
