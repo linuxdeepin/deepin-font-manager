@@ -931,7 +931,8 @@ void DFontMgrMainWindow::handleAddFontEvent()
         dialog.setDirectory(historyDir);
     }
 
-    m_fontPreviewListView->refreshFocuses();
+//    m_fontPreviewListView->refreshFocuses();
+
     const int mode = dialog.exec();
 
     // save the directory string to config file.
