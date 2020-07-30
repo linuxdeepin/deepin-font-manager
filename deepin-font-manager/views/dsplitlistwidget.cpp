@@ -453,14 +453,14 @@ void DNoFocusDelegate::hideTooltipImmediately()
 
 void DSplitListWidget::mousePressEvent(QMouseEvent *event)
 {
-    if (Qt::RightButton == event->button() || Qt::MiddleButton == event->button()) {
-        return;
-    }
     QPoint clickPoint = event->pos();
     QModelIndex modelIndex = indexAt(clickPoint);
 
     m_IsMouseClicked = true;
 
+    if (Qt::RightButton == event->button() || Qt::MiddleButton == event->button()) {
+        return;
+    }
 //    if (!hasFocus() && m_IsTabFocus) {
 //        m_IsTabFocus = false;
 //    }
