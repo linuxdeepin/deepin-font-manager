@@ -206,6 +206,7 @@ void DFontMgrMainWindow::initConnections()
     QObject::connect(d->rightKeyMenu, &QMenu::aboutToShow, this, [ = ]() {
         qDebug() << __FUNCTION__ << "about toshow";
         //记录操作之前有无tab聚焦
+        m_fontPreviewListView->setFocus(Qt::MouseFocusReason);
         m_recoveryTabFocusState = m_fontPreviewListView->getIsTabFocus();
         DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
         int cnt = 0;
