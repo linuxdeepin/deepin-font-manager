@@ -665,19 +665,29 @@ bool DFInstallErrorListView::eventFilter(QObject *obj, QEvent *event)
 {
     Q_UNUSED(obj)
 
-//失去焦点时重置各个标志位
+    //失去焦点时重置各个标志位
     if (event->type() == QEvent::FocusOut) {
-        m_isMouseClicked = false;
-        m_IsTabFocus = false;
-        m_isInstallFocus = false;
+        QFocusEvent *focusEvent = dynamic_cast<QFocusEvent *>(event);
+
+        //需要排除因为窗口切换导致errorlistview失去焦点的情况，这种情况不需要清空标志位
+        if (focusEvent->reason() != Qt::ActiveWindowFocusReason) {
+            m_isMouseClicked = false;
+            m_IsTabFocus = false;
+            m_isInstallFocus = false;
+        }
+
     }
 
-
     if (event->type() == QEvent::FocusIn) {
-        //获取到焦点时，判断获取焦点的方式，如果不是通过鼠标点击或者安装过程后设置的焦点，就
-        //判断为通过tab获取到的焦点。
-        if (!m_isMouseClicked && !m_isInstallFocus) {
-            m_IsTabFocus = true;
+        QFocusEvent *focusEvent = dynamic_cast<QFocusEvent *>(event);
+
+        //需要排除因为窗口切换导致errorlistview获取到焦点的情况
+        if (focusEvent->reason() != Qt::ActiveWindowFocusReason) {
+            //不是因为窗口切换获取到焦点时，判断获取焦点的方式，如果不是通过鼠标点击或者安装过程后设置的焦点，就
+            //判断为通过tab获取到的焦点。
+            if (!m_isMouseClicked && !m_isInstallFocus) {
+                m_IsTabFocus = true;
+            }
         }
 
         //没有选中项时，切换到异常字体列表时，默认选中第一个
@@ -691,7 +701,6 @@ bool DFInstallErrorListView::eventFilter(QObject *obj, QEvent *event)
             selectNextIndex(selectIndex.row());
             scrollTo(selectIndex);
         }
-
     }
 
     return false;

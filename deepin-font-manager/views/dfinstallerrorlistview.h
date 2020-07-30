@@ -81,8 +81,6 @@ private:
     bool m_IsTabFocus = false;
     bool m_isInstallFocus = false;
 
-
-
 signals:
     void onClickErrorListItem(QModelIndex index);
 
