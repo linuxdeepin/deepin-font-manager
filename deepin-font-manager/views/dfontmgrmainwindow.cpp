@@ -981,14 +981,14 @@ void DFontMgrMainWindow::handleMenuEvent(QAction *action)
             // Add menu handler code here
             switch (actionId) {
             case DFontMenuManager::MenuAction::M_AddFont: {
-                m_fontPreviewListView->setIsTabFocus(false);
+//                m_fontPreviewListView->setIsTabFocus(false);
                 handleAddFontEvent();
             }
             break;
             case DFontMenuManager::MenuAction::M_FontInfo: {
                 DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
                 DFontInfoDialog *fontInfoDlg = new DFontInfoDialog(&currItemData, this);
-                m_fontPreviewListView->setIsTabFocus(false);
+//                m_fontPreviewListView->setIsTabFocus(false);
                 fontInfoDlg->exec();
             }
             break;
@@ -1022,12 +1022,12 @@ void DFontMgrMainWindow::handleMenuEvent(QAction *action)
             }
             break;
             case DFontMenuManager::MenuAction::M_ShowFontPostion:
-                m_fontPreviewListView->setIsTabFocus(false);
+//                m_fontPreviewListView->setIsTabFocus(false);
                 showFontFilePostion();
                 break;
             default:
                 qDebug() << "handleMenuEvent->(id=" << actionId << ")";
-                m_fontPreviewListView->setIsTabFocus(false);
+//                m_fontPreviewListView->setIsTabFocus(false);
                 break;
             }
         }
