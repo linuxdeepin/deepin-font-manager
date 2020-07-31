@@ -492,6 +492,7 @@ void DFInstallErrorListView::setSelectStatus(QStringList &HalfInstalledFiles)
         }
         str << file;
     }
+
     for (int i = 0; i < m_errorListSourceModel->rowCount(); i++) {
         QModelIndex modelIndex = m_errorListSourceModel->index(i, 0);
         QVariant varModel = m_errorListSourceModel->data(modelIndex, Qt::DisplayRole);
@@ -509,6 +510,7 @@ void DFInstallErrorListView::setSelectStatus(QStringList &HalfInstalledFiles)
                 updateErrorFontModelList(i, itemData);
                 m_errorListSourceModel->setData(modelIndex, QVariant::fromValue(itemData), Qt::DisplayRole);
             }
+
             if (itemData.bSelectable) {
                 selectionModel()->select(modelIndex, QItemSelectionModel::Select);
             }
@@ -687,6 +689,7 @@ bool DFInstallErrorListView::eventFilter(QObject *obj, QEvent *event)
             //不是因为窗口切换获取到焦点时，判断获取焦点的方式，如果不是通过鼠标点击或者安装过程后设置的焦点，就
             //判断为通过tab获取到的焦点。
             if (!m_isMouseClicked && !m_isInstallFocus) {
+                //刚打开窗口第一次获取焦点时不需要tab选中的效果.
                 if (m_ifFirstFocus) {
                     m_ifFirstFocus = false;
                 } else {

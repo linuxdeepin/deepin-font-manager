@@ -428,9 +428,13 @@ void DFInstallErrorDialog::addData(QStringList &errorFileList, QStringList &half
 
     m_installErrorListView->addErrorListData(m_updateInstallErrorFontModelList);
     m_installErrorListView->checkScrollToIndex(addHalfInstalledFiles, oldHalfInstalledFiles, errorFileList);
+
     addHalfInstalledFiles.append(oldHalfInstalledFiles);
     addHalfInstalledFiles.append(errorFileList);
+
     m_installErrorListView->setSelectStatus(addHalfInstalledFiles);
+    m_installErrorListView->setFocus();
+
     resetContinueInstallBtnStatus();
 
 }
