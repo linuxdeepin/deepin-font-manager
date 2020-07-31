@@ -172,7 +172,9 @@ void DFontMgrMainWindow::initConnections()
     connect(m_fontPreviewListView, &DFontPreviewListView::deleteFinished, this, [ = ]() {
         setDeleteFinish();
     });
-
+    connect(d->searchFontEdit, &DSearchEdit::searchAborted, [ = ] {
+        d->searchFontEdit->lineEdit()->setFocus(Qt::TabFocusReason);
+    });
     // Add Font button event
     QObject::connect(d->addFontButton, &DIconButton::clicked, this,
                      &DFontMgrMainWindow::handleAddFontEvent);
