@@ -121,6 +121,7 @@ private:
     int getOnePageCount();
 
     bool m_bLoadDataFinish = false;
+    volatile bool m_fontChanged = false;
     bool m_bListviewAtButtom = false;
     bool m_bListviewAtTop = false;
     QWidget *m_parentWidget;
@@ -129,10 +130,12 @@ private:
     DFontPreviewItemDelegate *m_fontPreviewItemDelegate {nullptr};
     SignalManager *m_signalManager = SignalManager::instance();
 
-    QModelIndex m_currModelIndex;
     DFontPreviewProxyModel *m_fontPreviewProxyModel {nullptr};
 
     DFontPreviewListDataThread *m_dataThread;
+    QTimer *m_fontChangeTimer;
+    QFont m_curAppFont;
+    QModelIndex m_currModelIndex;
     QModelIndex m_pressModelIndex;
     QModelIndex m_hoverModelIndex;
     QMutex m_mutex;
@@ -146,8 +149,8 @@ private:
     int m_currentSelectedRow = -1;
 
     int m_selectAfterDel = -1;/*539 删除后的选中位置*/
+    int m_tryCnt = 0;
     qint64 m_curTm {0};
-
 
 signals:
     //字体列表加载状态
@@ -175,6 +178,7 @@ public slots:
     void onItemAdded(const DFontPreviewItemData &itemData);
     void onMultiItemsAdded(QList<DFontPreviewItemData> &data, DFontSpinnerWidget::SpinnerStyles styles);
     void onUpdateCurrentFont();
+    void onFontChanged(const QFont &font);
     void onItemRemoved(const DFontPreviewItemData &itemData);
     void onItemRemovedFromSys(const DFontPreviewItemData &itemData);
     void updateCurrentFontGroup(int currentFontGroup);
