@@ -287,6 +287,7 @@ void DFontMgrMainWindow::initConnections()
         int size = d->fontScaleSlider->value();
         QString fontSize = QString::number(size) + "px";
         autoLabelWidth(fontSize, d->fontSizeLabel, d->fontSizeLabel->fontMetrics());
+        m_fontPreviewListView->onFontChanged(qApp->font());
     });
 
     connect(m_signalManager, &SignalManager::popInstallErrorDialog, this, [ = ] {
@@ -1404,7 +1405,7 @@ void DFontMgrMainWindow::onLoadStatus(int type)
                 }
                 m_openfirst = false;
             }
-            m_fontPreviewListView->onUpdateCurrentFont();
+            m_fontPreviewListView->onFontChanged(qApp->font());
             break;
         default:
             break;

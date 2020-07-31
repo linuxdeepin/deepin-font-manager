@@ -22,6 +22,7 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
     , m_parentWidget(parent)
     , m_fontPreviewItemModel(new QStandardItemModel())
     , m_dataThread(nullptr)
+    , m_fontChangeTimer(new QTimer(this))
 {
     qRegisterMetaType<DFontPreviewItemData>("DFontPreviewItemData");
     qRegisterMetaType<QList<DFontPreviewItemData>>("QList<DFontPreviewItemData> &");
@@ -37,12 +38,7 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
     connect(this, &DFontPreviewListView::itemRemovedFromSys, this, &DFontPreviewListView::onItemRemovedFromSys);
     connect(this, &DFontPreviewListView::requestUpdateModel, this, &DFontPreviewListView::updateModel);
 
-    QObject::connect(qApp, &DApplication::fontChanged, [ this ](const QFont & font) {
-        qDebug() << __FUNCTION__ << "Font changed " << m_currentFont << font.family() << font.style();
-        QTimer::singleShot(200, [this] {
-            onUpdateCurrentFont();
-        });
-    });
+    connect(m_fontChangeTimer, &QTimer::timeout, this, &DFontPreviewListView::onUpdateCurrentFont);
 
     DFontMgrMainWindow *mw = qobject_cast<DFontMgrMainWindow *>(m_parentWidget);
     if (mw)
@@ -115,9 +111,6 @@ void DFontPreviewListView::onMultiItemsAdded(QList<DFontPreviewItemData> &data, 
         qDebug() << __FUNCTION__ << "insertRows fail";
         return;
     }
-    QStringList curFont;
-    if (styles == DFontSpinnerWidget::StartupLoad)
-        curFont = DFontInfoManager::instance()->getCurrentFontFamily();
 
     qDebug() << __FUNCTION__ << "rows = " << m_fontPreviewItemModel->rowCount();
     for (DFontPreviewItemData &itemData : data) {
@@ -370,33 +363,82 @@ QRect DFontPreviewListView::getCheckboxRect(const QRect &rect)
 
 void DFontPreviewListView::onUpdateCurrentFont()
 {
-    qDebug() << __FUNCTION__ << "begin";
-    QStringList curFont = DFontInfoManager::instance()->getCurrentFontFamily();
-
-    if (curFont.isEmpty() || curFont.size() < 3) {
-        qDebug() << __FUNCTION__ << curFont << " is invalid";
+    if (!m_fontChanged) {
+        m_fontChangeTimer->stop();
         return;
     }
 
-    if ((m_currentFont.size() == curFont.size()) && (m_currentFont.at(1) == curFont.at(1)) && (m_currentFont.at(2) == curFont.at(2)))
+    QStringList curFont = DFontInfoManager::instance()->getCurrentFontFamily();
+    qDebug() << __FUNCTION__ << "begin " << curFont << m_fontChanged;
+
+    if (curFont.isEmpty() || curFont.size() < 3) {
+        qDebug() << __FUNCTION__ << curFont << " is invalid";
+        m_fontChanged = false;
+        m_fontChangeTimer->stop();
         return;
+    }
+
+    if ((m_currentFont.size() == curFont.size()) && (m_currentFont.at(1) == curFont.at(1)) && (m_currentFont.at(2) == curFont.at(2))) {
+        qDebug() << __FUNCTION__ << " will check 2 times : " << m_tryCnt;
+        m_tryCnt++;
+        if (m_tryCnt > 2) {
+            m_tryCnt = 0;
+            m_fontChanged = false;
+            m_fontChangeTimer->stop();
+        }
+        return;
+    }
 
     DFontPreviewItemData prevFontData = m_curFontData;
     for (DFontPreviewItemData &itemData : m_dataThread->getFontModelList()) {
         if (QFileInfo(itemData.fontInfo.filePath).fileName() != curFont.at(0))
             continue;
 
-        QString styleName;
-        QStringList families = DFontInfoManager::instance()->getFontFamilyStyle(itemData.fontInfo.filePath, styleName);
-        if ((families.contains(curFont.at(1)) || (itemData.fontInfo.familyName == curFont.at(1)))
-                && (curFont.at(2) == itemData.fontInfo.styleName)) {
+        if (curFont.at(2) != itemData.fontInfo.styleName)
+            continue;
+
+        bool found = false;
+        if (itemData.fontInfo.familyName == curFont.at(1)) {
+            found = true;
+        } else {
+            QStringList families = DFontInfoManager::instance()->getFontFamilyStyle(itemData.fontInfo.filePath);
+            if (families.contains(curFont.at(1)))
+                found = true;
+        }
+
+        if (found) {
             m_currentFont = curFont;
             m_curFontData = itemData;
-            qDebug() << __FUNCTION__ << " found " << curFont << itemData.fontInfo.toString();
+            qDebug() << __FUNCTION__ << " found " << curFont << itemData.strFontName;
+            m_fontChanged = false;
+            m_fontChangeTimer->stop();
             break;
         }
     }
     qDebug() << __FUNCTION__ << "end" << m_currentFont;
+}
+
+void DFontPreviewListView::onFontChanged(const QFont &font)
+{
+    if (font.weight() == m_curAppFont.weight() && font.style() == m_curAppFont.style()
+            && font.stretch() == m_curAppFont.stretch() && font.styleHint() == m_curAppFont.styleHint()
+            && font.styleStrategy() == m_curAppFont.styleStrategy() && font.fixedPitch() == m_curAppFont.fixedPitch()
+            && font.family() == m_curAppFont.family() && font.styleName() == m_curAppFont.styleName()
+            && font.hintingPreference() == m_curAppFont.hintingPreference()) {
+        qDebug() << __FUNCTION__ << "same fontChanged , ignore it " << font.family();
+        return;
+    }
+
+    m_fontChangeTimer->stop();
+    qDebug() << __FUNCTION__ << "Font changed " << m_currentFont << font.family() << font.style() << m_currentFont;
+    m_fontChanged = true;
+    onUpdateCurrentFont();
+    if (m_fontChanged) {
+        m_fontChangeTimer->setInterval(300);
+        m_fontChangeTimer->start();
+    }
+    m_curAppFont = font;
+    qDebug() << __FUNCTION__ << " end";
 }
 
 bool DFontPreviewListView::isCurrentFont(DFontPreviewItemData &itemData)

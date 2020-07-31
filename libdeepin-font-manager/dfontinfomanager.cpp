@@ -462,8 +462,28 @@ QString DFontInfoManager::getDefaultPreview(const QString &filePath, qint8 &prei
 
 QStringList DFontInfoManager::getCurrentFontFamily()
 {
-    FcPattern *pat = FcPatternCreate();
     QStringList retStrList;
+    QProcess process;
+
+    process.start("fc-match");
+    process.waitForFinished(-1);
+
+    QString output = process.readAllStandardOutput();
+    QStringList lines = output.split(QChar('\n'));
+    for (QString &line : lines) {
+        retStrList = line.split(" \"");
+        int index = 0;
+        for (QString &fontStr : retStrList) {
+            fontStr.remove(QChar('\"'));
+            if (index == 0 && fontStr.endsWith(":"))
+                fontStr.remove(":");
+            index++;
+        }
+        if (!retStrList.isEmpty())
+            break;
+    }
+#if 0
+    FcPattern *pat = FcPatternCreate();
     if (!pat)
         return retStrList;
 
@@ -500,19 +520,42 @@ QStringList DFontInfoManager::getCurrentFontFamily()
             }
             FcStrFree(s);
         }
+        qDebug() << __FUNCTION__ << retStrList;
         FcPatternDestroy(font);
         if (!retStrList.isEmpty())
             break;
     }
     FcFontSetDestroy(fs);
     FcFini();
-
+#endif
     return retStrList;
 }
 
-QStringList DFontInfoManager::getFontFamilyStyle(const QString &filePah, QString &styleName)
+QStringList DFontInfoManager::getFontFamilyStyle(const QString &filePah)
 {
     QStringList fontFamilyList;
+#if 0
+    QProcess process;
+
+    process.start("fc-list |grep " + filePah);
+    process.waitForFinished(-1);
+
+    QString output = process.readAllStandardOutput();
+    QStringList lines = output.split(QChar('\n'));
+    for (QString &line : lines) {
+        qDebug() << __FUNCTION__ << line;
+        QStringList retStrList = line.split(":");
+        if (retStrList.size() != 3) {
+            continue;
+        }
+        QString families = const_cast<const QString &>(retStrList.at(1)).simplified();
+        fontFamilyList = families.split(",");
+        for (QString &fontStr : fontFamilyList) {
+            fontStr.remove(QChar('\\'));
+        }
+
+    }
+#endif
     const FcChar8 *format = reinterpret_cast<const FcChar8 *>("%{=fclist}");
     FcObjectSet *os = FcObjectSetBuild(FC_FAMILY, FC_STYLE, FC_FILE, nullptr);
     FcPattern *pat = FcPatternCreate();
@@ -543,11 +586,6 @@ QStringList DFontInfoManager::getFontFamilyStyle(const QString &filePah, QString
                 for (QString &fontStr : fontFamilyList) {
                     fontStr.remove(QChar('\\'));
                 }
-                QString styles = const_cast<const QString &>(retStrList.at(2)).simplified();
-                QStringList styleList = styles.split("=");
-                if (styleList.size() == 2) {
-                    styleName = styleList.at(1);
-                }
 
                 FcStrFree(s);
                 break;
@@ -558,7 +596,8 @@ QStringList DFontInfoManager::getFontFamilyStyle(const QString &filePah, QString
         FcFontSetDestroy(fs);
     }
 
-    FcFini();
+//    FcFini();
+
     return fontFamilyList;
 }
 
