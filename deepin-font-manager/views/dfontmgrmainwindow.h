@@ -211,6 +211,8 @@ protected:
     bool m_previewListViewTabFocus = false;
     bool m_recoveryTabFocusState = false;
 
+    bool m_isSearchLineEditMenuPoped{false};
+    bool m_isInputLineEditMunuPoped{false};
     //Stand shortcut
     //Implement by DTK                       //Close window       --> Alt+F4
     QShortcut *m_scShowAllSC     {nullptr};  //Show shortcut      --> Ctrl+Shift+/

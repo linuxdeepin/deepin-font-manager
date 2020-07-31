@@ -489,9 +489,31 @@ void DFontMgrMainWindow::initShortcuts()
         m_scShowMenu->setAutoRepeat(false);
 
         connect(m_scShowMenu, &QShortcut::activated, this, [this] {
+//            DFontMgrMainWindow *mw = qobject_cast<DFontMgrMainWindow *>(this);
+            D_D(DFontMgrMainWindow);
             if (m_fontPreviewListView->hasFocus())
             {
                 m_fontPreviewListView->onRightMenuShortCutActivated();
+            } else if (d->searchFontEdit->lineEdit()->hasFocus())
+            {
+                if (!m_isSearchLineEditMenuPoped) {
+                    QPoint GlobalPoint(d->searchFontEdit->mapToGlobal(QPoint(0, 0)));
+                    QPoint position = d->searchFontEdit->lineEdit()->rect().center();
+                    QPoint popPosition(GlobalPoint.x() + position.x(), GlobalPoint.y() + position.y() + 10);
+                    QContextMenuEvent *eve = new QContextMenuEvent(QContextMenuEvent::Reason::Keyboard, popPosition, popPosition);
+                    m_isSearchLineEditMenuPoped = QApplication::sendEvent(d->searchFontEdit->lineEdit(), eve);
+                    qDebug() << m_isSearchLineEditMenuPoped;
+                }
+
+            } else if (d->textInputEdit->lineEdit()->hasFocus())
+            {
+                if (!m_isInputLineEditMunuPoped) {
+                    QPoint GlobalPoint(d->textInputEdit->mapToGlobal(QPoint(0, 0)));
+                    QPoint position = d->textInputEdit->lineEdit()->rect().center();
+                    QPoint popPosition(GlobalPoint.x() + position.x(), GlobalPoint.y() + position.y() + 10);
+                    QContextMenuEvent *eve = new QContextMenuEvent(QContextMenuEvent::Reason::Keyboard, popPosition, popPosition);
+                    m_isInputLineEditMunuPoped = QApplication::sendEvent(d->textInputEdit->lineEdit(), eve);
+                }
             } else
             {
                 return;
@@ -1821,7 +1843,7 @@ QStringList DFontMgrMainWindow::checkFilesSpace(const QStringList &files, bool m
 /**
 *  @brief  对主窗口中的focusout事件进行检查后对相关控件标志位等进行处理
 *  @param[in]  触发事件的控件
-*  @param[in]  触发事件的控件
+*  @param[in]  触发事件
 */
 void DFontMgrMainWindow::mainwindowFocusOutCheck(QObject *obj, QEvent *event)
 {
@@ -1850,7 +1872,7 @@ void DFontMgrMainWindow::mainwindowFocusOutCheck(QObject *obj, QEvent *event)
 /**
 *  @brief  对主窗口中的focusin事件进行检查后对相关控件标志位等进行处理
 *  @param[in]  触发事件的控件
-*  @param[in]  触发事件的控件
+*  @param[in]  触发事件
 */
 void DFontMgrMainWindow::mainwindowFocusInCheck(QObject *obj, QEvent *event)
 {
@@ -1880,7 +1902,11 @@ void DFontMgrMainWindow::mainwindowFocusInCheck(QObject *obj, QEvent *event)
     //设置searchEdit的tab方式
     if (obj == d->searchFontEdit->lineEdit()) {
         d->searchFontEdit->lineEdit()->setFocusPolicy(Qt::StrongFocus);
+        m_isSearchLineEditMenuPoped  = false;
     }
+
+    if (obj == d->textInputEdit->lineEdit())
+        m_isInputLineEditMunuPoped  = false;
 }
 
 /*调节右下角字体大小显示label显示内容 UT000539*/
@@ -1966,7 +1992,16 @@ bool DFontMgrMainWindow::eventFilter(QObject *obj, QEvent *event)
         mainwindowFocusInCheck(obj, event);
     }
 
-
+    if (event->type() == QEvent::MouseButtonPress) {
+        QMouseEvent *mouseEvent = dynamic_cast<QMouseEvent *>(event);
+        if (mouseEvent->button() == Qt::RightButton) {
+            if (obj == d->searchFontEdit->lineEdit())
+                m_isSearchLineEditMenuPoped = true;
+            else if (obj == d->textInputEdit->lineEdit()) {
+                m_isInputLineEditMunuPoped = true;
+            }
+        }
+    }
 
     return QWidget::eventFilter(obj, event);
 }
