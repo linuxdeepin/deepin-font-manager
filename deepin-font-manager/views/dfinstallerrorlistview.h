@@ -80,6 +80,7 @@ private:
     bool m_isMouseClicked = false;
     bool m_IsTabFocus = false;
     bool m_isInstallFocus = false;
+    bool m_ifFirstFocus = true;
 
 signals:
     void onClickErrorListItem(QModelIndex index);

@@ -66,7 +66,7 @@ DFInstallErrorDialog::DFInstallErrorDialog(QWidget *parent, const QStringList &e
     emit m_signalManager->popInstallErrorDialog();
     connect(m_signalManager, &SignalManager::updateInstallErrorListview, this, &DFInstallErrorDialog::addData);
     resetContinueInstallBtnStatus();
-
+    m_installErrorListView->setFocus();
 
 }
 
@@ -78,7 +78,7 @@ DFInstallErrorDialog::~DFInstallErrorDialog()
     m_systemFilesPsname.clear();
     m_systemFilesFamilyname.clear();
     m_installErrorFontModelList.clear();
-    m_NeedSelectFiles.clear();
+//    m_NeedSelectFiles.clear();
     qDebug() << __func__ << "end" << endl;
 }
 
@@ -111,7 +111,7 @@ void DFInstallErrorDialog::initData()
             itemModel.strFontFilePath = fileInfo.filePath();
             itemModel.bIsNormalUserFont = true;//SP3--安装验证页面，回车取消/选中--设置字体状态
             itemModel.strFontInstallStatus = DApplication::translate("DFInstallErrorDialog", "Same version installed");
-            m_NeedSelectFiles.append(it);
+//            m_NeedSelectFiles.append(it);
             m_installErrorFontModelList.push_back(itemModel);
         } else if (isSystemFont(fontInfo)) {
             QFileInfo fileInfo(it);
@@ -285,7 +285,7 @@ void DFInstallErrorDialog::initInstallErrorFontViews()
     m_mainLayout->addWidget(btnFrame);
     m_mainLayout->addStretch();
 
-    m_installErrorListView->setSelectStatus(m_NeedSelectFiles);
+//    m_installErrorListView->setSelectStatus(m_NeedSelectFiles);
 
     connect(m_installErrorListView, SIGNAL(onClickErrorListItem(QModelIndex)), this,
             SLOT(onListItemClicked(QModelIndex)));

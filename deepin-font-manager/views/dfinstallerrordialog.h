@@ -79,7 +79,7 @@ private:
     QStringList m_errorInstallFiles;
     QStringList m_systemFilesPsname;
     QStringList m_systemFilesFamilyname;
-    QStringList m_NeedSelectFiles;
+//    QStringList m_NeedSelectFiles;
     QList<DFInstallErrorItemModel> m_installErrorFontModelList;
 
     int m_SystemFontCount = 0;

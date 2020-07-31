@@ -389,6 +389,7 @@ void DFInstallErrorListView::initErrorListData()
 
     if (itemModel.bSelectable) {
         selectionModel()->select(firstRowModelIndex, QItemSelectionModel::Select);
+        setCurrentIndex(firstRowModelIndex);
     }
 }
 
@@ -686,7 +687,11 @@ bool DFInstallErrorListView::eventFilter(QObject *obj, QEvent *event)
             //不是因为窗口切换获取到焦点时，判断获取焦点的方式，如果不是通过鼠标点击或者安装过程后设置的焦点，就
             //判断为通过tab获取到的焦点。
             if (!m_isMouseClicked && !m_isInstallFocus) {
-                m_IsTabFocus = true;
+                if (m_ifFirstFocus) {
+                    m_ifFirstFocus = false;
+                } else {
+                    m_IsTabFocus = true;
+                }
             }
         }
 
