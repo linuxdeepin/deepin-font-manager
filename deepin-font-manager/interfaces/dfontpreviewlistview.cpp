@@ -662,6 +662,8 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
 {
     qDebug() << "\n" << __FUNCTION__ << event->type() << event->button();
     QListView::mousePressEvent(event);
+    //应该设置焦点，否则鼠标在其他区域release会导致缺失焦点。
+    setFocus(Qt::MouseFocusReason);
     QPoint clickPoint = event->pos();
     QModelIndex modelIndex = indexAt(clickPoint);
 

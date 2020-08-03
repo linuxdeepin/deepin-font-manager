@@ -457,10 +457,11 @@ void DSplitListWidget::mousePressEvent(QMouseEvent *event)
     QModelIndex modelIndex = indexAt(clickPoint);
 
     m_IsMouseClicked = true;
-
     if (Qt::RightButton == event->button() || Qt::MiddleButton == event->button()) {
         return;
     }
+    //应该设置焦点，否则鼠标在其他区域release会导致缺失焦点。
+    setFocus(Qt::MouseFocusReason);
 //    if (!hasFocus() && m_IsTabFocus) {
 //        m_IsTabFocus = false;
 //    }

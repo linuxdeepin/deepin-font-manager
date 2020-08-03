@@ -1998,10 +1998,15 @@ bool DFontMgrMainWindow::eventFilter(QObject *obj, QEvent *event)
     if (event->type() == QEvent::MouseButtonPress) {
         QMouseEvent *mouseEvent = dynamic_cast<QMouseEvent *>(event);
         if (mouseEvent->button() == Qt::RightButton) {
+            //搜索输入框和预览输入框右击时，设置快捷键菜单弹出判断标志位为true，表示已有菜单弹出
             if (obj == d->searchFontEdit->lineEdit())
                 m_isSearchLineEditMenuPoped = true;
             else if (obj == d->textInputEdit->lineEdit()) {
                 m_isInputLineEditMunuPoped = true;
+            }
+            //屏蔽添加字体按钮的右键效果
+            else if (obj == d->addFontButton) {
+                return true;
             }
         }
     }
