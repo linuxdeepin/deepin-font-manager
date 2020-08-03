@@ -381,16 +381,16 @@ void DFInstallErrorListView::initErrorListData()
 
     this->setModel(m_errorListSourceModel);
 
-    //设置默认选中第一行
-    QModelIndex firstRowModelIndex = m_errorListSourceModel->index(0, 0);
+//    //设置默认选中第一行
+//    QModelIndex firstRowModelIndex = m_errorListSourceModel->index(0, 0);
 
-    DFInstallErrorItemModel itemModel =
-        qvariant_cast<DFInstallErrorItemModel>(m_errorListSourceModel->data(firstRowModelIndex));
+//    DFInstallErrorItemModel itemModel =
+//        qvariant_cast<DFInstallErrorItemModel>(m_errorListSourceModel->data(firstRowModelIndex));
 
-    if (itemModel.bSelectable) {
-        selectionModel()->select(firstRowModelIndex, QItemSelectionModel::Select);
-        setCurrentIndex(firstRowModelIndex);
-    }
+//    if (itemModel.bSelectable) {
+//        selectionModel()->select(firstRowModelIndex, QItemSelectionModel::Select);
+//        setCurrentIndex(firstRowModelIndex);
+//    }
 }
 
 void DFInstallErrorListView::initDelegate()
@@ -479,7 +479,7 @@ void DFInstallErrorListView::scrollToIndex(QString &filePath)
 }
 
 //设置选中效果
-void DFInstallErrorListView::setSelectStatus(QStringList &HalfInstalledFiles)
+void DFInstallErrorListView::setSelectStatus(QStringList &HalfInstalledFiles, QModelIndexList &beforeSelectFiles)
 {
     QStringList str;
     foreach (auto it, HalfInstalledFiles) {
@@ -492,6 +492,10 @@ void DFInstallErrorListView::setSelectStatus(QStringList &HalfInstalledFiles)
         }
         str << file;
     }
+
+
+
+    bool selected = false;
 
     for (int i = 0; i < m_errorListSourceModel->rowCount(); i++) {
         QModelIndex modelIndex = m_errorListSourceModel->index(i, 0);
@@ -512,8 +516,18 @@ void DFInstallErrorListView::setSelectStatus(QStringList &HalfInstalledFiles)
             }
 
             if (itemData.bSelectable) {
+                selected = true;
                 selectionModel()->select(modelIndex, QItemSelectionModel::Select);
             }
+        }
+    }
+
+    if (selected == false) {
+//        this->selectionModel()->select(beforeSelectFiles)
+        foreach (auto it, beforeSelectFiles) {
+//            selectionModel()->select(it, QItemSelectionModel::Select);
+            QModelIndex modelIndex = m_errorListSourceModel->index(it.row(), 0);
+            selectionModel()->select(modelIndex, QItemSelectionModel::Select);
         }
     }
 }
@@ -704,11 +718,11 @@ bool DFInstallErrorListView::eventFilter(QObject *obj, QEvent *event)
                 if (selectNextIndex(i))
                     break;
             }
-        } else {
+        } /*else {
             QModelIndex selectIndex = selectionModel()->selectedIndexes().first();
             selectNextIndex(selectIndex.row());
             scrollTo(selectIndex);
-        }
+        }*/
     }
 
     return false;

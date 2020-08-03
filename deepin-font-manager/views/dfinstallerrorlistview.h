@@ -57,7 +57,7 @@ public:
     void addErrorListData(const QList<DFInstallErrorItemModel> &installErrorFontModelList);
     void checkScrollToIndex(QStringList &addHalfInstalledFiles, QStringList &oldHalfInstalledFiles, QStringList &errorFileList);
     void scrollToIndex(QString &filePath);
-    void setSelectStatus(QStringList &HalfInstalledFiles);
+    void setSelectStatus(QStringList &HalfInstalledFiles, QModelIndexList &beforeSelectFiles);
     void updateErrorFontModelList(int index, DFInstallErrorItemModel m_currentItemModel);
     void initModel(bool newOne = true);
     QStandardItemModel *getErrorListSourceModel();
