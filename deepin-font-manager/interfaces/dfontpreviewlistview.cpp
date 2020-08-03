@@ -642,11 +642,18 @@ void DFontPreviewListView::mouseMoveEvent(QMouseEvent *event)
             clearHoverState();
 
         if (collectIconRect.contains(clickPoint)) {
-            if (itemData.collectIconStatus != IconHover) {
-                itemData.collectIconStatus = IconHover;
-                m_fontPreviewProxyModel->setData(modelIndex, QVariant::fromValue(itemData), Qt::DisplayRole);
+            if (m_isMousePressNow) {
+                if (itemData.collectIconStatus != IconPress) {
+                    itemData.collectIconStatus = IconPress;
+                    m_fontPreviewProxyModel->setData(modelIndex, QVariant::fromValue(itemData), Qt::DisplayRole);
+                }
+            } else {
+                if (itemData.collectIconStatus != IconHover) {
+                    itemData.collectIconStatus = IconHover;
+                    m_fontPreviewProxyModel->setData(modelIndex, QVariant::fromValue(itemData), Qt::DisplayRole);
+                }
+                m_hoverModelIndex = modelIndex;
             }
-            m_hoverModelIndex = modelIndex;
         } else {
             if (itemData.collectIconStatus != IconNormal) {
                 itemData.collectIconStatus = IconNormal;
@@ -670,6 +677,7 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
     m_isMouseClicked = true;
 
     if ((event->button() == Qt::LeftButton) && modelIndex.isValid()) {
+        m_isMousePressNow = true;
         if (QApplication::keyboardModifiers() == Qt::ShiftModifier) {
             //Shift多选
             updateShiftSelect(modelIndex);
@@ -735,6 +743,7 @@ void DFontPreviewListView::mouseReleaseEvent(QMouseEvent *event)
     QRect collectIconRect = getCollectionIconRect(rect);
     //539 排除右键点击效果
     if (event->button() == Qt::LeftButton) {
+        m_isMousePressNow = false;
         if (checkboxRealRect.contains(clickPoint)) {
             //触发启用/禁用字体
             int sysFontCnt = (itemData.isEnabled && itemData.fontInfo.isSystemFont) ? 1 : 0;

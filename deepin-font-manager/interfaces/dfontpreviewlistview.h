@@ -136,7 +136,7 @@ private:
 
     bool m_IsTabFocus = false;
     bool m_isMouseClicked = false;
-
+    bool m_isMousePressNow {false};
 
     QWidget *m_parentWidget;
     QStandardItemModel *m_fontPreviewItemModel {nullptr};
