@@ -12,6 +12,7 @@
 #include <DMessageManager>
 
 #include <QFontDatabase>
+#include <QScroller>
 #include <QSet>
 
 DWIDGET_USE_NAMESPACE
@@ -65,6 +66,8 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
     initDelegate();
     initConnections();
     installEventFilter(this);
+
+    QScroller::grabGesture(this, QScroller::TouchGesture);
 }
 
 DFontPreviewListView::~DFontPreviewListView()
@@ -717,6 +720,10 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
 
         onListViewShowContextMenu();
         refreshFocuses();
+    } else if (event->button() == Qt::MidButton && QApplication::keyboardModifiers() == Qt::NoModifier) {
+        clearSelection();
+        setCurrentIndex(modelIndex);
+        setCurrentSelected(modelIndex.row());
     }
 }
 
