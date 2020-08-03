@@ -632,37 +632,49 @@ bool DFInstallErrorListView::selectNextIndex(int nextIndex)
 //SP3--安装验证页面，listview上下键自动跳过异常字体
 void DFInstallErrorListView::keyPressEvent(QKeyEvent *event)
 {
-    if (event->key() == Qt::Key_Up || event->key() == Qt::Key_Down) {
-        if (selectedIndexes().count() == 0) {//没有选中时，设置第一个可选项为选中状态
-            for (int i = 0; i < this->count(); i++) {
-                if (selectNextIndex(i))
-                    break;
-            }
-            return;
-        } else if (selectedIndexes().count() > 1) {//多选时，设置第一个选中项为单独选中
-            setCurrentIndex(selectedIndexes().first());
-            scrollTo(selectedIndexes().first());
-            return;
-        }
-        if (event->key() == Qt::Key_Down) {//循环判断是否可选,如果没有可选则不改变选项
-            for (int i = currentIndex().row() + 1; i <= this->count(); i++) {
-                if (selectNextIndex(i))
-                    return;
-                if (i == (this->count() - 1) || i == this->count())
-                    i = -1;
-            }
-            return;
-        } else {//循环判断是否可选,如果没有可选则不改变选项
 
-            for (int i = currentIndex().row() - 1; i >= -1; i--) {
-                if (selectNextIndex(i))
-                    return;
-                if (i == 0 || i == -1)
-                    i = this->count();
+    if (event->key() == Qt::Key_Up || event->key() == Qt::Key_Down) {
+///*
+        if (QApplication::keyboardModifiers() == Qt::ControlModifier) {
+            if (event->key() == Qt::Key_Up || event->key() == Qt::Key_Down) {
+                return;
             }
+        } else if (QApplication::keyboardModifiers() == Qt::ShiftModifier) {
+            DListView::keyPressEvent(event);
             return;
+        } else {
+//            if (selectedIndexes().count() == 0) {//没有选中时，设置第一个可选项为选中状态
+//                for (int i = 0; i < this->count(); i++) {
+//                    if (selectNextIndex(i))
+//                        break;
+//                }
+//                return;
+//            } else if (selectedIndexes().count() > 1) {//多选时，设置第一个选中项为单独选中
+//                setCurrentIndex(selectedIndexes().first());
+//                scrollTo(selectedIndexes().first());
+//                return;
+//            }
+
+            if (event->key() == Qt::Key_Down) {//循环判断是否可选,如果没有可选则不改变选项
+                for (int i = currentIndex().row() + 1; i <= this->count(); i++) {
+                    if (selectNextIndex(i))
+                        return;
+                    if (i == (this->count() - 1) || i == this->count())
+                        i = -1;
+                }
+                return;
+            } else {//循环判断是否可选,如果没有可选则不改变选项
+                for (int i = currentIndex().row() - 1; i >= -1; i--) {
+                    if (selectNextIndex(i))
+                        return;
+                    if (i == 0 || i == -1)
+                        i = this->count();
+                }
+                return;
+            }
         }
     }
+
     DListView::keyPressEvent(event);
 }
 
@@ -676,6 +688,36 @@ void DFInstallErrorListView::ifNeedScrollTo(QModelIndex idx)
 {
     if (!viewport()->visibleRegion().contains(visualRect(idx).center()))
         scrollTo(idx);
+}
+
+
+
+/*************************************************************************/
+/*                                                                       */
+/* <Function>    sortModelIndexList                                      */
+/*                                                                       */
+/* <Description> 对传入的indexlist进行从大到小的排序                         */
+/*                                                                       */
+/* <para>       需要排序的indexlist的引用                                   */
+/*                                                                       */
+/* <Return>     无返回值                                                  */
+void DFInstallErrorListView::sortModelIndexList(QModelIndexList &sourceList)
+{
+    QModelIndex temp;
+    bool flag;
+    for (int i = 0; i < sourceList.count() - 1; i++) {
+        flag = false;
+        for (int j = sourceList.count() - 1; j > i; j--) {
+            if (sourceList[j].row() > sourceList[j - 1].row()) {
+                temp = sourceList[j];
+                sourceList[j] = sourceList[j - 1];
+                sourceList[j - 1] = temp;
+                flag = true;
+            }
+        }
+        if (!flag)
+            break;
+    }
 }
 
 bool DFInstallErrorListView::eventFilter(QObject *obj, QEvent *event)
