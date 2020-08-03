@@ -715,11 +715,10 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
 void DFontPreviewListView::mouseReleaseEvent(QMouseEvent *event)
 {
     qDebug() << __FUNCTION__ << " begin";
-    QListView::mouseReleaseEvent(event);
-
     if (Qt::MidButton == event->button()) {
         return;
     }
+    QListView::mouseReleaseEvent(event);
 
     QPoint clickPoint = event->pos();
 
