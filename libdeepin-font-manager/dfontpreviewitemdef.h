@@ -18,26 +18,26 @@
 #define FTM_PREVIEW_ITEM_HEIGHT (72+2+10)
 
 typedef enum IconStatus {
-    IconHover = 0,
+    IconNormal = 0,
     IconPress,
-    IconNormal,
+    IconHover,
 } IconStatus;
 
 struct DFontPreviewItemData {
     DFontInfo fontInfo;       //字体信息
     QString strFontName;      //字体名称
-    QString strFontFileName;  //字体文件名称
-    qint8 iFontSize;          //字体大小
+//    QString strFontFileName;  //字体文件名称
+//    qint8 iFontSize;          //字体大小
 //    QString strFontPreview;   //字体预览内容
     bool isEnabled;           //是否启用
-    bool isPreviewEnabled;    //是否启用(用于预览字体delegate,由于启用/禁用字体不是及时生效,需要该字段保存启用历史状态)
+//    bool isPreviewEnabled;    //是否启用(用于预览字体delegate,由于启用/禁用字体不是及时生效,需要该字段保存启用历史状态)
     bool isCollected;         //是否收藏
-    QString strFontId;        //字体唯一id,对应数据库表中的fontId
-
     bool isChineseFont;       //是否中文字体
     bool isMonoSpace;         //是否等宽字体
+    QString strFontId;        //字体唯一id,对应数据库表中的fontId
 
-    IconStatus collectIconStatus;
+
+//    IconStatus collectIconStatus;
     int appFontId;
 
     DFontPreviewItemData()
@@ -60,18 +60,18 @@ struct DFontPreviewItemData {
         fontInfo.previewLang = FONT_LANG_NONE;
 
         strFontName = "";
-        strFontFileName = "";
-        iFontSize = 0;
+//        strFontFileName = "";
+//        iFontSize = 0;
 //        strFontPreview = "";
         isEnabled = false;
-        isPreviewEnabled = false;
+//        isPreviewEnabled = false;
         isCollected = false;
         strFontId = "";
         isChineseFont = false;
         isMonoSpace = false;
         appFontId = -1;
 
-        collectIconStatus = IconNormal;
+//        collectIconStatus = IconNormal;
 
     }
 
@@ -91,18 +91,15 @@ struct DFontPreviewItemData {
         fontInfo.isInstalled = other.fontInfo.isInstalled;
         fontInfo.isError = other.fontInfo.isError;
         fontInfo.isSystemFont = other.fontInfo.isSystemFont;
-        fontInfo.fullname = other.fontInfo.fullname;
-        fontInfo.psname = other.fontInfo.psname;
-        fontInfo.trademark = other.fontInfo.trademark;
         fontInfo.defaultPreview = other.fontInfo.defaultPreview;
         fontInfo.previewLang = other.fontInfo.previewLang;
 
         strFontName = other.strFontName;
-        strFontFileName = other.strFontFileName;
-        iFontSize = other.iFontSize;
+//        strFontFileName = other.strFontFileName;
+//        iFontSize = other.iFontSize;
 //        strFontPreview = other.strFontPreview;
         isEnabled = other.isEnabled;
-        isPreviewEnabled = other.isPreviewEnabled;
+//        isPreviewEnabled = other.isPreviewEnabled;
         isCollected = other.isCollected;
         strFontId = other.strFontId;
 
@@ -110,7 +107,7 @@ struct DFontPreviewItemData {
         isMonoSpace = other.isMonoSpace;
         appFontId = other.appFontId;
 
-        collectIconStatus = other.collectIconStatus;
+//        collectIconStatus = other.collectIconStatus;
     }
 
     ~DFontPreviewItemData()
@@ -120,10 +117,99 @@ struct DFontPreviewItemData {
 
     bool operator==(const DFontPreviewItemData &info)
     {
-        return (fontInfo == info.fontInfo);
+        return (strFontName == info.strFontName);
+        //return (fontInfo == info.fontInfo);
     }
 };
 
 Q_DECLARE_METATYPE(DFontPreviewItemData)
 
+struct FontData {
+    QString strFontName;     //字体名称 familyName-StyleName
+    int fontState;           // ENABLED : 是否启用isEnabled; COLLECTED : 是否收藏isCollected; CHINESED : 是否中文字体isChineseFont; MONOSPACE : 是否等宽字体isMonoSpace; NORMAL/PRESS/HOVER: hover state
+
+    FontData()
+    {
+        strFontName = "";
+        fontState = 0;
+    }
+
+    FontData(const FontData &other)
+    {
+        strFontName = other.strFontName;
+        fontState = other.fontState;
+    }
+
+    FontData(const QString &_strFontName, bool isEnabled, bool isCollected)
+    {
+        strFontName = _strFontName;
+        setEnabled(isEnabled);
+        setCollected(isCollected);
+    }
+
+    enum {
+        CLEAR = 0,
+        ENABLED = 0x01,
+        COLLECTED = 0x02,
+        CHINESED = 0x04,
+        MONOSPACE = 0x08,
+        NORMAL = 0x10,
+        PRESS = 0x20,
+        HOVEER = 0x40,
+        HOVERSTATE = 0x30,
+    };
+
+    void setEnabled(bool isEnabled)
+    {
+        fontState = isEnabled ? (fontState | ENABLED) : (fontState & ~ENABLED);
+    }
+
+    bool isEnabled()
+    {
+        return (fontState & ENABLED);
+    }
+
+    void setCollected(bool collected)
+    {
+        fontState = (collected ? (fontState | COLLECTED) : (fontState & ~COLLECTED));
+    }
+
+    bool isCollected()
+    {
+        return (fontState & COLLECTED);
+    }
+
+    void setChinese(bool chinese)
+    {
+        fontState = (chinese ? (fontState | CHINESED) : (fontState & ~CHINESED));
+    }
+
+    bool isChinese()
+    {
+        return (fontState & CHINESED);
+    }
+
+    void setMonoSpace(bool isMonospace)
+    {
+        fontState = (isMonospace ? (fontState | MONOSPACE) : (fontState & ~MONOSPACE));
+    }
+
+    bool isMonoSpace()
+    {
+        return (fontState & MONOSPACE);
+    }
+
+    void setHoverState(IconStatus state)
+    {
+        fontState &= ~HOVERSTATE;
+        fontState |= ((state) << 4);
+    }
+
+    IconStatus getHoverState()
+    {
+        return static_cast<IconStatus>((fontState & HOVERSTATE) >> 4);
+    }
+};
+
+Q_DECLARE_METATYPE(FontData)
 #endif  // DFONTPREVIEWITEMDEF_H

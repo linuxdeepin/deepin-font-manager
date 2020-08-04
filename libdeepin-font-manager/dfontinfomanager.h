@@ -74,8 +74,14 @@ public:
     DFontInfoManager(QObject *parent = nullptr);
     ~DFontInfoManager();
 
+    enum FontTYpe  {
+        All,
+        Chinese,
+        MonoSpace,
+    };
+
     void refreshList();
-    QStringList getAllFontPath() const;
+    QStringList getAllFontPath(bool isStartup = false) const;
     QStringList getAllChineseFontPath() const;
     QStringList getAllMonoSpaceFontPath() const;
     QString getFontType(const QString &filePath);
@@ -83,6 +89,7 @@ public:
     QString getDefaultPreview(const QString &filePath, qint8 &preivewLang);
     QStringList getCurrentFontFamily();
     QStringList getFontFamilyStyle(const QString &filePah);
+    QStringList getFonts(FontTYpe type) const;
     QString getInstFontPath(const QString &originPath, const QString &familyName);
     bool isFontInstalled(DFontInfo &data);
     void getDefaultPreview(DFontInfo &data);

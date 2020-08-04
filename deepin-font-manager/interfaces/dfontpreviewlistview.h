@@ -105,6 +105,19 @@ public:
         return m_curFontData;
     }
 
+    inline static DFontPreviewItemData getFontData(const QString &strFontName)
+    {
+        return DFontPreviewListDataThread::instance()->getFontData(strFontName);
+//        DFontPreviewItemData itemdata;
+//        itemdata.strFontName = strFontName;
+//        QStringList familySyle;
+//        int index = DFontPreviewListDataThread::instance()->getFontModelList().indexOf(itemdata);
+//        if (index > -1) {
+//            return DFontPreviewListDataThread::instance()->getFontModelList().at(index);
+//        }
+//        return itemdata;
+    }
+
     bool getIsTabFocus() const;
     void setIsTabFocus(bool IsTabFocus);
     void onRightMenuShortCutActivated();//SP3--Alt+M右键菜单

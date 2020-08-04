@@ -4,8 +4,9 @@
 #include "dfontpreviewitemdef.h"
 
 #include <QFontDatabase>
-
 #include <QStyledItemDelegate>
+
+#include <dstyleoption.h>
 
 //DWIDGET_USE_NAMESPACE
 
@@ -17,10 +18,13 @@ class DFontPreviewItemDelegate : public QStyledItemDelegate
 public:
     explicit DFontPreviewItemDelegate(QAbstractItemView *parent = nullptr);
     static void setNoFont(bool noFont);
-
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const Q_DECL_OVERRIDE;
     QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const Q_DECL_OVERRIDE;
 
+    enum {
+        FontPreviewRole = Dtk::UserRole + 1,
+        FontSizeRole = Dtk::UserRole + 2,
+    };
 protected:
     bool eventFilter(QObject *object, QEvent *event) override;
 
@@ -31,7 +35,7 @@ private:
 
     void paintForegroundCheckBox(QPainter *painter, const QStyleOptionViewItem &option, const DFontPreviewItemData &itemData) const;
     void paintForegroundFontName(QPainter *painter, const QStyleOptionViewItem &option, const DFontPreviewItemData &itemData) const;
-    void paintForegroundCollectIcon(QPainter *painter, const QStyleOptionViewItem &option, const DFontPreviewItemData &itemData) const;
+    void paintForegroundCollectIcon(QPainter *painter, const QStyleOptionViewItem &option, FontData &itemData) const;
     void paintForegroundPreviewFont(QPainter *painter, const QStyleOptionViewItem &option, const DFontPreviewItemData &data, int fontPixelSize, QString &fontPreviewText) const;
     void paintBackground(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
     void paintTabFocusBackground(QPainter *painter, const QStyleOptionViewItem &option, const QRect &bgRect)const;
@@ -43,6 +47,7 @@ private:
     void setfont(QFont &font, QString fontStyleName) const;
 
     DFontPreviewListView *m_parentView;
+    DFontPreviewItemData m_fontData;
 };
 
 #endif  // DFONTPREVIEWITEMDELEGATE_H

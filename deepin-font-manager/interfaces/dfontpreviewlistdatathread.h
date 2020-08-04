@@ -42,12 +42,24 @@ public:
 
     void updateItemStatus(int index, const DFontPreviewItemData &itemData);
     void updateFontId(const DFontPreviewItemData &itemData, int id);
+    inline static DFontPreviewItemData getFontData(const QString &strFontName)
+    {
+        DFontPreviewItemData itemdata;
+        itemdata.strFontName = strFontName;
+        QStringList familySyle;
+        int index = DFontPreviewListDataThread::instance()->getFontModelList().indexOf(itemdata);
+        if (index > -1) {
+            return DFontPreviewListDataThread::instance()->getFontModelList().at(index);
+        }
+        return itemdata;
+    }
 signals:
     void resultReady();
     void requestForceDeleteFiles(const QStringList &files);
     void requestBatchReInstallContinue();
     void requestRemoveFileWatchers(const QStringList &files);
     void requestAutoDirWatchers();
+    void requestAddApplicationFont();
 
 protected slots:
     void doWork();

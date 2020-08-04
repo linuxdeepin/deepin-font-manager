@@ -596,7 +596,7 @@ void DFontMgrMainWindow::initFontFiles()
 
     QStringList installFont = m_dbManager->getInstalledFontsPath();
 
-    for (QString filePath : allFontsList) {
+    for (QString &filePath : allFontsList) {
         if (!m_dbManager->isSystemFont(filePath) && !installFont.contains(filePath)) {
             QFileInfo openFile(filePath);
             if (!QFile::remove(filePath))
@@ -1235,7 +1235,7 @@ void DFontMgrMainWindow::onFontSizeChanged(int fontSize)
 
     for (int rowIndex = 0; rowIndex < filterModel->rowCount(); rowIndex++) {
         QModelIndex modelIndex = filterModel->index(rowIndex, 0);
-        filterModel->setData(modelIndex, QVariant(fontSize), Dtk::UserRole + 2);
+        filterModel->setData(modelIndex, QVariant(fontSize), DFontPreviewItemDelegate::FontSizeRole);
         //filterModel->setEditStatus(m_searchTextStatusIsEmpty);
     }
     //Q_EMIT m_signalManager->prevFontChanged();
@@ -1622,7 +1622,7 @@ void DFontMgrMainWindow::resizeEvent(QResizeEvent *event)
         setWindowState(Qt::WindowMaximized);
     }
 
-    if (Qt::WindowMaximized != int(QWidget::windowState())) {
+    if (!windowState().testFlag(Qt::WindowFullScreen) && !windowState().testFlag(Qt::WindowMaximized)) {
         m_winHight = geometry().height();
         m_winWidth = geometry().width();
         m_IsWindowMax = false;
@@ -1793,14 +1793,12 @@ void DFontMgrMainWindow::onPreviewTextChanged()
 
     for (int rowIndex = 0; rowIndex < total; rowIndex++) {
         QModelIndex modelIndex = filterModel->index(rowIndex, 0);
-        QString itemPreviewTxt = filterModel->data(modelIndex, Dtk::UserRole + 1).toString();
+        QString itemPreviewTxt = filterModel->data(modelIndex, DFontPreviewItemDelegate::FontPreviewRole).toString();
         if (m_previewText != itemPreviewTxt)
-            filterModel->setData(modelIndex, QVariant(m_previewText), Dtk::UserRole + 1);
-        if (m_previewFontSize != filterModel->data(modelIndex, Dtk::UserRole + 2).toInt())
-            filterModel->setData(modelIndex, QVariant(m_previewFontSize), Dtk::UserRole + 2);
-        //        filterModel->setEditStatus(m_searchTextStatusIsEmpty);
+            filterModel->setData(modelIndex, QVariant(m_previewText), DFontPreviewItemDelegate::FontPreviewRole);
+        if (m_previewFontSize != filterModel->data(modelIndex, DFontPreviewItemDelegate::FontSizeRole).toInt())
+            filterModel->setData(modelIndex, QVariant(m_previewFontSize), DFontPreviewItemDelegate::FontSizeRole);
     }
-    //    emit m_signalManager->freshListView();
 }
 
 qint64 DFontMgrMainWindow::getDiskSpace(bool m_bInstall)

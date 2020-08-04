@@ -46,7 +46,7 @@ void DFontPreviewItemDelegate::paintForegroundCheckBox(QPainter *painter, const 
 
     QStyleOptionButton checkBoxOption;
     checkBoxOption.state |= QStyle::State_Enabled;
-    checkBoxOption.state |= (itemData.isEnabled == true) ? QStyle::State_On : QStyle::State_Off;
+    checkBoxOption.state |= itemData.isEnabled ? QStyle::State_On : QStyle::State_Off;
     checkBoxOption.rect = rect;
 
     DCheckBox checkBox;
@@ -76,15 +76,16 @@ void DFontPreviewItemDelegate::paintForegroundFontName(QPainter *painter, const 
     painter->drawText(fontNameRect, Qt::AlignLeft | Qt::AlignVCenter, elidedText);
 }
 
-void DFontPreviewItemDelegate::paintForegroundCollectIcon(QPainter *painter, const QStyleOptionViewItem &option, const DFontPreviewItemData &itemData) const
+void DFontPreviewItemDelegate::paintForegroundCollectIcon(QPainter *painter, const QStyleOptionViewItem &option, FontData &itemData) const
 {
     DGuiApplicationHelper *appHelper = DGuiApplicationHelper::instance();
     QString strImgPrefix = (DGuiApplicationHelper::DarkType == appHelper->themeType()) ? QString("dark_") : QString("");
 
     QString iconStatus = QString("press");
-    if (IconHover == itemData.collectIconStatus) {
+    IconStatus status = itemData.getHoverState();
+    if (IconHover == status) {
         iconStatus = QString("hover");
-    } else if (IconPress == itemData.collectIconStatus) {
+    } else if (IconPress == status) {
         iconStatus = QString("press");
         strImgPrefix = "";
     } else {
@@ -96,7 +97,7 @@ void DFontPreviewItemDelegate::paintForegroundCollectIcon(QPainter *painter, con
 
     QString strImageSrc;
     QPixmap pixmap;
-    if (itemData.isCollected) {
+    if (itemData.isCollected()) {
         strImageSrc = QString("://%1collection_%2.svg").arg(strImgPrefix).arg(iconStatus);
         pixmap = Utils::renderSVG(strImageSrc, QSize(COLLECT_ICON_SIZE, COLLECT_ICON_SIZE));
     } else {
@@ -333,8 +334,11 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
         painter->save();
         painter->setRenderHint(QPainter::TextAntialiasing, true);
 
-        DFontPreviewItemData itemData = index.data(Qt::DisplayRole).value<DFontPreviewItemData>();
-        int fontPixelSize = (index.data(Dtk::UserRole + 2).isNull()) ? itemData.iFontSize : index.data(Dtk::UserRole + 2).toInt();
+        FontData fontData = index.data(Qt::DisplayRole).value<FontData>();
+        DFontPreviewItemData itemData = m_parentView->getFontData(fontData.strFontName);
+        if (itemData.fontInfo.filePath.isEmpty())
+            return;
+        int fontPixelSize = (index.data(FontSizeRole).isNull()) ? FTM_DEFAULT_PREVIEW_FONTSIZE : index.data(FontSizeRole).toInt();
         fontPixelSize = (fontPixelSize <= 0) ? FTM_DEFAULT_PREVIEW_FONTSIZE : fontPixelSize;
         QString fontPreview = itemData.fontInfo.defaultPreview;
         if (fontPreview.isEmpty()) {
@@ -347,7 +351,7 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
             }
         }
 
-        QString fontPreviewContent = index.data(Dtk::UserRole + 1).toString().isEmpty() ? fontPreview : index.data(Dtk::UserRole + 1).toString();
+        QString fontPreviewContent = index.data(FontPreviewRole).toString().isEmpty() ? fontPreview : index.data(FontPreviewRole).toString();
         if ((fontPreviewContent.isEmpty() || 0 == fontPixelSize) && itemData.strFontName.isEmpty()) {
             painter->restore();
             return;
@@ -356,7 +360,7 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
         paintBackground(painter, option, index);
         paintForegroundCheckBox(painter, option, itemData);
         paintForegroundFontName(painter, option, itemData);
-        paintForegroundCollectIcon(painter, option, itemData);
+        paintForegroundCollectIcon(painter, option, fontData);
         paintForegroundPreviewFont(painter, option, itemData, fontPixelSize, fontPreviewContent);
         painter->restore();
     } else {
@@ -369,8 +373,8 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
 
 QSize DFontPreviewItemDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-    DFontPreviewItemData data = index.data(Qt::DisplayRole).value<DFontPreviewItemData>();
-    int fontSize = (false == index.data(Dtk::UserRole + 2).isNull()) ? index.data(Dtk::UserRole + 2).toInt() : data.iFontSize;
+    FontData data = index.data(Qt::DisplayRole).value<FontData>();
+    int fontSize = (false == index.data(FontSizeRole).isNull()) ? index.data(FontSizeRole).toInt() : FTM_DEFAULT_PREVIEW_FONTSIZE;
 
     int itemHeight = FTM_PREVIEW_ITEM_HEIGHT;
     if (fontSize > 30) {

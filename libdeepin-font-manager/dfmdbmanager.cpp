@@ -45,11 +45,11 @@ DFontPreviewItemData DFMDBManager::parseRecordToItemData(const QMap<QString, QSt
     itemData.strFontName = record.value("fontName");
     QFileInfo filePathInfo(filePath);
     filePathInfo.setCaching(false);
-    itemData.strFontFileName = filePathInfo.baseName();
+//    itemData.strFontFileName = filePathInfo.baseName();
 //    itemData.strFontPreview = QString(DApplication::translate("Font", "Don't let your dreams be dreams"));
-    itemData.iFontSize = FTM_DEFAULT_PREVIEW_FONTSIZE;
+//    itemData.iFontSize = FTM_DEFAULT_PREVIEW_FONTSIZE;
     itemData.isEnabled = record.value("isEnabled").toInt();
-    itemData.isPreviewEnabled = itemData.isEnabled;
+//    itemData.isPreviewEnabled = itemData.isEnabled;
     itemData.isCollected = record.value("isCollected").toInt();
     itemData.isChineseFont = record.value("isChineseFont").toInt();
     itemData.isMonoSpace = record.value("isMonoSpace").toInt();

@@ -75,7 +75,7 @@ void DFontPreviewListDataThread::doWork()
     QStringList chineseFontPathList = fontInfoMgr->getAllChineseFontPath();
     QStringList monoSpaceFontPathList = fontInfoMgr->getAllMonoSpaceFontPath();
 
-    QStringList strAllFontList = fontInfoMgr->getAllFontPath();
+    QStringList strAllFontList = fontInfoMgr->getAllFontPath(true);
     qDebug() << "strAllFontList.size()" << strAllFontList.size() << endl;
     int index = 0;
     for (QString &filePath : strAllFontList) {
@@ -262,10 +262,10 @@ int DFontPreviewListDataThread::insertFontItemData(const QString &filePath,
     }
 
     itemData.strFontId = QString::number(index);
-    itemData.strFontFileName = filePathInfo.baseName();
+//    itemData.strFontFileName = filePathInfo.baseName();
 //    itemData.strFontPreview = m_view->getPreviewTextWithSize(&itemData.iFontSize);
     itemData.isEnabled = isEnabled;
-    itemData.isPreviewEnabled = true;
+//    itemData.isPreviewEnabled = true;
     itemData.isCollected = false;
     itemData.isChineseFont = chineseFontPathList.contains(filePath) && (itemData.fontInfo.previewLang & FONT_LANG_CHINESE);
     itemData.isMonoSpace = monoSpaceFontPathList.contains(filePath);
@@ -316,7 +316,7 @@ void DFontPreviewListDataThread::refreshFontListData(bool isStartup, const QStri
 {
     qDebug() << __FUNCTION__ << " begin";
     DFontInfoManager *fontInfoMgr = DFontInfoManager::instance();
-    QStringList strAllFontList = fontInfoMgr->getAllFontPath();
+    QStringList strAllFontList = fontInfoMgr->getAllFontPath(isStartup);
 
     QList<DFontPreviewItemData> fontInfoList;
     if (isStartup) {
@@ -494,10 +494,10 @@ void DFontPreviewListDataThread::syncFontEnableDisableStatusData(const QStringLi
         //disableFontMap为被禁用的字体map
         if (disableFontMap.value(keyFilePath)) {
             fontItemData.isEnabled = false;
-            fontItemData.isPreviewEnabled = false;
+//            fontItemData.isPreviewEnabled = false;
         } else {
             fontItemData.isEnabled = true;
-            fontItemData.isPreviewEnabled = true;
+//            fontItemData.isPreviewEnabled = true;
         }
 
         m_dbManager->updateFontInfo(fontItemData, "isEnabled");

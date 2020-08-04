@@ -27,6 +27,7 @@
 #include <QFileInfo>
 #include <QFontDatabase>
 #include <QProcess>
+#include <QDateTime>
 
 #include <fontconfig/fontconfig.h>
 #include <ft2build.h>
@@ -140,8 +141,11 @@ void DFontInfoManager::refreshList()
     }
 }
 
-QStringList DFontInfoManager::getAllFontPath() const
+QStringList DFontInfoManager::getAllFontPath(bool isStartup) const
 {
+#if 0
+    QStringList pathList = getFonts(DFontInfoManager::All);
+#endif
     QStringList pathList;
     QProcess process;
 
@@ -174,22 +178,17 @@ QStringList DFontInfoManager::getAllFontPath() const
 //        }
 //    }
 
-    //系统字体文件
-    QStringList systemfilelist = getFileNames(FONT_SYSTEM_DIR);
-    foreach (QString str, systemfilelist) {
-        if (!pathList.contains(str)) {
-            pathList << str;
+    if (isStartup) {
+        //系统字体文件
+        QStringList systemfilelist = getFileNames(FONT_SYSTEM_DIR);
+        for (const QString &str : systemfilelist) {
+            if (!pathList.contains(str)) {
+                pathList << str;
+            }
         }
     }
 
-    //用户字体文件
-    QStringList usrfilelist = getFileNames(FONT_USR_DIR);
-    foreach (QString str, usrfilelist) {
-        if (!pathList.contains(str)) {
-            pathList << str;
-        }
-    }
-
+    qDebug() << __FUNCTION__ << pathList.size();
     return pathList;
 }
 
@@ -258,6 +257,9 @@ QStringList DFontInfoManager::getAllChineseFontPath() const
     }
 
     return pathList;
+#if 0
+    return getFonts(Chinese);
+#endif
 }
 
 
@@ -277,7 +279,9 @@ QStringList DFontInfoManager::getAllMonoSpaceFontPath() const
             pathList << filePath;
         }
     }
-
+#if 0
+    QStringList pathList = getFonts(MonoSpace);
+#endif
     return pathList;
 }
 
@@ -291,7 +295,7 @@ QString DFontInfoManager::getFontType(const QString &filePath)
     } else if (suffix == "otf") {
         return "OpenType";
     } else {
-        return "Unknown";//DApplication::translate("FontDetailDailog", "Unknown");
+        return "Unknown";
     }
 }
 
@@ -599,6 +603,61 @@ QStringList DFontInfoManager::getFontFamilyStyle(const QString &filePah)
 //    FcFini();
 
     return fontFamilyList;
+}
+
+QStringList DFontInfoManager::getFonts(DFontInfoManager::FontTYpe type) const
+{
+    QStringList fontList;
+    const FcChar8 *format = reinterpret_cast<const FcChar8 *>("%{=fclist}");
+    FcPattern *pat = nullptr;
+    const FcChar8 *opt = nullptr;
+    switch (type) {
+    case Chinese:
+        opt = reinterpret_cast<const FcChar8 *>(":lang=zh");
+        break;
+    case MonoSpace:
+        opt = reinterpret_cast<const FcChar8 *>(":spacing=mono");
+        break;
+    case All:
+        break;
+    }
+
+    if (opt != nullptr) {
+        pat = FcNameParse(opt);
+        if (pat == nullptr) {
+            qDebug() << __FUNCTION__ << " err " << type;
+            return fontList;
+        }
+    } else {
+        pat = FcPatternCreate();
+    }
+
+    FcObjectSet *os = FcObjectSetBuild(FC_FILE, nullptr);
+    FcFontSet *fs = FcFontList(nullptr, pat, os);
+
+    if (os)
+        FcObjectSetDestroy(os);
+    if (pat)
+        FcPatternDestroy(pat);
+
+    if (fs) {
+        for (int j = 0; j < fs->nfont; j++) {
+            FcChar8 *s = FcPatternFormat(fs->fonts[j], format);
+            if (s == nullptr)
+                continue;
+
+            QString str = QString(reinterpret_cast<char *>(s));
+            str.remove(": ");
+//            qDebug() << __FUNCTION__ << str;
+            if (!fontList.contains(str) && !str.isEmpty())
+                fontList << str;
+            FcStrFree(s);
+        }
+        FcFontSetDestroy(fs);
+    }
+
+//    FcFini();
+    return fontList;
 }
 
 QString DFontInfoManager::getInstFontPath(const QString &originPath, const QString &familyName)

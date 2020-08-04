@@ -67,11 +67,12 @@ bool DFontPreviewProxyModel::isCustomFilterAcceptsRow(const QModelIndex &modelIn
     }
 
     //zhangya 20200313  fix varModel is not DFontPreviewItemData crash
-    if (varModel.canConvert<DFontPreviewItemData>() == false) {
+    if (varModel.canConvert<FontData>() == false) {
         return false;
     }
 
-    DFontPreviewItemData itemData = varModel.value<DFontPreviewItemData>();
+    FontData fdata = varModel.value<FontData>();
+    DFontPreviewItemData itemData = DFontPreviewListDataThread::instance()->getFontData(fdata.strFontName);
 
     const QString &fontName = itemData.strFontName;
 
