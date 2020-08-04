@@ -280,6 +280,8 @@ void DFInstallErrorDialog::initInstallErrorFontViews()
     m_installErrorListView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     m_installErrorListView->setFixedWidth(width() - LISTVIEW_LEFT_SPACING);
     m_installErrorListView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    m_installErrorListView->setSelectionMode(QAbstractItemView::ExtendedSelection);
+
 
     m_mainLayout->addWidget(m_installErrorListView);
     m_mainLayout->addWidget(btnFrame);
@@ -303,7 +305,7 @@ void DFInstallErrorDialog::initInstallErrorFontViews()
 void DFInstallErrorDialog::resetContinueInstallBtnStatus()
 {
 
-    qDebug() << m_SystemFontCount << endl;
+//    qDebug() << m_SystemFontCount << endl;
     //所有字体都未勾选时，禁止点击"继续安装"
     if (0 == getErrorFontCheckedCount()) {
 //        m_continueInstallBtn->setEnabled(false);
@@ -332,6 +334,8 @@ void DFInstallErrorDialog::keyPressEvent(QKeyEvent *event)
         if (m_installErrorListView->selectionModel()->selectedIndexes().count() == 1) {
             onListItemClicked(m_installErrorListView->currentIndex());
             return;
+        } else {
+            onListItemsClicked(m_installErrorListView->selectionModel()->selectedIndexes());
         }
     }
     QWidget::keyPressEvent(event);
@@ -356,6 +360,38 @@ void DFInstallErrorDialog::onListItemClicked(QModelIndex index)
         m_installErrorListView->updateErrorFontModelList(index.row(), itemModel);
         resetContinueInstallBtnStatus();
     }
+}
+
+/*************************************************************************/
+/*                                                                       */
+/* <Function>    onListItemsClicked                                      */
+/*                                                                       */
+/* <Description> 用于处理字体验证框中选择多个字体后使用快捷键改变选中字体的选择状态 */
+/*                                                                       */
+/* <para>       所有选中项的index构成的indexlist                            */
+/*                                                                       */
+/* <Return>     无返回值                                                  */
+void DFInstallErrorDialog::onListItemsClicked(QModelIndexList indexList)
+{
+    m_installErrorListView->sortModelIndexList(indexList);
+
+
+    DFInstallErrorItemModel itemModel =
+        qvariant_cast<DFInstallErrorItemModel>(m_installErrorListView->getErrorListSourceModel()->data(indexList.last()));
+
+    foreach (auto it, indexList) {
+        qDebug() << it.row() << "++++++++++++++++++++++++++++++" << endl;
+        DFInstallErrorItemModel itemModel2 =
+            qvariant_cast<DFInstallErrorItemModel>(m_installErrorListView->getErrorListSourceModel()->data(it));
+        if (itemModel2.bIsNormalUserFont) {
+            itemModel2.bChecked = !itemModel.bChecked;
+            //m_installErrorListView->ifNeedScrollTo(it);
+            m_installErrorListView->getErrorListSourceModel()->setData(it, QVariant::fromValue(itemModel2), Qt::DisplayRole);
+            m_installErrorListView->updateErrorFontModelList(it.row(), itemModel2);
+        }
+
+    }
+    resetContinueInstallBtnStatus();
 }
 
 
