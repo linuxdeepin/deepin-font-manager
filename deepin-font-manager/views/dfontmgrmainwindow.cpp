@@ -73,6 +73,14 @@ public:
     Q_DECLARE_PUBLIC(DFontMgrMainWindow)
 };
 
+/*************************************************************************
+ <Function>      DFontMgrMainWindow
+ <Description>   构造函数
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 DFontMgrMainWindow::DFontMgrMainWindow(bool isQuickMode, QWidget *parent)
     : DMainWindow(parent)
     , m_isQuickMode(isQuickMode)
@@ -97,6 +105,14 @@ DFontMgrMainWindow::DFontMgrMainWindow(bool isQuickMode, QWidget *parent)
     initFontFiles();
 }
 
+/*************************************************************************
+ <Function>      DFontMgrMainWindow
+ <Description>   析构函数
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 DFontMgrMainWindow::~DFontMgrMainWindow()
 {
     d_func()->settingsQsPtr->setValue(FTM_MWSIZE_H_KEY, m_winHight);
@@ -107,6 +123,14 @@ DFontMgrMainWindow::~DFontMgrMainWindow()
     dbus.unregisterService("com.deepin.FontManager");
 }
 
+/*************************************************************************
+ <Function>      initData
+ <Description>   初始化应用数据
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontMgrMainWindow::initData()
 {
     D_D(DFontMgrMainWindow);
@@ -131,6 +155,14 @@ void DFontMgrMainWindow::initData()
     DGuiApplicationHelper::instance()->setPaletteType(colorType);
 }
 
+/*************************************************************************
+ <Function>      initUI
+ <Description>   页面初始化入口
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontMgrMainWindow::initUI()
 {
     //Enable main window accept drag event
@@ -143,7 +175,14 @@ void DFontMgrMainWindow::initUI()
     initMainVeiws();
 }
 
-/*SP3--设置tab顺序--安装事件过滤器(539)*/
+/*************************************************************************
+ <Function>      installEventFilters
+ <Description>   SP3--设置tab顺序--安装事件过滤器
+ <Author>        UT000539
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontMgrMainWindow::installEventFilters()
 {
     D_D(DFontMgrMainWindow);
@@ -158,6 +197,14 @@ void DFontMgrMainWindow::installEventFilters()
     m_noResultListView->installEventFilter(this);//无结果页面
 }
 
+/*************************************************************************
+ <Function>      initConnections
+ <Description>   初始化信号和槽的连接函数
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontMgrMainWindow::initConnections()
 {
     D_D(DFontMgrMainWindow);
@@ -337,6 +384,14 @@ void DFontMgrMainWindow::initConnections()
     });
 }
 
+/*************************************************************************
+ <Function>      initShortcuts
+ <Description>   初始化快捷键和处理函数
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontMgrMainWindow::initShortcuts()
 {
     D_D(DFontMgrMainWindow);
@@ -581,6 +636,14 @@ void DFontMgrMainWindow::initShortcuts()
     }
 }
 
+/*************************************************************************
+ <Function>      initFontFiles
+ <Description>   初始化字体文件
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontMgrMainWindow::initFontFiles()
 {
     /* Bug#19657 sudo执行后，QDir::homePath路径不再是/home/user,导致新建数据库，
@@ -610,6 +673,14 @@ void DFontMgrMainWindow::initFontFiles()
     }
 }
 
+/*************************************************************************
+ <Function>      initTileBar
+ <Description>   初始化titleBar
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontMgrMainWindow::initTileBar()
 {
     D_D(DFontMgrMainWindow);
@@ -629,6 +700,14 @@ void DFontMgrMainWindow::initTileBar()
     }
 }
 
+/*************************************************************************
+ <Function>      initTileFrame
+ <Description>   初始化标题栏
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontMgrMainWindow::initTileFrame()
 {
     D_D(DFontMgrMainWindow);
@@ -670,6 +749,14 @@ void DFontMgrMainWindow::initTileFrame()
 #endif
 }
 
+/*************************************************************************
+ <Function>      initMainVeiws
+ <Description>   初始化主页面
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontMgrMainWindow::initMainVeiws()
 {
     D_D(DFontMgrMainWindow);
@@ -701,6 +788,14 @@ void DFontMgrMainWindow::initMainVeiws()
     setCentralWidget(d->mainWndSpliter);
 }
 
+/*************************************************************************
+ <Function>      initLeftSideBar
+ <Description>   初始化页面左侧菜单部分
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontMgrMainWindow::initLeftSideBar()
 {
     D_D(DFontMgrMainWindow);
@@ -737,6 +832,14 @@ void DFontMgrMainWindow::initLeftSideBar()
 #endif
 }
 
+/*************************************************************************
+ <Function>      initRightFontView
+ <Description>   初始化页面右部分
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontMgrMainWindow::initRightFontView()
 {
     Q_D(DFontMgrMainWindow);
@@ -779,7 +882,15 @@ void DFontMgrMainWindow::initRightFontView()
 #endif
 }
 
-/*初始化字体预览ListView*/
+/*************************************************************************
+ <Function>      initFontPreviewListView
+ <Description>   初始化字体预览页面ListView
+ <Author>
+ <Input>
+    <param1>     parent          Description:父类控件
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontMgrMainWindow::initFontPreviewListView(QWidget *parent)
 {
     Q_D(DFontMgrMainWindow);
@@ -864,6 +975,14 @@ void DFontMgrMainWindow::initFontPreviewListView(QWidget *parent)
     m_noInstallListView->hide();
 }
 
+/*************************************************************************
+ <Function>      initStateBar
+ <Description>   初始化状态栏-包含预览输入框和字体大小调节滑块和字体大小标签
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontMgrMainWindow::initStateBar()
 {
     Q_D(DFontMgrMainWindow);
@@ -937,6 +1056,14 @@ void DFontMgrMainWindow::initStateBar()
 #endif
 }
 
+/*************************************************************************
+ <Function>      handleAddFontEvent
+ <Description>   添加字体文管页面处理函数
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontMgrMainWindow::handleAddFontEvent()
 {
     Q_D(DFontMgrMainWindow);
@@ -994,6 +1121,15 @@ void DFontMgrMainWindow::handleAddFontEvent()
     Q_EMIT fileSelected(filelist);
 }
 
+/*************************************************************************
+ <Function>      handleMenuEvent
+ <Description>   右键菜单弹出处理函数
+ <Author>
+ <Input>
+    <param1>     action          Description:传参为菜单动作选项
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontMgrMainWindow::handleMenuEvent(QAction *action)
 {
     if (action->data().isValid()) {
@@ -1059,7 +1195,15 @@ void DFontMgrMainWindow::handleMenuEvent(QAction *action)
     }
 }
 
-/*return value: true: install success, false: install fail*/
+/*************************************************************************
+ <Function>      installFont
+ <Description>   安装字体入口函数
+ <Author>
+ <Input>
+    <param1>     files           Description:待安装字体文件列表
+ <Return>        bool            Description:return true 安装成功；return false 安装失败
+ <Note>          null
+*************************************************************************/
 bool DFontMgrMainWindow::installFont(const QStringList &files)
 {
     QStringList m_installFiles = checkFilesSpace(files);
@@ -1098,6 +1242,15 @@ bool DFontMgrMainWindow::installFont(const QStringList &files)
     return true;
 }
 
+/*************************************************************************
+ <Function>      installFontFromSys
+ <Description>   从系统中加载字体
+ <Author>
+ <Input>
+    <param1>     files           Description:字体文件列表
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontMgrMainWindow::installFontFromSys(const QStringList &files)
 {
     this->m_isFromSys = true;
@@ -1124,6 +1277,14 @@ void DFontMgrMainWindow::installFontFromSys(const QStringList &files)
     }
 }
 
+/*************************************************************************
+ <Function>      initRightKeyMenu
+ <Description>   初始化右键菜单
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontMgrMainWindow::initRightKeyMenu()
 {
     Q_D(DFontMgrMainWindow);
@@ -1131,6 +1292,14 @@ void DFontMgrMainWindow::initRightKeyMenu()
     d->rightKeyMenu = DFontMenuManager::getInstance()->createRightKeyMenu();
 }
 
+/*************************************************************************
+ <Function>      setQuickInstallMode
+ <Description>   设置快速安装标志位
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontMgrMainWindow::setQuickInstallMode(bool isQuick)
 {
 #ifdef QT_QML_DEBUG
@@ -1139,6 +1308,14 @@ void DFontMgrMainWindow::setQuickInstallMode(bool isQuick)
     m_isQuickMode = isQuick;
 }
 
+/*************************************************************************
+ <Function>      hideQucikInstallWindow
+ <Description>   隐藏快速安装页面
+ <Author>        null
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontMgrMainWindow::hideQucikInstallWindow()
 {
     if (m_quickInstallWnd.get() != nullptr) {
@@ -1146,6 +1323,14 @@ void DFontMgrMainWindow::hideQucikInstallWindow()
     }
 }
 
+/*************************************************************************
+ <Function>      InitQuickWindowIfNeeded
+ <Description>   快速安装
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontMgrMainWindow::InitQuickWindowIfNeeded()
 {
     if (m_quickInstallWnd.get() == nullptr) {
@@ -1170,6 +1355,14 @@ void DFontMgrMainWindow::InitQuickWindowIfNeeded()
     }
 }
 
+/*************************************************************************
+ <Function>      forceNoramlInstalltionQuitIfNeeded
+ <Description>   安装进程被打断
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontMgrMainWindow::forceNoramlInstalltionQuitIfNeeded()
 {
     if (m_fIsInstalling) {
@@ -1179,17 +1372,42 @@ void DFontMgrMainWindow::forceNoramlInstalltionQuitIfNeeded()
     }
 }
 
+/*************************************************************************
+ <Function>      setDeleteFinish
+ <Description>   删除字体后恢复标志位
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontMgrMainWindow::setDeleteFinish()
 {
     m_fIsDeleting &= ~Delete_Deleting;
     qDebug() << __FUNCTION__ << m_fIsDeleting;
 }
 
+/*************************************************************************
+ <Function>      cancelDelete
+ <Description>   删除字体验证页面取消恢复标志位
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontMgrMainWindow::cancelDelete()
 {
     m_fIsDeleting = UnDeleting;
 }
 
+/*************************************************************************
+ <Function>      onSearchTextChanged
+ <Description>   根据搜索框输入内容刷新搜索结果
+ <Author>
+ <Input>
+    <param1>     currStr         Description:搜索关键词
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontMgrMainWindow::onSearchTextChanged(const QString &currStr)
 {
     if (!m_fontPreviewListView->isListDataLoadFinished()) {
@@ -1216,6 +1434,15 @@ void DFontMgrMainWindow::onSearchTextChanged(const QString &currStr)
     m_fontPreviewListView->scrollToTop();
 }
 
+/*************************************************************************
+ <Function>      onPreviewTextChanged
+ <Description>   刷新预览内容
+ <Author>
+ <Input>
+    <param1>     text            Description:预览内容
+ <Return>        null            Description:null
+ <Note>          onPreviewTextChanged()为调用函数更新预览内容
+*************************************************************************/
 void DFontMgrMainWindow::onPreviewTextChanged(const QString &text)
 {
     m_previewText = text;
@@ -1223,6 +1450,15 @@ void DFontMgrMainWindow::onPreviewTextChanged(const QString &text)
     onPreviewTextChanged();
 }
 
+/*************************************************************************
+ <Function>      onFontSizeChanged
+ <Description>   更新预览页面字号大小
+ <Author>
+ <Input>
+    <param1>     fontSize        Description:预览字号大小
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontMgrMainWindow::onFontSizeChanged(int fontSize)
 {
     //Q_EMIT m_signalManager->refreshCurRect();
@@ -1241,6 +1477,14 @@ void DFontMgrMainWindow::onFontSizeChanged(int fontSize)
     //Q_EMIT m_signalManager->prevFontChanged();
 }
 
+/*************************************************************************
+ <Function>      showFontFilePostion
+ <Description>   右键菜单：在文件管理器中显示字体文件位置
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontMgrMainWindow::showFontFilePostion()
 {
     DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
@@ -1250,6 +1494,15 @@ void DFontMgrMainWindow::showFontFilePostion()
     }
 }
 
+/*************************************************************************
+ <Function>      onLeftSiderBarItemClicked
+ <Description>   左侧菜单项切换选项
+ <Author>
+ <Input>
+    <param1>     index           Description:菜单项索引
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontMgrMainWindow::onLeftSiderBarItemClicked(int index)
 {
     if (!m_fontPreviewListView->isListDataLoadFinished()) {
@@ -1277,6 +1530,15 @@ void DFontMgrMainWindow::onLeftSiderBarItemClicked(int index)
     m_fontPreviewListView->clearSelection();
 }
 
+/*************************************************************************
+ <Function>      onFontInstallFinished
+ <Description>   安装后添加至listview
+ <Author>
+ <Input>
+    <param1>     fileList       Description:已安装字体列表
+ <Return>        null           Description:null
+ <Note>          null
+*************************************************************************/
 void DFontMgrMainWindow::onFontInstallFinished(const QStringList &fileList)
 {
     Q_D(DFontMgrMainWindow);
@@ -1288,18 +1550,32 @@ void DFontMgrMainWindow::onFontInstallFinished(const QStringList &fileList)
     }
 }
 
+/*************************************************************************
+ <Function>      onUninstallFcCacheFinish
+ <Description>   字体删除fc-cache操作后恢复标志位
+ <Author>
+ <Input>         null
+ <Return>        null           Description:null
+ <Note>          null
+*************************************************************************/
 void DFontMgrMainWindow::onUninstallFcCacheFinish()
 {
     m_fIsDeleting &= ~Delete_Cacheing;
     qDebug() << __FUNCTION__ << m_fIsDeleting;
 }
 
-/* 判断FontListView的结果并显示对应状态
- * dShow = 0 :查找到信息，显示正常
- * dShow = 1 :未查到信息，显示“无搜索结果”
- * dShow = 2 :未安装字体，显示“暂无字体”
- * default   :默认有信息，显示正常
- */
+/*************************************************************************
+ <Function>      onFontListViewRowCountChanged
+ <Description>   切换字体菜单后判断FontListView的结果并显示对应状态
+ <Author>
+ <Input>
+        dShow = 0 :查找到信息，显示正常
+        dShow = 1 :未查到信息，显示“无搜索结果”
+        dShow = 2 :未安装字体，显示“暂无字体”
+        default   :默认有信息，显示正常
+ <Return>        null           Description:null
+ <Note>          null
+*************************************************************************/
 void DFontMgrMainWindow::onFontListViewRowCountChanged()
 {
     Q_D(DFontMgrMainWindow);
@@ -1369,8 +1645,15 @@ void DFontMgrMainWindow::onFontListViewRowCountChanged()
     }
 }
 
-/* 0 正在加载
-1 完成加载*/
+/*************************************************************************
+ <Function>      onLoadStatus
+ <Description>   刷新加载状态
+ <Author>
+ <Input>
+    <param1>     type           Description:0 正在加载1 完成加载
+ <Return>        null           Description:null
+ <Note>          null
+*************************************************************************/
 void DFontMgrMainWindow::onLoadStatus(int type)
 {
     D_D(DFontMgrMainWindow);
@@ -1416,25 +1699,19 @@ void DFontMgrMainWindow::onLoadStatus(int type)
     //}
 }
 
+/*************************************************************************
+ <Function>      onShowMessage
+ <Description>   安装字体提示信息
+ <Author>
+ <Input>
+    <param1>     successCount   Description:字体安装个数
+ <Return>        null           Description:null
+ <Note>          null
+*************************************************************************/
 void DFontMgrMainWindow::onShowMessage(int successCount)
 {
     QString messageA;
     QString messageB;
-
-    //    if (successCount == 1 && systemFontCount != 0) {
-    //        messageA = DApplication::translate("Font", "%1 font installed").arg(successCount);
-    //        DMessageManager::instance()->sendMessage(this, QIcon(":/images/ok.svg"), messageA);
-    //        messageB = DApplication::translate("Font", "The other %2 system fonts have already been installed").arg(systemFontCount);
-    //        DMessageManager::instance()->sendMessage(this, QIcon(":/images/exception-logo.svg"), messageB);
-    //    }
-    //    if (successCount != 1) {
-    //        messageA = DApplication::translate("Font", "%1 fonts installed").arg(successCount);
-    //        DMessageManager::instance()->sendMessage(this, QIcon(":/images/ok.svg"), messageA);
-    //        if (systemFontCount > 0) {
-    //            messageB = DApplication::translate("Font", "The other %2 system fonts have already been installed").arg(systemFontCount);
-    //            DMessageManager::instance()->sendMessage(this, QIcon(":/images/exception-logo.svg"), messageB);
-    //        }
-    //    }
 
     if (successCount == 1) {
         messageA = DApplication::translate("DFontMgrMainWindow", "%1 font installed").arg(successCount);
@@ -1446,6 +1723,17 @@ void DFontMgrMainWindow::onShowMessage(int successCount)
     }
 }
 
+/*************************************************************************
+ <Function>      onShowSpinner
+ <Description>   显示或停止旋转进度图标
+ <Author>
+ <Input>
+    <param1>     bShow          Description:判断显示还是停止的标志位
+    <param2>     force          Description:函数类传参，判断是否需要重绘的标志位
+    <param3>     style          Description:显示模式
+ <Return>        null           Description:null
+ <Note>          null
+*************************************************************************/
 void DFontMgrMainWindow::onShowSpinner(bool bShow, bool force, DFontSpinnerWidget::SpinnerStyles style)
 {
     qDebug() << __FUNCTION__ << bShow << "begin";
@@ -1462,6 +1750,14 @@ void DFontMgrMainWindow::onShowSpinner(bool bShow, bool force, DFontSpinnerWidge
     qDebug() << __FUNCTION__ << bShow << "end";
 }
 
+/*************************************************************************
+ <Function>      delCurrentFont
+ <Description>   字体删除处理函数
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontMgrMainWindow::delCurrentFont()
 {
     qDebug() << __FUNCTION__ << m_fIsDeleting;
@@ -1500,6 +1796,14 @@ void DFontMgrMainWindow::delCurrentFont()
     confirmDelDlg->exec();
 }
 
+/*************************************************************************
+ <Function>      exportFont
+ <Description>   字体导出处理函数
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontMgrMainWindow::exportFont()
 {
     int cnt = 0;
@@ -1533,6 +1837,16 @@ void DFontMgrMainWindow::exportFont()
     showExportFontMessage(m_exportFiles.count(), files.count() - m_exportFiles.count());
 }
 
+/*************************************************************************
+ <Function>      showExportFontMessage
+ <Description>   显示导出字体时提示内容
+ <Author>
+ <Input>
+    <param1>     successCount         Description:导出成功字体个数
+    <param2>     abandonFilesCount    Description:导出失败字体个数
+ <Return>        null                 Description:null
+ <Note>          null
+*************************************************************************/
 void DFontMgrMainWindow::showExportFontMessage(int successCount, int abandonFilesCount)
 {
     QString message;
@@ -1554,6 +1868,15 @@ void DFontMgrMainWindow::showExportFontMessage(int successCount, int abandonFile
 
 }
 
+/*************************************************************************
+ <Function>      dragEnterEvent
+ <Description>   处理拖入事件
+ <Author>
+ <Input>
+    <param1>     event          Description:事件对象
+ <Return>        null           Description:null
+ <Note>          null
+*************************************************************************/
 void DFontMgrMainWindow::dragEnterEvent(QDragEnterEvent *event)
 {
     //Q_D(DFontMgrMainWindow);
@@ -1578,6 +1901,15 @@ void DFontMgrMainWindow::dragEnterEvent(QDragEnterEvent *event)
     event->ignore();
 }
 
+/*************************************************************************
+ <Function>      dropEvent
+ <Description>   处理拖放事件
+ <Author>
+ <Input>
+    <param1>     event          Description:事件对象
+ <Return>        null           Description:null
+ <Note>          null
+*************************************************************************/
 void DFontMgrMainWindow::dropEvent(QDropEvent *event)
 {
 
@@ -1611,6 +1943,15 @@ void DFontMgrMainWindow::dropEvent(QDropEvent *event)
     }
 }
 
+/*************************************************************************
+ <Function>      resizeEvent
+ <Description>   处理窗口大小变化事件
+ <Author>
+ <Input>
+    <param1>     event          Description:事件对象
+ <Return>        null           Description:null
+ <Note>          null
+*************************************************************************/
 void DFontMgrMainWindow::resizeEvent(QResizeEvent *event)
 {
 //    Q_UNUSED(event)
@@ -1633,6 +1974,15 @@ void DFontMgrMainWindow::resizeEvent(QResizeEvent *event)
     DMainWindow::resizeEvent(event);
 }
 
+/*************************************************************************
+ <Function>      getPreviewTextWithSize
+ <Description>   获得默认字体预览大小
+ <Author>
+ <Input>
+    <param1>     fontSize       Description:根据此参数调整预览字体大小
+ <Return>        QString        Description:返回预览内容字符串
+ <Note>          null
+*************************************************************************/
 QString DFontMgrMainWindow::getPreviewTextWithSize(int *fontSize)
 {
     if (fontSize != nullptr)
@@ -1641,6 +1991,14 @@ QString DFontMgrMainWindow::getPreviewTextWithSize(int *fontSize)
     return m_previewText;
 }
 
+/*************************************************************************
+ <Function>      showAllShortcut
+ <Description>   调用显示快捷键的说明页面
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontMgrMainWindow::showAllShortcut()
 {
     QRect rect = window()->geometry();
@@ -1698,6 +2056,14 @@ void DFontMgrMainWindow::showAllShortcut()
     connect(shortcutViewProcess, SIGNAL(finished(int)), shortcutViewProcess, SLOT(deleteLater()));
 }
 
+/*************************************************************************
+ <Function>      showInstalledFiles
+ <Description>   安装完成后切换至用户字体页面
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontMgrMainWindow::showInstalledFiles()
 {
     D_D(DFontMgrMainWindow);
@@ -1706,8 +2072,16 @@ void DFontMgrMainWindow::showInstalledFiles()
     onLeftSiderBarItemClicked(DSplitListWidget::UserFont);
 }
 
-
-/*通过styles来决定标签显示内容*/
+/*************************************************************************
+ <Function>      showSpinner
+ <Description>   通过styles来决定标签显示内容
+ <Author>
+ <Input>
+    <param1>     styles         Description:标签枚举类型
+    <param2>     force          Description:是否需要重绘的标志位
+ <Return>        null           Description:
+ <Note>          null
+*************************************************************************/
 void DFontMgrMainWindow::showSpinner(DFontSpinnerWidget::SpinnerStyles styles, bool force)
 {
     D_D(DFontMgrMainWindow);
@@ -1727,6 +2101,14 @@ void DFontMgrMainWindow::showSpinner(DFontSpinnerWidget::SpinnerStyles styles, b
     m_fontLoadingSpinner->spinnerStart();
 }
 
+/*************************************************************************
+ <Function>      hideSpinner
+ <Description>   判断是否需要隐藏旋转进度图标
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontMgrMainWindow::hideSpinner()
 {
     if (!m_cacheFinish || !m_installFinish) {
@@ -1772,6 +2154,14 @@ void DFontMgrMainWindow::hideSpinner()
     });
 }
 
+/*************************************************************************
+ <Function>      waitForInsert
+ <Description>   更新待安装列表
+ <Author>        exa
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontMgrMainWindow::waitForInsert()
 {
     if (m_waitForInstall.isEmpty())
@@ -1781,6 +2171,14 @@ void DFontMgrMainWindow::waitForInsert()
         m_waitForInstall.clear();
 }
 
+/*************************************************************************
+ <Function>      onPreviewTextChanged
+ <Description>   根据输入内容调整预览字体
+ <Author>
+ <Input>         Null
+ <Return>        Null            Description:Null
+ <Note>          Null
+*************************************************************************/
 void DFontMgrMainWindow::onPreviewTextChanged()
 {
     if (!m_fontPreviewListView->isListDataLoadFinished()) {
@@ -1801,6 +2199,15 @@ void DFontMgrMainWindow::onPreviewTextChanged()
     }
 }
 
+/*************************************************************************
+ <Function>      getDiskSpace
+ <Description>   获得硬盘剩余空间
+ <Author>        UT000442
+ <Input>
+    <param1>     m_bInstall     Description:标志位
+ <Return>        qint64         Description:返回盈余空间大小
+ <Note>          Null
+*************************************************************************/
 qint64 DFontMgrMainWindow::getDiskSpace(bool m_bInstall)
 {
     //    QStorageInfo storage = QStorageInfo::root();
@@ -1818,6 +2225,16 @@ qint64 DFontMgrMainWindow::getDiskSpace(bool m_bInstall)
     return m_remainSpace;
 }
 
+/*************************************************************************
+ <Function>      checkFilesSpace
+ <Description>   检查空间盈余
+ <Author>        UT000442
+ <Input>
+    <param1>     files          Description:文件路径列表
+    <param2>     m_bInstall     Description:标志位
+ <Return>        QStringList    Description:返回路径列表
+ <Note>          Null
+*************************************************************************/
 QStringList DFontMgrMainWindow::checkFilesSpace(const QStringList &files, bool m_bInstall)
 {
     QStringList m_installFiles;
@@ -1910,7 +2327,17 @@ void DFontMgrMainWindow::mainwindowFocusInCheck(QObject *obj, QEvent *event)
         m_isInputLineEditMunuPoped  = false;
 }
 
-/*调节右下角字体大小显示label显示内容 UT000539*/
+/*************************************************************************
+ <Function>      autoLabelWidth
+ <Description>   调节右下角字体大小显示label显示内容
+ <Author>        UT000539
+ <Input>
+    <param1>     text           Description:文本字符串
+    <param2>     lab            Description:label对象
+    <param3>     fm             Description:当前字体信息
+ <Return>        Null           Description:Null
+ <Note>          Null
+*************************************************************************/
 void DFontMgrMainWindow::autoLabelWidth(QString text, DLabel *lab, QFontMetrics fm)
 {
     QString str = text;
@@ -1931,6 +2358,15 @@ void DFontMgrMainWindow::autoLabelWidth(QString text, DLabel *lab, QFontMetrics 
     lab->setText(str);
 }
 
+/*************************************************************************
+ <Function>      keyPressEvent
+ <Description>   处理键盘press事件
+ <Author>        UT000539
+ <Input>
+    <param1>     event          Description:事件对象
+ <Return>        Null           Description:Null
+ <Note>          Null
+*************************************************************************/\
 void DFontMgrMainWindow::keyPressEvent(QKeyEvent *event)
 {
     //UT000539 判断slider是否聚焦，调整预览字体大小
@@ -1956,7 +2392,16 @@ void DFontMgrMainWindow::keyPressEvent(QKeyEvent *event)
     DWidget::keyPressEvent(event);
 }
 
-/*SP3--设置tab顺序(539)*/
+/*************************************************************************
+ <Function>      eventFilter
+ <Description>   事件过滤器：用于过滤事件
+ <Author>        UT000539
+ <Input>
+    <param1>     obj            Description:事件接收对象
+    <param2>     event          Description:事件对象
+ <Return>        bool           Description:返回事件处理结果
+ <Note>          Null
+*************************************************************************/
 bool DFontMgrMainWindow::eventFilter(QObject *obj, QEvent *event)
 {
     D_D(DFontMgrMainWindow);
@@ -2012,7 +2457,15 @@ bool DFontMgrMainWindow::eventFilter(QObject *obj, QEvent *event)
     return QWidget::eventFilter(obj, event);
 }
 
-/*SP3--设置tab顺序(539)*/
+/*************************************************************************
+ <Function>      setNextTabFocus
+ <Description>   设置tab聚焦顺序
+ <Author>        UT000539
+ <Input>
+    <param1>     obj            Description:接收对象
+ <Return>        Null           Description:Null
+ <Note>          Null
+*************************************************************************/
 void DFontMgrMainWindow::setNextTabFocus(QObject *obj)
 {
     D_D(DFontMgrMainWindow);

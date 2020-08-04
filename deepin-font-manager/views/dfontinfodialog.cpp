@@ -20,6 +20,16 @@
 
 #define NAME_TITLE_WIDTH 300
 
+/*************************************************************************
+ <Function>      DFontInfoDialog
+ <Description>   信息页面构造函数
+ <Author>
+ <Input>
+    <param1>     fontInfo        Description:当前字体信息结构体
+    <param2>     parent          Description:父控件
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 DFontInfoDialog::DFontInfoDialog(DFontPreviewItemData *fontInfo, QWidget *parent)
     : DFontBaseDialog(parent)
     , m_fontInfo(fontInfo)
@@ -32,7 +42,15 @@ DFontInfoDialog::DFontInfoDialog(DFontPreviewItemData *fontInfo, QWidget *parent
     this->move(m_faCenter - this->rect().center());
 }
 
-/*用于nametitle的宽度和字符串长度判断， UT000539 */
+/*************************************************************************
+ <Function>      AutoFeed
+ <Description>   用于信息页面nametitle的宽度和字符串长度判断，
+ <Author>        UT000539
+ <Input>
+    <param1>     text            Description:待处理文本
+ <Return>        QString         Description:返回处理过的字符串
+ <Note>          null
+*************************************************************************/
 QString DFontInfoDialog::AutoFeed(QString text)
 {
     QFont m_CurrentFont = this->font();
@@ -61,7 +79,17 @@ QString DFontInfoDialog::AutoFeed(QString text)
     return text;
 }
 
-/*用于nametitle的第三行判断，由AutoFeed调用 UT000539 fix bug 26967*/
+/*************************************************************************
+ <Function>      adaptiveLengthForNameTitle
+ <Description>   用于nametitle的第三行判断，由AutoFeed调用
+ <Author>        UT000539
+ <Input>
+    <param1>     fm            Description:传入当前字体属性信息
+    <param2>     thirdLineText Description:第三行待处理的文本
+    <param3>     lineWidth     Description:用于判断的行宽参数
+ <Return>        QString       Description:返回处理过的第三行字符串
+ <Note>          null
+*************************************************************************/
 QString DFontInfoDialog::adaptiveLengthForNameTitle(QFontMetrics fm, QString thirdLineText, int lineWidth)
 {
     if (fm.width(thirdLineText) > lineWidth) {
@@ -78,6 +106,14 @@ QString DFontInfoDialog::adaptiveLengthForNameTitle(QFontMetrics fm, QString thi
     } return thirdLineText;
 }
 
+/*************************************************************************
+ <Function>      initUI
+ <Description>   初始化信息页面
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontInfoDialog::initUI()
 {
 
@@ -229,6 +265,15 @@ void DFontInfoDialog::initUI()
     m_fontDescription->setStyleSheet("background: green");
 #endif
 }
+
+/*************************************************************************
+ <Function>      initConnections
+ <Description>   初始化信号与槽连接处理函数-主题变化信号和槽
+ <Author>        UT000539
+ <Input>         Null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontInfoDialog::initConnections()
 {
     connect(DApplicationHelper::instance(), &DApplicationHelper::themeTypeChanged, this, [ = ] {
@@ -251,13 +296,31 @@ void DFontInfoDialog::initConnections()
         }
     });
 }
+
+/*************************************************************************
+ <Function>      resizeEvent
+ <Description>   大小变化处理函数
+ <Author>
+ <Input>
+    <param1>     event           Description:事件对象
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontInfoDialog::resizeEvent(QResizeEvent *event)
 {
     DFontBaseDialog::resizeEvent(event);
 
 }
 
-//信息快捷键关闭本窗口
+/*************************************************************************
+ <Function>      keyPressEvent
+ <Description>   重新实现键盘press事件-信息页面打开快捷键关闭本窗口
+ <Author>
+ <Input>
+    <param1>     ev              Description:事件对象
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontInfoDialog::keyPressEvent(QKeyEvent *ev)
 {
     QDialog::keyPressEvent(ev);
@@ -267,6 +330,15 @@ void DFontInfoDialog::keyPressEvent(QKeyEvent *ev)
     }
 }
 
+/*************************************************************************
+ <Function>      autoHeight
+ <Description>   自适应变化信息详情页面高度
+ <Author>        UT000442
+ <Input>
+    <param1>     height          Description:用于判断信息详情页面高度的参数
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontInfoDialog::autoHeight(int height)
 {
     //repaint m_fontFileName/*UT000539*/

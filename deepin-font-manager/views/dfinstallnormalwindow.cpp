@@ -17,6 +17,16 @@ DWIDGET_USE_NAMESPACE
 
 const QString ONLYPROGRESS = "onlyprogress";
 
+/*************************************************************************
+ <Function>      DFInstallNormalWindow
+ <Description>   构造函数
+ <Author>
+ <Input>
+    <param1>     files           Description:待安装字体文件
+    <param2>     parent          Description:父控件对象
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 DFInstallNormalWindow::DFInstallNormalWindow(const QStringList &files, QWidget *parent)
     : DFontBaseDialog(parent)
     , m_installFiles(files)
@@ -33,6 +43,14 @@ DFInstallNormalWindow::DFInstallNormalWindow(const QStringList &files, QWidget *
     initConnections();
 }
 
+/*************************************************************************
+ <Function>      ~DFInstallNormalWindow
+ <Description>   析构函数处理函数
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 DFInstallNormalWindow::~DFInstallNormalWindow()
 {
     qDebug() << __func__ << "start" << endl;
@@ -50,6 +68,14 @@ DFInstallNormalWindow::~DFInstallNormalWindow()
     qDebug() << __func__ << "end" << this << endl;
 }
 
+/*************************************************************************
+ <Function>      initUI
+ <Description>   初始化主页面
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFInstallNormalWindow::initUI()
 {
     setFixedSize(QSize(380, 136));
@@ -111,6 +137,14 @@ void DFInstallNormalWindow::initUI()
 #endif
 }
 
+/*************************************************************************
+ <Function>      initVerifyTimer
+ <Description>   初始化文件过滤定时器
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFInstallNormalWindow::initVerifyTimer()
 {
     m_verifyTimer->setSingleShot(true);
@@ -120,6 +154,14 @@ void DFInstallNormalWindow::initVerifyTimer()
     m_verifyTimer->start(VERIFY_DELYAY_TIME);
 }
 
+/*************************************************************************
+ <Function>      initConnections
+ <Description>   初始化信号和槽connect连接函数
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFInstallNormalWindow::initConnections()
 {
     // Install the font list ,which may be changed in exception window
@@ -171,8 +213,14 @@ void DFInstallNormalWindow::initConnections()
     initVerifyTimer();
 }
 
-
-//ut000442 从数据库中读取系统字体，用于之后的判断
+/*************************************************************************
+ <Function>      getAllSysfiles
+ <Description>   从数据库中读取系统字体，用于之后的判断
+ <Author>        UT000442
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFInstallNormalWindow::getAllSysfiles()
 {
     QList<DFontPreviewItemData> allFontInfo = DFontPreviewListDataThread::instance()->getFontModelList();
@@ -195,8 +243,17 @@ void DFInstallNormalWindow::getAllSysfiles()
     }
 }
 
-//字体文件过滤器，过滤后得到需要新安装的字体，重复安装字体，损毁字体，系统字体,以及字体验证框弹出时安装的字体
-//过滤后进行安装
+
+/*************************************************************************
+ <Function>      verifyFontFiles
+ <Description>   字体文件过滤器，过滤后得到需要新安装的字体，重复安装字体，损毁字体，系统字体,以及字体验证框弹出时安装的字体
+                 过滤后进行安装
+ <Author>
+ <Input>
+    <param1>     isHalfwayInstall Description:需要过滤的字体文件
+ <Return>        null             Description:null
+ <Note>          null
+*************************************************************************/
 void DFInstallNormalWindow::verifyFontFiles(bool isHalfwayInstall)
 {
     DFontInfo fontInfo;
@@ -273,8 +330,14 @@ void DFInstallNormalWindow::verifyFontFiles(bool isHalfwayInstall)
     m_errorList = m_damagedFiles + m_installedFiles + m_systemFiles;
 }
 
-
-//检测是否要弹出字体验证框，存在重复安装字体，系统字体时，损坏字体时弹出字体验证框
+/*************************************************************************
+ <Function>      ifNeedShowExceptionWindow
+ <Description>   检测是否要弹出字体验证框，存在重复安装字体，系统字体时，损坏字体时弹出字体验证框
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 bool DFInstallNormalWindow::ifNeedShowExceptionWindow() const
 {
     // Skip Exception dialog
@@ -307,6 +370,15 @@ bool DFInstallNormalWindow::ifNeedShowExceptionWindow() const
     return false;
 }
 
+/*************************************************************************
+ <Function>      isSystemFont
+ <Description>   判断当前字体是否为系统字体
+ <Author>
+ <Input>
+    <param1>     f               Description:传入当前字体
+ <Return>        bool            Description:true 表示当前字体为系统字体；false 表示当前字体不是系统字体
+ <Note>          null
+*************************************************************************/
 bool DFInstallNormalWindow::isSystemFont(DFontInfo &f)
 {
     QString fontFullPsname;
@@ -330,8 +402,16 @@ bool DFInstallNormalWindow::isSystemFont(DFontInfo &f)
     }
 }
 
-//新安装的字体在安装完成时 getInstallMessage置为true。重复安装的字体安装完成时 getReInstallMessage置为true
-//列表刷新完成后 m_installAdded置为true。三者都为true时表示一次安装过程结束。
+/*************************************************************************
+ <Function>      checkShowMessage
+ <Description>   根据字体安装或重复安装状态更新标志位getInstallMessage
+                 新安装的字体在安装完成时 getInstallMessage置为true。重复安装的字体安装完成时 getReInstallMessage置为true
+                 列表刷新完成后 m_installAdded置为true。三者都为true时表示一次安装过程结束。
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFInstallNormalWindow::checkShowMessage()
 {
     qDebug() << "Install over" << endl;
@@ -372,6 +452,15 @@ void DFInstallNormalWindow::checkShowMessage()
     emit m_signalManager->setIsJustInstalled();
 }
 
+/*************************************************************************
+ <Function>      getNoSameFilesCount
+ <Description>   获取新增字体文件
+ <Author>
+ <Input>
+    <param1>     filesList       Description:传入字体文件列表
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFInstallNormalWindow::getNoSameFilesCount(const QStringList &filesList)
 {
     DFontInfo fontInfo;
@@ -384,12 +473,29 @@ void DFInstallNormalWindow::getNoSameFilesCount(const QStringList &filesList)
     }
 }
 
-
+/*************************************************************************
+ <Function>      resizeEvent
+ <Description>   重新实现大小改变事件处理函数
+ <Author>
+ <Input>
+    <param1>     event            Description:事件对象
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFInstallNormalWindow::resizeEvent(QResizeEvent *event)
 {
     DFontBaseDialog::resizeEvent(event);
 }
 
+/*************************************************************************
+ <Function>      paintEvent
+ <Description>   重新实现重绘函数-根据字体属性刷新进度标签高度
+ <Author>
+ <Input>
+    <param1>     event           Description:事件对象
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFInstallNormalWindow::paintEvent(QPaintEvent *event)
 {
 //  ut000442 优化显示效果，弹出对话框时可以动态调整label的高度，从而避免遮挡的出现
@@ -398,6 +504,15 @@ void DFInstallNormalWindow::paintEvent(QPaintEvent *event)
     m_progressStepLabel->setFixedHeight(m_progressStepLabel->fontMetrics().height());
 }
 
+/*************************************************************************
+ <Function>      closeEvent
+ <Description>   重新实现关闭事件处理函数-停止字体管理线程
+ <Author>
+ <Input>
+    <param1>     event           Description:事件对象
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFInstallNormalWindow::closeEvent(QCloseEvent *event)
 {
     Q_UNUSED(event);
@@ -405,6 +520,16 @@ void DFInstallNormalWindow::closeEvent(QCloseEvent *event)
 
     m_fontManager->stop();
 }
+
+/*************************************************************************
+ <Function>      batchInstall
+ <Description>   批量安装处理函数
+ <Author>
+ <Input>
+    <param1>     reinstallFiles  Description:待重装字体文件列表
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFInstallNormalWindow::batchInstall()
 {
     // Check&Sort uninstalled ,installed & damaged font file here
@@ -477,7 +602,15 @@ void DFInstallNormalWindow::batchInstall()
     m_fontManager->start();
 }
 
-
+/*************************************************************************
+ <Function>      batchReInstall
+ <Description>   批量重新安装处理函数
+ <Author>
+ <Input>
+    <param1>     reinstallFiles  Description:待重装字体文件列表
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFInstallNormalWindow::batchReInstall(QStringList reinstallFiles)
 {
     // Reinstall the user selected files
@@ -534,8 +667,15 @@ void DFInstallNormalWindow::batchReInstall(QStringList reinstallFiles)
     m_fontManager->start();
 }
 
-
-//字体验证框弹出时在文件管理器进行安装
+/*************************************************************************
+ <Function>      batchHalfwayInstall
+ <Description>   字体验证框弹出时在文件管理器进行安装
+ <Author>
+ <Input>
+    <param1>     filelist        Description:并行安装新增文件列表
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFInstallNormalWindow::batchHalfwayInstall(const QStringList &filelist)
 {
     m_installFiles = filelist;
@@ -564,6 +704,14 @@ void DFInstallNormalWindow::batchHalfwayInstall(const QStringList &filelist)
     m_fontManager->start();
 }
 
+/*************************************************************************
+ <Function>      batchReInstallContinue
+ <Description>   重装验证页面，继续按钮处理函数-继续批量安装
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFInstallNormalWindow::batchReInstallContinue()
 {
     if (m_installState == InstallState::reinstall) {
@@ -584,6 +732,14 @@ void DFInstallNormalWindow::batchReInstallContinue()
     m_fontManager->start();
 }
 
+/*************************************************************************
+ <Function>      onCancelInstall
+ <Description>   重装验证页面，取消按钮处理函数-QStringList()我安装了个寂寞
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFInstallNormalWindow::onCancelInstall()
 {
 #ifdef QT_QML_DEBUG
@@ -599,6 +755,15 @@ void DFInstallNormalWindow::onCancelInstall()
 //    this->accept();
 }
 
+/*************************************************************************
+ <Function>      onContinueInstall
+ <Description>   重装验证页面，继续按钮处理函数-继续安装
+ <Author>
+ <Input>
+    <param1>     continueInstallFontFileList    Description:重装字体文件列表
+ <Return>        null                           Description:null
+ <Note>          null
+*************************************************************************/
 void DFInstallNormalWindow::onContinueInstall(const QStringList &continueInstallFontFileList)
 {
 #ifdef QT_QML_DEBUG
@@ -612,6 +777,16 @@ void DFInstallNormalWindow::onContinueInstall(const QStringList &continueInstall
     Q_EMIT batchReinstall(continueInstallFontFileList);
 }
 
+/*************************************************************************
+ <Function>      onProgressChanged
+ <Description>   刷新安装进度显示内容
+ <Author>
+ <Input>
+    <param1>     familyName      Description:当前字体组名
+    <param2>     percent         Description:用于计算百分百参数
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFInstallNormalWindow::onProgressChanged(const QString &familyName, const double &percent)
 {
     if (familyName.isEmpty()) {
@@ -625,6 +800,16 @@ void DFInstallNormalWindow::onProgressChanged(const QString &familyName, const d
     m_progressBar->setTextVisible(false);
 }
 
+/*************************************************************************
+ <Function>      onInstallFinished
+ <Description>   字体安装后的处理函数
+ <Author>
+ <Input>
+    <param1>     state           Description:完成状态
+    <param2>     fileList        Description:安装字体文件列表
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFInstallNormalWindow::onInstallFinished(int state, QStringList fileList)
 {
     // ToDo:
@@ -677,6 +862,16 @@ void DFInstallNormalWindow::onInstallFinished(int state, QStringList fileList)
     emit  m_signalManager->sendInstallMessage(fileList);
 }
 
+/*************************************************************************
+ <Function>      onReInstallFinished
+ <Description>   字体重新安装后的处理函数
+ <Author>
+ <Input>
+    <param1>     state           Description:完成状态
+    <param2>     fileList        Description:重装字体文件列表
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFInstallNormalWindow::onReInstallFinished(int state, QStringList fileList)
 {
     // ToDo:
@@ -715,6 +910,14 @@ void DFInstallNormalWindow::onReInstallFinished(int state, QStringList fileList)
     emit  m_signalManager->sendReInstallMessage(fileList);
 }
 
+/*************************************************************************
+ <Function>      showInstallErrDlg
+ <Description>   弹出字体验证框
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFInstallNormalWindow::showInstallErrDlg()
 {
     m_popedInstallErrorDialg = true;
@@ -734,11 +937,28 @@ void DFInstallNormalWindow::showInstallErrDlg()
 
 }
 
+/*************************************************************************
+ <Function>      setSkipException
+ <Description>   设置m_isNeedSkipException标志位状态
+ <Author>
+ <Input>
+    <param1>     skip            Description:状态类型
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFInstallNormalWindow::setSkipException(bool skip)
 {
     m_isNeedSkipException = skip;
 }
 
+/*************************************************************************
+ <Function>      breakInstalltion
+ <Description>   打断安装操作-关闭验证框
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFInstallNormalWindow::breakInstalltion()
 {
     //Todo:
@@ -751,6 +971,15 @@ void DFInstallNormalWindow::breakInstalltion()
     this->hide();
 }
 
+/*************************************************************************
+ <Function>      keyPressEvent
+ <Description>   键盘press事件处理函数-esc键退出安装和关闭窗口
+ <Author>
+ <Input>
+    <param1>     event           Description:事件对象
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFInstallNormalWindow::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Escape) {

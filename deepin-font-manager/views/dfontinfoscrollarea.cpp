@@ -10,6 +10,16 @@
 #define INFO_VISIBLE_WIDTH 180
 #define IS_NEED_ELLIPSIS 30 //是否需要省略号
 
+/*************************************************************************
+ <Function>      dfontinfoscrollarea
+ <Description>   构造函数
+ <Author>
+ <Input>
+    <param1>     pData           Description:当前字体信息结构体
+    <param2>     parent          Description:父控件对象
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 dfontinfoscrollarea::dfontinfoscrollarea(DFontPreviewItemData *pData,  DWidget *parent)
     : DFrame(parent)
     , m_fontInfo(pData)
@@ -20,6 +30,14 @@ dfontinfoscrollarea::dfontinfoscrollarea(DFontPreviewItemData *pData,  DWidget *
     initUi();
 }
 
+/*************************************************************************
+ <Function>      initUi
+ <Description>   初始化信息页面中详情页面
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void dfontinfoscrollarea::initUi()
 {
     auto gridLayout = new QGridLayout;
@@ -68,6 +86,16 @@ void dfontinfoscrollarea::initUi()
     this->setLayout(vLayout);
 }
 
+/*************************************************************************
+ <Function>      eventFilter
+ <Description>   事件过滤器-过滤到字体改变事件后更新详情页字体信息与页面高度
+ <Author>
+ <Input>
+    <param1>     obj             Description:事件接受对象
+    <param2>     e               Description:事件对象
+ <Return>        bool            Description:返回值为是否已处理该事件
+ <Note>          null
+*************************************************************************/
 bool dfontinfoscrollarea::eventFilter(QObject *obj, QEvent *e)
 {
     if (e->type() == QEvent::FontChange) {
@@ -79,7 +107,18 @@ bool dfontinfoscrollarea::eventFilter(QObject *obj, QEvent *e)
     return  DFrame::eventFilter(obj, e);
 }
 
-//初始化信息页面label/*539*/
+/*************************************************************************
+ <Function>      createLabel
+ <Description>   初始话信息页面详情中信息部分标签内容
+ <Author>        UT000539
+ <Input>
+    <param1>     layout          Description:父布局
+    <param2>     index           Description:行参数
+    <param3>     objName         Description:标签逻辑名称
+    <param4>     sData           Description:标签文本内容
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void dfontinfoscrollarea::createLabel(QGridLayout *layout, const int &index, const QString &objName, const QString &sData)
 {
     QString str = objName;
@@ -105,7 +144,16 @@ void dfontinfoscrollarea::createLabel(QGridLayout *layout, const int &index, con
     }
 }
 
-//增加内容信息frame/*539*/
+/*************************************************************************
+ <Function>      addTitleFrame
+ <Description>   初始话信息页面详情中标题部分标签内容
+ <Author>
+ <Input>
+    <param1>     sData            Description:标签文本内容
+    <param2>     objName          Description:标签逻辑名称
+ <Return>        DFrame           Description:返回一个信息页面布局
+ <Note>          null
+*************************************************************************/
 DFrame *dfontinfoscrollarea::addTitleFrame(const QString &sData, const QString &objName)
 {
     Q_UNUSED(objName);
@@ -142,13 +190,29 @@ DFrame *dfontinfoscrollarea::addTitleFrame(const QString &sData, const QString &
     return m_textShowFrame;
 }
 
-//重绘信息页面/*539(勿删勿动!)*/
+/*************************************************************************
+ <Function>      paintEvent
+ <Description>   不实现重绘事件
+ <Author>
+ <Input>
+    <param1>     event           Description:事件对象
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void dfontinfoscrollarea::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event);
 }
 
-//用于信息页面title名称长度判断/*539*/
+/*************************************************************************
+ <Function>      elideText
+ <Description>   用于信息页面title名称长度判断
+ <Author>
+ <Input>
+    <param1>     titleName       Description:标题名称文本
+ <Return>        QString         Description:返回处理过的文本信息
+ <Note>          null
+*************************************************************************/
 QString dfontinfoscrollarea::elideText(QString &titleName) const
 {
     QFont font = this->font();
@@ -184,6 +248,17 @@ QString dfontinfoscrollarea::elideText(QString &titleName) const
 }
 
 //用于信息页面详细信息部分换行判断/*539*/
+/*************************************************************************
+ <Function>      elideText
+ <Description>   用于信息页面详情信息部分长度判断
+ <Author>
+ <Input>
+    <param1>     text       Description:详情文本内容
+    <param1>     font       Description:当前页面字体信息
+    <param1>     nLabelSize Description:页面标签宽度
+ <Return>        QString    Description:返回处理过的文本信息
+ <Note>          null
+*************************************************************************/
 QString dfontinfoscrollarea::elideText(const QString &text, const QFont &font, int nLabelSize)
 {
     QFontMetrics fm(font);
@@ -205,7 +280,14 @@ QString dfontinfoscrollarea::elideText(const QString &text, const QFont &font, i
     return strText;
 }
 
-//重绘信息页面/*539(勿删勿动!)*/
+/*************************************************************************
+ <Function>      updateText
+ <Description>   在字体变化后重绘信息页面
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void dfontinfoscrollarea::updateText()
 {
     for (auto pTltle : pTitleMap) {
@@ -226,6 +308,14 @@ void dfontinfoscrollarea::updateText()
     }
 }
 
+/*************************************************************************
+ <Function>      autoHeight
+ <Description>   重新计算信息详情页面高度参数
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void dfontinfoscrollarea::autoHeight()
 {
     int m_totalHeight = 0;
