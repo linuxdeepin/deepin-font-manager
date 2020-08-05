@@ -567,6 +567,8 @@ void DFontPreviewListView::deleteFontModelIndex(const QString &filePath, bool is
         return;
     }
 
+    QStringList str;
+
     for (int i = 0; i < m_fontPreviewProxyModel->sourceModel()->rowCount(); i++) {
         QModelIndex modelIndex = m_fontPreviewProxyModel->sourceModel()->index(i, 0);
         QVariant varModel = m_fontPreviewProxyModel->sourceModel()->data(modelIndex, Qt::DisplayRole);
@@ -576,6 +578,7 @@ void DFontPreviewListView::deleteFontModelIndex(const QString &filePath, bool is
 
         if (itemData.fontInfo.filePath == filePath) {
             m_fontPreviewProxyModel->sourceModel()->removeRow(i);
+            m_dataThread->removeFontData(itemData);
             break;
         }
     }
@@ -1426,7 +1429,7 @@ void DFontPreviewListView::updateChangedDir(const QString &path)
             enableFont(itemData.fontInfo.filePath);
             DFMDBManager::instance()->deleteFontInfo(itemData);
             Q_EMIT itemRemovedFromSys(itemData);
-            m_dataThread->removeFontData(itemData);
+//            m_dataThread->removeFontData(itemData);
             m_dataThread->removePathWatcher(filePathInfo.filePath());
         }
     }
@@ -1501,7 +1504,7 @@ void DFontPreviewListView::changeFontFile(const QString &path, bool force)
             enableFont(itemData.fontInfo.filePath);
             DFMDBManager::instance()->deleteFontInfo(itemData);
             Q_EMIT itemRemoved(itemData);
-            m_dataThread->removeFontData(itemData);
+//            m_dataThread->removeFontData(itemData);
             m_dataThread->removePathWatcher(filePath);
             if (!isDir)
                 break;
