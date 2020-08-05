@@ -1067,6 +1067,8 @@ void DFontMgrMainWindow::initStateBar()
 void DFontMgrMainWindow::handleAddFontEvent()
 {
     Q_D(DFontMgrMainWindow);
+    //记录当前listview是否有tab聚焦状态
+    m_fontPreviewListView->setRecoveryTabFocusState(m_fontPreviewListView->getIsTabFocus());
     //SP3--添加字体按钮取消安装后恢复选中状态--记录选中状态
     bool hasTabFocus = d->addFontButton->hasFocus();
     DFileDialog dialog;

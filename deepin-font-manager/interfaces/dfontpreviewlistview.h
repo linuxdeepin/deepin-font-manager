@@ -123,6 +123,8 @@ public:
     void onRightMenuShortCutActivated();//SP3--Alt+M右键菜单
     //检查鼠标是否处于hover状态
     void checkHoverState();
+    void setRecoveryTabFocusState(bool recoveryTabFocusState);
+
 protected:
     void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected) override;
 
@@ -173,6 +175,8 @@ private:
     FontGroup m_currentFontGroup;
 
     QRect m_curRect;
+    //是否需要恢复tab状态
+    bool m_recoveryTabFocusState = false;
     int m_currentSelectedRow = -1;
     int m_selectAfterDel = -1;/*539 删除后的选中位置*/
     int m_tryCnt = 0;

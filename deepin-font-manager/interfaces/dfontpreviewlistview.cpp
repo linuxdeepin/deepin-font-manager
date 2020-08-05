@@ -287,6 +287,11 @@ int DFontPreviewListView::getOnePageCount()
     return count;
 }
 
+void DFontPreviewListView::setRecoveryTabFocusState(bool recoveryTabFocusState)
+{
+    m_recoveryTabFocusState = recoveryTabFocusState;
+}
+
 void DFontPreviewListView::setIsTabFocus(bool IsTabFocus)
 {
     m_IsTabFocus = IsTabFocus;
@@ -618,6 +623,7 @@ void DFontPreviewListView::selectFonts(const QStringList &fileList)
     Q_EMIT SignalManager::instance()->requestInstallAdded();
     //用于安装后刷新聚焦、安装后focus for ctrl+a UT000539
     refreshFocuses();
+    setIsTabFocus(m_recoveryTabFocusState);
 }
 
 QMutex *DFontPreviewListView::getMutex()
