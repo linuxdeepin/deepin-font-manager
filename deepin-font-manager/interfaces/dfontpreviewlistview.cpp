@@ -12,7 +12,6 @@
 #include <DMessageManager>
 
 #include <QFontDatabase>
-#include <QScroller>
 #include <QSet>
 
 DWIDGET_USE_NAMESPACE
@@ -66,8 +65,6 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
     initDelegate();
     initConnections();
     installEventFilter(this);
-
-    QScroller::grabGesture(this, QScroller::TouchGesture);
 }
 
 DFontPreviewListView::~DFontPreviewListView()
@@ -846,17 +843,19 @@ void DFontPreviewListView::keyPressEvent(QKeyEvent *event)
     if (event->key() == Qt::Key_End) {
         if (event->modifiers() == Qt::ControlModifier) {
             scrollToBottom();
-            return;
+        } else {
+            setCurrentIndex(m_fontPreviewProxyModel->index(count() - 1, 0));
+            setCurrentSelected(count() - 1);
+            scrollToBottom();
         }
-        setCurrentIndex(m_fontPreviewProxyModel->index(count() - 1, 0));
-        setCurrentSelected(count() - 1);
     } else if (event->key() == Qt::Key_Home) {
         if (event->modifiers() == Qt::ControlModifier) {
             scrollToTop();
-            return;
+        } else {
+            setCurrentIndex(m_fontPreviewProxyModel->index(0, 0));
+            setCurrentSelected(0);
+            scrollToTop();
         }
-        setCurrentIndex(m_fontPreviewProxyModel->index(0, 0));
-        setCurrentSelected(0);
     } else {
         if (event->key() == Qt::Key_Up || event->key() == Qt::Key_Down) {
             QModelIndexList list = selectedIndexes();
@@ -1094,6 +1093,7 @@ QString DFontPreviewListView::getPreviewTextWithSize(int *fontSize)
 /*SP3--Alt+M右键菜单--弹出*/
 void DFontPreviewListView::onRightMenuShortCutActivated()
 {
+    m_isMousePressNow = false;
     if (selectedIndexes().count() == 0) {
         return;
     }
@@ -1330,6 +1330,7 @@ void DFontPreviewListView::onCollectBtnClicked(const QModelIndexList &index, boo
 void DFontPreviewListView::onListViewShowContextMenu()
 {
     QAction *action = m_rightMenu->exec(QCursor::pos());
+    m_isMousePressNow = false;
     qDebug() << __FUNCTION__ << action;
 }
 
