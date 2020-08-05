@@ -195,7 +195,7 @@ void DFontManager::doInstall(const QStringList &fileList, bool reinstall)
 
         //这里有过familyname中带有 /  的话，创建的目录会多一层，导致与其他不统一，也会造成删除时删除不完全的问题
         if (familyName.contains("/")) {
-            familyName.replace("/", " ");
+            familyName.replace("/", "-");
         }
         const QFileInfo info(filePathOrig);
         QString dirName = familyName;
