@@ -18,6 +18,16 @@
 
 DCORE_USE_NAMESPACE
 
+/*************************************************************************
+ <Function>      SingleFontApplication
+ <Description>   构造函数-返回一个应用的单例对象
+ <Author>        null
+ <Input>
+    <param1>     argc                  Description:标准函数
+    <param2>     argv                  Description:标准函数
+ <Return>        SingleFontApplication Description:返回一个应用的单例对象
+ <Note>          null
+*************************************************************************/
 SingleFontApplication::SingleFontApplication(int &argc, char **argv)
     : DApplication(argc, argv)
     , m_qspMainWnd(nullptr)
@@ -31,10 +41,27 @@ SingleFontApplication::SingleFontApplication(int &argc, char **argv)
             &SingleFontApplication::onFontInstallFinished);
 }
 
+/*************************************************************************
+ <Function>      ~SingleFontApplication
+ <Description>   析构函数
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 SingleFontApplication::~SingleFontApplication()
 {
 }
 
+/*************************************************************************
+ <Function>      setMainWindow
+ <Description>   设置主窗口属性
+ <Author>
+ <Input>
+    <param1>     mainWindow      Description:主窗口对象
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void SingleFontApplication::setMainWindow(DMainWindow *mainWindow)
 {
     m_qspMainWnd.reset(mainWindow);
@@ -42,6 +69,14 @@ void SingleFontApplication::setMainWindow(DMainWindow *mainWindow)
     m_qspMainWnd->setWindowIcon(QIcon::fromTheme(DEEPIN_FONT_MANAGER));
 }
 
+/*************************************************************************
+ <Function>      parseCmdLine
+ <Description>   初始化命令行
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 bool SingleFontApplication::parseCmdLine()
 {
     QCommandLineParser parser;
@@ -72,6 +107,14 @@ bool SingleFontApplication::parseCmdLine()
     return true;
 }
 
+/*************************************************************************
+ <Function>      activateWindow
+ <Description>   激活应用窗口
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void SingleFontApplication::activateWindow()
 {
     //If quick install mode
@@ -174,6 +217,14 @@ void SingleFontApplication::activateWindow()
     }
 }
 
+/*************************************************************************
+ <Function>      slotBatchInstallFonts
+ <Description>   批量安装字体响应
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void SingleFontApplication::slotBatchInstallFonts()
 {
     qDebug() << "batch install fonts";
@@ -183,12 +234,30 @@ void SingleFontApplication::slotBatchInstallFonts()
     waitForInstallSet.clear();
 }
 
+/*************************************************************************
+ <Function>      onFontInstallFinished
+ <Description>   安装完成清空列表
+ <Author>
+ <Input>
+    <param1>     fileList        Description:UnUsed
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void SingleFontApplication::onFontInstallFinished(const QStringList &fileList)
 {
     Q_UNUSED(fileList);
     m_selectedFiles.clear();
 }
 
+/*************************************************************************
+ <Function>      installFonts
+ <Description>   批量安装字体响应
+ <Author>
+ <Input>
+    <param1>     fontPathList    Description:待安装字体列表
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void SingleFontApplication::installFonts(const QStringList &fontPathList)
 {
 //    qDebug() << __FUNCTION__ << fontPathList;

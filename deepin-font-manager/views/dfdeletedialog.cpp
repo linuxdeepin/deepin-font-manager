@@ -15,7 +15,19 @@
 #include <DFontSizeManager>
 #include <DTipLabel>
 #include <DScrollArea>
-
+/*************************************************************************
+ <Function>      DFDeleteDialog
+ <Description>   构造函数：此类为字体删除确认页面，主要功能为确认删除字体和取消删除字体
+ <Author>
+ <Input>
+    <param1>     win               Description:主页面实例对象
+    <param2>     deleteCnt         Description:待删除字体数量
+    <param3>     systemCnt         Description:选中系统字体的数量
+    <param3>     hasCurrent        Description:是否包含当前系统在用字体
+    <param3>     parent            Description:父对象
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 DFDeleteDialog::DFDeleteDialog(DFontMgrMainWindow *win, int deleteCnt, int systemCnt, bool hasCurrent, QWidget *parent)
     : DFontBaseDialog(parent)
     , m_mainWindow(win)
@@ -29,6 +41,14 @@ DFDeleteDialog::DFDeleteDialog(DFontMgrMainWindow *win, int deleteCnt, int syste
     setTheme();
 }
 
+/*************************************************************************
+ <Function>      initUI
+ <Description>   初始化字体删除待确认页面
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFDeleteDialog::initUI()
 {
     setFixedWidth(DEFAULT_WINDOW_W);
@@ -58,6 +78,14 @@ void DFDeleteDialog::initUI()
     addContent(mainFrame);
 }
 
+/*************************************************************************
+ <Function>      initConnections
+ <Description>   初始化用于判断删除或取消操作的信号和槽的链接函数
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFDeleteDialog::initConnections()
 {
     connect(m_cancelBtn, &DPushButton::clicked, this, [ = ]() {
@@ -85,6 +113,14 @@ void DFDeleteDialog::initConnections()
     connect(DApplicationHelper::instance(), &DApplicationHelper::themeTypeChanged, this, &DFDeleteDialog::setTheme);
 }
 
+/*************************************************************************
+ <Function>      initMessageTitle
+ <Description>   初始化页面提示信息标题
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFDeleteDialog::initMessageTitle()
 {
     messageTitle = new DLabel(this);
@@ -105,6 +141,14 @@ void DFDeleteDialog::initMessageTitle()
     DApplicationHelper::instance()->setPalette(messageTitle, pa);
 }
 
+/*************************************************************************
+ <Function>      initMessageDetail
+ <Description>   初始化页面提示信息内容
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFDeleteDialog::initMessageDetail()
 {
     messageDetail = new DLabel(this);
@@ -141,6 +185,14 @@ void DFDeleteDialog::initMessageDetail()
     DApplicationHelper::instance()->setPalette(messageDetail, pa);
 }
 
+/*************************************************************************
+ <Function>      initBottomButtons
+ <Description>   初始化页面按钮
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 QLayout *DFDeleteDialog::initBottomButtons()
 {
     QHBoxLayout *layout = new QHBoxLayout();
@@ -173,6 +225,17 @@ QLayout *DFDeleteDialog::initBottomButtons()
     return layout;
 }
 
+/*************************************************************************
+ <Function>      onFontChanged
+ <Description>   适应系统字体变化
+ <Author>
+ <Input>
+    <param1>     font            Description:当前系统在用字体
+    <param2>     null            Description:
+    <param3>     null            Description:
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFDeleteDialog::onFontChanged(const QFont &font)
 {
     Q_UNUSED(font);
@@ -181,6 +244,15 @@ void DFDeleteDialog::onFontChanged(const QFont &font)
     resize(sizeHint());
 }
 
+/*************************************************************************
+ <Function>      keyPressEvent
+ <Description>   响应键盘press事件中的esc按键
+ <Author>
+ <Input>
+    <param1>     event           Description:事件对象
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFDeleteDialog::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Escape) {
@@ -189,6 +261,14 @@ void DFDeleteDialog::keyPressEvent(QKeyEvent *event)
     }
 }
 
+/*************************************************************************
+ <Function>      setTheme
+ <Description>   根据主题设置页面颜色
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFDeleteDialog::setTheme()
 {
     if (DApplicationHelper::DarkType == DApplicationHelper::instance()->themeType()) {

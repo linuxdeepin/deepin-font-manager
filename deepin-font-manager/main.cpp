@@ -36,7 +36,16 @@
 DWIDGET_USE_NAMESPACE
 DCORE_USE_NAMESPACE
 
-
+/*************************************************************************
+ <Function>      main
+ <Description>   工程主函数入口
+ <Author>
+ <Input>
+    <param1>     argc            Description:标准参数
+    <param2>     argv[]          Description:标准参数
+ <Return>        int             Description:返回函数处理结果
+ <Note>          null
+*************************************************************************/
 int main(int argc, char *argv[])
 {
     // load dtk xcb plugin.

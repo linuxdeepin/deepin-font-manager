@@ -11,7 +11,16 @@
 
 DWIDGET_USE_NAMESPACE
 using DTK_GUI_NAMESPACE::DSvgRenderer;
-
+/*************************************************************************
+ <Function>      FontIconText
+ <Description>   构造函数-构造字体图标对象
+ <Author>
+ <Input>
+    <param1>     picPath         Description:图像路径
+    <param2>     parent          Description:父对象
+ <Return>        FontIconText    Description:返回一个构造字体图标对象
+ <Note>          null
+*************************************************************************/
 FontIconText::FontIconText(const QString picPath, QWidget *parent)
     : QWidget(parent)
     , m_picPath(picPath)
@@ -23,6 +32,16 @@ FontIconText::FontIconText(const QString picPath, QWidget *parent)
     setFixedSize(defaultSize.width(), defaultSize.height());
 }
 
+/*************************************************************************
+ <Function>      setFontName
+ <Description>   设置字体名
+ <Author>
+ <Input>
+    <param1>     familyName      Description:字体的familyName属性
+    <param2>     styleName       Description:字体的styleName属性
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void FontIconText::setFontName(const QString &familyName, const QString &styleName)
 {
     m_font = font();
@@ -53,6 +72,15 @@ void FontIconText::setFontName(const QString &familyName, const QString &styleNa
     }
 }
 
+/*************************************************************************
+ <Function>      paintEvent
+ <Description>   重写绘图事件
+ <Author>        null
+ <Input>
+    <param1>     event           Description:事件对象
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void FontIconText::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event)
@@ -78,6 +106,15 @@ void FontIconText::paintEvent(QPaintEvent *event)
 
 }
 
+/*************************************************************************
+ <Function>      setContent
+ <Description>   设置是否为ttf字体属性
+ <Author>
+ <Input>
+    <param1>     isTtf           Description:是否为ttf字体属性参数
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void FontIconText::setContent(bool isTtf)
 {
     m_isTtf = isTtf;

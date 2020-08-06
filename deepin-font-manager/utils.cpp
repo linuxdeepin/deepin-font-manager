@@ -41,15 +41,41 @@
 QHash<QString, QPixmap> Utils::m_imgCacheHash;
 QHash<QString, QString> Utils::m_fontNameCache;
 
+/*************************************************************************
+ <Function>      Utils
+ <Description>   构造函数-全文索引类
+ <Author>
+ <Input>
+    <param1>     parent          Description:父对象
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 Utils::Utils(QObject *parent)
     : QObject(parent)
 {
 }
 
+/*************************************************************************
+ <Function>      Utils
+ <Description>   析构函数
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 Utils::~Utils()
 {
 }
 
+/*************************************************************************
+ <Function>      getQssContent
+ <Description>   读取文件字符串内容
+ <Author>
+ <Input>
+    <param1>     filePath        Description:当前文件路径
+ <Return>        QString         Description:返回当前读取内容字符串
+ <Note>          null
+*************************************************************************/
 QString Utils::getQssContent(const QString &filePath)
 {
     QFile file(filePath);
@@ -62,6 +88,14 @@ QString Utils::getQssContent(const QString &filePath)
     return qss;
 }
 
+/*************************************************************************
+ <Function>      getConfigPath
+ <Description>   读取应用配置文件信息字符串
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 QString Utils::getConfigPath()
 {
     QDir dir(QDir(QStandardPaths::standardLocations(QStandardPaths::ConfigLocation).first())
@@ -70,6 +104,15 @@ QString Utils::getConfigPath()
     return dir.filePath(qApp->applicationName());
 }
 
+/*************************************************************************
+ <Function>      isFontMimeType
+ <Description>   判断当前是否为MIME类型的数据库
+ <Author>        null
+ <Input>
+    <param1>     filePath        Description:文件路径
+ <Return>        bool            Description:是否为MIME类型的数据库，true，是；false：否
+ <Note>          null
+*************************************************************************/
 bool Utils::isFontMimeType(const QString &filePath)
 {
     const QString mimeName = QMimeDatabase().mimeTypeForFile(filePath).name();
@@ -81,11 +124,29 @@ bool Utils::isFontMimeType(const QString &filePath)
     return false;
 }
 
+/*************************************************************************
+ <Function>      suffixList
+ <Description>   获取文件后缀类型
+ <Author>
+ <Input>         null
+ <Return>        QString            Description:文件后缀类型
+ <Note>          null
+*************************************************************************/
 QString Utils::suffixList()
 {
     return QString("Font Files (*.ttf *.ttc *.otf)");
 }
 
+/*************************************************************************
+ <Function>      renderSVG
+ <Description>   读取图像信息
+ <Author>
+ <Input>
+    <param1>     filePath        Description:文件路径
+    <param2>     size            Description:size大小
+ <Return>        QPixmap         Description:返回读取到的图像信息
+ <Note>          null
+*************************************************************************/
 QPixmap Utils::renderSVG(const QString &filePath, const QSize &size)
 {
     if (m_imgCacheHash.contains(filePath)) {
@@ -111,6 +172,15 @@ QPixmap Utils::renderSVG(const QString &filePath, const QSize &size)
     return pixmap;
 }
 
+/*************************************************************************
+ <Function>      loadFontFamilyFromFiles
+ <Description>   获取字体familyName信息
+ <Author>
+ <Input>
+    <param1>     fontFileName    Description:字体文件名
+ <Return>        QString         Description:字体familyName信息
+ <Note>          null
+*************************************************************************/
 QString Utils::loadFontFamilyFromFiles(const QString &fontFileName)
 {
     if (m_fontNameCache.contains(fontFileName)) {
@@ -136,6 +206,17 @@ QString Utils::loadFontFamilyFromFiles(const QString &fontFileName)
     return fontFamilyName;
 }
 
+/*************************************************************************
+ <Function>      holdTextInRect
+ <Description>   获取输入文本QTextLine信息
+ <Author>
+ <Input>
+    <param1>     font            Description:字体信息
+    <param2>     text            Description:文本参数
+    <param3>     size            Description:size参数
+ <Return>        QString         Description:文本QTextLine信息
+ <Note>          null
+*************************************************************************/
 const QString Utils::holdTextInRect(const QFont &font, QString text, const QSize &size)
 {
     QFontMetrics fm(font);
@@ -185,6 +266,16 @@ const QString Utils::holdTextInRect(const QFont &font, QString text, const QSize
     return lines.join("");
 }
 
+/*************************************************************************
+ <Function>      convertToPreviewString
+ <Description>   转换成预览文本信息
+ <Author>
+ <Input>
+    <param1>     fontFilePath    Description:字体路径
+    <param3>     srcString       Description:字符串参数
+ <Return>        QString         Description:预览文本信息
+ <Note>          null
+*************************************************************************/
 QString Utils::convertToPreviewString(QString fontFilePath, QString srcString)
 {
     if (fontFilePath.isEmpty()) {

@@ -13,7 +13,12 @@ class DFontMgrMainWindow;
 
 
 DWIDGET_USE_NAMESPACE
-
+/*************************************************************************
+ <Class>         DFontBaseDialog
+ <Description>   此类为字体删除确认页面，主要功能为确认删除字体和取消删除字体
+ <Author>
+ <Note>          null
+*************************************************************************/
 class DFDeleteDialog : public DFontBaseDialog
 {
     Q_OBJECT
@@ -24,25 +29,31 @@ public:
     static constexpr int DEFAULT_WINDOW_H = 160;
 
 public slots:
+    //适应系统字体变化
     void onFontChanged(const QFont &font);
 
 protected:
+    //响应键盘press事件中的esc按键
     void keyPressEvent(QKeyEvent *event) override;
 signals:
+    //发出删除请求信号
     void requestDelete();
-
     //是否执行删除操作信号
     void signal_delete(bool isdelete);
 
 private slots:
+    //根据主题设置页面颜色
     void setTheme();
-
 private:
+    //初始化字体删除待确认页面
     void initUI();
+    //初始化用于判断删除或取消操作的信号和槽的链接函数
     void initConnections();
-
+    //初始化页面提示信息标题
     void initMessageTitle();
+    //初始化页面提示信息内容
     void initMessageDetail();
+    //初始化页面按钮
     QLayout *initBottomButtons();
 
     DLabel *messageTitle;

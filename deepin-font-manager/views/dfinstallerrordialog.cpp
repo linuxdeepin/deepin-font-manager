@@ -21,18 +21,45 @@
 #define LISTVIEW_LEFT_SPACING 2
 
 DWIDGET_USE_NAMESPACE
-
+/*************************************************************************
+ <Function>      DFMSuggestButton
+ <Description>   内部类构造函数
+ <Author>
+ <Input>
+    <param1>     parent          Description:父对象
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 DFMSuggestButton::DFMSuggestButton(QWidget *parent)
     : QPushButton(parent)
 {
 
 }
 
+/*************************************************************************
+ <Function>      DFMSuggestButton
+ <Description>   内部类构造函数
+ <Author>
+ <Input>
+    <param1>     text            Description:构建文本信息
+    <param1>     parent          Description:父对象
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 DFMSuggestButton::DFMSuggestButton(const QString &text, QWidget *parent)
     : QPushButton(text, parent)
 {
 }
 
+/*************************************************************************
+ <Function>      paintEvent
+ <Description>   绘图事件-绘制页面颜色
+ <Author>
+ <Input>
+    <param1>     event           Description:事件对象
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFMSuggestButton::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event)
@@ -52,6 +79,18 @@ void DFMSuggestButton::paintEvent(QPaintEvent *event)
     p.drawControl(QStyle::CE_PushButton, option);
 }
 
+/*************************************************************************
+ <Function>      DFInstallErrorDialog
+ <Description>   构造函数-构造安装验证框页面
+ <Author>        null
+ <Input>
+    <param1>     parent                       Description:父对象
+    <param2>     errorInstallFontFileList     Description:安装时重复字体列表
+    <param3>     systemFontFileListPsname     Description:安装时系统字体Psname列表
+    <param4>     systemFontFileListFamilyname Description:安装时系统字体Familyname列表
+ <Return>        null                         Description:null
+ <Note>          null
+*************************************************************************/
 DFInstallErrorDialog::DFInstallErrorDialog(QWidget *parent, const QStringList &errorInstallFontFileList,
                                            const  QStringList &systemFontFileListPsname, const QStringList &systemFontFileListFamilyname)
     : DFontBaseDialog(parent)
@@ -70,6 +109,14 @@ DFInstallErrorDialog::DFInstallErrorDialog(QWidget *parent, const QStringList &e
 
 }
 
+/*************************************************************************
+ <Function>      ~DFInstallErrorDialog
+ <Description>   析构函数-析构字体验证框页面
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 DFInstallErrorDialog::~DFInstallErrorDialog()
 {
     qDebug() << __func__ << "start" << endl;
@@ -82,6 +129,14 @@ DFInstallErrorDialog::~DFInstallErrorDialog()
     qDebug() << __func__ << "end" << endl;
 }
 
+/*************************************************************************
+ <Function>      initData
+ <Description>   构造时初始化字体信息列表
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFInstallErrorDialog::initData()
 {
     DFontInfo fontInfo;
@@ -130,6 +185,14 @@ void DFInstallErrorDialog::initData()
 
 }
 
+/*************************************************************************
+ <Function>      initUI
+ <Description>   字体验证框主页面
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFInstallErrorDialog::initUI()
 {
     initMainFrame();
@@ -139,12 +202,29 @@ void DFInstallErrorDialog::initUI()
     connect(this, &DFInstallErrorDialog::closeBtnClicked, this, &DFInstallErrorDialog::onCancelInstall);
 }
 
+/*************************************************************************
+ <Function>      resizeEvent
+ <Description>   字体验证框大小重绘页面
+ <Author>
+ <Input>
+    <param1>     event           Description:事件对象
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFInstallErrorDialog::resizeEvent(QResizeEvent *event)
 {
     DFontBaseDialog::resizeEvent(event);
     m_mainFrame->resize(event->size().width(), event->size().height());
 }
 
+/*************************************************************************
+ <Function>      initMainFrame
+ <Description>   初始化字体验证框页面框架
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFInstallErrorDialog::initMainFrame()
 {
     this->setFixedSize(448, 302);
@@ -167,12 +247,28 @@ void DFInstallErrorDialog::initMainFrame()
 #endif
 }
 
+/*************************************************************************
+ <Function>      initTitleBar
+ <Description>   初始化标题栏信息
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFInstallErrorDialog::initTitleBar()
 {
     setIconPixmap(Utils::renderSVG("://exception-logo.svg", QSize(32, 32)));
     setTitle(DApplication::translate("ExceptionWindow", "Font Verification"));
 }
 
+/*************************************************************************
+ <Function>      getErrorFontCheckedCount
+ <Description>   获取已勾选继续安装项个数
+ <Author>
+ <Input>         null
+ <Return>        int             Description:选中项个数
+ <Note>          null
+*************************************************************************/
 int DFInstallErrorDialog::getErrorFontCheckedCount()
 {
     int checkedCount = 0;
@@ -188,6 +284,15 @@ int DFInstallErrorDialog::getErrorFontCheckedCount()
     return checkedCount;
 }
 
+/*************************************************************************
+ <Function>      isSystemFont
+ <Description>   判断当前字体是否为系统字体
+ <Author>
+ <Input>
+    <param1>     f               Description:当前字体信息
+ <Return>        bool            Description:是否为系统字体，true：系统字体；false：非系统字体
+ <Note>          null
+*************************************************************************/
 bool DFInstallErrorDialog::isSystemFont(DFontInfo &f)
 {
     QString fontFullPsname;
@@ -211,6 +316,14 @@ bool DFInstallErrorDialog::isSystemFont(DFontInfo &f)
     }
 }
 
+/*************************************************************************
+ <Function>      initInstallErrorFontViews
+ <Description>   初始化字体验证列表视图布局
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFInstallErrorDialog::initInstallErrorFontViews()
 {
     //contentFrame = new QWidget(this);
@@ -302,6 +415,14 @@ void DFInstallErrorDialog::initInstallErrorFontViews()
 #endif
 }
 
+/*************************************************************************
+ <Function>      resetContinueInstallBtnStatus
+ <Description>   刷新继续按钮的状态-选中数量大于1时，继续按钮可用
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFInstallErrorDialog::resetContinueInstallBtnStatus()
 {
 
@@ -324,6 +445,15 @@ void DFInstallErrorDialog::resetContinueInstallBtnStatus()
 
 }
 
+/*************************************************************************
+ <Function>      keyPressEvent
+ <Description>   重写键盘press事件
+ <Author>
+ <Input>
+    <param1>     event           Description:事件对象
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFInstallErrorDialog::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Escape) {
@@ -341,13 +471,30 @@ void DFInstallErrorDialog::keyPressEvent(QKeyEvent *event)
     QWidget::keyPressEvent(event);
 }
 
+/*************************************************************************
+ <Function>      closeEvent
+ <Description>   重写关闭事件-发送取消继续安装信号
+ <Author>
+ <Input>
+    <param1>     event           Description:事件对象
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFInstallErrorDialog::closeEvent(QCloseEvent *event)
 {
     Q_UNUSED(event)
     emit onCancelInstall();
 }
 
-
+/*************************************************************************
+ <Function>      onListItemClicked
+ <Description>   勾选按钮点击或回车选中事件
+ <Author>
+ <Input>
+    <param1>     index           Description:当前选中项
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFInstallErrorDialog::onListItemClicked(QModelIndex index)
 {
     DFInstallErrorItemModel itemModel =
@@ -476,6 +623,15 @@ void DFInstallErrorDialog::addData(QStringList &errorFileList, QStringList &half
 
 }
 
+/*************************************************************************
+ <Function>      onControlButtonClicked
+ <Description>   按钮点击事件
+ <Author>
+ <Input>
+    <param1>     btnIndex        Description:按钮索引
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFInstallErrorDialog::onControlButtonClicked(int btnIndex)
 {
     if (0 == btnIndex) {

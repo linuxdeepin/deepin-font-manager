@@ -16,13 +16,32 @@
 #define FTM_ERROR_ITEM_FONTNAME_LEFT    39
 
 DWIDGET_USE_NAMESPACE
-
+/*************************************************************************
+ <Function>      DFInstallErrorListDelegate
+ <Description>   代理用于绘制字体验证框中的字体列表页面
+ <Author>
+ <Input>
+    <param1>     parent          Description:父对象
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 DFInstallErrorListDelegate::DFInstallErrorListDelegate(QAbstractItemView *parent)
     : DStyledItemDelegate(parent)
     , m_parentView(qobject_cast<DFInstallErrorListView *>(parent))
 {
 }
 
+/*************************************************************************
+ <Function>      drawCheckBox
+ <Description>   代理绘制勾选按钮函数
+ <Author>
+ <Input>
+    <param1>     painter         Description:画家对象
+    <param2>     itemModel       Description:需要绘制的ItemModel对象
+    <param3>     bgRect          Description:绘制区域
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFInstallErrorListDelegate::drawCheckBox(QPainter *painter, DFInstallErrorItemModel itemModel, QRect bgRect) const
 {
     QStyleOptionButton checkBoxOption;
@@ -45,6 +64,16 @@ void DFInstallErrorListDelegate::drawCheckBox(QPainter *painter, DFInstallErrorI
                                          &checkBox);
 }
 
+/*************************************************************************
+ <Function>      drawCheckBoxIcon
+ <Description>   代理绘制勾选按钮图标函数
+ <Author>
+ <Input>
+    <param1>     painter         Description:画家对象
+    <param3>     bgRect          Description:绘制区域
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFInstallErrorListDelegate::drawCheckBoxIcon(QPainter *painter, QRect bgRect) const
 {
     int checkBoxSize = 20;
@@ -60,6 +89,19 @@ void DFInstallErrorListDelegate::drawCheckBoxIcon(QPainter *painter, QRect bgRec
     }
 }
 
+/*************************************************************************
+ <Function>      drawFontName
+ <Description>   代理绘制字体名
+ <Author>
+ <Input>
+    <param1>     painter         Description:画家对象
+    <param1>     option          Description:QStyleOptionViewItem对象
+    <param1>     itemModel       Description:需要绘制的ItemModel对象
+    <param3>     bgRect          Description:绘制区域
+    <param3>     bSelectable     Description:是否可勾选
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFInstallErrorListDelegate::drawFontName(QPainter *painter, const QStyleOptionViewItem &option,
                                               DFInstallErrorItemModel itemModel, QRect bgRect, bool bSelectable) const
 {
@@ -118,6 +160,19 @@ void DFInstallErrorListDelegate::drawFontName(QPainter *painter, const QStyleOpt
     }
 }
 
+/*************************************************************************
+ <Function>      drawFontStyle
+ <Description>   代理绘制字体样式
+ <Author>
+ <Input>
+    <param1>     painter         Description:画家对象
+    <param1>     option          Description:QStyleOptionViewItem对象
+    <param1>     itemModel       Description:需要绘制的ItemModel对象
+    <param3>     bgRect          Description:绘制区域
+    <param3>     bSelectable     Description:是否可勾选
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFInstallErrorListDelegate::drawFontStyle(QPainter *painter, const QStyleOptionViewItem &option,
                                                DFInstallErrorItemModel itemModel, QRect bgRect, bool bSelectable) const
 {
@@ -165,6 +220,17 @@ void DFInstallErrorListDelegate::drawFontStyle(QPainter *painter, const QStyleOp
     QFont::cleanup();
 }
 
+/*************************************************************************
+ <Function>      drawSelectStatus
+ <Description>   代理绘制勾选状态
+ <Author>
+ <Input>
+    <param1>     painter         Description:画家对象
+    <param1>     option          Description:QStyleOptionViewItem对象
+    <param3>     bgRect          Description:绘制区域
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFInstallErrorListDelegate::drawSelectStatus(QPainter *painter, const QStyleOptionViewItem &option, QRect bgRect) const
 {
     QPainterPath path;
@@ -187,6 +253,17 @@ void DFInstallErrorListDelegate::drawSelectStatus(QPainter *painter, const QStyl
     }
 }
 
+/*************************************************************************
+ <Function>      paintTabFocusBackground
+ <Description>   代理绘制tab聚焦状态背景颜色
+ <Author>
+ <Input>
+    <param1>     painter         Description:画家对象
+    <param1>     option          Description:QStyleOptionViewItem对象
+    <param3>     bgRect          Description:绘制区域
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFInstallErrorListDelegate::paintTabFocusBackground(QPainter *painter, const QStyleOptionViewItem &option, const QRect &bgRect) const
 {
     painter->setRenderHint(QPainter::Antialiasing, true);
@@ -228,6 +305,17 @@ void DFInstallErrorListDelegate::paintTabFocusBackground(QPainter *painter, cons
     painter->fillPath(path3, painter->brush());
 }
 
+/*************************************************************************
+ <Function>      lengthAutoFeed
+ <Description>   listview中字体名长度自适应处理
+ <Author>        null
+ <Input>
+    <param1>     painter         Description:画家对象
+    <param2>     sourceStr       Description:字体名字符串
+    <param3>     m_StatusWidth   Description:名称区域宽度
+ <Return>        QString         Description:处理过的字符串
+ <Note>          null
+*************************************************************************/
 QString DFInstallErrorListDelegate::lengthAutoFeed(QPainter *painter, QString sourceStr, int m_StatusWidth) const
 {
     //ut000442 listview中字体名长度自适应处理
@@ -285,7 +373,17 @@ void DFInstallErrorListDelegate::setPaintPath(const QRect &bgRect, QPainterPath 
     path.arcTo(QRect(QPoint(path_bottomRight - QPoint(radius * 2, radius * 2)), QSize(radius * 2, radius * 2)), 270, 90);
 }
 
-//用于去除选中项的边框
+/*************************************************************************
+ <Function>      paint
+ <Description>   代理绘制字体列表入口
+ <Author>
+ <Input>
+    <param1>     painter         Description:画家对象
+    <param1>     option          Description:QStyleOptionViewItem对象
+    <param1>     index           Description:当前绘制对象
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFInstallErrorListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
                                        const QModelIndex &index) const
 {
@@ -329,6 +427,16 @@ void DFInstallErrorListDelegate::paint(QPainter *painter, const QStyleOptionView
     QFont::cleanup();
 }
 
+/*************************************************************************
+ <Function>      sizeHint
+ <Description>   获得当前QModelIndex对象size
+ <Author>
+ <Input>
+    <param1>     option          Description:画家对象
+    <param2>     index           Description:当前绘制对象
+ <Return>        QSize           Description:返回QModelIndex对象size
+ <Note>          null
+*************************************************************************/
 QSize DFInstallErrorListDelegate::sizeHint(const QStyleOptionViewItem &option,
                                            const QModelIndex &index) const
 {
@@ -337,7 +445,16 @@ QSize DFInstallErrorListDelegate::sizeHint(const QStyleOptionViewItem &option,
     return QSize(option.rect.width(), 48);
 }
 
-//DFInstallErrorListView
+/*************************************************************************
+ <Function>      DFInstallErrorListView
+ <Description>   构造函数-构造字体列表视图实例对象
+ <Author>
+ <Input>
+    <param1>     installErrorFontModelList Description:异常字体列表信息
+    <param2>     parent                    Description:父对象
+ <Return>        null                      Description:null
+ <Note>          null
+*************************************************************************/
 DFInstallErrorListView::DFInstallErrorListView(const QList<DFInstallErrorItemModel> &installErrorFontModelList,
                                                QWidget *parent)
     : DListView(parent)
@@ -357,6 +474,14 @@ DFInstallErrorListView::DFInstallErrorListView(const QList<DFInstallErrorItemMod
     installEventFilter(this);
 }
 
+/*************************************************************************
+ <Function>      ~DFInstallErrorListView
+ <Description>   析构函数-析构字体列表视图实例对象
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 DFInstallErrorListView::~DFInstallErrorListView()
 {
     initModel(false);
@@ -364,6 +489,14 @@ DFInstallErrorListView::~DFInstallErrorListView()
 
 }
 
+/*************************************************************************
+ <Function>      initErrorListData
+ <Description>   初始化异常字体列表信息
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFInstallErrorListView::initErrorListData()
 {
     initModel();
@@ -393,12 +526,29 @@ void DFInstallErrorListView::initErrorListData()
 //    }
 }
 
+/*************************************************************************
+ <Function>      initDelegate
+ <Description>   初始化绘图代理-实例化代理对象
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFInstallErrorListView::initDelegate()
 {
     m_errorListItemDelegate = new DFInstallErrorListDelegate(this);
     this->setItemDelegate(m_errorListItemDelegate);
 }
 
+/*************************************************************************
+ <Function>      addErrorListData
+ <Description>   新增异常字体信息至列表
+ <Author>
+ <Input>
+    <param1>     installErrorFontModelList Description:新增的异常字体列表信息
+ <Return>        null                      Description:null
+ <Note>          null
+*************************************************************************/
 void DFInstallErrorListView::addErrorListData(const QList<DFInstallErrorItemModel> &installErrorFontModelList)
 {
     initModel();
@@ -435,7 +585,17 @@ void DFInstallErrorListView::addErrorListData(const QList<DFInstallErrorItemMode
     this->setModel(m_errorListSourceModel);
 }
 
-//字体验证框中的滚动
+/*************************************************************************
+ <Function>      checkScrollToIndex
+ <Description>   检查是否需要滚动至指定QModelIndex
+ <Author>
+ <Input>
+    <param1>     addHalfInstalledFiles Description:中途新增异常字体列表信息
+    <param2>     oldHalfInstalledFiles Description:初始化时异常字体列表信息
+    <param3>     errorFileList         Description:异常字体列表信息
+ <Return>        null                  Description:null
+ <Note>          null
+*************************************************************************/
 void DFInstallErrorListView::checkScrollToIndex(QStringList &addHalfInstalledFiles, QStringList &oldHalfInstalledFiles, QStringList &errorFileList)
 {
     if (addHalfInstalledFiles.count() > 0) {
@@ -450,6 +610,15 @@ void DFInstallErrorListView::checkScrollToIndex(QStringList &addHalfInstalledFil
     }
 }
 
+/*************************************************************************
+ <Function>      scrollToIndex
+ <Description>   滚动至指定QModelIndex
+ <Author>
+ <Input>
+    <param1>     filePath        Description:文件路径参数
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFInstallErrorListView::scrollToIndex(QString &filePath)
 {
     DFontInfo fontinfo = m_fontInfoManager->getFontInfo(filePath);
@@ -478,7 +647,16 @@ void DFInstallErrorListView::scrollToIndex(QString &filePath)
     }
 }
 
-//设置选中效果
+/*************************************************************************
+ <Function>      setSelectStatus
+ <Description>   设置选中状态
+ <Author>
+ <Input>
+    <param1>     HalfInstalledFiles Description:中途新增异常字体列表
+    <param2>     beforeSelectFiles  Description:初始化时异常字体列表
+ <Return>        null               Description:null
+ <Note>          null
+*************************************************************************/
 void DFInstallErrorListView::setSelectStatus(QStringList &HalfInstalledFiles, QModelIndexList &beforeSelectFiles)
 {
     QStringList str;
@@ -532,11 +710,31 @@ void DFInstallErrorListView::setSelectStatus(QStringList &HalfInstalledFiles, QM
     }
 }
 
+/*************************************************************************
+ <Function>      updateErrorFontModelList
+ <Description>   更新DFInstallErrorItemModel信息
+ <Author>
+ <Input>
+    <param1>     m_currentItemModel Description:当前需要更新的ItemModel
+    <param2>     index              Description:当前需要更新的位置索引
+    <param3>     null            Description:
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFInstallErrorListView::updateErrorFontModelList(int index, DFInstallErrorItemModel m_currentItemModel)
 {
     m_installErrorFontModelList.replace(index, m_currentItemModel);
 }
 
+/*************************************************************************
+ <Function>      initModel
+ <Description>   初始化ItemModel对象
+ <Author>
+ <Input>
+    <param1>     newOne          Description:是否新建
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFInstallErrorListView::initModel(bool newOne)
 {
     if (m_errorListSourceModel != nullptr) {
@@ -556,26 +754,68 @@ void DFInstallErrorListView::initModel(bool newOne)
         m_errorListSourceModel = new QStandardItemModel();
 }
 
+/*************************************************************************
+ <Function>      getErrorListSourceModel
+ <Description>   获取当前QStandardItemModel实例对象
+ <Author>
+ <Input>         null
+ <Return>        m_errorListSourceModel Description:当前QStandardItemModel实例对象
+ <Note>          null
+*************************************************************************/
 QStandardItemModel *DFInstallErrorListView::getErrorListSourceModel()
 {
     return m_errorListSourceModel;
 }
 
+/*************************************************************************
+ <Function>      getIsTabFocus
+ <Description>   获取当前是否为tab聚焦状态
+ <Author>
+ <Input>         null
+ <Return>        m_IsTabFocus Description:是否为tab聚焦状态标志位
+ <Note>          null
+*************************************************************************/
 bool DFInstallErrorListView::getIsTabFocus() const
 {
     return m_IsTabFocus;
 }
 
+/*************************************************************************
+ <Function>      setIsInstallFocus
+ <Description>   更新tab聚焦状态
+ <Author>
+ <Input>
+    <param1>     isInstallFocus  Description:用于设置tab聚焦标志位的参数
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFInstallErrorListView::setIsInstallFocus(bool isInstallFocus)
 {
     m_isInstallFocus = isInstallFocus;
 }
 
+/*************************************************************************
+ <Function>      getIsInstallFocus
+ <Description>   查看是否为列表新增获取的tab聚焦
+ <Author>
+ <Input>         null
+ <Return>        m_isInstallFocus Description:是否为列表新增获取的tab聚焦
+ <Note>          null
+*************************************************************************/
 bool DFInstallErrorListView::getIsInstallFocus() const
 {
     return m_isInstallFocus;
 }
 
+/*************************************************************************
+ <Function>      mousePressEvent
+ <Description>   重写鼠标press事件
+ <Author>
+ <Input>
+    <param1>     event           Description:事件对象
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFInstallErrorListView::mousePressEvent(QMouseEvent *event)
 {
     m_isMouseClicked = true;
@@ -588,8 +828,16 @@ void DFInstallErrorListView::mousePressEvent(QMouseEvent *event)
     DListView::mousePressEvent(event);
 }
 
-
-
+/*************************************************************************
+ <Function>      setSelection
+ <Description>   重写设置选中函数
+ <Author>
+ <Input>
+    <param1>     rect            Description:选中区域
+    <param2>     command         Description:选中命令参数
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFInstallErrorListView::setSelection(const QRect &rect, QItemSelectionModel::SelectionFlags command)
 {
     DListView::setSelection(rect, command);
@@ -609,7 +857,15 @@ void DFInstallErrorListView::setSelection(const QRect &rect, QItemSelectionModel
     }
 }
 
-
+/*************************************************************************
+ <Function>      selectNextIndex
+ <Description>   判断下个选中
+ <Author>
+ <Input>
+    <param1>     nextIndex       Description:下个选中项索引
+ <Return>        bool            Description:返回下个选中结果
+ <Note>          null
+*************************************************************************/
 bool DFInstallErrorListView::selectNextIndex(int nextIndex)
 {
     if (nextIndex == currentIndex().row() && selectedIndexes().count() != 0)//循环到当前选中时，结束
@@ -629,7 +885,15 @@ bool DFInstallErrorListView::selectNextIndex(int nextIndex)
 //    return false;
 }
 
-//SP3--安装验证页面，listview上下键自动跳过异常字体
+/*************************************************************************
+ <Function>      keyPressEvent
+ <Description>   重写键盘press事件-安装验证页面，listview上下键自动跳过异常字体
+ <Author>
+ <Input>
+    <param1>     event           Description:事件对象
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFInstallErrorListView::keyPressEvent(QKeyEvent *event)
 {
 
@@ -720,6 +984,16 @@ void DFInstallErrorListView::sortModelIndexList(QModelIndexList &sourceList)
     }
 }
 
+/*************************************************************************
+ <Function>      eventFilter
+ <Description>   重写事件过滤器
+ <Author>
+ <Input>
+    <param1>     obj             Description:事件接收对象
+    <param2>     event           Description:事件对象
+ <Return>        bool            Description:返回事件处理结果,true：已处理；false：未处理
+ <Note>          null
+*************************************************************************/
 bool DFInstallErrorListView::eventFilter(QObject *obj, QEvent *event)
 {
     Q_UNUSED(obj)
