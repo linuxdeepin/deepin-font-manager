@@ -37,7 +37,7 @@ DFontPreviewItemDelegate::DFontPreviewItemDelegate(QAbstractItemView *parent)
     parent->viewport()->installEventFilter(this);
 }
 
-void DFontPreviewItemDelegate::paintForegroundCheckBox(QPainter *painter, const QStyleOptionViewItem &option, const DFontPreviewItemData &itemData) const
+void DFontPreviewItemDelegate::paintForegroundCheckBox(QPainter *painter, const QStyleOptionViewItem &option, const FontData &itemData) const
 {
     int checkBoxWidth = CHECKBOX_SIZE - 4;
     int checkBoxHeight = CHECKBOX_SIZE - 4;
@@ -46,14 +46,14 @@ void DFontPreviewItemDelegate::paintForegroundCheckBox(QPainter *painter, const 
 
     QStyleOptionButton checkBoxOption;
     checkBoxOption.state |= QStyle::State_Enabled;
-    checkBoxOption.state |= itemData.isEnabled ? QStyle::State_On : QStyle::State_Off;
+    checkBoxOption.state |= itemData.isEnabled() ? QStyle::State_On : QStyle::State_Off;
     checkBoxOption.rect = rect;
 
     DCheckBox checkBox;
     DApplication::style()->drawPrimitive(QStyle::PE_IndicatorCheckBox, &checkBoxOption, painter, &checkBox);
 }
 
-void DFontPreviewItemDelegate::paintForegroundFontName(QPainter *painter, const QStyleOptionViewItem &option, const DFontPreviewItemData &itemData) const
+void DFontPreviewItemDelegate::paintForegroundFontName(QPainter *painter, const QStyleOptionViewItem &option, const FontData &itemData) const
 {
     QFont nameFont = painter->font();
     nameFont.setPixelSize(DFontSizeManager::instance()->fontPixelSize(DFontSizeManager::T6));
@@ -63,7 +63,7 @@ void DFontPreviewItemDelegate::paintForegroundFontName(QPainter *painter, const 
     DPalette pa = DApplicationHelper::instance()->palette(m_parentView);
     QColor fillColor = styleHelper.getColor(static_cast<const QStyleOption *>(&option), pa, DPalette::TextTips);
     //SP3--禁用置灰(539)
-    if (!itemData.isEnabled) {
+    if (!itemData.isEnabled()) {
         fillColor.setAlphaF(0.6);
     }
     painter->setPen(QPen(fillColor));
@@ -76,7 +76,7 @@ void DFontPreviewItemDelegate::paintForegroundFontName(QPainter *painter, const 
     painter->drawText(fontNameRect, Qt::AlignLeft | Qt::AlignVCenter, elidedText);
 }
 
-void DFontPreviewItemDelegate::paintForegroundCollectIcon(QPainter *painter, const QStyleOptionViewItem &option, FontData &itemData) const
+void DFontPreviewItemDelegate::paintForegroundCollectIcon(QPainter *painter, const QStyleOptionViewItem &option, const FontData &itemData) const
 {
     DGuiApplicationHelper *appHelper = DGuiApplicationHelper::instance();
     QString strImgPrefix = (DGuiApplicationHelper::DarkType == appHelper->themeType()) ? QString("dark_") : QString("");
@@ -139,66 +139,11 @@ QPoint DFontPreviewItemDelegate::adjustPreviewFontBaseLinePoint(const QRect &fon
     return QPoint(baseLineX, baseLineY);
 }
 
-QFont DFontPreviewItemDelegate::adjustPreviewFont(const int appFontId, const QString &fontFamilyName, const QString &fontStyleName, const int &fontSize) const
-{
-    QString familyName = QFontDatabase::applicationFontFamilies(appFontId).isEmpty() ? fontFamilyName : QFontDatabase::applicationFontFamilies(appFontId).first();
-    QFont font;
-    font.setFamily(familyName);
-    font.setStyleName(fontStyleName);
-    font.setPixelSize(fontSize);
-//    font.setItalic(fontStyleName.contains("Italic"));
-    //设置字体 ut000794
-//    setfont(font, fontStyleName);
-    return font;
-}
-
-void DFontPreviewItemDelegate::setfont(QFont &font, QString fontStyleName) const
-{
-    if (fontStyleName.contains("Regular")) {
-        font.setWeight(QFont::Normal);
-    } else if (fontStyleName.contains("Bold")) {
-        font.setWeight(QFont::Bold);
-    } else if (fontStyleName.contains("Light")) {
-        font.setWeight(QFont::Light);
-    } else if (fontStyleName.contains("Thin")) {
-        font.setWeight(QFont::Thin);
-    } else if (fontStyleName.contains("ExtraLight")) {
-        font.setWeight(QFont::ExtraLight);
-    } else if (fontStyleName.contains("ExtraBold")) {
-        font.setWeight(QFont::ExtraBold);
-    } else if (fontStyleName.contains("Medium")) {
-        font.setWeight(QFont::Medium);
-    } else if (fontStyleName.contains("DemiBold")) {
-        font.setWeight(QFont::DemiBold);
-    } else if (fontStyleName.contains("Black")) {
-        font.setWeight(QFont::Black);
-    } else if (fontStyleName.contains("AnyStretch")) {
-        font.setStretch(QFont::AnyStretch);
-    } else if (fontStyleName.contains("UltraCondensed")) {
-        font.setStretch(QFont::UltraCondensed);
-    } else if (fontStyleName.contains("ExtraCondensed")) {
-        font.setStretch(QFont::ExtraCondensed);
-    } else if (fontStyleName.contains("Condensed")) {
-        font.setStretch(QFont::Condensed);
-    } else if (fontStyleName.contains("SemiCondensed")) {
-        font.setStretch(QFont::SemiCondensed);
-    } else if (fontStyleName.contains("Unstretched")) {
-        font.setStretch(QFont::Unstretched);
-    } else if (fontStyleName.contains("SemiExpanded")) {
-        font.setStretch(QFont::SemiExpanded);
-    } else if (fontStyleName.contains("Expanded")) {
-        font.setStretch(QFont::Expanded);
-    } else if (fontStyleName.contains("ExtraExpanded")) {
-        font.setStretch(QFont::ExtraExpanded);
-    } else if (fontStyleName.contains("UltraExpanded")) {
-        font.setStretch(QFont::UltraExpanded);
-    }
-
-}
-
 void DFontPreviewItemDelegate::paintForegroundPreviewFont(QPainter *painter, const QStyleOptionViewItem &option, const DFontPreviewItemData &itemData, int fontPixelSize, QString &fontPreviewText) const
 {
-    QFont previewFont = adjustPreviewFont(itemData.appFontId, itemData.fontInfo.familyName, itemData.fontInfo.styleName, fontPixelSize);
+    QFont previewFont;
+    previewFont.setFamily(itemData.fontInfo.familyName);
+    previewFont.setStyleName(itemData.fontInfo.styleName);
     previewFont.setPixelSize(fontPixelSize);
     painter->setFont(previewFont);
 
@@ -209,7 +154,7 @@ void DFontPreviewItemDelegate::paintForegroundPreviewFont(QPainter *painter, con
 //    painter->setPen(QPen(option.palette.color(DPalette::Text)));
     //SP3--禁用置灰(539)
     QColor color(option.palette.color(DPalette::Text));
-    if (!itemData.isEnabled)
+    if (!itemData.fontData.isEnabled())
         color.setAlphaF(0.6);
     painter->setPen(QPen(color));
 
@@ -335,7 +280,7 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
         painter->setRenderHint(QPainter::TextAntialiasing, true);
 
         FontData fontData = index.data(Qt::DisplayRole).value<FontData>();
-        DFontPreviewItemData itemData = m_parentView->getFontData(fontData.strFontName);
+        DFontPreviewItemData itemData = m_parentView->getFontData(fontData);
         if (itemData.fontInfo.filePath.isEmpty())
             return;
         int fontPixelSize = (index.data(FontSizeRole).isNull()) ? FTM_DEFAULT_PREVIEW_FONTSIZE : index.data(FontSizeRole).toInt();
@@ -352,14 +297,14 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
         }
 
         QString fontPreviewContent = index.data(FontPreviewRole).toString().isEmpty() ? fontPreview : index.data(FontPreviewRole).toString();
-        if ((fontPreviewContent.isEmpty() || 0 == fontPixelSize) && itemData.strFontName.isEmpty()) {
+        if ((fontPreviewContent.isEmpty() || 0 == fontPixelSize) && itemData.fontData.strFontName.isEmpty()) {
             painter->restore();
             return;
         }
 
         paintBackground(painter, option, index);
-        paintForegroundCheckBox(painter, option, itemData);
-        paintForegroundFontName(painter, option, itemData);
+        paintForegroundCheckBox(painter, option, fontData);
+        paintForegroundFontName(painter, option, fontData);
         paintForegroundCollectIcon(painter, option, fontData);
         paintForegroundPreviewFont(painter, option, itemData, fontPixelSize, fontPreviewContent);
         painter->restore();

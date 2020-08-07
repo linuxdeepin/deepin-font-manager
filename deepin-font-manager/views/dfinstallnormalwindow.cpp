@@ -205,7 +205,7 @@ void DFInstallNormalWindow::getAllSysfiles()
     QList<DFontPreviewItemData> allFontInfo = DFontPreviewListDataThread::instance()->getFontModelList();
     if (allFontInfo.isEmpty())
         allFontInfo = DFMDBManager::instance()->getAllFontInfo();
-    for (auto font : allFontInfo) {
+    for (auto &font : allFontInfo) {
         if (Q_UNLIKELY(font.fontInfo.filePath.contains("/usr/share/"))) {
             QString systemFilePsname;
             if (Q_UNLIKELY(!font.fontInfo.psname.compare(""))) {
@@ -504,7 +504,7 @@ void DFInstallNormalWindow::batchInstall()
     QStringList installListWithFamliyName;
     foreach (auto it, installList) {
         DFontInfo fontInfo = m_fontInfoManager->getFontInfo(it);
-        QString familyName = fontInfo.familyName;
+        QString familyName = (fontInfo.familyName.isEmpty() || fontInfo.familyName.contains(QChar('?'))) ? fontInfo.fullname : fontInfo.familyName;
         installListWithFamliyName.append(it + "|" + familyName);
 
 //        qDebug() << " Prepare install file: " << it + "|" + familyName;
@@ -581,7 +581,7 @@ void DFInstallNormalWindow::batchReInstall(QStringList reinstallFiles)
     QStringList installListWithFamliyName;
     foreach (auto it, installList) {
         DFontInfo fontInfo = m_fontInfoManager->getFontInfo(it);
-        QString familyName = fontInfo.familyName;
+        QString familyName = (fontInfo.familyName.isEmpty() || fontInfo.familyName.contains(QChar('?'))) ? fontInfo.fullname : fontInfo.familyName;
         installListWithFamliyName.append(it + "|" + familyName);
 
 //        qDebug() << " Prepare install file: " << it + m_loadingSpinner"|" + familyName;
@@ -617,7 +617,7 @@ void DFInstallNormalWindow::batchHalfwayInstall(const QStringList &filelist)
     QStringList installListWithFamliyName;
     foreach (auto it, m_newInstallFiles) {
         DFontInfo fontInfo = m_fontInfoManager->getFontInfo(it);
-        QString familyName = fontInfo.familyName;
+        QString familyName = (fontInfo.familyName.isEmpty() || fontInfo.familyName.contains(QChar('?'))) ? fontInfo.fullname : fontInfo.familyName;
         installListWithFamliyName.append(it + "|" + familyName);
         //        qDebug() << " Prepare install file: " << it + "|" + familyName;
     }
@@ -646,7 +646,7 @@ void DFInstallNormalWindow::batchReInstallContinue()
     QStringList installListWithFamliyName;
     foreach (auto it, m_installFiles) {
         DFontInfo fontInfo = m_fontInfoManager->getFontInfo(it);
-        QString familyName = fontInfo.familyName;
+        QString familyName = (fontInfo.familyName.isEmpty() || fontInfo.familyName.contains(QChar('?'))) ? fontInfo.fullname : fontInfo.familyName;
         installListWithFamliyName.append(it + "|" + familyName);
 
 //        qDebug() << " Prepare install file: " << it + "|" + familyName;

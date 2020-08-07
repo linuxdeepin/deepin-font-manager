@@ -30,21 +30,17 @@ protected:
 
 private:
     QRect adjustPreviewRect(const QRect bgRect) const;
-    QFont adjustPreviewFont(const int appFontId, const QString &fontFamilyName, const QString &fontStyleName, const int &fontSize) const;
     QPoint adjustPreviewFontBaseLinePoint(const QRect &fontPreviewRect, const QFontMetrics &previewFontMetrics) const;
 
-    void paintForegroundCheckBox(QPainter *painter, const QStyleOptionViewItem &option, const DFontPreviewItemData &itemData) const;
-    void paintForegroundFontName(QPainter *painter, const QStyleOptionViewItem &option, const DFontPreviewItemData &itemData) const;
-    void paintForegroundCollectIcon(QPainter *painter, const QStyleOptionViewItem &option, FontData &itemData) const;
+    void paintForegroundCheckBox(QPainter *painter, const QStyleOptionViewItem &option, const FontData &itemData) const;
+    void paintForegroundFontName(QPainter *painter, const QStyleOptionViewItem &option, const FontData &itemData) const;
+    void paintForegroundCollectIcon(QPainter *painter, const QStyleOptionViewItem &option, const FontData &itemData) const;
     void paintForegroundPreviewFont(QPainter *painter, const QStyleOptionViewItem &option, const DFontPreviewItemData &data, int fontPixelSize, QString &fontPreviewText) const;
     void paintBackground(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
     void paintTabFocusBackground(QPainter *painter, const QStyleOptionViewItem &option, const QRect &bgRect)const;
 
     //获取需要绘制区域的路径
     void setPaintPath(const QRect &bgRect, QPainterPath &path, const int xDifference, const int yDifference, const int radius)const;
-
-    //设置字体 UT000794
-    void setfont(QFont &font, QString fontStyleName) const;
 
     DFontPreviewListView *m_parentView;
     DFontPreviewItemData m_fontData;

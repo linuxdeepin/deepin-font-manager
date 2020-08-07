@@ -188,7 +188,14 @@ QStringList DFontInfoManager::getAllFontPath(bool isStartup) const
         }
     }
 
-    qDebug() << __FUNCTION__ << pathList.size();
+    //用户字体文件
+    QStringList usrfilelist = getFileNames(FONT_USR_DIR);
+    foreach (QString str, usrfilelist) {
+        if (!pathList.contains(str)) {
+            pathList << str;
+        }
+    }
+
     return pathList;
 }
 
@@ -291,21 +298,16 @@ QString DFontInfoManager::getFontType(const QString &filePath)
     const QString suffix = fileInfo.suffix().toLower();
 
     if (suffix == "ttf" || suffix == "ttc") {
-        return "TrueType";
+        return FONT_TTF;
     } else if (suffix == "otf") {
-        return "OpenType";
+        return FONT_OTF;
     } else {
-        return "Unknown";
+        return FONT_UNKNOWN;
     }
 }
 
 DFontInfo DFontInfoManager::getFontInfo(const QString &filePath)
 {
-//    if (!force && m_fontInfoMap.contains(filePath)) {
-//        return m_fontInfoMap.value(filePath);
-//    } else if (!force) {
-//        qDebug() << __FUNCTION__ << " not found " << filePath;
-//    }
     FT_Library m_library = nullptr;
     FT_Face m_face = nullptr;
 
@@ -333,20 +335,6 @@ DFontInfo DFontInfoManager::getFontInfo(const QString &filePath)
     fontInfo.isError = false;
     fontInfo.filePath = filePath;
 
-//    int appFontId = QFontDatabase::addApplicationFont(filePath);
-//    QStringList fontFamilyList = QFontDatabase::applicationFontFamilies(appFontId);
-//    if (fontFamilyList.size() > 0) {
-//        QString fontFamily = QString(fontFamilyList.first().toLocal8Bit());
-//        fontInfo.familyName = fontFamily;
-//    }
-
-//    if (fontInfo.familyName.trimmed().length() < 1) {
-//        fontInfo.familyName = QString::fromUtf8(DFreeTypeUtil::getFontFamilyName(m_face));
-//    }
-//    if (fontInfo.familyName.trimmed().length() < 1) {
-//        fontInfo.familyName = QString::fromLatin1(m_face->family_name);
-//    }
-
     fontInfo.styleName = QString::fromLatin1(m_face->style_name);
 
     fontInfo.type = getFontType(filePath);
@@ -364,12 +352,6 @@ DFontInfo DFontInfoManager::getFontInfo(const QString &filePath)
             if (sname.language_id == 0) {
                 continue;
             }
-
-            // QString content;
-            // for (int i = 0; i != sname.string_len; ++i) {
-            //     char ch = static_cast<char>(sname.string[i]);
-            //     content.append(ch);
-            // }
 
             switch (sname.name_id) {
             case TT_NAME_ID_COPYRIGHT:
@@ -403,12 +385,7 @@ DFontInfo DFontInfoManager::getFontInfo(const QString &filePath)
         }
     }
 
-    if (!fontInfo.fullname.isEmpty())
-        fontInfo.familyName = fontInfo.fullname.replace(QRegExp(QString(" " + fontInfo.styleName + "$")), "");
-
-    if (fontInfo.familyName.trimmed().length() < 1) {
-        fontInfo.familyName = QString::fromLatin1(m_face->family_name);
-    }
+    fontInfo.familyName = QString::fromLatin1(m_face->family_name).trimmed();
 
     //default preview text
     if (fontInfo.familyName == "Noto Sans Grantha") {

@@ -579,7 +579,7 @@ void DFontMgrMainWindow::initShortcuts()
             if (m_fontPreviewListView->m_rightMenu->isVisible())
                 m_fontPreviewListView->m_rightMenu->close();
 
-            m_fontPreviewListView->onCollectBtnClicked(allItemIndexes, !currItemData.isCollected,
+            m_fontPreviewListView->onCollectBtnClicked(allItemIndexes, !currItemData.fontData.isCollected(),
                                                        filterGroup == DSplitListWidget::FontGroup::CollectFont);
         });
     }
@@ -1163,7 +1163,7 @@ void DFontMgrMainWindow::handleMenuEvent(QAction *action)
                 int disableCnt = 0;
                 m_fontPreviewListView->selectedFonts(nullptr, &systemCnt, &currCnt, &disableCnt, nullptr, nullptr, &itemIndexes, nullptr, &currItemData);
 
-                m_fontPreviewListView->onEnableBtnClicked(itemIndexes, systemCnt, currCnt, !currItemData.isEnabled,
+                m_fontPreviewListView->onEnableBtnClicked(itemIndexes, systemCnt, currCnt, !currItemData.fontData.isEnabled(),
                                                           filterGroup == DSplitListWidget::FontGroup::ActiveFont);
             }
             break;
@@ -1172,7 +1172,7 @@ void DFontMgrMainWindow::handleMenuEvent(QAction *action)
                 QModelIndexList itemIndexes;
                 m_fontPreviewListView->selectedFonts(nullptr, nullptr, nullptr, nullptr, nullptr, &itemIndexes, nullptr, nullptr, &currItemData);
 
-                m_fontPreviewListView->onCollectBtnClicked(itemIndexes, !currItemData.isCollected,
+                m_fontPreviewListView->onCollectBtnClicked(itemIndexes, !currItemData.fontData.isCollected(),
                                                            filterGroup == DSplitListWidget::FontGroup::CollectFont);
             }
             break;

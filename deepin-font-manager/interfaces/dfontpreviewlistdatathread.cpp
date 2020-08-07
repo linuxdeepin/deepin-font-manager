@@ -88,7 +88,7 @@ void DFontPreviewListDataThread::doWork()
         index =  insertFontItemData(filePath, index, chineseFontPathList, monoSpaceFontPathList, true, false);
     }
 
-    Q_EMIT m_view->multiItemsAdded(m_fontModelList, DFontSpinnerWidget::Load);
+    Q_EMIT m_view->multiItemsAdded(m_fontModelList, DFontSpinnerWidget::StartupLoad);
 
     m_dbManager->commitAddFontInfo();
 
@@ -166,7 +166,7 @@ void DFontPreviewListDataThread::removePathWatcher(const QString &path)
 
 void DFontPreviewListDataThread::onFileDeleted(const QStringList &files)
 {
-    qDebug() << __FUNCTION__ << files.size() << m_mutex;
+    qDebug() << __FUNCTION__ << files.size() << "LLLLLLLLLLLLLLLLL" << files;
     if (m_mutex != nullptr)
         QMutexLocker locker(m_mutex);
     m_view->deleteCurFonts(files, false);
@@ -224,7 +224,7 @@ void DFontPreviewListDataThread::forceDeleteFiles(const QStringList &files)
 
 void DFontPreviewListDataThread::onRemoveFileWatchers(const QStringList &files)
 {
-    m_fsWatcher->removePaths(files);
+    qDebug() << __FUNCTION__   << files << "llllllllllllll" << m_fsWatcher->removePaths(files);
     //remove extra
     m_fsWatcher->removePath(FONTS_DIR);
     m_fsWatcher->removePath(FONTS_UP_DIR);
@@ -244,48 +244,48 @@ int DFontPreviewListDataThread::insertFontItemData(const QString &filePath,
 {
     DFontInfoManager *fontInfoMgr = DFontInfoManager::instance();
     DFontPreviewItemData itemData;
-    QFileInfo filePathInfo(filePath);
-    if (isStartup) {
-        itemData.fontInfo = fontInfoMgr->getFontInfo(filePath);
+    itemData.fontInfo = fontInfoMgr->getFontInfo(filePath);
+
+    QString familyName;
+    if (itemData.fontInfo.familyName.isEmpty() || itemData.fontInfo.familyName.contains(QChar('?'))) {
+        int appFontId = QFontDatabase::addApplicationFont(itemData.fontInfo.filePath);
+
+        itemData.appFontId = appFontId;
+        QStringList fontFamilyList = QFontDatabase::applicationFontFamilies(appFontId);
+        for (QString &family : fontFamilyList) {
+            if (family.contains(QChar('?')))
+                continue;
+            familyName = family;
+        }
+        itemData.fontInfo.familyName = familyName.isEmpty() ? itemData.fontInfo.fullname : familyName;
+        familyName = itemData.fontInfo.familyName;
     } else {
-        itemData.fontInfo = fontInfoMgr->getFontInfo(filePath);
+        familyName = itemData.fontInfo.fullname;
     }
 
-    checkStyleName(itemData.fontInfo);
-
-    if (itemData.fontInfo.styleName.length() > 0 && !itemData.fontInfo.familyName.contains(itemData.fontInfo.styleName) &&
-            checkChineseStyleName(itemData.fontInfo.familyName)) {
-        itemData.strFontName =
-            QString("%1-%2").arg(itemData.fontInfo.familyName).arg(itemData.fontInfo.styleName);
+    if (itemData.fontInfo.styleName.length() > 0 && !familyName.endsWith(itemData.fontInfo.styleName)) {
+        itemData.fontData.strFontName =
+            QString("%1-%2").arg(familyName).arg(itemData.fontInfo.styleName);
     } else {
-        if (itemData.fontInfo.styleName != "") {
-            if (!itemData.fontInfo.familyName.contains(itemData.fontInfo.styleName))
-                itemData.strFontName = itemData.fontInfo.familyName + "-" + itemData.fontInfo.styleName;
-            else {
-                itemData.strFontName = itemData.fontInfo.familyName + "-" + QString(itemData.fontInfo.styleName).at(0).toUpper();
-            }
-        } else {
-            itemData.strFontName = itemData.fontInfo.familyName;
-        }
+        itemData.fontData.strFontName = familyName;
     }
 
     itemData.strFontId = QString::number(index);
-//    itemData.strFontFileName = filePathInfo.baseName();
-//    itemData.strFontPreview = m_view->getPreviewTextWithSize(&itemData.iFontSize);
-    itemData.isEnabled = isEnabled;
-//    itemData.isPreviewEnabled = true;
-    itemData.isCollected = false;
-    itemData.isChineseFont = chineseFontPathList.contains(filePath) && (itemData.fontInfo.previewLang & FONT_LANG_CHINESE);
-    itemData.isMonoSpace = monoSpaceFontPathList.contains(filePath);
+    itemData.fontData.setEnabled(isEnabled);
+    itemData.fontData.setCollected(false);
+    itemData.fontData.setChinese(chineseFontPathList.contains(filePath) && (itemData.fontInfo.previewLang & FONT_LANG_CHINESE));
+    itemData.fontData.setMonoSpace(monoSpaceFontPathList.contains(filePath));
+    itemData.fontData.setFontType(itemData.fontInfo.type);
 
     itemData.fontInfo.isInstalled = true;
 
     //中文字体
-    if (itemData.fontInfo.isSystemFont && itemData.isChineseFont) {
+    if (itemData.fontInfo.isSystemFont && itemData.fontData.isChinese()) {
         /* Bug#16821 UT000591  添加字体后需要加入到Qt的字体数据库中，否则无法使用*/
         qDebug() << "addApplicationFont s"  << endl;
         int appFontId = QFontDatabase::addApplicationFont(itemData.fontInfo.filePath);
-        qDebug() << "addApplicationFont e"  << appFontId << itemData.strFontName << endl;
+        qDebug() << "addApplicationFont e"  << appFontId << itemData.fontData.strFontName << endl;
+        itemData.appFontId = appFontId;
 
         QStringList fontFamilyList = QFontDatabase::applicationFontFamilies(appFontId);
         if (fontFamilyList.size() > 1) {
@@ -294,10 +294,10 @@ int DFontPreviewListDataThread::insertFontItemData(const QString &filePath,
                 itemData.strFontId = QString::number(index);
                 itemData.fontInfo.familyName = fontFamily;
                 if (itemData.fontInfo.styleName.length() > 0) {
-                    itemData.strFontName =
+                    itemData.fontData.strFontName =
                         QString("%1-%2").arg(itemData.fontInfo.familyName).arg(itemData.fontInfo.styleName);
                 } else {
-                    itemData.strFontName = itemData.fontInfo.familyName;
+                    itemData.fontData.strFontName = itemData.fontInfo.familyName;
                 }
                 m_dbManager->addFontInfo(itemData);
                 m_fontModelList.append(itemData);
@@ -322,7 +322,7 @@ int DFontPreviewListDataThread::insertFontItemData(const QString &filePath,
 
 void DFontPreviewListDataThread::refreshFontListData(bool isStartup, const QStringList &installFont)
 {
-    qDebug() << __FUNCTION__ << " begin";
+    qDebug() << __FUNCTION__ << " begin" << isStartup << installFont.size();
     DFontInfoManager *fontInfoMgr = DFontInfoManager::instance();
     QStringList strAllFontList = fontInfoMgr->getAllFontPath(isStartup);
 
@@ -348,6 +348,7 @@ void DFontPreviewListDataThread::refreshFontListData(bool isStartup, const QStri
 
             if (filePathInfo.exists()) {
                 m_fontModelList.append(itemData);
+                itemData.fontData.setFontType(itemData.fontInfo.type);
                 dbFilePathSet.insert(filePath);
                 addPathWatcher(filePath);
             } else {
@@ -362,8 +363,8 @@ void DFontPreviewListDataThread::refreshFontListData(bool isStartup, const QStri
             QFileInfo filePathInfo(filePath);
 
             if (filePathInfo.exists()) {
+                itemData.fontData.setFontType(itemData.fontInfo.type);
                 dbFilePathSet.insert(filePath);
-                addPathWatcher(filePath);
             } else {
                 qDebug() << __FUNCTION__ << " removed file " << filePath;
             }
@@ -382,7 +383,7 @@ void DFontPreviewListDataThread::refreshFontListData(bool isStartup, const QStri
         int maxFontId = m_dbManager->getCurrMaxFontId();
         QList<QString> diffFilePathList = diffSet.toList();
         int index = maxFontId + 1;
-        foreach (QString filePath, diffFilePathList) {
+        for (QString &filePath : diffFilePathList) {
             if (m_dbManager->isSystemFont(filePath) || installFont.contains(filePath)) {
                 bool isEnabled = (isStartup && installFont.contains(filePath)) ? false : true;
                 index = insertFontItemData(filePath, index, chineseFontPathList, monoSpaceFontPathList, isStartup, isEnabled);
@@ -408,75 +409,10 @@ void DFontPreviewListDataThread::removeFontData(const DFontPreviewItemData &remo
     for (DFontPreviewItemData &itemData : m_fontModelList) {
         if (itemData.fontInfo.filePath == removeItemData.fontInfo.filePath) {
             m_fontModelList.removeOne(itemData);
-            return;
+            qDebug() << __FUNCTION__ << m_fontModelList.size() << removeItemData.fontData.strFontName
+                     << m_fontModelList.indexOf(removeItemData);
         }
     }
-}
-
-void DFontPreviewListDataThread::checkStyleName(DFontInfo &f)
-{
-    QStringList str;
-    str << "Regular" << "Bold" << "Light" << "Thin" << "ExtraLight" << "ExtraBold" << "Medium" << "DemiBold" << "Black"
-        << "AnyStretch" << "UltraCondensed" << "ExtraCondensed" << "Condensed" << "SemiCondensed" << "Unstretched" << "SemiExpanded" << "Expanded"
-        << "ExtraExpanded" << "UltraExpanded";
-//有些字体文件因为不规范导致的stylename为空，通过psname来判断该字体的stylename。
-    if (f.styleName.contains("?")) {
-        if (f.psname != "") {
-            if (f.psname.contains("Regular")) {
-                f.styleName = "Regular";
-            } else if (f.psname.contains("Bold")) {
-                f.styleName = "Bold";
-            } else if (f.psname.contains("Light")) {
-                f.styleName = "Light";
-            } else if (f.psname.contains("Thin")) {
-                f.styleName = "Thin";
-            } else if (f.psname.contains("ExtraLight")) {
-                f.styleName = "ExtraLight";
-            } else if (f.psname.contains("ExtraBold")) {
-                f.styleName = "ExtraBold";
-            } else if (f.psname.contains("Medium")) {
-                f.styleName = "Medium";
-            } else if (f.psname.contains("DemiBold")) {
-                f.styleName = "DemiBold";
-            } else if (f.psname.contains("AnyStretch")) {
-                f.styleName = "AnyStretch";
-            } else if (f.psname.contains("UltraCondensed")) {
-                f.styleName = "UltraCondensed";
-            } else if (f.psname.contains("ExtraCondensed")) {
-                f.styleName = "ExtraCondensed";
-            } else if (f.psname.contains("Condensed")) {
-                f.styleName = "Condensed";
-            } else if (f.psname.contains("SemiCondensed")) {
-                f.styleName = "SemiCondensed";
-            } else if (f.psname.contains("Unstretched")) {
-                f.styleName = "Unstretched";
-            } else if (f.psname.contains("SemiExpanded")) {
-                f.styleName = "SemiExpanded";
-            } else if (f.psname.contains("Expanded")) {
-                f.styleName = "Expanded";
-            } else if (f.psname.contains("ExtraExpanded")) {
-                f.styleName = "ExtraExpanded";
-            } else if (f.psname.contains("UltraExpanded")) {
-                f.styleName = "UltraExpanded";
-            } else {
-                f.styleName = "Unknown";
-            }
-        }
-//        //有些字体及其特殊，解析获得的信息中获取不到任何有关stylename的信息，对于这种字体，stylename设置为Unknown
-//        if (!str.contains(f.styleName)) {
-//            f.styleName = "Unknown";
-//        }
-    }
-}
-
-
-//有些字体不规范，familyname为中文且包含了字体的style信息，按照正常显示就会有异常。在此进行过滤，这种情况下只用familyname做为显示内容
-bool DFontPreviewListDataThread::checkChineseStyleName(const QString fontFamilyName)
-{
-    if (fontFamilyName.contains("粗体") || fontFamilyName.contains("常规") || fontFamilyName.contains("细体") || fontFamilyName.contains("黑体")) {
-        return false;
-    }
-    return true;
 }
 
 void DFontPreviewListDataThread::syncFontEnableDisableStatusData(const QStringList &disableFontPathList)
@@ -496,16 +432,14 @@ void DFontPreviewListDataThread::syncFontEnableDisableStatusData(const QStringLi
     for (DFontPreviewItemData &fontItemData : fontInfoList) {
         QString keyFilePath = fontItemData.fontInfo.filePath;
 
-        if (fontItemData.isEnabled != disableFontMap.value(keyFilePath))
+        if (fontItemData.fontData.isEnabled() != disableFontMap.value(keyFilePath))
             continue;
 
         //disableFontMap为被禁用的字体map
         if (disableFontMap.value(keyFilePath)) {
-            fontItemData.isEnabled = false;
-//            fontItemData.isPreviewEnabled = false;
+            fontItemData.fontData.setEnabled(false);
         } else {
-            fontItemData.isEnabled = true;
-//            fontItemData.isPreviewEnabled = true;
+            fontItemData.fontData.setEnabled(true);
         }
 
         m_dbManager->updateFontInfo(fontItemData, "isEnabled");

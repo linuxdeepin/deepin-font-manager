@@ -72,9 +72,9 @@ bool DFontPreviewProxyModel::isCustomFilterAcceptsRow(const QModelIndex &modelIn
     }
 
     FontData fdata = varModel.value<FontData>();
-    DFontPreviewItemData itemData = DFontPreviewListDataThread::instance()->getFontData(fdata.strFontName);
+    DFontPreviewItemData itemData = DFontPreviewListDataThread::instance()->getFontData(fdata);
 
-    const QString &fontName = itemData.strFontName;
+    const QString &fontName = itemData.fontData.strFontName;
 
     switch (m_filterGroup) {
     //显示所有字体
@@ -103,25 +103,25 @@ bool DFontPreviewProxyModel::isCustomFilterAcceptsRow(const QModelIndex &modelIn
     } break;
     //只显示收藏字体
     case DSplitListWidget::CollectFont: {
-        if (itemData.isCollected && isFontNameContainsPattern(fontName)) {
+        if (itemData.fontData.isCollected() && isFontNameContainsPattern(fontName)) {
             return true;
         }
     } break;
     //已激活(启用)字体
     case DSplitListWidget::ActiveFont: {
-        if (itemData.isEnabled && isFontNameContainsPattern(fontName)) {
+        if (itemData.fontData.isEnabled() && isFontNameContainsPattern(fontName)) {
             return true;
         }
     } break;
     //中文字体
     case DSplitListWidget::ChineseFont: {
-        if (itemData.isChineseFont && isFontNameContainsPattern(fontName)) {
+        if (itemData.fontData.isChinese() && isFontNameContainsPattern(fontName)) {
             return true;
         }
     } break;
     //等宽字体
     case DSplitListWidget::EqualWidthFont: {
-        if (itemData.isMonoSpace && isFontNameContainsPattern(fontName)) {
+        if (itemData.fontData.isMonoSpace() && isFontNameContainsPattern(fontName)) {
             return true;
         }
 

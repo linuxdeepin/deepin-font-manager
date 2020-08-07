@@ -26,9 +26,6 @@ public:
     void syncFontEnableDisableStatusData(const QStringList &disableFontPathList);
     void refreshFontListData(bool isStartup = false, const QStringList &list = QStringList());
     void removeFontData(const DFontPreviewItemData &removeItemData);
-    void checkStyleName(DFontInfo &f);
-
-    bool checkChineseStyleName(const QString fontFamilyName);
 
     int insertFontItemData(const QString &filePath,
                            int index,
@@ -42,14 +39,16 @@ public:
 
     void updateItemStatus(int index, const DFontPreviewItemData &itemData);
     void updateFontId(const DFontPreviewItemData &itemData, int id);
-    inline static DFontPreviewItemData getFontData(const QString &strFontName)
+    inline static DFontPreviewItemData getFontData(const FontData &fontData)
     {
         DFontPreviewItemData itemdata;
-        itemdata.strFontName = strFontName;
+        itemdata.fontData = fontData;
         QStringList familySyle;
         int index = DFontPreviewListDataThread::instance()->getFontModelList().indexOf(itemdata);
         if (index > -1) {
             return DFontPreviewListDataThread::instance()->getFontModelList().at(index);
+        } else {
+            qDebug() << __FUNCTION__ << " not found " << fontData.getFontType() << fontData.strFontName << DFontPreviewListDataThread::instance()->getFontModelList().size();
         }
         return itemdata;
     }

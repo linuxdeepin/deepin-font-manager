@@ -73,8 +73,11 @@ public:
                        QModelIndexList *disableIndexList = nullptr, QStringList *allMinusSysFontList = nullptr, DFontPreviewItemData *curData = nullptr);
     inline void appendFilePath(QStringList *allFontList, const QString &filePath)
     {
-        if ((allFontList != nullptr) && (!allFontList->contains(filePath)))
+        if ((allFontList != nullptr) && (!allFontList->contains(filePath))) {
             *allFontList << filePath;
+        } else if (allFontList != nullptr && allFontList->contains(filePath)) {
+            qDebug() << filePath << __FUNCTION__ << " duplicate end";
+        }
     }
     void deleteFontModelIndex(const QString &filePath, bool isFromSys = false);
     inline bool isDeleting();
@@ -97,7 +100,7 @@ public:
     void updateSpinner(DFontSpinnerWidget::SpinnerStyles style, bool force = true);
     inline QString getCurFontStrName()
     {
-        return QString("%1").arg(m_curFontData.strFontName);
+        return QString("%1").arg(m_curFontData.fontData.strFontName);
     }
 
     inline DFontPreviewItemData getCurFontData()
@@ -105,9 +108,9 @@ public:
         return m_curFontData;
     }
 
-    inline static DFontPreviewItemData getFontData(const QString &strFontName)
+    inline static DFontPreviewItemData getFontData(const FontData &fontData)
     {
-        return DFontPreviewListDataThread::instance()->getFontData(strFontName);
+        return DFontPreviewListDataThread::instance()->getFontData(fontData);
 //        DFontPreviewItemData itemdata;
 //        itemdata.strFontName = strFontName;
 //        QStringList familySyle;

@@ -42,19 +42,17 @@ DFontPreviewItemData DFMDBManager::parseRecordToItemData(const QMap<QString, QSt
 
     itemData.strFontId = record.value("fontId");
     QString filePath = record.value("filePath");
-    itemData.strFontName = record.value("fontName");
+    itemData.fontData = FontData(record.value("fontName"), record.value("isEnabled").toInt()
+                                 , record.value("isCollected").toInt()
+                                 , record.value("isChineseFont").toInt()
+                                 , record.value("isMonoSpace").toInt(), TTF);
     QFileInfo filePathInfo(filePath);
     filePathInfo.setCaching(false);
-//    itemData.strFontFileName = filePathInfo.baseName();
-//    itemData.strFontPreview = QString(DApplication::translate("Font", "Don't let your dreams be dreams"));
-//    itemData.iFontSize = FTM_DEFAULT_PREVIEW_FONTSIZE;
-    itemData.isEnabled = record.value("isEnabled").toInt();
-//    itemData.isPreviewEnabled = itemData.isEnabled;
-    itemData.isCollected = record.value("isCollected").toInt();
-    itemData.isChineseFont = record.value("isChineseFont").toInt();
-    itemData.isMonoSpace = record.value("isMonoSpace").toInt();
 
     itemData.fontInfo = getDFontInfo(record);
+    itemData.fontData.setFontType(itemData.fontInfo.type);
+    if (!itemData.fontData.strFontName.endsWith(itemData.fontInfo.styleName) && !itemData.fontInfo.styleName.isEmpty())
+        itemData.fontData.strFontName += QString("-%1").arg(itemData.fontInfo.styleName);
 
     return itemData;
 }
@@ -142,7 +140,7 @@ QStringList DFMDBManager::getInstalledFontsPath()
     return m_sqlUtil->getInstalledFontsPath();
 }
 
-QString DFMDBManager::isFontInfoExist(const DFontInfo &newFileFontInfo)
+int DFMDBManager::isFontExist(const QString &familyName, const QString &styleName, QStringList &result)
 {
     QList<QMap<QString, QString>> recordList;
 
@@ -150,8 +148,30 @@ QString DFMDBManager::isFontInfoExist(const DFontInfo &newFileFontInfo)
     appendAllKeys(keyList);
 
     QMap<QString, QString> whereMap;
+    whereMap.insert("familyName", familyName);
+    whereMap.insert("styleName", styleName);
+    m_sqlUtil->findRecords(keyList, whereMap, &recordList);
+
+    result.clear();
+    for (QMap<QString, QString> &map : recordList) {
+        result << map.value("filePath");
+        result << map.value("fullname");
+    }
+
+    return recordList.size();
+}
+
+QString DFMDBManager::isFontInfoExist(const DFontInfo &newFileFontInfo)
+{
+    QList<QMap<QString, QString>> recordList;
+
+    QList<QString> keyList;
+    keyList.append("filePath");
+
+    QMap<QString, QString> whereMap;
     whereMap.insert("familyName", newFileFontInfo.familyName);
     whereMap.insert("styleName", newFileFontInfo.styleName);
+    whereMap.insert("fullname", newFileFontInfo.fullname);
     m_sqlUtil->findRecords(keyList, whereMap, &recordList);
 
     if (recordList.size() > 0) {
@@ -166,11 +186,11 @@ QMap<QString, QString> DFMDBManager::mapItemData(DFontPreviewItemData itemData)
 {
     QMap<QString, QString> mapData;
     //mapData.insert("fontId", itemData.strFontId);   //auto increament ,Don't need supply
-    mapData.insert("fontName", itemData.strFontName);
-    mapData.insert("isEnabled", QString::number(itemData.isEnabled));
-    mapData.insert("isCollected", QString::number(itemData.isCollected));
-    mapData.insert("isChineseFont", QString::number(itemData.isChineseFont));
-    mapData.insert("isMonoSpace", QString::number(itemData.isMonoSpace));
+    mapData.insert("fontName", itemData.fontData.strFontName);
+    mapData.insert("isEnabled", QString::number(itemData.fontData.isEnabled()));
+    mapData.insert("isCollected", QString::number(itemData.fontData.isCollected()));
+    mapData.insert("isChineseFont", QString::number(itemData.fontData.isChinese()));
+    mapData.insert("isMonoSpace", QString::number(itemData.fontData.isMonoSpace()));
     mapData.insert("filePath", itemData.fontInfo.filePath);
     mapData.insert("familyName", itemData.fontInfo.familyName);
     mapData.insert("styleName", itemData.fontInfo.styleName);

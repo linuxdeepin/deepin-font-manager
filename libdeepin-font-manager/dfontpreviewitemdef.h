@@ -17,6 +17,11 @@
 #define FTM_DEFAULT_PREVIEW_FONTSIZE 30
 #define FTM_PREVIEW_ITEM_HEIGHT (72+2+10)
 
+#define FONT_TTF QString("TrueType")
+#define FONT_OTF QString("OpenType")
+#define FONT_UNKNOWN QString("Unknown");
+
+
 /*************************************************************************
  <Enum>          IconStatus
  <Description>   收藏图标状态
@@ -33,8 +38,171 @@ typedef enum IconStatus {
     IconHover,
 } IconStatus;
 
+typedef enum FontType {
+    TTF = 0,
+    OTF,
+    TTC,
+    UNKNOWN,
+} FontType;
+
+    /*************************************************************************
+     <Enum>          枚举
+     <Description>   字体状态枚举
+     <Author>
+     <Value>
+        <Value1>     CLEAR               Description:无状态
+        <Value2>     ENABLED             Description:是否启用
+        <Value3>     COLLECTED           Description:是否收藏
+        <Value4>     CHINESED            Description:是否中文字体
+        <Value5>     MONOSPACE           Description:是否等宽字体
+
+        <Value6>     NORMAL              Description:常规
+        <Value7>     PRESS               Description:press状态
+        <Value8>     HOVEER              Description:hover状态
+        <Value9>     HOVERSTATE          Description:press&hover状态
+     <Note>          null
+    *************************************************************************/
+enum {
+    CLEAR = 0,
+    ENABLED = 0x01,
+    COLLECTED = 0x02,
+    CHINESED = 0x04,
+    MONOSPACE = 0x08,
+    HOVERSTATE = 0x30,
+    FONTTYPE = 0x0F00,
+};
+
 /*************************************************************************
- <Struct>        DFInstallErrorItemModel
+ <Struct>        FontData
+ <Description>   字体信息结构体
+ <Attribution>
+    <Attr1>     strFontName           Description:字体名称 familyName-StyleName
+    <Attr2>     fontState             Description:字体状态
+ <Note>          null
+*************************************************************************/
+struct FontData {
+    QString strFontName;
+    int fontState;
+    FontData()
+    {
+        strFontName = "";
+        fontState = 0;
+    }
+
+    //拷贝构造
+    FontData(const QString &_strFontName, bool isEnabled, bool isCollected, bool isChinesed, bool isMono, FontType type)
+    {
+        strFontName = _strFontName;
+        fontState = 0;
+        setEnabled(isEnabled);
+        setCollected(isCollected);
+        setChinese(isChinesed);
+        setMonoSpace(isMono);
+        setFontType(type);
+    }
+
+    //重载拷贝构造
+    FontData(const QString &_strFontName, bool isEnabled, bool isCollected, bool isChinesed, bool isMono, const QString &type)
+    {
+        strFontName = _strFontName;
+        fontState = 0;
+        setEnabled(isEnabled);
+        setCollected(isCollected);
+        setChinese(isChinesed);
+        setMonoSpace(isMono);
+        setFontType(type);
+    }
+
+
+    //更新启用状态
+    void setEnabled(bool isEnabled)
+    {
+        fontState = isEnabled ? (fontState | ENABLED) : (fontState & ~ENABLED);
+    }
+
+    //返回启用状态
+    bool isEnabled() const
+    {
+        return (fontState & ENABLED);
+    }
+    //更新收藏状态
+    void setCollected(bool collected)
+    {
+        fontState = (collected ? (fontState | COLLECTED) : (fontState & ~COLLECTED));
+    }
+
+    //返回收藏状态
+    bool isCollected() const
+    {
+        return (fontState & COLLECTED);
+    }
+    //更新是否为中文字体状态
+    void setChinese(bool chinese)
+    {
+        fontState = (chinese ? (fontState | CHINESED) : (fontState & ~CHINESED));
+    }
+
+    //返回是否为中文字体状态
+    bool isChinese() const
+    {
+        return (fontState & CHINESED);
+    }
+    //更新是否为等宽字体状态
+    void setMonoSpace(bool isMonospace)
+    {
+        fontState = (isMonospace ? (fontState | MONOSPACE) : (fontState & ~MONOSPACE));
+    }
+
+    //返回是否为等宽字体状态
+    bool isMonoSpace() const
+    {
+        return (fontState & MONOSPACE);
+    }
+    //更新hover或press状态
+    void setHoverState(IconStatus state)
+    {
+        fontState &= ~HOVERSTATE;
+        fontState |= ((state) << 4);
+    }
+
+    //返回hover或press状态
+    IconStatus getHoverState() const
+    {
+        return static_cast<IconStatus>((fontState & HOVERSTATE) >> 4);
+    }
+
+    void setFontType(FontType type)
+    {
+        fontState &= ~FONTTYPE;
+        fontState |= (type << 8);
+    }
+
+    void setFontType(const QString &suffix)
+    {
+        if (suffix == FONT_TTF) {
+            setFontType(TTF);
+        } else if (suffix == FONT_OTF) {
+            setFontType(OTF);
+        } else {
+            setFontType(UNKNOWN);
+        }
+    }
+
+    FontType getFontType() const
+    {
+        return static_cast<FontType>((fontState & FONTTYPE) >> 8);
+    }
+
+    bool operator==(const FontData &info)
+    {
+        return ((strFontName == info.strFontName) && (getFontType() == info.getFontType()));
+    }
+};
+
+Q_DECLARE_METATYPE(FontData)
+
+/*************************************************************************
+ <Struct>        DFontPreviewItemData
  <Description>   ItemModel信息结构体
  <Attribution>
     <Attr1>      fontInfo         Description:字体信息
@@ -63,16 +231,13 @@ typedef enum IconStatus {
  <Note>          null
 *************************************************************************/
 struct DFontPreviewItemData {
-    DFontInfo fontInfo;
-    QString strFontName;
-    bool isEnabled;
-    bool isCollected;
-    bool isChineseFont;
-    bool isMonoSpace;
-    QString strFontId;
+    DFontInfo fontInfo;       //字体信息
+    FontData fontData;
+
+    QString strFontId;        //字体唯一id,对应数据库表中的fontId
+
     int appFontId;
 
-    //初始化
     DFontPreviewItemData()
     {
         fontInfo.filePath = "";
@@ -92,16 +257,25 @@ struct DFontPreviewItemData {
         fontInfo.defaultPreview = "";
         fontInfo.previewLang = FONT_LANG_NONE;
 
-        strFontName = "";
-        isEnabled = false;
-        isCollected = false;
         strFontId = "";
-        isChineseFont = false;
-        isMonoSpace = false;
         appFontId = -1;
     }
 
-    //拷贝构造函数
+    DFontPreviewItemData(const QString &_filePath, const QString &_familyName, const QString &_styleName, const QString &_type,
+                         const QString &_version, const QString &_copyright, const QString &_desc, const QString &_sysVer,
+                         const QString &_fullname, const QString &_psname, const QString &_trademark, bool _isInstalled,
+                         bool _isError, bool _isSystemFont, bool _isEnabled, bool _isCollected, bool _isChinese,
+                         bool _isMono, const QString &_strFontName)
+    {
+        fontInfo = DFontInfo(_filePath, _familyName, _styleName, _type, _version, _copyright, _desc, _sysVer, _fullname,
+                             _psname, _trademark, _isInstalled, _isError, _isSystemFont);
+
+        fontData = FontData(_strFontName, _isEnabled, _isCollected, _isChinese, _isMono, _type);
+
+        strFontId = "";
+        appFontId = -1;
+    }
+
     DFontPreviewItemData(const DFontPreviewItemData &other)
     {
         fontInfo.filePath = other.fontInfo.filePath;
@@ -121,139 +295,19 @@ struct DFontPreviewItemData {
         fontInfo.defaultPreview = other.fontInfo.defaultPreview;
         fontInfo.previewLang = other.fontInfo.previewLang;
 
-        strFontName = other.strFontName;
-        isEnabled = other.isEnabled;
-        isCollected = other.isCollected;
+        fontData = other.fontData;
         strFontId = other.strFontId;
-
-        isChineseFont = other.isChineseFont;
-        isMonoSpace = other.isMonoSpace;
         appFontId = other.appFontId;
     }
-    //结构体析构函数
-    ~DFontPreviewItemData()
-    {
 
-    }
-    //strFontName字段赋值
     bool operator==(const DFontPreviewItemData &info)
     {
-        return (strFontName == info.strFontName);
+        if (info.fontData.strFontName.isEmpty())
+            return (fontInfo == info.fontInfo);
+
+        return (fontData == info.fontData);
     }
 };
 
 Q_DECLARE_METATYPE(DFontPreviewItemData)
-
-/*************************************************************************
- <Struct>        FontData
- <Description>   字体信息结构体
- <Attribution>
-    <Attr1>     strFontName           Description:字体名称 familyName-StyleName
-    <Attr2>     fontState             Description:字体状态
- <Note>          null
-*************************************************************************/
-struct FontData {
-    QString strFontName;
-    int fontState;
-    FontData()
-    {
-        strFontName = "";
-        fontState = 0;
-    }
-    //拷贝构造
-    FontData(const FontData &other)
-    {
-        strFontName = other.strFontName;
-        fontState = other.fontState;
-    }
-    //重载拷贝构造
-    FontData(const QString &_strFontName, bool isEnabled, bool isCollected)
-    {
-        strFontName = _strFontName;
-        setEnabled(isEnabled);
-        setCollected(isCollected);
-    }
-    /*************************************************************************
-     <Enum>          枚举
-     <Description>   字体状态枚举
-     <Author>
-     <Value>
-        <Value1>     CLEAR               Description:无状态
-        <Value2>     ENABLED             Description:是否启用
-        <Value3>     COLLECTED           Description:是否收藏
-        <Value4>     CHINESED            Description:是否中文字体
-        <Value5>     MONOSPACE           Description:是否等宽字体
-
-        <Value6>     NORMAL              Description:常规
-        <Value7>     PRESS               Description:press状态
-        <Value8>     HOVEER              Description:hover状态
-        <Value9>     HOVERSTATE          Description:press&hover状态
-     <Note>          null
-    *************************************************************************/
-    //构造
-    enum {
-        CLEAR = 0,
-        ENABLED = 0x01,
-        COLLECTED = 0x02,
-        CHINESED = 0x04,
-        MONOSPACE = 0x08,
-        NORMAL = 0x10,
-        PRESS = 0x20,
-        HOVEER = 0x40,
-        HOVERSTATE = 0x30,
-    };
-    //更新启用状态
-    void setEnabled(bool isEnabled)
-    {
-        fontState = isEnabled ? (fontState | ENABLED) : (fontState & ~ENABLED);
-    }
-    //返回启用状态
-    bool isEnabled()
-    {
-        return (fontState & ENABLED);
-    }
-    //更新收藏状态
-    void setCollected(bool collected)
-    {
-        fontState = (collected ? (fontState | COLLECTED) : (fontState & ~COLLECTED));
-    }
-    //返回收藏状态
-    bool isCollected()
-    {
-        return (fontState & COLLECTED);
-    }
-    //更新是否为中文字体状态
-    void setChinese(bool chinese)
-    {
-        fontState = (chinese ? (fontState | CHINESED) : (fontState & ~CHINESED));
-    }
-    //返回是否为中文字体状态
-    bool isChinese()
-    {
-        return (fontState & CHINESED);
-    }
-    //更新是否为等宽字体状态
-    void setMonoSpace(bool isMonospace)
-    {
-        fontState = (isMonospace ? (fontState | MONOSPACE) : (fontState & ~MONOSPACE));
-    }
-    //返回是否为等宽字体状态
-    bool isMonoSpace()
-    {
-        return (fontState & MONOSPACE);
-    }
-    //更新hover或press状态
-    void setHoverState(IconStatus state)
-    {
-        fontState &= ~HOVERSTATE;
-        fontState |= ((state) << 4);
-    }
-    //返回hover或press状态
-    IconStatus getHoverState()
-    {
-        return static_cast<IconStatus>((fontState & HOVERSTATE) >> 4);
-    }
-};
-
-Q_DECLARE_METATYPE(FontData)
 #endif  // DFONTPREVIEWITEMDEF_H

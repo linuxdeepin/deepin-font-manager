@@ -53,9 +53,73 @@ struct DFontInfo {
     bool isError {false};
     bool isSystemFont {true};  // Default is system font
 
+    DFontInfo()
+    {
+        filePath = "";
+        familyName = "";
+        styleName = "";
+        type = "";
+        version = "";
+        copyright = "";
+        description = "";
+        sysVersion = "";
+        fullname = "";
+        psname = "";
+        trademark = "";
+        isInstalled = false;
+        isError = false;
+        isSystemFont = true;
+        defaultPreview = "";
+        previewLang = FONT_LANG_NONE;
+    }
+
+    DFontInfo(const QString &_filePath, const QString &_familyName, const QString &_styleName, const QString &_type,
+              const QString &_version, const QString &_copyright, const QString &_desc, const QString &_sysVer,
+              const QString &_fullname, const QString &_psname, const QString &_trademark, bool _isInstalled,
+              bool _isError, bool _isSystemFont)
+    {
+        filePath = _filePath;
+        familyName = _familyName;
+        styleName = _styleName;
+        type = _type;
+        version = _version;
+        copyright = _copyright;
+        description = _desc;
+        sysVersion = _sysVer;
+        fullname = _fullname;
+        psname = _psname;
+        trademark = _trademark;
+        isInstalled = _isInstalled;
+        isError = _isError;
+        isSystemFont = _isSystemFont;
+
+        defaultPreview = "";
+        previewLang = FONT_LANG_NONE;
+    }
+
+    DFontInfo(const DFontInfo &other)
+    {
+        filePath = other.filePath;
+        familyName = other.familyName;
+        styleName = other.styleName;
+        type = other.type;
+        version = other.version;
+        copyright = other.copyright;
+        description = other.description;
+        sysVersion = other.sysVersion;
+        fullname = other.fullname;
+        psname = other.psname;
+        trademark = other.trademark;
+        isInstalled = other.isInstalled;
+        isError = other.isError;
+        isSystemFont = other.isSystemFont;
+        defaultPreview = other.defaultPreview;
+        previewLang = other.previewLang;
+    }
+
     bool operator==(const DFontInfo &info)
     {
-        return info.familyName == familyName && info.styleName == styleName;
+        return info.familyName == familyName && info.styleName == styleName && info.fullname == fullname;
     }
 
     QString toString() const

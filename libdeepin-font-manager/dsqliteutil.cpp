@@ -563,11 +563,11 @@ trademark) values( \
     QVariantList psnameList;
     QVariantList trademarkList;
     for (const DFontPreviewItemData &item : fontList) {
-        fontNameList << escapeString(item.strFontName);
-        isEnabledList << QString::number(item.isEnabled);
-        isCollectedList << QString::number(item.isCollected);
-        isChineseList << QString::number(item.isChineseFont);
-        isMonoSpaceList << QString::number(item.isMonoSpace);
+        fontNameList << escapeString(item.fontData.strFontName);
+        isEnabledList << QString::number(item.fontData.isEnabled());
+        isCollectedList << QString::number(item.fontData.isCollected());
+        isChineseList << QString::number(item.fontData.isChinese());
+        isMonoSpaceList << QString::number(item.fontData.isMonoSpace());
         filePathList << escapeString(item.fontInfo.filePath);
         familyNameList << escapeString(item.fontInfo.familyName);
         styleNameList << escapeString(item.fontInfo.styleName);
@@ -672,9 +672,9 @@ void DSqliteUtil::updateFontInfo(const QList<DFontPreviewItemData> &fontList, co
     QVariantList filePathList;
     for (const DFontPreviewItemData &item : fontList) {
         if (key == "isEnabled") {
-            keyList << QString::number(item.isEnabled);
+            keyList << QString::number(item.fontData.isEnabled());
         } else if (key == "isCollected") {
-            keyList << QString::number(item.isCollected);
+            keyList << QString::number(item.fontData.isCollected());
         }
 
         filePathList << escapeString(item.fontInfo.filePath);

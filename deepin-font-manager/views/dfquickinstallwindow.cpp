@@ -299,21 +299,21 @@ void DFQuickInstallWindow::onFontInstallFinished()
         itemData.fontInfo.filePath = target;
 
         if (itemData.fontInfo.styleName.length() > 0) {
-            itemData.strFontName =
+            itemData.fontData.strFontName =
                 QString("%1-%2").arg(itemData.fontInfo.familyName).arg(itemData.fontInfo.styleName);
         } else {
-            itemData.strFontName = itemData.fontInfo.familyName;
+            itemData.fontData.strFontName = itemData.fontInfo.familyName;
         }
 
         //itemData.strFontId = QString::number(m_dbManager->getRecordCount()+1);
 //        itemData.strFontFileName = filePathInfo.baseName();
 //        itemData.strFontPreview = QString(DApplication::translate("Font", "Don't let your dreams be dreams"));
 //        itemData.iFontSize = FTM_DEFAULT_PREVIEW_FONTSIZE;
-        itemData.isEnabled = true;
 //        itemData.isPreviewEnabled = true;
-        itemData.isCollected = false;
-        itemData.isChineseFont = chineseFontPathList.contains(m_installFiles[0]);
-        itemData.isMonoSpace = monoSpaceFontPathList.contains(m_installFiles[0]);
+        itemData.fontData.setEnabled(true);
+        itemData.fontData.setCollected(false);
+        itemData.fontData.setChinese(chineseFontPathList.contains(m_installFiles[0]));
+        itemData.fontData.setMonoSpace(monoSpaceFontPathList.contains(m_installFiles[0]));
 
         itemData.fontInfo.isInstalled = true;
 

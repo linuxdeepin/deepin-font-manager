@@ -156,7 +156,7 @@ QAction *DFontMenuManager::getActionByMenuAction(MenuAction maction, MenuType me
     return action;
 }
 
-void DFontMenuManager::onRightKeyMenuPopup(const DFontPreviewItemData &fontData, bool hasUser, bool enableDisable, bool hasCurFont)
+void DFontMenuManager::onRightKeyMenuPopup(const DFontPreviewItemData &itemData, bool hasUser, bool enableDisable, bool hasCurFont)
 {
     // Disable delete menu for system font
     QAction *delAction = DFontMenuManager::getInstance()->getActionByMenuAction(
@@ -186,14 +186,14 @@ void DFontMenuManager::onRightKeyMenuPopup(const DFontPreviewItemData &fontData,
     }
 
     // Favarite font Menu
-    if (nullptr != faveriteAction && fontData.isCollected) {
+    if (nullptr != faveriteAction && itemData.fontData.isCollected()) {
         faveriteAction->setText(DApplication::translate("Menu", "Unfavorite"));
     } else {
         faveriteAction->setText(DApplication::translate("Menu", "Favorite"));
     }
 
     // Enable/Disable Menu
-    if (nullptr != enableOrDisableAction && fontData.isEnabled) {
+    if (nullptr != enableOrDisableAction && itemData.fontData.isEnabled()) {
         if (enableDisable) {
             enableOrDisableAction->setEnabled(true);
         } else {
