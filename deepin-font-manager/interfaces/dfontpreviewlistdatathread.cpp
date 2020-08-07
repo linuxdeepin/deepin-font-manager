@@ -258,7 +258,15 @@ int DFontPreviewListDataThread::insertFontItemData(const QString &filePath,
         itemData.strFontName =
             QString("%1-%2").arg(itemData.fontInfo.familyName).arg(itemData.fontInfo.styleName);
     } else {
-        itemData.strFontName = itemData.fontInfo.familyName;
+        if (itemData.fontInfo.styleName != "") {
+            if (!itemData.fontInfo.familyName.contains(itemData.fontInfo.styleName))
+                itemData.strFontName = itemData.fontInfo.familyName + "-" + itemData.fontInfo.styleName;
+            else {
+                itemData.strFontName = itemData.fontInfo.familyName + "-" + QString(itemData.fontInfo.styleName).at(0).toUpper();
+            }
+        } else {
+            itemData.strFontName = itemData.fontInfo.familyName;
+        }
     }
 
     itemData.strFontId = QString::number(index);
