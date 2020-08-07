@@ -29,7 +29,14 @@
 
 static DFontManager *INSTANCE = nullptr;
 const QString sysDir = QDir::homePath() + "/.local/share/fonts";
-
+/*************************************************************************
+ <Function>      instance
+ <Description>   获取字体管理线程类的单例对象
+ <Author>
+ <Input>         Null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 DFontManager *DFontManager::instance()
 {
     if (!INSTANCE) {
@@ -39,26 +46,56 @@ DFontManager *DFontManager::instance()
     return INSTANCE;
 }
 
+/*************************************************************************
+ <Function>      DFontManager
+ <Description>   构造函数-字体管理线程类
+ <Author>
+ <Input>
+    <param1>     parent          Description:父类对象
+ <Return>        DFontManager    Description:返回字体管理器线程类对象
+ <Note>          null
+*************************************************************************/
 DFontManager::DFontManager(QObject *parent)
     : QThread(parent)
 {
-//    connect(this, &QThread::finished, [ = ] {
-//        qDebug() << QThread::currentThreadId() << endl;
-//        qDebug() << "########## finished";
-//    });
-//    connect(this, &QThread::started, [ = ] {
-//        qDebug() << "########## started";
-//    });
+
 }
 
+/*************************************************************************
+ <Function>      ~DFontManager
+ <Description>   析构函数-析构字体管理线程类对象
+ <Author>
+ <Input>
+    <param1>     parent          Description:父类对象
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 DFontManager::~DFontManager() {}
 
+/*************************************************************************
+ <Function>      setType
+ <Description>   设置线程执行类型
+ <Author>
+ <Input>
+    <param1>     type            Description:类型参数
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontManager::setType(Type type)
 {
     qDebug() << type << endl;
     m_type = type;
 }
 
+/*************************************************************************
+ <Function>      setInstallFileList
+ <Description>   传入待安装字体列表
+ <Author>
+ <Input>
+    <param1>     list            Description:待安装字体列表
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontManager::setInstallFileList(const QStringList &list)
 {
     qDebug() << __FUNCTION__ << "start" << endl;
@@ -69,17 +106,44 @@ void DFontManager::setInstallFileList(const QStringList &list)
     m_instFileList << list;
 }
 
+/*************************************************************************
+ <Function>      setReInstallFile
+ <Description>   传入待重装字体列表
+ <Author>
+ <Input>
+    <param1>     reinstFile      Description:待重装字体列表
+    <param2>     sysFile         Description:待重装字体列表中系统字体列表
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontManager::setReInstallFile(const QString &reinstFile, const QString &sysFile)
 {
     m_reinstFile = reinstFile;
     m_sysFile = sysFile;
 }
 
+/*************************************************************************
+ <Function>      setUnInstallFile
+ <Description>   传入待删除字体列表
+ <Author>
+ <Input>
+    <param1>     filePath        Description:待删除字体列表
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontManager::setUnInstallFile(const QStringList &filePath)
 {
     m_uninstFile = filePath;
 }
 
+/*************************************************************************
+ <Function>      run
+ <Description>   线程执行入口函数-安装、中途安装、重装与卸载
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontManager::run()
 {
     qDebug() << __FUNCTION__ << "start" << m_type << endl;
@@ -99,6 +163,15 @@ void DFontManager::run()
     }
 }
 
+/*************************************************************************
+ <Function>      doCmd
+ <Description>   线程执行函数
+ <Author>
+ <Input>
+    <param1>     arguments       Description:动作执行参数列表
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontManager::doCmd(const QStringList &arguments)
 {
     qDebug() << "QProcess start";
@@ -120,6 +193,15 @@ void DFontManager::doCmd(const QStringList &arguments)
     }
 }
 
+/*************************************************************************
+ <Function>      handleInstall
+ <Description>   字体安装-函数入口
+ <Author>
+ <Input>
+    <param1>     isHalfwayInstall Description:是否为中途新增安装
+ <Return>        null             Description:null
+ <Note>          null
+*************************************************************************/
 void DFontManager::handleInstall(bool isHalfwayInstall)
 {
     doCmd(QStringList() << m_instFileList);
@@ -141,6 +223,14 @@ void DFontManager::handleInstall(bool isHalfwayInstall)
     m_installOutList.clear();
 }
 
+/*************************************************************************
+ <Function>      handleUnInstall
+ <Description>   字体卸载-函数入口
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontManager::handleUnInstall()
 {
     qDebug() << "waitForFinished";
@@ -151,6 +241,14 @@ void DFontManager::handleUnInstall()
     m_uninstFile.clear();
 }
 
+/*************************************************************************
+ <Function>      handleReInstall
+ <Description>   字体重装-函数入口
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontManager::handleReInstall()
 {
     doCmd(QStringList() << m_instFileList);
@@ -167,12 +265,30 @@ void DFontManager::handleReInstall()
     m_installOutList.clear();
 }
 
+/*************************************************************************
+ <Function>      setSystemFontCount
+ <Description>   更新待安装列表中系统字体的个数
+ <Author>
+ <Input>
+    <param1>     systemFontCount Description:系统字体个数
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontManager::setSystemFontCount(int systemFontCount)
 {
     m_systemFontCount = systemFontCount;
 }
 
-// install fileList fonts
+/*************************************************************************
+ <Function>      doInstall
+ <Description>   字体安装-具体执行函数
+ <Author>
+ <Input>
+    <param1>     fileList        Description:待安装字体列表
+    <param2>     reinstall       Description:是否为重装
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontManager::doInstall(const QStringList &fileList, bool reinstall)
 {
     Q_UNUSED(reinstall);
@@ -252,6 +368,15 @@ void DFontManager::doInstall(const QStringList &fileList, bool reinstall)
     Q_EMIT m_signalManager->cancelInstall();
 }
 
+/*************************************************************************
+ <Function>      doUninstall
+ <Description>   字体卸载-具体执行函数
+ <Author>
+ <Input>
+    <param1>     fileList        Description:待卸载字体列表
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontManager::doUninstall(const QStringList &fileList)
 {
     for (const QString &file : fileList) {
@@ -297,16 +422,41 @@ void DFontManager::doUninstall(const QStringList &fileList)
     qDebug() << __FUNCTION__ << ret;
 }
 
+/*************************************************************************
+ <Function>      setCacheStatus
+ <Description>   设置fc-cache命令执行的状态
+ <Author>
+ <Input>
+    <param1>     CacheStatus     Description:命令执行状态的枚举
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontManager::setCacheStatus(const CacheStatus &CacheStatus)
 {
     m_CacheStatus = CacheStatus;
 }
 
+/*************************************************************************
+ <Function>      stop
+ <Description>   更新线程停止状态标志位
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontManager::stop()
 {
     m_IsNeedStop = true;
 }
 
+/*************************************************************************
+ <Function>      doCache
+ <Description>   执行fc-cache命令
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontManager::doCache()
 {
     qDebug() << __FUNCTION__;

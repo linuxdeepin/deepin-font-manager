@@ -9,6 +9,14 @@
 //#define qDebug while(false) QMessageLogger().noDebug
 //#endif
 
+/*************************************************************************
+ <Function>      DSqliteUtil
+ <Description>   构造函数-构造一个数据库处理类对象
+ <Author>
+ <Input>         null
+ <Return>        DSqliteUtil        Description:返回一个数据库处理类对象
+ <Note>          null
+*************************************************************************/
 DSqliteUtil::DSqliteUtil(const QString &strDatabase)
     : m_strDatabase(strDatabase)
     , m_query(nullptr)
@@ -23,6 +31,14 @@ DSqliteUtil::DSqliteUtil(const QString &strDatabase)
     createTable();
 }
 
+/*************************************************************************
+ <Function>      ~DSqliteUtil
+ <Description>   析构函数-析构数据库处理类对象
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 DSqliteUtil::~DSqliteUtil()
 {
     if (m_query) {
@@ -33,6 +49,15 @@ DSqliteUtil::~DSqliteUtil()
     QSqlDatabase::removeDatabase("font_manager");
 }
 
+/*************************************************************************
+ <Function>      createConnection
+ <Description>   创建数据库连接
+ <Author>
+ <Input>
+    <param1>     database        Description:数据库连接字符串
+ <Return>        bool            Description:返回数据库连接结果
+ <Note>          null
+*************************************************************************/
 bool DSqliteUtil::createConnection(const QString &database)
 {
     QStringList drivers = QSqlDatabase::drivers();
@@ -62,7 +87,14 @@ bool DSqliteUtil::createConnection(const QString &database)
     }
 }
 
-//创建数据库表
+/*************************************************************************
+ <Function>      createTable
+ <Description>   创建数据库表
+ <Author>
+ <Input>         null
+ <Return>        bool            Description:返回执行结果
+ <Note>          null
+*************************************************************************/
 bool DSqliteUtil::createTable()
 {
     if (!m_db.isOpen()) {
@@ -106,7 +138,16 @@ isMonoSpace TINYINT)";
     }
 }
 
-//向数据库中增加数据
+/*************************************************************************
+ <Function>      addRecord
+ <Description>   向数据库中增加数据
+ <Author>
+ <Input>
+    <param1>     data            Description:插入数据
+    <param2>     table_name      Description:表名
+ <Return>        bool            Description:返回执行结果
+ <Note>          null
+*************************************************************************/
 bool DSqliteUtil::addRecord(QMap<QString, QString> data, const QString &table_name)
 {
     QString sql = "insert into " + table_name + "(";
@@ -138,7 +179,16 @@ bool DSqliteUtil::addRecord(QMap<QString, QString> data, const QString &table_na
     }
 }
 
-//删除记录
+/*************************************************************************
+ <Function>      delRecord
+ <Description>   删除记录
+ <Author>
+ <Input>
+    <param1>     where           Description:位置索引
+    <param2>     table_name      Description:表名
+ <Return>        bool            Description:返回执行结果
+ <Note>          null
+*************************************************************************/
 bool DSqliteUtil::delRecord(QMap<QString, QString> where, const QString &table_name)
 {
     QString sql = "delete from ";
@@ -170,7 +220,17 @@ bool DSqliteUtil::delRecord(QMap<QString, QString> where, const QString &table_n
     }
 }
 
-//修改数据库记录
+/*************************************************************************
+ <Function>      updateRecord
+ <Description>   修改数据库记录
+ <Author>
+ <Input>
+    <param1>     where           Description:位置索引
+    <param2>     data            Description:更新数据
+    <param3>     table_name      Description:表名
+ <Return>        bool            Description:返回执行结果
+ <Note>          null
+*************************************************************************/
 bool DSqliteUtil::updateRecord(QMap<QString, QString> where, QMap<QString, QString> data,
                                const QString &table_name)
 {
@@ -202,6 +262,17 @@ bool DSqliteUtil::updateRecord(QMap<QString, QString> where, QMap<QString, QStri
     }
 }
 
+/*************************************************************************
+ <Function>      findAllRecords
+ <Description>   查找所有表
+ <Author>
+ <Input>
+    <param1>     key             Description:查询内容
+    <param2>     row             Description:表名键
+    <param3>     table_name      Description:表名值
+ <Return>        bool            Description:返回执行结果
+ <Note>          null
+*************************************************************************/
 bool DSqliteUtil::findAllRecords(const QList<QString> &key, QList<QMap<QString, QString> > &row, const QString &table_name)
 {
     QString sql = "select \
@@ -245,7 +316,17 @@ trademark from " + table_name;
     return false;
 }
 
-//查找所有记录
+/*************************************************************************
+ <Function>      findRecords
+ <Description>   查找所有记录
+ <Author>
+ <Input>
+    <param1>     key             Description:查询内容
+    <param2>     row             Description:表名键
+    <param3>     table_name      Description:表名值
+ <Return>        bool            Description:返回执行结果
+ <Note>          null
+*************************************************************************/
 bool DSqliteUtil::findRecords(const QList<QString> &key, QList<QMap<QString, QString>> *row,
                               const QString &table_name)
 {
@@ -277,7 +358,18 @@ bool DSqliteUtil::findRecords(const QList<QString> &key, QList<QMap<QString, QSt
     }
 }
 
-//按条件查找
+/*************************************************************************
+ <Function>      findRecords
+ <Description>   按条件查找
+ <Author>
+ <Input>
+    <param1>     key             Description:查询内容
+    <param2>     where           Description:判断条件
+    <param3>     row             Description:表名键
+    <param4>     table_name      Description:表名
+ <Return>        bool            Description:返回执行结果
+ <Note>          null
+*************************************************************************/
 bool DSqliteUtil::findRecords(const QList<QString> &key, const QMap<QString, QString> &where,
                               QList<QMap<QString, QString>> *row, const QString &table_name)
 {
@@ -318,6 +410,15 @@ bool DSqliteUtil::findRecords(const QList<QString> &key, const QMap<QString, QSt
     }
 }
 
+/*************************************************************************
+ <Function>      getRecordCount
+ <Description>   获取记录总数
+ <Author>
+ <Input>
+    <param1>     table_name      Description:表名
+ <Return>        bool            Description:返回记录总数
+ <Note>          null
+*************************************************************************/
 int DSqliteUtil::getRecordCount(const QString &table_name)
 {
     QString sql = "select count(1) from " + table_name;
@@ -335,7 +436,15 @@ int DSqliteUtil::getRecordCount(const QString &table_name)
 
     return resultCount;
 }
-//获取已安装字体路径
+
+/*************************************************************************
+ <Function>      getInstalledFontsPath
+ <Description>   获取安装字体路径列表
+ <Author>
+ <Input>         null
+ <Return>        QStringList      Description:返回安装字体路径列表
+ <Note>          null
+*************************************************************************/
 QStringList DSqliteUtil::getInstalledFontsPath()
 {
     QString sql = "select filePath from t_fontmanager where isInstalled = 1";
@@ -351,6 +460,15 @@ QStringList DSqliteUtil::getInstalledFontsPath()
     return installedList;
 }
 
+/*************************************************************************
+ <Function>      getMaxFontId
+ <Description>   获取最大字体id
+ <Author>
+ <Input>
+    <param1>     table_name      Description:表名
+ <Return>        int             Description:返回最大字体id
+ <Note>          null
+*************************************************************************/
 int DSqliteUtil::getMaxFontId(const QString &table_name)
 {
     QString sql = "select max(fontId) from " + table_name;
@@ -369,6 +487,16 @@ int DSqliteUtil::getMaxFontId(const QString &table_name)
     return maxFontId;
 }
 
+/*************************************************************************
+ <Function>      addFontInfo
+ <Description>   批量添加字体信息
+ <Author>
+ <Input>
+    <param1>     fontList        Description:字体列表
+    <param2>     table_name      Description:表名
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DSqliteUtil::addFontInfo(const QList<DFontPreviewItemData> &fontList, const QString &table_name)
 {
     if (fontList.isEmpty())
@@ -483,6 +611,16 @@ trademark) values( \
     finish();
 }
 
+/*************************************************************************
+ <Function>      deleteFontInfo
+ <Description>   批量删除字体信息
+ <Author>
+ <Input>
+    <param1>     fontList        Description:字体列表
+    <param2>     table_name      Description:表名
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DSqliteUtil::deleteFontInfo(const QList<DFontPreviewItemData> &fontList, const QString &table_name)
 {
     QMutexLocker m_locker(&mutex);
@@ -510,6 +648,16 @@ void DSqliteUtil::deleteFontInfo(const QList<DFontPreviewItemData> &fontList, co
     finish();
 }
 
+/*************************************************************************
+ <Function>      updateFontInfo
+ <Description>   批量更新字体信息
+ <Author>
+ <Input>
+    <param1>     fontList            Description:字体列表
+    <param2>     table_name          Description:表名
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DSqliteUtil::updateFontInfo(const QList<DFontPreviewItemData> &fontList, const QString &key, const QString &table_name)
 {
     if ((key != "isCollected" && key != "isEnabled") || fontList.isEmpty())
@@ -544,16 +692,31 @@ void DSqliteUtil::updateFontInfo(const QList<DFontPreviewItemData> &fontList, co
     finish();
 }
 
+/*************************************************************************
+ <Function>      escapeString
+ <Description>   字符串处理
+ <Author>
+ <Input>
+    <param1>     str             Description:待处理字符串
+ <Return>        QString         Description:返回处理结果字符串
+ <Note>          null
+*************************************************************************/
 QString DSqliteUtil::escapeString(const QString &str)
 {
     if (str.isEmpty() || str.isNull())
         return "";
     return str;
-//    QString escapeStr = str;
-//    escapeStr = escapeStr.replace("'", "''");
-//    return escapeStr;
 }
 
+/*************************************************************************
+ <Function>      delAllRecords
+ <Description>   删除所有记录
+ <Author>
+ <Input>
+    <param1>     table_name      Description:表名
+ <Return>        bool            Description:返回处理结果
+ <Note>          null
+*************************************************************************/
 bool DSqliteUtil::delAllRecords(const QString &table_name)
 {
     QString sql = "delete from " + table_name;

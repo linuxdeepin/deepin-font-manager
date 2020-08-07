@@ -43,6 +43,15 @@ static QString sampleString = nullptr;
 static QString styleName = nullptr;
 static QHash<QString, QString> contents = {};
 
+/*************************************************************************
+ <Function>      DFontPreview
+ <Description>   构造函数-创建一个字体预览视图类对象
+ <Author>
+ <Input>
+    <param1>     parent          Description:父对象
+ <Return>        DFontPreview    Description:返回一个字体预览视图类对象
+ <Note>          null
+*************************************************************************/
 DFontPreview::DFontPreview(QWidget *parent)
     : QWidget(parent)
     , m_library(nullptr)
@@ -55,12 +64,29 @@ DFontPreview::DFontPreview(QWidget *parent)
     //                 static_cast<int>(qApp->primaryScreen()->geometry().height() / 1.5));
 }
 
+/*************************************************************************
+ <Function>      ~DFontPreview
+ <Description>   析构函数-析构字体预览视图类对象
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 DFontPreview::~DFontPreview()
 {
     FT_Done_Face(m_face);
     FT_Done_FreeType(m_library);
 }
 
+/*************************************************************************
+ <Function>      setFileUrl
+ <Description>   传入当前预览字体的路径
+ <Author>
+ <Input>
+    <param1>     url             Description:当前预览字体的路径
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreview::setFileUrl(const QString &url)
 {
     // fontDatabase->removeAllApplicationFonts();
@@ -78,6 +104,15 @@ void DFontPreview::setFileUrl(const QString &url)
     repaint();
 }
 
+/*************************************************************************
+ <Function>      paintEvent
+ <Description>   重写绘图事件-实现预览效果
+ <Author>
+ <Input>
+    <param1>     e               Description:事件对象
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreview::paintEvent(QPaintEvent *e)
 {
     currentMaxWidth = 1;
@@ -163,7 +198,15 @@ void DFontPreview::paintEvent(QPaintEvent *e)
     QWidget::paintEvent(e);
 }
 
-/*判断text宽度是否超过当前宽度 UT000539*/
+/*************************************************************************
+ <Function>      isNeedScroll
+ <Description>   判断是否需要出现底部水平滚动条
+ <Author>        UT000539
+ <Input>
+    <param1>     width           Description:当前预览文本最大宽度
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreview::isNeedScroll(const int width)
 {
     if (m_needScroll == false) {
@@ -176,6 +219,14 @@ void DFontPreview::isNeedScroll(const int width)
     }
 }
 
+/*************************************************************************
+ <Function>      initContents
+ <Description>   初始化预览文本内容
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreview::initContents()
 {
     QFile file("/usr/share/deepin-font-manager/CONTENTS.txt");
@@ -197,6 +248,14 @@ void DFontPreview::initContents()
     }
 }
 
+/*************************************************************************
+ <Function>      getSampleString
+ <Description>   获取预览文本-获取小写英文文本
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 QString DFontPreview::getSampleString()
 {
     QString sampleString = nullptr;
@@ -224,6 +283,15 @@ QString DFontPreview::getSampleString()
     return sampleString;
 }
 
+/*************************************************************************
+ <Function>      getLanguageSampleString
+ <Description>   获得当前语言下可预览字符串
+ <Author>
+ <Input>
+    <param1>     language        Description:当前语言
+ <Return>        QString         Description:返回当前语言下可预览字符串
+ <Note>          null
+*************************************************************************/
 QString DFontPreview::getLanguageSampleString(const QString &language)
 {
     QString result = nullptr;
@@ -247,6 +315,16 @@ QString DFontPreview::getLanguageSampleString(const QString &language)
     return result;
 }
 
+/*************************************************************************
+ <Function>      checkFontContainText
+ <Description>   检查字体库中是否有当前字符信息
+ <Author>
+ <Input>
+    <param1>     face            Description:FT_Face操作对象
+    <param2>     text            Description:判断文本
+ <Return>        bool            Description:返回判断结果
+ <Note>          null
+*************************************************************************/
 bool DFontPreview::checkFontContainText(FT_Face face, const QString &text)
 {
     if (face == nullptr || face->num_charmaps == 0)
@@ -276,7 +354,16 @@ bool DFontPreview::checkFontContainText(FT_Face face, const QString &text)
     return retval;
 }
 
-//if it is special symbol (return value is true) it will be filtered and not show up in preview text
+/*************************************************************************
+ <Function>      isSpecialSymbol
+ <Description>   判断是否为特殊字符
+ <Author>
+ <Input>
+    <param1>     face            Description:FT_Face操作对象
+    <param2>     ucs4            Description:uint操作对象
+ <Return>        bool            Description:返回判断结果,true：特殊字符；false：正常字符
+ <Note>          null
+*************************************************************************/
 bool isSpecialSymbol(FT_Face face, uint ucs4)
 {
     unsigned int glyph = FT_Get_Char_Index(face, ucs4);
@@ -311,6 +398,16 @@ bool isSpecialSymbol(FT_Face face, uint ucs4)
     return false;
 }
 
+/*************************************************************************
+ <Function>      buildCharlistForFace
+ <Description>   构建预览字符串
+ <Author>
+ <Input>
+    <param1>     face            Description:FT_Face操作对象
+    <param2>     length          Description:长度
+ <Return>        QString         Description:预览预览字符串
+ <Note>          null
+*************************************************************************/
 QString DFontPreview::buildCharlistForFace(FT_Face face, int length)
 {
     QString retval;
@@ -389,7 +486,16 @@ QString DFontPreview::buildCharlistForFace(FT_Face face, int length)
     return retval;
 }
 
-/*返回绘制起始point UT000539 fix bug 27030*/
+/*************************************************************************
+ <Function>      adjustPreviewFontBaseLinePoint
+ <Description>   获取预览绘制的起始点
+ <Author>        UT000539
+ <Input>
+    <param1>     fontPreviewRect    Description:传入绘制区域参数
+    <param2>     previewFontMetrics Description:预览字体信息参数
+ <Return>        QPoint             Description:返回预览绘制的起始点
+ <Note>          null
+*************************************************************************/
 QPoint DFontPreview::adjustPreviewFontBaseLinePoint(const QRect &fontPreviewRect, const QFontMetrics &previewFontMetrics) const
 {
     Q_UNUSED(previewFontMetrics);

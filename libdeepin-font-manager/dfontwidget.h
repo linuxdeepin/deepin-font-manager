@@ -33,7 +33,12 @@
 #include <QTranslator>
 
 DWIDGET_USE_NAMESPACE
-
+/*************************************************************************
+ <Class>         DFontWidget
+ <Description>   字体预览类
+ <Author>
+ <Note>          null
+*************************************************************************/
 class DFontWidget : public QWidget
 {
     Q_OBJECT
@@ -41,12 +46,13 @@ class DFontWidget : public QWidget
 public:
     DFontWidget(QWidget *parent = nullptr);
     ~DFontWidget() override;
-
+    //传入字体路径
     void setFileUrl(const QString &url);
 
 protected:
 
 private:
+    //显示预览结果
     void handleFinished(const QByteArray &data);
 
 private:

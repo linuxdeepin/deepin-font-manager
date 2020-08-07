@@ -23,6 +23,15 @@
 #include <QDebug>
 const int FIXED_WIDTH = 1280;
 const int FIXED_HEIGHT = 740;
+/*************************************************************************
+ <Function>      DFontWidget
+ <Description>   构造函数-构造一个字体预览类对象
+ <Author>
+ <Input>
+    <param1>     parent          Description:父对象
+ <Return>        DFontWidget     Description:返回一个字体预览类对象
+ <Note>          null
+*************************************************************************/
 DFontWidget::DFontWidget(QWidget *parent)
     : QWidget(parent),
       m_layout(new QStackedLayout(this)),
@@ -69,11 +78,28 @@ DFontWidget::DFontWidget(QWidget *parent)
 //                         static_cast<int>(qApp->primaryScreen()->geometry().height() / 1.5 + 20));
 }
 
+/*************************************************************************
+ <Function>      ~DFontWidget
+ <Description>   析构函数-析构DFontWidget类对象
+ <Author>
+ <Input>
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 DFontWidget::~DFontWidget()
 {
     qApp->removeTranslator(&m_translator);
 }
 
+/*************************************************************************
+ <Function>      setFileUrl
+ <Description>   传入字体路径
+ <Author>
+ <Input>
+    <param1>     url             Description:字体路径
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontWidget::setFileUrl(const QString &url)
 {
     m_filePath = url;
@@ -87,6 +113,15 @@ void DFontWidget::setFileUrl(const QString &url)
     m_thread->start();
 }
 
+/*************************************************************************
+ <Function>      handleFinished
+ <Description>   显示预览结果
+ <Author>
+ <Input>
+    <param1>     data            Description:输入字节流
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontWidget::handleFinished(const QByteArray &data)
 {
     /*UT000539 字体损坏弹出提示隐藏view*/

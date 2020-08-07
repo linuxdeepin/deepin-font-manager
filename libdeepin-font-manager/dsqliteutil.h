@@ -10,14 +10,19 @@
 #include <QSqlQuery>
 #include <QVariant>
 #include <QMutexLocker>
-
+/*************************************************************************
+ <Class>         DSqliteUtil
+ <Description>   数据库处理类
+ <Author>
+ <Note>          null
+*************************************************************************/
 class DSqliteUtil
 {
 public:
     explicit DSqliteUtil(const QString &strDatabase = "sqlite3db.db");
     ~DSqliteUtil();
 
-    //新建数据库连接
+    //创建数据库连接
     bool createConnection(const QString &strConn);
 
     //创建数据库表
@@ -47,22 +52,24 @@ public:
     //按条件查找
     bool findRecords(const QList<QString> &key, const QMap<QString, QString> &where, QList<QMap<QString, QString>> *row,
                      const QString &table_name = "t_fontmanager");
-
+    //获取记录总数
     int getRecordCount(const QString &table_name = "t_fontmanager");
-
+    //获取最大字体id
     int getMaxFontId(const QString &table_name = "t_fontmanager");
-    // batch operation
+    //批量添加字体信息
     void addFontInfo(const QList<DFontPreviewItemData> &fontList, const QString &table_name = "t_fontmanager");
+    //批量删除字体信息
     void deleteFontInfo(const QList<DFontPreviewItemData> &fontList, const QString &table_name = "t_fontmanager");
+    //批量更新字体信息
     void updateFontInfo(const QList<DFontPreviewItemData> &fontList, const QString &key, const QString &table_name = "t_fontmanager");
+    //字符串处理
     QString escapeString(const QString &str);
+    //内联函数-执行结束处理函数
     inline void finish()
     {
         if (m_query == nullptr)
             return;
-//        qDebug() << __FUNCTION__ << m_query->isActive();
         m_query->finish();
-//        m_query->clear();
     }
 
     QSqlDatabase m_db;
