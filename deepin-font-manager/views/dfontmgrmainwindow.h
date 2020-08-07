@@ -194,7 +194,10 @@ protected:
     void dragEnterEvent(QDragEnterEvent *event) override;
     //处理拖放事件
     void dropEvent(QDropEvent *event) override;
-
+    //响应字体大小滑块大小改变
+    void respondToValueChanged(int value);
+    //响应安装结束
+    void respondToInstallOver(int successInstallCount);
     DFontPreviewListView *m_fontPreviewListView;
     DListView *m_noResultListView;
     DListView *m_noInstallListView;

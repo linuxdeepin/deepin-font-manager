@@ -14,7 +14,7 @@
 #include <DFontSizeManager>
 
 #define FTM_ERROR_ITEM_FONTNAME_LEFT    39
-
+#define FTM_PARAM_OF_WIDTH 350
 DWIDGET_USE_NAMESPACE
 /*************************************************************************
  <Function>      DFInstallErrorListDelegate
@@ -127,14 +127,6 @@ void DFInstallErrorListDelegate::drawFontName(QPainter *painter, const QStyleOpt
                                    checkboxRect.top() - 5,
                                    bgRect.width() - fontNameLeft - m_StatusWidth,
                                    checkboxRect.height() + 15);
-//    QString elidedFontFileNameText = fontMetric.elidedText(strFontFileName,
-//                                                           Qt::ElideRight,
-//                                                           fontFileNameRect.width(),
-//                                                           Qt::TextShowMnemonic);
-
-    //Automatically truncates and adds ellipsis based on the font width /*UT000539*/
-    //QString elidedFontFileNameText = fontMetric.elidedText(strFontFileName, Qt::ElideRight, 235);
-    //ut000442 Optimize the adaptive effect here 20200421
     QString elidedFontFileNameText;
 
     if (m_NameWidth  + m_StatusWidth < 360) {
@@ -202,10 +194,6 @@ void DFInstallErrorListDelegate::drawFontStyle(QPainter *painter, const QStyleOp
                                                      Qt::ElideRight,
                                                      installStatusRect.width(),
                                                      Qt::TextShowMnemonic);
-
-//    DPalette pa = DApplicationHelper::instance()->palette(m_parentView);
-//    DStyleHelper styleHelper;
-//    QColor penColor = styleHelper.getColor(static_cast<const QStyleOption *>(&option), pa, DPalette::TextWarning);
 
     DGuiApplicationHelper::ColorType themeType = DGuiApplicationHelper::instance()->themeType();
     if (themeType == DGuiApplicationHelper::LightType) {
@@ -332,7 +320,7 @@ QString DFInstallErrorListDelegate::lengthAutoFeed(QPainter *painter, QString so
 
     int m_index = 1;
 
-    while (m_TargetStrWidth + m_StatusWidth < 350) {
+    while (m_TargetStrWidth + m_StatusWidth < FTM_PARAM_OF_WIDTH) {
 
 //      每次插入一个字符，直到长度超过最大范围
         m_TargetStr.insert(m_index, sourceStr.at(m_index));

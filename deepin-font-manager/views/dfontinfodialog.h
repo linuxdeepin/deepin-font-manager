@@ -49,7 +49,6 @@ signals:
 public slots:
 
 private:
-    int m_height;
     QWidget *m_mainFrame {nullptr};
     QString m_FileName;
     QPoint m_faCenter;

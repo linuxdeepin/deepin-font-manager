@@ -241,10 +241,6 @@ void DFInstallErrorDialog::initMainFrame()
     m_mainFrame->setLayout(m_mainLayout);
 
     addContent(m_mainFrame);
-    // Debug layout code
-#ifdef FTM_DEBUG_LAYOUT_COLOR
-    m_mainFrame->setStyleSheet("background-color:purple");
-#endif
 }
 
 /*************************************************************************
@@ -408,11 +404,6 @@ void DFInstallErrorDialog::initInstallErrorFontViews()
         m_SystemFontCount = 0;
     });
 
-    // Debug layout code
-#ifdef FTM_DEBUG_LAYOUT_COLOR
-    m_installErrorListView->setStyleSheet("background-color:cyan");
-    //contentFrame->setStyleSheet("background-color:blue");
-#endif
 }
 
 /*************************************************************************

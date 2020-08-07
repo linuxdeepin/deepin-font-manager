@@ -63,8 +63,6 @@ private:
     int m_leftminwidth;
 
     DFontPreviewItemData *m_fontInfo;//字体信息
-    //不实现重绘事件
-    void paintEvent(QPaintEvent *event) override;
     DLabel *basicLabel = nullptr;
     std::map<QLabel *, QString> pTitleMap;//存储信息title键值对
     std::map<QLabel *, QString> pLabelMap;//存储信息info label键值对

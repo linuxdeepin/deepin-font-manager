@@ -155,9 +155,6 @@ void DFontInfoDialog::initUI()
     m_FileName = QFileInfo(m_fontInfo->fontInfo.filePath).fileName();
     QString text = AutoFeed(m_FileName);
 
-
-    QFontMetrics elideFont(this->font());
-//    m_fontFileName->setText(elideFont.elidedText(text, Qt::ElideRight, 140));
     m_fontFileName->setText(text);
     // Set color
     DPalette pa = DApplicationHelper::instance()->palette(m_fontFileName);
@@ -190,8 +187,6 @@ void DFontInfoDialog::initUI()
     m_baseicInfoLayout->addWidget(panelName);
     m_baseicInfoLayout->addSpacing(4);
 
-
-//    insertContents();
     m_baseicInfoLayout->addStretch(2);
     m_basicInfoFrame->setLayout(m_baseicInfoLayout);
 
@@ -247,23 +242,6 @@ void DFontInfoDialog::initUI()
         DApplicationHelper::instance()->setPalette(scrollArea->viewport(), paFrame);
     }
     fontinfoArea->autoHeight();
-    // Update font info to UI
-//    updateFontInfo();
-#ifdef FTM_DEBUG_LAYOUT_COLOR
-    m_mainFrame->setStyleSheet("background: red");
-    m_fontLogo->setStyleSheet("background: blue");
-    m_fontSytleName->setStyleSheet("background: blue");
-    styleName->setStyleSheet("background: red");
-    m_fontTypeName->setStyleSheet("background: blue");
-    typeName->setStyleSheet("background: red");
-    m_fontFileName->setStyleSheet("background: blue");
-    m_basicInfoFrame->setStyleSheet("background: yellow");
-    panelName->setStyleSheet("background: blue");
-    versionName->setStyleSheet("background: red");
-    m_fontVersion->setStyleSheet("background: blue");
-    versionName->setStyleSheet("background: red");
-    m_fontDescription->setStyleSheet("background: green");
-#endif
 }
 
 /*************************************************************************

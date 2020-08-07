@@ -36,10 +36,6 @@ protected:
     //响应键盘press事件中的esc按键
     void keyPressEvent(QKeyEvent *event) override;
 signals:
-    //发出删除请求信号
-    void requestDelete();
-    //是否执行删除操作信号
-    void signal_delete(bool isdelete);
 
 private slots:
     //根据主题设置页面颜色

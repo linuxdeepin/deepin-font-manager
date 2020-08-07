@@ -191,20 +191,6 @@ DFrame *dfontinfoscrollarea::addTitleFrame(const QString &sData, const QString &
 }
 
 /*************************************************************************
- <Function>      paintEvent
- <Description>   不实现重绘事件
- <Author>
- <Input>
-    <param1>     event           Description:事件对象
- <Return>        null            Description:null
- <Note>          null
-*************************************************************************/
-void dfontinfoscrollarea::paintEvent(QPaintEvent *event)
-{
-    Q_UNUSED(event);
-}
-
-/*************************************************************************
  <Function>      elideText
  <Description>   用于信息页面title名称长度判断
  <Author>

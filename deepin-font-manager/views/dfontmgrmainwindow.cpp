@@ -283,15 +283,8 @@ void DFontMgrMainWindow::initConnections()
     });
 
     // State bar event
-    QObject::connect(d->fontScaleSlider, &DSlider::valueChanged, this, [this, d](int value) {
-        m_previewFontSize = value;
-        QString fontSizeText;
-        fontSizeText.sprintf(FMT_FONT_SIZE, value);
-        //d->fontSizeLabel->setText(fontSizeText);
-        //调节右下角字体大小显示label显示内容/*UT000539*/
-        autoLabelWidth(fontSizeText, d->fontSizeLabel, d->fontSizeLabel->fontMetrics());
-        onFontSizeChanged(value);
-    });
+    QObject::connect(d->fontScaleSlider, &DSlider::valueChanged,
+                     this, &DFontMgrMainWindow::respondToValueChanged);
 
     // Search text changed
     QObject::connect(d->searchFontEdit, SIGNAL(textChanged(const QString &)), this,
@@ -310,14 +303,6 @@ void DFontMgrMainWindow::initConnections()
     //安装结束后刷新字体列表
     connect(m_signalManager, &SignalManager::finishFontInstall, this,
             &DFontMgrMainWindow::onFontInstallFinished);
-
-    connect(m_signalManager, &SignalManager::closeInstallDialog, this, [ = ] {
-        //        if (m_dfNormalInstalldlg->isVisible())
-        //        {
-        //            m_dfNormalInstalldlg->deleteLater();
-        //        }
-        //        showSpinner(DFontSpinnerWidget::Load);
-    });
 
     connect(m_fontManager, &DFontManager::cacheFinish, this, [ = ] {
         m_cacheFinish = true;
@@ -345,22 +330,8 @@ void DFontMgrMainWindow::initConnections()
         m_isPopInstallErrorDialog = false;
     });
 
-    connect(m_signalManager, &SignalManager::installOver, this, [ = ](int successInstallCount) {
-        m_isInstallOver = true;
-        m_successInstallCount = successInstallCount;
-
-        if (m_dfNormalInstalldlg->isVisible()) {
-            m_dfNormalInstalldlg->deleteLater();
-        }
-        if (successInstallCount > 0) {
-            showSpinner(DFontSpinnerWidget::Load);
-        } else {
-            //成功安装的字体数目为0时,在这里将安装标志位复位
-            qDebug() << __func__ << "install finish" << endl;
-            m_fIsInstalling = false;
-        }
-
-    });
+    connect(m_signalManager, &SignalManager::installOver, this,
+            &DFontMgrMainWindow::respondToInstallOver);
 
     connect(m_signalManager, &SignalManager::cancelInstall, this, [ = ]() {
         m_isInstallOver = true;
@@ -674,6 +645,51 @@ void DFontMgrMainWindow::initFontFiles()
 }
 
 /*************************************************************************
+ <Function>      respondToValueChangedEvent
+ <Description>   响应字体大小滑块大小改变
+ <Author>        UT000539
+ <Input>         value           Description:滑块值大小
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
+void DFontMgrMainWindow::respondToValueChanged(int value)
+{
+    D_D(DFontMgrMainWindow);
+    m_previewFontSize = value;
+    QString fontSizeText;
+    fontSizeText.sprintf(FMT_FONT_SIZE, value);
+    //d->fontSizeLabel->setText(fontSizeText);
+    //调节右下角字体大小显示label显示内容/*UT000539*/
+    autoLabelWidth(fontSizeText, d->fontSizeLabel, d->fontSizeLabel->fontMetrics());
+    onFontSizeChanged(value);
+}
+
+/*************************************************************************
+ <Function>      respondToInstallOver
+ <Description>   响应安装结束
+ <Author>        UT000539
+ <Input>         value           Description:滑块值大小
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
+void DFontMgrMainWindow::respondToInstallOver(int successInstallCount)
+{
+    m_isInstallOver = true;
+    m_successInstallCount = successInstallCount;
+
+    if (m_dfNormalInstalldlg->isVisible()) {
+        m_dfNormalInstalldlg->deleteLater();
+    }
+    if (successInstallCount > 0) {
+        showSpinner(DFontSpinnerWidget::Load);
+    } else {
+        //成功安装的字体数目为0时,在这里将安装标志位复位
+        qDebug() << __func__ << "install finish" << endl;
+        m_fIsInstalling = false;
+    }
+}
+
+/*************************************************************************
  <Function>      initTileBar
  <Description>   初始化titleBar
  <Author>
@@ -688,16 +704,10 @@ void DFontMgrMainWindow::initTileBar()
     initTileFrame();
 
     d->toolBarMenu = DFontMenuManager::getInstance()->createToolBarSettingsMenu();
+    titlebar()->setMenu(d->toolBarMenu);
+    titlebar()->setContentsMargins(0, 0, 0, 0);
 
-    bool isDXcbPlatform = true;
-
-    if (isDXcbPlatform) {
-        // d->toolbar->getSettingsButton()->hide();
-        titlebar()->setMenu(d->toolBarMenu);
-        titlebar()->setContentsMargins(0, 0, 0, 0);
-
-        titlebar()->setFixedHeight(FTM_TITLE_FIXED_HEIGHT);
-    }
+    titlebar()->setFixedHeight(FTM_TITLE_FIXED_HEIGHT);
 }
 
 /*************************************************************************
@@ -717,7 +727,7 @@ void DFontMgrMainWindow::initTileFrame()
 
     //Action area add a extra space
     d->titleActionArea = new QWidget(this);
-    d->titleActionArea->setFixedSize(QSize(58, FTM_TITLE_FIXED_HEIGHT));
+    d->titleActionArea->setFixedSize(QSize(FTM_TITLE_FIXED_WIDTH, FTM_TITLE_FIXED_HEIGHT));
 
     QHBoxLayout *titleActionAreaLayout = new QHBoxLayout(d->titleActionArea);
     titleActionAreaLayout->setSpacing(0);
@@ -725,7 +735,7 @@ void DFontMgrMainWindow::initTileFrame()
 
     // Add Font
     d->addFontButton = new DIconButton(DStyle::StandardPixmap::SP_IncreaseElement, this);
-    d->addFontButton->setFixedSize(QSize(38, 38));
+    d->addFontButton->setFixedSize(QSize(FTM_ADDBUTTON_PATAM, FTM_ADDBUTTON_PATAM));
     d->addFontButton->setFlat(false);
     d->addFontButton->setFocusPolicy(Qt::FocusPolicy::NoFocus);
 
@@ -739,14 +749,6 @@ void DFontMgrMainWindow::initTileFrame()
 
     titlebar()->addWidget(d->searchFontEdit, Qt::AlignCenter);
     titlebar()->addWidget(d->titleActionArea, Qt::AlignLeft | Qt::AlignVCenter);
-
-
-    // Debug layout code
-#ifdef FTM_DEBUG_LAYOUT_COLOR
-    d->titleActionArea->setStyleSheet("background: red");
-    d->addFontButton->setStyleSheet("background: silver");
-    d->searchFontEdit->setStyleSheet("background: yellow");
-#endif
 }
 
 /*************************************************************************
@@ -913,16 +915,6 @@ void DFontMgrMainWindow::initFontPreviewListView(QWidget *parent)
 
     listViewVBoxLayout->addWidget(m_fontPreviewListView);
 
-    // 加载图标
-    //    DLabel *onLoadingSpinner = new DLabel(m_fontLoadingSpinner);
-    //    onLoadingSpinner->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    //    onLoadingSpinner->setFixedHeight(onLoadingSpinner->fontMetrics().height());
-    //    onLoadingSpinner->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
-
-    //    QVBoxLayout *lblLayoutLoad = new QVBoxLayout;
-    //    lblLayoutLoad->addWidget(onLoadingSpinner);
-
-    //    m_fontLoadingSpinner->setLayout(lblLayoutLoad);
     listViewVBoxLayout->addWidget(m_fontLoadingSpinner);
 
     m_fontLoadingSpinner->spinnerStart();
