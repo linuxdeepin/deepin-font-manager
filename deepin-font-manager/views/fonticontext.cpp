@@ -25,7 +25,6 @@ FontIconText::FontIconText(const QString picPath, QWidget *parent)
     : QWidget(parent)
     , m_picPath(picPath)
     , render(new DSvgRenderer(this))
-    , m_text("ttf")
 {
     render->load(picPath);
     QSize defaultSize = render->defaultSize();
@@ -91,18 +90,16 @@ void FontIconText::paintEvent(QPaintEvent *event)
 
     const auto ratio = devicePixelRatioF();
     QSize defaultSize = render->defaultSize() * ratio;
-    QImage img = render->toImage(defaultSize);
     QRect picRect = rect();
+    QIcon m_fontIcon;
     if (m_isTtf == true) {
         //then draw text
-        QIcon m_fontIcon = QIcon("/usr/share/icons/bloom/mimetypes/256/font-ttf.svg");// QIcon::fromTheme("deepin-font-manager");
-        QPixmap p = m_fontIcon.pixmap(defaultSize);
-        painter.drawPixmap(picRect, p);
+        m_fontIcon = QIcon("/usr/share/icons/bloom/mimetypes/256/font-ttf.svg");// QIcon::fromTheme("deepin-font-manager");
     } else {
-        QIcon m_fontIcon = QIcon("/usr/share/icons/bloom/mimetypes/256/font-x-generic.svg");// QIcon::fromTheme("deepin-font-manager");
-        QPixmap p = m_fontIcon.pixmap(defaultSize);
-        painter.drawPixmap(picRect, p);
+        m_fontIcon = QIcon("/usr/share/icons/bloom/mimetypes/256/font-x-generic.svg");// QIcon::fromTheme("deepin-font-manager");
     }
+    QPixmap p = m_fontIcon.pixmap(defaultSize);
+    painter.drawPixmap(picRect, p);
 
 }
 

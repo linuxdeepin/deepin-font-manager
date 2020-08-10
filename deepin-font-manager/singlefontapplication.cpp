@@ -33,10 +33,6 @@ SingleFontApplication::SingleFontApplication(int &argc, char **argv)
     , m_qspMainWnd(nullptr)
     , m_qspQuickWnd(nullptr)
 {
-    connect(DGuiApplicationHelper::instance()
-            , &DGuiApplicationHelper::newProcessInstance, this
-            , &SingleFontApplication::onNewProcessInstance);
-
     connect(SignalManager::instance(), &SignalManager::finishFontInstall, this,
             &SingleFontApplication::onFontInstallFinished);
 }
@@ -270,21 +266,3 @@ void SingleFontApplication::installFonts(const QStringList &fontPathList)
     slotBatchInstallFonts();
 }
 
-/* Deprecated ut000591 */
-void SingleFontApplication::onNewProcessInstance(qint64 pid, const QStringList &arguments)
-{
-    Q_UNUSED(pid);
-
-    //clear old file list
-    m_selectedFiles.clear();
-
-    //<app_excename> <file list>
-    //1.Skip app-exce name p=0
-    //2.Check font file MIME,ignore invalid file.
-    for (int p = 1; p < arguments.size(); p++) {
-        if (Utils::isFontMimeType(arguments[p])) {
-            m_selectedFiles.append(arguments[p]);
-        }
-    }
-    activateWindow();
-}

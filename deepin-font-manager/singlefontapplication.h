@@ -36,8 +36,6 @@ public slots:
     Q_SCRIPTABLE void installFonts(const QStringList &fontPathList);
 
 private slots:
-    //Deprecated
-    void onNewProcessInstance(qint64 pid, const QStringList &arguments);
     //批量安装字体响应
     void slotBatchInstallFonts();
     //安装完成清空列表

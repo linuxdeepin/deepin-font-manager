@@ -1,6 +1,6 @@
 #ifndef GLOBALDEF_H
 #define GLOBALDEF_H
-
+//窗口默认大小
 #define DEFAULT_WINDOWS_WIDTH 820
 #define DEFAULT_WINDOWS_HEIGHT 580
 

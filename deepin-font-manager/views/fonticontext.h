@@ -15,7 +15,6 @@ public:
     explicit FontIconText(const QString picPath, QWidget *parent = nullptr);
     //设置字体名
     void setFontName(const QString &familyName, const QString &styleName);
-//    inline void setText(const QString &text) { if (!text.isEmpty()) m_text = text; }
     //设置是否为ttf字体属性
     void setContent(bool isTtf);
 
@@ -29,6 +28,5 @@ private:
     QString m_picPath;
     DTK_GUI_NAMESPACE::DSvgRenderer *render;
     QFont m_font;
-    QString m_text;
     bool m_isTtf;
 };
