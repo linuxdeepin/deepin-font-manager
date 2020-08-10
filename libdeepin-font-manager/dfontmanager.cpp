@@ -448,7 +448,7 @@ void DFontManager::setCacheStatus(const CacheStatus &CacheStatus)
  <Return>        null            Description:null
  <Note>          null
 *************************************************************************/
-void DFontManager::stoped()
+void DFontManager::stop()
 {
     m_IsNeedStop = true;
 }

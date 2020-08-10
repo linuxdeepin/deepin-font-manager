@@ -87,7 +87,7 @@ public:
     //设置fc-cache命令执行的状态
     void setCacheStatus(const CacheStatus &CacheStatus);
     //更新线程停止状态标志位
-    void stoped();
+    void stop();
 
 signals:
     //批量安装信号

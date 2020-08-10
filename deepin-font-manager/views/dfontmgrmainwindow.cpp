@@ -1506,7 +1506,7 @@ void DFontMgrMainWindow::onLeftSiderBarItemClicked(int index)
         return;
     }
     bool resetFocus = false;
-    if (m_fontPreviewListView->hasFocus() || m_noResultListView->hasFocus())
+    if (m_fontPreviewListView->hasFocus())
         resetFocus = true;
 
     m_leftIndex = 0;
