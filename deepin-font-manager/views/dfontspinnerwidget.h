@@ -7,6 +7,17 @@ class DFontSpinner;
 class DFontSpinnerWidget : public Dtk::Widget::DWidget
 {
 public:
+    /*************************************************************************
+     <Enum>      SpinnerStyles
+     <Description>   加载动画样式
+     <Author>
+     <Value>
+        <Value1>   StartupLoad      Description:启动应用加载
+        <Value2>   Load             Description:安装后加载
+        <Value3>   Delete           Description:删除后加载
+        <Value4>   NoLabel          Description:无加载提示信息
+     <Note>          null
+    *************************************************************************/
     enum SpinnerStyles {
         StartupLoad,
         Load,

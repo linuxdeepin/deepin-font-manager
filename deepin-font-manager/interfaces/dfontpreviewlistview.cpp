@@ -71,30 +71,68 @@ DFontPreviewListView::~DFontPreviewListView()
 {
 }
 
+/*************************************************************************
+ <Function>      initFontListData
+ <Description>   初始化时,设置界面各个控件的状态
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListView::initFontListData()
 {
     emit onLoadFontsStatus(0);
 }
 
+/*************************************************************************
+ <Function>      isListDataLoadFinished
+ <Description>   获取加载数据是否完成的标志位
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        m_bLoadDataFinish            Description:加载数据是否完成的标志位
+ <Note>          null
+*************************************************************************/
 bool DFontPreviewListView::isListDataLoadFinished()
 {
     return m_bLoadDataFinish;
 }
 
+/*************************************************************************
+ <Function>      onFinishedDataLoad
+ <Description>   数据加载完成响应函数
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListView::onFinishedDataLoad()
 {
     qDebug() << "onFinishedDataLoad thread id = " << QThread::currentThreadId();
     m_bLoadDataFinish = true;
 }
 
-void DFontPreviewListView::onItemAdded(const DFontPreviewItemData &itemData)
-{
-    QStandardItemModel *sourceModel = qobject_cast<QStandardItemModel *>(m_fontPreviewProxyModel->sourceModel());
-    QStandardItem *item = new QStandardItem;
-    item->setData(QVariant::fromValue(itemData), Qt::DisplayRole);
-    sourceModel->appendRow(item);
-}
 
+//void DFontPreviewListView::onItemAdded(const DFontPreviewItemData &itemData)
+//{
+//    QStandardItemModel *sourceModel = qobject_cast<QStandardItemModel *>(m_fontPreviewProxyModel->sourceModel());
+//    QStandardItem *item = new QStandardItem;
+//    item->setData(QVariant::fromValue(itemData), Qt::DisplayRole);
+//    sourceModel->appendRow(item);
+//}
+
+/*************************************************************************
+ <Function>      onMultiItemsAdded
+ <Description>   listview中添加项响应函数
+ <Author>        null
+ <Input>
+    <param1>     data              Description:需要添加项的数据列表
+    <param2>     styles            Description:加载动画的样式
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListView::onMultiItemsAdded(QList<DFontPreviewItemData> &data, DFontSpinnerWidget::SpinnerStyles styles)
 {
     if (data.isEmpty())
@@ -140,6 +178,15 @@ void DFontPreviewListView::onMultiItemsAdded(QList<DFontPreviewItemData> &data, 
     qDebug() << __FUNCTION__ << "end";
 }
 
+/*************************************************************************
+ <Function>      onItemRemoved
+ <Description>   移除某一项响应函数
+ <Author>        null
+ <Input>
+    <param1>     itemData            Description:需要移除项的数据
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListView::onItemRemoved(const DFontPreviewItemData &itemData)
 {
     if (m_fontPreviewProxyModel == nullptr)
@@ -151,6 +198,15 @@ void DFontPreviewListView::onItemRemoved(const DFontPreviewItemData &itemData)
     updateSelection();
 }
 
+/*************************************************************************
+ <Function>      onItemRemovedFromSys
+ <Description>   从文管中删除字体响应函数
+ <Author>        null
+ <Input>
+    <param1>     itemData            Description:需要移除项的数据
+ <Return>        null                Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListView::onItemRemovedFromSys(const DFontPreviewItemData &itemData)
 {
     if (m_fontPreviewProxyModel == nullptr)
@@ -163,6 +219,17 @@ void DFontPreviewListView::onItemRemovedFromSys(const DFontPreviewItemData &item
     updateSelection();
 }
 
+/*************************************************************************
+ <Function>      updateCurrentFontGroup
+ <Description>   切换界面时,更新之前记录的当前字体组的信息
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+    <param2>     null            Description:null
+    <param3>     null            Description:null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListView::updateCurrentFontGroup(int currentFontGroup)
 {
     switch (currentFontGroup) {
@@ -200,6 +267,15 @@ void DFontPreviewListView::updateCurrentFontGroup(int currentFontGroup)
 
 }
 
+/*************************************************************************
+ <Function>      initDelegate
+ <Description>   初始化listview的代理
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListView::initDelegate()
 {
     m_fontPreviewItemDelegate = new DFontPreviewItemDelegate(this);
@@ -212,21 +288,57 @@ void DFontPreviewListView::initDelegate()
     QListView::setModel(m_fontPreviewProxyModel);
 }
 
+/*************************************************************************
+ <Function>      initConnections
+ <Description>   初始化链接
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListView::initConnections()
 {
     connect(m_signalManager, &SignalManager::currentFontGroup, this, &DFontPreviewListView::updateCurrentFontGroup);
 }
 
+/*************************************************************************
+ <Function>      count
+ <Description>   获取当前listview的行数
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        int             Description:当前listview的行数
+ <Note>          null
+*************************************************************************/
 int DFontPreviewListView::count() const
 {
     return model()->rowCount(rootIndex());
 }
 
+/*************************************************************************
+ <Function>      cancelDel
+ <Description>   取消删除后,重置之前记录的删除后的位置
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListView::cancelDel()
 {
     m_selectAfterDel = -1;
 }
 
+/*************************************************************************
+ <Function>      viewChanged
+ <Description>   切换界面后,滚动到最上方
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListView::viewChanged()
 {
     scrollToTop();
@@ -234,6 +346,15 @@ void DFontPreviewListView::viewChanged()
 }
 
 /*记录移除前位置*/
+/*************************************************************************
+ <Function>      markPositionBeforeRemoved
+ <Description>   记录移除前位置
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListView::markPositionBeforeRemoved(bool isDelete, const QModelIndexList &list)
 {
     if (isDelete) {
@@ -249,7 +370,15 @@ void DFontPreviewListView::markPositionBeforeRemoved(bool isDelete, const QModel
     }
 }
 
-/*UT000539 设置focus状态、设置选中状态 */
+/*************************************************************************
+ <Function>      refreshFocuses
+ <Description>   设置focus状态、设置选中状态
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListView::refreshFocuses()
 {
     qDebug() << __FUNCTION__;
@@ -257,7 +386,15 @@ void DFontPreviewListView::refreshFocuses()
         setFocus(Qt::MouseFocusReason);
 }
 
-/*获取一页个数*/
+/*************************************************************************
+ <Function>      getOnePageCount
+ <Description>   获取一页中列表项的个数
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        int             Description:列表项的个数
+ <Note>          null
+*************************************************************************/
 int DFontPreviewListView::getOnePageCount()
 {
     const int defaultCount = 12;
@@ -272,21 +409,58 @@ int DFontPreviewListView::getOnePageCount()
     return count;
 }
 
+/*************************************************************************
+ <Function>      setRecoveryTabFocusState
+ <Description>   记录操作前的tabfocus状态,用于进行操作后还原
+ <Author>        null
+ <Input>
+    <param1>     recoveryTabFocusState            Description:操作前的tabfocus状态
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListView::setRecoveryTabFocusState(bool recoveryTabFocusState)
 {
     m_recoveryTabFocusState = recoveryTabFocusState;
 }
 
+/*************************************************************************
+ <Function>      setIsTabFocus
+ <Description>   设置是否为tabfocus的标志位
+ <Author>        null
+ <Input>
+    <param1>     IsTabFocus            Description:是否为tabfocus
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListView::setIsTabFocus(bool IsTabFocus)
 {
     m_IsTabFocus = IsTabFocus;
 }
 
+/*************************************************************************
+ <Function>      getIsTabFocus
+ <Description>   获取是否为tab focus
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        bool            Description:是否为tabfocus的标志位
+ <Note>          null
+*************************************************************************/
 bool DFontPreviewListView::getIsTabFocus() const
 {
     return m_IsTabFocus;
 }
 
+/*************************************************************************
+ <Function>      updateSpinner
+ <Description>   更新加载动画spinner
+ <Author>        null
+ <Input>
+    <param1>     style            Description:spinner的种类
+    <param2>     force            Description:是否强制刷新
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListView::updateSpinner(DFontSpinnerWidget::SpinnerStyles style, bool force)
 {
     qint64 curtm = QDateTime::currentMSecsSinceEpoch();
@@ -297,6 +471,15 @@ void DFontPreviewListView::updateSpinner(DFontSpinnerWidget::SpinnerStyles style
     }
 }
 
+/*************************************************************************
+ <Function>      updateModel
+ <Description>   删除字体后更新整个model
+ <Author>        null
+ <Input>
+    <param1>     showSpinner            Description:显示加载图标的样式
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListView::updateModel(bool showSpinner)
 {
     Q_UNUSED(showSpinner)
@@ -346,18 +529,45 @@ void DFontPreviewListView::updateModel(bool showSpinner)
     m_recoveryTabFocusState = false;
 }
 
+/*************************************************************************
+ <Function>      getCollectionIconRect
+ <Description>   获取收藏图标尺寸
+ <Author>        null
+ <Input>
+    <param1>     rect             Description:listview中一项的范围
+ <Return>        QRect            Description:收藏图标尺寸
+ <Note>          null
+*************************************************************************/
 QRect DFontPreviewListView::getCollectionIconRect(const QRect &rect)
 {
     int collectIconSize = 22 + 10;
     return QRect(rect.right() - 10 - 33, rect.top() + 10 - 5, collectIconSize, collectIconSize);
 }
 
+/*************************************************************************
+ <Function>      getCheckboxRect
+ <Description>   获取复选框尺寸
+ <Author>        null
+ <Input>
+    <param1>     rect            Description:listview中一项的范围
+ <Return>        QRect            Description:复选框尺寸
+ <Note>          null
+*************************************************************************/
 QRect DFontPreviewListView::getCheckboxRect(const QRect &rect)
 {
     int checkBoxSize = 20 + 10;
     return QRect(rect.left() + 20, rect.top() + 10 - 5, checkBoxSize, checkBoxSize);
 }
 
+/*************************************************************************
+ <Function>      onUpdateCurrentFont
+ <Description>   更新当前字体
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListView::onUpdateCurrentFont()
 {
     if (!m_fontChanged) {
@@ -415,6 +625,15 @@ void DFontPreviewListView::onUpdateCurrentFont()
     qDebug() << __FUNCTION__ << "end" << m_currentFont;
 }
 
+/*************************************************************************
+ <Function>      onFontChanged
+ <Description>   应用字体变化时触发函数
+ <Author>        null
+ <Input>
+    <param1>     font            Description:当前使用字体
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListView::onFontChanged(const QFont &font)
 {
     if (font.weight() == m_curAppFont.weight() && font.style() == m_curAppFont.style()
@@ -438,13 +657,29 @@ void DFontPreviewListView::onFontChanged(const QFont &font)
     qDebug() << __FUNCTION__ << " end";
 }
 
+/*************************************************************************
+ <Function>      isCurrentFont
+ <Description>   判断这个字体是否为当前系统使用字体
+ <Author>        null
+ <Input>
+    <param1>     itemData            Description:需要判断的字体
+ <Return>        bool                Description:是否为当前系统使用字体
+ <Note>          null
+*************************************************************************/
 bool DFontPreviewListView::isCurrentFont(DFontPreviewItemData &itemData)
 {
     return (itemData == m_curFontData);
 }
 
-/* ut000442 对选中字体的索引按照row从大到小进行排序，为了在我的收藏界面和已激活界面进行操作时*/
-/* 涉及到删除listview中item时从后往前删，避免在删除过程中索引出错的问题。*/
+/*************************************************************************
+ <Function>      sortModelIndexList
+ <Description>   对选中字体的索引按照row从大到小进行排序，为了在我的收藏界面和已激活界面进行操作时
+ <Author>        ut000442
+ <Input>
+    <param1>     sourceList            Description:需要排序的字体列表
+ <Return>        null                  Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListView::sortModelIndexList(QModelIndexList &sourceList)
 {
     QModelIndex temp;
@@ -469,7 +704,16 @@ void DFontPreviewListView::sortModelIndexList(QModelIndexList &sourceList)
     }
 }
 
-/*设置item移除后的选中*/
+/*************************************************************************
+ <Function>      selectItemAfterRemoved
+ <Description>   设置item移除后的选中
+ <Author>        null
+ <Input>
+    <param1>     isAtBottom            Description:是否在列表底部
+    <param2>     isAtTop               Description:是否在列表顶部
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListView::selectItemAfterRemoved(bool isAtBottom, bool isAtTop)
 {
     int param = getOnePageCount();
@@ -549,6 +793,16 @@ void DFontPreviewListView::selectItemAfterRemoved(bool isAtBottom, bool isAtTop)
     }
 }
 
+/*************************************************************************
+ <Function>      deleteFontModelIndex
+ <Description>   根据文件路径删除字体列表中项
+ <Author>        null
+ <Input>
+    <param1>     filePath            Description:需要删除的字体路径
+    <param2>     isFromSys           Description:是否为从文管中删除
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListView::deleteFontModelIndex(const QString &filePath, bool isFromSys)
 {
     Q_UNUSED(isFromSys);
@@ -576,6 +830,15 @@ void DFontPreviewListView::deleteFontModelIndex(const QString &filePath, bool is
     }
 }
 
+/*************************************************************************
+ <Function>      isDeleting
+ <Description>   返回是否正在删除
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        bool            Description:是否在删除
+ <Note>          null
+*************************************************************************/
 bool DFontPreviewListView::isDeleting()
 {
     DFontMgrMainWindow *mw = qobject_cast<DFontMgrMainWindow *>(m_parentWidget);
@@ -584,6 +847,15 @@ bool DFontPreviewListView::isDeleting()
     return false;
 }
 
+/*************************************************************************
+ <Function>      selectFonts
+ <Description>   根据提供的路径选中哦个listview中的项
+ <Author>        null
+ <Input>
+    <param1>     fileList            Description:需要选中字体的路径
+ <Return>        null                Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListView::selectFonts(const QStringList &fileList)
 {
     if (fileList.isEmpty())
@@ -623,16 +895,44 @@ void DFontPreviewListView::selectFonts(const QStringList &fileList)
     m_recoveryTabFocusState = false;
 }
 
+/*************************************************************************
+ <Function>      getMutex
+ <Description>   获取线程锁
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 QMutex *DFontPreviewListView::getMutex()
 {
     return &m_mutex;
 }
 
+/*************************************************************************
+ <Function>      selectionChanged
+ <Description>   选中切换后触发函数
+ <Author>        null
+ <Input>
+    <param1>     selected              Description:下个选中项
+    <param2>     deselected            Description:取消选中项
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListView::selectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
 {
     QListView::selectionChanged(selected, deselected);
 }
 
+/*************************************************************************
+ <Function>      mouseMoveEvent
+ <Description>   鼠标移动事件
+ <Author>        null
+ <Input>
+    <param1>     event            Description:鼠标事件
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListView::mouseMoveEvent(QMouseEvent *event)
 {
     if (!m_fontPreviewProxyModel) {
@@ -676,6 +976,15 @@ void DFontPreviewListView::mouseMoveEvent(QMouseEvent *event)
     QListView::mouseMoveEvent(event);
 }
 
+/*************************************************************************
+ <Function>      mousePressEvent
+ <Description>   鼠标点击事件
+ <Author>        null
+ <Input>
+    <param1>     event            Description:鼠标事件
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
 {
     qDebug() << "\n" << __FUNCTION__ << event->type() << event->button();
@@ -737,6 +1046,15 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
     }
 }
 
+/*************************************************************************
+ <Function>      mouseReleaseEvent
+ <Description>   鼠标释放事件
+ <Author>        null
+ <Input>
+    <param1>     event            Description:鼠标事件
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListView::mouseReleaseEvent(QMouseEvent *event)
 {
     qDebug() << __FUNCTION__ << " begin";
@@ -804,11 +1122,30 @@ void DFontPreviewListView::mouseReleaseEvent(QMouseEvent *event)
     qDebug() << __FUNCTION__ << " end\n\n";
 }
 
+/*************************************************************************
+ <Function>      mouseDoubleClickEvent
+ <Description>   鼠标双击事件
+ <Author>        null
+ <Input>
+    <param1>     event            Description:鼠标事件
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListView::mouseDoubleClickEvent(QMouseEvent *event)
 {
     QListView::mouseDoubleClickEvent(event);
 }
 
+/*************************************************************************
+ <Function>      setSelection
+ <Description>   listview设置选中的函数,主要在这里获取当前选中的字体index
+ <Author>        null
+ <Input>
+    <param1>     rect            Description:需要选中的区域范围
+    <param2>     command            Description:SelectionFlag
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListView::setSelection(const QRect &rect,
                                         QItemSelectionModel::SelectionFlags command)
 {
@@ -819,12 +1156,32 @@ void DFontPreviewListView::setSelection(const QRect &rect,
     QListView::setSelection(rect, command);
 }
 
+/*************************************************************************
+ <Function>      setModel
+ <Description>   为listview设置模型
+ <Author>        null
+ <Input>
+    <param1>     model            Description:需要设置的模型
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListView::setModel(QAbstractItemModel *model)
 {
 //    m_fontPreviewItemModel = qobject_cast<QStandardItemModel *>(model);
     QListView::setModel(model);
 }
 
+/*************************************************************************
+ <Function>      rowsAboutToBeRemoved
+ <Description>   listview一行将要移出时触发函数
+ <Author>        null
+ <Input>
+    <param1>     parent            Description:对应被删除的夫索引
+    <param2>     start            Description:第一个眼删除的行号
+    <param3>     end            Description:最后一个要删除的行号
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListView::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end)
 {
     if (selectionModel()->selectedIndexes().count() > 0) {
@@ -838,6 +1195,15 @@ void DFontPreviewListView::rowsAboutToBeRemoved(const QModelIndex &parent, int s
     QListView::rowsAboutToBeRemoved(parent, start, end);
 }
 
+/*************************************************************************
+ <Function>      keyPressEvent
+ <Description>   键盘点击事件
+ <Author>        null
+ <Input>
+    <param1>     event            Description:键盘点击事件
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListView::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_End) {
@@ -884,13 +1250,19 @@ void DFontPreviewListView::keyPressEvent(QKeyEvent *event)
         QListView::keyPressEvent(event);
     }
 }
-/*
- * param:list             :The selected QModelIndexList
- * param:isUp             :Key_Up pressed
- * param:isDown           :Key_Down pressed
- * param:isShiftModifier  :Key_Shift pressed
- * 根据按键设置选中
-*/
+
+/*************************************************************************
+ <Function>      keyPressEventFilter
+ <Description>   根据按键设置选中
+ <Author>        null
+ <Input>
+    <param1>     list              Description:The selected QModelIndexList
+    <param2>     isUp              Description:Key_Up pressed
+    <param3>     isDown            Description:Key_Down pressed
+    <param4>     isShiftModifier   Description:Key_Shift pressed
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListView::keyPressEventFilter(const QModelIndexList &list, bool isUp, bool isDown, bool isShiftModifier)
 {
     //SP3--空白页面上下键选中判断
@@ -969,6 +1341,16 @@ void DFontPreviewListView::keyPressEventFilter(const QModelIndexList &list, bool
     }
 }
 
+/*************************************************************************
+ <Function>      eventFilter
+ <Description>   事件过滤器,用于处理焦点移动事件
+ <Author>        null
+ <Input>
+    <param1>     obj              Description:UNUSED
+    <param2>     event            Description:触发的事件
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 bool DFontPreviewListView::eventFilter(QObject *obj, QEvent *event)
 {
     Q_UNUSED(obj)
@@ -989,18 +1371,45 @@ bool DFontPreviewListView::eventFilter(QObject *obj, QEvent *event)
     return false;
 }
 
+/*************************************************************************
+ <Function>      enableFont
+ <Description>   启用字体
+ <Author>        null
+ <Input>
+    <param1>     filePath            Description:启用字体路径
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListView::enableFont(const QString &filePath)
 {
     if (!m_enableFontList.contains(filePath))
         m_enableFontList << filePath;
 }
 
+/*************************************************************************
+ <Function>      disableFont
+ <Description>   禁用字体
+ <Author>        null
+ <Input>
+    <param1>     filePath            Description:禁用字体路径
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListView::disableFont(const QString &filePath)
 {
     if (!m_disableFontList.contains(filePath))
         m_disableFontList << filePath;
 }
 
+/*************************************************************************
+ <Function>      enableFonts
+ <Description>   批量启用字体
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListView::enableFonts()
 {
     if (m_enableFontList.isEmpty())
@@ -1018,6 +1427,15 @@ void DFontPreviewListView::enableFonts()
     m_enableFontList.clear();
 }
 
+/*************************************************************************
+ <Function>      enableFonts
+ <Description>   批量禁用字体
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListView::disableFonts()
 {
     if (m_disableFontList.isEmpty())
@@ -1035,6 +1453,15 @@ void DFontPreviewListView::disableFonts()
     m_disableFontList.clear();
 }
 
+/*************************************************************************
+ <Function>      updateShiftSelect
+ <Description>   更新shift选中的字体.
+ <Author>        null
+ <Input>
+    <param1>     modelIndex            Description:需要更新的index
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListView::updateShiftSelect(const QModelIndex &modelIndex)
 {
     if (!modelIndex.isValid())
@@ -1064,6 +1491,15 @@ void DFontPreviewListView::updateShiftSelect(const QModelIndex &modelIndex)
     }
 }
 
+/*************************************************************************
+ <Function>      isAtListviewBottom
+ <Description>   判断listview是否在底部
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        bool            Description:listview是否在底部
+ <Note>          null
+*************************************************************************/
 bool DFontPreviewListView::isAtListviewBottom()
 {
     if (this->verticalScrollBar()->value() >= this->verticalScrollBar()->maximum()) {
@@ -1072,6 +1508,15 @@ bool DFontPreviewListView::isAtListviewBottom()
     return false;
 }
 
+/*************************************************************************
+ <Function>      isAtListviewTop
+ <Description>   判断listview是否在顶部
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        bool            Description:listview是否在顶部
+ <Note>          null
+*************************************************************************/
 bool DFontPreviewListView::isAtListviewTop()
 {
     if (this->verticalScrollBar()->value() <= this->verticalScrollBar()->minimum()) {
@@ -1080,6 +1525,15 @@ bool DFontPreviewListView::isAtListviewTop()
     return false;
 }
 
+/*************************************************************************
+ <Function>      getPreviewTextWithSize
+ <Description>   通过字体大小获得预览内容
+ <Author>        null
+ <Input>
+    <param1>     fontSize            Description:字体大小
+ <Return>        QString             Description:预览内容
+ <Note>          null
+*************************************************************************/
 QString DFontPreviewListView::getPreviewTextWithSize(int *fontSize)
 {
     DFontMgrMainWindow *mw = qobject_cast<DFontMgrMainWindow *>(m_parentWidget);
@@ -1090,7 +1544,15 @@ QString DFontPreviewListView::getPreviewTextWithSize(int *fontSize)
     return QString(DApplication::translate("Font", "Don't let your dreams be dreams"));
 }
 
-/*SP3--Alt+M右键菜单--弹出*/
+/*************************************************************************
+ <Function>      onRightMenuShortCutActivated
+ <Description>   Alt+M右键菜单--弹出
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListView::onRightMenuShortCutActivated()
 {
     m_isMousePressNow = false;
@@ -1160,12 +1622,29 @@ void DFontPreviewListView::onRightMenuShortCutActivated()
     }
 }
 
+/*************************************************************************
+ <Function>      setCurrentSelected
+ <Description>   记录当前选中行的行数
+ <Author>        null
+ <Input>
+    <param1>     indexRow            Description:当前选中行的行数
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListView::setCurrentSelected(int indexRow)
 {
     m_currentSelectedRow = indexRow;
 }
 
-/*检查鼠标是否处于hover状态*/
+/*************************************************************************
+ <Function>      checkHoverState
+ <Description>   检查鼠标是否处于hover状态
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListView::checkHoverState()
 {
     //记录鼠标位置下的QModelIndex
@@ -1181,6 +1660,19 @@ void DFontPreviewListView::checkHoverState()
     }
 }
 
+/*************************************************************************
+ <Function>      onEnableBtnClicked
+ <Description>   listview中启用禁用响应函数
+ <Author>        null
+ <Input>
+    <param1>     itemIndexes            Description:选中项的索引
+    <param2>     systemCnt              Description:是否为系统字体
+    <param3>     curCnt                 Description:是否为系统当前使用的字体
+    <param4>     setValue               Description:需要设置的值
+    <param5>     isFromActiveFont       Description:是否在已激活界面触发
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListView::onEnableBtnClicked(const QModelIndexList &itemIndexes, int systemCnt,
                                               int curCnt, bool setValue, bool isFromActiveFont)
 {
@@ -1279,6 +1771,17 @@ void DFontPreviewListView::onEnableBtnClicked(const QModelIndexList &itemIndexes
     Q_EMIT rowCountChanged();
 }
 
+/*************************************************************************
+ <Function>      onCollectBtnClicked
+ <Description>   listview收藏界面点击后触发函数
+ <Author>        null
+ <Input>
+    <param1>     index               Description:选中项的indexlist
+    <param2>     setValue            Description:需要设置的值
+    <param3>     isFromCollectFont   Description:是否来自于我的收藏界面
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListView::onCollectBtnClicked(const QModelIndexList &index, bool setValue, bool isFromCollectFont)
 {
     if (index.isEmpty())
@@ -1325,6 +1828,15 @@ void DFontPreviewListView::onCollectBtnClicked(const QModelIndexList &index, boo
     qDebug() << __FUNCTION__ << " after " << currModelIndex().row() << currentIndex().row();
 }
 
+/*************************************************************************
+ <Function>      onListViewShowContextMenu
+ <Description>   显示右键菜单
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListView::onListViewShowContextMenu()
 {
     QAction *action = m_rightMenu->exec(QCursor::pos());
@@ -1332,11 +1844,29 @@ void DFontPreviewListView::onListViewShowContextMenu()
     qDebug() << __FUNCTION__ << action;
 }
 
+/*************************************************************************
+ <Function>      setRightContextMenu
+ <Description>   设置右键菜单
+ <Author>        null
+ <Input>
+    <param1>     rightMenu       Description:需要设置的右键菜单
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListView::setRightContextMenu(QMenu *rightMenu)
 {
     m_rightMenu = rightMenu;
 }
 
+/*************************************************************************
+ <Function>      currModelIndex
+ <Description>   获取当前项的Index
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        QModelIndex     Description:当前项的Index
+ <Note>          null
+*************************************************************************/
 QModelIndex DFontPreviewListView::currModelIndex()
 {
     int min = -1;
@@ -1354,6 +1884,15 @@ QModelIndex DFontPreviewListView::currModelIndex()
     return m_currModelIndex;
 }
 
+/*************************************************************************
+ <Function>      currModelData
+ <Description>   返回当前项的itemdata
+ <Author>        null
+ <Input>
+    <param1>     null                            Description:null
+ <Return>        DFontPreviewItemData            Description:当前项的itemdata
+ <Note>          null
+*************************************************************************/
 DFontPreviewItemData DFontPreviewListView::currModelData()
 {
     QVariant varModel = m_fontPreviewProxyModel->data(currModelIndex(), Qt::DisplayRole);
@@ -1363,11 +1902,29 @@ DFontPreviewItemData DFontPreviewListView::currModelData()
     return itemData;
 }
 
+/*************************************************************************
+ <Function>      getFontPreviewProxyModel
+ <Description>   获取listview的model;
+ <Author>        null
+ <Input>
+    <param1>     null                         Description:null
+ <Return>        DFontPreviewProxyModel*      Description:listview的model
+ <Note>          null
+*************************************************************************/
 DFontPreviewProxyModel *DFontPreviewListView::getFontPreviewProxyModel()
 {
     return m_fontPreviewProxyModel;
 }
 
+/*************************************************************************
+ <Function>      clearPressState
+ <Description>   清空选中状态
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListView::clearPressState()
 {
     if (!m_pressModelIndex.isValid())
@@ -1382,6 +1939,15 @@ void DFontPreviewListView::clearPressState()
     m_pressModelIndex = QModelIndex();
 }
 
+/*************************************************************************
+ <Function>      clearHoverState
+ <Description>   清空hover状态
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListView::clearHoverState()
 {
     if (!m_hoverModelIndex.isValid())
@@ -1397,6 +1963,16 @@ void DFontPreviewListView::clearHoverState()
     m_hoverModelIndex = QModelIndex();
 }
 
+/*************************************************************************
+ <Function>      updateChangedFile
+ <Description>   文件改动时触发的函数
+ <Author>        null
+ <Input>
+    <param1>     path            Description:改动文件的路径
+
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListView::updateChangedFile(const QString &path)
 {
     qDebug() << __FUNCTION__ << path << " begin ";
@@ -1407,6 +1983,16 @@ void DFontPreviewListView::updateChangedFile(const QString &path)
     qDebug() << __FUNCTION__ << path << " end ";
 }
 
+/*************************************************************************
+ <Function>      updateChangedFile
+ <Description>   目录改动时触发的函数
+ <Author>        null
+ <Input>
+    <param1>     path            Description:改动目录的路径
+
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListView::updateChangedDir(const QString &path)
 {
     //no different between "share" or "fonts" dir
@@ -1435,6 +2021,16 @@ void DFontPreviewListView::updateChangedDir(const QString &path)
     //qDebug() << __FUNCTION__ << "update end";
 }
 
+/*************************************************************************
+ <Function>      deleteFontFiles
+ <Description>   删除字体
+ <Author>        null
+ <Input>
+    <param1>     files            Description:需要删除的字体
+    <param2>     force            Description:是否为强制删除
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListView::deleteFontFiles(const QStringList &files, bool force)
 {
     if (force) {
@@ -1446,6 +2042,7 @@ void DFontPreviewListView::deleteFontFiles(const QStringList &files, bool force)
 
     deleteCurFonts(files, force);
 }
+
 
 void DFontPreviewListView::deleteCurFonts(const QStringList &files, bool force)
 {
@@ -1474,6 +2071,17 @@ void DFontPreviewListView::deleteCurFonts(const QStringList &files, bool force)
     m_dataThread->onAutoDirWatchers();
 }
 
+/*************************************************************************
+ <Function>      changeFontFile
+ <Description>   文件改动时触发的函数,对相应文件进行处理
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+    <param2>     null            Description:null
+    <param3>     null            Description:null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListView::changeFontFile(const QString &path, bool force)
 {
     QFileInfo fi(path);
@@ -1512,18 +2120,23 @@ void DFontPreviewListView::changeFontFile(const QString &path, bool force)
     }
 }
 
-/**
- * @brief DFontPreviewListView::selectedFonts
- * @param deleteCnt : count of deletable fonts (minus system fonts and current font)
- * @param systemCnt : count of system font
- * @param curFontCnt : count of current font (0/1)
- * @param disableCnt : count of can be disabled/enabled fonts
- * @param delFontList : delete font path list (for delete fonts)
- * @param allIndexList : all font index list (includes system fonts and current font) (for collect fonts)
- * @param disableIndexList : can be disabled/enabled font index list (for enable/disable fonts)
- * @param allMinusSysFontList : all font path list exclude system fonts (for export fonts)
- * @param curData : current index data (required for disable/enable/collect fonts)
- */
+/*************************************************************************
+ <Function>      selectedFonts
+ <Description>   选中字体,并通过传入参数获得各种字体的数目等信息.
+ <Author>        null
+ <Input>
+    <param1> deleteCnt           Description: count of deletable fonts (minus system fonts and current font)
+    <param1> systemCnt           Description: count of system font
+    <param1> curFontCnt          Description: count of current font (0/1)
+    <param1> disableCnt          Description: count of can be disabled/enabled fonts
+    <param1> delFontList         Description: delete font path list (for delete fonts)
+    <param1> allIndexList        Description: all font index list (includes system fonts and current font) (for collect fonts)
+    <param1> disableIndexList    Description: can be disabled/enabled font index list (for enable/disable fonts)
+    <param1> allMinusSysFontList Description: all font path list exclude system fonts (for export fonts)
+    <param1> curData             Description: current index data (required for disable/enable/collect fonts)
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListView::selectedFonts(int *deleteCnt, int *systemCnt, int *curFontCnt, int *disableCnt,
                                          QStringList *delFontList, QModelIndexList *allIndexList,
                                          QModelIndexList *disableIndexList, QStringList *allMinusSysFontList, DFontPreviewItemData *curData)
@@ -1596,7 +2209,15 @@ void DFontPreviewListView::selectedFonts(int *deleteCnt, int *systemCnt, int *cu
         qDebug() << __FUNCTION__ << delFontList->size() << *deleteCnt;
 }
 
-/*SP3--切换至listview，已有选中且不可见，则滚动到第一并记录位置*/
+/*************************************************************************
+ <Function>      scrollWithTheSelected
+ <Description>   切换至listview，已有选中且不可见，则滚动到第一并记录位置
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListView::scrollWithTheSelected()
 {
     if (0 == selectedIndexes().count()) {
@@ -1626,7 +2247,15 @@ void DFontPreviewListView::scrollWithTheSelected()
     }
 }
 
-/*记录下当前选中的位置,用于局中显示UT000539*/
+/*************************************************************************
+ <Function>      refreshRect
+ <Description>   记录下当前选中的位置,用于局中显示
+ <Author>        UT000539
+ <Input>
+    <param1>     null            Description:null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListView::refreshRect()
 {
     QModelIndexList indexes = selectionModel()->selectedIndexes();
@@ -1636,6 +2265,15 @@ void DFontPreviewListView::refreshRect()
     m_curRect = visualRect(indexes.last());
 }
 
+/*************************************************************************
+ <Function>      updateSelection
+ <Description>   更新选中状态
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListView::updateSelection()
 {
     if (m_selectAfterDel != -1) {

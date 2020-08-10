@@ -24,6 +24,14 @@ DFontBaseDialog::~DFontBaseDialog()
     }
 }
 
+/*************************************************************************
+ <Function>      initUI
+ <Description>   初始化ui界面
+ <Author>        null
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontBaseDialog::initUI()
 {
     QVBoxLayout *mainLayout = new QVBoxLayout();
@@ -73,6 +81,15 @@ void DFontBaseDialog::initUI()
     setLayout(mainLayout);
 }
 
+
+/*************************************************************************
+ <Function>      InitConnections
+ <Description>   初始化信号与槽的链接
+ <Input>
+    <param1>     null            Description:null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontBaseDialog::InitConnections()
 {
     connect(m_closeButton, &DWindowCloseButton::clicked, this, [this]() {
@@ -81,6 +98,15 @@ void DFontBaseDialog::InitConnections()
     });
 }
 
+/*************************************************************************
+ <Function>      setLogoVisable
+ <Description>   设置logo标签是否可见
+ <Author>        null
+ <Input>
+    <param1>     visible            Description:表示logo标签要设置的状态
+ <Return>        null
+ <Note>          null
+*************************************************************************/
 void DFontBaseDialog::setLogoVisable(bool visible)
 {
     if (nullptr != m_logoIcon) {
@@ -88,6 +114,16 @@ void DFontBaseDialog::setLogoVisable(bool visible)
     }
 }
 
+
+/*************************************************************************
+ <Function>      setTitle
+ <Description>   设置title标签显示的内容
+ <Author>        null
+ <Input>
+    <param1>     title            Description:需要标签显示的内容
+ <Return>        null
+ <Note>          null
+*************************************************************************/
 void DFontBaseDialog::setTitle(const QString &title)
 {
     if (nullptr != m_tileText) {
@@ -95,11 +131,29 @@ void DFontBaseDialog::setTitle(const QString &title)
     }
 }
 
+/*************************************************************************
+ <Function>      getContentLayout
+ <Description>   获取窗口使用的布局
+ <Author>        null
+ <Input>
+    <param1>     null
+ <Return>        Qlayout *,窗口正在使用的布局;
+ <Note>          null
+*************************************************************************/
 QLayout *DFontBaseDialog::getContentLayout()
 {
     return m_contentLayout;
 }
 
+/*************************************************************************
+ <Function>      addContent
+ <Description>   向窗口中添加控件
+ <Author>        null
+ <Input>
+    <param1>     Qwidget*        Description:需要添加的控件
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontBaseDialog::addContent(QWidget *content)
 {
     Q_ASSERT(nullptr != getContentLayout());
@@ -107,6 +161,16 @@ void DFontBaseDialog::addContent(QWidget *content)
     getContentLayout()->addWidget(content);
 }
 
+
+/*************************************************************************
+ <Function>      setIconPixmap
+ <Description>   设置Iconlabel显示的图片内容
+ <Author>        null
+ <Input>
+    <param1>     QPixmap  &        Description:需要显示的内容
+ <Return>        null              Description:null
+ <Note>          null
+*************************************************************************/
 void DFontBaseDialog::setIconPixmap(const QPixmap &iconPixmap)
 {
     if (nullptr != m_logoIcon) {
@@ -123,11 +187,27 @@ void DFontBaseDialog::closeEvent(QCloseEvent *event)
     Q_EMIT closed();
 }
 
+/*************************************************************************
+ <Function>      getCloseButton
+ <Description>   获取右上角的关闭按钮
+ <Author>        null
+ <Input>         null
+ <Return>        null
+ <Note>          null
+*************************************************************************/
 DWindowCloseButton *DFontBaseDialog::getCloseButton() const
 {
     return m_closeButton;
 }
 
+/*************************************************************************
+ <Function>      getContent
+ <Description>   获取窗口中使用主布局的控件
+ <Author>        null
+ <Input>         null
+ <Return>        null
+ <Note>          null
+*************************************************************************/
 QWidget *DFontBaseDialog::getContent() const
 {
     return m_content;

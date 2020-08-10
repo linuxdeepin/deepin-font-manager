@@ -7,16 +7,16 @@
 #include "globaldef.h"
 #include "interfaces/dfontpreviewer.h"
 
-#include <QFontDatabase>
-#include <QResizeEvent>
-#include <QVBoxLayout>
-
 #include <DLog>
 #include <DPalette>
 #include <DPushButton>
 #include <DTitlebar>
 #include <DApplicationHelper>
 #include <DWidgetUtil>
+
+#include <QFontDatabase>
+#include <QResizeEvent>
+#include <QVBoxLayout>
 
 DFQuickInstallWindow::DFQuickInstallWindow(QStringList files, QWidget *parent)
     : DMainWindow(parent)
@@ -36,6 +36,15 @@ DFQuickInstallWindow::~DFQuickInstallWindow()
     qDebug() << __FUNCTION__ << "destructor";
 }
 
+/*************************************************************************
+ <Function>      initUI
+ <Description>   初始化ui界面
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFQuickInstallWindow::initUI()
 {
     //hide maximize button, minimize button & menu button
@@ -132,6 +141,15 @@ void DFQuickInstallWindow::initUI()
 #endif
 }
 
+/*************************************************************************
+ <Function>      initConnections
+ <Description>   初始化链接
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFQuickInstallWindow::initConnections()
 {
     connect(this, &DFQuickInstallWindow::fileSelected, this, &DFQuickInstallWindow::onFileSelected);
@@ -141,12 +159,22 @@ void DFQuickInstallWindow::initConnections()
     });
 }
 
+/*************************************************************************
+ <Function>      resizeEvent
+ <Description>   尺寸变化事件
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFQuickInstallWindow::resizeEvent(QResizeEvent *event)
 {
     DMainWindow::resizeEvent(event);
 
     // m_mainFrame->setFixedSize(event->size().width() - 150, event->size().height());
 }
+
 
 void DFQuickInstallWindow::onFileSelected(const QStringList &fileList)
 {
@@ -200,6 +228,15 @@ void DFQuickInstallWindow::onFileSelected(const QStringList &fileList)
     }
 }
 
+/*************************************************************************
+ <Function>      onInstallBtnClicked
+ <Description>   安装按钮按下后响应函数
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFQuickInstallWindow::onInstallBtnClicked()
 {
     // Hide Quick install first
@@ -207,6 +244,15 @@ void DFQuickInstallWindow::onInstallBtnClicked()
     Q_EMIT quickInstall();
 }
 
+/*************************************************************************
+ <Function>      InitPreviewFont
+ <Description>   初始化预览字体
+ <Author>        null
+ <Input>
+    <param1>     fontInfo            Description:字体信息
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFQuickInstallWindow::InitPreviewFont(DFontInfo fontInfo)
 {
     qDebug() << __FUNCTION__ << "enter";
@@ -260,6 +306,15 @@ void DFQuickInstallWindow::InitPreviewFont(DFontInfo fontInfo)
     }
 }
 
+/*************************************************************************
+ <Function>      installFont
+ <Description>   安装字体
+ <Author>        null
+ <Input>
+    <param1>     files            Description:需要安装的字体路径
+ <Return>        null             Description:null
+ <Note>          null
+*************************************************************************/
 void DFQuickInstallWindow::installFont(const QStringList &files)
 {
     qDebug() << __FUNCTION__ << files;
@@ -276,6 +331,15 @@ void DFQuickInstallWindow::installFont(const QStringList &files)
     dfNormalInstalldlg.exec();
 }
 
+/*************************************************************************
+ <Function>      onFontInstallFinished
+ <Description>   字体安装结束后响应函数
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFQuickInstallWindow::onFontInstallFinished()
 {
     DFontPreviewItemData itemData;

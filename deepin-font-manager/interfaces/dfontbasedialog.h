@@ -8,35 +8,53 @@
 
 DWIDGET_USE_NAMESPACE
 
+/*************************************************************************
+ <Class>         DFMXmlWrapper
+ <Description>   项目中弹出对话框的基类
+ <Author>
+ <Note>          null
+*************************************************************************/
 //class DWindowCloseButton;
 //class DLabel;
 class QVBoxLayout;
-
 class DFontBaseDialog : public DAbstractDialog
 {
     Q_OBJECT
 public:
     explicit DFontBaseDialog(QWidget *parent = nullptr);
-    ~DFontBaseDialog();
+    ~DFontBaseDialog()Q_DECL_OVERRIDE;
 
+    //窗口增加包含控件的函数
     void addContent(QWidget *content);
+
+    //设置IconLabel的显示内容
     void setIconPixmap(const QPixmap &iconPixmap);
 
+    //获取窗口中使用主布局的控件的函数
     QWidget *getContent() const;
 
+    //获取右上角关闭按钮的函数
     DWindowCloseButton *getCloseButton() const;
 
 protected:
     void initUI();
     void InitConnections();
+
+    //设置IconLabel是否可见
     void setLogoVisable(bool visible = true);
+
+    //设置titlelabel显示内容
     void setTitle(const QString &title);
+
     QLayout *getContentLayout();
 
     //Overrides
     void closeEvent(QCloseEvent *event) override;
 signals:
+    //窗口关闭信号
     void closed();
+
+    //点击右上角关闭按钮信号
     void closeBtnClicked();
 
 public slots:

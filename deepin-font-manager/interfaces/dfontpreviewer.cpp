@@ -15,6 +15,15 @@ DFontPreviewer::DFontPreviewer(QWidget *parent)
     InitConnections();
 }
 
+/*************************************************************************
+ <Function>      InitData
+ <Description>   初始化预览内容数据
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewer::InitData()
 {
     m_previewTexts << "汉体书写信息技术标准相容"
@@ -25,22 +34,50 @@ void DFontPreviewer::InitData()
                    << "AaBbCc ＡａＢｂＣｃ";
 }
 
+/*************************************************************************
+ <Function>      InitConnections
+ <Description>   初始化链接
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewer::InitConnections()
 {
     connect(this, &DFontPreviewer::previewFontChanged,
             this, &DFontPreviewer::onPreviewFontChanged);
 }
 
+
+/*************************************************************************
+ <Function>      onPreviewFontChanged
+ <Description>   预览字体类型发生变化后的处理
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewer::onPreviewFontChanged()
 {
     m_previewTexts.clear();
     InitData();
-    foreach(auto it, m_previewTexts) {
+    foreach (auto it, m_previewTexts) {
         QString text = Utils::convertToPreviewString(m_fontPath, it);
         m_previewTexts.replaceInStrings(it, text);
     }
 }
 
+/*************************************************************************
+ <Function>      setPreviewFontPath
+ <Description>   设置当前预览字体的路径
+ <Author>        null
+ <Input>
+    <param1>     font            Description:当前字体路径
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewer::setPreviewFontPath(const QString font)
 {
     if (m_fontPath != font) {
@@ -49,7 +86,17 @@ void DFontPreviewer::setPreviewFontPath(const QString font)
     }
 }
 
-void DFontPreviewer::paintEvent(QPaintEvent *event) {
+/*************************************************************************
+ <Function>      paintEvent
+ <Description>   绘制预览字体
+ <Author>        null
+ <Input>
+    <param1>     event            Description:绘制事件
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
+void DFontPreviewer::paintEvent(QPaintEvent *event)
+{
     QPainter painter(this);
 
     //Save pen
@@ -71,17 +118,17 @@ void DFontPreviewer::paintEvent(QPaintEvent *event) {
     int topSpace = 0;
     int fontHeight = painter.font().pixelSize();
     int textline = m_previewTexts.size();
-    int textSpace = (event->rect().height() - textline*fontHeight-topSpace) / (textline+1);
-    int textHeight = fontHeight+textSpace;
+    int textSpace = (event->rect().height() - textline * fontHeight - topSpace) / (textline + 1);
+    int textHeight = fontHeight + textSpace;
 
     //Restore the pen
     painter.setPen(oldPen);
 
-    QRect startRect(0,topSpace,event->rect().width(),textHeight);
-    foreach(auto it, m_previewTexts) {
+    QRect startRect(0, topSpace, event->rect().width(), textHeight);
+    foreach (auto it, m_previewTexts) {
         painter.drawText(startRect, Qt::AlignCenter, it);
 
-        startRect.setY(startRect.y()+textHeight);
+        startRect.setY(startRect.y() + textHeight);
         startRect.setHeight(textHeight);
     }
 }

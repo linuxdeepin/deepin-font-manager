@@ -8,12 +8,22 @@ DCORE_USE_NAMESPACE
 
 DFontMenuManager *DFontMenuManager::instance = nullptr;
 
+//构造函数
 DFontMenuManager::DFontMenuManager(QObject *parent)
     : QObject(parent)
 {
     initMenuData();
 }
 
+/*************************************************************************
+ <Function>      getInstance
+ <Description>   获取单例
+ <Author>        null
+ <Input>
+    <param1>     null                         Description:null
+ <Return>        DFontMenuManager *           Description:需要获取到的单例类
+ <Note>
+*************************************************************************/
 DFontMenuManager *DFontMenuManager::getInstance()
 {
     if (nullptr == instance) {
@@ -23,6 +33,14 @@ DFontMenuManager *DFontMenuManager::getInstance()
     return instance;
 }
 
+/*************************************************************************
+ <Function>      DFontMenuManager
+ <Description>   对菜单进行初始化
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        null            Description:null
+*************************************************************************/
 void DFontMenuManager::initMenuData()
 {
     // ToDo:
@@ -53,6 +71,15 @@ void DFontMenuManager::initMenuData()
         new FMenuItem(DApplication::translate("Menu", "Display in file manager"), MenuAction::M_ShowFontPostion));
 }
 
+
+/*************************************************************************
+ <Function>      createToolBarSettingsMenu
+ <Description>   新建工具栏菜单(已弃用)
+ <Author>        null
+ <Input>
+    <param1>     FMenuActionTriggle  actionTriggle    Description:无用参数
+ <Return>        null            Description:null
+*************************************************************************/
 QMenu *DFontMenuManager::createToolBarSettingsMenu(FMenuActionTriggle actionTriggle)
 {
     Q_UNUSED(actionTriggle);
@@ -95,10 +122,17 @@ QMenu *DFontMenuManager::createToolBarSettingsMenu(FMenuActionTriggle actionTrig
             }
         }
     }
-
     return mainMenu;
 }
 
+/*************************************************************************
+ <Function>      createRightKeyMenu
+ <Description>   新建右键菜单
+ <Author>        null
+ <Input>
+    <param1>     FMenuActionTriggle  actionTriggle    Description:无用参数
+ <Return>        null            Description:null
+*************************************************************************/
 QMenu *DFontMenuManager::createRightKeyMenu(FMenuActionTriggle actionTriggle)
 {
     Q_UNUSED(actionTriggle);
@@ -135,6 +169,16 @@ QMenu *DFontMenuManager::createRightKeyMenu(FMenuActionTriggle actionTriggle)
     return rightKeyMenu;
 }
 
+/*************************************************************************
+ <Function>      getActionByMenuAction
+ <Description>   通过传入参数获取到菜单的操作
+ <Author>        null
+ <Input>
+    <param1>     MenuAction maction   Description:菜单操作类型
+    <param2>     MenuType menuType    Description:菜单的种类
+ <Return>        QAction *            menuType种类的菜单中maction类型的操作
+ <Note>          null
+*************************************************************************/
 QAction *DFontMenuManager::getActionByMenuAction(MenuAction maction, MenuType menuType)
 {
     QAction *action = nullptr;
@@ -156,6 +200,18 @@ QAction *DFontMenuManager::getActionByMenuAction(MenuAction maction, MenuType me
     return action;
 }
 
+/*******************************************************************************************************
+ <Function>      onRightKeyMenuPopup
+ <Description>   右键菜单弹出时进行判断,使菜单的显示内容根据不同情况进行改变
+ <Author>        null
+ <Input>
+    <param1>     const DFontPreviewItemData &fontData  Description:唤起菜单时作为判断的预览字体列表项的数据
+    <param2>     bool hasUser                          Description:是否可以删除(只有用户字体可以删除)
+    <param3>     bool enableDisable                    Description:是否可以禁用
+    <param4>     bool hasCurFont                       Description:是否包含当前使用字体
+ <Return>        null
+ <Note>          null
+*******************************************************************************************************/
 void DFontMenuManager::onRightKeyMenuPopup(const DFontPreviewItemData &itemData, bool hasUser, bool enableDisable, bool hasCurFont)
 {
     // Disable delete menu for system font

@@ -14,6 +14,15 @@ DFontSpinnerWidget::DFontSpinnerWidget(QWidget *parent,  SpinnerStyles styles) :
     initUI();
 }
 
+/*************************************************************************
+ <Function>      initUI
+ <Description>   初始化ui界面
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontSpinnerWidget::initUI()
 {
     m_spinner = new DFontSpinner(this);
@@ -40,6 +49,15 @@ DFontSpinnerWidget::~DFontSpinnerWidget()
 {
 }
 
+/*************************************************************************
+ <Function>      setStyles
+ <Description>   设置加载动画样式
+ <Author>        null
+ <Input>
+    <param1>     加载动画样式      Description:styles
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontSpinnerWidget::setStyles(SpinnerStyles styles)
 {
     m_Styles = styles;
@@ -51,11 +69,30 @@ void DFontSpinnerWidget::setStyles(SpinnerStyles styles)
         m_label->setText(QString());
     }
 }
+
+/*************************************************************************
+ <Function>      spinnerStart
+ <Description>   开始
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontSpinnerWidget::spinnerStart()
 {
     m_spinner->start();
 }
 
+/*************************************************************************
+ <Function>      spinnerStop
+ <Description>   停止旋转
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontSpinnerWidget::spinnerStop()
 {
     m_spinner->stop();

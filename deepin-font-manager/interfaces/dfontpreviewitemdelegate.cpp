@@ -3,8 +3,6 @@
 #include "globaldef.h"
 #include "utils.h"
 
-#include <QPainter>
-
 #include <DApplication>
 #include <DApplicationHelper>
 #include <DStyleHelper>
@@ -13,6 +11,8 @@
 #include <DCheckBox>
 #include <DLabel>
 #include <DFontSizeManager>
+
+#include <QPainter>
 
 DWIDGET_USE_NAMESPACE
 
@@ -37,6 +37,18 @@ DFontPreviewItemDelegate::DFontPreviewItemDelegate(QAbstractItemView *parent)
     parent->viewport()->installEventFilter(this);
 }
 
+/*************************************************************************
+ <Function>      paintForegroundCheckBox
+ <Description>   绘制字体预览列表中的复选框
+ <Author>        null
+ <Input>
+    <param1>     painter            Description:绘制类指针
+    <param2>     option             Description:listview中的一行成员
+    <param3>     itemdata           Description:对应aption行的数据
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
+
 void DFontPreviewItemDelegate::paintForegroundCheckBox(QPainter *painter, const QStyleOptionViewItem &option, const FontData &itemData) const
 {
     int checkBoxWidth = CHECKBOX_SIZE - 4;
@@ -53,6 +65,18 @@ void DFontPreviewItemDelegate::paintForegroundCheckBox(QPainter *painter, const 
     DApplication::style()->drawPrimitive(QStyle::PE_IndicatorCheckBox, &checkBoxOption, painter, &checkBox);
 }
 
+
+/*************************************************************************
+ <Function>      paintForegroundFontName
+ <Description>   绘制字体预览列表中的字体名字
+ <Author>        null
+ <Input>
+    <param1>     painter            Description:绘制类指针
+    <param2>     option             Description:listview中的一行成员
+    <param3>     itemdata           Description:对应aption行的数据
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewItemDelegate::paintForegroundFontName(QPainter *painter, const QStyleOptionViewItem &option, const FontData &itemData) const
 {
     QFont nameFont = painter->font();
@@ -76,6 +100,17 @@ void DFontPreviewItemDelegate::paintForegroundFontName(QPainter *painter, const 
     painter->drawText(fontNameRect, Qt::AlignLeft | Qt::AlignVCenter, elidedText);
 }
 
+/*************************************************************************
+ <Function>      paintForegroundCollectIcon
+ <Description>   绘制字体预览列表中的收藏图标
+ <Author>        null
+ <Input>
+    <param1>     painter            Description:绘制类指针
+    <param2>     option             Description:listview中的一行成员
+    <param3>     itemdata           Description:对应aption行的数据
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewItemDelegate::paintForegroundCollectIcon(QPainter *painter, const QStyleOptionViewItem &option, const FontData &itemData) const
 {
     DGuiApplicationHelper *appHelper = DGuiApplicationHelper::instance();
@@ -112,6 +147,16 @@ void DFontPreviewItemDelegate::paintForegroundCollectIcon(QPainter *painter, con
 
 }
 
+/*************************************************************************
+ <Function>      adjustPreviewRect
+ <Description>   调整预览区域
+ <Author>        null
+ <Input>
+    <param1>     bgRect            Description:调整前的区域
+ <Return>        QRect             Dscription:调整后的区域
+ <Note>          null
+*************************************************************************/
+
 QRect DFontPreviewItemDelegate::adjustPreviewRect(const QRect bgRect) const
 {
     QRect fontPreviewRect;
@@ -121,6 +166,16 @@ QRect DFontPreviewItemDelegate::adjustPreviewRect(const QRect bgRect) const
     return fontPreviewRect;
 }
 
+/*************************************************************************
+ <Function>      adjustPreviewFontBaseLinePoint
+ <Description>   根据预览区域和文字显示效果获取基准点
+ <Author>        null
+ <Input>
+    <param1>     fontPreviewRect               Description:字体预览区域范围
+    <param2>     previewFontMetrics            Description:字体显示效果
+ <Return>        QPoint                        Description:显示基准点
+ <Note>          null
+*************************************************************************/
 QPoint DFontPreviewItemDelegate::adjustPreviewFontBaseLinePoint(const QRect &fontPreviewRect, const QFontMetrics &previewFontMetrics) const
 {
     Q_UNUSED(previewFontMetrics);
@@ -139,7 +194,90 @@ QPoint DFontPreviewItemDelegate::adjustPreviewFontBaseLinePoint(const QRect &fon
     return QPoint(baseLineX, baseLineY);
 }
 
-void DFontPreviewItemDelegate::paintForegroundPreviewFont(QPainter *painter, const QStyleOptionViewItem &option, const DFontPreviewItemData &itemData, int fontPixelSize, QString &fontPreviewText) const
+/*************************************************************************
+ <Function>      adjustPreviewFont
+ <Description>   获得预览字体类型
+ <Author>        null
+ <Input>
+    <param1>     appFontId                 Description:应用字体数据库中该字体的id
+    <param2>     fontFamilyName            Description:字体的familyname
+    <param3>     fontStyleName             Description:字体的fStyleName
+    <param4>     fontStyleName             Description:字体的大小
+
+ <Note>          null
+*************************************************************************/
+//QFont DFontPreviewItemDelegate::adjustPreviewFont(const int appFontId, const QString &fontFamilyName, const QString &fontStyleName, const int &fontSize) const
+//{
+//    QString familyName = QFontDatabase::applicationFontFamilies(appFontId).isEmpty() ? fontFamilyName : QFontDatabase::applicationFontFamilies(appFontId).first();
+//    QFont font;
+//    font.setFamily(familyName);
+//    font.setStyleName(fontStyleName);
+//    font.setPixelSize(fontSize);
+////    font.setItalic(fontStyleName.contains("Italic"));
+//    //设置字体 ut000794
+////    setfont(font, fontStyleName);
+//    return font;
+//}
+
+//void DFontPreviewItemDelegate::setfont(QFont &font, QString fontStyleName) const
+//{
+//    if (fontStyleName.contains("Regular")) {
+//        font.setWeight(QFont::Normal);
+//    } else if (fontStyleName.contains("Bold")) {
+//        font.setWeight(QFont::Bold);
+//    } else if (fontStyleName.contains("Light")) {
+//        font.setWeight(QFont::Light);
+//    } else if (fontStyleName.contains("Thin")) {
+//        font.setWeight(QFont::Thin);
+//    } else if (fontStyleName.contains("ExtraLight")) {
+//        font.setWeight(QFont::ExtraLight);
+//    } else if (fontStyleName.contains("ExtraBold")) {
+//        font.setWeight(QFont::ExtraBold);
+//    } else if (fontStyleName.contains("Medium")) {
+//        font.setWeight(QFont::Medium);
+//    } else if (fontStyleName.contains("DemiBold")) {
+//        font.setWeight(QFont::DemiBold);
+//    } else if (fontStyleName.contains("Black")) {
+//        font.setWeight(QFont::Black);
+//    } else if (fontStyleName.contains("AnyStretch")) {
+//        font.setStretch(QFont::AnyStretch);
+//    } else if (fontStyleName.contains("UltraCondensed")) {
+//        font.setStretch(QFont::UltraCondensed);
+//    } else if (fontStyleName.contains("ExtraCondensed")) {
+//        font.setStretch(QFont::ExtraCondensed);
+//    } else if (fontStyleName.contains("Condensed")) {
+//        font.setStretch(QFont::Condensed);
+//    } else if (fontStyleName.contains("SemiCondensed")) {
+//        font.setStretch(QFont::SemiCondensed);
+//    } else if (fontStyleName.contains("Unstretched")) {
+//        font.setStretch(QFont::Unstretched);
+//    } else if (fontStyleName.contains("SemiExpanded")) {
+//        font.setStretch(QFont::SemiExpanded);
+//    } else if (fontStyleName.contains("Expanded")) {
+//        font.setStretch(QFont::Expanded);
+//    } else if (fontStyleName.contains("ExtraExpanded")) {
+//        font.setStretch(QFont::ExtraExpanded);
+//    } else if (fontStyleName.contains("UltraExpanded")) {
+//        font.setStretch(QFont::UltraExpanded);
+//    }
+//}
+
+/*************************************************************************
+ <Function>      paintForegroundPreviewFont
+ <Description>   绘制字体预览列表中的预览内容
+ <Author>        null
+ <Input>
+    <param1>     painter                 Description:绘制类指针
+    <param2>     option                  Description:listview中的一行成员
+    <param3>     itemdata                Description:对应aption行的数据
+    <param4>     fontPixelSize           Description:预览效果的像素大小
+    <param5>     fontPreviewText         Description:要显示的预览内容
+
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
+void DFontPreviewItemDelegate::paintForegroundPreviewFont(QPainter *painter, const QStyleOptionViewItem &option,
+                                                          const DFontPreviewItemData &itemData, int fontPixelSize, QString &fontPreviewText) const
 {
     QFont previewFont;
     previewFont.setFamily(itemData.fontInfo.familyName);
@@ -167,6 +305,17 @@ void DFontPreviewItemDelegate::paintForegroundPreviewFont(QPainter *painter, con
     painter->drawText(baseLinePoint.x(), baseLinePoint.y(), elidedText);
 }
 
+/*************************************************************************
+ <Function>      paintBackground
+ <Description>   绘制字体预览列表的背景
+ <Author>        null
+ <Input>
+    <param1>     painter            Description:绘制类指针
+    <param2>     option             Description:listview中的一行成员
+    <param3>     index              Description:字体列表的索引
+ <Return>        null               Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewItemDelegate::paintBackground(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     DPalette::ColorGroup colorGroup = option.state.testFlag(QStyle::State_Enabled) ? DPalette::Normal : DPalette::Disabled;
@@ -209,7 +358,17 @@ void DFontPreviewItemDelegate::paintBackground(QPainter *painter, const QStyleOp
     }
 }
 
-//绘制tab选中后的背景效果
+/*************************************************************************
+ <Function>      paintTabFocusBackground
+ <Description>   绘制tab选中后的背景效果
+ <Author>        null
+ <Input>
+    <param1>     painter            Description:绘制类指针
+    <param2>     option             Description:listview中的一行成员
+    <param3>     bgRect           Description:绘制区域
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewItemDelegate::paintTabFocusBackground(QPainter *painter, const QStyleOptionViewItem &option, const QRect &bgRect) const
 {
     //初始化绘制高亮色区域路径
@@ -247,14 +406,19 @@ void DFontPreviewItemDelegate::paintTabFocusBackground(QPainter *painter, const 
     painter->fillPath(path3, painter->brush());
 }
 
-/**
-*  @brief  得到需要绘制区域的路径
-*  @param[in]  bgRect listview一项的区域范围
-*  @param[in]  path 需要绘制区域的路径
-*  @param[in]  xDifference x方向需要变化的数值
-*  @param[in]  yDifference y方向需要变化的数值
-*  @param[in]  radius  圆弧半径
-*/
+/*************************************************************************
+ <Function>      setPaintPath
+ <Description>   得到需要绘制区域的路径
+ <Author>        null
+ <Input>
+    <param1>     bgRect          Description:listview一项的区域范围
+    <param2>     path            Description:需要绘制区域的路径
+    <param3>     xDifference     Description:x方向需要变化的数值
+    <param4>     yDifference     Description:y方向需要变化的数值
+    <param5>     radius          Description:圆弧半径
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewItemDelegate::setPaintPath(const QRect &bgRect, QPainterPath &path, const int xDifference, const int yDifference, const int radius) const
 {
     QPoint path_bottomRight(bgRect.bottomRight().x() - xDifference, bgRect.bottomRight().y() - yDifference);
@@ -272,6 +436,18 @@ void DFontPreviewItemDelegate::setPaintPath(const QRect &bgRect, QPainterPath &p
     path.arcTo(QRect(QPoint(path_bottomRight - QPoint(radius * 2, radius * 2)), QSize(radius * 2, radius * 2)), 270, 90);
 }
 
+
+/*************************************************************************
+ <Function>    paint
+ <Description>   代理的绘画函数
+ <Author>        null
+ <Input>
+    <param1>     painter         Description:绘制类指针
+    <param2>     option          Description:listview中的一行成员
+    <param3>     index           Description:option的索引
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
                                      const QModelIndex &index) const
 {
@@ -316,6 +492,16 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
     QFont::cleanup();
 }
 
+/*************************************************************************
+ <Function>      sizeHint
+ <Description>   获取当前listview一项尺寸的大小
+ <Author>        null
+ <Input>
+    <param1>     option            Description:listview中的一行成员
+    <param2>     index            Description:lsiview中的该字体的索引
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 QSize DFontPreviewItemDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     FontData data = index.data(Qt::DisplayRole).value<FontData>();
@@ -329,6 +515,16 @@ QSize DFontPreviewItemDelegate::sizeHint(const QStyleOptionViewItem &option, con
     return QSize(option.rect.width(), itemHeight);
 }
 
+/*************************************************************************
+ <Function>      eventFilter
+ <Description>   事件过滤器
+ <Author>        null
+ <Input>
+    <param1>     object            Description:unused
+    <param2>     event             Description:进入时间过滤器的事件
+ <Return>        bool              Description:事件是否处理
+ <Note>          null
+*************************************************************************/
 bool DFontPreviewItemDelegate::eventFilter(QObject *object, QEvent *event)
 {
     Q_UNUSED(object)

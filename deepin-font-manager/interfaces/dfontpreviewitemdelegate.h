@@ -17,7 +17,8 @@ class DFontPreviewItemDelegate : public QStyledItemDelegate
 
 public:
     explicit DFontPreviewItemDelegate(QAbstractItemView *parent = nullptr);
-    static void setNoFont(bool noFont);
+//    static void setNoFont(bool noFont);
+
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const Q_DECL_OVERRIDE;
     QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const Q_DECL_OVERRIDE;
 

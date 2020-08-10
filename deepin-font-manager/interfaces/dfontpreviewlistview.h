@@ -15,19 +15,40 @@
 #include <QSortFilterProxyModel>
 
 DWIDGET_USE_NAMESPACE
+/*************************************************************************
+ <Class>         DFontPreviewListView
+ <Description>   字体预览列表listview,负责显示每个字体的状态,字体基本信息以及预览效果
+ <Author>
+ <Note>          null
+*************************************************************************/
 
 class DFontPreviewListView : public QListView
 {
     Q_OBJECT
 public:
+    /*************************************************************************
+     <Enum>       FontGroup
+     <Description>  表明当前界面字体所在分组的枚举
+     <Author>        null
+     <Value>
+        <Value1>   AllFont      Description:所有字体
+        <Value2>   SysFont      Description:系统字体
+        <Value3>   UserFont      Description:用户字体
+        <Value4>   CollectFont      Description:收藏
+        <Value5>   ActiveFont      Description:已激活
+        <Value6>   ChineseFont      Description:中文
+        <Value7>   EqualWidthFont      Description:等宽
+     <Note>          null
+    *************************************************************************/
+
     enum FontGroup {
-        AllFont,        //所有字体
-        SysFont,        //系统字体
-        UserFont,       //用户字体
-        CollectFont,    //收藏
-        ActiveFont,     //已激活
-        ChineseFont,    //中文
-        EqualWidthFont  //等宽
+        AllFont,
+        SysFont,
+        UserFont,
+        CollectFont,
+        ActiveFont,
+        ChineseFont,
+        EqualWidthFont
     };
 
 public:
@@ -193,7 +214,7 @@ signals:
 
     void requestDeleted(const QStringList &files);
     void requestAdded(const QStringList &files, bool isFirstInstall = false);
-    void itemAdded(const DFontPreviewItemData &data);
+//    void itemAdded(const DFontPreviewItemData &data);
     void multiItemsAdded(QList<DFontPreviewItemData> &data, DFontSpinnerWidget::SpinnerStyles styles);
     void itemRemoved(const DFontPreviewItemData &data);
     void itemRemovedFromSys(const DFontPreviewItemData &data);
@@ -210,7 +231,7 @@ public slots:
     void onListViewShowContextMenu();
     void onFinishedDataLoad();
     void selectFonts(const QStringList &fileList);
-    void onItemAdded(const DFontPreviewItemData &itemData);
+//    void onItemAdded(const DFontPreviewItemData &itemData);
     void onMultiItemsAdded(QList<DFontPreviewItemData> &data, DFontSpinnerWidget::SpinnerStyles styles);
     void onUpdateCurrentFont();
     void onFontChanged(const QFont &font);

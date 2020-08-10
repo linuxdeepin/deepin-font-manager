@@ -53,6 +53,15 @@ DFontSpinner::~DFontSpinner()
     delete m_ptr;
 }
 
+/*************************************************************************
+ <Function>      start
+ <Description>   旋转开始
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontSpinner::start()
 {
     m_ptr->currentDegree += 14;
@@ -60,11 +69,29 @@ void DFontSpinner::start()
     m_ptr->refreshTimer.start();
 }
 
+/*************************************************************************
+ <Function>      stop
+ <Description>   旋转暂停
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontSpinner::stop()
 {
     m_ptr->refreshTimer.stop();
 }
 
+/*************************************************************************
+ <Function>      setBackgroundColor
+ <Description>   设置背景色
+ <Author>        null
+ <Input>
+    <param1>     color            Description:背景色
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontSpinner::setBackgroundColor(QColor color)
 {
     setAutoFillBackground(true);
@@ -73,6 +100,17 @@ void DFontSpinner::setBackgroundColor(QColor color)
     setPalette(pal);
 }
 
+/*************************************************************************
+ <Function>      paintEvent
+ <Description>   自绘函数
+ <Author>        null
+ <Input>
+    <param1>     QPaintEvent*    Description:绘画事件
+    <param2>     null            Description:null
+    <param3>     null            Description:null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontSpinner::paintEvent(QPaintEvent *)
 {
     if (m_ptr->indicatorColors.isEmpty()) {
@@ -118,6 +156,16 @@ void DFontSpinner::changeEvent(QEvent *e)
     QWidget::changeEvent(e);
 }
 
+
+/*************************************************************************
+ <Function>      createDefaultIndicatorColorList
+ <Description>   初始化自绘spinner控件颜色的透明度
+ <Author>        null
+ <Input>
+    <param1>     color            Description:控件颜色
+ <Return>        QList<QColor>    Description:不同透明度的color颜色组成的list
+ <Note>          null
+*************************************************************************/
 QList<QColor> DFontSpinnerPrivate::createDefaultIndicatorColorList(QColor color)
 {
     QList<QColor> colors;

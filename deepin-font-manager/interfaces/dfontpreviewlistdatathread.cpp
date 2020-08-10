@@ -5,8 +5,12 @@
 #include <QFontDatabase>
 
 static DFontPreviewListDataThread *INSTANCE = nullptr;
+
+//系统字体路径
 const QString FONTS_DIR = QDir::homePath() + "/.local/share/fonts/";
+
 const QString FONTS_UP_DIR = QDir::homePath() + "/.local/share/";
+
 
 DFontPreviewListDataThread *DFontPreviewListDataThread::instance(DFontPreviewListView *view)
 {
@@ -22,6 +26,15 @@ DFontPreviewListDataThread *DFontPreviewListDataThread::instance()
     return INSTANCE;
 }
 
+/*************************************************************************
+ <Function>      DFontPreviewListDataThread
+ <Description>    构造函数
+ <Author>        null
+ <Input>
+    <param1>     view            Description:父指针
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 DFontPreviewListDataThread::DFontPreviewListDataThread(DFontPreviewListView *view)
     : m_view(view)
     , m_fsWatcher(nullptr)
@@ -47,6 +60,15 @@ DFontPreviewListDataThread::~DFontPreviewListDataThread()
 {
 }
 
+/*************************************************************************
+ <Function>      doWork
+ <Description>   线程函数
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListDataThread::doWork()
 {
     QMutexLocker locker(m_mutex);
@@ -95,6 +117,15 @@ void DFontPreviewListDataThread::doWork()
     m_view->onFinishedDataLoad();
 }
 
+/*************************************************************************
+ <Function>      initFileSystemWatcher
+ <Description>   初始化系统文件监视器
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListDataThread::initFileSystemWatcher()
 {
     if (m_fsWatcher == nullptr)
@@ -125,21 +156,57 @@ void DFontPreviewListDataThread::initFileSystemWatcher()
     });
 }
 
+/*************************************************************************
+ <Function>      updateChangedFile
+ <Description>   文件修改后触发函数
+ <Author>        null
+ <Input>
+    <param1>     path            Description:路径
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListDataThread::updateChangedFile(const QString &path)
 {
     m_view->updateChangedFile(path);
 }
 
+/*************************************************************************
+ <Function>      updateChangedDir
+ <Description>   文件夹修改后触发函数
+ <Author>        null
+ <Input>
+    <param1>     path            Description:路径
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListDataThread::updateChangedDir(const QString &path)
 {
     m_view->updateChangedDir(path);
 }
 
+/*************************************************************************
+ <Function>      setCantDisabledMonoList
+ <Description>   设置不能禁用的等宽字体
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListDataThread::setCantDisabledMonoList()
 {
     cantDisabledMonoList << "Noto Mono-Regular" << "Noto Sans Mono-Regular" << "Noto Sans Mono-Bold";
 }
 
+/*************************************************************************
+ <Function>      addPathWatcher
+ <Description>   添加文件监视器
+ <Author>        null
+ <Input>
+    <param1>     path            Description:需要添加的路径
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListDataThread::addPathWatcher(const QString &path)
 {
     if (m_fsWatcher == nullptr)
@@ -157,6 +224,15 @@ void DFontPreviewListDataThread::addPathWatcher(const QString &path)
     }
 }
 
+/*************************************************************************
+ <Function>      removePathWatcher
+ <Description>   移除特定路径的文件监视器
+ <Author>        null
+ <Input>
+    <param1>     path            Description:需要移除的路径
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListDataThread::removePathWatcher(const QString &path)
 {
     if (m_fsWatcher == nullptr)
@@ -164,6 +240,15 @@ void DFontPreviewListDataThread::removePathWatcher(const QString &path)
     m_fsWatcher->removePath(path);
 }
 
+/*************************************************************************
+ <Function>      onFileDeleted
+ <Description>   文件删除响应函数
+ <Author>        null
+ <Input>
+    <param1>     files            Description:删除的文件路径
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListDataThread::onFileDeleted(const QStringList &files)
 {
     qDebug() << __FUNCTION__ << files.size() << "LLLLLLLLLLLLLLLLL" << files;
@@ -172,6 +257,15 @@ void DFontPreviewListDataThread::onFileDeleted(const QStringList &files)
     m_view->deleteCurFonts(files, false);
 }
 
+/*************************************************************************
+ <Function>      onFileAdded
+ <Description>   增加文件响应函数
+ <Author>        null
+ <Input>
+    <param1>     files            Description:增加的文件路径
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListDataThread::onFileAdded(const QStringList &files)
 {
     if (files.isEmpty()) {
@@ -188,6 +282,15 @@ void DFontPreviewListDataThread::onFileAdded(const QStringList &files)
     refreshFontListData(false, files);
 }
 
+/*************************************************************************
+ <Function>      getFontModelList
+ <Description>   获取当前列表所有项的数据链表
+ <Author>        null
+ <Input>
+    <param1>     null                         Description:null
+ <Return>        QList<DFontPreviewItemData>  Description:列表所有项的数据链表
+ <Note>          null
+*************************************************************************/
 QList<DFontPreviewItemData> DFontPreviewListDataThread::getFontModelList()
 {
     if (m_view->isListDataLoadFinished())
@@ -196,21 +299,59 @@ QList<DFontPreviewItemData> DFontPreviewListDataThread::getFontModelList()
 }
 
 //更新itemDataList的itemData状态
+
+/*************************************************************************
+ <Function>      updateItemStatus
+ <Description>   更新itemDataList的itemData状态
+ <Author>        null
+ <Input>
+    <param1>     index               Description:需要更新的位置
+    <param2>     itemData            Description:需要更新的数据
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListDataThread::updateItemStatus(int index, const DFontPreviewItemData &itemData)
 {
     m_fontModelList.replace(index, itemData);
 }
 
+/*************************************************************************
+ <Function>      getDiffFontModelList
+ <Description>   获取需要新增的字体数据链表
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        QList<DFontPreviewItemData>            Description:新增的字体数据链表
+ <Note>          null
+*************************************************************************/
 QList<DFontPreviewItemData> DFontPreviewListDataThread::getDiffFontModelList() const
 {
     return m_diffFontModelList;
 }
 
+/*************************************************************************
+ <Function>      setMutex
+ <Description>   给线程锁赋值
+ <Author>        null
+ <Input>
+    <param1>     mutex            Description:线程锁赋的值
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListDataThread::setMutex(QMutex *mutex)
 {
     m_mutex = mutex;
 }
 
+/*************************************************************************
+ <Function>      forceDeleteFiles
+ <Description>   强制删除文件
+ <Author>        null
+ <Input>
+    <param1>     files            Description:需要删除的文件路径
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListDataThread::forceDeleteFiles(const QStringList &files)
 {
     qDebug() << __FUNCTION__ << files << m_mutex;
@@ -222,6 +363,15 @@ void DFontPreviewListDataThread::forceDeleteFiles(const QStringList &files)
     qDebug() << __FUNCTION__ << files << " end ";
 }
 
+/*************************************************************************
+ <Function>      onRemoveFileWatchers
+ <Description>   批量移除文件监视器
+ <Author>        null
+ <Input>
+    <param1>     files            Description:需要移除的路径
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListDataThread::onRemoveFileWatchers(const QStringList &files)
 {
     qDebug() << __FUNCTION__   << files << "llllllllllllll" << m_fsWatcher->removePaths(files);
@@ -230,12 +380,36 @@ void DFontPreviewListDataThread::onRemoveFileWatchers(const QStringList &files)
     m_fsWatcher->removePath(FONTS_UP_DIR);
 }
 
+/*************************************************************************
+ <Function>      onAutoDirWatchers
+ <Description>   添加特定文件夹的文件监视器
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListDataThread::onAutoDirWatchers()
 {
     m_fsWatcher->addPath(FONTS_DIR);
     m_fsWatcher->addPath(FONTS_UP_DIR);
 }
 
+/*************************************************************************
+ <Function>      insertFontItemData
+ <Description>   将需要添加项的字体数据收集放人lis中.
+ <Author>        null
+ <Input>
+    <param1>     filepath            Description:文件路径
+    <param2>     index               Description:null添加的位置
+    <param3>     chineseFontPathList           Description:中文字体列表
+    <param4>     monoSpaceFontPathList           Description:等宽字体列表
+    <param5>     isStartup           Description:是否为第一次启动
+    <param6>     isEnabled           Description:是否可以换启用
+
+ <Return>        int                 Description:null
+ <Note>          null
+*************************************************************************/
 int DFontPreviewListDataThread::insertFontItemData(const QString &filePath,
                                                    int index,
                                                    const QStringList &chineseFontPathList,
@@ -320,6 +494,16 @@ int DFontPreviewListDataThread::insertFontItemData(const QString &filePath,
     return (index + 1);
 }
 
+/*************************************************************************
+ <Function>      refreshFontListData
+ <Description>    刷新字体列表的数据
+ <Author>        null
+ <Input>
+    <param1>     isStartup              Description:是否为第一次启动
+    <param2>     installFont            Description:安装的字体文件
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListDataThread::refreshFontListData(bool isStartup, const QStringList &installFont)
 {
     qDebug() << __FUNCTION__ << " begin" << isStartup << installFont.size();
@@ -402,6 +586,15 @@ void DFontPreviewListDataThread::refreshFontListData(bool isStartup, const QStri
     }
 }
 
+/*************************************************************************
+ <Function>      removeFontData
+ <Description>   从字体信息链表中删除需要删除的项
+ <Author>        null
+ <Input>
+    <param1>     removeItemData            Description:需要删除的数据项
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListDataThread::removeFontData(const DFontPreviewItemData &removeItemData)
 {
     m_diffFontModelList.clear();
@@ -415,6 +608,17 @@ void DFontPreviewListDataThread::removeFontData(const DFontPreviewItemData &remo
     }
 }
 
+/*************************************************************************
+ <Function>      syncFontEnableDisableStatusData
+ <Description>   更新从配置文件中读到的禁用字体的信息
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+    <param2>     null            Description:null
+    <param3>     null            Description:null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListDataThread::syncFontEnableDisableStatusData(const QStringList &disableFontPathList)
 {
     //disableFontPathList为被禁用的字体路径列表
@@ -448,6 +652,18 @@ void DFontPreviewListDataThread::syncFontEnableDisableStatusData(const QStringLi
     m_dbManager->commitUpdateFontInfo();
 }
 
+
+/*************************************************************************
+ <Function>      updateFontId
+ <Description>   更新字体信息中的fontid
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+    <param2>     null            Description:null
+    <param3>     null            Description:null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListDataThread::updateFontId(const DFontPreviewItemData &itemData, int id)
 {
     if (id < 0)

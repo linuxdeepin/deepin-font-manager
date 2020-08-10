@@ -25,6 +25,17 @@ DNoFocusDelegate::DNoFocusDelegate(QAbstractItemView *parent)
 }
 
 //用于去除选中项的边框
+/*************************************************************************
+ <Function>      paint
+ <Description>   绘制函数
+ <Author>        null
+ <Input>
+    <param1>     painter            Description:绘制类的指针
+    <param2>     option             Description:当前项
+    <param3>     index              Description:当前项索引
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DNoFocusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
                              const QModelIndex &index) const
 {
@@ -99,6 +110,16 @@ void DNoFocusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
     }
 }
 
+/*************************************************************************
+ <Function>      sizeHint
+ <Description>   获取一项的size
+ <Author>        null
+ <Input>
+    <param1>     option            Description:listview中的一行成员
+    <param2>     index             Description:当前项的索引
+ <Return>        QSize             Description:返回的尺寸大小
+ <Note>          null
+*************************************************************************/
 QSize DNoFocusDelegate::sizeHint(const QStyleOptionViewItem &option,
                                  const QModelIndex &index) const
 {
@@ -113,7 +134,18 @@ QSize DNoFocusDelegate::sizeHint(const QStyleOptionViewItem &option,
 }
 
 
-
+/*************************************************************************
+ <Function>      paintTabFocusBackground
+ <Description>   绘制tab选中的效果
+ <Author>        null
+ <Input>
+    <param1>     painter                   Description:绘制类指针
+    <param2>     option                    Description:listview中的一行成员
+    <param3>     backgroundRect            Description:绘制背景区域
+    <param4>     cg                        Description:ColorGroup
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DNoFocusDelegate::paintTabFocusBackground(QPainter *painter, const QStyleOptionViewItem &option, const QRect &backgroundRect, const QPalette::ColorGroup cg) const
 {
     //绘制左侧列表外部高亮区域的路径
@@ -149,14 +181,19 @@ void DNoFocusDelegate::paintTabFocusBackground(QPainter *painter, const QStyleOp
     }
 }
 
-/**
-*  @brief  得到需要绘制区域的路径
-*  @param[in]  bgRect listview一项的区域范围
-*  @param[in]  path 需要绘制区域的路径
-*  @param[in]  xDifference x方向需要变化的数值
-*  @param[in]  yDifference y方向需要变化的数值
-*  @param[in]  radius  圆弧半径
-*/
+/*************************************************************************
+ <Function>      setPaintPath
+ <Description>   设置需要绘制区域的路径
+ <Author>        null
+ <Input>
+    <param1>     bgRect            Description:listview一项的区域范围
+    <param2>     path              Description:需要绘制区域的路径
+    <param3>     xDifference       Description:x方向需要变化的数值
+    <param4>     yDifference       Description:y方向需要变化的数值
+    <param5>     radius            Description:圆弧半径
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DNoFocusDelegate::setPaintPath(const QRect &bgRect, QPainterPath &path, const int xDifference, const int yDifference, const int radius) const
 {
     QPoint path_bottomRight(bgRect.bottomRight().x() - xDifference, bgRect.bottomRight().y() - yDifference);
@@ -175,7 +212,17 @@ void DNoFocusDelegate::setPaintPath(const QRect &bgRect, QPainterPath &path, con
 }
 
 
-//adjust length/*UT000539*/
+
+/*************************************************************************
+ <Function>      adjustLength
+ <Description>   自适应长度
+ <Author>        null
+ <Input>
+    <param1>     titleName       Description:名字
+    <param2>     font            Description:当前字体
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 QString DNoFocusDelegate::adjustLength(QString &titleName, QFont &font) const
 {
     QFontMetrics fontMetric(font);
@@ -258,6 +305,16 @@ void DSplitListWidget::initListData()
     selectionModel()->select(index, QItemSelectionModel::Select);
 }
 
+/*************************************************************************
+ <Function>      currentChanged
+ <Description>   选中项改变触发函数
+ <Author>        null
+ <Input>
+    <param1>     current             Description:当前项索引
+    <param2>     previous            Description:下一项的索引
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DSplitListWidget::currentChanged(const QModelIndex &current, const QModelIndex &previous)
 {
     Q_UNUSED(previous);
@@ -274,18 +331,43 @@ void DSplitListWidget::currentChanged(const QModelIndex &current, const QModelIn
     emit onListWidgetItemClicked(realIndex);
 }
 
+/*************************************************************************
+ <Function>      setIsHalfWayFocus
+ <Description>   设置是否为其它原因获取的焦点
+ <Author>        null
+ <Input>
+    <param1>     IsHalfWayFocus            Description:是否为其它原因获取的焦点
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DSplitListWidget::setIsHalfWayFocus(bool IsHalfWayFocus)
 {
     m_IsHalfWayFocus = IsHalfWayFocus;
 }
 
+/*************************************************************************
+ <Function>      IsTabFocus
+ <Description>   判断是否tab选中
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        bool            Description:是否tab选中
+ <Note>          null
+*************************************************************************/
 bool DSplitListWidget::IsTabFocus() const
 {
     return m_IsTabFocus;
 }
 
-
-//获取当前SplitListview的状态
+/*************************************************************************
+ <Function>      getStatus
+ <Description>   获取当前SplitListview的状态
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        FocusStatus            Description:当前SplitListview的状态
+ <Note>          null
+*************************************************************************/
 FocusStatus &DSplitListWidget::getStatus()
 {
     m_currentStatus.m_IsFirstFocus = this->m_IsFirstFocus;
@@ -295,12 +377,29 @@ FocusStatus &DSplitListWidget::getStatus()
     return m_currentStatus;
 }
 
-//设置SplitListView的状态
+/*************************************************************************
+ <Function>      setCurrentStatus
+ <Description>   设置SplitListView的状态
+ <Author>        null
+ <Input>
+    <param1>     currentStatus            Description:SplitListView的状态
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DSplitListWidget::setCurrentStatus(const FocusStatus &currentStatus)
 {
     m_currentStatus = currentStatus;
 }
 
+/*************************************************************************
+ <Function>      mouseMoveEvent
+ <Description>   鼠标移动事件
+ <Author>        null
+ <Input>
+    <param1>     event            Description:鼠标移动事件
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DSplitListWidget::mouseMoveEvent(QMouseEvent *event)
 {
     Q_UNUSED(event)
@@ -310,6 +409,15 @@ void DSplitListWidget::mouseMoveEvent(QMouseEvent *event)
     return;
 }
 
+/*************************************************************************
+ <Function>      setRefreshFinished
+ <Description>   设置安装是否结束
+ <Author>        null
+ <Input>
+    <param1>     isInstalling            Description:安装是否结束
+ <Return>        null                    Description:null
+ <Note>          null
+*************************************************************************/
 void DSplitListWidget::setRefreshFinished(bool isInstalling)
 {
     if (isInstalling) {
@@ -319,6 +427,15 @@ void DSplitListWidget::setRefreshFinished(bool isInstalling)
     }
 }
 
+/*************************************************************************
+ <Function>      wheelEvent
+ <Description>   滚轮事件
+ <Author>        null
+ <Input>
+    <param1>     event            Description:滚轮事件
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DSplitListWidget::wheelEvent(QWheelEvent *event)
 {
     if (!m_refreshFinished)
@@ -362,6 +479,15 @@ void DSplitListWidget::wheelEvent(QWheelEvent *event)
     }
 }
 
+/*************************************************************************
+ <Function>      keyPressEvent
+ <Description>   鼠标点击事件
+ <Author>        null
+ <Input>
+    <param1>     event            Description:鼠标点击事件
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DSplitListWidget::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Up) {
@@ -383,6 +509,16 @@ void DSplitListWidget::keyPressEvent(QKeyEvent *event)
     }
 }
 
+/*************************************************************************
+ <Function>      eventFilter
+ <Description>   事件过滤器
+ <Author>        null
+ <Input>
+    <param1>     obj              Description:UNUSED
+    <param2>     event            Description:事件
+ <Return>        bool             Description:是否处理
+ <Note>          null
+*************************************************************************/
 bool DSplitListWidget::eventFilter(QObject *obj, QEvent *event)
 {
     Q_UNUSED(obj)
@@ -407,7 +543,18 @@ bool DSplitListWidget::eventFilter(QObject *obj, QEvent *event)
 }
 
 
-//hover for helper on leftListview /*UT000539*/
+/*************************************************************************
+ <Function>      helpEvent
+ <Description>   左侧列表hover现实提示信息.
+ <Author>        null
+ <Input>
+    <param1>     event             Description:QHelpEvent
+    <param2>     view              Description:listview
+    <param3>     option            Description:当前项
+    <param4>     index             Description:当前项的索引
+ <Return>        bool              Description:委托可以处理该事件，则返回true;否则返回false
+ <Note>          null
+*************************************************************************/
 bool DNoFocusDelegate::helpEvent(QHelpEvent *event, QAbstractItemView *view
                                  , const QStyleOptionViewItem &option, const QModelIndex &index)
 {
@@ -440,7 +587,15 @@ bool DNoFocusDelegate::helpEvent(QHelpEvent *event, QAbstractItemView *view
     return DNoFocusDelegate::helpEvent(event, view, option, index);
 }
 
-//hide tooltip
+/*************************************************************************
+ <Function>      hideTooltipImmediately
+ <Description>   隐藏提示信息
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DNoFocusDelegate::hideTooltipImmediately()
 {
     QWidgetList qwl = QApplication::topLevelWidgets();
@@ -451,6 +606,15 @@ void DNoFocusDelegate::hideTooltipImmediately()
     }
 }
 
+/*************************************************************************
+ <Function>      mousePressEvent
+ <Description>   鼠标点击事件
+ <Author>        null
+ <Input>
+    <param1>     event            Description:鼠标点击事件
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DSplitListWidget::mousePressEvent(QMouseEvent *event)
 {
     QPoint clickPoint = event->pos();

@@ -8,6 +8,19 @@ DFMXmlWrapper::DFMXmlWrapper()
 {
 }
 
+
+/*************************************************************************
+ <Function>      createXmlFile
+ <Description>   新建xml文件
+ <Author>        null
+ <Input>
+    <param1>     fileName        Description: 文件名
+    <param2>     rootName        Description:根节点名
+    <param3>     version         Description:xml版本
+    <param4>     encoding        Description:xml编码（字符集）
+ <Return>        bool            Description:表示新建结果
+ <Note>          null
+*************************************************************************/
 bool DFMXmlWrapper::createXmlFile(const QString &fileName,
                                   const QString &rootName,
                                   const QString &version,
@@ -38,6 +51,15 @@ bool DFMXmlWrapper::createXmlFile(const QString &fileName,
     return true;
 }
 
+/*************************************************************************
+ <Function>      createFontConfigFile
+ <Description>   新建fontconfig配置文件
+ <Author>        null
+ <Input>
+    <param1>     xmlFilePath         Description:文件路径
+ <Return>        bool                Description:新建文件的结果
+ <Note>          null
+*************************************************************************/
 bool DFMXmlWrapper::createFontConfigFile(const QString &xmlFilePath)
 {
     QFile file(xmlFilePath);
@@ -84,6 +106,15 @@ bool DFMXmlWrapper::createFontConfigFile(const QString &xmlFilePath)
     return true;
 }
 
+/*************************************************************************
+ <Function>      deleteXmlFile
+ <Description>   删除文件
+ <Author>        null
+ <Input>
+    <param1>     fileName            Description:文件名
+ <Return>        bool                Description: 是否成功删除文件
+ <Note>          null
+*************************************************************************/
 bool DFMXmlWrapper::deleteXmlFile(const QString &fileName)
 {
     if (fileName.isEmpty()) {
@@ -99,12 +130,33 @@ bool DFMXmlWrapper::deleteXmlFile(const QString &fileName)
     return true;
 }
 
+/*************************************************************************
+ <Function>      renameXmlFile
+ <Description>   重命名xml文件
+ <Author>        null
+ <Input>
+    <param1>     fileName            Description:文件名
+    <param2>     newName             Description:新名称
+ <Return>        bool                Description:重命名是否成功
+ <Note>          null
+*************************************************************************/
 bool DFMXmlWrapper::renameXmlFile(const QString &fileName,
                                   const QString &newName)
 {
     return QFile::rename(fileName, newName);
 }
 
+/*************************************************************************
+ <Function>      getNodeByName
+ <Description>   根据节点名获取节点元素
+ <Author>        null
+ <Input>
+    <param1>     rootEle         Description:根元素
+    <param2>     nodeName        Description:节点名
+    <param3>     node            Description:节点
+ <Return>        bool            Description:查询的结果
+ <Note>          null
+*************************************************************************/
 bool DFMXmlWrapper::getNodeByName(QDomElement &rootEle,
                                   const QString &nodeName,
                                   QDomElement &node)
@@ -125,7 +177,18 @@ bool DFMXmlWrapper::getNodeByName(QDomElement &rootEle,
     return false;
 }
 
-
+/*************************************************************************
+ <Function>      addNode_Text
+ <Description>   增加只有文本的节点
+ <Author>        null
+ <Input>
+    <param1>     fileName                  Description:文件名
+    <param2>     parentNodeName            Description:父节点名
+    <param3>     nodeName                  Description:节点名
+    <param3>     nodeText                  Description:节点文本
+ <Return>        bool                      Description:是否成功增加
+ <Note>          null
+*************************************************************************/
 bool DFMXmlWrapper::addNode_Text(const QString &fileName,
                                  const QString &parentNodeName,
                                  const QString &nodeName,
@@ -135,13 +198,35 @@ bool DFMXmlWrapper::addNode_Text(const QString &fileName,
         return false;
     }
 
-    // 新建QDomDocument类对象，它代表一个XML文档
+    // 新建QDomDocument类对象，它代表
+    /**
+    *  @brief  增加节点
+    *  @param[in]  fileName 文件名
+    *  @param[in]  parentNodeName 父节点名
+    *  @param[in]  nodePropertyList 节点名列表(将依次作为子节点添加到父节点上，
+    * 　　
+    *  @param[in]  nodeAttributeList 节点的属性/值map列表
+    *  @param[in]  lastNodeText 用于填充在最后一个节点的文本
+    *  @retval true 表示成功
+    *  @retval false 表示失败
+    */
     QDomDocument doc;
     // 建立指向“fileName”文件的QFile对象
     QFile file(fileName);
     // 以只读方式打开
     if (!file.open(QIODevice::ReadOnly)) {
         return false;
+        /**
+        *  @brief  增加节点
+        *  @param[in]  fileName 文件名
+        *  @param[in]  parentNodeName 父节点名
+        *  @param[in]  nodePropertyList 节点名列表(将依次作为子节点添加到父节点上，
+        * 　　
+        *  @param[in]  nodeAttributeList 节点的属性/值map列表
+        *  @param[in]  lastNodeText 用于填充在最后一个节点的文本
+        *  @retval true 表示成功
+        *  @retval false 表示失败
+        */
     }
 
     // 将文件内容读到doc中
@@ -175,6 +260,30 @@ bool DFMXmlWrapper::addNode_Text(const QString &fileName,
     return true;
 }
 
+
+/*************************************************************************
+ <Function>      addNodesWithText
+ <Description>   增加节点
+ <Author>        null
+ <Input>
+    <param1>     fileName             Description:文件名
+    <param2>     parentNodeName       Description:父节点名
+    <param3>     nodeNameList         Description:null
+    <param4>     nodeAttributeList    Description:节点的属性/值map列表
+    <param5>     lastNodeText         Description:用于填充在最后一个节点的文本
+ <Return>        bool                 Description:节点是否成功新建
+ <Note>          比如父节点名叫"parentNode", nodeMapList包含"nodeA", "nodeB", "nodeC"三个节点)，
+ 　　　           则节点全部加入后变成：
+                  <parentNode>
+                     <nodeA>
+                       <nodeB property="value">
+                          <nodeC>
+                             nodeText
+                          </nodeC>
+                       </nodeB>
+                     </nodeA>
+                  </parentNode>
+*************************************************************************/
 bool DFMXmlWrapper::addNodesWithText(const QString &fileName,
                                      const QString &parentNodeName,
                                      const QStringList &nodeNameList,
@@ -303,6 +412,7 @@ bool DFMXmlWrapper::addNodesWithTextList(const QString &fileName, const QString 
         return false;
     }
 
+
     //输出到文件
     QTextStream out(&file);
     // 将文档保存到文件，4为子元素缩进字符数
@@ -348,6 +458,17 @@ bool DFMXmlWrapper::addPatternNodesWithTextList(const QString &fileName, const Q
     return ret;
 }
 
+/*************************************************************************
+ <Function>      addNode_All
+ <Description>   增加包含文本与属性的节点
+ <Author>        null
+ <Input>
+    <param1>     fileName            Description:文件名
+    <param2>     parentNodeName      Description:父节点名
+    <param3>     nodeName            Description:节点名
+ <Return>        bool                Description:节点是否成功增加
+ <Note>          null
+*************************************************************************/
 bool DFMXmlWrapper::addNode_All(const QString &fileName,
                                 const QString &parentNodeName,
                                 const QString &nodeName,
@@ -407,6 +528,17 @@ bool DFMXmlWrapper::addNode_All(const QString &fileName,
     return true;
 }
 
+/*************************************************************************
+ <Function>      deleteNodeWithText
+ <Description>   删除节点
+ <Author>        null
+ <Input>
+    <param1>     fileName            Description:文件名
+    <param2>     nodeName            Description:节点名
+    <param3>     nodeText            Description:节点包含的文本
+ <Return>        bool                Description:是否成功删除
+ <Note>          null
+*************************************************************************/
 bool DFMXmlWrapper::deleteNodeWithText(const QString &fileName,
                                        const QString &nodeName,
                                        const QString &nodeText)
@@ -473,6 +605,17 @@ bool DFMXmlWrapper::deleteNodeWithText(const QString &fileName,
     return true;
 }
 
+/*************************************************************************
+ <Function>      deleteNodeWithTextList
+ <Description>   删除节点v
+ <Author>        null
+ <Input>
+    <param1>     fileName                Description:null
+    <param2>     nodeName                Description:null
+    <param3>     nodeTextList            Description:所有节点包含的文本
+ <Return>        null                     Description:null
+ <Note>          null
+*************************************************************************/
 bool DFMXmlWrapper::deleteNodeWithTextList(const QString &fileName, const QString &nodeName, const QStringList &nodeTextList)
 {
     if (fileName.isEmpty()) {
@@ -538,6 +681,17 @@ bool DFMXmlWrapper::deleteNodeWithTextList(const QString &fileName, const QStrin
     return true;
 }
 
+/*************************************************************************
+ <Function>      modifyNode_Text
+ <Description>   修改节点文本
+ <Author>        null
+ <Input>
+    <param1>     fileName            Description:文件名
+    <param2>     nodeName            Description:节点名
+    <param3>     nodeText            Description:节点文本
+ <Return>        bool                Description:修改是否成功
+ <Note>          null
+*************************************************************************/
 bool DFMXmlWrapper::modifyNode_Text(const QString &fileName,
                                     const QString &nodeName,
                                     const QString &nodeText)
@@ -588,6 +742,17 @@ bool DFMXmlWrapper::modifyNode_Text(const QString &fileName,
     return true;
 }
 
+/*************************************************************************
+ <Function>      modifyNode_Attribute
+ <Description>   修改节点属性
+ <Author>        null
+ <Input>
+    <param1>     fileName            Description:文件名
+    <param2>     nodeName            Description:节点名
+    <param3>     attMap              Description:节点属性
+ <Return>        bool                Description:修改节点属性是否成功
+ <Note>          null
+*************************************************************************/
 bool DFMXmlWrapper::modifyNode_Attribute(const QString &fileName,
                                          const QString &nodeName,
                                          QSTRING_MAP &attMap)
@@ -638,6 +803,17 @@ bool DFMXmlWrapper::modifyNode_Attribute(const QString &fileName,
     return true;
 }
 
+/*************************************************************************
+ <Function>      queryNode_Text
+ <Description>   查询节点文本
+ <Author>        null
+ <Input>
+    <param1>     fileName            Description:文件名
+    <param2>     nodeName            Description:节点名
+    <param3>     nodeText            Description:节点文本
+ <Return>        bool                Description:查询节点文本
+ <Note>          null
+*************************************************************************/
 bool DFMXmlWrapper::queryNode_Text(const QString &fileName,
                                    const QString &nodeName,
                                    QString &nodeText)
@@ -674,6 +850,18 @@ bool DFMXmlWrapper::queryNode_Text(const QString &fileName,
     }
 }
 
+/*************************************************************************
+ <Function>      queryNode_Attribute
+ <Description>   查询节点属性
+ <Author>        null
+ <Input>
+    <param1>     fileName            Description:文件名
+    <param2>     nodeName            Description:节点名
+    <param3>     attName             Description:节点属性名
+    <param4>     attValue            Description:节点属性值
+ <Return>        bool                Description:查询是否成功
+ <Note>          null
+*************************************************************************/
 bool DFMXmlWrapper::queryNode_Attribute(const QString &fileName,
                                         const QString &nodeName,
                                         const QString &attName,
@@ -712,6 +900,17 @@ bool DFMXmlWrapper::queryNode_Attribute(const QString &fileName,
     }
 }
 
+/*************************************************************************
+ <Function>      queryAllChildNodes_Text
+ <Description>   查询所有子节点文本
+ <Author>        null
+ <Input>
+    <param1>     fileName              Description:文件名
+    <param2>     nodeName              Description:节点名
+    <param3>     textVector            Description:子节点文本
+ <Return>        bool                  Description:查询是否成功
+ <Note>          null
+*************************************************************************/
 bool DFMXmlWrapper::queryAllChildNodes_Text(const QString &fileName,
                                             const QString &nodeName,
                                             QSTRING_VECTOR &textVector)
@@ -752,6 +951,17 @@ bool DFMXmlWrapper::queryAllChildNodes_Text(const QString &fileName,
     return true;
 }
 
+/*************************************************************************
+ <Function>      queryAllChildNodes_Text
+ <Description>   查询所有子节点文本
+ <Author>        null
+ <Input>
+    <param1>     fileName            Description:文件名
+    <param2>     nodeName            Description:节点名
+    <param3>     textList            Description:子节点文本
+ <Return>        bool                Description:查询结果
+ <Note>          null
+*************************************************************************/
 bool DFMXmlWrapper::queryAllChildNodes_Text(const QString &fileName,
                                             const QString &nodeName,
                                             QStringList &textList)
@@ -795,6 +1005,15 @@ bool DFMXmlWrapper::queryAllChildNodes_Text(const QString &fileName,
     return true;
 }
 
+/*************************************************************************
+ <Function>      getFontConfigDisableFontPathList
+ <Description>   查询所有禁用字体文件路径列表
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 QStringList DFMXmlWrapper::getFontConfigDisableFontPathList()
 {
     QStringList strDisableFontPathList;
