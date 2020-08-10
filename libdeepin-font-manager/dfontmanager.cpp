@@ -160,6 +160,8 @@ void DFontManager::run()
     case UnInstall:
         handleUnInstall();
         break;
+    default:
+        break;
     }
 }
 
@@ -189,6 +191,8 @@ void DFontManager::doCmd(const QStringList &arguments)
         break;
     case UnInstall:
         doUninstall(arguments);
+        break;
+    default:
         break;
     }
 }
@@ -444,7 +448,7 @@ void DFontManager::setCacheStatus(const CacheStatus &CacheStatus)
  <Return>        null            Description:null
  <Note>          null
 *************************************************************************/
-void DFontManager::stop()
+void DFontManager::stoped()
 {
     m_IsNeedStop = true;
 }

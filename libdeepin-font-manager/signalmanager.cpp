@@ -19,6 +19,11 @@ SignalManager *SignalManager::instance()
     return m_signalManager;
 }
 
+SignalManager::~SignalManager()
+{
+    m_signalManager = nullptr;
+}
+
 /*************************************************************************
  <Function>      SignalManager
  <Description>   构造函数

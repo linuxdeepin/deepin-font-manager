@@ -468,7 +468,7 @@ void DFInstallNormalWindow::closeEvent(QCloseEvent *event)
     Q_UNUSED(event);
     qDebug() << __FUNCTION__;
 
-    m_fontManager->stop();
+    m_fontManager->stoped();
 }
 
 /*************************************************************************

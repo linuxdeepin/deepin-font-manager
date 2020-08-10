@@ -253,7 +253,8 @@ void DFontPreviewListView::markPositionBeforeRemoved(bool isDelete, const QModel
 void DFontPreviewListView::refreshFocuses()
 {
     qDebug() << __FUNCTION__;
-    setFocus(Qt::MouseFocusReason);
+    if (isVisible())
+        setFocus(Qt::MouseFocusReason);
 }
 
 /*获取一页个数*/
@@ -341,6 +342,8 @@ void DFontPreviewListView::updateModel(bool showSpinner)
     refreshFocuses();
     Q_EMIT rowCountChanged();
     Q_EMIT deleteFinished();
+    setIsTabFocus(m_recoveryTabFocusState);
+    m_recoveryTabFocusState = false;
 }
 
 QRect DFontPreviewListView::getCollectionIconRect(const QRect &rect)
@@ -617,6 +620,7 @@ void DFontPreviewListView::selectFonts(const QStringList &fileList)
     //用于安装后刷新聚焦、安装后focus for ctrl+a UT000539
     refreshFocuses();
     setIsTabFocus(m_recoveryTabFocusState);
+    m_recoveryTabFocusState = false;
 }
 
 QMutex *DFontPreviewListView::getMutex()

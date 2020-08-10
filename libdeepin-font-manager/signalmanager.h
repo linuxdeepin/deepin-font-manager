@@ -14,7 +14,7 @@ class SignalManager : public QObject
     Q_OBJECT
 public:
     static SignalManager *instance();
-
+    ~SignalManager();
 signals:
     //触发安装提示信息窗口
     void showInstallFloatingMessage(int totalCount);

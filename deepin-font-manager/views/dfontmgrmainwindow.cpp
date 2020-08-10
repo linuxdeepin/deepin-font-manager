@@ -257,6 +257,7 @@ void DFontMgrMainWindow::initConnections()
         //记录操作之前有无tab聚焦
         m_fontPreviewListView->setFocus(Qt::MouseFocusReason);
         m_recoveryTabFocusState = m_fontPreviewListView->getIsTabFocus();
+        m_fontPreviewListView->setRecoveryTabFocusState(m_recoveryTabFocusState);
         DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
         int cnt = 0;
         int systemCnt = 0;
@@ -505,7 +506,7 @@ void DFontMgrMainWindow::initShortcuts()
             //first disable delete
             if (m_cacheFinish || m_installFinish)
                 return;
-            m_recoveryTabFocusState = m_fontPreviewListView->getIsTabFocus();
+            m_fontPreviewListView->setRecoveryTabFocusState(m_fontPreviewListView->getIsTabFocus());
             delCurrentFont();
         }, Qt::UniqueConnection);
     }
@@ -1504,7 +1505,9 @@ void DFontMgrMainWindow::onLeftSiderBarItemClicked(int index)
         m_leftIndex = index;
         return;
     }
-
+    bool resetFocus = false;
+    if (m_fontPreviewListView->hasFocus() || m_noResultListView->hasFocus())
+        resetFocus = true;
 
     m_leftIndex = 0;
 
@@ -1522,6 +1525,8 @@ void DFontMgrMainWindow::onLeftSiderBarItemClicked(int index)
     onFontListViewRowCountChanged();
     onPreviewTextChanged();
     m_fontPreviewListView->clearSelection();
+    if (resetFocus && m_fontPreviewListView->isVisible())
+        m_fontPreviewListView->setFocus(Qt::MouseFocusReason);
 }
 
 /*************************************************************************

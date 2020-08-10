@@ -46,7 +46,7 @@ public:
         <Value2>     HalfwayInstall          Description:中途安装
      <Note>          null
     *************************************************************************/
-    enum Type { Install, ReInstall, UnInstall, HalfwayInstall};
+    enum Type { Install, ReInstall, UnInstall, HalfwayInstall, DefaultNullType};
     /*************************************************************************
      <Enum>          InstallStatus
      <Description>   安装状态
@@ -87,7 +87,7 @@ public:
     //设置fc-cache命令执行的状态
     void setCacheStatus(const CacheStatus &CacheStatus);
     //更新线程停止状态标志位
-    void stop();
+    void stoped();
 
 signals:
     //批量安装信号
@@ -129,7 +129,7 @@ private:
     QString m_reinstFile;
     QString m_sysFile;
     bool m_IsNeedStop = false;
-    Type m_type;
+    Type m_type{Type::DefaultNullType};
     CacheStatus m_CacheStatus;
     int m_systemFontCount = 0;
 };
