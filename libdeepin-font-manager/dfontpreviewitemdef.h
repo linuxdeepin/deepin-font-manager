@@ -45,23 +45,23 @@ typedef enum FontType {
     UNKNOWN,
 } FontType;
 
-    /*************************************************************************
-     <Enum>          枚举
-     <Description>   字体状态枚举
-     <Author>
-     <Value>
-        <Value1>     CLEAR               Description:无状态
-        <Value2>     ENABLED             Description:是否启用
-        <Value3>     COLLECTED           Description:是否收藏
-        <Value4>     CHINESED            Description:是否中文字体
-        <Value5>     MONOSPACE           Description:是否等宽字体
+/*************************************************************************
+ <Enum>          枚举
+ <Description>   字体状态枚举
+ <Author>
+ <Value>
+    <Value1>     CLEAR               Description:无状态
+    <Value2>     ENABLED             Description:是否启用
+    <Value3>     COLLECTED           Description:是否收藏
+    <Value4>     CHINESED            Description:是否中文字体
+    <Value5>     MONOSPACE           Description:是否等宽字体
 
-        <Value6>     NORMAL              Description:常规
-        <Value7>     PRESS               Description:press状态
-        <Value8>     HOVEER              Description:hover状态
-        <Value9>     HOVERSTATE          Description:press&hover状态
-     <Note>          null
-    *************************************************************************/
+    <Value6>     NORMAL              Description:常规
+    <Value7>     PRESS               Description:press状态
+    <Value8>     HOVEER              Description:hover状态
+    <Value9>     HOVERSTATE          Description:press&hover状态
+ <Note>          null
+*************************************************************************/
 enum {
     CLEAR = 0,
     ENABLED = 0x01,

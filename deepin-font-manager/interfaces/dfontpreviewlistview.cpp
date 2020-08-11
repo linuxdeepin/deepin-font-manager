@@ -1207,21 +1207,29 @@ void DFontPreviewListView::rowsAboutToBeRemoved(const QModelIndex &parent, int s
 void DFontPreviewListView::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_End) {
-        if (event->modifiers() == Qt::ControlModifier) {
-            scrollToBottom();
-        } else {
+        if (event->modifiers() == Qt::NoModifier) {
             setCurrentIndex(m_fontPreviewProxyModel->index(count() - 1, 0));
             setCurrentSelected(count() - 1);
-            scrollToBottom();
+        } else if (event->modifiers() == Qt::ShiftModifier) {
+            clearSelection();
+            for (int i = m_currentSelectedRow; i < count(); i++) {
+                QModelIndex nextModelIndex = m_fontPreviewProxyModel->index(i, 0);
+                selectionModel()->select(nextModelIndex, QItemSelectionModel::Select);
+            }
         }
+        scrollToBottom();
     } else if (event->key() == Qt::Key_Home) {
-        if (event->modifiers() == Qt::ControlModifier) {
-            scrollToTop();
-        } else {
+        if (event->modifiers() == Qt::ShiftModifier) {
+            clearSelection();
+            for (int i = m_currentSelectedRow; i >= 0; i--) {
+                QModelIndex nextModelIndex = m_fontPreviewProxyModel->index(i, 0);
+                selectionModel()->select(nextModelIndex, QItemSelectionModel::Select);
+            }
+        } else if (event->modifiers() == Qt::NoModifier) {
             setCurrentIndex(m_fontPreviewProxyModel->index(0, 0));
             setCurrentSelected(0);
-            scrollToTop();
         }
+        scrollToTop();
     } else {
         if (event->key() == Qt::Key_Up || event->key() == Qt::Key_Down) {
             QModelIndexList list = selectedIndexes();
@@ -1794,6 +1802,8 @@ void DFontPreviewListView::onCollectBtnClicked(const QModelIndexList &index, boo
     sortModelIndexList(itemIndexesNew);
     if (itemIndexesNew.count() > 0) {
         m_selectAfterDel = itemIndexesNew.last().row();
+    } else {
+        return;
     }
 
     m_bListviewAtButtom = isAtListviewBottom();
