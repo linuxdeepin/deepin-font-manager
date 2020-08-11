@@ -80,7 +80,6 @@ public slots:
     void forceDeleteFiles(const QStringList &files);
     void onRemoveFileWatchers(const QStringList &files);
     void onAutoDirWatchers();
-    void setCantDisabledMonoList();
 
 protected:
     QThread mThread;
@@ -90,7 +89,6 @@ protected:
     QList<DFontPreviewItemData> m_diffFontModelList;
     DFontPreviewListView *m_view;
     QFileSystemWatcher *m_fsWatcher;
-    QStringList cantDisabledMonoList;
     QMutex *m_mutex;
 };
 

@@ -38,7 +38,6 @@ DFontPreviewListDataThread *DFontPreviewListDataThread::instance()
 DFontPreviewListDataThread::DFontPreviewListDataThread(DFontPreviewListView *view)
     : m_view(view)
     , m_fsWatcher(nullptr)
-    , cantDisabledMonoList(nullptr)
     , m_mutex(nullptr)
 {
     if (view != nullptr)
@@ -46,7 +45,6 @@ DFontPreviewListDataThread::DFontPreviewListDataThread(DFontPreviewListView *vie
 
     m_dbManager = DFMDBManager::instance();
     moveToThread(&mThread);
-    setCantDisabledMonoList();
     QObject::connect(&mThread, SIGNAL(started()), this, SLOT(doWork()));
     connect(m_view, &DFontPreviewListView::requestDeleted, this, &DFontPreviewListDataThread::onFileDeleted, Qt::QueuedConnection);
     connect(m_view, &DFontPreviewListView::requestAdded, this, &DFontPreviewListDataThread::onFileAdded/*, Qt::QueuedConnection*/);
@@ -182,20 +180,6 @@ void DFontPreviewListDataThread::updateChangedFile(const QString &path)
 void DFontPreviewListDataThread::updateChangedDir(const QString &path)
 {
     m_view->updateChangedDir(path);
-}
-
-/*************************************************************************
- <Function>      setCantDisabledMonoList
- <Description>   设置不能禁用的等宽字体
- <Author>        null
- <Input>
-    <param1>     null            Description:null
- <Return>        null            Description:null
- <Note>          null
-*************************************************************************/
-void DFontPreviewListDataThread::setCantDisabledMonoList()
-{
-    cantDisabledMonoList << "Noto Mono-Regular" << "Noto Sans Mono-Regular" << "Noto Sans Mono-Bold";
 }
 
 /*************************************************************************
@@ -431,7 +415,12 @@ int DFontPreviewListDataThread::insertFontItemData(const QString &filePath,
                 continue;
             familyName = family;
         }
-        itemData.fontInfo.familyName = familyName.isEmpty() ? itemData.fontInfo.fullname : familyName;
+        if (familyName.isEmpty()) {
+            familyName = itemData.fontInfo.fullname;
+        } else {
+            itemData.fontInfo.familyName = familyName;
+        }
+    } else if (itemData.fontInfo.isSystemFont) {
         familyName = itemData.fontInfo.familyName;
     } else {
         familyName = itemData.fontInfo.fullname;

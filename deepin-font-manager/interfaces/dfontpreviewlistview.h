@@ -88,10 +88,10 @@ public:
     void deleteFontFiles(const QStringList &files, bool force = false);
     void deleteCurFonts(const QStringList &files, bool force = false);
     void changeFontFile(const QString &path, bool force = false);
-    void selectedFonts(int *deleteCnt = nullptr, int *systemCnt = nullptr,
-                       int *curFontCnt = nullptr, int *disableCnt = nullptr,
+    void selectedFonts(const DFontPreviewItemData &curData, int *deleteCnt = nullptr,
+                       int *systemCnt = nullptr, qint8 *curFontCnt = nullptr, int *disableCnt = nullptr,
                        QStringList *delFontList = nullptr, QModelIndexList *allIndexList = nullptr,
-                       QModelIndexList *disableIndexList = nullptr, QStringList *allMinusSysFontList = nullptr, DFontPreviewItemData *curData = nullptr);
+                       QModelIndexList *disableIndexList = nullptr, QStringList *allMinusSysFontList = nullptr);
     inline void appendFilePath(QStringList *allFontList, const QString &filePath)
     {
         if ((allFontList != nullptr) && (!allFontList->contains(filePath))) {
@@ -112,7 +112,6 @@ public:
     void updateShiftSelect(const QModelIndex &modelIndex);
     bool isAtListviewBottom();
     bool isAtListviewTop();
-    QString getPreviewTextWithSize(int *fontSize = nullptr);
     void setCurrentSelected(int indexRow);
     void cancelDel();
     void viewChanged();

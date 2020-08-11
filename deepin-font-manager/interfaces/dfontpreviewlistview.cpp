@@ -1534,25 +1534,6 @@ bool DFontPreviewListView::isAtListviewTop()
 }
 
 /*************************************************************************
- <Function>      getPreviewTextWithSize
- <Description>   通过字体大小获得预览内容
- <Author>        null
- <Input>
-    <param1>     fontSize            Description:字体大小
- <Return>        QString             Description:预览内容
- <Note>          null
-*************************************************************************/
-QString DFontPreviewListView::getPreviewTextWithSize(int *fontSize)
-{
-    DFontMgrMainWindow *mw = qobject_cast<DFontMgrMainWindow *>(m_parentWidget);
-    if (mw)
-        return mw->getPreviewTextWithSize(fontSize);
-    if (fontSize != nullptr)
-        *fontSize = FTM_DEFAULT_PREVIEW_FONTSIZE;
-    return QString(DApplication::translate("Font", "Don't let your dreams be dreams"));
-}
-
-/*************************************************************************
  <Function>      onRightMenuShortCutActivated
  <Description>   Alt+M右键菜单--弹出
  <Author>        null
@@ -1561,6 +1542,7 @@ QString DFontPreviewListView::getPreviewTextWithSize(int *fontSize)
  <Return>        null            Description:null
  <Note>          null
 *************************************************************************/
+/*SP3--Alt+M右键菜单--弹出*/
 void DFontPreviewListView::onRightMenuShortCutActivated()
 {
     m_isMousePressNow = false;
@@ -2147,18 +2129,36 @@ void DFontPreviewListView::changeFontFile(const QString &path, bool force)
  <Return>        null            Description:null
  <Note>          null
 *************************************************************************/
-void DFontPreviewListView::selectedFonts(int *deleteCnt, int *systemCnt, int *curFontCnt, int *disableCnt,
+void DFontPreviewListView::selectedFonts(const DFontPreviewItemData &curData,
+                                         int *deleteCnt, int *systemCnt, qint8 *curFontCnt, int *disableCnt,
                                          QStringList *delFontList, QModelIndexList *allIndexList,
-                                         QModelIndexList *disableIndexList, QStringList *allMinusSysFontList, DFontPreviewItemData *curData)
+                                         QModelIndexList *disableIndexList, QStringList *allMinusSysFontList)
 {
+    if (deleteCnt != nullptr)
+        *deleteCnt = 0;
+    if (systemCnt != nullptr)
+        *systemCnt = 0;
+    if (curFontCnt != nullptr)
+        *curFontCnt = 0;
+    if (disableCnt != nullptr)
+        *disableCnt = 0;
+    if (delFontList != nullptr)
+        delFontList->clear();
+    if (allIndexList != nullptr)
+        allIndexList->clear();
+    if (disableIndexList != nullptr)
+        disableIndexList->clear();
+    if (allMinusSysFontList != nullptr)
+        allMinusSysFontList->clear();
+
     QModelIndexList list = selectedIndexes();
 
     bool curEnableCollect = false;
     bool calDisable = ((disableIndexList != nullptr) || (disableCnt != nullptr));
-    if (calDisable && curData != nullptr) {
-        curEnableCollect = curData->fontData.isEnabled();
-    } else if ((allIndexList != nullptr) && (curData != nullptr)) {
-        curEnableCollect = curData->fontData.isCollected();
+    if (calDisable) {
+        curEnableCollect = curData.fontData.isEnabled();
+    } else if (allIndexList != nullptr) {
+        curEnableCollect = curData.fontData.isCollected();
     }
 
     for (QModelIndex &index : list) {

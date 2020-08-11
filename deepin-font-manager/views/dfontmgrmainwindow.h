@@ -7,14 +7,13 @@
 #include "signalmanager.h"
 #include "dsplitlistwidget.h"
 #include "views/dfdeletedialog.h"
+
 #include <QShortcut>
 
 #include <DFrame>
 #include <DMainWindow>
 #include <QResizeEvent>
 #include <QScreen>
-
-
 
 DWIDGET_USE_NAMESPACE
 
@@ -42,27 +41,11 @@ public:
     ~DFontMgrMainWindow() override;
 
     //静态变量
+    static constexpr char const *FMT_FONT_SIZE = "%dpx";
     static constexpr int MIN_FONT_SIZE = 6;
     static constexpr int MAX_FONT_SIZE = 60;
     static constexpr int DEFAULT_FONT_SIZE = FTM_DEFAULT_PREVIEW_FONTSIZE;
-    static constexpr char const *FMT_FONT_SIZE = "%dpx";
-    static constexpr int PARAM = 1;
 
-    /*************************************************************************
-     <Enum>          Theme
-     <Description>   主题类型
-     <Author>
-     <Value>
-        <Value1>     Dark               Description:浅色
-        <Value2>     Light              Description:深色
-        <Value2>     FollowSystem       Description:跟随系统
-     <Note>          null
-    *************************************************************************/
-    enum Theme {
-        Dark,
-        Light,
-        FollowSystem,
-    };
     /*************************************************************************
      <Enum>          DeleteStatus
      <Description>   删除状态
@@ -80,6 +63,7 @@ public:
         Delete_Deleting = 2,
         Deleting = Delete_Cacheing | Delete_Deleting,
     };
+
     //设置快速安装标志位
     void setQuickInstallMode(bool isQuick);
     //隐藏快速安装页面
@@ -118,15 +102,25 @@ public:
         m_fontLoadingSpinner->spinnerStop();
         m_fontLoadingSpinner->hide();
     }
-    //获得默认字体预览大小
-    QString getPreviewTextWithSize(int *fontSize = nullptr);
+    //获取高度
+    inline int getWinHeight()
+    {
+        return m_winHight;
+    }
+    //获取宽度
+    inline int getWinWidth()
+    {
+        return m_winWidth;
+    }
+    //获取是否最大化
+    inline bool getIsMaximized()
+    {
+        return m_IsWindowMax;
+    }
 
-    //Main window Size
-    int m_winHight;
-    int m_winWidth;
-    bool m_IsWindowMax = false;
     //处理键盘press事件
     void keyPressEvent(QKeyEvent *event)override;
+
 protected:
     //初始化应用数据
     void initData();
@@ -165,7 +159,7 @@ protected:
     //右键菜单：在文件管理器中显示字体文件位置
     void showFontFilePostion();
     //字体删除处理函数
-    void delCurrentFont();
+    void delCurrentFont(bool activatedByRightmenu = true);
     //字体导出处理函数
     void exportFont();
     //显示导出字体时提示内容
@@ -198,11 +192,6 @@ protected:
     void respondToValueChanged(int value);
     //响应安装结束
     void respondToInstallOver(int successInstallCount);
-    DFontPreviewListView *m_fontPreviewListView;
-    DListView *m_noResultListView;
-    DListView *m_noInstallListView;
-    DFontSpinnerWidget *m_fontLoadingSpinner {nullptr};
-    DFMDBManager *m_dbManager {nullptr};
 
     //处理窗口大小变化事件
     void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
@@ -244,21 +233,39 @@ public slots:
     void onShowSpinner(bool bShow, bool force, DFontSpinnerWidget::SpinnerStyles style);
 
 protected:
-    // For quick install mode
-    bool m_isQuickMode = {false};
+    DFontPreviewListView *m_fontPreviewListView;
+    DListView *m_noResultListView;
+    DListView *m_noInstallListView;
+    DFontSpinnerWidget *m_fontLoadingSpinner {nullptr};
+    DFMDBManager *m_dbManager {nullptr};
     DFontManager *m_fontManager;
     SignalManager *m_signalManager = SignalManager::instance();
-    DSplitListWidget::FontGroup filterGroup;
-//    DSpinner *m_loadingSpinner = nullptr;
     QShortcut *m_scFullScreen;  //全屏快捷键F11
     QShortcut *m_scZoomIn;        //放大字体快捷键Ctrl+=
     QShortcut *m_scZoomOut;       //放大字体快捷键Ctrl+-
     QShortcut *m_scDefaultSize;   //默认⼤⼩字体快捷键Ctrl+0
-    int m_previewFontSize;
-    int m_abandonFilesCount = 0;
     QString m_previewText;
-    int m_leftIndex {0};
+    // For quick install mode
+    bool m_isQuickMode = {false};
+    qint8 m_previewFontSize;
+    qint8 m_leftIndex {0};
+    //selected fonts
+    qint8 m_menuCurCnt;
+    int m_menuDelCnt;
+    int m_menuSysCnt;
+    int m_menuDisableCnt;
+    DSplitListWidget::FontGroup filterGroup;
+    QStringList m_menuDelFontList;
+    QModelIndexList m_menuAllIndexList;
+    QModelIndexList m_menuDisableIndexList;
+    QStringList m_menuAllMinusSysFontList;
+    DFontPreviewItemData m_menuCurData;
+
     int m_successInstallCount = 0;
+    //Main window Size
+    short m_winHight;
+    short m_winWidth;
+    bool m_IsWindowMax = false;
 
     bool m_searchTextStatusIsEmpty = true;
     bool m_isFromSys = false;

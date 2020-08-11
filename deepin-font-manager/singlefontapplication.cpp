@@ -139,9 +139,9 @@ void SingleFontApplication::activateWindow()
                     m_qspMainWnd.reset(new
                                        DFontMgrMainWindow());
                     int windowWidth = reinterpret_cast<DFontMgrMainWindow *>(
-                                          m_qspMainWnd.get())->m_winWidth;
+                                          m_qspMainWnd.get())->getWinWidth();
                     int windowHeight = reinterpret_cast<DFontMgrMainWindow *>(
-                                           m_qspMainWnd.get())->m_winHight;
+                                           m_qspMainWnd.get())->getWinHeight();
 
                     m_qspMainWnd->setMinimumSize(DEFAULT_WINDOWS_WIDTH, DEFAULT_WINDOWS_HEIGHT);
                     if (DEFAULT_WINDOWS_WIDTH <= windowWidth && DEFAULT_WINDOWS_HEIGHT <= windowHeight) {
@@ -181,9 +181,9 @@ void SingleFontApplication::activateWindow()
         if (nullptr == m_qspMainWnd.get()) {
             m_qspMainWnd.reset(new DFontMgrMainWindow());
             int windowWidth = reinterpret_cast<DFontMgrMainWindow *>(
-                                  m_qspMainWnd.get())->m_winWidth;
+                                  m_qspMainWnd.get())->getWinWidth();
             int windowHeight = reinterpret_cast<DFontMgrMainWindow *>(
-                                   m_qspMainWnd.get())->m_winHight;
+                                   m_qspMainWnd.get())->getWinHeight();
             //.toInt(&hWinDataStatus);
             m_qspMainWnd->setMinimumSize(DEFAULT_WINDOWS_WIDTH, DEFAULT_WINDOWS_HEIGHT);
             if (DEFAULT_WINDOWS_WIDTH <= windowWidth && DEFAULT_WINDOWS_HEIGHT <= windowHeight) {
@@ -195,7 +195,7 @@ void SingleFontApplication::activateWindow()
             m_qspMainWnd->show();
         } else {
             bool IsWindowMax = reinterpret_cast<DFontMgrMainWindow *>(
-                                   m_qspMainWnd.get())->m_IsWindowMax;
+                                   m_qspMainWnd.get())->getIsMaximized();
             if (IsWindowMax == true) {
                 m_qspMainWnd->setWindowState(Qt::WindowMaximized);
             } else {
