@@ -206,7 +206,8 @@ private:
     qint64 m_curTm {0};
     //根据按键设置选中
     void keyPressEventFilter(const QModelIndexList &list, bool isUp, bool isDown, bool isShiftModifier);
-
+    //检查当前是否无选中
+    void checkIfHasSelection();
 signals:
     //字体列表加载状态
     void onLoadFontsStatus(int type);
