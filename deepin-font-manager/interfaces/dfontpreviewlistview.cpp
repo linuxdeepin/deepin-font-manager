@@ -988,6 +988,8 @@ void DFontPreviewListView::mouseMoveEvent(QMouseEvent *event)
 void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
 {
     qDebug() << "\n" << __FUNCTION__ << event->type() << event->button();
+    //检查当前是否有选中，恢复起始位
+    checkIfHasSelection();
     QListView::mousePressEvent(event);
     //应该设置焦点，否则鼠标在其他区域release会导致缺失焦点。
     setFocus(Qt::MouseFocusReason);
@@ -995,7 +997,6 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
     QModelIndex modelIndex = indexAt(clickPoint);
 
     m_isMouseClicked = true;
-
     if ((event->button() == Qt::LeftButton) && modelIndex.isValid()) {
         m_isMousePressNow = true;
         if (QApplication::keyboardModifiers() == Qt::ShiftModifier) {
@@ -1023,12 +1024,25 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
             }
         }
     } else if ((event->button() == Qt::RightButton)  && modelIndex.isValid()) {
+        if (event->modifiers() == Qt::ShiftModifier) {
+            clearSelection();
+            if (m_currentSelectedRow <= modelIndex.row()) {
+                for (auto it = m_currentSelectedRow; it <= modelIndex.row(); it++) {
+                    selectionModel()->select(m_fontPreviewProxyModel->index(it, 0), QItemSelectionModel::Select);
+                }
+            } else if (m_currentSelectedRow > modelIndex.row()) {
+                for (auto it = modelIndex.row(); it <= m_currentSelectedRow; it++) {
+                    selectionModel()->select(m_fontPreviewProxyModel->index(it, 0), QItemSelectionModel::Select);
+                }
+            }
+        }
         //右键单击
-        if (!this->selectedIndexes().contains(modelIndex)) {
+        if (!this->selectedIndexes().contains(modelIndex) && event->modifiers() != Qt::ShiftModifier) {
             this->setCurrentIndex(modelIndex);
         }
         //右键index设置为shift起始位置
-        setCurrentSelected(modelIndex.row());
+        if (event->modifiers() != Qt::ShiftModifier)
+            setCurrentSelected(modelIndex.row());
         //恢复normal状态
         FontData fdata = qvariant_cast<FontData>(m_fontPreviewProxyModel->data(modelIndex));
 //        DFontPreviewItemData itemData = getFontData(fdata.strFontName);
@@ -1137,6 +1151,20 @@ void DFontPreviewListView::mouseDoubleClickEvent(QMouseEvent *event)
 }
 
 /*************************************************************************
+ <Function>      ifHasSelection
+ <Description>   检查当前是否无选中，恢复起始位
+ <Author>        UT000539
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
+void DFontPreviewListView::checkIfHasSelection()
+{
+    if (selectedIndexes().count() == 0)
+        m_currentSelectedRow = -1;
+}
+
+/*************************************************************************
  <Function>      setSelection
  <Description>   listview设置选中的函数,主要在这里获取当前选中的字体index
  <Author>        null
@@ -1206,6 +1234,8 @@ void DFontPreviewListView::rowsAboutToBeRemoved(const QModelIndex &parent, int s
 *************************************************************************/
 void DFontPreviewListView::keyPressEvent(QKeyEvent *event)
 {
+    //检查当前是否有选中，恢复起始位
+    checkIfHasSelection();
     if (event->key() == Qt::Key_End) {
         if (event->modifiers() == Qt::NoModifier) {
             setCurrentIndex(m_fontPreviewProxyModel->index(count() - 1, 0));
@@ -1213,17 +1243,19 @@ void DFontPreviewListView::keyPressEvent(QKeyEvent *event)
         } else if (event->modifiers() == Qt::ShiftModifier) {
             clearSelection();
             for (int i = m_currentSelectedRow; i < count(); i++) {
-                QModelIndex nextModelIndex = m_fontPreviewProxyModel->index(i, 0);
-                selectionModel()->select(nextModelIndex, QItemSelectionModel::Select);
+                selectionModel()->select(m_fontPreviewProxyModel->index(i, 0), QItemSelectionModel::Select);
             }
         }
         scrollToBottom();
     } else if (event->key() == Qt::Key_Home) {
         if (event->modifiers() == Qt::ShiftModifier) {
             clearSelection();
-            for (int i = m_currentSelectedRow; i >= 0; i--) {
-                QModelIndex nextModelIndex = m_fontPreviewProxyModel->index(i, 0);
-                selectionModel()->select(nextModelIndex, QItemSelectionModel::Select);
+            if (selectedIndexes().count() == 0)
+                selectionModel()->select(m_fontPreviewProxyModel->index(0, 0), QItemSelectionModel::Select);
+            else {
+                for (int i = m_currentSelectedRow; i >= 0; i--) {
+                    selectionModel()->select(m_fontPreviewProxyModel->index(i, 0), QItemSelectionModel::Select);
+                }
             }
         } else if (event->modifiers() == Qt::NoModifier) {
             setCurrentIndex(m_fontPreviewProxyModel->index(0, 0));
@@ -1494,8 +1526,7 @@ void DFontPreviewListView::updateShiftSelect(const QModelIndex &modelIndex)
 
     selectionModel()->clear();
     for (int i = begin; i <= end; i++) {
-        QModelIndex modelIndex1 = m_fontPreviewProxyModel->index(i, 0);
-        selectionModel()->select(modelIndex1, QItemSelectionModel::Select);
+        selectionModel()->select(m_fontPreviewProxyModel->index(i, 0), QItemSelectionModel::Select);
     }
 }
 
