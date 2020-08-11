@@ -1245,21 +1245,19 @@ void DFontPreviewListView::keyPressEvent(QKeyEvent *event)
             for (int i = m_currentSelectedRow; i < count(); i++) {
                 selectionModel()->select(m_fontPreviewProxyModel->index(i, 0), QItemSelectionModel::Select);
             }
+            if (-1 == m_currentSelectedRow)
+                setCurrentSelected(0);
         }
         scrollToBottom();
     } else if (event->key() == Qt::Key_Home) {
-        if (event->modifiers() == Qt::ShiftModifier) {
-            clearSelection();
-            if (selectedIndexes().count() == 0)
-                selectionModel()->select(m_fontPreviewProxyModel->index(0, 0), QItemSelectionModel::Select);
-            else {
-                for (int i = m_currentSelectedRow; i >= 0; i--) {
-                    selectionModel()->select(m_fontPreviewProxyModel->index(i, 0), QItemSelectionModel::Select);
-                }
-            }
-        } else if (event->modifiers() == Qt::NoModifier) {
+        if (event->modifiers() == Qt::NoModifier || selectedIndexes().count() == 0) {
             setCurrentIndex(m_fontPreviewProxyModel->index(0, 0));
             setCurrentSelected(0);
+        } else if (event->modifiers() == Qt::ShiftModifier) {
+            clearSelection();
+            for (int i = m_currentSelectedRow; i >= 0; i--) {
+                selectionModel()->select(m_fontPreviewProxyModel->index(i, 0), QItemSelectionModel::Select);
+            }
         }
         scrollToTop();
     } else {
