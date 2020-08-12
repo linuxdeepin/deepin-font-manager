@@ -69,6 +69,12 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
     initDelegate();
     initConnections();
     installEventFilter(this);
+
+    grabGesture(Qt::TapGesture);
+    grabGesture(Qt::TapAndHoldGesture);
+    grabGesture(Qt::PanGesture);
+    grabGesture(Qt::PinchGesture);
+    grabGesture(Qt::SwipeGesture);
 }
 
 DFontPreviewListView::~DFontPreviewListView()
@@ -1064,6 +1070,9 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
     checkIfHasSelection();
     QListView::mousePressEvent(event);
     //应该设置焦点，否则鼠标在其他区域release会导致缺失焦点。
+
+
+
     setFocus(Qt::MouseFocusReason);
     QPoint clickPoint = event->pos();
     QModelIndex modelIndex = indexAt(clickPoint);
@@ -1146,6 +1155,7 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
 void DFontPreviewListView::mouseReleaseEvent(QMouseEvent *event)
 {
     qDebug() << __FUNCTION__ << " begin";
+
     if (Qt::MidButton == event->button()) {
         return;
     }
@@ -1467,6 +1477,8 @@ bool DFontPreviewListView::eventFilter(QObject *obj, QEvent *event)
 {
     Q_UNUSED(obj)
 
+
+
     if (event->type() == QEvent::FocusOut) {
         m_isMouseClicked = false;
         m_IsTabFocus = false;
@@ -1479,6 +1491,7 @@ bool DFontPreviewListView::eventFilter(QObject *obj, QEvent *event)
 //            qDebug() << "ASD" << endl;
 //        }
     }
+
 
     return false;
 }

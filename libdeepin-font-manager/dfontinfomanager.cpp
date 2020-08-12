@@ -46,6 +46,16 @@ static DFontInfoManager *INSTANCE = nullptr;
 const QString FONT_USR_DIR = QDir::homePath() + "/.local/share/fonts/";
 const QString FONT_SYSTEM_DIR = "/usr/share/fonts/";
 
+
+/*************************************************************************
+ <Function>      isSystemFont
+ <Description>   判断是否为系统字体
+ <Author>        null
+ <Input>
+    <param1>     filePath            Description:需要判断的字体路径
+ <Return>        bool                Description:是否为系统字体
+ <Note>          null
+*************************************************************************/
 inline bool isSystemFont(const QString &filePath)
 {
     if (filePath.contains("/usr/share/fonts/")) {
@@ -55,6 +65,16 @@ inline bool isSystemFont(const QString &filePath)
     }
 }
 
+/*************************************************************************
+ <Function>      convertToUtf8
+ <Description>   将字符串内容转换为utf8格式
+ <Author>        null
+ <Input>
+    <param1>     content            Description:需要转换的内容
+    <param2>     len                Description:转换长度
+ <Return>        QString            Description:转换之后的内容
+ <Note>          null
+*************************************************************************/
 QString convertToUtf8(unsigned char *content, unsigned int len)
 {
     QString convertedStr = "";
@@ -78,6 +98,17 @@ QString convertToUtf8(unsigned char *content, unsigned int len)
 
 QString getDefaultPreviewText(FT_Face face, qint8 &lang, int len = FTM_DEFAULT_PREVIEW_LENGTH);
 
+/*************************************************************************
+ <Function>      getDefaultPreviewText
+ <Description>   获取默认的预览显示内容
+ <Author>        null
+ <Input>
+    <param1>     face            Description:字体文件对应的FT_Face对象
+    <param2>     lang            Description:传入参数,记录字体类型
+    <param3>     len             Description:显示长度
+ <Return>        QString         Description:预览显示内容
+ <Note>          null
+*************************************************************************/
 QString getDefaultPreviewText(FT_Face face, qint8 &lang, int len)
 {
     QString previewTxt;
@@ -128,6 +159,15 @@ DFontInfoManager::DFontInfoManager(QObject *parent)
 
 DFontInfoManager::~DFontInfoManager() {}
 
+/*************************************************************************
+ <Function>      refreshList
+ <Description>   刷新字体链表
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontInfoManager::refreshList()
 {
     if (!dataList.isEmpty()) {
@@ -141,6 +181,15 @@ void DFontInfoManager::refreshList()
     }
 }
 
+/*************************************************************************
+ <Function>      getAllFontPath
+ <Description>   获取所有的字体文件路径
+ <Author>        null
+ <Input>
+    <param1>     isStartup              Description:是否为第一次启动
+ <Return>        QStringList            Description:所有的字体文件路径
+ <Note>          null
+*************************************************************************/
 QStringList DFontInfoManager::getAllFontPath(bool isStartup) const
 {
 #if 0
@@ -222,6 +271,15 @@ QStringList DFontInfoManager::getAllFontPath(bool isStartup) const
 
 //}
 
+/*************************************************************************
+ <Function>      getFileNames
+ <Description>   获取路径下的所有字体文件
+ <Author>        null
+ <Input>
+    <param1>     path                   Description:路径
+ <Return>        QStringList            Description:路径下的所有字体文件
+ <Note>          null
+*************************************************************************/
 QStringList DFontInfoManager::getFileNames(const QString &path)const
 {
     QStringList string_list;
@@ -246,6 +304,15 @@ QStringList DFontInfoManager::getFileNames(const QString &path)const
     return string_list;
 }
 
+/*************************************************************************
+ <Function>      getAllMonoSpaceFontPath
+ <Description>   获得所有的中文字体
+ <Author>        null
+ <Input>
+    <param1>     null                   Description:null
+ <Return>        QStringList            Description:获取到的字体
+ <Note>          null
+*************************************************************************/
 QStringList DFontInfoManager::getAllChineseFontPath() const
 {
     QStringList pathList;
@@ -269,7 +336,15 @@ QStringList DFontInfoManager::getAllChineseFontPath() const
 #endif
 }
 
-
+/*************************************************************************
+ <Function>      getAllMonoSpaceFontPath
+ <Description>   获得所有的等款字体
+ <Author>        null
+ <Input>
+    <param1>     null                   Description:null
+ <Return>        QStringList            Description:获取到的字体
+ <Note>          null
+*************************************************************************/
 QStringList DFontInfoManager::getAllMonoSpaceFontPath() const
 {
     QStringList pathList;
@@ -292,6 +367,15 @@ QStringList DFontInfoManager::getAllMonoSpaceFontPath() const
     return pathList;
 }
 
+/*************************************************************************
+ <Function>      getFontType
+ <Description>   获取字体文件类型
+ <Author>        null
+ <Input>
+    <param1>     filePath            Description:字体文件路径
+ <Return>        QString             Description:字体文件类型
+ <Note>          null
+*************************************************************************/
 QString DFontInfoManager::getFontType(const QString &filePath)
 {
     const QFileInfo fileInfo(filePath);
@@ -306,6 +390,15 @@ QString DFontInfoManager::getFontType(const QString &filePath)
     }
 }
 
+/*************************************************************************
+ <Function>      getFontInfo
+ <Description>   获取字体信息
+ <Author>        null
+ <Input>
+    <param1>     filePath             Description:字体文件路径
+ <Return>        DFontInfo            Description:该字体文件的字体信息
+ <Note>          null
+*************************************************************************/
 DFontInfo DFontInfoManager::getFontInfo(const QString &filePath)
 {
     FT_Library m_library = nullptr;
@@ -417,6 +510,16 @@ DFontInfo DFontInfoManager::getFontInfo(const QString &filePath)
     return fontInfo;
 }
 
+/*************************************************************************
+ <Function>      getDefaultPreview
+ <Description>   获取字体初始的预览效果内容
+ <Author>        null
+ <Input>
+    <param1>     filePath               Description:字体文件路径
+    <param2>     preivewLang            Description:显示内容长度
+ <Return>        QString                Description:字体初始的预览效果内容
+ <Note>          null
+*************************************************************************/
 QString DFontInfoManager::getDefaultPreview(const QString &filePath, qint8 &preivewLang)
 {
     FT_Library m_library = nullptr;
@@ -441,6 +544,15 @@ QString DFontInfoManager::getDefaultPreview(const QString &filePath, qint8 &prei
     return defaultPreview;
 }
 
+/*************************************************************************
+ <Function>      getCurrentFontFamily
+ <Description>   获取当前使用字体的familyname
+ <Author>        null
+ <Input>
+    <param1>     null                   Description:null
+ <Return>        QStringList            Description:当前使用字体的familyname
+ <Note>          null
+*************************************************************************/
 QStringList DFontInfoManager::getCurrentFontFamily()
 {
     QStringList retStrList;
@@ -512,6 +624,15 @@ QStringList DFontInfoManager::getCurrentFontFamily()
     return retStrList;
 }
 
+/*************************************************************************
+ <Function>      getFontFamilyStyle
+ <Description>   获取字体的family信息
+ <Author>        null
+ <Input>
+    <param1>     filePah                Description:字体文件路径
+ <Return>        QStringList            Description:获取到的信息
+ <Note>          null
+*************************************************************************/
 QStringList DFontInfoManager::getFontFamilyStyle(const QString &filePah)
 {
     QStringList fontFamilyList;
@@ -582,6 +703,15 @@ QStringList DFontInfoManager::getFontFamilyStyle(const QString &filePah)
     return fontFamilyList;
 }
 
+/*************************************************************************
+ <Function>      getFonts
+ <Description>   获取所需类型的字体
+ <Author>        null
+ <Input>
+    <param1>     type                   Description:所需字体的类型
+ <Return>        QStringList            Description:指定类型的字体
+ <Note>          null
+*************************************************************************/
 QStringList DFontInfoManager::getFonts(DFontInfoManager::FontTYpe type) const
 {
     QStringList fontList;
@@ -637,6 +767,16 @@ QStringList DFontInfoManager::getFonts(DFontInfoManager::FontTYpe type) const
     return fontList;
 }
 
+/*************************************************************************
+ <Function>      getInstFontPath
+ <Description>   获取安装字体路径
+ <Author>        null
+ <Input>
+    <param1>     originPath            Description:字体文件源路径
+    <param2>     familyName            Description:字体信息中的familyname
+ <Return>        QString               Description:需要的字体路径
+ <Note>          null
+*************************************************************************/
 QString DFontInfoManager::getInstFontPath(const QString &originPath, const QString &familyName)
 {
     if (isSystemFont(originPath) || originPath.contains("/.local/share/fonts"))
@@ -655,6 +795,15 @@ QString DFontInfoManager::getInstFontPath(const QString &originPath, const QStri
     return target;
 }
 
+/*************************************************************************
+ <Function>      isFontInstalled
+ <Description>   字体有没有被安装过
+ <Author>        null
+ <Input>
+    <param1>     data            Description:需要处理的字体信息
+ <Return>        bool            Description:有没有被安装过
+ <Note>          null
+*************************************************************************/
 bool DFontInfoManager::isFontInstalled(DFontInfo &data)
 {
     for (DFontInfo &item : dataList) {
@@ -667,6 +816,15 @@ bool DFontInfoManager::isFontInstalled(DFontInfo &data)
     return false;
 }
 
+/*************************************************************************
+ <Function>      getDefaultPreview
+ <Description>   获取默认的字体预览效果现实内容
+ <Author>        null
+ <Input>
+    <param1>     data            Description:需要处理的字体信息
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontInfoManager::getDefaultPreview(DFontInfo &data)
 {
     for (DFontInfo &item : dataList) {
@@ -680,6 +838,16 @@ void DFontInfoManager::getDefaultPreview(DFontInfo &data)
     data.defaultPreview = getDefaultPreview(data.filePath, data.previewLang);
 }
 
+
+/*************************************************************************
+ <Function>      checkStyleName
+ <Description>   对某些特殊字体的stylename进行处理,使得显示内容规范
+ <Author>        null
+ <Input>
+    <param1>     f               Description:需要处理的字体信息
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontInfoManager::checkStyleName(DFontInfo &f)
 {
     QStringList str;

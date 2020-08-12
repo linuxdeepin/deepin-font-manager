@@ -322,7 +322,7 @@ trademark from " + table_name;
  <Author>
  <Input>
     <param1>     key             Description:查询内容
-    <param2>     row             Description:表名键
+    <param2>     row             Description:传入参数,存放查询到的记录的容器
     <param3>     table_name      Description:表名值
  <Return>        bool            Description:返回执行结果
  <Note>          null
@@ -365,7 +365,7 @@ bool DSqliteUtil::findRecords(const QList<QString> &key, QList<QMap<QString, QSt
  <Input>
     <param1>     key             Description:查询内容
     <param2>     where           Description:判断条件
-    <param3>     row             Description:表名键
+    <param3>     row             Description:传入参数,存放查询到的记录的容器
     <param4>     table_name      Description:表名
  <Return>        bool            Description:返回执行结果
  <Note>          null

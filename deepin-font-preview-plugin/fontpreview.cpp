@@ -30,11 +30,29 @@ FontPreview::~FontPreview()
         m_previewWidget->deleteLater();
 }
 
+/*************************************************************************
+ <Function>      fileUrl
+ <Description>   获取文件的url路径
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        DUrl            Description:返回字体文件的url路径
+ <Note>          null
+*************************************************************************/
 DUrl FontPreview::fileUrl() const
 {
     return m_url;
 }
 
+/*************************************************************************
+ <Function>      setFileUrl
+ <Description>   设置url路径
+ <Author>        null
+ <Input>
+    <param1>     url             Description:需要设置的路径
+ <Return>        bool                Description:是否设置成功
+ <Note>          null
+*************************************************************************/
 bool FontPreview::setFileUrl(const DUrl &url)
 {
     if (m_url == url)
@@ -59,16 +77,43 @@ bool FontPreview::setFileUrl(const DUrl &url)
     return true;
 }
 
+/*************************************************************************
+ <Function>      contentWidget
+ <Description>   获取预览控件
+ <Author>        null
+ <Input>
+    <param1>     null                 Description:null
+ <Return>        QWidget *            Description:预览控件的指针
+ <Note>          null
+*************************************************************************/
 QWidget *FontPreview::contentWidget() const
 {
     return m_previewWidget;
 }
 
+/*************************************************************************
+ <Function>      title
+ <Description>   获取标题label显示内容
+ <Author>        null
+ <Input>
+    <param1>     null               Description:null
+ <Return>        QString            Description:label显示内容
+ <Note>          null
+*************************************************************************/
 QString FontPreview::title() const
 {
     return m_title;
 }
 
+/*************************************************************************
+ <Function>      showStatusBarSeparator
+ <Description>   是否显示状态栏分隔符
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        bool            Description:是否显示状态栏分隔符
+ <Note>          null
+*************************************************************************/
 bool FontPreview::showStatusBarSeparator() const
 {
     return true;

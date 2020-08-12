@@ -18,13 +18,14 @@ class TextPreviewPlugin : public DFMFilePreviewPlugin
     Q_PLUGIN_METADATA(IID DFMFilePreviewFactoryInterface_iid FILE "deepin-font-preview-plugin.json")
 
 public:
-    DFMFilePreview *create(const QString &key) Q_DECL_OVERRIDE
-    {
+    DFMFilePreview *create(const QString &key) Q_DECL_OVERRIDE {
         Q_UNUSED(key)
 
         return new FontPreview();
     }
 };
+
+
 
 DFM_END_NAMESPACE
 

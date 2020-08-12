@@ -26,16 +26,43 @@ DFMDBManager *DFMDBManager::instance()
     return INSTANCE;
 }
 
+/*************************************************************************
+ <Function>      isSystemFont
+ <Description>   判断是否为系统字体
+ <Author>        null
+ <Input>
+    <param1>     filePath            Description:字体路径
+ <Return>        bool                Description:是否为系统字体
+ <Note>          null
+*************************************************************************/
 bool DFMDBManager::isSystemFont(const QString &filePath)
 {
     return filePath.contains("/usr/share/fonts/");
 }
 
+/*************************************************************************
+ <Function>      isUserFont
+ <Description>   判断是否为用户字体
+ <Author>        null
+ <Input>
+    <param1>     filePath            Description:字体路径
+<Return>         bool                Description:是否为用户字体
+ <Note>          null
+*************************************************************************/
 bool DFMDBManager::isUserFont(const QString &filePath)
 {
     return filePath.contains(QDir::homePath() + "/.local/share/fonts");
 }
 
+/*************************************************************************
+ <Function>      parseRecordToItemData
+ <Description>   将查询记录转化为itemdata
+ <Author>        null
+ <Input>
+    <param1>     record                        Description:查询记录
+ <Return>        DFontPreviewItemData          Description:转化后的数据
+ <Note>          null
+*************************************************************************/
 DFontPreviewItemData DFMDBManager::parseRecordToItemData(const QMap<QString, QString> &record)
 {
     DFontPreviewItemData itemData;
@@ -57,6 +84,15 @@ DFontPreviewItemData DFMDBManager::parseRecordToItemData(const QMap<QString, QSt
     return itemData;
 }
 
+/*************************************************************************
+ <Function>      getDFontInfo
+ <Description>   通过查询记录获取字体信息
+ <Author>        null
+ <Input>
+    <param1>     record               Description:查询记录
+ <Return>        DFontInfo            Description:字体信息
+ <Note>          null
+*************************************************************************/
 DFontInfo DFMDBManager::getDFontInfo(const QMap<QString, QString> &record)
 {
     DFontInfo fontInfo;
@@ -81,6 +117,16 @@ DFontInfo DFMDBManager::getDFontInfo(const QMap<QString, QString> &record)
     return fontInfo;
 }
 
+
+/*************************************************************************
+ <Function>      appendAllKeys
+ <Description>   添加关键字
+ <Author>        null
+ <Input>
+    <param1>     keyList            Description:传入参数,待添加的关键字链表
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFMDBManager::appendAllKeys(QList<QString> &keyList)
 {
     keyList.append("fontId");
@@ -105,6 +151,15 @@ void DFMDBManager::appendAllKeys(QList<QString> &keyList)
     keyList.append("trademark");
 }
 
+/*************************************************************************
+ <Function>      getAllFontInfo
+ <Description>   获取所有的字体的字体信息
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        QList<DFontPreviewItemData>  Description:所有字体的字体信息
+ <Note>          null
+*************************************************************************/
 QList<DFontPreviewItemData> DFMDBManager::getAllFontInfo()
 {
     QList<DFontPreviewItemData> fontItemDataList;
@@ -125,21 +180,58 @@ QList<DFontPreviewItemData> DFMDBManager::getAllFontInfo()
     return fontItemDataList;
 }
 
+/*************************************************************************
+ <Function>      getRecordCount
+ <Description>   获取查询记录的数目
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        int             Description:查询记录的数目
+ <Note>          null
+*************************************************************************/
 int DFMDBManager::getRecordCount()
 {
     return m_sqlUtil->getRecordCount();
 }
 
+/*************************************************************************
+ <Function>      getCurrMaxFontId
+ <Description>   获取现在数据库中最大的fontid
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        int             Description:数据库中最大的fontid
+ <Note>          null
+*************************************************************************/
 int DFMDBManager::getCurrMaxFontId()
 {
     return m_sqlUtil->getMaxFontId();
 }
-//获取已安装字体路径
+
+/*************************************************************************
+ <Function>      getInstalledFontsPath
+ <Description>   获取已安装字体路径
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        QStringList     Description:获取到的已安装字体路径
+ <Note>          null
+*************************************************************************/
 QStringList DFMDBManager::getInstalledFontsPath()
 {
     return m_sqlUtil->getInstalledFontsPath();
 }
 
+
+/*************************************************************************
+ <Function>      isFontInfoExist
+ <Description>   得到字体的路径
+ <Author>        null
+ <Input>
+    <param1>     newFileFontInfo               Description:需要判断的字体
+ <Return>        QString                       Description:字体的路径
+ <Note>          null
+*************************************************************************/
 QString DFMDBManager::isFontInfoExist(const DFontInfo &newFileFontInfo)
 {
     QList<QMap<QString, QString>> recordList;
@@ -148,6 +240,7 @@ QString DFMDBManager::isFontInfoExist(const DFontInfo &newFileFontInfo)
     keyList.append("filePath");
 
     QMap<QString, QString> whereMap;
+    whereMap.insert("familyName", newFileFontInfo.familyName);
     whereMap.insert("styleName", newFileFontInfo.styleName);
     whereMap.insert("fullname", newFileFontInfo.fullname);
     m_sqlUtil->findRecords(keyList, whereMap, &recordList);
@@ -160,6 +253,16 @@ QString DFMDBManager::isFontInfoExist(const DFontInfo &newFileFontInfo)
     return QString();
 }
 
+
+/*************************************************************************
+ <Function>      mapItemData
+ <Description>   通过itemdata来构建字体信息的map
+ <Author>        null
+ <Input>
+    <param1>     itemData                          Description:字体的itemdata
+ <Return>        QMap<QString, QString>            Description:字体信息的map
+ <Note>          null
+*************************************************************************/
 QMap<QString, QString> DFMDBManager::mapItemData(DFontPreviewItemData itemData)
 {
     QMap<QString, QString> mapData;
@@ -187,6 +290,15 @@ QMap<QString, QString> DFMDBManager::mapItemData(DFontPreviewItemData itemData)
     return mapData;
 }
 
+/*************************************************************************
+ <Function>      addFontInfo
+ <Description>   记录需要添加的字体数据,用于之后批量添加
+ <Author>        null
+ <Input>
+    <param1>     itemData            Description:需要添加的字体数据
+ <Return>        bool                Description:是否成功
+ <Note>          null
+*************************************************************************/
 bool DFMDBManager::addFontInfo(const DFontPreviewItemData &itemData)
 {
 //    qDebug() << __FUNCTION__ << itemData.fontInfo.toString();
@@ -197,16 +309,48 @@ bool DFMDBManager::addFontInfo(const DFontPreviewItemData &itemData)
 //    return m_sqlUtil->addRecord(mapItemData(itemData));
 }
 
+/*************************************************************************
+ <Function>      deleteFontInfoByFontMap
+ <Description>   通过字体信息map删除数据库中记录的数据
+ <Author>        null
+ <Input>
+    <param1>     fontDelMap            Description:字体信息map
+ <Return>        bool                  Description:删除是否成功
+ <Note>          null
+*************************************************************************/
 bool DFMDBManager::deleteFontInfoByFontMap(const QMap<QString, QString> &fontDelMap)
 {
     return m_sqlUtil->delRecord(fontDelMap);
 }
 
+
+/*************************************************************************
+ <Function>      updateFontInfo
+ <Description>   更新数据库中的数据
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+    <param2>     null            Description:null
+    <param3>     null            Description:null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 bool DFMDBManager::updateFontInfo(const QMap<QString, QString> &whereMap, const QMap<QString, QString> &dataMap)
 {
     return m_sqlUtil->updateRecord(whereMap, dataMap);
 }
 
+
+/*************************************************************************
+ <Function>      updateFontInfoByFontId
+ <Description>   通过fontid来更新数据库中的数据
+ <Author>        null
+ <Input>
+    <param1>     strFontId            Description:需要更新字体信息的fontid
+    <param2>     dataMap              Description:需要更新的字体信息
+ <Return>        bool                 Description:是否更新成功
+ <Note>          null
+*************************************************************************/
 bool DFMDBManager::updateFontInfoByFontId(const QString &strFontId, const QMap<QString, QString> &dataMap)
 {
     QMap<QString, QString> where;
@@ -215,6 +359,17 @@ bool DFMDBManager::updateFontInfoByFontId(const QString &strFontId, const QMap<Q
     return m_sqlUtil->updateRecord(where, dataMap);
 }
 
+/*************************************************************************
+ <Function>      updateFontInfoByFontId
+ <Description>   通过fontid来更新数据库中特定字节的数据
+ <Author>        null
+ <Input>
+    <param1>     strFontId            Description:需要更新字体信息的fontid
+    <param2>     strKey               Description:数据库中特定字节
+    <param3>     strValue             Description:数据
+ <Return>        bool                 Description:是否更新成功
+ <Note>          null
+*************************************************************************/
 bool DFMDBManager::updateFontInfoByFontId(const QString &strFontId, const QString &strKey, const QString &strValue)
 {
     QMap<QString, QString> where;
@@ -226,6 +381,17 @@ bool DFMDBManager::updateFontInfoByFontId(const QString &strFontId, const QStrin
     return m_sqlUtil->updateRecord(where, dataMap);
 }
 
+/*************************************************************************
+ <Function>      updateFontInfoByFontFilePath
+ <Description>   通过FontFilePath来更新数据库中特定字节的数据
+ <Author>        null
+ <Input>
+    <param1>     strFontId            Description:需要更新字体信息的FontFilePath
+    <param2>     strKey               Description:数据库中特定字节
+    <param3>     strValue             Description:数据
+ <Return>        bool                 Description:是否更新成功
+ <Note>          null
+*************************************************************************/
 bool DFMDBManager::updateFontInfoByFontFilePath(const QString &strFontFilePath, const QString &strKey, const QString &strValue)
 {
     QMap<QString, QString> where;
@@ -237,6 +403,15 @@ bool DFMDBManager::updateFontInfoByFontFilePath(const QString &strFontFilePath, 
     return m_sqlUtil->updateRecord(where, dataMap);
 }
 
+/*************************************************************************
+ <Function>      commitAddFontInfo
+ <Description>   开启事物,批量增加数据
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFMDBManager::commitAddFontInfo()
 {
     if (m_addFontList.isEmpty())
@@ -249,22 +424,58 @@ void DFMDBManager::commitAddFontInfo()
     m_addFontList.clear();
 }
 
+/*************************************************************************
+ <Function>      addFontInfo
+ <Description>   向数据库中添加数据
+ <Author>        null
+ <Input>
+    <param1>     fontList            Description:需要添加的数据链表
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFMDBManager::addFontInfo(const QList<DFontPreviewItemData> &fontList)
 {
     return m_sqlUtil->addFontInfo(fontList);
 }
 
+/*************************************************************************
+ <Function>      deleteFontInfo
+ <Description>   收集需要删除的字体数据,等待批量删除
+ <Author>        null
+ <Input>
+    <param1>     itemData            Description:需要删除的字体数据
+ <Return>        null                Description:null
+ <Note>          null
+*************************************************************************/
 void DFMDBManager::deleteFontInfo(const DFontPreviewItemData &itemData)
 {
     if (!m_delFontList.contains(itemData))
         m_delFontList << itemData;
 }
 
+/*************************************************************************
+ <Function>      deleteFontInfo
+ <Description>   批量从数据库中删除数据
+ <Author>        null
+ <Input>
+    <param1>     fontList            Description:需要删除的字体信息链表
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFMDBManager::deleteFontInfo(const QList<DFontPreviewItemData> &fontList)
 {
     m_sqlUtil->deleteFontInfo(fontList);
 }
 
+/*************************************************************************
+ <Function>      commitDeleteFontInfo
+ <Description>   开启事物,批量进行删除
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFMDBManager::commitDeleteFontInfo()
 {
     if (m_delFontList.isEmpty())
@@ -276,6 +487,16 @@ void DFMDBManager::commitDeleteFontInfo()
     m_delFontList.clear();
 }
 
+/*************************************************************************
+ <Function>      updateFontInfo
+ <Description>   准备批量更新的字体数据
+ <Author>        null
+ <Input>
+    <param1>     itemData            Description:需要更新的字体数据
+    <param2>     strKey              Description:更新的字节
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFMDBManager::updateFontInfo(const DFontPreviewItemData &itemData, const QString &strKey)
 {
     if (!m_updateFontList.contains(itemData) || itemData.fontInfo.isSystemFont) {
@@ -285,11 +506,30 @@ void DFMDBManager::updateFontInfo(const DFontPreviewItemData &itemData, const QS
     }
 }
 
+/*************************************************************************
+ <Function>      updateFontInfo
+ <Description>   批量更新数据
+ <Author>        null
+ <Input>
+    <param1>     fontList            Description:需要更新的字体数据
+    <param2>     strKey              Description:关键字
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFMDBManager::updateFontInfo(const QList<DFontPreviewItemData> &fontList, const QString &strKey)
 {
     return m_sqlUtil->updateFontInfo(fontList, strKey);
 }
 
+/*************************************************************************
+ <Function>      commitUpdateFontInfo
+ <Description>   开启事务,批量更新数据
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFMDBManager::commitUpdateFontInfo()
 {
     if (m_updateFontList.isEmpty())
@@ -301,11 +541,29 @@ void DFMDBManager::commitUpdateFontInfo()
     m_updateFontList.clear();
 }
 
+/*************************************************************************
+ <Function>      beginTransaction
+ <Description>   开启事务
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFMDBManager::beginTransaction()
 {
     m_sqlUtil->m_db.transaction();
 }
 
+/*************************************************************************
+ <Function>      endTransaction
+ <Description>   关闭事务
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFMDBManager::endTransaction()
 {
     m_sqlUtil->m_db.commit();

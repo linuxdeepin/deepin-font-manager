@@ -15,6 +15,7 @@
 #include <QSortFilterProxyModel>
 #include <QPointer>
 
+
 DWIDGET_USE_NAMESPACE
 /*************************************************************************
  <Class>         DFontPreviewListView
@@ -76,7 +77,6 @@ public:
     void keyPressEvent(QKeyEvent *event)Q_DECL_OVERRIDE;
 
     bool eventFilter(QObject *obj, QEvent *event)override;
-
 
     void setRightContextMenu(QMenu *rightMenu);
     QModelIndex currModelIndex();
