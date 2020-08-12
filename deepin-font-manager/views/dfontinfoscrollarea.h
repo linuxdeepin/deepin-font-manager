@@ -42,7 +42,7 @@ class dfontinfoscrollarea: public DFrame
 public:
     explicit dfontinfoscrollarea(DFontPreviewItemData *pData, DWidget *parent  = nullptr);
     //用于信息页面详情信息部分长度判断
-    QString elideText(const QString &text, const QFont &font, int nLabelSize);//
+    QString elideText(const QString &text, const QFont &font, int nLabelSize);
     //在字体变化后重绘信息页面
     void updateText();
     //重新计算信息详情页面高度参数

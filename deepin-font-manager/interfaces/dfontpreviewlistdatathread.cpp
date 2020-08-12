@@ -51,6 +51,7 @@ DFontPreviewListDataThread::DFontPreviewListDataThread(DFontPreviewListView *vie
     connect(this, &DFontPreviewListDataThread::requestForceDeleteFiles, this, &DFontPreviewListDataThread::forceDeleteFiles);
     connect(this, &DFontPreviewListDataThread::requestRemoveFileWatchers, this, &DFontPreviewListDataThread::onRemoveFileWatchers, Qt::BlockingQueuedConnection);
     connect(this, &DFontPreviewListDataThread::requestAutoDirWatchers, this, &DFontPreviewListDataThread::onAutoDirWatchers, Qt::BlockingQueuedConnection);
+    connect(this, &DFontPreviewListDataThread::requestExportFont, this, &DFontPreviewListDataThread::onExportFont);
     mThread.start();
 }
 
@@ -377,6 +378,19 @@ void DFontPreviewListDataThread::onAutoDirWatchers()
 {
     m_fsWatcher->addPath(FONTS_DIR);
     m_fsWatcher->addPath(FONTS_UP_DIR);
+}
+
+void DFontPreviewListDataThread::onExportFont(const QStringList &files)
+{
+    QString desktopPath = QString("%1/%2/").arg(QStandardPaths::writableLocation(QStandardPaths::DesktopLocation)).arg(tr("Fonts"));
+    QDir dir(desktopPath);
+    if (!dir.exists())
+        dir.mkpath(desktopPath);
+    for (const QString &file : files) {
+        QFile::copy(file, desktopPath + QFileInfo(file).fileName());
+    }
+
+    Q_EMIT exportFontFinished(files.size());
 }
 
 /*************************************************************************

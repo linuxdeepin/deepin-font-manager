@@ -65,6 +65,8 @@ signals:
     void requestRemoveFileWatchers(const QStringList &files);
     void requestAutoDirWatchers();
     void requestAddApplicationFont();
+    void requestExportFont(const QStringList &files);
+    void exportFontFinished(int count);
 
 protected slots:
     void doWork();
@@ -80,6 +82,7 @@ public slots:
     void forceDeleteFiles(const QStringList &files);
     void onRemoveFileWatchers(const QStringList &files);
     void onAutoDirWatchers();
+    void onExportFont(const QStringList &files);
 
 protected:
     QThread mThread;

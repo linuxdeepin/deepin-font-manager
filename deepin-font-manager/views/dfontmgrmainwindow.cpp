@@ -357,6 +357,11 @@ void DFontMgrMainWindow::initConnections()
         qDebug() << "m_waitForInstall" << m_waitForInstall;
         waitForInsert();
     });
+
+    connect(DFontPreviewListDataThread::instance(), &DFontPreviewListDataThread::exportFontFinished,
+    this, [ = ](int count) {
+        showExportFontMessage(count, m_menuAllMinusSysFontList.count() - count);
+    });
 }
 
 /*************************************************************************
@@ -1796,21 +1801,13 @@ void DFontMgrMainWindow::delCurrentFont(bool activatedByRightmenu)
 *************************************************************************/
 void DFontMgrMainWindow::exportFont()
 {
-    QStringList m_exportFiles = checkFilesSpace(m_menuAllMinusSysFontList, false);
-    if (m_exportFiles.count() == 0) {
+    QStringList exportFiles = checkFilesSpace(m_menuAllMinusSysFontList, false);
+    if (exportFiles.count() == 0) {
         showExportFontMessage(0, m_menuAllMinusSysFontList.count());
         return;
     }
-    if (m_menuAllMinusSysFontList.isEmpty())
-        return;
-    QString desktopPath = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation) + "/" + tr("Fonts") + "/";
-    QDir dir(desktopPath);
-    if (!dir.exists())
-        dir.mkpath(desktopPath);
-    for (QString &file : m_exportFiles) {
-        QFile::copy(file, desktopPath + QFileInfo(file).fileName());
-    }
-    showExportFontMessage(m_exportFiles.count(), m_menuAllMinusSysFontList.count() - m_exportFiles.count());
+
+    Q_EMIT DFontPreviewListDataThread::instance()->requestExportFont(exportFiles);
 }
 
 /*************************************************************************
@@ -2168,8 +2165,6 @@ void DFontMgrMainWindow::onPreviewTextChanged()
 *************************************************************************/
 qint64 DFontMgrMainWindow::getDiskSpace(bool m_bInstall)
 {
-    //    QStorageInfo storage = QStorageInfo::root();
-
     QStorageInfo storage;
     if (m_bInstall) {
         storage = QStorageInfo(QDir::homePath());
@@ -2195,23 +2190,26 @@ qint64 DFontMgrMainWindow::getDiskSpace(bool m_bInstall)
 *************************************************************************/
 QStringList DFontMgrMainWindow::checkFilesSpace(const QStringList &files, bool m_bInstall)
 {
-    QStringList m_installFiles;
-    qint64 m_totalSelectSpace = 0;
-    qint64 m_currentDiskSpace = getDiskSpace(m_bInstall);
-    qDebug() << m_currentDiskSpace << endl;
-    foreach (auto it, files) {
-        QFile file(it);
-        if (file.open(QIODevice::ReadWrite) || file.open(QIODevice::ReadOnly)) {
-            m_totalSelectSpace = m_totalSelectSpace + file.size();
-            if (m_totalSelectSpace >= m_currentDiskSpace) {
-                break;
-            } else {
-                m_installFiles.append(it);
-            }
-        }
-    }
+    if (files.isEmpty())
+        return files;
 
-    return m_installFiles;
+    QStringList installFiles;
+    qint64 totalSelectSpace = 0;
+    qint64 currentDiskSpace = getDiskSpace(m_bInstall);
+
+    for (const QString &file : files) {
+        QFileInfo fileInfo(file);
+        totalSelectSpace = totalSelectSpace + fileInfo.size();
+        if (totalSelectSpace >= currentDiskSpace) {
+            break;
+        } else {
+            installFiles.append(file);
+        }
+
+    }
+    qDebug() << currentDiskSpace << totalSelectSpace << endl;
+
+    return installFiles;
 }
 
 
