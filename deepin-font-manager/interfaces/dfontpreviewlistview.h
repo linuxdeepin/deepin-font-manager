@@ -13,6 +13,7 @@
 
 #include <QMouseEvent>
 #include <QSortFilterProxyModel>
+#include <QPointer>
 
 DWIDGET_USE_NAMESPACE
 /*************************************************************************
@@ -164,6 +165,8 @@ private:
     void updateSelection();
     int getOnePageCount();
 
+    void touchPanelClick(QMouseEvent *event);
+
     bool m_bLoadDataFinish = false;
     volatile bool m_fontChanged = false;
     bool m_bListviewAtButtom = false;
@@ -175,6 +178,9 @@ private:
     bool m_IsTabFocus = false;
     bool m_isMouseClicked = false;
     bool m_isMousePressNow {false};
+
+    QPoint lastTouchBeginPos;
+    QPointer<QTimer> touchCheckTimer;
 
     QWidget *m_parentWidget;
     QStandardItemModel *m_fontPreviewItemModel {nullptr};
