@@ -140,27 +140,6 @@ QStringList DFMDBManager::getInstalledFontsPath()
     return m_sqlUtil->getInstalledFontsPath();
 }
 
-int DFMDBManager::isFontExist(const QString &familyName, const QString &styleName, QStringList &result)
-{
-    QList<QMap<QString, QString>> recordList;
-
-    QList<QString> keyList;
-    appendAllKeys(keyList);
-
-    QMap<QString, QString> whereMap;
-    whereMap.insert("familyName", familyName);
-    whereMap.insert("styleName", styleName);
-    m_sqlUtil->findRecords(keyList, whereMap, &recordList);
-
-    result.clear();
-    for (QMap<QString, QString> &map : recordList) {
-        result << map.value("filePath");
-        result << map.value("fullname");
-    }
-
-    return recordList.size();
-}
-
 QString DFMDBManager::isFontInfoExist(const DFontInfo &newFileFontInfo)
 {
     QList<QMap<QString, QString>> recordList;
@@ -169,7 +148,6 @@ QString DFMDBManager::isFontInfoExist(const DFontInfo &newFileFontInfo)
     keyList.append("filePath");
 
     QMap<QString, QString> whereMap;
-    whereMap.insert("familyName", newFileFontInfo.familyName);
     whereMap.insert("styleName", newFileFontInfo.styleName);
     whereMap.insert("fullname", newFileFontInfo.fullname);
     m_sqlUtil->findRecords(keyList, whereMap, &recordList);

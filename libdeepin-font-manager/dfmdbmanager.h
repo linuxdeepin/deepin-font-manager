@@ -16,7 +16,6 @@ public:
     int getRecordCount();
     int getCurrMaxFontId();
     QStringList getInstalledFontsPath();
-    int isFontExist(const QString &familyName, const QString &styleName, QStringList &result);
     QString isFontInfoExist(const DFontInfo &newFileFontInfo);
 
     bool addFontInfo(const DFontPreviewItemData &itemData);

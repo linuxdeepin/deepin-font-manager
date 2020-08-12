@@ -89,7 +89,7 @@ public:
     void deleteFontFiles(const QStringList &files, bool force = false);
     void deleteCurFonts(const QStringList &files, bool force = false);
     void changeFontFile(const QString &path, bool force = false);
-    void selectedFonts(const DFontPreviewItemData &curData, int *deleteCnt = nullptr,
+    void selectedFonts(const DFontPreviewItemData &curData, int *deleteCnt = nullptr, int *disableSysCnt = nullptr,
                        int *systemCnt = nullptr, qint8 *curFontCnt = nullptr, int *disableCnt = nullptr,
                        QStringList *delFontList = nullptr, QModelIndexList *allIndexList = nullptr,
                        QModelIndexList *disableIndexList = nullptr, QStringList *allMinusSysFontList = nullptr);

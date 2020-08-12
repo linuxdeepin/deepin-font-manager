@@ -2233,12 +2233,14 @@ void DFontPreviewListView::changeFontFile(const QString &path, bool force)
  <Note>          null
 *************************************************************************/
 void DFontPreviewListView::selectedFonts(const DFontPreviewItemData &curData,
-                                         int *deleteCnt, int *systemCnt, qint8 *curFontCnt, int *disableCnt,
-                                         QStringList *delFontList, QModelIndexList *allIndexList,
+                                         int *deleteCnt, int *disableSysCnt, int *systemCnt, qint8 *curFontCnt,
+                                         int *disableCnt, QStringList *delFontList, QModelIndexList *allIndexList,
                                          QModelIndexList *disableIndexList, QStringList *allMinusSysFontList)
 {
     if (deleteCnt != nullptr)
         *deleteCnt = 0;
+    if (disableSysCnt != nullptr)
+        *disableSysCnt = 0;
     if (systemCnt != nullptr)
         *systemCnt = 0;
     if (curFontCnt != nullptr)
@@ -2256,12 +2258,16 @@ void DFontPreviewListView::selectedFonts(const DFontPreviewItemData &curData,
 
     QModelIndexList list = selectedIndexes();
 
-    bool curEnableCollect = false;
+    bool curEnabled = false;
+    bool curCollected = false;
     bool calDisable = ((disableIndexList != nullptr) || (disableCnt != nullptr));
+    bool calCollect = (allIndexList != nullptr);
+
     if (calDisable) {
-        curEnableCollect = curData.fontData.isEnabled();
-    } else if (allIndexList != nullptr) {
-        curEnableCollect = curData.fontData.isCollected();
+        curEnabled = curData.fontData.isEnabled();
+    }
+    if (calCollect) {
+        curCollected = curData.fontData.isCollected();
     }
 
     for (QModelIndex &index : list) {
@@ -2274,9 +2280,9 @@ void DFontPreviewListView::selectedFonts(const DFontPreviewItemData &curData,
         if (itemData.fontInfo.isSystemFont) {
             //处理启用禁用
             if (calDisable) {
-                if (!curEnableCollect) { //禁用状态
+                if (!curEnabled) { //禁用状态
                     //系统字体可以启用
-                    if (curEnableCollect == itemData.fontData.isEnabled()) {
+                    if (curEnabled == itemData.fontData.isEnabled()) {
                         if (disableCnt)
                             *disableCnt += 1;
                         if (disableIndexList)
@@ -2284,21 +2290,21 @@ void DFontPreviewListView::selectedFonts(const DFontPreviewItemData &curData,
                     }
                     //启用状态, 系统字体不可禁用
                 } else {
-                    if (systemCnt != nullptr)
-                        *systemCnt += 1;
+                    if (disableSysCnt != nullptr)
+                        *disableSysCnt += 1;
                 }
-            } else {
-                if (systemCnt != nullptr)
-                    *systemCnt += 1;
-                if ((allIndexList != nullptr) && (curEnableCollect == itemData.fontData.isCollected()))
-                    *allIndexList << index;
             }
+
+            if (systemCnt != nullptr)
+                *systemCnt += 1;
+            if (calCollect && (curCollected == itemData.fontData.isCollected()))
+                *allIndexList << index;
         } else if (itemData == m_curFontData) {
             qDebug() << __FUNCTION__ << " current font " << itemData.fontData.strFontName;
             if (curFontCnt)
                 *curFontCnt += 1;
             appendFilePath(allMinusSysFontList, itemData.fontInfo.filePath);
-            if ((allIndexList != nullptr) && (curEnableCollect == itemData.fontData.isCollected()))
+            if ((calCollect) && (curCollected == itemData.fontData.isCollected()))
                 *allIndexList << index;
         } else {
             if (deleteCnt)
@@ -2307,12 +2313,14 @@ void DFontPreviewListView::selectedFonts(const DFontPreviewItemData &curData,
             appendFilePath(delFontList, itemData.fontInfo.filePath);
             appendFilePath(allMinusSysFontList, itemData.fontInfo.filePath);
 
-            if (calDisable && (curEnableCollect == itemData.fontData.isEnabled())) {
+            if (calDisable && (curEnabled == itemData.fontData.isEnabled())) {
                 if (disableCnt)
                     *disableCnt += 1;
                 if (disableIndexList)
                     *disableIndexList << index;
-            } else if ((allIndexList != nullptr) && (curEnableCollect == itemData.fontData.isCollected())) {
+            }
+
+            if ((calCollect) && (curCollected == itemData.fontData.isCollected())) {
                 *allIndexList << index;
             }
         }

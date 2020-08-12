@@ -141,7 +141,7 @@ bool DFontPreviewProxyModel::isCustomFilterAcceptsRow(const QModelIndex &modelIn
     } break;
     //只显示收藏字体
     case DSplitListWidget::CollectFont: {
-        if (itemData.fontData.isCollected()/* && isFontNameContainsPattern(fontName)*/) {
+        if (itemData.fontData.isCollected() && isFontNameContainsPattern(fontName)) {
             return true;
         }
     } break;

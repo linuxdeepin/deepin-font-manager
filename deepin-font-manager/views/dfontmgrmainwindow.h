@@ -195,6 +195,12 @@ protected:
 
     //处理窗口大小变化事件
     void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
+    //调节右下角字体大小显示label显示内容
+    void autoLabelWidth(QString text, DLabel *lab, QFontMetrics fm);
+    //设置tab聚焦顺序
+    void setNextTabFocus(QObject *obj);//SP3--设置tab顺序(539)
+    //事件过滤器：用于过滤事件
+    bool eventFilter(QObject *obj, QEvent *event)Q_DECL_OVERRIDE;//SP3--设置tab顺序(539)
 
 signals:
     //信号-文管中选中字体打开
@@ -252,15 +258,16 @@ protected:
     //selected fonts
     qint8 m_menuCurCnt;
     int m_menuDelCnt;
+    int m_menuDisableSysCnt;
     int m_menuSysCnt;
     int m_menuDisableCnt;
-    DSplitListWidget::FontGroup filterGroup;
     QStringList m_menuDelFontList;
     QModelIndexList m_menuAllIndexList;
     QModelIndexList m_menuDisableIndexList;
     QStringList m_menuAllMinusSysFontList;
     DFontPreviewItemData m_menuCurData;
 
+    DSplitListWidget::FontGroup filterGroup;
     int m_successInstallCount = 0;
     //Main window Size
     short m_winHight;
@@ -282,6 +289,15 @@ protected:
 
     bool m_isSearchLineEditMenuPoped{false};
     bool m_isInputLineEditMunuPoped{false};
+    //is in installing font flow
+    //Avoid start multi-NormalInstalltion window
+    bool                    m_fIsInstalling {false};
+    //is it in uninstalling font flow
+    //Avoid start multi delete confirm dialog
+    volatile qint8 m_fIsDeleting {UnDeleting};
+
+    FocusStatus m_currentStatus;
+
     //Stand shortcut
     //Implement by DTK                       //Close window       --> Alt+F4
     QShortcut *m_scShowAllSC     {nullptr};  //Show shortcut      --> Ctrl+Shift+/
@@ -295,16 +311,7 @@ protected:
     QShortcut *m_scAddOrCancelFavFont   {nullptr};  //Add or cancel favorite    -->.
     QShortcut *m_scShowMenu      {nullptr};  //ShowMenu           -->Alt+M//SP3--Alt+M右键菜单
 
-    //is in installing font flow
-    //Avoid start multi-NormalInstalltion window
-    bool                    m_fIsInstalling {false};
-    //is it in uninstalling font flow
-    //Avoid start multi delete confirm dialog
-    volatile qint8 m_fIsDeleting {UnDeleting};
-//    QStringList m_fileList;
     QStringList m_waitForInstall;
-
-    FocusStatus m_currentStatus;
 
     DFInstallNormalWindow  *m_dfNormalInstalldlg {nullptr};
 
@@ -314,12 +321,6 @@ protected:
     QString mhistoryDir = ""; //保存上次文件的路径的文件夹
 
     Q_DECLARE_PRIVATE_D(qGetPtrHelper(m_ptr), DFontMgrMainWindow)
-    //调节右下角字体大小显示label显示内容
-    void autoLabelWidth(QString text, DLabel *lab, QFontMetrics fm);
-    //设置tab聚焦顺序
-    void setNextTabFocus(QObject *obj);//SP3--设置tab顺序(539)
-    //事件过滤器：用于过滤事件
-    bool eventFilter(QObject *obj, QEvent *event)Q_DECL_OVERRIDE;//SP3--设置tab顺序(539)
 };
 
 #endif  // DFONTMGRMAINWINDOW_H
