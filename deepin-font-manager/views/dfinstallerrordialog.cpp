@@ -593,6 +593,7 @@ void DFInstallErrorDialog::addData(QStringList &errorFileList, QStringList &half
             itemModel.bChecked = true;
             itemModel.strFontFileName = fileInfo.fileName();
             itemModel.strFontFilePath = fileInfo.filePath();
+            itemModel.bIsNormalUserFont = true;
             itemModel.strFontInstallStatus = DApplication::translate("DFInstallErrorDialog", "Same version installed");
             m_updateInstallErrorFontModelList.push_back(itemModel);
         }
