@@ -1079,13 +1079,10 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
     QListView::mousePressEvent(event);
     //应该设置焦点，否则鼠标在其他区域release会导致缺失焦点。
 
-
-
     setFocus(Qt::MouseFocusReason);
     QPoint clickPoint = event->pos();
     QModelIndex modelIndex = indexAt(clickPoint);
 
-    m_isMouseClicked = true;
     if ((event->button() == Qt::LeftButton) && event->source() == Qt::MouseEventSynthesizedByQt) {
         touchPanelClick(event);
     } else if ((event->button() == Qt::LeftButton) && modelIndex.isValid()) {
@@ -1101,7 +1098,6 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
             QRect collectIconRect = getCollectionIconRect(m_curRect);
 
             FontData fdata = qvariant_cast<FontData>(m_fontPreviewProxyModel->data(modelIndex));
-//            DFontPreviewItemData itemData = getFontData(fdata.strFontName);
 
             if (collectIconRect.contains(clickPoint)) {
                 if (fdata.getHoverState() != IconPress) {
@@ -1136,7 +1132,7 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
             setCurrentSelected(modelIndex.row());
         //恢复normal状态
         FontData fdata = qvariant_cast<FontData>(m_fontPreviewProxyModel->data(modelIndex));
-//        DFontPreviewItemData itemData = getFontData(fdata.strFontName);
+
         if (fdata.getHoverState() != IconNormal) {
             fdata.setHoverState(IconNormal);
             m_fontPreviewProxyModel->setData(modelIndex, QVariant::fromValue(fdata), Qt::DisplayRole);
@@ -1485,10 +1481,7 @@ bool DFontPreviewListView::eventFilter(QObject *obj, QEvent *event)
 {
     Q_UNUSED(obj)
 
-
-
     if (event->type() == QEvent::FocusOut) {
-        m_isMouseClicked = false;
         m_IsTabFocus = false;
     }
 

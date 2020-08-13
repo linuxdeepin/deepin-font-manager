@@ -176,7 +176,6 @@ private:
     bool m_IsNeedFocus = false;//是否需要设置聚焦
 
     bool m_IsTabFocus = false;
-    bool m_isMouseClicked = false;
     bool m_isMousePressNow {false};
 
     QPoint lastTouchBeginPos;
