@@ -240,9 +240,12 @@ QString DFMDBManager::isFontInfoExist(const DFontInfo &newFileFontInfo)
     keyList.append("filePath");
 
     QMap<QString, QString> whereMap;
-    whereMap.insert("familyName", newFileFontInfo.familyName);
     whereMap.insert("styleName", newFileFontInfo.styleName);
-    whereMap.insert("fullname", newFileFontInfo.fullname);
+    if (newFileFontInfo.fullname.isEmpty()) {
+        whereMap.insert("familyName", newFileFontInfo.familyName);
+    } else {
+        whereMap.insert("fullname", newFileFontInfo.fullname);
+    }
     m_sqlUtil->findRecords(keyList, whereMap, &recordList);
 
     if (recordList.size() > 0) {
