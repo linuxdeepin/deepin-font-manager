@@ -323,7 +323,7 @@ void DFontMgrMainWindow::initConnections()
         int size = d->fontScaleSlider->value();
         QString fontSize = QString::number(size) + "px";
         autoLabelWidth(fontSize, d->fontSizeLabel, d->fontSizeLabel->fontMetrics());
-        m_fontPreviewListView->onFontChanged(qApp->font());
+        m_fontPreviewListView->onFontChanged(qApp->font(), false);
     });
 
     connect(m_signalManager, &SignalManager::popInstallErrorDialog, this, [ = ] {
@@ -354,7 +354,6 @@ void DFontMgrMainWindow::initConnections()
             onSearchTextChanged(d->searchFontEdit->text());
         }
         //删除过程中安装字体，删除过后要继续安装
-        qDebug() << "m_waitForInstall" << m_waitForInstall;
         waitForInsert();
     });
 
@@ -1685,7 +1684,7 @@ void DFontMgrMainWindow::onLoadStatus(int type)
                 }
                 m_openfirst = false;
             }
-            m_fontPreviewListView->onFontChanged(qApp->font());
+            m_fontPreviewListView->onFontChanged(DApplication::font(), true);
             break;
         default:
             break;

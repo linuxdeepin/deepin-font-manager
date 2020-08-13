@@ -240,7 +240,7 @@ public slots:
 //    void onItemAdded(const DFontPreviewItemData &itemData);
     void onMultiItemsAdded(QList<DFontPreviewItemData> &data, DFontSpinnerWidget::SpinnerStyles styles);
     void onUpdateCurrentFont();
-    void onFontChanged(const QFont &font);
+    void onFontChanged(const QFont &font, bool isLoading);
     void onItemRemoved(const DFontPreviewItemData &itemData);
     void onItemRemovedFromSys(const DFontPreviewItemData &itemData);
     void updateCurrentFontGroup(int currentFontGroup);
