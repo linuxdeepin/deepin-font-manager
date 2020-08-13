@@ -3,6 +3,7 @@
 #include "dfontpreviewlistview.h"
 
 #include <QFontDatabase>
+#include <QApplication>
 
 static DFontPreviewListDataThread *INSTANCE = nullptr;
 
@@ -382,7 +383,8 @@ void DFontPreviewListDataThread::onAutoDirWatchers()
 
 void DFontPreviewListDataThread::onExportFont(const QStringList &files)
 {
-    QString desktopPath = QString("%1/%2/").arg(QStandardPaths::writableLocation(QStandardPaths::DesktopLocation)).arg(tr("Fonts"));
+    QString desktopPath = QString("%1/%2/").arg(QStandardPaths::writableLocation(QStandardPaths::DesktopLocation))
+                          .arg(QApplication::translate("DFontMgrMainWindow", "Fonts"));
     QDir dir(desktopPath);
     if (!dir.exists())
         dir.mkpath(desktopPath);
