@@ -135,19 +135,19 @@
     </message>
     <message>
         <source>The other %1 system fonts cannot be deleted</source>
-        <translation type="unfinished"/>
+        <translation>Las otras fuentes del sistema %1 no pueden ser borradas</translation>
     </message>
     <message>
         <source>The font &quot;%1&quot; in use cannot be deleted</source>
-        <translation type="unfinished"/>
+        <translation>La fuente «%1» está en uso no puede ser eliminada</translation>
     </message>
     <message>
         <source>The other %1 system fonts and the font &quot;%2&quot; in use cannot be deleted</source>
-        <translation type="unfinished"/>
+        <translation>Las otras %1 fuentes del sistema y la fuente «%2» está en uso, no pueden ser borradas</translation>
     </message>
     <message>
         <source>Are you sure you want to delete %1 font(s)?</source>
-        <translation type="unfinished"/>
+        <translation>¿Está seguro de que quieres borrar la(s) fuente(s) %1?</translation>
     </message>
     <message>
         <source>Delete</source>
@@ -165,7 +165,7 @@
     <name>ExceptionWindow</name>
     <message>
         <source>Font Verification</source>
-        <translation>Verificación de la fuente</translation>
+        <translation>Verificación de fuente</translation>
     </message>
     <message>
         <source>Exit</source>
@@ -230,11 +230,11 @@
     <name>Main</name>
     <message>
         <source>Font Manager</source>
-        <translation>Gestor de fuentes</translation>
+        <translation>Administrador de fuentes</translation>
     </message>
     <message>
         <source>Font Manager helps users install and manage fonts.</source>
-        <translation>El gestor de fuentes ayuda a los usuarios a instalar y administrar fuentes.</translation>
+        <translation>Administrador de fuentes de Deepin ayuda a instalar y gestionar fuentes.</translation>
     </message>
     <message>
         <source>Loading fonts, please wait...</source>
@@ -285,11 +285,11 @@
     </message>
     <message>
         <source>Details</source>
-        <translation>Detalle</translation>
+        <translation>Detalles</translation>
     </message>
     <message>
         <source>Display in file manager</source>
-        <translation>Mostrar en el gestor de archivos</translation>
+        <translation>Mostrar en el administrador de archivos</translation>
     </message>
     <message>
         <source>Export</source>
@@ -415,7 +415,7 @@
     <name>StateBar</name>
     <message>
         <source>Input preview text</source>
-        <translation>Introducir el texto de la vista previa</translation>
+        <translation>Introducir texto de vista previa</translation>
     </message>
 </context>
 <context>
