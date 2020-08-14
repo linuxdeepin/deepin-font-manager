@@ -64,6 +64,8 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
 
     initDelegate();
     initConnections();
+    m_curAppFont.setFamily(QString());
+    m_curAppFont.setStyleName(QString());
 }
 
 DFontPreviewListView::~DFontPreviewListView()
