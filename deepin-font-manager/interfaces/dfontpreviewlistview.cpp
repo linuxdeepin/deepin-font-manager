@@ -17,9 +17,6 @@
 
 DWIDGET_USE_NAMESPACE
 
-
-
-
 DFontPreviewListView::DFontPreviewListView(QWidget *parent)
     : QListView(parent)
     , m_bLoadDataFinish(false)
@@ -68,6 +65,7 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
 
     initDelegate();
     initConnections();
+
     installEventFilter(this);
 
     grabGesture(Qt::TapGesture);
@@ -75,6 +73,9 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
     grabGesture(Qt::PanGesture);
     grabGesture(Qt::PinchGesture);
     grabGesture(Qt::SwipeGesture);
+
+    m_curAppFont.setFamily(QString());
+    m_curAppFont.setStyleName(QString());
 }
 
 DFontPreviewListView::~DFontPreviewListView()
