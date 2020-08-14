@@ -53,6 +53,11 @@ public:
         EqualWidthFont
     };
 
+    enum ClearType {
+        MoveClear,
+        MoveOutClear,
+        PreviousClear
+    };
 public:
     explicit DFontPreviewListView(QWidget *parent = nullptr);
     ~DFontPreviewListView() override;
@@ -61,7 +66,6 @@ public:
     void initDelegate();
 
     bool isListDataLoadFinished();
-
     void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
     void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 
@@ -82,7 +86,8 @@ public:
     QModelIndex currModelIndex();
     DFontPreviewItemData currModelData();
     DFontPreviewProxyModel *getFontPreviewProxyModel();
-    void clearPressState();
+    //清空收藏图标的press状态
+    void clearPressState(ClearType clearType, int nowPressedPos = -2);
     void clearHoverState();
     void updateChangedFile(const QString &path);
     void updateChangedDir(const QString &path);
@@ -155,6 +160,7 @@ protected:
 private:
     void initConnections();
     int count() const;
+    int m_previousPressPos = -1;
     inline QRect getCollectionIconRect(const QRect &rect);
     inline QRect getCheckboxRect(const QRect &rect);
     void deleteFontModelIndex(const DFontInfo &fontInfo);

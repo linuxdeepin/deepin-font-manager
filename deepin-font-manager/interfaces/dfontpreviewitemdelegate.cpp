@@ -463,6 +463,7 @@ bool DFontPreviewItemDelegate::eventFilter(QObject *object, QEvent *event)
     if (event->type() == QEvent::HoverLeave) {
         DFontPreviewListView *listview = qobject_cast<DFontPreviewListView *>(parent());
         listview->clearHoverState();
+        listview->clearPressState(DFontPreviewListView::ClearType::PreviousClear);
     }
 
     return false;

@@ -1011,12 +1011,13 @@ void DFontPreviewListView::mouseMoveEvent(QMouseEvent *event)
 
         if (m_hoverModelIndex.row() != modelIndex.row())
             clearHoverState();
-
+        clearPressState(ClearType::PreviousClear, modelIndex.row());
         if (collectIconRect.contains(clickPoint)) {
 
             if (m_isMousePressNow) {
                 if (itemData.getHoverState() != IconPress) {
                     itemData.setHoverState(IconPress);
+                    m_previousPressPos = modelIndex.row();
                     m_fontPreviewProxyModel->setData(modelIndex, QVariant::fromValue(itemData), Qt::DisplayRole);
                 }
             } else {
@@ -1181,6 +1182,8 @@ void DFontPreviewListView::mouseReleaseEvent(QMouseEvent *event)
     //539 排除右键点击效果
     if (event->button() == Qt::LeftButton) {
         m_isMousePressNow = false;
+//        m_previousPressPos = -1;
+        clearPressState(ClearType::MoveOutClear);
         if (checkboxRealRect.contains(clickPoint)) {
             //触发启用/禁用字体
             int sysFontCnt = (fdata.isEnabled() && itemData.fontInfo.isSystemFont) ? 1 : 0;
@@ -1475,7 +1478,9 @@ void DFontPreviewListView::keyPressEventFilter(const QModelIndexList &list, bool
     <param1>     obj              Description:UNUSED
     <param2>     event            Description:触发的事件
  <Return>        null            Description:null
- <Note>          null
+
+ <Function>      enableFont
+ <Description>   启用字体 <Note>          null
 *************************************************************************/
 bool DFontPreviewListView::eventFilter(QObject *obj, QEvent *event)
 {
@@ -1492,7 +1497,6 @@ bool DFontPreviewListView::eventFilter(QObject *obj, QEvent *event)
 //            qDebug() << "ASD" << endl;
 //        }
     }
-
 
     return false;
 }
@@ -1663,6 +1667,7 @@ bool DFontPreviewListView::isAtListviewTop()
 void DFontPreviewListView::onRightMenuShortCutActivated()
 {
     m_isMousePressNow = false;
+//    m_previousPressPos = -1;////
     if (selectedIndexes().count() == 0) {
         return;
     }
@@ -2027,25 +2032,42 @@ DFontPreviewProxyModel *DFontPreviewListView::getFontPreviewProxyModel()
 
 /*************************************************************************
  <Function>      clearPressState
- <Description>   清空选中状态
+ <Description>   清空收藏图标的press状态
  <Author>        null
  <Input>
-    <param1>     null            Description:null
- <Return>        null            Description:null
+    <param1>     type            Description:用于清空收藏图标press状态的类型
+ <Return>        currentRow      Description:当前收藏图标在press状态的行
  <Note>          null
 *************************************************************************/
-void DFontPreviewListView::clearPressState()
+void DFontPreviewListView::clearPressState(ClearType type, int currentRow)
 {
-    if (!m_pressModelIndex.isValid())
-        return;
+
+    QModelIndex modelIndexBefore = m_fontPreviewProxyModel->index(m_previousPressPos, 0);
+    FontData itemDataBefore =
+        qvariant_cast<FontData>(m_fontPreviewProxyModel->data(modelIndexBefore));
 
     FontData pressData =
         qvariant_cast<FontData>(m_fontPreviewProxyModel->data(m_pressModelIndex));
-    if (pressData.getHoverState() == IconNormal)
-        return;
-    pressData.setHoverState(IconNormal);
-    m_fontPreviewProxyModel->setData(m_pressModelIndex, QVariant::fromValue(pressData), Qt::DisplayRole);
-    m_pressModelIndex = QModelIndex();
+
+    switch (type) {
+    case ClearType::MoveClear:
+        if (!m_pressModelIndex.isValid())
+            return;
+        if (pressData.getHoverState() == IconNormal)
+            return;
+        pressData.setHoverState(IconNormal);
+        m_fontPreviewProxyModel->setData(m_pressModelIndex, QVariant::fromValue(pressData), Qt::DisplayRole);
+        m_pressModelIndex = QModelIndex();
+        break;
+    case DFontPreviewListView::ClearType::PreviousClear:
+        if (-1 != m_previousPressPos && m_previousPressPos != currentRow) {
+            itemDataBefore.setHoverState(IconNormal);
+            m_fontPreviewProxyModel->setData(modelIndexBefore, QVariant::fromValue(itemDataBefore), Qt::DisplayRole);
+        }
+        break;
+    default:
+        break;
+    }
 }
 
 /*************************************************************************

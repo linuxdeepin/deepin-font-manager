@@ -275,7 +275,7 @@ void DFontMgrMainWindow::initConnections()
 
     connect(d->rightKeyMenu, &QMenu::aboutToHide, this, [ = ] {
         qDebug() << __FUNCTION__ << "about to hide\n\n";
-        m_fontPreviewListView->clearPressState();
+        m_fontPreviewListView->clearPressState(DFontPreviewListView::ClearType::MoveClear);
         //恢复聚焦状态
         if (m_fontPreviewListView->hasFocus() && m_recoveryTabFocusState == true)
         {
