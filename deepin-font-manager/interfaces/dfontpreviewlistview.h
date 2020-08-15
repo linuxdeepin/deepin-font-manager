@@ -52,10 +52,17 @@ public:
         ChineseFont,
         EqualWidthFont
     };
-
+    /*************************************************************************
+     <Enum>          ClearType
+     <Description>   设置对于收藏图标press状态的清空操作类型
+     <Author>        UT000539
+     <Value>
+        <Value1>     MoveClear          Description:清空press状态
+        <Value2>     PreviousClear      Description:清空前一个press的状态
+     <Note>          null
+    *************************************************************************/
     enum ClearType {
         MoveClear,
-        MoveOutClear,
         PreviousClear
     };
 public:

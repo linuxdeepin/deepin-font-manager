@@ -361,6 +361,11 @@ void DFontMgrMainWindow::initConnections()
     this, [ = ](int count) {
         showExportFontMessage(count, m_menuAllMinusSysFontList.count() - count);
     });
+
+    //安装字体刷新后，按下左键保持焦点正常切换至菜单
+    connect(m_signalManager, &SignalManager::requestSetLeftSiderBarFocus, this, [ = ] {
+        d->leftSiderBar->setFocus(Qt::MouseFocusReason);
+    });
 }
 
 /*************************************************************************

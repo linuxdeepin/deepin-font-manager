@@ -63,7 +63,8 @@ signals:
     void cancelDel();
     //触发更新预览大小跟随滑块信号
     void fontSizeRequestToSlider();
-
+    //触发切换焦点至菜单
+    void requestSetLeftSiderBarFocus();
 
 private:
     explicit SignalManager(QObject *parent = nullptr);

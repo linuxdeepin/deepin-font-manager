@@ -1183,7 +1183,7 @@ void DFontPreviewListView::mouseReleaseEvent(QMouseEvent *event)
     if (event->button() == Qt::LeftButton) {
         m_isMousePressNow = false;
 //        m_previousPressPos = -1;
-        clearPressState(ClearType::MoveOutClear);
+        clearPressState(ClearType::MoveClear);
         if (checkboxRealRect.contains(clickPoint)) {
             //触发启用/禁用字体
             int sysFontCnt = (fdata.isEnabled() && itemData.fontInfo.isSystemFont) ? 1 : 0;
@@ -1375,6 +1375,11 @@ void DFontPreviewListView::keyPressEvent(QKeyEvent *event)
                 keyPressEventFilter(list, false, true, false);
                 return;
             }
+        }
+        //左键切换焦点至菜单项
+        else if (event->key() == Qt::Key_Left) {
+            emit m_signalManager->requestSetLeftSiderBarFocus();
+            return;
         }
         QListView::keyPressEvent(event);
     }
