@@ -625,6 +625,46 @@ QStringList DFontInfoManager::getCurrentFontFamily()
 }
 
 /*************************************************************************
+ <Function>      getFontPath
+ <Description>   获取字体的路径信息
+ <Author>        null
+ <Input>
+    <param1>     null
+ <Return>        字体的路径
+ <Note>          null
+*************************************************************************/
+QString DFontInfoManager::getFontPath()
+{
+    QString filePath;
+    QStringList retStrList;
+    QProcess process;
+
+    process.start("fc-match -v |grep file");
+    process.waitForFinished(-1);
+
+    QString output = process.readAllStandardOutput();
+    QStringList lines = output.split(QChar('\n'));
+    for (QString &line : lines) {
+        line = line.simplified();
+        if (!line.startsWith("file:"))
+            continue;
+
+        retStrList = line.split(" \"");
+        for (QString &fontStr : retStrList) {
+            int lastIndex = fontStr.lastIndexOf(QChar('\"'));
+            if (lastIndex == -1)
+                continue;
+
+            fontStr.chop(fontStr.size() - lastIndex);
+            if (!fontStr.isEmpty()) {
+                return fontStr;
+            }
+        }
+    }
+    return filePath;
+}
+
+/*************************************************************************
  <Function>      getFontFamilyStyle
  <Description>   获取字体的family信息
  <Author>        null

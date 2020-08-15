@@ -630,6 +630,7 @@ void DFontPreviewListView::onUpdateCurrentFont()
     }
 
     QStringList curFont = DFontInfoManager::instance()->getCurrentFontFamily();
+    QString filePath = DFontInfoManager::instance()->getFontPath();
     qDebug() << __FUNCTION__ << "begin " << curFont << m_fontChanged;
 
     if (curFont.isEmpty() || curFont.size() < 3) {
@@ -652,10 +653,10 @@ void DFontPreviewListView::onUpdateCurrentFont()
 
     DFontPreviewItemData prevFontData = m_curFontData;
     for (DFontPreviewItemData &itemData : m_dataThread->getFontModelList()) {
-        if (QFileInfo(itemData.fontInfo.filePath).fileName() != curFont.at(0))
+        if (itemData.fontInfo.filePath != filePath)
             continue;
 
-        if (curFont.at(2) != itemData.fontInfo.styleName)
+        if (itemData.fontInfo.isSystemFont && curFont.at(2) != itemData.fontInfo.styleName)
             continue;
 
         bool found = false;
@@ -663,7 +664,8 @@ void DFontPreviewListView::onUpdateCurrentFont()
             found = true;
         } else {
             QStringList families = DFontInfoManager::instance()->getFontFamilyStyle(itemData.fontInfo.filePath);
-            if (families.contains(curFont.at(1)))
+            if (families.contains(curFont.at(1))
+                    || (filePath == itemData.fontInfo.filePath && !itemData.fontInfo.isSystemFont))
                 found = true;
         }
 
