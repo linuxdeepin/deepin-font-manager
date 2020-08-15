@@ -1084,31 +1084,33 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
     QPoint clickPoint = event->pos();
     QModelIndex modelIndex = indexAt(clickPoint);
 
-    if ((event->button() == Qt::LeftButton) && event->source() == Qt::MouseEventSynthesizedByQt) {
-        touchPanelClick(event);
-    } else if ((event->button() == Qt::LeftButton) && modelIndex.isValid()) {
+    if (event->button() == Qt::LeftButton) {
         m_isMousePressNow = true;
-        if (QApplication::keyboardModifiers() == Qt::ShiftModifier) {
-            //Shift多选
-            updateShiftSelect(modelIndex);
-        } else {
-            //左键单击
-            m_currentSelectedRow = modelIndex.row();
-            m_curRect = visualRect(modelIndex);
+        if (event->source() == Qt::MouseEventSynthesizedByQt)
+            touchPanelClick(event);
+        else if (modelIndex.isValid()) {
+            if (QApplication::keyboardModifiers() == Qt::ShiftModifier) {
+                //Shift多选
+                updateShiftSelect(modelIndex);
+            } else {
+                //左键单击
+                m_currentSelectedRow = modelIndex.row();
+                m_curRect = visualRect(modelIndex);
 
-            QRect collectIconRect = getCollectionIconRect(m_curRect);
+                QRect collectIconRect = getCollectionIconRect(m_curRect);
 
-            FontData fdata = qvariant_cast<FontData>(m_fontPreviewProxyModel->data(modelIndex));
+                FontData fdata = qvariant_cast<FontData>(m_fontPreviewProxyModel->data(modelIndex));
 
-            if (collectIconRect.contains(clickPoint)) {
-                if (fdata.getHoverState() != IconPress) {
-                    fdata.setHoverState(IconPress);
+                if (collectIconRect.contains(clickPoint)) {
+                    if (fdata.getHoverState() != IconPress) {
+                        fdata.setHoverState(IconPress);
+                        m_fontPreviewProxyModel->setData(modelIndex, QVariant::fromValue(fdata), Qt::DisplayRole);
+                    }
+                    m_pressModelIndex = modelIndex;
+                } else if (fdata.getHoverState() != IconNormal) {
+                    fdata.setHoverState(IconNormal);
                     m_fontPreviewProxyModel->setData(modelIndex, QVariant::fromValue(fdata), Qt::DisplayRole);
                 }
-                m_pressModelIndex = modelIndex;
-            } else if (fdata.getHoverState() != IconNormal) {
-                fdata.setHoverState(IconNormal);
-                m_fontPreviewProxyModel->setData(modelIndex, QVariant::fromValue(fdata), Qt::DisplayRole);
             }
         }
     } else if ((event->button() == Qt::RightButton)  && modelIndex.isValid()) {
