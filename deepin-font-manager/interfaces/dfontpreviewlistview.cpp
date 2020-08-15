@@ -17,7 +17,7 @@
 
 DWIDGET_USE_NAMESPACE
 
-#define  DEFAULT_PRESSTIME_Length 200
+
 
 
 DFontPreviewListView::DFontPreviewListView(QWidget *parent)
@@ -450,7 +450,7 @@ void DFontPreviewListView::touchPanelClick(QMouseEvent *event)
             touchFlickBeginMoveDelay = theme_settings->property("touchFlickBeginMoveDelay");
         }
         //若dde配置了则使用dde的配置，若没有则使用默认的200ms
-        touchCheckTimer->setInterval(touchFlickBeginMoveDelay.isValid() ? touchFlickBeginMoveDelay.toInt() : DEFAULT_PRESSTIME_Length);
+        touchCheckTimer->setInterval(touchFlickBeginMoveDelay.isValid() ? touchFlickBeginMoveDelay.toInt() : DEFAULT_PRESSTIME_LENGTH);
 
         connect(touchCheckTimer, &QTimer::timeout, touchCheckTimer, &QTimer::deleteLater);
     }
@@ -458,8 +458,8 @@ void DFontPreviewListView::touchPanelClick(QMouseEvent *event)
     touchCheckTimer->start();
 
 //    mouseLastPressedIndex = QModelIndex();
-    QListView::mousePressEvent(event);
-    return;
+//    QListView::mousePressEvent(event);
+//    return;
 }
 
 /*************************************************************************

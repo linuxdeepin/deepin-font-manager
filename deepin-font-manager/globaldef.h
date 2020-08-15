@@ -61,4 +61,6 @@
 //Font MIME
 #define FONT_FILE_MIME "font/collection;font/ttf;font/otf;application/x-font-otf;application/x-font-ttf;application/x-font-type1;"
 
+//默认触摸屏一次触摸时间
+#define  DEFAULT_PRESSTIME_LENGTH 500
 #endif  // GLOBALDEF_H
