@@ -467,6 +467,10 @@ void DFInstallErrorDialog::keyPressEvent(QKeyEvent *event)
                 m_quitInstallBtn->click();
             }
         }
+    } else if (event->key() == Qt::Key_Home && event->modifiers() == Qt::NoModifier) {
+        m_installErrorListView->responseToHomeAndEnd(true);
+    } else if (event->key() == Qt::Key_End && event->modifiers() == Qt::NoModifier) {
+        m_installErrorListView->responseToHomeAndEnd(false);
     }
     QWidget::keyPressEvent(event);
 }

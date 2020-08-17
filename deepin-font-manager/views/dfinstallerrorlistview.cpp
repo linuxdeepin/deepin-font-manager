@@ -884,49 +884,43 @@ bool DFInstallErrorListView::selectNextIndex(int nextIndex)
 *************************************************************************/
 void DFInstallErrorListView::keyPressEvent(QKeyEvent *event)
 {
-
+    bool isEventResponsed = false;
     if (event->key() == Qt::Key_Up || event->key() == Qt::Key_Down) {
-///*
         if (QApplication::keyboardModifiers() == Qt::ControlModifier) {
             if (event->key() == Qt::Key_Up || event->key() == Qt::Key_Down) {
-                return;
+                isEventResponsed = true;
             }
         } else if (QApplication::keyboardModifiers() == Qt::ShiftModifier) {
             DListView::keyPressEvent(event);
-            return;
+            isEventResponsed = true;
         } else {
-//            if (selectedIndexes().count() == 0) {//没有选中时，设置第一个可选项为选中状态
-//                for (int i = 0; i < this->count(); i++) {
-//                    if (selectNextIndex(i))
-//                        break;
-//                }
-//                return;
-//            } else if (selectedIndexes().count() > 1) {//多选时，设置第一个选中项为单独选中
-//                setCurrentIndex(selectedIndexes().first());
-//                scrollTo(selectedIndexes().first());
-//                return;
-//            }
-
             if (event->key() == Qt::Key_Down) {//循环判断是否可选,如果没有可选则不改变选项
                 for (int i = currentIndex().row() + 1; i <= this->count(); i++) {
                     if (selectNextIndex(i))
-                        return;
+                        isEventResponsed = true;
                     if (i == (this->count() - 1) || i == this->count())
                         i = -1;
                 }
-                return;
+                isEventResponsed = true;
             } else {//循环判断是否可选,如果没有可选则不改变选项
                 for (int i = currentIndex().row() - 1; i >= -1; i--) {
                     if (selectNextIndex(i))
-                        return;
+                        isEventResponsed = true;
                     if (i == 0 || i == -1)
                         i = this->count();
                 }
-                return;
+                isEventResponsed = true;
             }
         }
-    }
-
+    } /*else if (event->key() == Qt::Key_Home && event->modifiers() == Qt::NoModifier) {
+        responseToHomeAndEnd(true);
+        isEventResponsed = true;
+    } else if (event->key() == Qt::Key_End && event->modifiers() == Qt::NoModifier) {
+        responseToHomeAndEnd(false);
+        isEventResponsed = true;
+    }*/
+    if (isEventResponsed)
+        return;
     DListView::keyPressEvent(event);
 }
 /*************************************************************************
@@ -944,6 +938,35 @@ void DFInstallErrorListView::initSelectedItem()
             if (selectNextIndex(i))
                 break;
         }
+    }
+}
+
+/*************************************************************************
+ <Function>      responseToHomeAndEnd
+ <Description>   响应home和end快捷按键-fix bug 43109-便于父对象调用，整理成函数
+ <Author>        UT000539
+ <Input>
+    <param1>     isHomeKeyPressed Description:区分home还是end
+    <param2>     null             Description:
+    <param3>     null             Description:
+ <Return>        null             Description:null
+ <Note>          null
+*************************************************************************/
+void DFInstallErrorListView::responseToHomeAndEnd(bool isHomeKeyPressed)
+{
+    QModelIndex index;
+    if (isHomeKeyPressed) {
+        index = m_errorListSourceModel->index(0, 0);
+        scrollToTop();
+    } else {
+        index = m_errorListSourceModel->index(count() - 1, 0);
+        scrollToBottom();
+    }
+    DFInstallErrorItemModel itemModel =
+        qvariant_cast<DFInstallErrorItemModel>(m_errorListSourceModel->data(index));
+    clearSelection();
+    if (itemModel.bIsNormalUserFont) {
+        selectionModel()->select(index, QItemSelectionModel::Select);
     }
 }
 
@@ -1024,7 +1047,7 @@ bool DFInstallErrorListView::eventFilter(QObject *obj, QEvent *event)
             //不是因为窗口切换获取到焦点时，判断获取焦点的方式，如果不是通过鼠标点击或者安装过程后设置的焦点，就
             //判断为通过tab获取到的焦点。
             if (!m_isMouseClicked && !m_isInstallFocus) {
-                //刚打开窗口第一次获取焦点时不需要tab选中的效果.
+                //刚打开窗口第一次获取焦点时不需要tab的效果.
 //                if (m_ifFirstFocus) {
 //                    m_ifFirstFocus = false;
 //                } else {
