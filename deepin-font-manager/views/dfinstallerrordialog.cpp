@@ -105,8 +105,7 @@ DFInstallErrorDialog::DFInstallErrorDialog(QWidget *parent, const QStringList &e
     emit m_signalManager->popInstallErrorDialog();
     connect(m_signalManager, &SignalManager::updateInstallErrorListview, this, &DFInstallErrorDialog::addData);
     resetContinueInstallBtnStatus();
-    m_installErrorListView->setFocus();
-
+//    m_installErrorListView->setFocus();
 }
 
 /*************************************************************************
@@ -451,12 +450,22 @@ void DFInstallErrorDialog::keyPressEvent(QKeyEvent *event)
         this->close();
     }
     //SP3--安装验证页面，回车取消/选中
-    else if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter) {
-        if (m_installErrorListView->selectionModel()->selectedIndexes().count() == 1) {
-            onListItemClicked(m_installErrorListView->currentIndex());
-            return;
-        } else {
-            onListItemsClicked(m_installErrorListView->selectionModel()->selectedIndexes());
+    else if ((event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter)) {
+        if (m_installErrorListView->hasFocus()) {
+            if (m_installErrorListView->selectionModel()->selectedIndexes().count() == 1) {
+                onListItemClicked(m_installErrorListView->currentIndex());
+                return;
+            } else if (m_installErrorListView->selectionModel()->selectedIndexes().count() > 1) {
+                onListItemsClicked(m_installErrorListView->selectionModel()->selectedIndexes());
+            }
+        }
+        //默认字体列表无焦点情况下，回车执行“继续”或“取消”按钮
+        else {
+            if (m_continueInstallBtn->isEnabled())
+                emit m_continueInstallBtn->click();
+            else {
+                m_quitInstallBtn->click();
+            }
         }
     }
     QWidget::keyPressEvent(event);
@@ -609,7 +618,7 @@ void DFInstallErrorDialog::addData(QStringList &errorFileList, QStringList &half
 
     m_installErrorListView->setSelectStatus(addHalfInstalledFiles, list);
 
-    m_installErrorListView->setFocus();
+//    m_installErrorListView->setFocus();
 
     resetContinueInstallBtnStatus();
 

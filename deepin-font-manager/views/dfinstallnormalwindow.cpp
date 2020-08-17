@@ -830,7 +830,6 @@ void DFInstallNormalWindow::showInstallErrDlg()
 
     m_pexceptionDlg->move(geometry().center() - m_pexceptionDlg->rect().center());
     m_pexceptionDlg->exec();
-
 }
 
 /*************************************************************************

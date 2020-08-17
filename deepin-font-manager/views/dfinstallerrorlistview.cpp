@@ -458,7 +458,7 @@ DFInstallErrorListView::DFInstallErrorListView(const QList<DFInstallErrorItemMod
 
     initErrorListData();
     initDelegate();
-
+    initSelectedItem();
     installEventFilter(this);
 }
 
@@ -929,6 +929,23 @@ void DFInstallErrorListView::keyPressEvent(QKeyEvent *event)
 
     DListView::keyPressEvent(event);
 }
+/*************************************************************************
+ <Function>      initSelectedItem
+ <Description>   初始选中第一个可选项
+ <Author>        UT000539
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
+void DFInstallErrorListView::initSelectedItem()
+{
+    if (selectionModel()->selectedIndexes().count() == 0) {
+        for (int i = 0; i < this->count(); i++) {
+            if (selectNextIndex(i))
+                break;
+        }
+    }
+}
 
 /*******************************************************************************
  1. @函数:    ifNeedScrollTo(QModelIndex idx)
@@ -1008,25 +1025,21 @@ bool DFInstallErrorListView::eventFilter(QObject *obj, QEvent *event)
             //判断为通过tab获取到的焦点。
             if (!m_isMouseClicked && !m_isInstallFocus) {
                 //刚打开窗口第一次获取焦点时不需要tab选中的效果.
-                if (m_ifFirstFocus) {
-                    m_ifFirstFocus = false;
-                } else {
-                    m_IsTabFocus = true;
-                }
+//                if (m_ifFirstFocus) {
+//                    m_ifFirstFocus = false;
+//                } else {
+                m_IsTabFocus = true;
+//                }
             }
         }
 
         //没有选中项时，切换到异常字体列表时，默认选中第一个
-        if (selectionModel()->selectedIndexes().count() == 0) {
-            for (int i = 0; i < this->count(); i++) {
-                if (selectNextIndex(i))
-                    break;
-            }
-        } /*else {
-            QModelIndex selectIndex = selectionModel()->selectedIndexes().first();
-            selectNextIndex(selectIndex.row());
-            scrollTo(selectIndex);
-        }*/
+        initSelectedItem();
+        /*else {
+                    QModelIndex selectIndex = selectionModel()->selectedIndexes().first();
+                    selectNextIndex(selectIndex.row());
+                    scrollTo(selectIndex);
+                }*/
     }
 
     return false;

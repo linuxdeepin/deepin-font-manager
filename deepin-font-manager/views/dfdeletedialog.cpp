@@ -255,10 +255,20 @@ void DFDeleteDialog::onFontChanged(const QFont &font)
 *************************************************************************/
 void DFDeleteDialog::keyPressEvent(QKeyEvent *event)
 {
+    bool received = false;
     if (event->key() == Qt::Key_Escape) {
         reject();
         close();
+        received = true;
     }
+    if (event->key() == Qt::Key_Return) {
+        if (!getCloseButton()->hasFocus() && !m_cancelBtn->hasFocus()) {
+            m_confirmBtn->click();
+            received = true;
+        }
+    }
+    if (!received)
+        QDialog::keyPressEvent(event);
 }
 
 /*************************************************************************

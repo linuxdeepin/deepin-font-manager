@@ -114,7 +114,8 @@ private:
     bool m_IsTabFocus = false;
     bool m_isInstallFocus = false;
     bool m_ifFirstFocus = true;
-
+    //初始选中第一个可选项
+    void initSelectedItem();
 signals:
     //发送item点击信号
     void onClickErrorListItem(QModelIndex index);
