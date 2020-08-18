@@ -221,6 +221,8 @@ private:
     int m_currentSelectedRow = -1;
     int m_selectAfterDel = -1;/*539 删除后的选中位置*/
     int m_tryCnt = 0;
+    QList<int> m_recoverSelectStateList;
+    bool m_curFontSelected{false};
     qint64 m_curTm {0};
     //根据按键设置选中
     void keyPressEventFilter(const QModelIndexList &list, bool isUp, bool isDown, bool isShiftModifier);

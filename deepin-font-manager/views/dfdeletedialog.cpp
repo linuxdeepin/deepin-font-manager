@@ -106,6 +106,7 @@ void DFDeleteDialog::initConnections()
         if (m_mainWindow != nullptr && !m_deleting) {
             qDebug() << "cancel delte";
             m_mainWindow->cancelDelete();
+            emit m_signalManager->clearRecoverList();
         }
     });
     connect(qApp, &DApplication::fontChanged, this, &DFDeleteDialog::onFontChanged);

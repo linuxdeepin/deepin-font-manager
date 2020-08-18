@@ -65,7 +65,8 @@ signals:
     void fontSizeRequestToSlider();
     //触发切换焦点至菜单
     void requestSetLeftSiderBarFocus();
-
+    //清空待恢复选中状态索引列表
+    void clearRecoverList();
 private:
     explicit SignalManager(QObject *parent = nullptr);
 

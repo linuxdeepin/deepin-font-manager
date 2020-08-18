@@ -311,6 +311,11 @@ void DFontPreviewListView::initDelegate()
 void DFontPreviewListView::initConnections()
 {
     connect(m_signalManager, &SignalManager::currentFontGroup, this, &DFontPreviewListView::updateCurrentFontGroup);
+
+    connect(m_signalManager, &SignalManager::clearRecoverList, this, [ = ] {
+        m_recoverSelectStateList.clear();
+        m_curFontSelected = false;
+    });
 }
 
 /*************************************************************************
@@ -838,9 +843,31 @@ void DFontPreviewListView::selectItemAfterRemoved(bool isAtBottom, bool isAtTop,
                 }
             }
         }
+        //更新选中位置
         setCurrentSelected(nextIndexRow);
-        if (!hasDisableFailedFont /*&& filterModel->index(nextIndexRow, 0).isValid()*/) {
+        //不能禁用的系统字体，保留选中状态
+        if (!hasDisableFailedFont) {
             setCurrentIndex(filterModel->index(nextIndexRow, 0));
+        }
+        //不能删除的系统列表，恢复选中状态
+        if (m_recoverSelectStateList.count() > 0) {
+            DFontPreviewProxyModel *filterModel = this->getFontPreviewProxyModel();
+            for (auto idx : m_recoverSelectStateList) {
+                selectionModel()->select(filterModel->index(idx, 0), QItemSelectionModel::Select);
+            }
+            m_recoverSelectStateList.clear();
+        }
+        //操作前已选中的当前正在使用的用户字体，恢复选中状态
+        if (m_curFontSelected) {
+            for (int i = count() - 1; i >= 0; i--) {
+                FontData fdata = qvariant_cast<FontData>(m_fontPreviewProxyModel->data(filterModel->index(i, 0)));
+                DFontPreviewItemData itemData = m_dataThread->getFontData(fdata);
+                if (itemData == m_curFontData) {
+                    selectionModel()->select(filterModel->index(i, 0), QItemSelectionModel::Select);
+                    break;
+                }
+            }
+            m_curFontSelected = false;
         }
     }
 }
@@ -2324,7 +2351,8 @@ void DFontPreviewListView::selectedFonts(const DFontPreviewItemData &curData,
                         *disableSysCnt += 1;
                 }
             }
-
+            //系统字体不可删除,记录idx便于恢复选中状态
+            m_recoverSelectStateList.append(index.row());
             if (systemCnt != nullptr)
                 *systemCnt += 1;
             if (calCollect && (curCollected == itemData.fontData.isCollected()))
@@ -2336,6 +2364,8 @@ void DFontPreviewListView::selectedFonts(const DFontPreviewItemData &curData,
             appendFilePath(allMinusSysFontList, itemData.fontInfo.filePath);
             if ((calCollect) && (curCollected == itemData.fontData.isCollected()))
                 *allIndexList << index;
+            //不可删除字体包括当前使用中用户字体
+            m_curFontSelected = true;
         } else {
             if (deleteCnt)
                 *deleteCnt += 1;
