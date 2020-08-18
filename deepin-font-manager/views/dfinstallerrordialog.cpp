@@ -471,6 +471,10 @@ void DFInstallErrorDialog::keyPressEvent(QKeyEvent *event)
         m_installErrorListView->responseToHomeAndEnd(true);
     } else if (event->key() == Qt::Key_End && event->modifiers() == Qt::NoModifier) {
         m_installErrorListView->responseToHomeAndEnd(false);
+    } else if (event->key() == Qt::Key_PageUp && event->modifiers() == Qt::NoModifier) {
+        m_installErrorListView->responseToPageUpAndPageDown(true);
+    } else if (event->key() == Qt::Key_PageDown && event->modifiers() == Qt::NoModifier) {
+        m_installErrorListView->responseToPageUpAndPageDown(false);
     }
     QWidget::keyPressEvent(event);
 }

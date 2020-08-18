@@ -896,8 +896,9 @@ void DFInstallErrorListView::keyPressEvent(QKeyEvent *event)
         } else {
             if (event->key() == Qt::Key_Down) {//循环判断是否可选,如果没有可选则不改变选项
                 for (int i = currentIndex().row() + 1; i <= this->count(); i++) {
-                    if (selectNextIndex(i))
-                        isEventResponsed = true;
+                    if (selectNextIndex(i)) {
+                        return;
+                    }
                     if (i == (this->count() - 1) || i == this->count())
                         i = -1;
                 }
@@ -905,20 +906,26 @@ void DFInstallErrorListView::keyPressEvent(QKeyEvent *event)
             } else {//循环判断是否可选,如果没有可选则不改变选项
                 for (int i = currentIndex().row() - 1; i >= -1; i--) {
                     if (selectNextIndex(i))
-                        isEventResponsed = true;
+                        return;
                     if (i == 0 || i == -1)
                         i = this->count();
                 }
                 isEventResponsed = true;
             }
         }
-    } /*else if (event->key() == Qt::Key_Home && event->modifiers() == Qt::NoModifier) {
+    } else if (event->key() == Qt::Key_Home && event->modifiers() == Qt::NoModifier) {
         responseToHomeAndEnd(true);
         isEventResponsed = true;
     } else if (event->key() == Qt::Key_End && event->modifiers() == Qt::NoModifier) {
         responseToHomeAndEnd(false);
         isEventResponsed = true;
-    }*/
+    } else if (event->key() == Qt::Key_PageUp && event->modifiers() == Qt::NoModifier) {
+        responseToPageUpAndPageDown(true);
+        isEventResponsed = true;
+    } else if (event->key() == Qt::Key_PageDown && event->modifiers() == Qt::NoModifier) {
+        responseToPageUpAndPageDown(false);
+        isEventResponsed = true;
+    }
     if (isEventResponsed)
         return;
     DListView::keyPressEvent(event);
@@ -967,6 +974,32 @@ void DFInstallErrorListView::responseToHomeAndEnd(bool isHomeKeyPressed)
     clearSelection();
     if (itemModel.bIsNormalUserFont) {
         selectionModel()->select(index, QItemSelectionModel::Select);
+        setCurrentIndex(index);
+    }
+}
+
+/*************************************************************************
+ <Function>      responseToPageUpAndPageDown
+ <Description>   响应PageUp和PageDown快捷按键-便于父对象调用，整理成函数
+ <Author>
+ <Input>
+    <param1>     isPageUpPressed Description:区分是PageUp还是PageDown
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
+void DFInstallErrorListView::responseToPageUpAndPageDown(bool isPageUpPressed)
+{
+    if (isPageUpPressed) {
+        QModelIndex firstVisibleItem = indexAt(QPoint(3, 3));
+        if (firstVisibleItem.isValid()) {
+            scrollTo(firstVisibleItem, QAbstractItemView::PositionAtBottom);
+        }
+    } else {
+        QRect visibleRect = geometry();
+        QModelIndex lastVisibleItem = indexAt(QPoint(3, visibleRect.height() - 3));
+        if (lastVisibleItem.isValid()) {
+            scrollTo(lastVisibleItem, QAbstractItemView::PositionAtTop);
+        }
     }
 }
 

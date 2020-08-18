@@ -102,6 +102,8 @@ public:
     void sortModelIndexList(QModelIndexList &sourceList);
     //响应home和end快捷按键-fix bug 43109-便于父对象调用，整理成函数
     void responseToHomeAndEnd(bool isHomeKeyPressed);
+    //响应PageUp和PageDown快捷按键-便于父对象调用，整理成函数
+    void responseToPageUpAndPageDown(bool isPageUpPressed);
 private:
 
     DFontInfoManager *m_fontInfoManager;
