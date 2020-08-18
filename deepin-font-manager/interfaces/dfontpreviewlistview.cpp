@@ -623,7 +623,6 @@ QRect DFontPreviewListView::getCheckboxRect(const QRect &rect)
 *************************************************************************/
 void DFontPreviewListView::onUpdateCurrentFont()
 {
-    //应用初始化时也要检查当前字体更新为列表中itemdata
     if (!m_fontChanged) {
         m_fontChangeTimer->stop();
         return;
@@ -688,15 +687,8 @@ void DFontPreviewListView::onUpdateCurrentFont()
  <Return>        null            Description:null
  <Note>          null
 *************************************************************************/
-void DFontPreviewListView::onFontChanged(const QFont &font, bool isLoading)
+void DFontPreviewListView::onFontChanged(const QFont &font)
 {
-    if (isLoading) {
-        m_fontChanged = true;
-        onUpdateCurrentFont();
-        m_curAppFont = font;
-        return;
-    }
-
     if (font.weight() == m_curAppFont.weight() && font.style() == m_curAppFont.style()
             && font.stretch() == m_curAppFont.stretch() && font.styleHint() == m_curAppFont.styleHint()
             && font.styleStrategy() == m_curAppFont.styleStrategy() && font.fixedPitch() == m_curAppFont.fixedPitch()
