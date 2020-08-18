@@ -573,7 +573,7 @@ void DFontPreviewListView::updateModel(bool showSpinner)
     emit m_signalManager->fontSizeRequestToSlider();
 
     //设置字体删除后的选中
-    selectItemAfterRemoved(m_bListviewAtButtom, m_bListviewAtTop);
+    selectItemAfterRemoved(m_bListviewAtButtom, m_bListviewAtTop, false);
 
     //删除之后设置焦点
     refreshFocuses();
@@ -770,7 +770,7 @@ void DFontPreviewListView::sortModelIndexList(QModelIndexList &sourceList)
  <Return>        null            Description:null
  <Note>          null
 *************************************************************************/
-void DFontPreviewListView::selectItemAfterRemoved(bool isAtBottom, bool isAtTop)
+void DFontPreviewListView::selectItemAfterRemoved(bool isAtBottom, bool isAtTop, bool hasDisableFailedFont)
 {
     int param = getOnePageCount();
     if (m_selectAfterDel != -1) {
@@ -780,7 +780,6 @@ void DFontPreviewListView::selectItemAfterRemoved(bool isAtBottom, bool isAtTop)
         if (m_selectAfterDel == this->count()) {
             if (count() > 0) {
                 //上移选中
-                setCurrentIndex(filterModel->index(count() - 1, 0));
                 nextIndexRow = count() - 1;
             }
             scrollToBottom();
@@ -789,7 +788,6 @@ void DFontPreviewListView::selectItemAfterRemoved(bool isAtBottom, bool isAtTop)
             if (this->count() > param) {
                 //删除第一页的字体
                 if (m_selectAfterDel <= param) {
-                    setCurrentIndex(filterModel->index(m_selectAfterDel, 0));
                     //既在顶部一页又在底部一页
                     if (m_selectAfterDel >= this->count() - param) {
                         if (isAtTop) {
@@ -812,7 +810,6 @@ void DFontPreviewListView::selectItemAfterRemoved(bool isAtBottom, bool isAtTop)
                 //删除最后一页的字体
                 else if (m_selectAfterDel >= this->count() - param) {
                     if (isAtBottom) {
-                        setCurrentIndex(filterModel->index(m_selectAfterDel - 1, 0));
                         nextIndexRow = m_selectAfterDel - 1;
                         if (m_selectAfterDel == this->count() - param) {
                             scrollTo(filterModel->index(m_selectAfterDel - 1, 0));
@@ -820,14 +817,12 @@ void DFontPreviewListView::selectItemAfterRemoved(bool isAtBottom, bool isAtTop)
                             scrollToBottom();
                         }
                     } else {
-                        setCurrentIndex(filterModel->index(m_selectAfterDel, 0));
                         nextIndexRow = m_selectAfterDel;
                         scrollTo(filterModel->index(m_selectAfterDel, 0));
                     }
                 }
                 //删除中间位置的字体
                 else {
-                    setCurrentIndex(filterModel->index(m_selectAfterDel, 0));
                     nextIndexRow = m_selectAfterDel;
                 }
             }
@@ -835,10 +830,8 @@ void DFontPreviewListView::selectItemAfterRemoved(bool isAtBottom, bool isAtTop)
             else {
                 if (m_selectAfterDel <= param) {
                     if (filterModel->index(m_selectAfterDel, 0).isValid()) {
-                        setCurrentIndex(filterModel->index(m_selectAfterDel, 0));
                         nextIndexRow = m_selectAfterDel;
                     } else {
-                        setCurrentIndex(filterModel->index(m_selectAfterDel - 1, 0));
                         nextIndexRow = m_selectAfterDel - 1;
                     }
                     scrollToTop();
@@ -846,6 +839,9 @@ void DFontPreviewListView::selectItemAfterRemoved(bool isAtBottom, bool isAtTop)
             }
         }
         setCurrentSelected(nextIndexRow);
+        if (!hasDisableFailedFont /*&& filterModel->index(nextIndexRow, 0).isValid()*/) {
+            setCurrentIndex(filterModel->index(nextIndexRow, 0));
+        }
     }
 }
 
@@ -1812,16 +1808,13 @@ void DFontPreviewListView::onEnableBtnClicked(const QModelIndexList &itemIndexes
     int pos = list.last().row();
     m_selectAfterDel = pos;
     list.clear();
-
     QList<DFontPreviewItemData> modelist = m_dataThread->getFontModelList();
-
     for (QModelIndex &index : itemIndexesNew) {
         FontData fdata = qvariant_cast<FontData>(m_fontPreviewProxyModel->data(index));
         DFontPreviewItemData itemData = m_dataThread->getFontData(fdata);
         QFileInfo fi(itemData.fontInfo.filePath);
         if (!fi.exists())
             continue;
-
         int idx = modelist.indexOf(itemData);
         if (setValue) {
             enableFont(itemData.fontInfo.filePath);
@@ -1841,7 +1834,6 @@ void DFontPreviewListView::onEnableBtnClicked(const QModelIndexList &itemIndexes
         //更新状态
         m_dataThread->updateItemStatus(idx, itemData);
         DFMDBManager::instance()->updateFontInfo(itemData, "isEnabled");
-
         m_fontPreviewProxyModel->setData(index, QVariant::fromValue(fdata), Qt::DisplayRole);
     }
 
@@ -1857,7 +1849,7 @@ void DFontPreviewListView::onEnableBtnClicked(const QModelIndexList &itemIndexes
 
     if (isFromActiveFont == true) {
         //设置移除后的选中
-        selectItemAfterRemoved(m_bListviewAtButtom, m_bListviewAtTop);
+        selectItemAfterRemoved(m_bListviewAtButtom, m_bListviewAtTop, needShowTips);
     }
 
     QString message;
@@ -1934,7 +1926,7 @@ void DFontPreviewListView::onCollectBtnClicked(const QModelIndexList &index, boo
             return;
         }
         //设置收藏页面移除后的选中
-        selectItemAfterRemoved(m_bListviewAtButtom, m_bListviewAtTop);
+        selectItemAfterRemoved(m_bListviewAtButtom, m_bListviewAtTop, false);
     }
 
     DFMDBManager::instance()->commitUpdateFontInfo();

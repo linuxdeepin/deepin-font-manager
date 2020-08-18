@@ -474,7 +474,6 @@ DFInstallErrorListView::~DFInstallErrorListView()
 {
     initModel(false);
     m_installErrorFontModelList.clear();
-
 }
 
 /*************************************************************************
@@ -1014,8 +1013,6 @@ void DFInstallErrorListView::ifNeedScrollTo(QModelIndex idx)
     if (!viewport()->visibleRegion().contains(visualRect(idx).center()))
         scrollTo(idx);
 }
-
-
 
 /*************************************************************************/
 /*                                                                       */
