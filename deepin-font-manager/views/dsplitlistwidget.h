@@ -82,7 +82,7 @@ public:
 
 private:
     bool m_refreshFinished = true;
-
+    bool m_isFocusFromFontListView{false};
     //判断鼠标有没有点击
     bool m_IsMouseClicked = false;
 

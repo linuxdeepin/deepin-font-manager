@@ -469,6 +469,22 @@ void DFontPreviewListView::touchPanelClick(QMouseEvent *event)
 }
 
 /*************************************************************************
+ <Function>      null
+ <Description>   null
+ <Author>        null
+ <Input>
+    <param1>     null            Description:
+    <param2>     null            Description:
+    <param3>     null            Description:
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
+void DFontPreviewListView::setIsLostFocusOfLeftKey(bool isLostFocusOfLeftKey)
+{
+    m_isLostFocusOfLeftKey = isLostFocusOfLeftKey;
+}
+
+/*************************************************************************
  <Function>      setRecoveryTabFocusState
  <Description>   记录操作前的tabfocus状态,用于进行操作后还原
  <Author>        null
@@ -1398,6 +1414,7 @@ void DFontPreviewListView::keyPressEvent(QKeyEvent *event)
         }
         //左键切换焦点至菜单项
         else if (event->key() == Qt::Key_Left) {
+            setIsLostFocusOfLeftKey(true);
             emit m_signalManager->requestSetLeftSiderBarFocus();
             return;
         }
@@ -1513,6 +1530,11 @@ bool DFontPreviewListView::eventFilter(QObject *obj, QEvent *event)
 
     if (event->type() == QEvent::FocusOut) {
         m_IsTabFocus = false;
+        if (m_isLostFocusOfLeftKey == true)
+            m_isLostFocusOfLeftKey = false;
+        else {
+            m_signalManager->setLostFocusState(true);
+        }
     }
 
     if (event->type() == QEvent::FocusIn) {

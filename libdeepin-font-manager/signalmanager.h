@@ -67,6 +67,8 @@ signals:
     void requestSetLeftSiderBarFocus();
     //清空待恢复选中状态索引列表
     void clearRecoverList();
+    //更新标志位：是否从字体列表获取焦点
+    void setLostFocusState(bool isTrue);
 private:
     explicit SignalManager(QObject *parent = nullptr);
 

@@ -365,6 +365,7 @@ void DFontMgrMainWindow::initConnections()
 
     //安装字体刷新后，按下左键保持焦点正常切换至菜单
     connect(m_signalManager, &SignalManager::requestSetLeftSiderBarFocus, this, [ = ] {
+        emit m_signalManager->setLostFocusState(false);
         d->leftSiderBar->setFocus(Qt::MouseFocusReason);
     });
 }
@@ -2269,6 +2270,8 @@ void DFontMgrMainWindow::mainwindowFocusInCheck(QObject *obj, QEvent *event)
                 d->leftSiderBar->setIsHalfWayFocus(true);
             }
         }
+    } else {
+        emit m_signalManager->setLostFocusState(false);
     }
 
     if (obj == m_fontPreviewListView) {
@@ -2336,6 +2339,8 @@ void DFontMgrMainWindow::keyPressEvent(QKeyEvent *event)
         if (d->fontScaleSlider->hasFocus()) {
             d->fontScaleSlider->setValue(d->fontScaleSlider->value() - 1);
         } else if (Qt::Key_Left == event->key() && (m_fontPreviewListView->hasFocus() || m_noInstallListView->hasFocus())) {
+            emit m_signalManager->setLostFocusState(false);
+            m_fontPreviewListView->setIsLostFocusOfLeftKey(true);
             d->leftSiderBar->setFocus(Qt::MouseFocusReason);
         }
     }

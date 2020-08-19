@@ -265,6 +265,9 @@ DSplitListWidget::DSplitListWidget(QWidget *parent)
     this->installEventFilter(this);
     initListData();
     connect(m_signalManager, &SignalManager::setSpliteWidgetScrollEnable, this, &DSplitListWidget::setRefreshFinished);
+    connect(m_signalManager, &SignalManager::setLostFocusState, this, [ = ](bool isTrue) {
+        m_isFocusFromFontListView = isTrue;
+    });
 }
 
 DSplitListWidget::~DSplitListWidget() {}
@@ -533,7 +536,8 @@ bool DSplitListWidget::eventFilter(QObject *obj, QEvent *event)
 
 //获取焦点时只要不是通过鼠标点击获取焦点以及不是打开软件自动设置的焦点以及不是其他过程中途设置的焦点，就是判断为通过tab获取到的焦点
     if (event->type() == QEvent::FocusIn) {
-        if (!m_IsMouseClicked /*&& !m_IsLeftFocus*/ && !m_IsFirstFocus && !m_IsHalfWayFocus) {
+        qDebug() << m_isFocusFromFontListView;
+        if (!m_IsMouseClicked && !m_IsFirstFocus && !m_IsHalfWayFocus && !m_isFocusFromFontListView) {
             m_IsTabFocus = true;
         }
 //        m_IsFristTimeFocus = false;

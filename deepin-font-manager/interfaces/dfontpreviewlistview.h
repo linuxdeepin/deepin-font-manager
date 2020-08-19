@@ -190,6 +190,8 @@ public:
     //记录操作前的tabfocus状态,用于进行操作后还原
     void setRecoveryTabFocusState(bool recoveryTabFocusState);
 
+    void setIsLostFocusOfLeftKey(bool isLostFocusOfLeftKey);
+
 protected:
     //选中切换后触发函数
     void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected) override;
@@ -225,7 +227,7 @@ private:
     volatile bool m_fontChanged = false;
     bool m_bListviewAtButtom = false;
     bool m_bListviewAtTop = false;
-
+    bool m_isLostFocusOfLeftKey{false};
 
     bool m_IsNeedFocus = false;//是否需要设置聚焦
 
