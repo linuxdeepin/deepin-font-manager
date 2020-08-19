@@ -26,7 +26,7 @@ class DFontMenuManager : public QObject
     Q_OBJECT
 public:
     explicit DFontMenuManager(QObject *parent = nullptr);
-
+    //获取单例
     static DFontMenuManager *getInstance();
 
     /*************************************************************************

@@ -1528,7 +1528,7 @@ bool DFontPreviewListView::eventFilter(QObject *obj, QEvent *event)
 
 /*************************************************************************
  <Function>      enableFont
- <Description>   启用字体
+ <Description>   加入启用字体列表
  <Author>        null
  <Input>
     <param1>     filePath            Description:启用字体路径
@@ -1543,7 +1543,7 @@ void DFontPreviewListView::enableFont(const QString &filePath)
 
 /*************************************************************************
  <Function>      disableFont
- <Description>   禁用字体
+ <Description>   加入禁用字体列表
  <Author>        null
  <Input>
     <param1>     filePath            Description:禁用字体路径
@@ -2195,7 +2195,16 @@ void DFontPreviewListView::deleteFontFiles(const QStringList &files, bool force)
     deleteCurFonts(files, force);
 }
 
-
+/*************************************************************************
+ <Function>      deleteCurFonts
+ <Description>   从字体库删除字体
+ <Author>
+ <Input>
+    <param1>     files           Description:待删除字体列表
+    <param2>     force           Description:删除类型
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListView::deleteCurFonts(const QStringList &files, bool force)
 {
     qDebug() << __FUNCTION__ << " before delete " << m_dataThread->getFontModelList().size() << m_fontPreviewProxyModel->rowCount()  << m_fontPreviewProxyModel->sourceModel()->rowCount();

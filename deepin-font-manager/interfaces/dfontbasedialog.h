@@ -37,7 +37,9 @@ public:
     DWindowCloseButton *getCloseButton() const;
 
 protected:
+    //初始化ui界面
     void initUI();
+    //初始化信号与槽的链接
     void InitConnections();
 
     //设置IconLabel是否可见
@@ -45,7 +47,7 @@ protected:
 
     //设置titlelabel显示内容
     void setTitle(const QString &title);
-
+    //获取窗口使用的布局
     QLayout *getContentLayout();
 
     //Overrides

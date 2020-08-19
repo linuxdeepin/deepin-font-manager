@@ -16,7 +16,7 @@ class DFontPreviewer : public QWidget
     Q_OBJECT
 public:
     explicit DFontPreviewer(QWidget *parent = nullptr);
-
+    //绘制预览字体
     void paintEvent(QPaintEvent *event) override;
 
     //初始化数据

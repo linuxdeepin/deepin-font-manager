@@ -360,8 +360,7 @@ void DFontPreviewListDataThread::forceDeleteFiles(const QStringList &files)
 *************************************************************************/
 void DFontPreviewListDataThread::onRemoveFileWatchers(const QStringList &files)
 {
-    qDebug() << __FUNCTION__   << files << "llllllllllllll" << m_fsWatcher->removePaths(files);
-    //remove extra
+    Q_UNUSED(files)
     m_fsWatcher->removePath(FONTS_DIR);
     m_fsWatcher->removePath(FONTS_UP_DIR);
 }
@@ -381,6 +380,15 @@ void DFontPreviewListDataThread::onAutoDirWatchers()
     m_fsWatcher->addPath(FONTS_UP_DIR);
 }
 
+/*************************************************************************
+ <Function>      onExportFont
+ <Description>   导出字体文件
+ <Author>
+ <Input>
+    <param1>     files           Description:需要导出的字体文件列表
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
 void DFontPreviewListDataThread::onExportFont(const QStringList &files)
 {
     QString desktopPath = QString("%1/%2/").arg(QStandardPaths::writableLocation(QStandardPaths::DesktopLocation))
@@ -397,7 +405,7 @@ void DFontPreviewListDataThread::onExportFont(const QStringList &files)
 
 /*************************************************************************
  <Function>      insertFontItemData
- <Description>   将需要添加项的字体数据收集放人lis中.
+ <Description>   将需要添加项的字体数据收集放人list中.
  <Author>        null
  <Input>
     <param1>     filepath            Description:文件路径

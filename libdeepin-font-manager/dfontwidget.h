@@ -48,7 +48,6 @@ public:
     ~DFontWidget() override;
     //传入字体路径
     void setFileUrl(const QString &url);
-
 protected:
 
 private:

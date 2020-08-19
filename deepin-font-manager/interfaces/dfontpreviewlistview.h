@@ -68,43 +68,59 @@ public:
 public:
     explicit DFontPreviewListView(QWidget *parent = nullptr);
     ~DFontPreviewListView() override;
-
+    //初始化时,设置界面各个控件的状态
     void initFontListData();
+    //初始化listview的代理
     void initDelegate();
-
+    //获取加载数据是否完成的标志位
     bool isListDataLoadFinished();
+    //鼠标点击事件
     void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+    //鼠标移动事件
     void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
-
+    //鼠标释放事件
     void mouseReleaseEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+    //鼠标双击事件
     void mouseDoubleClickEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
-
+    //listview设置选中的函数,主要在这里获取当前选中的字体index
     void setSelection(const QRect &rect,
                       QItemSelectionModel::SelectionFlags command) Q_DECL_OVERRIDE;
-
+    //为listview设置模型
     void setModel(QAbstractItemModel *model) Q_DECL_OVERRIDE;
-
+    //listview一行将要移出时触发函数
     void rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end) Q_DECL_OVERRIDE;
+    //键盘点击事件
     void keyPressEvent(QKeyEvent *event)Q_DECL_OVERRIDE;
-
+    //事件过滤器,用于处理焦点移动事件
     bool eventFilter(QObject *obj, QEvent *event)override;
-
+    //设置右键菜单
     void setRightContextMenu(QMenu *rightMenu);
+    //获取当前项的Index
     QModelIndex currModelIndex();
+    //返回当前项的itemdata
     DFontPreviewItemData currModelData();
+    //获取listview的model
     DFontPreviewProxyModel *getFontPreviewProxyModel();
     //清空收藏图标的press状态
     void clearPressState(ClearType clearType, int nowPressedPos = -2);
+    //清空hover状态
     void clearHoverState();
+    //文件改动时触发的函数
     void updateChangedFile(const QString &path);
+    //目录改动时触发的函数
     void updateChangedDir(const QString &path);
+    //删除字体
     void deleteFontFiles(const QStringList &files, bool force = false);
+    //从字体库删除字体
     void deleteCurFonts(const QStringList &files, bool force = false);
+    //文件改动时触发的函数,对相应文件进行处理
     void changeFontFile(const QString &path, bool force = false);
+    //选中字体,并通过传入参数获得各种字体的数目等信息.
     void selectedFonts(const DFontPreviewItemData &curData, int *deleteCnt = nullptr, int *disableSysCnt = nullptr,
                        int *systemCnt = nullptr, qint8 *curFontCnt = nullptr, int *disableCnt = nullptr,
                        QStringList *delFontList = nullptr, QModelIndexList *allIndexList = nullptr,
                        QModelIndexList *disableIndexList = nullptr, QStringList *allMinusSysFontList = nullptr);
+    //选中字体调用的字体路径添加函数,用作内联，方便调用
     inline void appendFilePath(QStringList *allFontList, const QString &filePath)
     {
         if ((allFontList != nullptr) && (!allFontList->contains(filePath))) {
@@ -113,71 +129,96 @@ public:
             qDebug() << filePath << __FUNCTION__ << " duplicate end";
         }
     }
+    //根据文件路径删除字体列表中项
     void deleteFontModelIndex(const QString &filePath, bool isFromSys = false);
+    //返回是否正在删除
     inline bool isDeleting();
+    //获取线程锁
     QMutex *getMutex();
     QMenu *m_rightMenu {nullptr};
+    //加入启用字体列表
     void enableFont(const QString &filePath);
+    //加入禁用字体列表
     void disableFont(const QString &filePath);
+    //批量启用字体
     void enableFonts();
+    //批量禁用字体
     void disableFonts();
-    void scrollWithTheSelected();//SP3--切换至listview，已有选中且不可见，则滚动到第一并记录位置
+    //SP3--切换至listview，已有选中且不可见，则滚动到第一并记录位置
+    void scrollWithTheSelected();
+    //更新shift选中的字体
     void updateShiftSelect(const QModelIndex &modelIndex);
+    //判断listview是否在底部
     bool isAtListviewBottom();
+    //判断listview是否在顶部
     bool isAtListviewTop();
+    //记录当前选中行的行数
     void setCurrentSelected(int indexRow);
+    //取消删除后,重置之前记录的删除后的位置
     void cancelDel();
+    //切换界面后,滚动到最上方
     void viewChanged();
+    //记录移除前位置
     void markPositionBeforeRemoved(bool isDelete, const QModelIndexList &list); //记录移除前位置
+    //设置focus状态、设置选中状态
     void refreshFocuses();
+    //更新加载动画spinner
     void updateSpinner(DFontSpinnerWidget::SpinnerStyles style, bool force = true);
+    //返回当前在用字体的名称
     inline QString getCurFontStrName()
     {
         return QString("%1").arg(m_curFontData.fontData.strFontName);
     }
-
+    //返回当前DFontData信息
     inline DFontPreviewItemData getCurFontData()
     {
         return m_curFontData;
     }
-
+    //获取FontData信息
     inline static DFontPreviewItemData getFontData(const FontData &fontData)
     {
         return DFontPreviewListDataThread::instance()->getFontData(fontData);
-//        DFontPreviewItemData itemdata;
-//        itemdata.strFontName = strFontName;
-//        QStringList familySyle;
-//        int index = DFontPreviewListDataThread::instance()->getFontModelList().indexOf(itemdata);
-//        if (index > -1) {
-//            return DFontPreviewListDataThread::instance()->getFontModelList().at(index);
-//        }
-//        return itemdata;
     }
-
+    //获取是否为tab focus
     bool getIsTabFocus() const;
+    //设置是否为tabfocus的标志位
     void setIsTabFocus(bool IsTabFocus);
+    //Alt+M右键菜单--弹出
     void onRightMenuShortCutActivated();//SP3--Alt+M右键菜单
     //检查鼠标是否处于hover状态
     void checkHoverState();
+    //记录操作前的tabfocus状态,用于进行操作后还原
     void setRecoveryTabFocusState(bool recoveryTabFocusState);
 
 protected:
+    //选中切换后触发函数
     void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected) override;
 
 private:
+    //初始化链接
     void initConnections();
+    //获取当前listview的行数
     int count() const;
     int m_previousPressPos = -1;
+    //获取收藏图标尺寸
     inline QRect getCollectionIconRect(const QRect &rect);
+    //获取复选框尺寸
     inline QRect getCheckboxRect(const QRect &rect);
+    //根据文件路径删除字体列表中项
     void deleteFontModelIndex(const DFontInfo &fontInfo);
+    //判断这个字体是否为当前系统使用字体
     bool isCurrentFont(DFontPreviewItemData &itemData);
+    //对选中字体的索引按照row从大到小进行排序，为了在我的收藏界面和已激活界面进行操作时
     void sortModelIndexList(QModelIndexList &sourceList);
+    //设置item移除后的选中
     void selectItemAfterRemoved(bool isAtBottom, bool isAtTop, bool hasDisableFailedFont); //设置item移除后的选中
+    //记录下当前选中的位置,用于局中显示
     void refreshRect();
+    //更新选中状态
     void updateSelection();
+    //获取一页中列表项的个数
     int getOnePageCount();
-
+    //触摸屏点击响应函数
     void touchPanelClick(QMouseEvent *event);
 
     bool m_bLoadDataFinish = false;
@@ -231,33 +272,52 @@ private:
 signals:
     //字体列表加载状态
     void onLoadFontsStatus(int type);
-
+    //发出删除字体文件请求
     void requestDeleted(const QStringList &files);
+    //发出添加字体文件请求
     void requestAdded(const QStringList &files, bool isFirstInstall = false);
 //    void itemAdded(const DFontPreviewItemData &data);
+    //批量添加item请求
     void multiItemsAdded(QList<DFontPreviewItemData> &data, DFontSpinnerWidget::SpinnerStyles styles);
+    //请求移除某一项的响应函数
     void itemRemoved(const DFontPreviewItemData &data);
+    //请求从文管中删除字体响应函数
     void itemRemovedFromSys(const DFontPreviewItemData &data);
+    //请求安装后的选中响应函数
     void itemsSelected(const QStringList &files, bool isFirstInstall = false);
+    //请求字体列表数目改变函数
     void rowCountChanged();
+    //更新删除状态标志位
     void deleteFinished();
+    //请求刷新QStandardItemModel信息
     void requestUpdateModel(bool showSpinner);
+    //请求刷新加载图标
     void requestShowSpinner(bool bShow, bool force, DFontSpinnerWidget::SpinnerStyles style);
 
 public slots:
-
+    //listview中启用禁用响应函数
     void onEnableBtnClicked(const QModelIndexList &itemIndexes, int systemCnt, int curCnt, bool setValue, bool isFromActiveFont = false);
+    //listview收藏界面点击后触发函数
     void onCollectBtnClicked(const QModelIndexList &index, bool setValue, bool isFromCollectFont = false);
+    //显示右键菜单
     void onListViewShowContextMenu();
+    //数据加载完成响应函数
     void onFinishedDataLoad();
+    //根据提供的路径选中哦个listview中的项
     void selectFonts(const QStringList &fileList);
-//    void onItemAdded(const DFontPreviewItemData &itemData);
+    //listview中添加项响应函数
     void onMultiItemsAdded(QList<DFontPreviewItemData> &data, DFontSpinnerWidget::SpinnerStyles styles);
+    //更新当前字体
     void onUpdateCurrentFont();
+    //应用字体变化时触发函数
     void onFontChanged(const QFont &font);
+    //移除某一项响应函数
     void onItemRemoved(const DFontPreviewItemData &itemData);
+    //从文管中删除字体响应函数
     void onItemRemovedFromSys(const DFontPreviewItemData &itemData);
+    //切换界面时,更新之前记录的当前字体组的信息
     void updateCurrentFontGroup(int currentFontGroup);
+    //删除字体后更新整个model
     void updateModel(bool showSpinner = true);
 };
 

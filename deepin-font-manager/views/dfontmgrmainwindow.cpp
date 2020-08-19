@@ -1108,9 +1108,9 @@ void DFontMgrMainWindow::handleAddFontEvent()
     if (mode != QDialog::Accepted) {
         //SP3--添加字体按钮取消安装后恢复选中状态
         if (hasTabFocus) {
-            QTimer::singleShot(10, [ = ] {
-                d->addFontButton->setFocus(Qt::TabFocusReason);
-            });
+//            QTimer::singleShot(10, [ = ] {
+            d->addFontButton->setFocus(Qt::TabFocusReason);
+//            });
         }
         return;
     }

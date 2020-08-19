@@ -30,21 +30,27 @@ public:
 
     //从fontconfig配置文件同步字体启用/禁用状态数据
     void syncFontEnableDisableStatusData(const QStringList &disableFontPathList);
+    //刷新字体列表的数据
     void refreshFontListData(bool isStartup = false, const QStringList &list = QStringList());
+    //从字体信息链表中删除需要删除的项
     void removeFontData(const DFontPreviewItemData &removeItemData);
-
+    //将需要添加项的字体数据收集放人list中
     int insertFontItemData(const QString &filePath,
                            int index,
                            const QStringList &chineseFontPathList,
                            const QStringList &monoSpaceFontPathList,
                            bool isStartup = false, bool isEnabled = true);
-
+    //获取当前列表所有项的数据链表
     QList<DFontPreviewItemData> getFontModelList();
+    //获取需要新增的字体数据链表
     QList<DFontPreviewItemData> getDiffFontModelList() const;
+    //给线程锁赋值
     void setMutex(QMutex *mutex);
-
+    //更新itemDataList的itemData状态
     void updateItemStatus(int index, const DFontPreviewItemData &itemData);
+    //更新字体信息中的fontid
     void updateFontId(const DFontPreviewItemData &itemData, int id);
+    //通过DFontData信息获取DFontPreviewItemData
     inline static DFontPreviewItemData getFontData(const FontData &fontData)
     {
         DFontPreviewItemData itemdata;
@@ -59,29 +65,45 @@ public:
         return itemdata;
     }
 signals:
-    void resultReady();
+    //请求删除字体文件
     void requestForceDeleteFiles(const QStringList &files);
+    //请求重装继续
     void requestBatchReInstallContinue();
+    //请求批量移除文件监视器
     void requestRemoveFileWatchers(const QStringList &files);
+    //添加特定文件夹的文件监视器
     void requestAutoDirWatchers();
-    void requestAddApplicationFont();
+    //发出导出字体的请求
     void requestExportFont(const QStringList &files);
+    //导出字体后，请求提示信息
     void exportFontFinished(int count);
 
 protected slots:
+    //线程函数
     void doWork();
+    //初始化系统文件监视器
     void initFileSystemWatcher();
 
 public slots:
+    //文件修改后触发函数
     void updateChangedFile(const QString &path);
+    //文件夹修改后触发函数
     void updateChangedDir(const QString &path);
+    //添加文件监视器
     void addPathWatcher(const QString &path);
+    //移除特定路径的文件监视器
     void removePathWatcher(const QString &path);
+    //文件删除响应函数
     void onFileDeleted(const QStringList &files);
+    //增加文件响应函数
     void onFileAdded(const QStringList &files);
+    //强制删除文件
     void forceDeleteFiles(const QStringList &files);
+    //批量移除文件监视器
     void onRemoveFileWatchers(const QStringList &files);
+    //添加特定文件夹的文件监视器
     void onAutoDirWatchers();
+    //导出字体文件
     void onExportFont(const QStringList &files);
 
 protected:
