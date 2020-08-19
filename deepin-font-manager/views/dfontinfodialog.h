@@ -30,7 +30,8 @@ public:
     //静态变量-长宽属性
     static constexpr int DEFAULT_WINDOW_W = 300;
     static constexpr int DEFAULT_WINDOW_H = 640;
-
+    //析构函数
+    ~DFontInfoDialog();
 protected:
     //初始化信息页面
     void initUI();
@@ -63,9 +64,8 @@ private:
 
     DFontPreviewItemData *m_fontInfo;
 
-    dfontinfoscrollarea *fontinfoArea;
-
-    DScrollArea *scrollArea;
+    dfontinfoscrollarea *m_fontinfoArea;
+    DScrollArea *m_scrollArea;
 };
 
 #endif  // DFONTINFODIALOG_H

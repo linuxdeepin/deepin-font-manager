@@ -1118,7 +1118,7 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
                 QRect collectIconRect = getCollectionIconRect(m_curRect);
 
                 FontData fdata = qvariant_cast<FontData>(m_fontPreviewProxyModel->data(modelIndex));
-
+                qDebug() << "count" << count();
                 if (collectIconRect.contains(clickPoint)) {
                     if (fdata.getHoverState() != IconPress) {
                         fdata.setHoverState(IconPress);

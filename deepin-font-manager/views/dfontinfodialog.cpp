@@ -33,13 +33,29 @@
 DFontInfoDialog::DFontInfoDialog(DFontPreviewItemData *fontInfo, QWidget *parent)
     : DFontBaseDialog(parent)
     , m_fontInfo(fontInfo)
-    , fontinfoArea(nullptr)
+    , m_fontinfoArea(nullptr)
+    , m_scrollArea(nullptr)
 {
     m_faCenter = parent->geometry().center();
     connect(m_signalManager, &SignalManager::sizeChange, this, &DFontInfoDialog::autoHeight);
     initUI();
     initConnections();
     this->move(m_faCenter - this->rect().center());
+}
+
+/*************************************************************************
+ <Function>      ~DFontInfoDialog
+ <Description>   析构函数
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
+DFontInfoDialog::~DFontInfoDialog()
+{
+    m_fontInfo = nullptr;
+    m_fontinfoArea = nullptr;
+    m_scrollArea = nullptr;
 }
 
 /*************************************************************************
@@ -192,9 +208,9 @@ void DFontInfoDialog::initUI()
 
     /**************************Basic info panel****END*******************************/
 
-    scrollArea = new QScrollArea();
+    m_scrollArea = new QScrollArea();
 //    scrollArea->setLineWidth(120);
-    scrollArea->setFixedSize(QSize(290, 375));
+    m_scrollArea->setFixedSize(QSize(290, 375));
 //    scrollArea->setContentsMargins(0,0,30,0);
 
     QPixmap bmp(QSize(280, 375));
@@ -204,17 +220,17 @@ void DFontInfoDialog::initUI()
     p.setBrush(Qt::black);
     p.drawRoundedRect(bmp.rect(), 12, 12);
     p.setRenderHint(QPainter::Antialiasing);
-    scrollArea->viewport()->setMask(bmp);
+    m_scrollArea->viewport()->setMask(bmp);
 
 //    m_basicInfoFrame->setAttribute(Qt::WA_TranslucentBackground);
 
-    scrollArea->setFrameShape(QFrame::Shape::NoFrame);
+    m_scrollArea->setFrameShape(QFrame::Shape::NoFrame);
 
-    fontinfoArea = new dfontinfoscrollarea(m_fontInfo);
-    fontinfoArea->setFixedWidth(290);
-    scrollArea->setWidget(fontinfoArea);
-    scrollArea->setWidgetResizable(true);
-    scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAlwaysOff);
+    m_fontinfoArea = new dfontinfoscrollarea(m_fontInfo);
+    m_fontinfoArea->setFixedWidth(290);
+    m_scrollArea->setWidget(m_fontinfoArea);
+    m_scrollArea->setWidgetResizable(true);
+    m_scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAlwaysOff);
 
     // Add childs to main layout
     mainLayout->addWidget(m_fontLogo, 0, Qt::AlignHCenter);
@@ -222,26 +238,27 @@ void DFontInfoDialog::initUI()
     mainLayout->addWidget(m_fontFileName);
 //    mainLayout->addSpacing(42);
     mainLayout->addStretch(8);
-    mainLayout->addWidget(scrollArea);
+    mainLayout->addWidget(m_scrollArea);
     m_mainFrame->setLayout(mainLayout);
     addContent(m_mainFrame);
 
 
     if (DApplicationHelper::DarkType == DGuiApplicationHelper::instance()->themeType()) {
-        DPalette paFrame = DApplicationHelper::instance()->palette(scrollArea->viewport());
+        DPalette paFrame = DApplicationHelper::instance()->palette(m_scrollArea->viewport());
         QColor colorFrame = paFrame.textLively().color();
         colorFrame.setAlphaF(0.05);
         paFrame.setColor(DPalette::Base, colorFrame);
-        DApplicationHelper::instance()->setPalette(scrollArea->viewport(), paFrame);
+        DApplicationHelper::instance()->setPalette(m_scrollArea->viewport(), paFrame);
 
     } else if (DApplicationHelper::LightType == DGuiApplicationHelper::instance()->themeType()) {
-        DPalette paFrame = DApplicationHelper::instance()->palette(scrollArea->viewport());
+        DPalette paFrame = DApplicationHelper::instance()->palette(m_scrollArea->viewport());
         QColor colorFrame = paFrame.textLively().color();
         colorFrame.setAlphaF(0.70);
         paFrame.setColor(DPalette::Base, colorFrame);
-        DApplicationHelper::instance()->setPalette(scrollArea->viewport(), paFrame);
+        DApplicationHelper::instance()->setPalette(m_scrollArea->viewport(), paFrame);
     }
-    fontinfoArea->autoHeight();
+    m_fontinfoArea->autoHeight();
+    m_scrollArea->setFocus(Qt::MouseFocusReason);
 }
 
 /*************************************************************************
@@ -259,11 +276,11 @@ void DFontInfoDialog::initConnections()
 
         if (DApplicationHelper::DarkType == themeType)
         {
-            DPalette paFrame = DApplicationHelper::instance()->palette(scrollArea->viewport());
+            DPalette paFrame = DApplicationHelper::instance()->palette(m_scrollArea->viewport());
             QColor colorFrame = paFrame.textLively().color();
             colorFrame.setAlphaF(0.05);
             paFrame.setColor(DPalette::Base, colorFrame);
-            DApplicationHelper::instance()->setPalette(scrollArea->viewport(), paFrame);
+            DApplicationHelper::instance()->setPalette(m_scrollArea->viewport(), paFrame);
         } else if (DApplicationHelper::LightType == themeType)
         {
             DPalette paFrame = DApplicationHelper::instance()->palette(m_basicInfoFrame);
@@ -302,7 +319,8 @@ void DFontInfoDialog::resizeEvent(QResizeEvent *event)
 void DFontInfoDialog::keyPressEvent(QKeyEvent *ev)
 {
     QDialog::keyPressEvent(ev);
-    if (QApplication::keyboardModifiers() == Qt::ControlModifier && ev->key() == Qt::Key_I) {
+    if (QApplication::keyboardModifiers()
+            == Qt::ControlModifier && ev->key() == Qt::Key_I) {
         this->close();
         deleteLater();
     }
@@ -337,9 +355,9 @@ void DFontInfoDialog::autoHeight(int height)
         p.setBrush(Qt::black);
         p.drawRoundedRect(bmp.rect(), 12, 12);
         p.setRenderHint(QPainter::Antialiasing);
-        scrollArea->viewport()->setMask(bmp);
-        scrollArea->viewport()->setFixedHeight(static_cast<int>(height * 1.1 + 10));
-        scrollArea->setFixedHeight(static_cast<int>(height * 1.1 + 10));
+        m_scrollArea->viewport()->setMask(bmp);
+        m_scrollArea->viewport()->setFixedHeight(static_cast<int>(height * 1.1 + 10));
+        m_scrollArea->setFixedHeight(static_cast<int>(height * 1.1 + 10));
     } else {
         this->setFixedHeight(DEFAULT_WINDOW_H);
 //            this->move(m_faCenter - this->rect().center());
@@ -350,8 +368,8 @@ void DFontInfoDialog::autoHeight(int height)
         p.setBrush(Qt::black);
         p.drawRoundedRect(bmp.rect(), 12, 12);
         p.setRenderHint(QPainter::Antialiasing);
-        scrollArea->viewport()->setMask(bmp);
-        scrollArea->viewport()->setFixedHeight(375);
-        scrollArea->setFixedHeight(375);
+        m_scrollArea->viewport()->setMask(bmp);
+        m_scrollArea->viewport()->setFixedHeight(375);
+        m_scrollArea->setFixedHeight(375);
     }
 }
