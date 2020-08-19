@@ -21,7 +21,6 @@
 #define FONT_OTF QString("OpenType")
 #define FONT_UNKNOWN QString("Unknown");
 
-
 /*************************************************************************
  <Enum>          IconStatus
  <Description>   收藏图标状态

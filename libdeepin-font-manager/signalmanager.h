@@ -24,8 +24,6 @@ signals:
     void sendReInstallMessage(const QStringList &m_finishFileList);
     //触发安装完成操作
     void installOver(int successInstallCount);
-    //安装验证页面，触发取消继续安装操作
-    void cancelInstall();
     //触发完成安装信号
     void finishFontInstall(const QStringList &fileList);
     //触发大小改变信号

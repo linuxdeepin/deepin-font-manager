@@ -24,8 +24,6 @@
 #include <QProcess>
 #include <QFileInfo>
 #include <QDir>
-#include "signalmanager.h"
-
 
 static DFontManager *INSTANCE = nullptr;
 const QString sysDir = QDir::homePath() + "/.local/share/fonts";
@@ -107,22 +105,6 @@ void DFontManager::setInstallFileList(const QStringList &list)
 }
 
 /*************************************************************************
- <Function>      setReInstallFile
- <Description>   传入待重装字体列表
- <Author>
- <Input>
-    <param1>     reinstFile      Description:待重装字体列表
-    <param2>     sysFile         Description:待重装字体列表中系统字体列表
- <Return>        null            Description:null
- <Note>          null
-*************************************************************************/
-void DFontManager::setReInstallFile(const QString &reinstFile, const QString &sysFile)
-{
-    m_reinstFile = reinstFile;
-    m_sysFile = sysFile;
-}
-
-/*************************************************************************
  <Function>      setUnInstallFile
  <Description>   传入待删除字体列表
  <Author>
@@ -180,12 +162,7 @@ void DFontManager::doCmd(const QStringList &arguments)
     qDebug() << m_type << endl;
     switch (m_type) {
     case Install:
-        doInstall(arguments);
-        break;
-
     case ReInstall:
-        doInstall(arguments, true);
-        break;
     case HalfwayInstall:
         doInstall(arguments);
         break;
@@ -270,32 +247,16 @@ void DFontManager::handleReInstall()
 }
 
 /*************************************************************************
- <Function>      setSystemFontCount
- <Description>   更新待安装列表中系统字体的个数
- <Author>
- <Input>
-    <param1>     systemFontCount Description:系统字体个数
- <Return>        null            Description:null
- <Note>          null
-*************************************************************************/
-void DFontManager::setSystemFontCount(int systemFontCount)
-{
-    m_systemFontCount = systemFontCount;
-}
-
-/*************************************************************************
  <Function>      doInstall
  <Description>   字体安装-具体执行函数
  <Author>
  <Input>
     <param1>     fileList        Description:待安装字体列表
-    <param2>     reinstall       Description:是否为重装
  <Return>        null            Description:null
  <Note>          null
 *************************************************************************/
-void DFontManager::doInstall(const QStringList &fileList, bool reinstall)
+void DFontManager::doInstall(const QStringList &fileList)
 {
-    Q_UNUSED(reinstall);
     qDebug() << __func__ << "s" << endl;
 
     QString target = "";
@@ -369,7 +330,7 @@ void DFontManager::doInstall(const QStringList &fileList, bool reinstall)
             fileDir.removeRecursively();
         }
     }
-    Q_EMIT m_signalManager->cancelInstall();
+    Q_EMIT cancelInstall();
 }
 
 /*************************************************************************

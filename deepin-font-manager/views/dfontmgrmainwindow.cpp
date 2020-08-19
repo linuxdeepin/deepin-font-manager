@@ -337,7 +337,7 @@ void DFontMgrMainWindow::initConnections()
     connect(m_signalManager, &SignalManager::installOver, this,
             &DFontMgrMainWindow::respondToInstallOver);
 
-    connect(m_signalManager, &SignalManager::cancelInstall, this, [ = ]() {
+    connect(m_fontManager, &DFontManager::cancelInstall, this, [ = ]() {
         m_isInstallOver = true;
         m_successInstallCount = 0;
         m_fIsInstalling = false;

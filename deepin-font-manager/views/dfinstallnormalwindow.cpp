@@ -522,8 +522,6 @@ void DFInstallNormalWindow::batchInstall()
 
 
     m_fontManager->setInstallFileList(installListWithFamliyName);
-    m_fontManager->setSystemFontCount(systemFontCount);
-    this->systemFontCount = 0;
     m_fontManager->start();
 }
 

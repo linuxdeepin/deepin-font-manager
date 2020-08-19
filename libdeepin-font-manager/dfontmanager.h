@@ -17,13 +17,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef DFONTMANAGER_H
-#define DFONTMANAGER_H
-
-#include "signalmanager.h"
+#pragma once
 
 #include <QThread>
-#include <QModelIndex>
+
 /*************************************************************************
  <Class>         DFontManager
  <Description>   字体管理线程类-线程执行字体安装、批量安装、中途安装、重新安装、删除、批量删除等操作
@@ -76,12 +73,8 @@ public:
     void setType(Type type);
     //传入待安装字体列表
     void setInstallFileList(const QStringList &list);
-    //传入待重装字体列表
-    void setReInstallFile(const QString &reinstFile, const QString &sysFile);
     //传入待删除字体列表
     void setUnInstallFile(const QStringList &filePath);
-    //更新待安装列表中系统字体的个数
-    void setSystemFontCount(int systemFontCount);
     //执行fc-cache命令
     void doCache();
     //设置fc-cache命令执行的状态
@@ -102,6 +95,8 @@ signals:
     void uninstallFcCacheFinish();
     //fc-cache命令完成信号
     void cacheFinish();
+    //取消安装
+    void cancelInstall();
 
 protected:
     //线程执行入口函数-安装、中途安装、重装与卸载
@@ -117,21 +112,16 @@ private:
     //字体重装-函数入口
     void handleReInstall();
     //字体安装-具体执行函数
-    void doInstall(const QStringList &fileList, bool reinstal = false);
+    void doInstall(const QStringList &fileList);
     //字体卸载-具体执行函数
     void doUninstall(const QStringList &fileList);
 
 private:
-    SignalManager *m_signalManager = SignalManager::instance();
     QStringList m_instFileList;
     QStringList m_installOutList;
     QStringList m_uninstFile;
-    QString m_reinstFile;
-    QString m_sysFile;
     bool m_IsNeedStop = false;
     Type m_type{Type::DefaultNullType};
     CacheStatus m_CacheStatus;
-    int m_systemFontCount = 0;
 };
 
-#endif

@@ -134,7 +134,6 @@ private:
     // Skip popup exception dialog if true
     bool m_isNeedSkipException {false};
     bool m_isFristThreadEnd = false;
-    int systemFontCount = 0;
 
     InstallState m_installState {Install};
 
