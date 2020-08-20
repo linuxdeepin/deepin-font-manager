@@ -360,6 +360,7 @@ void DFontPreviewListDataThread::forceDeleteFiles(const QStringList &files)
 *************************************************************************/
 void DFontPreviewListDataThread::onRemoveFileWatchers(const QStringList &files)
 {
+    qDebug() << __FUNCTION__ << files << m_fsWatcher->removePaths(files);
     Q_UNUSED(files)
     m_fsWatcher->removePath(FONTS_DIR);
     m_fsWatcher->removePath(FONTS_UP_DIR);
