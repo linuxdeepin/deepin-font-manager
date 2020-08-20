@@ -104,7 +104,7 @@ public slots:
     //添加特定文件夹的文件监视器
     void onAutoDirWatchers();
     //导出字体文件
-    void onExportFont(const QStringList &files);
+    void onExportFont(const QStringList &fontList);
 
 protected:
     QThread mThread;

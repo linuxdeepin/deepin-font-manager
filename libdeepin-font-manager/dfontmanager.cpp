@@ -18,6 +18,7 @@
  */
 
 #include "dfontmanager.h"
+
 #include <QDebug>
 #include <QJsonDocument>
 #include <QJsonObject>
@@ -27,6 +28,7 @@
 
 static DFontManager *INSTANCE = nullptr;
 const QString sysDir = QDir::homePath() + "/.local/share/fonts";
+
 /*************************************************************************
  <Function>      instance
  <Description>   获取字体管理线程类的单例对象

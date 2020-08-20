@@ -1,6 +1,7 @@
 #include "dfontpreviewlistdatathread.h"
 #include "dfmxmlwrapper.h"
 #include "dfontpreviewlistview.h"
+#include "dcopyfilesmanager.h"
 
 #include <QFontDatabase>
 #include <QApplication>
@@ -11,7 +12,6 @@ static DFontPreviewListDataThread *INSTANCE = nullptr;
 const QString FONTS_DIR = QDir::homePath() + "/.local/share/fonts/";
 
 const QString FONTS_UP_DIR = QDir::homePath() + "/.local/share/";
-
 
 DFontPreviewListDataThread *DFontPreviewListDataThread::instance(DFontPreviewListView *view)
 {
@@ -381,27 +381,21 @@ void DFontPreviewListDataThread::onAutoDirWatchers()
     m_fsWatcher->addPath(FONTS_UP_DIR);
 }
 
-/*************************************************************************
- <Function>      onExportFont
- <Description>   导出字体文件
- <Author>
- <Input>
-    <param1>     files           Description:需要导出的字体文件列表
- <Return>        null            Description:null
- <Note>          null
-*************************************************************************/
-void DFontPreviewListDataThread::onExportFont(const QStringList &files)
+/**
+* @brief DFontPreviewListDataThread::onExportFont 导出文件列表槽函数
+* @param fontList 要导出的文件列表
+* @return void
+*/
+void DFontPreviewListDataThread::onExportFont(const QStringList &fontList)
 {
-    QString desktopPath = QString("%1/%2/").arg(QStandardPaths::writableLocation(QStandardPaths::DesktopLocation))
-                          .arg(QApplication::translate("DFontMgrMainWindow", "Fonts"));
-    QDir dir(desktopPath);
-    if (!dir.exists())
-        dir.mkpath(desktopPath);
-    for (const QString &file : files) {
-        QFile::copy(file, desktopPath + QFileInfo(file).fileName());
-    }
+    qDebug() << __FUNCTION__ << fontList.size();
 
-    Q_EMIT exportFontFinished(files.size());
+    QDir dir(FONTS_DESKTOP_DIR);
+    if (!dir.exists())
+        dir.mkpath(FONTS_DESKTOP_DIR);
+
+    DCopyFilesManager::copyFiles(CopyFontThread::EXPORT, fontList);
+    Q_EMIT exportFontFinished(fontList.size());
 }
 
 /*************************************************************************
