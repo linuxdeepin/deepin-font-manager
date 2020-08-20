@@ -25,7 +25,7 @@ HEADERS += \
            dfmdbmanager.h \
            dsqliteutil.h \
            dfontpreviewitemdef.h \
-    signalmanager.h
+           signalmanager.h
 
 SOURCES += \
 	   dfontpreview.cpp \
@@ -35,7 +35,7 @@ SOURCES += \
            dfontwidget.cpp \
            dfmdbmanager.cpp \
            dsqliteutil.cpp \
-    signalmanager.cpp
+           signalmanager.cpp
 
 QMAKE_PKGCONFIG_LIBDIR = $$target.path
 QMAKE_PKGCONFIG_VERSION = $$VERSION

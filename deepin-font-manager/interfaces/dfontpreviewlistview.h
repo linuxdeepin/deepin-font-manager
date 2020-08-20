@@ -130,7 +130,7 @@ public:
         }
     }
     //根据文件路径删除字体列表中项
-    void deleteFontModelIndex(const QString &filePath, bool isFromSys = false);
+    void deleteFontModelIndex(const QString &filePath);
     //返回是否正在删除
     inline bool isDeleting();
     //获取线程锁
@@ -278,13 +278,10 @@ signals:
     void requestDeleted(const QStringList &files);
     //发出添加字体文件请求
     void requestAdded(const QStringList &files, bool isFirstInstall = false);
-//    void itemAdded(const DFontPreviewItemData &data);
     //批量添加item请求
     void multiItemsAdded(QList<DFontPreviewItemData> &data, DFontSpinnerWidget::SpinnerStyles styles);
     //请求移除某一项的响应函数
     void itemRemoved(const DFontPreviewItemData &data);
-    //请求从文管中删除字体响应函数
-    void itemRemovedFromSys(const DFontPreviewItemData &data);
     //请求安装后的选中响应函数
     void itemsSelected(const QStringList &files, bool isFirstInstall = false);
     //请求字体列表数目改变函数
@@ -315,8 +312,6 @@ public slots:
     void onFontChanged(const QFont &font);
     //移除某一项响应函数
     void onItemRemoved(const DFontPreviewItemData &itemData);
-    //从文管中删除字体响应函数
-    void onItemRemovedFromSys(const DFontPreviewItemData &itemData);
     //切换界面时,更新之前记录的当前字体组的信息
     void updateCurrentFontGroup(int currentFontGroup);
     //删除字体后更新整个model

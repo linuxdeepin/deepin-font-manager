@@ -33,10 +33,8 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
     m_fontPreviewItemModel->setColumnCount(1);
     setFrameShape(QFrame::NoFrame);
     connect(this, &DFontPreviewListView::itemsSelected, this, &DFontPreviewListView::selectFonts);
-    //    connect(this, &DFontPreviewListView::itemAdded, this, &DFontPreviewListView::onItemAdded);
     connect(this, &DFontPreviewListView::multiItemsAdded, this, &DFontPreviewListView::onMultiItemsAdded);
     connect(this, &DFontPreviewListView::itemRemoved, this, &DFontPreviewListView::onItemRemoved);
-    connect(this, &DFontPreviewListView::itemRemovedFromSys, this, &DFontPreviewListView::onItemRemovedFromSys);
     connect(this, &DFontPreviewListView::requestUpdateModel, this, &DFontPreviewListView::updateModel);
 
     connect(m_fontChangeTimer, &QTimer::timeout, this, &DFontPreviewListView::onUpdateCurrentFont);
@@ -125,15 +123,6 @@ void DFontPreviewListView::onFinishedDataLoad()
     m_bLoadDataFinish = true;
 }
 
-
-//void DFontPreviewListView::onItemAdded(const DFontPreviewItemData &itemData)
-//{
-//    QStandardItemModel *sourceModel = qobject_cast<QStandardItemModel *>(m_fontPreviewProxyModel->sourceModel());
-//    QStandardItem *item = new QStandardItem;
-//    item->setData(QVariant::fromValue(itemData), Qt::DisplayRole);
-//    sourceModel->appendRow(item);
-//}
-
 /*************************************************************************
  <Function>      onMultiItemsAdded
  <Description>   listview中添加项响应函数
@@ -205,27 +194,6 @@ void DFontPreviewListView::onItemRemoved(const DFontPreviewItemData &itemData)
 
     QFontDatabase::removeApplicationFont(itemData.appFontId);
     deleteFontModelIndex(itemData.fontInfo.filePath);
-
-    updateSelection();
-}
-
-/*************************************************************************
- <Function>      onItemRemovedFromSys
- <Description>   从文管中删除字体响应函数
- <Author>        null
- <Input>
-    <param1>     itemData            Description:需要移除项的数据
- <Return>        null                Description:null
- <Note>          null
-*************************************************************************/
-void DFontPreviewListView::onItemRemovedFromSys(const DFontPreviewItemData &itemData)
-{
-    if (m_fontPreviewProxyModel == nullptr)
-        return;
-
-    qDebug() << __FUNCTION__ << ", path " << itemData.fontInfo.filePath << QThread::currentThreadId();
-    QFontDatabase::removeApplicationFont(itemData.appFontId);
-    deleteFontModelIndex(itemData.fontInfo.filePath, true);
 
     updateSelection();
 }
@@ -898,9 +866,8 @@ void DFontPreviewListView::selectItemAfterRemoved(bool isAtBottom, bool isAtTop,
  <Return>        null            Description:null
  <Note>          null
 *************************************************************************/
-void DFontPreviewListView::deleteFontModelIndex(const QString &filePath, bool isFromSys)
+void DFontPreviewListView::deleteFontModelIndex(const QString &filePath)
 {
-    Q_UNUSED(isFromSys);
     qDebug() << __FUNCTION__ << "m_fontPreviewProxyModel rowcount = " << m_fontPreviewProxyModel->rowCount();
     if (m_fontPreviewItemModel && m_fontPreviewItemModel->rowCount() == 0) {
         return;
@@ -2183,7 +2150,7 @@ void DFontPreviewListView::updateChangedDir(const QString &path)
             //删除字体之前启用字体，防止下次重新安装后就被禁用
             enableFont(itemData.fontInfo.filePath);
             DFMDBManager::instance()->deleteFontInfo(itemData);
-            Q_EMIT itemRemovedFromSys(itemData);
+            Q_EMIT itemRemoved(itemData);
 //            m_dataThread->removeFontData(itemData);
             m_dataThread->removePathWatcher(filePathInfo.filePath());
         }
