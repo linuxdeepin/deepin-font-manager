@@ -893,18 +893,36 @@ void DFInstallErrorListView::keyPressEvent(QKeyEvent *event)
             DListView::keyPressEvent(event);
             isEventResponsed = true;
         } else {
+            bool noneSelection = false;
+            int cnt = 0;
             if (event->key() == Qt::Key_Down) {//循环判断是否可选,如果没有可选则不改变选项
                 for (int i = currentIndex().row() + 1; i <= this->count(); i++) {
+                    //没有选项则从头开始检查是否可选
+                    if (selectedIndexes().count() == 0 && cnt == 0) {
+                        i = 0;
+                        noneSelection = true;
+                    }
+                    cnt++;
                     if (selectNextIndex(i)) {
                         return;
                     }
+                    if (i == this->count() - 1 && noneSelection == true)
+                        return;
                     if (i == (this->count() - 1) || i == this->count())
                         i = -1;
                 }
                 isEventResponsed = true;
             } else {//循环判断是否可选,如果没有可选则不改变选项
                 for (int i = currentIndex().row() - 1; i >= -1; i--) {
+                    //没有选项则从底部开始检查是否可选
+                    if (selectedIndexes().count() == 0 && cnt == 0) {
+                        i = count() - 1;
+                        noneSelection = true;
+                    }
+                    cnt++;
                     if (selectNextIndex(i))
+                        return;
+                    if (i == 0 && noneSelection == true)
                         return;
                     if (i == 0 || i == -1)
                         i = this->count();
