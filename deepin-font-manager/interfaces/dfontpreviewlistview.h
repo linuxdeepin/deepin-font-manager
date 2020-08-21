@@ -189,8 +189,10 @@ public:
     void checkHoverState();
     //记录操作前的tabfocus状态,用于进行操作后还原
     void setRecoveryTabFocusState(bool recoveryTabFocusState);
-
+    //是否由左侧菜单而来的焦点
     void setIsLostFocusOfLeftKey(bool isLostFocusOfLeftKey);
+    //是否由slider获取的焦点
+    void setIsGetFocusFromSlider(bool isGetFocusFromSlider);
 
 protected:
     //选中切换后触发函数
@@ -230,7 +232,7 @@ private:
     bool m_isLostFocusOfLeftKey{false};
 
     bool m_IsNeedFocus = false;//是否需要设置聚焦
-
+    bool m_isGetFocusFromSlider{false};
     bool m_IsTabFocus = false;
     bool m_isMousePressNow {false};
 

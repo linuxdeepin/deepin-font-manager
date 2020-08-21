@@ -368,6 +368,10 @@ void DFontMgrMainWindow::initConnections()
         emit m_signalManager->setLostFocusState(false);
         d->leftSiderBar->setFocus(Qt::MouseFocusReason);
     });
+
+    connect(m_signalManager, &SignalManager::requestSetTabFocusToAddBtn, [ = ] {
+        d->addFontButton->setFocus(Qt::TabFocusReason);
+    });
 }
 
 /*************************************************************************
@@ -2247,6 +2251,9 @@ void DFontMgrMainWindow::mainwindowFocusOutCheck(QObject *obj, QEvent *event)
             m_previewListViewTabFocus  = m_fontPreviewListView->getIsTabFocus();
         }
     }
+
+    if (obj == d->fontScaleSlider)
+        m_fontPreviewListView->setIsGetFocusFromSlider(true);
 }
 
 /**
@@ -2279,6 +2286,8 @@ void DFontMgrMainWindow::mainwindowFocusInCheck(QObject *obj, QEvent *event)
         if (focusEvent->reason() == Qt::ActiveWindowFocusReason) {
             m_fontPreviewListView->setIsTabFocus(m_previewListViewTabFocus);
         }
+    } else {
+        m_fontPreviewListView->setIsGetFocusFromSlider(false);
     }
 
     //设置searchEdit的tab方式
@@ -2379,6 +2388,9 @@ bool DFontMgrMainWindow::eventFilter(QObject *obj, QEvent *event)
                 setNextTabFocus(obj);
                 //下个控件为titlebar时需要多执行一次keyPressEvent
                 DWidget::keyPressEvent(keyEvent);
+            }  else if (obj == d->textInputEdit->lineEdit()) {
+                d->fontScaleSlider->setFocus(Qt::TabFocusReason);
+                QWidget::keyPressEvent(keyEvent);
             } else {
                 setNextTabFocus(obj);
             }
@@ -2444,9 +2456,9 @@ void DFontMgrMainWindow::setNextTabFocus(QObject *obj)
         d->searchFontEdit->lineEdit()->setFocusPolicy(Qt::ClickFocus);
     } else if (obj == m_fontPreviewListView) {
         d->textInputEdit->lineEdit()->setFocus(Qt::TabFocusReason);
-    } else if (obj == d->textInputEdit->lineEdit()) {
+    }/* else if (obj == d->textInputEdit->lineEdit()) {
         d->fontScaleSlider->setFocus(Qt::TabFocusReason);
-    } else if (obj == d->leftSiderBar) {
+    }*/ else if (obj == d->leftSiderBar) {
         //如果预览窗口不可见，则直接切换焦点至添加字体按钮
         if (m_fontPreviewListView->isVisible()) {
             m_fontPreviewListView->setIsTabFocus(true);

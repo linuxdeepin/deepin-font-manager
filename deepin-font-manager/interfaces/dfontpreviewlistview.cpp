@@ -437,6 +437,20 @@ void DFontPreviewListView::touchPanelClick(QMouseEvent *event)
 }
 
 /*************************************************************************
+ <Function>      setIsGetFocusFromSlider
+ <Description>   是否由slider获取的焦点
+ <Author>        null
+ <Input>
+    <param1>     isGetFocusFromSlider Description:设置参数
+ <Return>        null                 Description:null
+ <Note>          null
+*************************************************************************/
+void DFontPreviewListView::setIsGetFocusFromSlider(bool isGetFocusFromSlider)
+{
+    m_isGetFocusFromSlider = isGetFocusFromSlider;
+}
+
+/*************************************************************************
  <Function>      null
  <Description>   null
  <Author>        null
@@ -1505,11 +1519,10 @@ bool DFontPreviewListView::eventFilter(QObject *obj, QEvent *event)
     }
 
     if (event->type() == QEvent::FocusIn) {
-
-//        if (!m_isMouseClicked) {
-//            m_IsTabFocus = true;
-//            qDebug() << "ASD" << endl;
-//        }
+        QFocusEvent *fxEvent = dynamic_cast<QFocusEvent *>(event);
+        if (fxEvent->reason() == Qt::TabFocusReason && m_isGetFocusFromSlider == true) {
+            emit m_signalManager->requestSetTabFocusToAddBtn();
+        }
     }
 
     return false;

@@ -67,6 +67,8 @@ signals:
     void clearRecoverList();
     //更新标志位：是否从字体列表获取焦点
     void setLostFocusState(bool isTrue);
+    //请求设置addbutton焦点
+    void requestSetTabFocusToAddBtn();
 private:
     explicit SignalManager(QObject *parent = nullptr);
 
