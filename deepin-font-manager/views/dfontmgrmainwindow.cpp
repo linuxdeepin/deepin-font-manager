@@ -337,7 +337,7 @@ void DFontMgrMainWindow::initConnections()
     connect(m_signalManager, &SignalManager::installOver, this,
             &DFontMgrMainWindow::respondToInstallOver);
 
-    connect(m_fontManager, &DFontManager::cancelInstall, this, [ = ]() {
+    connect(m_fontManager, &DFontManager::requestCancelInstall, this, [ = ]() {
         m_isInstallOver = true;
         m_successInstallCount = 0;
         m_fIsInstalling = false;
@@ -1214,8 +1214,8 @@ void DFontMgrMainWindow::handleMenuEvent(QAction *action)
 *************************************************************************/
 bool DFontMgrMainWindow::installFont(const QStringList &files)
 {
-    QStringList m_installFiles = checkFilesSpace(files);
-    if (m_installFiles.count() == 0) {
+    QStringList installFiles = checkFilesSpace(files);
+    if (installFiles.count() == 0) {
         emit m_signalManager->showInstallFloatingMessage(0);
         return false;
     }
@@ -1226,8 +1226,8 @@ bool DFontMgrMainWindow::installFont(const QStringList &files)
     }
 
     //m_fontPreviewListView->clearSelection();//取消安装不清空选中状态
-    qDebug() << "installFont new DFInstallNormalWindow " << endl;
-    m_dfNormalInstalldlg = new DFInstallNormalWindow(m_installFiles, this);
+    qDebug() << "installFont new DFInstallNormalWindow " << installFiles.size() << endl;
+    m_dfNormalInstalldlg = new DFInstallNormalWindow(installFiles, this);
     emit m_signalManager->setSpliteWidgetScrollEnable(true);//开始安装
     if (m_isQuickMode) {
         m_dfNormalInstalldlg->setSkipException(true);

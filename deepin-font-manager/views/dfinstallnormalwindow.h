@@ -38,6 +38,8 @@ public:
     void setSkipException(bool skip);
     //打断安装操作-关闭验证框
     void breakInstalltion();
+    //判断当前字体是否为系统字体
+    bool isSystemFont(DFontInfo &f);
 
 protected:
     static constexpr int VERIFY_DELYAY_TIME = 50;
@@ -53,8 +55,6 @@ protected:
     void verifyFontFiles(bool isHalfwayInstall = false);
     //检测是否要弹出字体验证框，存在重复安装字体，系统字体时，损坏字体时弹出字体验证框
     bool ifNeedShowExceptionWindow() const;
-    //判断当前字体是否为系统字体
-    bool isSystemFont(DFontInfo &f);
     // 根据字体安装或重复安装状态更新标志位getInstallMessage
     void checkShowMessage();
     //获取新增字体文件
@@ -63,11 +63,19 @@ protected:
     void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
     //重新实现重绘函数-根据字体属性刷新进度标签高度
     void paintEvent(QPaintEvent *event) override;
+
+private:
+    inline QString getFamilyName(const DFontInfo &fontInfo)
+    {
+        QString familyName = (fontInfo.familyName.isEmpty() || fontInfo.familyName.contains(QChar('?'))) ? fontInfo.fullname : fontInfo.familyName;
+        return familyName;
+    }
+
 protected slots:
     //批量安装处理函数
     void batchInstall();
     //批量重新安装处理函数
-    void batchReInstall(QStringList reinstallFiles);
+    void batchReInstall(const QStringList &reinstallFiles);
     //字体验证框弹出时在文件管理器进行安装
     void batchHalfwayInstall(const QStringList &filelist);
     //重装验证页面，继续按钮处理函数-继续批量安装
@@ -75,9 +83,9 @@ protected slots:
     //刷新安装进度显示内容
     void onProgressChanged(const QString &familyName, const double &percent);
     //字体安装后的处理函数
-    void onInstallFinished(int state, QStringList fileList);
+    void onInstallFinished(int state, const QStringList &fileList);
     //字体重新安装后的处理函数
-    void onReInstallFinished(int state, QStringList fileList);
+    void onReInstallFinished(int state, const QStringList &fileList);
     //重装验证页面，取消按钮处理函数-QStringList()我安装了个寂寞
     void onCancelInstall();
     //重装验证页面，继续按钮处理函数-继续安装
@@ -104,9 +112,7 @@ private:
     *************************************************************************/
     enum InstallState { Install, reinstall, damaged };
 
-    QStringList m_AllSysFilesPsname;
     QStringList m_AllSysFilesfamilyName;
-
 
     QStringList m_installFiles;
     QStringList m_installedFiles;

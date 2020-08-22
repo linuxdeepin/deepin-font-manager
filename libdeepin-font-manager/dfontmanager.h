@@ -79,16 +79,16 @@ public:
     void doCache();
     //设置fc-cache命令执行的状态
     void setCacheStatus(const CacheStatus &CacheStatus);
-    //更新线程停止状态标志位
-    void stop();
+    //取消安装
+    void cancelInstall();
 
 signals:
     //批量安装信号
     void batchInstall(const QString &filePath, const double &percent);
     //安装完成信号
-    void installFinished(int state, QStringList fileList);
+    void installFinished(int state, const QStringList &fileList);
     //重装完成信号
-    void reInstallFinished(int state, QStringList fileList);
+    void reInstallFinished(int state, const QStringList &fileList);
     //卸载完成信号
     void uninstallFontFinished(const QStringList &uninstallIndex);
     //卸载fc-cache命令执行完成信号
@@ -96,7 +96,7 @@ signals:
     //fc-cache命令完成信号
     void cacheFinish();
     //取消安装
-    void cancelInstall();
+    void requestCancelInstall();
 
 protected:
     //线程执行入口函数-安装、中途安装、重装与卸载
@@ -106,7 +106,7 @@ private:
     //线程执行函数
     void doCmd(const QStringList &arguments);
     //字体安装-函数入口
-    void handleInstall(bool isHalfwayInstall = false);
+    void handleInstall();
     //字体卸载-函数入口
     void handleUnInstall();
     //字体重装-函数入口
@@ -120,7 +120,7 @@ private:
     QStringList m_instFileList;
     QStringList m_installOutList;
     QStringList m_uninstFile;
-    bool m_IsNeedStop = false;
+    bool m_installCanceled = false;
     Type m_type{Type::DefaultNullType};
     CacheStatus m_CacheStatus;
 };

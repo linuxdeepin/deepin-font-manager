@@ -647,7 +647,7 @@ void DFInstallErrorListView::scrollToIndex(QString &filePath)
 void DFInstallErrorListView::setSelectStatus(QStringList &HalfInstalledFiles, QModelIndexList &beforeSelectFiles)
 {
     QStringList str;
-    foreach (auto it, HalfInstalledFiles) {
+    for (auto &it : HalfInstalledFiles) {
         DFontInfo fontinfo = m_fontInfoManager->getFontInfo(it);
         QString file;
         if (!fontinfo.psname.compare("")) {
@@ -689,7 +689,7 @@ void DFInstallErrorListView::setSelectStatus(QStringList &HalfInstalledFiles, QM
 
     if (selected == false) {
 //        this->selectionModel()->select(beforeSelectFiles)
-        foreach (auto it, beforeSelectFiles) {
+        for (auto &it : beforeSelectFiles) {
 //            selectionModel()->select(it, QItemSelectionModel::Select);
             QModelIndex modelIndex = m_errorListSourceModel->index(it.row(), 0);
             selectionModel()->select(modelIndex, QItemSelectionModel::Select);

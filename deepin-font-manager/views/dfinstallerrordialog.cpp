@@ -1,6 +1,7 @@
 #include "dfinstallerrordialog.h"
 #include "dfontinfomanager.h"
 #include "utils.h"
+#include "dfinstallnormalwindow.h"
 
 #include <QButtonGroup>
 #include <QHBoxLayout>
@@ -91,12 +92,10 @@ void DFMSuggestButton::paintEvent(QPaintEvent *event)
  <Return>        null                         Description:null
  <Note>          null
 *************************************************************************/
-DFInstallErrorDialog::DFInstallErrorDialog(QWidget *parent, const QStringList &errorInstallFontFileList,
-                                           const  QStringList &systemFontFileListPsname, const QStringList &systemFontFileListFamilyname)
+DFInstallErrorDialog::DFInstallErrorDialog(QWidget *parent, const QStringList &errorInstallFontFileList)
     : DFontBaseDialog(parent)
+    , m_parent(qobject_cast<DFInstallNormalWindow *>(parent))
     , m_errorInstallFiles(errorInstallFontFileList)
-    , m_systemFilesPsname(systemFontFileListPsname)
-    , m_systemFilesFamilyname(systemFontFileListFamilyname)
 {
 //    setWindowOpacity(0.3); //Debug
     initData();
@@ -121,8 +120,6 @@ DFInstallErrorDialog::~DFInstallErrorDialog()
     qDebug() << __func__ << "start" << endl;
     emit m_signalManager->hideInstallErrorDialog();
     m_errorInstallFiles.clear();
-    m_systemFilesPsname.clear();
-    m_systemFilesFamilyname.clear();
     m_installErrorFontModelList.clear();
 //    m_NeedSelectFiles.clear();
     qDebug() << __func__ << "end" << endl;
@@ -143,7 +140,7 @@ void DFInstallErrorDialog::initData()
     m_installErrorFontModelList.clear();
 
 
-    foreach (auto it, m_errorInstallFiles) {
+    for (auto &it : m_errorInstallFiles) {
         fontInfo = fontInfoManager->getFontInfo(it);
 
         DFInstallErrorItemModel itemModel;
@@ -156,7 +153,7 @@ void DFInstallErrorDialog::initData()
             itemModel.strFontInstallStatus = DApplication::translate("DFInstallErrorDialog", "Broken file");
 
             m_installErrorFontModelList.push_back(itemModel);
-        } else if (fontInfo.isInstalled && !isSystemFont(fontInfo)) {
+        } else if (fontInfo.isInstalled && !m_parent->isSystemFont(fontInfo)) {
             QFileInfo fileInfo(it);
             itemModel.bSelectable = true;
             //默认勾选已安装字体
@@ -167,7 +164,7 @@ void DFInstallErrorDialog::initData()
             itemModel.strFontInstallStatus = DApplication::translate("DFInstallErrorDialog", "Same version installed");
 //            m_NeedSelectFiles.append(it);
             m_installErrorFontModelList.push_back(itemModel);
-        } else if (isSystemFont(fontInfo)) {
+        } else if (m_parent->isSystemFont(fontInfo)) {
             QFileInfo fileInfo(it);
 //            m_SystemFontCount++;
             itemModel.bSelectable = false;
@@ -280,38 +277,6 @@ int DFInstallErrorDialog::getErrorFontCheckedCount()
 }
 
 /*************************************************************************
- <Function>      isSystemFont
- <Description>   判断当前字体是否为系统字体
- <Author>
- <Input>
-    <param1>     f               Description:当前字体信息
- <Return>        bool            Description:是否为系统字体，true：系统字体；false：非系统字体
- <Note>          null
-*************************************************************************/
-bool DFInstallErrorDialog::isSystemFont(DFontInfo &f)
-{
-    QString fontFullPsname;
-
-    if (!f.psname.compare("")) {
-        fontFullPsname = f.familyName + f.styleName;
-    } else {
-        fontFullPsname = f.psname + f.styleName;
-    }
-
-    QString fontFullFamliyName = f.familyName + f.styleName;
-//    foreach (auto it, m_AllSysFiles) {
-//        if (!it.compare(fontFullName)) {
-//            return true;
-//        }
-//    }
-    if (m_systemFilesPsname.contains(fontFullPsname) || m_systemFilesFamilyname.contains(fontFullFamliyName)) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
-/*************************************************************************
  <Function>      initInstallErrorFontViews
  <Description>   初始化字体验证列表视图布局
  <Author>
@@ -390,19 +355,12 @@ void DFInstallErrorDialog::initInstallErrorFontViews()
     m_installErrorListView->setEditTriggers(QAbstractItemView::NoEditTriggers);
     m_installErrorListView->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
-
     m_mainLayout->addWidget(m_installErrorListView);
     m_mainLayout->addWidget(btnFrame);
     m_mainLayout->addStretch();
 
-//    m_installErrorListView->setSelectStatus(m_NeedSelectFiles);
-
     connect(m_installErrorListView, SIGNAL(onClickErrorListItem(QModelIndex)), this,
             SLOT(onListItemClicked(QModelIndex)));
-    connect(this->getCloseButton(), &DWindowCloseButton::clicked, this, [ = ] {
-        m_SystemFontCount = 0;
-    });
-
 }
 
 /*************************************************************************
@@ -534,7 +492,7 @@ void DFInstallErrorDialog::onListItemsClicked(QModelIndexList indexList)
     DFInstallErrorItemModel itemModel =
         qvariant_cast<DFInstallErrorItemModel>(m_installErrorListView->getErrorListSourceModel()->data(indexList.last()));
 
-    foreach (auto it, indexList) {
+    for (auto &it : indexList) {
         qDebug() << it.row() << "++++++++++++++++++++++++++++++" << endl;
         DFInstallErrorItemModel itemModel2 =
             qvariant_cast<DFInstallErrorItemModel>(m_installErrorListView->getErrorListSourceModel()->data(it));
@@ -562,7 +520,7 @@ void DFInstallErrorDialog::addData(QStringList &errorFileList, QStringList &half
 
     m_installErrorFontModelList.clear();
 
-    foreach (auto it, errorFileList) {
+    for (auto &it : errorFileList) {
         fontInfo = fontInfoManager->getFontInfo(it);
 
         DFInstallErrorItemModel itemModel;
@@ -575,7 +533,7 @@ void DFInstallErrorDialog::addData(QStringList &errorFileList, QStringList &half
             itemModel.strFontInstallStatus = DApplication::translate("DFInstallErrorDialog", "Broken file");
 
             m_updateInstallErrorFontModelList.push_back(itemModel);
-        } else if (fontInfo.isInstalled && !isSystemFont(fontInfo)) {
+        } else if (fontInfo.isInstalled && !m_parent->isSystemFont(fontInfo)) {
             QFileInfo fileInfo(it);
             itemModel.bSelectable = true;
             //默认勾选已安装字体
@@ -586,7 +544,7 @@ void DFInstallErrorDialog::addData(QStringList &errorFileList, QStringList &half
             itemModel.strFontInstallStatus = DApplication::translate("DFInstallErrorDialog", "Same version installed");
 
             m_updateInstallErrorFontModelList.push_back(itemModel);
-        } else if (isSystemFont(fontInfo)) {
+        } else if (m_parent->isSystemFont(fontInfo)) {
             QFileInfo fileInfo(it);
 //            m_SystemFontCount++;
             itemModel.bSelectable = false;
@@ -601,19 +559,17 @@ void DFInstallErrorDialog::addData(QStringList &errorFileList, QStringList &half
         }
     }
 
-    if (halfInstalledFilelist.size() > 0) {
-        foreach (auto it, halfInstalledFilelist) {
-            QFileInfo fileInfo(it);
-            DFInstallErrorItemModel itemModel;
-            itemModel.bSelectable = true;
-            //默认勾选已安装字体
-            itemModel.bChecked = true;
-            itemModel.strFontFileName = fileInfo.fileName();
-            itemModel.strFontFilePath = fileInfo.filePath();
-            itemModel.bIsNormalUserFont = true;
-            itemModel.strFontInstallStatus = DApplication::translate("DFInstallErrorDialog", "Same version installed");
-            m_updateInstallErrorFontModelList.push_back(itemModel);
-        }
+    for (auto &it : halfInstalledFilelist) {
+        QFileInfo fileInfo(it);
+        DFInstallErrorItemModel itemModel;
+        itemModel.bSelectable = true;
+        //默认勾选已安装字体
+        itemModel.bChecked = true;
+        itemModel.strFontFileName = fileInfo.fileName();
+        itemModel.strFontFilePath = fileInfo.filePath();
+        itemModel.bIsNormalUserFont = true;
+        itemModel.strFontInstallStatus = DApplication::translate("DFInstallErrorDialog", "Same version installed");
+        m_updateInstallErrorFontModelList.push_back(itemModel);
     }
 
 //    m_installErrorListView->getErrorListSourceModel();
@@ -658,8 +614,6 @@ void DFInstallErrorDialog::onControlButtonClicked(int btnIndex)
             if (itemModel.bChecked && !itemModel.bSystemFont)
                 continueInstallFontFileList.push_back(itemModel.strFontFilePath);
         }
-
-        m_SystemFontCount = 0;
 
         emit onContinueInstall(continueInstallFontFileList);
 //        this->close();

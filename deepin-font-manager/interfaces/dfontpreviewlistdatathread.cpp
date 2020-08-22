@@ -610,8 +610,6 @@ void DFontPreviewListDataThread::removeFontData(const DFontPreviewItemData &remo
     for (DFontPreviewItemData &itemData : m_fontModelList) {
         if (itemData.fontInfo.filePath == removeItemData.fontInfo.filePath) {
             m_fontModelList.removeOne(itemData);
-            qDebug() << __FUNCTION__ << m_fontModelList.size() << removeItemData.fontData.strFontName
-                     << m_fontModelList.indexOf(removeItemData);
         }
     }
 }

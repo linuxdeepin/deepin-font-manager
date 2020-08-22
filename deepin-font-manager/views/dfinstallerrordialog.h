@@ -18,7 +18,7 @@ DCORE_USE_NAMESPACE
 
 class DFMSuggestButton;
 //typedef DFMSuggestButton DSuggestButton;
-
+class DFInstallNormalWindow;
 class DFMSuggestButton : public QPushButton, public DObject
 {
     Q_OBJECT
@@ -42,10 +42,7 @@ class DFInstallErrorDialog : public DFontBaseDialog
 
 public:
     explicit DFInstallErrorDialog(QWidget *parent = nullptr,
-                                  const QStringList &errorInstallFontFileList = QStringList(),
-                                  const QStringList &systemFontFileListPsname = QStringList(),
-                                  const QStringList &systemFontFileListFamilyname = QStringList()
-                                 );
+                                  const QStringList &errorInstallFontFileList = QStringList());
     ~DFInstallErrorDialog()Q_DECL_OVERRIDE;
     //构造时初始化字体信息列表
     void initData();
@@ -64,14 +61,6 @@ public:
     //判断当前字体是否为系统字体
     bool isSystemFont(DFontInfo &f);
 
-    QWidget *m_mainFrame;
-    QVBoxLayout *m_mainLayout;
-
-    DFInstallErrorListView *m_installErrorListView;
-
-    DPushButton *m_quitInstallBtn;
-    DSuggestButton *m_continueInstallBtn;
-
 private:
     //刷新继续按钮的状态-选中数量大于1时，继续按钮可用
     void resetContinueInstallBtnStatus();
@@ -80,27 +69,11 @@ private:
     //重写关闭事件-发送取消继续安装信号
     void closeEvent(QCloseEvent *event) override;
 
-    QWidget *titleFrame;
-    SignalManager *m_signalManager = SignalManager::instance();
-
-
-    DLabel *logoLabel;
-    DLabel *titleLabel;
-    //QWidget *contentFrame;
-
-    QStringList m_errorInstallFiles;
-    QStringList m_systemFilesPsname;
-    QStringList m_systemFilesFamilyname;
-//    QStringList m_NeedSelectFiles;
-    QList<DFInstallErrorItemModel> m_installErrorFontModelList;
-
-    int m_SystemFontCount = 0;
-
 signals:
     //发送取消继续安装重复字体的信号
     void onCancelInstall();
     //发送请求继续安装重复字体的信号
-    void onContinueInstall(QStringList continueInstallFontFilelList);
+    void onContinueInstall(const QStringList &continueInstallFontFilelList);
 
 public slots:
     //勾选按钮点击或回车选中事件
@@ -113,6 +86,21 @@ public slots:
                  QStringList &addHalfInstalledFiles, QStringList &oldHalfInstalledFiles);
     //按钮点击事件
     void onControlButtonClicked(int btnIndex);
+
+private:
+    DFInstallNormalWindow *m_parent;
+    QWidget *m_mainFrame;
+    QVBoxLayout *m_mainLayout;
+
+    DFInstallErrorListView *m_installErrorListView;
+
+    DPushButton *m_quitInstallBtn;
+    DSuggestButton *m_continueInstallBtn;
+
+    SignalManager *m_signalManager = SignalManager::instance();
+
+    QStringList m_errorInstallFiles;
+    QList<DFInstallErrorItemModel> m_installErrorFontModelList;
 };
 
 

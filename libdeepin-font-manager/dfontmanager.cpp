@@ -133,10 +133,8 @@ void DFontManager::run()
     qDebug() << __FUNCTION__ << "start" << m_type << endl;
     switch (m_type) {
     case Install:
-        handleInstall();
-        break;
     case HalfwayInstall:
-        handleInstall(true);
+        handleInstall();
         break;
     case ReInstall:
         handleReInstall();
@@ -181,23 +179,20 @@ void DFontManager::doCmd(const QStringList &arguments)
  <Description>   字体安装-函数入口
  <Author>
  <Input>
-    <param1>     isHalfwayInstall Description:是否为中途新增安装
+    <param1>     null
  <Return>        null             Description:null
  <Note>          null
 *************************************************************************/
-void DFontManager::handleInstall(bool isHalfwayInstall)
+void DFontManager::handleInstall()
 {
     doCmd(QStringList() << m_instFileList);
     if (m_instFileList.count() == 1) {
         // emit installFinished();
     }
-    if (!isHalfwayInstall) {
-        Q_EMIT installFinished(InstallStatus::InstallSuccess, m_installOutList);
-    } else {
-        Q_EMIT installFinished(InstallStatus::HalfwayInstallSuccess, m_installOutList);
-    }
 
-    if (m_CacheStatus == CacheNow && !m_IsNeedStop) {
+    Q_EMIT installFinished(InstallStatus::InstallSuccess, m_installOutList);
+
+    if (m_CacheStatus == CacheNow && !m_installCanceled) {
         doCache();
     }
 
@@ -265,10 +260,10 @@ void DFontManager::doInstall(const QStringList &fileList)
     QString targetDir = "";
 
     m_installOutList.clear();
-    m_IsNeedStop = false;
+    m_installCanceled = false;
 
     for (const QString &file : fileList) {
-        if (m_IsNeedStop) {
+        if (m_installCanceled) {
             break;
         }
 
@@ -311,7 +306,7 @@ void DFontManager::doInstall(const QStringList &fileList)
     }
 
     //delete installed fonts to prevent next time install take long time
-    if (!m_IsNeedStop) {
+    if (!m_installCanceled) {
         return;
     }
 
@@ -332,7 +327,7 @@ void DFontManager::doInstall(const QStringList &fileList)
             fileDir.removeRecursively();
         }
     }
-    Q_EMIT cancelInstall();
+    Q_EMIT requestCancelInstall();
 }
 
 /*************************************************************************
@@ -411,9 +406,9 @@ void DFontManager::setCacheStatus(const CacheStatus &CacheStatus)
  <Return>        null            Description:null
  <Note>          null
 *************************************************************************/
-void DFontManager::stop()
+void DFontManager::cancelInstall()
 {
-    m_IsNeedStop = true;
+    m_installCanceled = true;
 }
 
 /*************************************************************************
