@@ -18,6 +18,7 @@
  */
 
 #include "dfontmanager.h"
+#include "dcopyfilesmanager.h"
 
 #include <QDebug>
 #include <QJsonDocument>
@@ -27,7 +28,6 @@
 #include <QDir>
 
 static DFontManager *INSTANCE = nullptr;
-const QString sysDir = QDir::homePath() + "/.local/share/fonts";
 
 /*************************************************************************
  <Function>      instance
@@ -134,10 +134,8 @@ void DFontManager::run()
     switch (m_type) {
     case Install:
     case HalfwayInstall:
-        handleInstall();
-        break;
     case ReInstall:
-        handleReInstall();
+        handleInstall();
         break;
     case UnInstall:
         handleUnInstall();
@@ -186,19 +184,6 @@ void DFontManager::doCmd(const QStringList &arguments)
 void DFontManager::handleInstall()
 {
     doCmd(QStringList() << m_instFileList);
-    if (m_instFileList.count() == 1) {
-        // emit installFinished();
-    }
-
-    Q_EMIT installFinished(InstallStatus::InstallSuccess, m_installOutList);
-
-    if (m_CacheStatus == CacheNow && !m_installCanceled) {
-        doCache();
-    }
-
-    //clear
-    m_instFileList.clear();
-    m_installOutList.clear();
 }
 
 /*************************************************************************
@@ -220,30 +205,6 @@ void DFontManager::handleUnInstall()
 }
 
 /*************************************************************************
- <Function>      handleReInstall
- <Description>   字体重装-函数入口
- <Author>
- <Input>         null
- <Return>        null            Description:null
- <Note>          null
-*************************************************************************/
-void DFontManager::handleReInstall()
-{
-    doCmd(QStringList() << m_instFileList);
-    if (m_instFileList.count() == 1) {
-        // emit installFinished();
-    }
-
-    emit reInstallFinished(0, m_installOutList);
-
-    if (m_CacheStatus != NoNewFonts || !m_instFileList.isEmpty())
-        doCache();
-    //clear
-    m_instFileList.clear();
-    m_installOutList.clear();
-}
-
-/*************************************************************************
  <Function>      doInstall
  <Description>   字体安装-具体执行函数
  <Author>
@@ -254,79 +215,20 @@ void DFontManager::handleReInstall()
 *************************************************************************/
 void DFontManager::doInstall(const QStringList &fileList)
 {
-    qDebug() << __func__ << "s" << endl;
-
-    QString target = "";
-    QString targetDir = "";
+    qDebug() << __func__ << "s" << endl << QThread::currentThreadId();
 
     m_installOutList.clear();
     m_installCanceled = false;
+    m_installedCount = 0;
 
-    for (const QString &file : fileList) {
-        if (m_installCanceled) {
-            break;
-        }
-
-        QStringList fileParamList = file.split("|");
-        QString filePathOrig = fileParamList.at(0);
-        QString familyName = fileParamList.at(1);
-
-        //这里有过familyname中带有 /  的话，创建的目录会多一层，导致与其他不统一，也会造成删除时删除不完全的问题
-        if (familyName.contains("/")) {
-            familyName.replace("/", "-");
-        }
-        const QFileInfo info(filePathOrig);
-        QString dirName = familyName;
-
-        if (dirName.isEmpty()) {
-            dirName = info.baseName();
-        }
-
-        target = QString("%1/%2/%3").arg(sysDir).arg(dirName).arg(info.fileName());
-        targetDir = QString("%1/%2").arg(sysDir).arg(dirName);
-
-        QDir dir(targetDir);
-        dir.mkpath(".");
-        QFile::copy(filePathOrig, target);
-        m_installOutList << target;
-
-        const int currentIndex = fileList.indexOf(file);
-        const int count = fileList.count() - 1;
-
-        if (fileList.count() == 1) {
-            //  ut000442 之前安装一个字体时没有安装进度条,在此添加
-            Q_EMIT batchInstall(familyName, 100);
-
-        } else {
-            QString filePath = filePathOrig;
-            double percent = currentIndex / double(count) * 100;
-
-            Q_EMIT batchInstall(familyName, percent);
-        }
-    }
+    DCopyFilesManager::copyFiles(CopyFontThread::INSTALL, fileList);
 
     //delete installed fonts to prevent next time install take long time
     if (!m_installCanceled) {
         return;
     }
 
-    for (const QString &file : fileList) {
-        QStringList fileParamList = file.split("|");
-        QString filePathOrig = fileParamList.at(0);
-        QString familyName = fileParamList.at(1);
-        //这里有过familyname中带有 /  的话，创建的目录会多一层，导致与其他不统一，也会造成删除时删除不完全的问题
-        if (familyName.contains("/")) {
-            familyName.replace("/", " ");
-        }
-        const QFileInfo info(filePathOrig);
-        QString dirName = familyName;
-        target = QString("%1/%2/%3").arg(sysDir).arg(dirName).arg(info.fileName());
-        QFile::remove(target);
-        QDir fileDir(QFileInfo(target).path());
-        if (fileDir.isEmpty()) {
-            fileDir.removeRecursively();
-        }
-    }
+    m_installCanceled = false;
     Q_EMIT requestCancelInstall();
 }
 
@@ -384,6 +286,50 @@ void DFontManager::doUninstall(const QStringList &fileList)
     qDebug() << __FUNCTION__ << ret;
 }
 
+/**
+* @brief DFontManager::onInstallResult 安装拷贝字体文件槽函数
+* @param familyName 字体文件的familyName
+* @param target 拷贝的目的文件路径
+* @return void
+*/
+void DFontManager::onInstallResult(const QString &familyName, const QString &target)
+{
+    m_installedCount += 1;
+    m_installOutList << target;
+    const int totalCount = m_instFileList.count();
+
+    if (m_instFileList.count() == 1) {
+        //  ut000442 之前安装一个字体时没有安装进度条,在此添加
+        Q_EMIT batchInstall(familyName, 100);
+    } else {
+        double percent = m_installedCount / double(totalCount) * 100;
+
+        Q_EMIT batchInstall(familyName, percent);
+    }
+
+    if (m_installedCount != totalCount)
+        return;
+
+    qDebug() << __FUNCTION__ << m_installOutList.size();
+    if (m_type == Install) {
+        Q_EMIT installFinished(InstallStatus::InstallSuccess, m_installOutList);
+
+        if (m_CacheStatus == CacheNow && !m_installCanceled) {
+            doCache();
+        }
+    } else if (m_type == ReInstall) {
+        Q_EMIT reInstallFinished(0, m_installOutList);
+
+        if (m_CacheStatus != NoNewFonts || !m_instFileList.isEmpty())
+            doCache();
+    }
+
+    //clear
+    m_instFileList.clear();
+    m_installOutList.clear();
+    m_installedCount = 0;
+}
+
 /*************************************************************************
  <Function>      setCacheStatus
  <Description>   设置fc-cache命令执行的状态
@@ -399,8 +345,8 @@ void DFontManager::setCacheStatus(const CacheStatus &CacheStatus)
 }
 
 /*************************************************************************
- <Function>      stop
- <Description>   更新线程停止状态标志位
+ <Function>      cancelInstall
+ <Description>   取消安装
  <Author>
  <Input>         null
  <Return>        null            Description:null
@@ -409,6 +355,7 @@ void DFontManager::setCacheStatus(const CacheStatus &CacheStatus)
 void DFontManager::cancelInstall()
 {
     m_installCanceled = true;
+    DCopyFilesManager::cancelInstall();
 }
 
 /*************************************************************************
@@ -426,5 +373,4 @@ void DFontManager::doCache()
     process.start("fc-cache");
     process.waitForFinished(-1);
     emit  cacheFinish();
-
 }

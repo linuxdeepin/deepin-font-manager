@@ -237,7 +237,7 @@ void DFontPreviewListDataThread::removePathWatcher(const QString &path)
 *************************************************************************/
 void DFontPreviewListDataThread::onFileDeleted(const QStringList &files)
 {
-    qDebug() << __FUNCTION__ << files.size() << "LLLLLLLLLLLLLLLLL" << files;
+    qDebug() << __FUNCTION__ << files.size();
     if (m_mutex != nullptr)
         QMutexLocker locker(m_mutex);
     m_view->deleteCurFonts(files, false);
@@ -360,7 +360,7 @@ void DFontPreviewListDataThread::forceDeleteFiles(const QStringList &files)
 *************************************************************************/
 void DFontPreviewListDataThread::onRemoveFileWatchers(const QStringList &files)
 {
-    qDebug() << __FUNCTION__ << files << m_fsWatcher->removePaths(files);
+    qDebug() << __FUNCTION__ << files.size() << m_fsWatcher->removePaths(files);
     Q_UNUSED(files)
     m_fsWatcher->removePath(FONTS_DIR);
     m_fsWatcher->removePath(FONTS_UP_DIR);

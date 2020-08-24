@@ -449,6 +449,7 @@ void DFInstallNormalWindow::closeEvent(QCloseEvent *event)
     qDebug() << __FUNCTION__;
 
     m_fontManager->cancelInstall();
+    reject();
 }
 
 /*************************************************************************

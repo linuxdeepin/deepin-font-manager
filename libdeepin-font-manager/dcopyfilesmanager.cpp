@@ -19,6 +19,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "dcopyfilesmanager.h"
+#include "dfontmanager.h"
 
 #include <QDateTime>
 #include <QFile>
@@ -27,13 +28,14 @@
 #include <QStandardPaths>
 #include <QApplication>
 #include <QThreadPool>
+#include <QDir>
 #include <QDebug>
 
+const QString sysDir = QDir::homePath() + "/.local/share/fonts";
 
-CopyFontThread::CopyFontThread(OPType type, qint8 index, const QStringList &copyFiles)
+CopyFontThread::CopyFontThread(OPType type, short index, const QStringList &copyFiles)
     : m_opType(type)
     , m_index(index)
-    , m_isCanceled(false)
     , m_srcFiles(copyFiles)
 {
 }
@@ -60,9 +62,26 @@ void CopyFontThread::run()
 
             if (!QFile::copy(fontFile, target))
                 qDebug() << __FUNCTION__ << " copy file error " << fontFile << m_index;
+        } else if (m_opType == INSTALL) {
+            if (DCopyFilesManager::isInstallCanceled()) {
+                DCopyFilesManager::deleteFiles(m_targetFiles, true);
+                return;
+            }
+
+            QString filePathOrig;
+            QString target;
+            QString familyName = DCopyFilesManager::getTargetPath(fontFile, filePathOrig, target);
+            QFile::copy(filePathOrig, target);
+            m_targetFiles << target;
+            Q_EMIT fileInstalled(familyName, target);
         }
     }
 }
+
+//文件拷贝类型：导出 安装
+CopyFontThread::OPType DCopyFilesManager::m_type = CopyFontThread::INVALID;
+//安装是否被取消
+volatile bool DCopyFilesManager::m_installCanceled = false;
 
 DCopyFilesManager::DCopyFilesManager(QObject *parent)
     : QObject(parent)
@@ -78,6 +97,7 @@ DCopyFilesManager::DCopyFilesManager(QObject *parent)
 */
 void DCopyFilesManager::copyFiles(CopyFontThread::OPType type, const QStringList &fontList)
 {
+    m_type = type;
     qint64 start = QDateTime::currentMSecsSinceEpoch();
     int tcount = QThread::idealThreadCount() > 0 ? QThread::idealThreadCount() : 1;
 
@@ -116,9 +136,73 @@ void DCopyFilesManager::copyFiles(CopyFontThread::OPType type, const QStringList
     for (const QStringList &fileList : fontsList) {
         CopyFontThread *thread = new CopyFontThread(type, static_cast<qint8>(index), fileList);
 
+        if (type == CopyFontThread::INSTALL) {
+            connect(thread, &CopyFontThread::fileInstalled, DFontManager::instance(), &DFontManager::onInstallResult);
+        }
         global_pool->start(thread);
         index++;
     }
     global_pool->waitForDone();
+    if (m_installCanceled) {
+        m_installCanceled = false;
+        deleteFiles(fontList, false);
+    }
+    m_type = CopyFontThread::INVALID;
     qDebug() << __FUNCTION__ << " take (ms) :" << QDateTime::currentMSecsSinceEpoch() - start;
+}
+
+/**
+* @brief DCopyFilesManager::getTargetPath 获取安装前字体的安装后目标路径
+* @param inPath 传入的带familyName的字体路径
+* @param srcPath 安装前字体的路径
+* @param targetPath 安装后字体的路径
+* @return 字体的familyName
+*/
+QString DCopyFilesManager::getTargetPath(const QString &inPath, QString &srcPath, QString &targetPath)
+{
+    QString targetDir;
+    QStringList fileParamList = inPath.split("|");
+
+    srcPath = fileParamList.at(0);
+    QString familyName = fileParamList.at(1);
+
+    //这里有过familyname中带有 /  的话，创建的目录会多一层，导致与其他不统一，也会造成删除时删除不完全的问题
+    if (familyName.contains("/")) {
+        familyName.replace("/", "-");
+    }
+    const QFileInfo info(srcPath);
+    QString dirName = familyName;
+
+    if (dirName.isEmpty()) {
+        dirName = info.baseName();
+    }
+
+    targetPath = QString("%1/%2/%3").arg(sysDir).arg(dirName).arg(info.fileName());
+    targetDir = QString("%1/%2").arg(sysDir).arg(dirName);
+
+    QDir dir(targetDir);
+    dir.mkpath(".");
+    return familyName;
+}
+
+/**
+* @brief DCopyFilesManager::deleteFiles 删除取消安装时已经安装的字体文件列表
+* @param fileList 传入的待安装字体列表
+* @param isTarget 是否是目标文件，还是带familyName的源文件路径
+* @return void
+*/
+void DCopyFilesManager::deleteFiles(const QStringList &fileList, bool isTarget)
+{
+    for (const QString &font : fileList) {
+        QString target = font;
+        QString src;
+        if (!isTarget)
+            getTargetPath(font, src, target);
+
+        QFile(target).remove();
+        QDir fileDir(QFileInfo(target).path());
+        if (fileDir.isEmpty()) {
+            fileDir.removeRecursively();
+        }
+    }
 }

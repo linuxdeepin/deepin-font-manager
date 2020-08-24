@@ -39,15 +39,11 @@ public:
     enum OPType {
         EXPORT = 0,
         INSTALL,
+        INVALID,
     };
 
-    CopyFontThread(OPType type, qint8 index, const QStringList &copyFiles);
+    CopyFontThread(OPType type, short index, const QStringList &copyFiles);
     void run() override;
-    //取消安装
-    inline void cancelInstall()
-    {
-        m_isCanceled = true;
-    }
 
 signals:
     void fileInstalled(const QString &familyName, const QString &targetName);
@@ -55,11 +51,11 @@ signals:
 private:
     //拷贝类型：导出 安装
     short m_opType;
-    qint8 m_index;
-    //是否取消安装
-    bool m_isCanceled;
+    //线程下标
+    short m_index;
     //需要拷贝文件的源路径列表
     QStringList m_srcFiles;
+    QStringList m_targetFiles;
 };
 
 /**
@@ -73,8 +69,29 @@ public:
     explicit DCopyFilesManager(QObject *parent = nullptr);
     //拷贝文件列表
     static void copyFiles(CopyFontThread::OPType type, const QStringList &fontList);
+    //获取字体源路径、目标路径和familyName
+    static QString getTargetPath(const QString &inPath, QString &srcPath, QString &targetPath);
+    //取消安装
+    static inline void cancelInstall()
+    {
+        if (m_type != CopyFontThread::INSTALL)
+            return;
 
-signals:
+        m_installCanceled = true;
+    }
 
-public slots:
+    //安装是否已被取消
+    static inline bool isInstallCanceled()
+    {
+        return m_installCanceled;
+    }
+
+    //删除取消安装时已经安装的字体文件列表
+    static void deleteFiles(const QStringList  &fileList, bool isTarget);
+
+private:
+    //文件拷贝类型：导出 安装
+    static CopyFontThread::OPType m_type;
+    //安装是否被取消
+    static volatile bool m_installCanceled;
 };

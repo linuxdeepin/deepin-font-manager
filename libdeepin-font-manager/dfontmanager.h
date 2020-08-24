@@ -98,6 +98,10 @@ signals:
     //取消安装
     void requestCancelInstall();
 
+public slots:
+    //安装拷贝字体文件槽函数
+    void onInstallResult(const QString &familyName, const QString &target);
+
 protected:
     //线程执行入口函数-安装、中途安装、重装与卸载
     void run();
@@ -109,8 +113,6 @@ private:
     void handleInstall();
     //字体卸载-函数入口
     void handleUnInstall();
-    //字体重装-函数入口
-    void handleReInstall();
     //字体安装-具体执行函数
     void doInstall(const QStringList &fileList);
     //字体卸载-具体执行函数
@@ -120,8 +122,9 @@ private:
     QStringList m_instFileList;
     QStringList m_installOutList;
     QStringList m_uninstFile;
-    bool m_installCanceled = false;
+    volatile bool m_installCanceled = false;
     Type m_type{Type::DefaultNullType};
     CacheStatus m_CacheStatus;
+    int m_installedCount = 0;
 };
 
