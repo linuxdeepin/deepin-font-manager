@@ -2400,6 +2400,11 @@ bool DFontMgrMainWindow::eventFilter(QObject *obj, QEvent *event)
             //添加字体按钮聚焦，屏蔽上下左右键
             if (obj == d->addFontButton)
                 return true;
+        } else if (keyEvent->key() == Qt::Key_Escape) {
+            if (obj == d->textInputEdit->lineEdit())
+                d->textInputEdit->lineEdit()->clear();
+            if (obj == d->searchFontEdit->lineEdit())
+                d->searchFontEdit->lineEdit()->clear();
         }
         if (isShield_KeyTab) {
             return true;

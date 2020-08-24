@@ -576,7 +576,7 @@ void DFontPreviewListView::updateModel(bool showSpinner)
     emit m_signalManager->fontSizeRequestToSlider();
 
     //设置字体删除后的选中
-    selectItemAfterRemoved(m_bListviewAtButtom, m_bListviewAtTop, false);
+    selectItemAfterRemoved(m_bListviewAtButtom, m_bListviewAtTop, false, false);
 
     //删除之后设置焦点
     refreshFocuses();
@@ -773,7 +773,7 @@ void DFontPreviewListView::sortModelIndexList(QModelIndexList &sourceList)
  <Return>        null            Description:null
  <Note>          null
 *************************************************************************/
-void DFontPreviewListView::selectItemAfterRemoved(bool isAtBottom, bool isAtTop, bool hasDisableFailedFont)
+void DFontPreviewListView::selectItemAfterRemoved(bool isAtBottom, bool isAtTop, bool isCollectionPage, bool hasDisableFailedFont)
 {
     int param = getOnePageCount();
     if (m_selectAfterDel != -1) {
@@ -848,7 +848,7 @@ void DFontPreviewListView::selectItemAfterRemoved(bool isAtBottom, bool isAtTop,
             setCurrentIndex(filterModel->index(nextIndexRow, 0));
         }
         //不能删除的系统列表，恢复选中状态
-        if (m_recoverSelectStateList.count() > 0) {
+        if (m_recoverSelectStateList.count() > 0 && !isCollectionPage) {
             DFontPreviewProxyModel *filterModel = this->getFontPreviewProxyModel();
             for (auto idx : m_recoverSelectStateList) {
                 selectionModel()->select(filterModel->index(idx, 0), QItemSelectionModel::Select);
@@ -1878,7 +1878,7 @@ void DFontPreviewListView::onEnableBtnClicked(const QModelIndexList &itemIndexes
 
     if (isFromActiveFont == true) {
         //设置移除后的选中
-        selectItemAfterRemoved(m_bListviewAtButtom, m_bListviewAtTop, needShowTips);
+        selectItemAfterRemoved(m_bListviewAtButtom, m_bListviewAtTop, false, needShowTips);
     }
 
     QString message;
@@ -1955,7 +1955,7 @@ void DFontPreviewListView::onCollectBtnClicked(const QModelIndexList &index, boo
             return;
         }
         //设置收藏页面移除后的选中
-        selectItemAfterRemoved(m_bListviewAtButtom, m_bListviewAtTop, false);
+        selectItemAfterRemoved(m_bListviewAtButtom, m_bListviewAtTop, true, false);
     }
 
     DFMDBManager::instance()->commitUpdateFontInfo();

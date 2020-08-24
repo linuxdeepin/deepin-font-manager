@@ -215,7 +215,7 @@ private:
     //对选中字体的索引按照row从大到小进行排序，为了在我的收藏界面和已激活界面进行操作时
     void sortModelIndexList(QModelIndexList &sourceList);
     //设置item移除后的选中
-    void selectItemAfterRemoved(bool isAtBottom, bool isAtTop, bool hasDisableFailedFont); //设置item移除后的选中
+    void selectItemAfterRemoved(bool isAtBottom, bool isAtTop, bool isCollectionPage, bool hasDisableFailedFont); //设置item移除后的选中
     //记录下当前选中的位置,用于局中显示
     void refreshRect();
     //更新选中状态
