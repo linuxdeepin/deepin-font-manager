@@ -644,7 +644,7 @@ void DFInstallNormalWindow::onCancelInstall()
 #ifdef QT_QML_DEBUG
     qDebug() << __FUNCTION__ << " called";
 #endif
-    /*emit*/ onContinueInstall(QStringList());
+    onReInstallFinished(0, QStringList());
 }
 
 /*************************************************************************

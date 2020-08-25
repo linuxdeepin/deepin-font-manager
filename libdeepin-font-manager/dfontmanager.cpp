@@ -215,7 +215,7 @@ void DFontManager::handleUnInstall()
 *************************************************************************/
 void DFontManager::doInstall(const QStringList &fileList)
 {
-    qDebug() << __func__ << "s" << endl << QThread::currentThreadId();
+    qDebug() << __func__ << "s" << endl;
 
     m_installOutList.clear();
     m_installCanceled = false;
@@ -298,14 +298,8 @@ void DFontManager::onInstallResult(const QString &familyName, const QString &tar
     m_installOutList << target;
     const int totalCount = m_instFileList.count();
 
-    if (m_instFileList.count() == 1) {
-        //  ut000442 之前安装一个字体时没有安装进度条,在此添加
-        Q_EMIT batchInstall(familyName, 100);
-    } else {
-        double percent = m_installedCount / double(totalCount) * 100;
-
-        Q_EMIT batchInstall(familyName, percent);
-    }
+    double percent = m_installedCount / double(totalCount) * 100;
+    Q_EMIT batchInstall(familyName, percent);
 
     if (m_installedCount != totalCount)
         return;
