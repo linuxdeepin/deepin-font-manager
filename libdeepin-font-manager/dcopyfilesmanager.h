@@ -55,6 +55,7 @@ private:
     short m_index;
     //需要拷贝文件的源路径列表
     QStringList m_srcFiles;
+    //需要拷贝文件的目标路径列表
     QStringList m_targetFiles;
 };
 
