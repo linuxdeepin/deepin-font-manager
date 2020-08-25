@@ -1088,6 +1088,7 @@ void DFontMgrMainWindow::handleAddFontEvent()
     m_fontPreviewListView->setRecoveryTabFocusState(m_fontPreviewListView->getIsTabFocus());
     //SP3--添加字体按钮取消安装后恢复选中状态--记录选中状态
     bool hasTabFocus = d->addFontButton->hasFocus();
+    titlebar()->setFocus(Qt::TabFocusReason);
     DFileDialog dialog;
     dialog.setFileMode(DFileDialog::ExistingFiles);
     dialog.setNameFilter(Utils::suffixList());
@@ -1103,7 +1104,6 @@ void DFontMgrMainWindow::handleAddFontEvent()
     }
 
 //    m_fontPreviewListView->refreshFocuses();
-
     const int mode = dialog.exec();
 
     // save the directory string to config file.
@@ -1113,9 +1113,9 @@ void DFontMgrMainWindow::handleAddFontEvent()
     if (mode != QDialog::Accepted) {
         //SP3--添加字体按钮取消安装后恢复选中状态
         if (hasTabFocus) {
-//            QTimer::singleShot(10, [ = ] {
-            d->addFontButton->setFocus(Qt::TabFocusReason);
-//            });
+            QTimer::singleShot(10, [ = ] {
+                d->addFontButton->setFocus(Qt::TabFocusReason);
+            });
         }
         return;
     }
