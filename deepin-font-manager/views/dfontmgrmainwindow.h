@@ -120,7 +120,7 @@ public:
 
     //处理键盘press事件
     void keyPressEvent(QKeyEvent *event)override;
-
+    bool m_trig{false};
 protected:
     //初始化应用数据
     void initData();
@@ -284,10 +284,11 @@ protected:
 
     bool m_leftListViewTabFocus = false;
     bool m_previewListViewTabFocus = false;
-    bool m_recoveryTabFocusState = false;
 
     bool m_isSearchLineEditMenuPoped{false};
     bool m_isInputLineEditMunuPoped{false};
+    //菜单关闭的原因是否为触发action
+    bool m_hasMenuTriggered{false};
     //is in installing font flow
     //Avoid start multi-NormalInstalltion window
     bool                    m_fIsInstalling {false};

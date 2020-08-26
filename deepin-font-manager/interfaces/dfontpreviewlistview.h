@@ -193,7 +193,12 @@ public:
     void setIsLostFocusOfLeftKey(bool isLostFocusOfLeftKey);
     //是否由slider获取的焦点
     void setIsGetFocusFromSlider(bool isGetFocusFromSlider);
-
+    //根据是否需要恢复tab聚焦状态进行恢复
+    void syncTabStatus();
+    //是否需要恢复tab聚焦状态
+    bool getRecoveryTabFocusState() const;
+    //记录当前是否为tab聚焦状态
+    void syncRecoveryTabStatus();
 protected:
     //选中切换后触发函数
     void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected) override;

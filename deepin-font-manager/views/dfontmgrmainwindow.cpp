@@ -260,9 +260,7 @@ void DFontMgrMainWindow::initConnections()
         qDebug() << __FUNCTION__ << "about toshow";
         //记录操作之前有无tab聚焦
         m_fontPreviewListView->setFocus(Qt::MouseFocusReason);
-        m_recoveryTabFocusState = m_fontPreviewListView->getIsTabFocus();
-        m_fontPreviewListView->setRecoveryTabFocusState(m_recoveryTabFocusState);
-
+        m_fontPreviewListView->syncRecoveryTabStatus();
         m_menuCurData = m_fontPreviewListView->currModelData();
         m_fontPreviewListView->selectedFonts(m_menuCurData, &m_menuDelCnt, &m_menuDisableSysCnt,
                                              &m_menuSysCnt, &m_menuCurCnt, &m_menuDisableCnt,
@@ -276,12 +274,6 @@ void DFontMgrMainWindow::initConnections()
     connect(d->rightKeyMenu, &QMenu::aboutToHide, this, [ = ] {
         qDebug() << __FUNCTION__ << "about to hide\n\n";
         m_fontPreviewListView->clearPressState(DFontPreviewListView::ClearType::MoveClear);
-        //恢复聚焦状态
-        if (m_fontPreviewListView->hasFocus() && m_recoveryTabFocusState == true)
-        {
-            m_fontPreviewListView->setIsTabFocus(true);
-            m_recoveryTabFocusState = false;
-        }
         //检查鼠标是否处于hover状态
         m_fontPreviewListView->checkHoverState();
     });
@@ -371,6 +363,12 @@ void DFontMgrMainWindow::initConnections()
 
     connect(m_signalManager, &SignalManager::requestSetTabFocusToAddBtn, [ = ] {
         d->addFontButton->setFocus(Qt::TabFocusReason);
+    });
+
+    connect(m_signalManager, &SignalManager::onMenuHidden, [ = ] {
+        if (!m_hasMenuTriggered)
+            m_fontPreviewListView->syncTabStatus();
+        m_hasMenuTriggered = false;
     });
 }
 
@@ -524,7 +522,7 @@ void DFontMgrMainWindow::initShortcuts()
             //first disable delete
             if (m_cacheFinish || m_installFinish)
                 return;
-            m_fontPreviewListView->setRecoveryTabFocusState(m_fontPreviewListView->getIsTabFocus());
+            m_fontPreviewListView->syncRecoveryTabStatus();
             delCurrentFont(false);
         }, Qt::UniqueConnection);
     }
@@ -576,7 +574,8 @@ void DFontMgrMainWindow::initShortcuts()
         m_scAddNewFont->setContext(Qt::ApplicationShortcut);
         m_scAddNewFont->setAutoRepeat(false);
 
-        connect(m_scAddNewFont, &QShortcut::activated, this, [d] {
+        connect(m_scAddNewFont, &QShortcut::activated, this, [ = ] {
+            m_fontPreviewListView->syncRecoveryTabStatus();
             d->addFontButton->click();
         });
     }
@@ -1084,11 +1083,10 @@ void DFontMgrMainWindow::initStateBar()
 void DFontMgrMainWindow::handleAddFontEvent()
 {
     Q_D(DFontMgrMainWindow);
-    //记录当前listview是否有tab聚焦状态
-    m_fontPreviewListView->setRecoveryTabFocusState(m_fontPreviewListView->getIsTabFocus());
     //SP3--添加字体按钮取消安装后恢复选中状态--记录选中状态
     bool hasTabFocus = d->addFontButton->hasFocus();
-    titlebar()->setFocus(Qt::TabFocusReason);
+    if (hasTabFocus)
+        titlebar()->setFocus(Qt::TabFocusReason);
     DFileDialog dialog;
     dialog.setFileMode(DFileDialog::ExistingFiles);
     dialog.setNameFilter(Utils::suffixList());
@@ -1152,6 +1150,7 @@ void DFontMgrMainWindow::handleAddFontEvent()
 void DFontMgrMainWindow::handleMenuEvent(QAction *action)
 {
     if (action->data().isValid()) {
+        m_hasMenuTriggered = true;
         bool ok = false;
         int type = action->data().toInt(&ok);
 
@@ -1161,14 +1160,13 @@ void DFontMgrMainWindow::handleMenuEvent(QAction *action)
             // Add menu handler code here
             switch (actionId) {
             case DFontMenuManager::MenuAction::M_AddFont: {
-//                m_fontPreviewListView->setIsTabFocus(false);
                 handleAddFontEvent();
             }
             break;
             case DFontMenuManager::MenuAction::M_FontInfo: {
+                m_fontPreviewListView->setIsTabFocus(false);
                 DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
                 DFontInfoDialog *fontInfoDlg = new DFontInfoDialog(&currItemData, this);
-//                m_fontPreviewListView->setIsTabFocus(false);
                 fontInfoDlg->exec();
             }
             break;
@@ -1178,25 +1176,27 @@ void DFontMgrMainWindow::handleMenuEvent(QAction *action)
             break;
             case DFontMenuManager::MenuAction::M_ExportFont: {
                 exportFont();
+                m_fontPreviewListView->syncTabStatus();
             }
             break;
             case DFontMenuManager::MenuAction::M_EnableOrDisable: {
                 m_fontPreviewListView->onEnableBtnClicked(m_menuDisableIndexList, m_menuSysCnt, m_menuCurCnt, !m_menuCurData.fontData.isEnabled(),
                                                           filterGroup == DSplitListWidget::FontGroup::ActiveFont);
+                m_fontPreviewListView->syncTabStatus();
             }
             break;
             case DFontMenuManager::MenuAction::M_Faverator: {
                 m_fontPreviewListView->onCollectBtnClicked(m_menuAllIndexList, !m_menuCurData.fontData.isCollected(),
                                                            filterGroup == DSplitListWidget::FontGroup::CollectFont);
+                m_fontPreviewListView->syncTabStatus();
             }
             break;
             case DFontMenuManager::MenuAction::M_ShowFontPostion:
-//                m_fontPreviewListView->setIsTabFocus(false);
+                m_fontPreviewListView->setIsTabFocus(false);
                 showFontFilePostion();
                 break;
             default:
                 qDebug() << "handleMenuEvent->(id=" << actionId << ")";
-//                m_fontPreviewListView->setIsTabFocus(false);
                 break;
             }
         }
@@ -2284,7 +2284,10 @@ void DFontMgrMainWindow::mainwindowFocusInCheck(QObject *obj, QEvent *event)
     if (obj == m_fontPreviewListView) {
         QFocusEvent *focusEvent = dynamic_cast<QFocusEvent *>(event);
         if (focusEvent->reason() == Qt::ActiveWindowFocusReason) {
-            m_fontPreviewListView->setIsTabFocus(m_previewListViewTabFocus);
+            m_fontPreviewListView->syncTabStatus();
+//            else {
+//                m_fontPreviewListView->setIsTabFocus(m_previewListViewTabFocus);
+//            }
         }
     } else {
         m_fontPreviewListView->setIsGetFocusFromSlider(false);

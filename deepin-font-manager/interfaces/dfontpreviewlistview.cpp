@@ -437,6 +437,19 @@ void DFontPreviewListView::touchPanelClick(QMouseEvent *event)
 }
 
 /*************************************************************************
+ <Function>      getRecoveryTabFocusState
+ <Description>   是否需要恢复tab聚焦状态
+ <Author>
+ <Input>         null
+ <Return>        bool         Description:是否需要恢复聚焦状态
+ <Note>          null
+*************************************************************************/
+bool DFontPreviewListView::getRecoveryTabFocusState() const
+{
+    return m_recoveryTabFocusState;
+}
+
+/*************************************************************************
  <Function>      setIsGetFocusFromSlider
  <Description>   是否由slider获取的焦点
  <Author>        null
@@ -494,6 +507,31 @@ void DFontPreviewListView::setIsTabFocus(bool IsTabFocus)
     m_IsTabFocus = IsTabFocus;
 }
 
+/*************************************************************************
+ <Function>      syncTabStatus
+ <Description>   根据是否需要恢复tab聚焦状态进行恢复
+ <Author>        null
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
+void DFontPreviewListView::syncTabStatus()
+{
+    setIsTabFocus(m_recoveryTabFocusState);
+}
+
+/*************************************************************************
+ <Function>      syncRecoveryTabStatus
+ <Description>   记录当前是否为tab聚焦状态
+ <Author>
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
+void DFontPreviewListView::syncRecoveryTabStatus()
+{
+    setRecoveryTabFocusState(m_IsTabFocus);
+}
 /*************************************************************************
  <Function>      getIsTabFocus
  <Description>   获取是否为tab focus
@@ -582,7 +620,7 @@ void DFontPreviewListView::updateModel(bool showSpinner)
     refreshFocuses();
     Q_EMIT rowCountChanged();
     Q_EMIT deleteFinished();
-    setIsTabFocus(m_recoveryTabFocusState);
+    syncTabStatus();
     m_recoveryTabFocusState = false;
 }
 
@@ -967,7 +1005,7 @@ void DFontPreviewListView::selectFonts(const QStringList &fileList)
     Q_EMIT SignalManager::instance()->requestInstallAdded();
     //用于安装后刷新聚焦、安装后focus for ctrl+a UT000539
     refreshFocuses();
-    setIsTabFocus(m_recoveryTabFocusState);
+    syncTabStatus();
     m_recoveryTabFocusState = false;
 }
 
@@ -1089,7 +1127,7 @@ void DFontPreviewListView::mouseMoveEvent(QMouseEvent *event)
 *************************************************************************/
 void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
 {
-    qDebug() << "\n" << __FUNCTION__ << event->type() << event->button();
+    qDebug() << "\n" << __FUNCTION__ << event->type() << event->button() << "zzzzzzzzzz";
     //检查当前是否有选中，恢复起始位
     checkIfHasSelection();
     QListView::mousePressEvent(event);
@@ -1156,7 +1194,10 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
             m_fontPreviewProxyModel->setData(modelIndex, QVariant::fromValue(fdata), Qt::DisplayRole);
         }
 
+        //弹出右键菜单
         onListViewShowContextMenu();
+        //菜单关闭之后
+        emit m_signalManager->onMenuHidden();
         refreshFocuses();
     } else if (event->button() == Qt::MidButton && QApplication::keyboardModifiers() == Qt::NoModifier) {
         clearSelection();
