@@ -53,18 +53,30 @@ public:
     //通过DFontData信息获取DFontPreviewItemData
     inline static DFontPreviewItemData getFontData(const FontData &fontData)
     {
+        QList<DFontPreviewItemData> fontList = m_fontModelList;
+        /*        for (DFontPreviewItemData &itemdata : fontList) {
+                    if (itemdata.fontData == fontData)
+                        return itemdata;
+                }
+        */
         DFontPreviewItemData itemdata;
         itemdata.fontData = fontData;
-        QStringList familySyle;
-        int index = DFontPreviewListDataThread::instance()->getFontModelList().indexOf(itemdata);
+//        qDebug() << __FUNCTION__ << fontData.strFontName;
+        int index = fontList.indexOf(itemdata);
         if (index > -1) {
-            return DFontPreviewListDataThread::instance()->getFontModelList().at(index);
+//            qDebug() << __FUNCTION__ << fontData.strFontName << index;
+            return fontList.at(index);
         } else {
             qDebug() << __FUNCTION__ << " not found " << fontData.getFontType() << fontData.strFontName << DFontPreviewListDataThread::instance()->getFontModelList().size();
         }
         return itemdata;
     }
+
 signals:
+    //发出删除字体文件请求
+    void requestDeleted(const QStringList &files);
+    //发出添加字体文件请求
+    void requestAdded(const QStringList &files, bool isFirstInstall = false);
     //请求删除字体文件
     void requestForceDeleteFiles(const QStringList &files);
     //请求重装继续
@@ -106,11 +118,17 @@ public slots:
     //导出字体文件
     void onExportFont(const QStringList &fontList);
 
+public:
+    QStringList m_allFontPathList;
+    QStringList m_chineseFontPathList;
+    QStringList m_monoSpaceFontPathList;
+    static QList<DFontPreviewItemData> m_fontModelList;
+    QList<DFontPreviewItemData> m_delFontInfoList;
+
 protected:
     QThread mThread;
 
     DFMDBManager *m_dbManager {nullptr};
-    QList<DFontPreviewItemData> m_fontModelList;
     QList<DFontPreviewItemData> m_diffFontModelList;
     DFontPreviewListView *m_view;
     QFileSystemWatcher *m_fsWatcher;

@@ -281,10 +281,6 @@ private:
 signals:
     //字体列表加载状态
     void onLoadFontsStatus(int type);
-    //发出删除字体文件请求
-    void requestDeleted(const QStringList &files);
-    //发出添加字体文件请求
-    void requestAdded(const QStringList &files, bool isFirstInstall = false);
     //批量添加item请求
     void multiItemsAdded(QList<DFontPreviewItemData> &data, DFontSpinnerWidget::SpinnerStyles styles);
     //请求移除某一项的响应函数

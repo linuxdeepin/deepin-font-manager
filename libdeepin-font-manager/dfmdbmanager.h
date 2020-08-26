@@ -12,7 +12,7 @@ public:
     DFMDBManager(QObject *parent = nullptr);
     ~DFMDBManager();
 
-    QList<DFontPreviewItemData> getAllFontInfo();
+    QList<DFontPreviewItemData> getAllFontInfo(QList<DFontPreviewItemData> *deletedFontInfo = nullptr);
     int getRecordCount();
     int getCurrMaxFontId();
     QStringList getInstalledFontsPath();

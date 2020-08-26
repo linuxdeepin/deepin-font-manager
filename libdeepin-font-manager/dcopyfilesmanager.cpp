@@ -38,6 +38,8 @@ CopyFontThread::CopyFontThread(OPType type, short index, const QStringList &copy
     , m_index(index)
     , m_srcFiles(copyFiles)
 {
+    if (!copyFiles.isEmpty())
+        qDebug() << __FUNCTION__ << index << copyFiles.size();
 }
 
 void CopyFontThread::run()
@@ -101,7 +103,8 @@ void DCopyFilesManager::copyFiles(CopyFontThread::OPType type, const QStringList
     qint64 start = QDateTime::currentMSecsSinceEpoch();
     int tcount = QThread::idealThreadCount() > 0 ? QThread::idealThreadCount() : 1;
 
-    qDebug() << __FUNCTION__ << tcount  << QThread::currentThreadId();
+    //debug log
+    qDebug() << __FUNCTION__ << tcount  << type << fontList;
 
     int count = qRound(1.0f * fontList.size() / tcount);
     if (count == 0)

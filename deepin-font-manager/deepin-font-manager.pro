@@ -40,7 +40,8 @@ HEADERS += utils.h \
     views/dfontspinnerwidget.h \
     views/fonticontext.h \
     views/dfontinfoscrollarea.h \
-    views/dfontspinner.h
+    views/dfontspinner.h \
+    interfaces/dcomworker.h
 
 SOURCES += main.cpp \
 	   utils.cpp \
@@ -64,7 +65,8 @@ SOURCES += main.cpp \
     views/dfontspinnerwidget.cpp \
     views/fonticontext.cpp \
     views/dfontinfoscrollarea.cpp \
-    views/dfontspinner.cpp
+    views/dfontspinner.cpp \
+    interfaces/dcomworker.cpp
 
 RESOURCES += ../deepin-font-manager-assets/deepin-font-manager.qrc
 TRANSLATIONS += ../translations/deepin-font-manager.ts

@@ -291,8 +291,11 @@ void DFontMgrMainWindow::initConnections()
     QObject::connect(d->leftSiderBar, SIGNAL(onListWidgetItemClicked(int)), this,
                      SLOT(onLeftSiderBarItemClicked(int)));
 
-    QObject::connect(m_fontManager, SIGNAL(uninstallFontFinished(const QStringList &)), this,
-                     SIGNAL(requestDeleted(const QStringList &)));
+    QObject::connect(m_fontManager, &DFontManager::uninstallFontFinished, this, [ = ](const QStringList & files) {
+        m_fontPreviewListView->updateSpinner(DFontSpinnerWidget::Delete);
+        Q_EMIT DFontPreviewListDataThread::instance()->requestDeleted(files);
+    });
+
     QObject::connect(m_fontManager, &DFontManager::uninstallFcCacheFinish, this, &DFontMgrMainWindow::onUninstallFcCacheFinish);
     QObject::connect(m_signalManager, &SignalManager::showInstallFloatingMessage, this, &DFontMgrMainWindow::onShowMessage);
 
@@ -1550,11 +1553,8 @@ void DFontMgrMainWindow::onFontInstallFinished(const QStringList &fileList)
 {
     Q_D(DFontMgrMainWindow);
 
-    Q_EMIT m_fontPreviewListView->requestAdded(fileList);
+    Q_EMIT DFontPreviewListDataThread::instance()->requestAdded(fileList);
     d->textInputEdit->textChanged(d->textInputEdit->text());
-    if (!fileList.isEmpty()) {
-        showInstalledFiles();
-    }
 }
 
 /*************************************************************************
@@ -2077,6 +2077,7 @@ void DFontMgrMainWindow::showSpinner(DFontSpinnerWidget::SpinnerStyles styles, b
 *************************************************************************/
 void DFontMgrMainWindow::hideSpinner()
 {
+    qDebug() << __FUNCTION__ << m_cacheFinish << m_installFinish;
     if (!m_cacheFinish || !m_installFinish) {
         return;
     }

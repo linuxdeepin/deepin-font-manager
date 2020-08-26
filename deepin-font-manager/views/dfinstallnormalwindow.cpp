@@ -202,10 +202,7 @@ void DFInstallNormalWindow::initConnections()
 *************************************************************************/
 void DFInstallNormalWindow::getAllSysfiles()
 {
-    QList<DFontPreviewItemData> allFontInfo = DFontPreviewListDataThread::instance()->getFontModelList();
-    if (allFontInfo.isEmpty())
-        allFontInfo = DFMDBManager::instance()->getAllFontInfo();
-    for (auto &font : allFontInfo) {
+    for (auto &font : DFontPreviewListDataThread::instance()->getFontModelList()) {
         if (Q_UNLIKELY(font.fontInfo.filePath.contains("/usr/share/"))) {
             QString systemFileName;
             systemFileName.append(font.fontInfo.familyName).append(font.fontInfo.styleName);
@@ -645,6 +642,7 @@ void DFInstallNormalWindow::onCancelInstall()
     qDebug() << __FUNCTION__ << " called";
 #endif
     onReInstallFinished(0, QStringList());
+    Q_EMIT DFontManager::instance()->cacheFinish();
 }
 
 /*************************************************************************

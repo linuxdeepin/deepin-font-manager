@@ -144,7 +144,7 @@ public:
         MonoSpace,
     };
 
-    void refreshList();
+    void refreshList(const QStringList &allFontPathList);
     QStringList getAllFontPath(bool isStartup = false) const;
     QStringList getAllChineseFontPath() const;
     QStringList getAllMonoSpaceFontPath() const;

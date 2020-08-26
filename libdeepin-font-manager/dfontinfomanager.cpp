@@ -168,13 +168,13 @@ DFontInfoManager::~DFontInfoManager() {}
  <Return>        null            Description:null
  <Note>          null
 *************************************************************************/
-void DFontInfoManager::refreshList()
+void DFontInfoManager::refreshList(const QStringList &allFontPathList)
 {
     if (!dataList.isEmpty()) {
         dataList.clear();
     }
 
-    for (auto &path : getAllFontPath()) {
+    for (auto &path : allFontPathList) {
         DFontInfo fontInfo = getFontInfo(path);
         fontInfo.isSystemFont = isSystemFont(path);
         dataList << fontInfo;
@@ -239,7 +239,7 @@ QStringList DFontInfoManager::getAllFontPath(bool isStartup) const
 
     //用户字体文件
     QStringList usrfilelist = getFileNames(FONT_USR_DIR);
-    foreach (QString str, usrfilelist) {
+    for (const QString &str : usrfilelist) {
         if (!pathList.contains(str)) {
             pathList << str;
         }

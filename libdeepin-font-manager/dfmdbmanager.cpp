@@ -160,7 +160,7 @@ void DFMDBManager::appendAllKeys(QList<QString> &keyList)
  <Return>        QList<DFontPreviewItemData>  Description:所有字体的字体信息
  <Note>          null
 *************************************************************************/
-QList<DFontPreviewItemData> DFMDBManager::getAllFontInfo()
+QList<DFontPreviewItemData> DFMDBManager::getAllFontInfo(QList<DFontPreviewItemData> *deletedFontInfo)
 {
     QList<DFontPreviewItemData> fontItemDataList;
 
@@ -173,7 +173,12 @@ QList<DFontPreviewItemData> DFMDBManager::getAllFontInfo()
     for (QMap<QString, QString> &record : recordList) {
         if (record.size() > 0) {
             DFontPreviewItemData itemData = parseRecordToItemData(record);
-            fontItemDataList.push_back(itemData);
+            if (QFileInfo(itemData.fontInfo.filePath).exists()) {
+                fontItemDataList.push_back(itemData);
+            } else {
+                if (deletedFontInfo != nullptr)
+                    deletedFontInfo->push_back(itemData);
+            }
         }
     }
 

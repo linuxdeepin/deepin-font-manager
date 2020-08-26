@@ -120,7 +120,10 @@ public:
 
     //处理键盘press事件
     void keyPressEvent(QKeyEvent *event)override;
-    bool m_trig{false};
+
+    //安装完成后切换至用户字体页面
+    void showInstalledFiles();
+
 protected:
     //初始化应用数据
     void initData();
@@ -166,8 +169,6 @@ protected:
     void showExportFontMessage(int successCount, int abandonFilesCount);
     //调用显示快捷键的说明页面
     void showAllShortcut();
-    //安装完成后切换至用户字体页面
-    void showInstalledFiles();
     //通过styles来决定标签显示内容
     void showSpinner(DFontSpinnerWidget::SpinnerStyles styles, bool force = false);
     //判断是否需要隐藏旋转进度图标
@@ -207,8 +208,6 @@ signals:
     void fileSelected(const QStringList &files) const;
     //信号-文管中选中系统字体打开
     void fileSelectedInSys(const QStringList &files) const;
-    //信号-发出删除信号
-    void requestDeleted(const QStringList &files);
     //信号-设置正常安装模式
     void quickModeInstall(const QStringList files) const;
     //信号-添加安装字体

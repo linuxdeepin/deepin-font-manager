@@ -54,11 +54,6 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
     setUpdatesEnabled(true);
     setSelectionMode(QAbstractItemView::ExtendedSelection);
 
-    if (mw)
-        connect(mw, &DFontMgrMainWindow::requestDeleted, this, [ = ](const QStringList & files) {
-        updateSpinner(DFontSpinnerWidget::Delete);
-        Q_EMIT requestDeleted(files);
-    });
     initFontListData();
 
     initDelegate();
@@ -974,6 +969,9 @@ void DFontPreviewListView::selectFonts(const QStringList &fileList)
 {
     if (fileList.isEmpty())
         return;
+
+    DFontMgrMainWindow *mw = qobject_cast<DFontMgrMainWindow *>(m_parentWidget);
+    mw->showInstalledFiles();
 
     QItemSelection selection;
     qDebug() << __FUNCTION__ << " fileList size " << fileList.size() << ", row count " << getFontPreviewProxyModel()->rowCount();
