@@ -53,14 +53,15 @@ void GetFontList::run()
         thread->m_allFontPathList.clear();
         thread->m_allFontPathList = inst->getAllFontPath(m_isStartup);
         if (m_isStartup) {
-            qDebug() << __FUNCTION__ << "LLLLLLLLLLLLLLLLLL";
+            qDebug() << __FUNCTION__ << m_isStartup;
             inst->refreshList(thread->m_allFontPathList);
-            thread->m_fontModelList = DFMDBManager::instance()->getAllFontInfo(&thread->m_delFontInfoList);
         }
         break;
     case CHINESE:
         thread->m_chineseFontPathList.clear();
         thread->m_chineseFontPathList = inst->getAllChineseFontPath();
+        if (m_isStartup)
+            thread->m_fontModelList = DFMDBManager::instance()->getAllFontInfo(&thread->m_delFontInfoList);
         break;
     case MONOSPACE:
         thread->m_monoSpaceFontPathList.clear();

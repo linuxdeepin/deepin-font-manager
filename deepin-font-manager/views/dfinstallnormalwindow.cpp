@@ -641,8 +641,8 @@ void DFInstallNormalWindow::onCancelInstall()
 #ifdef QT_QML_DEBUG
     qDebug() << __FUNCTION__ << " called";
 #endif
-    onReInstallFinished(0, QStringList());
     Q_EMIT DFontManager::instance()->cacheFinish();
+    onReInstallFinished(0, QStringList());
 }
 
 /*************************************************************************

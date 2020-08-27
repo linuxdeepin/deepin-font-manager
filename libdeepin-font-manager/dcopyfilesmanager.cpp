@@ -33,23 +33,22 @@
 
 const QString sysDir = QDir::homePath() + "/.local/share/fonts";
 
-CopyFontThread::CopyFontThread(OPType type, short index, const QStringList &copyFiles)
+CopyFontThread::CopyFontThread(OPType type, short index)
     : m_opType(type)
     , m_index(index)
-    , m_srcFiles(copyFiles)
 {
-    if (!copyFiles.isEmpty())
-        qDebug() << __FUNCTION__ << index << copyFiles.size();
+    if (!autoDelete())
+        setAutoDelete(true);
+    if (!m_srcFiles.isEmpty())
+        qDebug() << __FUNCTION__ << index << m_srcFiles.size();
 }
 
 void CopyFontThread::run()
 {
-    if (!autoDelete())
-        setAutoDelete(true);
-
     if (m_srcFiles.isEmpty())
         return;
 
+//    qDebug() << __FUNCTION__ << m_index << m_srcFiles.size() << m_srcFiles;
     if (m_opType != EXPORT && m_opType != INSTALL)
         return;
 
@@ -80,6 +79,12 @@ void CopyFontThread::run()
     }
 }
 
+void CopyFontThread::appendFile(const QString &filePath)
+{
+    if (!m_srcFiles.contains(filePath))
+        m_srcFiles.append(filePath);
+}
+
 //文件拷贝类型：导出 安装
 CopyFontThread::OPType DCopyFilesManager::m_type = CopyFontThread::INVALID;
 //安装是否被取消
@@ -99,53 +104,46 @@ DCopyFilesManager::DCopyFilesManager(QObject *parent)
 */
 void DCopyFilesManager::copyFiles(CopyFontThread::OPType type, const QStringList &fontList)
 {
+    if (fontList.isEmpty())
+        return;
+
     m_type = type;
     qint64 start = QDateTime::currentMSecsSinceEpoch();
     int tcount = QThread::idealThreadCount() > 0 ? QThread::idealThreadCount() : 1;
+    if (tcount > fontList.size())
+        tcount = fontList.size();
+
+    QList<CopyFontThread *> threads = QList<CopyFontThread *>();
+    for (int i = 0; i < tcount; ++i) {
+        CopyFontThread *thread = new CopyFontThread(type, static_cast<short>(i));
+        threads.append(thread);
+    }
 
     //debug log
     qDebug() << __FUNCTION__ << tcount  << type << fontList;
 
-    int count = qRound(1.0f * fontList.size() / tcount);
-    if (count == 0)
-        ++count;
     int index = 0;
-    QList<QStringList> fontsList;
-    QStringList list;
 
+    int maxMod = (2 * tcount - 1) % (2 * tcount);
     for (const QString &file : fontList) {
-        if (fontsList.size() < tcount - 1) {
-            if (index < count) {
-                list << file;
-            }
-            ++index;
-            if (index == count) {
-                if (!list.isEmpty()) {
-                    fontsList << list;
-                    list.clear();
-                }
-                index = 0;
-            }
+        int modVal = (index % (2 * tcount));
+        if (modVal < tcount) {
+            threads.at(modVal)->appendFile(file);
         } else {
-            list << file;
+            threads.at(maxMod - modVal)->appendFile(file);
         }
+        index++;
     }
 
-    if (!list.isEmpty())
-        fontsList << list;
-
     QThreadPool *global_pool = QThreadPool::globalInstance();
-    index = 0;
-    for (const QStringList &fileList : fontsList) {
-        CopyFontThread *thread = new CopyFontThread(type, static_cast<qint8>(index), fileList);
-
+    for (CopyFontThread *thread : threads) {
         if (type == CopyFontThread::INSTALL) {
             connect(thread, &CopyFontThread::fileInstalled, DFontManager::instance(), &DFontManager::onInstallResult);
         }
         global_pool->start(thread);
-        index++;
     }
     global_pool->waitForDone();
+
     if (m_installCanceled) {
         m_installCanceled = false;
         deleteFiles(fontList, false);

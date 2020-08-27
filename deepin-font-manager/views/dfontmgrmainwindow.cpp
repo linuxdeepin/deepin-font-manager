@@ -2209,23 +2209,23 @@ QStringList DFontMgrMainWindow::checkFilesSpace(const QStringList &files, bool m
     if (files.isEmpty())
         return files;
 
-    QStringList installFiles;
     qint64 totalSelectSpace = 0;
     qint64 currentDiskSpace = getDiskSpace(m_bInstall);
 
+    QMap<qint64, QString> map;
     for (const QString &file : files) {
         QFileInfo fileInfo(file);
         totalSelectSpace = totalSelectSpace + fileInfo.size();
         if (totalSelectSpace >= currentDiskSpace) {
             break;
         } else {
-            installFiles.append(file);
+            map.insertMulti(fileInfo.size(), file);
         }
-
     }
+
     qDebug() << currentDiskSpace << totalSelectSpace << endl;
 
-    return installFiles;
+    return map.values();
 }
 
 

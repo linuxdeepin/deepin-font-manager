@@ -42,8 +42,9 @@ public:
         INVALID,
     };
 
-    CopyFontThread(OPType type, short index, const QStringList &copyFiles);
+    CopyFontThread(OPType type, short index);
     void run() override;
+    void appendFile(const QString &filePath);
 
 signals:
     void fileInstalled(const QString &familyName, const QString &targetName);
