@@ -194,7 +194,7 @@ public:
     //是否由slider获取的焦点
     void setIsGetFocusFromSlider(bool isGetFocusFromSlider);
     //根据是否需要恢复tab聚焦状态进行恢复
-    void syncTabStatus();
+    void syncTabStatus(bool restoreFlag = true);
     //是否需要恢复tab聚焦状态
     bool getRecoveryTabFocusState() const;
     //记录当前是否为tab聚焦状态

@@ -510,9 +510,11 @@ void DFontPreviewListView::setIsTabFocus(bool IsTabFocus)
  <Return>        null            Description:null
  <Note>          null
 *************************************************************************/
-void DFontPreviewListView::syncTabStatus()
+void DFontPreviewListView::syncTabStatus(bool restoreFlag)
 {
     setIsTabFocus(m_recoveryTabFocusState);
+    if (restoreFlag)
+        m_recoveryTabFocusState = false;
 }
 
 /*************************************************************************
@@ -1004,7 +1006,6 @@ void DFontPreviewListView::selectFonts(const QStringList &fileList)
     //用于安装后刷新聚焦、安装后focus for ctrl+a UT000539
     refreshFocuses();
     syncTabStatus();
-    m_recoveryTabFocusState = false;
 }
 
 /*************************************************************************

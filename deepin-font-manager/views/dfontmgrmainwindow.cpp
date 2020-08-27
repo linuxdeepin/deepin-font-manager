@@ -259,6 +259,7 @@ void DFontMgrMainWindow::initConnections()
     QObject::connect(d->rightKeyMenu, &QMenu::aboutToShow, this, [ = ]() {
         qDebug() << __FUNCTION__ << "about toshow";
         //记录操作之前有无tab聚焦
+        m_hasMenuTriggered = false;
         m_fontPreviewListView->setFocus(Qt::MouseFocusReason);
         m_fontPreviewListView->syncRecoveryTabStatus();
         m_menuCurData = m_fontPreviewListView->currModelData();
@@ -440,6 +441,7 @@ void DFontMgrMainWindow::initShortcuts()
         m_scShowAllSC->setAutoRepeat(false);
 
         connect(m_scShowAllSC, &QShortcut::activated, this, [this] {
+            m_fontPreviewListView->syncRecoveryTabStatus();
             this->showAllShortcut();
         });
     }
@@ -542,7 +544,9 @@ void DFontMgrMainWindow::initShortcuts()
             D_D(DFontMgrMainWindow);
             if (m_fontPreviewListView->hasFocus())
             {
+                m_fontPreviewListView->syncRecoveryTabStatus();
                 m_fontPreviewListView->onRightMenuShortCutActivated();
+                emit m_signalManager->onMenuHidden();
             } else if (d->searchFontEdit->lineEdit()->hasFocus())
             {
                 if (!m_isSearchLineEditMenuPoped) {
@@ -628,6 +632,7 @@ void DFontMgrMainWindow::initShortcuts()
             {
                 QAction *fontInfoAction = DFontMenuManager::getInstance()->getActionByMenuAction(
                     DFontMenuManager::M_FontInfo, DFontMenuManager::MenuType::RightKeyMenu);
+                m_fontPreviewListView->syncRecoveryTabStatus();
                 fontInfoAction->trigger();
             }
         });
@@ -2285,7 +2290,7 @@ void DFontMgrMainWindow::mainwindowFocusInCheck(QObject *obj, QEvent *event)
     if (obj == m_fontPreviewListView) {
         QFocusEvent *focusEvent = dynamic_cast<QFocusEvent *>(event);
         if (focusEvent->reason() == Qt::ActiveWindowFocusReason) {
-            m_fontPreviewListView->syncTabStatus();
+            m_fontPreviewListView->syncTabStatus(false);
 //            else {
 //                m_fontPreviewListView->setIsTabFocus(m_previewListViewTabFocus);
 //            }
