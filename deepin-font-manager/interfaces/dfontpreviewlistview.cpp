@@ -1127,7 +1127,7 @@ void DFontPreviewListView::mouseMoveEvent(QMouseEvent *event)
 *************************************************************************/
 void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
 {
-    qDebug() << "\n" << __FUNCTION__ << event->type() << event->button() << "zzzzzzzzzz";
+    qDebug() << "\n" << __FUNCTION__ << event->type() << event->button();
     //检查当前是否有选中，恢复起始位
     checkIfHasSelection();
     QListView::mousePressEvent(event);
@@ -1137,73 +1137,112 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
     QPoint clickPoint = event->pos();
     QModelIndex modelIndex = indexAt(clickPoint);
 
-    if (event->button() == Qt::LeftButton) {
-        m_isMousePressNow = true;
-//          if (event->source() == Qt::MouseEventSynthesizedByQt)
-//              touchPanelClick(event);
-        if (modelIndex.isValid()) {
-            if (QApplication::keyboardModifiers() == Qt::ShiftModifier) {
-                //Shift多选
-                updateShiftSelect(modelIndex);
-            } else {
-                //左键单击
-                m_currentSelectedRow = modelIndex.row();
-                m_curRect = visualRect(modelIndex);
+    bool isShiftMd = (event->modifiers() == Qt::ShiftModifier) ? true : false;
+    bool isCtrlMd = (event->modifiers() == Qt::CTRL) ? true : false;
 
-                QRect collectIconRect = getCollectionIconRect(m_curRect);
-
-                FontData fdata = qvariant_cast<FontData>(m_fontPreviewProxyModel->data(modelIndex));
-                qDebug() << "count" << count();
-                if (collectIconRect.contains(clickPoint)) {
-                    if (fdata.getHoverState() != IconPress) {
-                        fdata.setHoverState(IconPress);
-                        m_fontPreviewProxyModel->setData(modelIndex, QVariant::fromValue(fdata), Qt::DisplayRole);
-                    }
-                    m_pressModelIndex = modelIndex;
-                } else if (fdata.getHoverState() != IconNormal) {
-                    fdata.setHoverState(IconNormal);
-                    m_fontPreviewProxyModel->setData(modelIndex, QVariant::fromValue(fdata), Qt::DisplayRole);
-                }
+    if (modelIndex.isValid()) {
+        if (event->button() == Qt::LeftButton) {
+            onMouseLeftBtnPressed(modelIndex, clickPoint, isShiftMd, isCtrlMd);
+        } else if (event->button() == Qt::RightButton) {
+            onMouseRightBtnPressed(modelIndex, isShiftMd);
+        } else if (event->button() == Qt::MidButton) {
+            if (!isShiftMd && !isCtrlMd) {
+                clearSelection();
+                setCurrentIndex(modelIndex);
+                setCurrentSelected(modelIndex.row());
+            } else if (selectedIndexes().count() == 0) {
+                setIsTabFocus(false);
             }
         }
-    } else if ((event->button() == Qt::RightButton)  && modelIndex.isValid()) {
-        if (event->modifiers() == Qt::ShiftModifier) {
+    } else {
+        if (!isShiftMd && !isCtrlMd) {
             clearSelection();
-            if (m_currentSelectedRow <= modelIndex.row()) {
-                for (auto it = m_currentSelectedRow; it <= modelIndex.row(); it++) {
-                    selectionModel()->select(m_fontPreviewProxyModel->index(it, 0), QItemSelectionModel::Select);
-                }
-            } else if (m_currentSelectedRow > modelIndex.row()) {
-                for (auto it = modelIndex.row(); it <= m_currentSelectedRow; it++) {
-                    selectionModel()->select(m_fontPreviewProxyModel->index(it, 0), QItemSelectionModel::Select);
-                }
-            }
+            setIsTabFocus(false);
         }
-        //右键单击
-        if (!this->selectedIndexes().contains(modelIndex) && event->modifiers() != Qt::ShiftModifier) {
-            this->setCurrentIndex(modelIndex);
-        }
-        //右键index设置为shift起始位置
-        if (event->modifiers() != Qt::ShiftModifier)
-            setCurrentSelected(modelIndex.row());
-        //恢复normal状态
-        FontData fdata = qvariant_cast<FontData>(m_fontPreviewProxyModel->data(modelIndex));
+    }
+}
 
-        if (fdata.getHoverState() != IconNormal) {
+/*************************************************************************
+ <Function>      onMouseLeftBtnPressed
+ <Description>   鼠标左键press事件处理函数
+ <Author>
+ <Input>
+    <param1>     modelIndex      Description:当前press位置的modelIndex
+    <param1>     clickPoint      Description:当前press位置点--用于收藏按钮状态判断
+    <param2>     isShiftMdf      Description:是否shift组合键被按下
+    <param2>     isCtrlMdf       Description:是否ctrl组合键被按下
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
+void DFontPreviewListView::onMouseLeftBtnPressed(const QModelIndex &modelIndex, const QPoint &clickPoint, bool isShiftMdf, bool isCtrlMdf)
+{
+    m_isMousePressNow = true;
+    if (isShiftMdf) {
+        updateShiftSelect(modelIndex);
+    } else if (isCtrlMdf && selectedIndexes().count() == 0) {
+        setIsTabFocus(false);
+    } else {
+        //左键单击
+        m_currentSelectedRow = modelIndex.row();
+        m_curRect = visualRect(modelIndex);
+
+        QRect collectIconRect = getCollectionIconRect(m_curRect);
+
+        FontData fdata = qvariant_cast<FontData>(m_fontPreviewProxyModel->data(modelIndex));
+        if (collectIconRect.contains(clickPoint)) {
+            if (fdata.getHoverState() != IconPress) {
+                fdata.setHoverState(IconPress);
+                m_fontPreviewProxyModel->setData(modelIndex, QVariant::fromValue(fdata), Qt::DisplayRole);
+            }
+            m_pressModelIndex = modelIndex;
+        } else if (fdata.getHoverState() != IconNormal) {
             fdata.setHoverState(IconNormal);
             m_fontPreviewProxyModel->setData(modelIndex, QVariant::fromValue(fdata), Qt::DisplayRole);
         }
+    }
+}
 
-        //弹出右键菜单
-        onListViewShowContextMenu();
-        //菜单关闭之后
-        emit m_signalManager->onMenuHidden();
-        refreshFocuses();
-    } else if (event->button() == Qt::MidButton && QApplication::keyboardModifiers() == Qt::NoModifier) {
+/*************************************************************************
+ <Function>      onMouseRightBtnPressed
+ <Description>   鼠标右键press事件处理函数
+ <Author>
+ <Input>
+    <param1>     modelIndex      Description:当前press位置的modelIndex
+    <param2>     isShiftMdf      Description:是否shift组合键被按下
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
+void DFontPreviewListView::onMouseRightBtnPressed(const QModelIndex &modelIndex, bool isShiftMdf)
+{
+    if (isShiftMdf) {
         clearSelection();
-        setCurrentIndex(modelIndex);
+        if (m_currentSelectedRow <= modelIndex.row()) {
+            for (auto it = m_currentSelectedRow; it <= modelIndex.row(); it++) {
+                selectionModel()->select(m_fontPreviewProxyModel->index(it, 0), QItemSelectionModel::Select);
+            }
+        } else if (m_currentSelectedRow > modelIndex.row()) {
+            for (auto it = modelIndex.row(); it <= m_currentSelectedRow; it++) {
+                selectionModel()->select(m_fontPreviewProxyModel->index(it, 0), QItemSelectionModel::Select);
+            }
+        }
+    } else {
         setCurrentSelected(modelIndex.row());
     }
+    //右键单击
+    if (!selectedIndexes().contains(modelIndex) && !isShiftMdf) {
+        this->setCurrentIndex(modelIndex);
+    }
+    //恢复normal状态
+    FontData fdata = qvariant_cast<FontData>(m_fontPreviewProxyModel->data(modelIndex));
+    if (fdata.getHoverState() != IconNormal) {
+        fdata.setHoverState(IconNormal);
+        m_fontPreviewProxyModel->setData(modelIndex, QVariant::fromValue(fdata), Qt::DisplayRole);
+    }
+    //弹出右键菜单
+    onListViewShowContextMenu();
+    //菜单关闭之后
+    emit m_signalManager->onMenuHidden();
+    refreshFocuses();
 }
 
 /*************************************************************************
@@ -1218,71 +1257,82 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
 void DFontPreviewListView::mouseReleaseEvent(QMouseEvent *event)
 {
     qDebug() << __FUNCTION__ << " begin";
-
     if (Qt::MidButton == event->button()) {
         return;
     }
     QListView::mouseReleaseEvent(event);
 
     QPoint clickPoint = event->pos();
-
     QModelIndex modelIndex = indexAt(clickPoint);
-
-    QModelIndexList indexList;
     m_currModelIndex = modelIndex;
 
+    if (event->button() == Qt::LeftButton) {
+        onMouseLeftBtnReleased(modelIndex, clickPoint);
+    }
+    qDebug() << __FUNCTION__ << " end\n\n";
+}
+
+/*************************************************************************
+ <Function>      onMouseLeftBtnReleased
+ <Description>   鼠标左键release事件处理函数
+ <Author>
+ <Input>
+    <param1>     modelIndex      Description:当前press位置的modelIndex
+    <param1>     clickPoint      Description:当前press位置点--用于收藏按钮状态判断
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
+void DFontPreviewListView::onMouseLeftBtnReleased(const QModelIndex &modelIndex, const QPoint &clickPoint)
+{
+    QModelIndexList indexList;
     FontData fdata = qvariant_cast<FontData>(m_fontPreviewProxyModel->data(modelIndex));
     DFontPreviewItemData itemData = m_dataThread->getFontData(fdata);
 
     QRect rect = visualRect(modelIndex);
     QRect checkboxRealRect = getCheckboxRect(rect);
     QRect collectIconRect = getCollectionIconRect(rect);
-    //539 排除右键点击效果
-    if (event->button() == Qt::LeftButton) {
-        m_isMousePressNow = false;
-//        m_previousPressPos = -1;
-        clearPressState(ClearType::MoveClear);
-        if (checkboxRealRect.contains(clickPoint)) {
-            //触发启用/禁用字体
-            int sysFontCnt = (fdata.isEnabled() && itemData.fontInfo.isSystemFont) ? 1 : 0;
-            int curFontCnt = (itemData == m_curFontData) ? 1 : 0;
-            if (sysFontCnt == 0 && curFontCnt == 0)
-                indexList << modelIndex;
-            onEnableBtnClicked(indexList, sysFontCnt, curFontCnt, !itemData.fontData.isEnabled(), m_currentFontGroup == FontGroup::ActiveFont);
-        } else if (collectIconRect.contains(clickPoint)) {
-            //恢复normal状态
-            if (fdata.getHoverState() != IconNormal) {
-                fdata.setHoverState(IconNormal);
-                m_fontPreviewProxyModel->setData(modelIndex, QVariant::fromValue(fdata), Qt::DisplayRole);
-            }
-            //触发收藏/取消收藏
+
+    m_isMousePressNow = false;
+    clearPressState(ClearType::MoveClear);
+    if (checkboxRealRect.contains(clickPoint)) {
+        //触发启用/禁用字体
+        int sysFontCnt = (fdata.isEnabled() && itemData.fontInfo.isSystemFont) ? 1 : 0;
+        int curFontCnt = (itemData == m_curFontData) ? 1 : 0;
+        if (sysFontCnt == 0 && curFontCnt == 0)
             indexList << modelIndex;
-            onCollectBtnClicked(indexList, !itemData.fontData.isCollected(), (m_currentFontGroup == FontGroup::CollectFont));
-        }
-
-        //我的收藏界面,index点击之后会涉及到index的变化,所以需要重新获取一遍
-        if (m_currentFontGroup == FontGroup::CollectFont) {
-            qDebug() << __FUNCTION__ << " collect font grp";
-            modelIndex = currModelIndex();
-            rect = visualRect(modelIndex);
-            checkboxRealRect = getCheckboxRect(rect);
-            collectIconRect = getCollectionIconRect(rect);
-        }
-
-        fdata = qvariant_cast<FontData>(m_fontPreviewProxyModel->data(modelIndex));
-
-        if (collectIconRect.contains(clickPoint)) {
-            if (fdata.getHoverState() != IconHover) {
-                fdata.setHoverState(IconHover);
-                m_fontPreviewProxyModel->setData(modelIndex, QVariant::fromValue(fdata), Qt::DisplayRole);
-            }
-            m_hoverModelIndex = modelIndex;
-        } else if (fdata.getHoverState() != IconNormal) {
+        onEnableBtnClicked(indexList, sysFontCnt, curFontCnt, !itemData.fontData.isEnabled(), m_currentFontGroup == FontGroup::ActiveFont);
+    } else if (collectIconRect.contains(clickPoint)) {
+        //恢复normal状态
+        if (fdata.getHoverState() != IconNormal) {
             fdata.setHoverState(IconNormal);
             m_fontPreviewProxyModel->setData(modelIndex, QVariant::fromValue(fdata), Qt::DisplayRole);
         }
+        //触发收藏/取消收藏
+        indexList << modelIndex;
+        onCollectBtnClicked(indexList, !itemData.fontData.isCollected(), (m_currentFontGroup == FontGroup::CollectFont));
     }
-    qDebug() << __FUNCTION__ << " end\n\n";
+    QModelIndex modelIndexNew = modelIndex;
+    //我的收藏界面,index点击之后会涉及到index的变化,所以需要重新获取一遍
+    if (m_currentFontGroup == FontGroup::CollectFont) {
+        qDebug() << __FUNCTION__ << " collect font grp";
+        modelIndexNew = currModelIndex();
+        rect = visualRect(modelIndexNew);
+        checkboxRealRect = getCheckboxRect(rect);
+        collectIconRect = getCollectionIconRect(rect);
+    }
+
+    fdata = qvariant_cast<FontData>(m_fontPreviewProxyModel->data(modelIndexNew));
+
+    if (collectIconRect.contains(clickPoint)) {
+        if (fdata.getHoverState() != IconHover) {
+            fdata.setHoverState(IconHover);
+            m_fontPreviewProxyModel->setData(modelIndexNew, QVariant::fromValue(fdata), Qt::DisplayRole);
+        }
+        m_hoverModelIndex = modelIndexNew;
+    } else if (fdata.getHoverState() != IconNormal) {
+        fdata.setHoverState(IconNormal);
+        m_fontPreviewProxyModel->setData(modelIndexNew, QVariant::fromValue(fdata), Qt::DisplayRole);
+    }
 }
 
 /*************************************************************************

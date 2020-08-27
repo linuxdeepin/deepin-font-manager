@@ -278,6 +278,11 @@ private:
     void keyPressEventFilter(const QModelIndexList &list, bool isUp, bool isDown, bool isShiftModifier);
     //检查当前是否无选中
     void checkIfHasSelection();
+    //鼠标左键press事件处理函数
+    void onMouseLeftBtnPressed(const QModelIndex &modelIndex, const QPoint &point, bool isShiftMdf, bool isCtrlMdf);
+    //鼠标右键press事件处理函数
+    void onMouseRightBtnPressed(const QModelIndex &modelIndex, bool isShiftMdf);
+    void onMouseLeftBtnReleased(const QModelIndex &modelIndex, const QPoint &clickPoint);
 signals:
     //字体列表加载状态
     void onLoadFontsStatus(int type);
