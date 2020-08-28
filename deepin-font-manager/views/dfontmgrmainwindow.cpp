@@ -1235,6 +1235,7 @@ bool DFontMgrMainWindow::installFont(const QStringList &files)
 
     //m_fontPreviewListView->clearSelection();//取消安装不清空选中状态
     qDebug() << "installFont new DFInstallNormalWindow " << installFiles.size() << endl;
+    m_installTm = QDateTime::currentMSecsSinceEpoch();
     m_dfNormalInstalldlg = new DFInstallNormalWindow(installFiles, this);
     emit m_signalManager->setSpliteWidgetScrollEnable(true);//开始安装
     if (m_isQuickMode) {
@@ -1722,17 +1723,17 @@ void DFontMgrMainWindow::onLoadStatus(int type)
 *************************************************************************/
 void DFontMgrMainWindow::onShowMessage(int successCount)
 {
-    QString messageA;
-    QString messageB;
+    QString message;
 
     if (successCount == 1) {
-        messageA = DApplication::translate("DFontMgrMainWindow", "%1 font installed").arg(successCount);
-        DMessageManager::instance()->sendMessage(this, QIcon("://ok.svg"), messageA);
-
+        message = DApplication::translate("DFontMgrMainWindow", "%1 font installed").arg(successCount);
     } else if (successCount > 1) {
-        messageA = DApplication::translate("DFontMgrMainWindow", "%1 fonts installed").arg(successCount);
-        DMessageManager::instance()->sendMessage(this, QIcon("://ok.svg"), messageA);
+        message = DApplication::translate("DFontMgrMainWindow", "%1 fonts installed").arg(successCount);
     }
+
+    DMessageManager::instance()->sendMessage(this, QIcon("://ok.svg"), message);
+
+    qDebug() << __FUNCTION__ << " pop toast message " << message << " total (ms) :" << QDateTime::currentMSecsSinceEpoch() - m_installTm;
 }
 
 /*************************************************************************
@@ -1841,11 +1842,10 @@ void DFontMgrMainWindow::showExportFontMessage(int successCount, int abandonFile
     if (abandonFilesCount == 0) {
         if (successCount == 1) {
             message = DApplication::translate("Main", "The font exported to your desktop");
-            DMessageManager::instance()->sendMessage(this, QIcon("://ok.svg"), message);
         } else {
             message = DApplication::translate("Main", "%1 fonts exported to your desktop").arg(successCount);
-            DMessageManager::instance()->sendMessage(this, QIcon("://ok.svg"), message);
         }
+        DMessageManager::instance()->sendMessage(this, QIcon("://ok.svg"), message);
     } else if (abandonFilesCount == 1) {
         message = DApplication::translate("Main", "Failed to export 1 font. There is not enough disk space.");
         DMessageManager::instance()->sendMessage(this, QIcon("://exception-logo.svg"), message);
@@ -1853,7 +1853,7 @@ void DFontMgrMainWindow::showExportFontMessage(int successCount, int abandonFile
         message = DApplication::translate("Main", "Failed to export %1 fonts. There is not enough disk space.").arg(abandonFilesCount);
         DMessageManager::instance()->sendMessage(this, QIcon("://exception-logo.svg"), message);
     }
-
+    qDebug() << __FUNCTION__ << " pop toast message " << message;
 }
 
 /*************************************************************************

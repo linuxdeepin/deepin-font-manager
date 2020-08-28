@@ -10,7 +10,7 @@ class DFontPreviewProxyModel : public QSortFilterProxyModel
 
 public:
     explicit DFontPreviewProxyModel(QObject *parent = nullptr);
-    ~DFontPreviewProxyModel();
+    ~DFontPreviewProxyModel() override;
     //判断给定项是否包含在模型中
     bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const override;
     //获取行数
@@ -28,7 +28,6 @@ signals:
 private:
     int m_filterGroup;
     bool m_useSystemFilter;
-//    bool m_editStatus;
     QString m_fontNamePattern;
 };
 

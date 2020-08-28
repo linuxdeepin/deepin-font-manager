@@ -296,6 +296,7 @@ protected:
     volatile qint8 m_fIsDeleting {UnDeleting};
 
     FocusStatus m_currentStatus;
+    qint64 m_installTm;
 
     //Stand shortcut
     //Implement by DTK                       //Close window       --> Alt+F4
