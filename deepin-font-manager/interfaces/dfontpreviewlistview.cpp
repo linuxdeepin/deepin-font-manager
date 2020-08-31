@@ -389,6 +389,19 @@ int DFontPreviewListView::getOnePageCount()
 }
 
 /*************************************************************************
+ <Function>      getFontViewHasFocus
+ <Description>   获取操作前字体列表焦点状态
+ <Author>        UT000539
+ <Input>         null
+ <Return>        bool           Description:有无焦点
+ <Note>          null
+*************************************************************************/
+bool DFontPreviewListView::getFontViewHasFocus() const
+{
+    return m_FontViewHasFocus;
+}
+
+/*************************************************************************
  <Function>      setFontViewHasFocus
  <Description>   记录操作前字体列表有无焦点
  <Author>        UT000539

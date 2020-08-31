@@ -260,7 +260,7 @@ void DFontMgrMainWindow::initConnections()
         qDebug() << __FUNCTION__ << "about toshow";
         //记录操作之前有无tab聚焦
         m_hasMenuTriggered = false;
-        m_fontPreviewListView->setFocus(Qt::MouseFocusReason);
+//        m_fontPreviewListView->setFocus(Qt::MouseFocusReason);
         m_fontPreviewListView->syncRecoveryTabStatus();
         m_menuCurData = m_fontPreviewListView->currModelData();
         m_fontPreviewListView->selectedFonts(m_menuCurData, &m_menuDelCnt, &m_menuDisableSysCnt,
@@ -370,8 +370,13 @@ void DFontMgrMainWindow::initConnections()
     });
 
     connect(m_signalManager, &SignalManager::onMenuHidden, [ = ] {
-        if (!m_hasMenuTriggered)
-            m_fontPreviewListView->syncTabStatus();
+        if (m_fontPreviewListView->getFontViewHasFocus() == true)
+        {
+            m_fontPreviewListView->setFocus(Qt::TabFocusReason);
+            if (!m_hasMenuTriggered)
+                m_fontPreviewListView->syncTabStatus();
+            m_fontPreviewListView->setFontViewHasFocus(false);
+        }
         m_hasMenuTriggered = false;
     });
 }
@@ -542,12 +547,7 @@ void DFontMgrMainWindow::initShortcuts()
         connect(m_scShowMenu, &QShortcut::activated, this, [this] {
 //            DFontMgrMainWindow *mw = qobject_cast<DFontMgrMainWindow *>(this);
             D_D(DFontMgrMainWindow);
-            if (m_fontPreviewListView->hasFocus())
-            {
-                m_fontPreviewListView->syncRecoveryTabStatus();
-                m_fontPreviewListView->onRightMenuShortCutActivated();
-                emit m_signalManager->onMenuHidden();
-            } else if (d->searchFontEdit->lineEdit()->hasFocus())
+            if (d->searchFontEdit->lineEdit()->hasFocus())
             {
                 if (!m_isSearchLineEditMenuPoped) {
                     QPoint GlobalPoint(d->searchFontEdit->mapToGlobal(QPoint(0, 0)));
@@ -569,7 +569,10 @@ void DFontMgrMainWindow::initShortcuts()
                 }
             } else
             {
-                return;
+                m_fontPreviewListView->syncRecoveryTabStatus();
+                m_fontPreviewListView->setFontViewHasFocus(m_fontPreviewListView->hasFocus());
+                m_fontPreviewListView->onRightMenuShortCutActivated();
+                emit m_signalManager->onMenuHidden();
             }
         }, Qt::UniqueConnection);
     }

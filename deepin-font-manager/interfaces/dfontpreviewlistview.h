@@ -201,6 +201,8 @@ public:
     void syncRecoveryTabStatus();
     void setFontViewHasFocus(bool FontViewHasFocus);
 
+    bool getFontViewHasFocus() const;
+
 protected:
     //选中切换后触发函数
     void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected) override;
