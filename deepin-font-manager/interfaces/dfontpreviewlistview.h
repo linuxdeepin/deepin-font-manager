@@ -199,6 +199,8 @@ public:
     bool getRecoveryTabFocusState() const;
     //记录当前是否为tab聚焦状态
     void syncRecoveryTabStatus();
+    void setFontViewHasFocus(bool FontViewHasFocus);
+
 protected:
     //选中切换后触发函数
     void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected) override;
@@ -240,7 +242,8 @@ private:
     bool m_isGetFocusFromSlider{false};
     bool m_IsTabFocus = false;
     bool m_isMousePressNow {false};
-
+    //记录删除前字体列表焦点状态539
+    bool m_FontViewHasFocus{false};
     QPoint lastTouchBeginPos;
     QPointer<QTimer> touchCheckTimer;
 

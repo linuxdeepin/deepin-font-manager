@@ -298,7 +298,7 @@ int DFontPreviewListView::count() const
 /*************************************************************************
  <Function>      cancelDel
  <Description>   取消删除后,重置之前记录的删除后的位置
- <Author>        null
+ <Author>        UT000539
  <Input>
     <param1>     null            Description:null
  <Return>        null            Description:null
@@ -307,12 +307,13 @@ int DFontPreviewListView::count() const
 void DFontPreviewListView::cancelDel()
 {
     m_selectAfterDel = -1;
+    setFontViewHasFocus(false);
 }
 
 /*************************************************************************
  <Function>      viewChanged
  <Description>   切换界面后,滚动到最上方
- <Author>        null
+ <Author>        UT000539
  <Input>
     <param1>     null            Description:null
  <Return>        null            Description:null
@@ -328,7 +329,7 @@ void DFontPreviewListView::viewChanged()
 /*************************************************************************
  <Function>      markPositionBeforeRemoved
  <Description>   记录移除前位置
- <Author>        null
+ <Author>        UT000539
  <Input>
     <param1>     null            Description:null
  <Return>        null            Description:null
@@ -352,7 +353,7 @@ void DFontPreviewListView::markPositionBeforeRemoved(bool isDelete, const QModel
 /*************************************************************************
  <Function>      refreshFocuses
  <Description>   设置focus状态、设置选中状态
- <Author>        null
+ <Author>        UT000539
  <Input>
     <param1>     null            Description:null
  <Return>        null            Description:null
@@ -368,9 +369,8 @@ void DFontPreviewListView::refreshFocuses()
 /*************************************************************************
  <Function>      getOnePageCount
  <Description>   获取一页中列表项的个数
- <Author>        null
- <Input>
-    <param1>     null            Description:null
+ <Author>        UT000539
+ <Input>         null
  <Return>        int             Description:列表项的个数
  <Note>          null
 *************************************************************************/
@@ -386,6 +386,20 @@ int DFontPreviewListView::getOnePageCount()
     int itemHeight = size.height();
     int  count = height / itemHeight;
     return count;
+}
+
+/*************************************************************************
+ <Function>      setFontViewHasFocus
+ <Description>   记录操作前字体列表有无焦点
+ <Author>        UT000539
+ <Input>
+    <param1>     FontViewHasFocus Description:聚焦情况
+ <Return>        null             Description:null
+ <Note>          null
+*************************************************************************/
+void DFontPreviewListView::setFontViewHasFocus(bool FontViewHasFocus)
+{
+    m_FontViewHasFocus = FontViewHasFocus;
 }
 
 /*************************************************************************
@@ -434,7 +448,7 @@ int DFontPreviewListView::getOnePageCount()
 /*************************************************************************
  <Function>      getRecoveryTabFocusState
  <Description>   是否需要恢复tab聚焦状态
- <Author>
+ <Author>        UT000539
  <Input>         null
  <Return>        bool         Description:是否需要恢复聚焦状态
  <Note>          null
@@ -447,7 +461,7 @@ bool DFontPreviewListView::getRecoveryTabFocusState() const
 /*************************************************************************
  <Function>      setIsGetFocusFromSlider
  <Description>   是否由slider获取的焦点
- <Author>        null
+ <Author>        UT000539
  <Input>
     <param1>     isGetFocusFromSlider Description:设置参数
  <Return>        null                 Description:null
@@ -459,9 +473,9 @@ void DFontPreviewListView::setIsGetFocusFromSlider(bool isGetFocusFromSlider)
 }
 
 /*************************************************************************
- <Function>      null
- <Description>   null
- <Author>        null
+ <Function>      setIsLostFocusOfLeftKey
+ <Description>   更新是否由菜单获得焦点的标志位
+ <Author>        UT000539
  <Input>
     <param1>     null            Description:
     <param2>     null            Description:
@@ -477,7 +491,7 @@ void DFontPreviewListView::setIsLostFocusOfLeftKey(bool isLostFocusOfLeftKey)
 /*************************************************************************
  <Function>      setRecoveryTabFocusState
  <Description>   记录操作前的tabfocus状态,用于进行操作后还原
- <Author>        null
+ <Author>        UT000539
  <Input>
     <param1>     recoveryTabFocusState            Description:操作前的tabfocus状态
  <Return>        null            Description:null
@@ -491,7 +505,7 @@ void DFontPreviewListView::setRecoveryTabFocusState(bool recoveryTabFocusState)
 /*************************************************************************
  <Function>      setIsTabFocus
  <Description>   设置是否为tabfocus的标志位
- <Author>        null
+ <Author>        UT000442
  <Input>
     <param1>     IsTabFocus            Description:是否为tabfocus
  <Return>        null            Description:null
@@ -614,7 +628,10 @@ void DFontPreviewListView::updateModel(bool showSpinner)
     selectItemAfterRemoved(m_bListviewAtButtom, m_bListviewAtTop, false, false);
 
     //删除之后设置焦点
-    refreshFocuses();
+    if (m_FontViewHasFocus) {
+        refreshFocuses();
+        setFontViewHasFocus(false);
+    }
     Q_EMIT rowCountChanged();
     Q_EMIT deleteFinished();
     syncTabStatus();
@@ -801,7 +818,7 @@ void DFontPreviewListView::sortModelIndexList(QModelIndexList &sourceList)
 /*************************************************************************
  <Function>      selectItemAfterRemoved
  <Description>   设置item移除后的选中
- <Author>        null
+ <Author>        UT000539
  <Input>
     <param1>     isAtBottom            Description:是否在列表底部
     <param2>     isAtTop               Description:是否在列表顶部

@@ -1774,6 +1774,7 @@ void DFontMgrMainWindow::onShowSpinner(bool bShow, bool force, DFontSpinnerWidge
 void DFontMgrMainWindow::delCurrentFont(bool activatedByRightmenu)
 {
     qDebug() << __FUNCTION__ << m_fIsDeleting;
+    m_fontPreviewListView->setFontViewHasFocus(m_fontPreviewListView->hasFocus());
     if (m_fIsDeleting > UnDeleting)
         return;
     m_fIsDeleting = Deleting;
