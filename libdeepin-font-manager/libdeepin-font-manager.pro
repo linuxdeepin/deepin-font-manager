@@ -9,7 +9,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = deepin-font-manager
 TEMPLATE = lib
 CONFIG += c++11 link_pkgconfig
-PKGCONFIG += freetype2 fontconfig
+PKGCONFIG += freetype2 fontconfig gsettings-qt
 
 CONFIG += create_pc create_prl no_install_prl
 
@@ -72,7 +72,9 @@ translations.files = $$PWD/../translations/*.qm
 contents_file.path = /usr/share/deepin-font-manager/
 contents_file.files += $$PWD/CONTENTS.txt
 
-INSTALLS += target includes contents_file translations
+install_gsettings.files = ./schemas/com.deepin.font-manager.gschema.xml
+install_gsettings.path = /usr/share/glib-2.0/schemas/
+
+INSTALLS += target install_gsettings includes contents_file translations
 
 TRANSLATIONS += ../translations/deepin-font-manager.ts
-

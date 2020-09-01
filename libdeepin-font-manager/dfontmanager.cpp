@@ -221,7 +221,7 @@ void DFontManager::doInstall(const QStringList &fileList)
     m_installCanceled = false;
     m_installedCount = 0;
 
-    DCopyFilesManager::copyFiles(CopyFontThread::INSTALL, fileList);
+    DCopyFilesManager::instance()->copyFiles(CopyFontThread::INSTALL, fileList);
 
     //delete installed fonts to prevent next time install take long time
     if (!m_installCanceled) {

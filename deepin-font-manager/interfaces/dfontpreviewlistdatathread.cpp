@@ -386,7 +386,7 @@ void DFontPreviewListDataThread::onExportFont(const QStringList &fontList)
     if (!dir.exists())
         dir.mkpath(FONTS_DESKTOP_DIR);
 
-    DCopyFilesManager::copyFiles(CopyFontThread::EXPORT, fontList);
+    DCopyFilesManager::instance()->copyFiles(CopyFontThread::EXPORT, fontList);
     Q_EMIT exportFontFinished(fontList.size());
 }
 
