@@ -1182,6 +1182,10 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
                 setCurrentSelected(modelIndex.row());
             } else if (selectedIndexes().count() == 0) {
                 setIsTabFocus(false);
+            } else if (isShiftMd) {
+                updateShiftSelect(modelIndex);
+            } else if (isCtrlMd) {
+                setCurrentSelected(modelIndex.row());
             }
         }
     } else {
