@@ -110,6 +110,7 @@ DFontInfo DFMDBManager::getDFontInfo(const QMap<QString, QString> &record)
     fontInfo.fullname = record.value("fullname");
     fontInfo.psname = record.value("psname");
     fontInfo.trademark = record.value("trademark");
+    fontInfo.sp3FamilyName = record.value("fontPreview");
     DFontInfoManager::instance()->getDefaultPreview(fontInfo);
 
     return fontInfo;
@@ -147,6 +148,8 @@ void DFMDBManager::appendAllKeys(QList<QString> &keyList)
     keyList.append("fullname");
     keyList.append("psname");
     keyList.append("trademark");
+    //add for SP3 familyName
+    keyList.append("fontPreview");
 }
 
 /*************************************************************************
@@ -243,12 +246,9 @@ QString DFMDBManager::isFontInfoExist(const DFontInfo &newFileFontInfo)
     keyList.append("filePath");
 
     QMap<QString, QString> whereMap;
+    whereMap.insert("familyName", newFileFontInfo.familyName);
     whereMap.insert("styleName", newFileFontInfo.styleName);
-    if (newFileFontInfo.fullname.isEmpty()) {
-        whereMap.insert("familyName", newFileFontInfo.familyName);
-    } else {
-        whereMap.insert("fullname", newFileFontInfo.fullname);
-    }
+
     m_sqlUtil->findRecords(keyList, whereMap, &recordList);
 
     if (recordList.size() > 0) {
@@ -258,7 +258,6 @@ QString DFMDBManager::isFontInfoExist(const DFontInfo &newFileFontInfo)
 
     return QString();
 }
-
 
 /*************************************************************************
  <Function>      mapItemData
@@ -292,6 +291,7 @@ QMap<QString, QString> DFMDBManager::mapItemData(DFontPreviewItemData itemData)
     mapData.insert("fullname", itemData.fontInfo.fullname);
     mapData.insert("psname", itemData.fontInfo.psname);
     mapData.insert("trademark", itemData.fontInfo.trademark);
+    mapData.insert("fontPreview", itemData.fontInfo.sp3FamilyName);
 
     return mapData;
 }
@@ -407,6 +407,11 @@ bool DFMDBManager::updateFontInfoByFontFilePath(const QString &strFontFilePath, 
     dataMap.insert(strKey, strValue);
 
     return m_sqlUtil->updateRecord(where, dataMap);
+}
+
+void DFMDBManager::updateSP3FamilyName(const QList<DFontInfo> &fontList)
+{
+    m_sqlUtil->updateSP3FamilyName(fontList);
 }
 
 /*************************************************************************

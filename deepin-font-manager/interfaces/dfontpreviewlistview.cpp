@@ -145,10 +145,23 @@ void DFontPreviewListView::onMultiItemsAdded(QList<DFontPreviewItemData> &data, 
     }
 
     qDebug() << __FUNCTION__ << "rows = " << m_fontPreviewItemModel->rowCount();
+    QList<DFontInfo> fontList;
     for (DFontPreviewItemData &itemData : data) {
         if (itemData.appFontId < 0) {
             int appFontId = QFontDatabase::addApplicationFont(itemData.fontInfo.filePath);
             itemData.appFontId = appFontId;
+
+            //compitable with SP2 Update1
+            QString familyName;
+            if (itemData.fontInfo.sp3FamilyName.isEmpty() || itemData.fontInfo.sp3FamilyName.contains(QChar('?'))) {
+                fontList << itemData.fontInfo;
+                QStringList fontFamilyList = QFontDatabase::applicationFontFamilies(appFontId);
+                for (QString &family : fontFamilyList) {
+                    if (family.contains(QChar('?')))
+                        continue;
+                    itemData.fontInfo.sp3FamilyName = familyName;
+                }
+            }
             m_dataThread->updateFontId(itemData, appFontId);
         }
 
@@ -166,6 +179,8 @@ void DFontPreviewListView::onMultiItemsAdded(QList<DFontPreviewItemData> &data, 
         if (styles != DFontSpinnerWidget::NoLabel)
             updateSpinner(styles);
     }
+
+    DFontInfoManager::instance()->updateSP3FamilyName(fontList);
 
     if (styles == DFontSpinnerWidget::StartupLoad)
         Q_EMIT onLoadFontsStatus(1);

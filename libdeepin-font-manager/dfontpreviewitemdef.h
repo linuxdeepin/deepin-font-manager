@@ -255,6 +255,7 @@ struct DFontPreviewItemData {
         fontInfo.isSystemFont = true;
         fontInfo.defaultPreview = "";
         fontInfo.previewLang = FONT_LANG_NONE;
+        fontInfo.sp3FamilyName = "";
 
         strFontId = "";
         appFontId = -1;
@@ -264,10 +265,10 @@ struct DFontPreviewItemData {
                          const QString &_version, const QString &_copyright, const QString &_desc, const QString &_sysVer,
                          const QString &_fullname, const QString &_psname, const QString &_trademark, bool _isInstalled,
                          bool _isError, bool _isSystemFont, bool _isEnabled, bool _isCollected, bool _isChinese,
-                         bool _isMono, const QString &_strFontName)
+                         bool _isMono, const QString &_strFontName, const QString &_sp3FamilyName)
     {
         fontInfo = DFontInfo(_filePath, _familyName, _styleName, _type, _version, _copyright, _desc, _sysVer, _fullname,
-                             _psname, _trademark, _isInstalled, _isError, _isSystemFont);
+                             _psname, _trademark, _isInstalled, _isError, _isSystemFont, _sp3FamilyName);
 
         fontData = FontData(_strFontName, _isEnabled, _isCollected, _isChinese, _isMono, _type);
 
@@ -293,6 +294,7 @@ struct DFontPreviewItemData {
         fontInfo.isSystemFont = other.fontInfo.isSystemFont;
         fontInfo.defaultPreview = other.fontInfo.defaultPreview;
         fontInfo.previewLang = other.fontInfo.previewLang;
+        fontInfo.sp3FamilyName = other.fontInfo.sp3FamilyName;
 
         fontData = other.fontData;
         strFontId = other.strFontId;

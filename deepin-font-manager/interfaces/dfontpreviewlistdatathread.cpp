@@ -102,11 +102,10 @@ void DFontPreviewListDataThread::doWork()
         index =  insertFontItemData(filePath, index, m_chineseFontPathList, m_monoSpaceFontPathList, true, false);
     }
 
-    Q_EMIT m_view->multiItemsAdded(m_fontModelList, DFontSpinnerWidget::StartupLoad);
-
     m_dbManager->commitAddFontInfo();
-
     m_view->onFinishedDataLoad();
+
+    Q_EMIT m_view->multiItemsAdded(m_fontModelList, DFontSpinnerWidget::StartupLoad);
 }
 
 /*************************************************************************
@@ -416,7 +415,7 @@ int DFontPreviewListDataThread::insertFontItemData(const QString &filePath,
     itemData.fontInfo = fontInfoMgr->getFontInfo(filePath);
 
     QString familyName;
-    if (itemData.fontInfo.familyName.isEmpty() || itemData.fontInfo.familyName.contains(QChar('?'))) {
+    if (itemData.fontInfo.sp3FamilyName.isEmpty() || itemData.fontInfo.sp3FamilyName.contains(QChar('?'))) {
         int appFontId = QFontDatabase::addApplicationFont(itemData.fontInfo.filePath);
 
         itemData.appFontId = appFontId;
@@ -429,10 +428,10 @@ int DFontPreviewListDataThread::insertFontItemData(const QString &filePath,
         if (familyName.isEmpty()) {
             familyName = itemData.fontInfo.fullname;
         } else {
-            itemData.fontInfo.familyName = familyName;
+            itemData.fontInfo.sp3FamilyName = familyName;
         }
     } else if (itemData.fontInfo.isSystemFont) {
-        familyName = itemData.fontInfo.familyName;
+        familyName = itemData.fontInfo.sp3FamilyName;
     } else {
         familyName = itemData.fontInfo.fullname;
     }
@@ -467,6 +466,7 @@ int DFontPreviewListDataThread::insertFontItemData(const QString &filePath,
             for (QString &fontFamily : fontFamilyList) {
                 itemData.strFontId = QString::number(index);
                 itemData.fontInfo.familyName = fontFamily;
+                itemData.fontInfo.sp3FamilyName = fontFamily;
                 if (itemData.fontInfo.styleName.length() > 0) {
                     itemData.fontData.strFontName =
                         QString("%1-%2").arg(itemData.fontInfo.familyName).arg(itemData.fontInfo.styleName);
@@ -586,6 +586,7 @@ void DFontPreviewListDataThread::removeFontData(const DFontPreviewItemData &remo
     for (DFontPreviewItemData &itemData : m_fontModelList) {
         if (itemData.fontInfo.filePath == removeItemData.fontInfo.filePath) {
             m_fontModelList.removeOne(itemData);
+            return;
         }
     }
 }
@@ -649,6 +650,9 @@ void DFontPreviewListDataThread::updateFontId(const DFontPreviewItemData &itemDa
     if (id < 0)
         return;
     int index = m_fontModelList.indexOf(itemData);
-    if (index > -1)
+    if (index > -1) {
         m_fontModelList[index].appFontId = id;
+        if (m_fontModelList[index].fontInfo.sp3FamilyName != itemData.fontInfo.sp3FamilyName)
+            m_fontModelList[index].fontInfo.sp3FamilyName = itemData.fontInfo.sp3FamilyName;
+    }
 }

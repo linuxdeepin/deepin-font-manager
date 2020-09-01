@@ -64,6 +64,8 @@ public:
     void updateFontInfo(const QList<DFontPreviewItemData> &fontList, const QString &key, const QString &table_name = "t_fontmanager");
     //字符串处理
     QString escapeString(const QString &str);
+    //更新sp2的sp3familyName
+    void updateSP3FamilyName(const QList<DFontInfo> &fontList);
     //内联函数-执行结束处理函数
     inline void finish()
     {

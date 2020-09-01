@@ -179,6 +179,8 @@ void DFontInfoManager::refreshList(const QStringList &allFontPathList)
         fontInfo.isSystemFont = isSystemFont(path);
         dataList << fontInfo;
     }
+
+    updateSP3FamilyName(dataList);
 }
 
 /*************************************************************************
@@ -247,29 +249,6 @@ QStringList DFontInfoManager::getAllFontPath(bool isStartup) const
 
     return pathList;
 }
-
-//QStringList DFontInfoManager::getDirPathOfSplDir(QString dirPath)const
-//{
-//    QStringList dirPaths;
-//    QDir splDir(dirPath);
-//    QFileInfoList fileInfoListInSplDir = splDir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot);
-//    QFileInfo tempFileInfo;
-//    foreach (tempFileInfo, fileInfoListInSplDir) {
-//        dirPaths << tempFileInfo.absoluteFilePath();
-//    }
-//    return dirPaths;
-//}
-
-
-//QStringList DFontInfoManager::getFileNames(const QString &path)const
-//{
-//    QDir dir(path);
-//    QStringList nameFilters;
-//    nameFilters << "*.ttf" << "*.ttc" << "*.otf";
-//    QStringList files = dir.entryList(nameFilters, QDir::Files | QDir::Readable, QDir::Name);
-//    return files;
-
-//}
 
 /*************************************************************************
  <Function>      getFileNames
@@ -477,8 +456,15 @@ DFontInfo DFontInfoManager::getFontInfo(const QString &filePath)
             }
         }
     }
+    //compitable with SP2 update1 and previous versions
+    if (!fontInfo.fullname.isEmpty())
+        fontInfo.familyName = fontInfo.fullname.replace(QRegExp(QString(" " + fontInfo.styleName + "$")), "");
 
-    fontInfo.familyName = QString::fromLatin1(m_face->family_name).trimmed();
+    if (fontInfo.familyName.trimmed().length() < 1) {
+        fontInfo.familyName = QString::fromLatin1(m_face->family_name);
+    }
+
+    fontInfo.sp3FamilyName = QString::fromLatin1(m_face->family_name).trimmed();
 
     //default preview text
     if (fontInfo.familyName == "Noto Sans Grantha") {
@@ -808,34 +794,6 @@ QStringList DFontInfoManager::getFonts(DFontInfoManager::FontTYpe type) const
 }
 
 /*************************************************************************
- <Function>      getInstFontPath
- <Description>   获取安装字体路径
- <Author>        null
- <Input>
-    <param1>     originPath            Description:字体文件源路径
-    <param2>     familyName            Description:字体信息中的familyname
- <Return>        QString               Description:需要的字体路径
- <Note>          null
-*************************************************************************/
-QString DFontInfoManager::getInstFontPath(const QString &originPath, const QString &familyName)
-{
-    if (isSystemFont(originPath) || originPath.contains("/.local/share/fonts"))
-        return originPath;
-
-    const QFileInfo info(originPath);
-    QString dirName = familyName;
-
-    if (dirName.isEmpty()) {
-        dirName = info.baseName();
-    }
-
-    const QString sysDir = QDir::homePath() + "/.local/share/fonts";
-
-    QString target = QString("%1/%2/%3").arg(sysDir).arg(dirName).arg(info.fileName());
-    return target;
-}
-
-/*************************************************************************
  <Function>      isFontInstalled
  <Description>   字体有没有被安装过
  <Author>        null
@@ -878,6 +836,11 @@ void DFontInfoManager::getDefaultPreview(DFontInfo &data)
     data.defaultPreview = getDefaultPreview(data.filePath, data.previewLang);
 }
 
+void DFontInfoManager::updateSP3FamilyName(const QList<DFontInfo> &fontList)
+{
+    //compitable with sp2 update1 and previous versions
+    DFMDBManager::instance()->updateSP3FamilyName(fontList);
+}
 
 /*************************************************************************
  <Function>      checkStyleName

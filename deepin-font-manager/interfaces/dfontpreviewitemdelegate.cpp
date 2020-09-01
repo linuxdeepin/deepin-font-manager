@@ -212,7 +212,8 @@ void DFontPreviewItemDelegate::paintForegroundPreviewFont(QPainter *painter, con
                                                           const DFontPreviewItemData &itemData, int fontPixelSize, QString &fontPreviewText) const
 {
     QFont previewFont;
-    previewFont.setFamily(itemData.fontInfo.familyName);
+    QString familyName = itemData.fontInfo.sp3FamilyName.isEmpty() ? itemData.fontInfo.familyName : itemData.fontInfo.sp3FamilyName;
+    previewFont.setFamily(familyName);
     previewFont.setStyleName(itemData.fontInfo.styleName);
     previewFont.setPixelSize(fontPixelSize);
     painter->setFont(previewFont);

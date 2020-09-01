@@ -46,6 +46,10 @@ struct DFontInfo {
     QString trademark;
     //add default preview text
     QString defaultPreview;
+    //add since SP3 to be compitable with SP2 Update1 and previous versions
+    //familyName no longer used since SP3 instead of sp3FamilyName
+    //familyName is only kept to compatible with previous versions.
+    QString sp3FamilyName;
     qint8 previewLang; //0: none; 1: Chinese; 2: English; others...
 
 
@@ -71,12 +75,13 @@ struct DFontInfo {
         isSystemFont = true;
         defaultPreview = "";
         previewLang = FONT_LANG_NONE;
+        sp3FamilyName = "";
     }
 
     DFontInfo(const QString &_filePath, const QString &_familyName, const QString &_styleName, const QString &_type,
               const QString &_version, const QString &_copyright, const QString &_desc, const QString &_sysVer,
               const QString &_fullname, const QString &_psname, const QString &_trademark, bool _isInstalled,
-              bool _isError, bool _isSystemFont)
+              bool _isError, bool _isSystemFont,  const QString &_sp3FamilyName)
     {
         filePath = _filePath;
         familyName = _familyName;
@@ -95,6 +100,7 @@ struct DFontInfo {
 
         defaultPreview = "";
         previewLang = FONT_LANG_NONE;
+        sp3FamilyName = _sp3FamilyName;
     }
 
     DFontInfo(const DFontInfo &other)
@@ -115,6 +121,7 @@ struct DFontInfo {
         isSystemFont = other.isSystemFont;
         defaultPreview = other.defaultPreview;
         previewLang = other.previewLang;
+        sp3FamilyName = other.sp3FamilyName;
     }
 
     bool operator==(const DFontInfo &info)
@@ -155,23 +162,13 @@ public:
     QString getFontPath();
     QStringList getFontFamilyStyle(const QString &filePah);
     QStringList getFonts(FontTYpe type) const;
-    QString getInstFontPath(const QString &originPath, const QString &familyName);
     bool isFontInstalled(DFontInfo &data);
     void getDefaultPreview(DFontInfo &data);
+    void updateSP3FamilyName(const QList<DFontInfo> &fontList);
     void checkStyleName(DFontInfo &f);
-
-//    //获取指定文件夹下所有的子文件夹
-//    QStringList getDirPathOfSplDir(QString dirPath)const;
-//    //获取文件夹下的字体文件
-//    QStringList getFileNames(const QString &path)const;
 
     //获取文件夹下及子文件夹下所有字体文件
     QStringList getFileNames(const QString &path)const;
-
-private:
-//    QMap<QString, DFontInfo> m_fontInfoMap;
-//    FT_Library m_library;
-//    FT_Face m_face;
 };
 
 #endif

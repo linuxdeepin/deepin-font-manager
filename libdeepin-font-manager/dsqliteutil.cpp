@@ -294,7 +294,8 @@ isChineseFont,\
 isMonoSpace,\
 fullname,\
 psname,\
-trademark from " + table_name;
+trademark, \
+fontPreview from " + table_name;
 
     QMutexLocker m_locker(&mutex);
     m_query->prepare(sql);
@@ -521,7 +522,8 @@ isInstalled, \
 isError, \
 fullname, \
 psname, \
-trademark) values( \
+trademark, \
+fontPreview) values( \
 :fontName, \
 :isEnabled, \
 :isCollected, \
@@ -539,7 +541,8 @@ trademark) values( \
 :isError, \
 :fullname, \
 :psname, \
-:trademark)";
+:trademark, \
+:fontPreview)";
 
     qDebug() << sql;
     m_query->prepare(sql);
@@ -562,6 +565,7 @@ trademark) values( \
     QVariantList fullnameList;
     QVariantList psnameList;
     QVariantList trademarkList;
+    QVariantList sp3FamilyList;
     for (const DFontPreviewItemData &item : fontList) {
         fontNameList << escapeString(item.fontData.strFontName);
         isEnabledList << QString::number(item.fontData.isEnabled());
@@ -581,6 +585,7 @@ trademark) values( \
         fullnameList << escapeString(item.fontInfo.fullname);
         psnameList << escapeString(item.fontInfo.psname);
         trademarkList << escapeString(item.fontInfo.trademark);
+        sp3FamilyList << escapeString(item.fontInfo.sp3FamilyName);
     }
 
     m_query->addBindValue(fontNameList);
@@ -601,9 +606,10 @@ trademark) values( \
     m_query->addBindValue(fullnameList);
     m_query->addBindValue(psnameList);
     m_query->addBindValue(trademarkList);
+    m_query->addBindValue(sp3FamilyList);
 
     if (!m_query->execBatch()) {
-        qDebug() << __FUNCTION__ << "add data failed!" << fontNameList;
+        qDebug() << __FUNCTION__ << "add data failed!" << m_query->lastError();
     } else {
         qDebug() << __FUNCTION__ << "true";
     }
@@ -706,6 +712,49 @@ QString DSqliteUtil::escapeString(const QString &str)
     if (str.isEmpty() || str.isNull())
         return "";
     return str;
+}
+
+void DSqliteUtil::updateSP3FamilyName(const QList<DFontInfo> &fontList)
+{
+    QString sql = "select filePath from t_fontmanager where fontPreview is NULL and filePath not like \"%/usr/share/fonts/%\"";
+    qDebug() << sql;
+    QMutexLocker m_locker(&mutex);
+    m_query->prepare(sql);
+
+    QStringList fileList;
+    if (m_query->exec()) {
+        while (m_query->next()) {
+            fileList << m_query->value(0).toString();
+        }
+    }
+    finish();
+
+    if (fileList.isEmpty())
+        return;
+
+    qDebug() << __FUNCTION__ << fileList.size();
+    // update
+    sql = "update t_fontmanager set fontPreview = ? where filePath = ?";
+    qDebug() << sql;
+    m_query->prepare(sql);
+
+    QVariantList keyList;
+    QVariantList filePathList;
+    for (const DFontInfo &data : fontList) {
+        if (fileList.contains(data.filePath)) {
+            keyList << data.sp3FamilyName;
+            filePathList << data.filePath;
+        }
+    }
+
+    m_query->addBindValue(keyList);
+    m_query->addBindValue(filePathList);
+    if (!m_query->execBatch()) {
+        qDebug() << __FUNCTION__ << "update data failed!" << filePathList;
+    } else {
+        qDebug() << __FUNCTION__ << "true";
+    }
+    finish();
 }
 
 /*************************************************************************

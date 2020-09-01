@@ -25,6 +25,7 @@ public:
     bool updateFontInfoByFontId(const QString &strFontId, const QString &strKey, const QString &strValue);
 
     bool updateFontInfoByFontFilePath(const QString &strFontFilePath, const QString &strKey, const QString &strValue);
+    void updateSP3FamilyName(const QList<DFontInfo> &fontList);
 
     // batch operation
     void commitAddFontInfo();
