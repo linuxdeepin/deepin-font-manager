@@ -164,7 +164,7 @@ public:
     QStringList getFonts(FontTYpe type) const;
     bool isFontInstalled(DFontInfo &data);
     void getDefaultPreview(DFontInfo &data);
-    void updateSP3FamilyName(const QList<DFontInfo> &fontList);
+    void updateSP3FamilyName(const QList<DFontInfo> &fontList, bool inFontList = false);
     void checkStyleName(DFontInfo &f);
 
     //获取文件夹下及子文件夹下所有字体文件

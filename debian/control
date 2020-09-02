@@ -2,7 +2,7 @@ Source: deepin-font-manager
 Section: utils
 Priority: optional
 Maintainer: Rekols <rekols@foxmail.com>
-Build-Depends: debhelper (>= 9),pkg-config, qt5-qmake, libdtkwidget-dev, libdtkgui-dev, qttools5-dev-tools, libqt5svg5-dev, libfontconfig1-dev, libfreetype6-dev, libdde-file-manager-dev, deepin-gettext-tools
+Build-Depends: debhelper (>= 9),pkg-config, qt5-qmake, libdtkwidget-dev, libdtkgui-dev, qttools5-dev-tools, libqt5svg5-dev, libgsettings-qt1, libfontconfig1-dev, libfreetype6-dev, libdde-file-manager-dev, deepin-gettext-tools
 Standards-Version: 3.9.8
 Homepage: http://www.deepin.org
 

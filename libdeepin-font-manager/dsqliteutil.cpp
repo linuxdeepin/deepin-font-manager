@@ -714,38 +714,50 @@ QString DSqliteUtil::escapeString(const QString &str)
     return str;
 }
 
-void DSqliteUtil::updateSP3FamilyName(const QList<DFontInfo> &fontList)
+void DSqliteUtil::updateSP3FamilyName(const QList<DFontInfo> &fontList, bool inFontList)
 {
-    QString sql = "select filePath from t_fontmanager where fontPreview is NULL and filePath not like \"%/usr/share/fonts/%\"";
-    qDebug() << sql;
-    QMutexLocker m_locker(&mutex);
-    m_query->prepare(sql);
-
     QStringList fileList;
-    if (m_query->exec()) {
-        while (m_query->next()) {
-            fileList << m_query->value(0).toString();
+    if (inFontList) {
+        for (const DFontInfo &font : fontList) {
+            fileList << font.filePath;
         }
     }
-    finish();
+
+    QMutexLocker m_locker(&mutex);
+    QString sql;
+    if (!inFontList) {
+        sql = "select filePath from t_fontmanager where fontPreview is NULL and filePath not like \"%/usr/share/fonts/%\"";
+        m_query->prepare(sql);
+
+        if (m_query->exec()) {
+            while (m_query->next()) {
+                fileList << m_query->value(0).toString();
+            }
+        }
+        finish();
+    }
 
     if (fileList.isEmpty())
         return;
 
-    qDebug() << __FUNCTION__ << fileList.size();
-    // update
-    sql = "update t_fontmanager set fontPreview = ? where filePath = ?";
-    qDebug() << sql;
-    m_query->prepare(sql);
+    qDebug() << __FUNCTION__ << fileList.size() << fileList.first();
 
     QVariantList keyList;
     QVariantList filePathList;
     for (const DFontInfo &data : fontList) {
-        if (fileList.contains(data.filePath)) {
+        if (fileList.contains(data.filePath) && !data.sp3FamilyName.isEmpty()) {
             keyList << data.sp3FamilyName;
             filePathList << data.filePath;
         }
     }
+
+    if (keyList.isEmpty())
+        return;
+
+    // update
+    sql = "update t_fontmanager set fontPreview = ? where filePath = ?";
+    qDebug() << sql;
+    m_query->prepare(sql);
 
     m_query->addBindValue(keyList);
     m_query->addBindValue(filePathList);

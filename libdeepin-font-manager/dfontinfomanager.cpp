@@ -836,10 +836,12 @@ void DFontInfoManager::getDefaultPreview(DFontInfo &data)
     data.defaultPreview = getDefaultPreview(data.filePath, data.previewLang);
 }
 
-void DFontInfoManager::updateSP3FamilyName(const QList<DFontInfo> &fontList)
+void DFontInfoManager::updateSP3FamilyName(const QList<DFontInfo> &fontList, bool inFontList)
 {
+    if (fontList.isEmpty())
+        return;
     //compitable with sp2 update1 and previous versions
-    DFMDBManager::instance()->updateSP3FamilyName(fontList);
+    DFMDBManager::instance()->updateSP3FamilyName(fontList,  inFontList);
 }
 
 /*************************************************************************

@@ -409,9 +409,9 @@ bool DFMDBManager::updateFontInfoByFontFilePath(const QString &strFontFilePath, 
     return m_sqlUtil->updateRecord(where, dataMap);
 }
 
-void DFMDBManager::updateSP3FamilyName(const QList<DFontInfo> &fontList)
+void DFMDBManager::updateSP3FamilyName(const QList<DFontInfo> &fontList, bool inFontList)
 {
-    m_sqlUtil->updateSP3FamilyName(fontList);
+    m_sqlUtil->updateSP3FamilyName(fontList, inFontList);
 }
 
 /*************************************************************************

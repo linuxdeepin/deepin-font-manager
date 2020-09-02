@@ -153,13 +153,24 @@ void DFontPreviewListView::onMultiItemsAdded(QList<DFontPreviewItemData> &data, 
 
             //compitable with SP2 Update1
             QString familyName;
-            if (itemData.fontInfo.sp3FamilyName.isEmpty() || itemData.fontInfo.sp3FamilyName.contains(QChar('?'))) {
-                fontList << itemData.fontInfo;
+            if (!itemData.fontInfo.isSystemFont
+                    && (itemData.fontInfo.sp3FamilyName.isEmpty() || itemData.fontInfo.sp3FamilyName.contains(QChar('?')))) {
                 QStringList fontFamilyList = QFontDatabase::applicationFontFamilies(appFontId);
+                QString firstName;
+                if (!fontFamilyList.isEmpty())
+                    firstName = fontFamilyList.first();
                 for (QString &family : fontFamilyList) {
                     if (family.contains(QChar('?')))
                         continue;
+                    familyName = family;
+                    break;
+                }
+                if (familyName.isEmpty())
+                    familyName = firstName;
+
+                if (familyName != itemData.fontInfo.sp3FamilyName) {
                     itemData.fontInfo.sp3FamilyName = familyName;
+                    fontList << itemData.fontInfo;
                 }
             }
             m_dataThread->updateFontId(itemData, appFontId);
@@ -180,7 +191,7 @@ void DFontPreviewListView::onMultiItemsAdded(QList<DFontPreviewItemData> &data, 
             updateSpinner(styles);
     }
 
-    DFontInfoManager::instance()->updateSP3FamilyName(fontList);
+    DFontInfoManager::instance()->updateSP3FamilyName(fontList, true);
 
     if (styles == DFontSpinnerWidget::StartupLoad)
         Q_EMIT onLoadFontsStatus(1);
@@ -2395,7 +2406,7 @@ void DFontPreviewListView::changeFontFile(const QString &path, bool force)
     }
 
     qDebug() << __FUNCTION__ << path;
-    foreach (DFontPreviewItemData itemData, m_dataThread->getFontModelList()) {
+    for (DFontPreviewItemData &itemData : m_dataThread->getFontModelList()) {
         QString filePath = itemData.fontInfo.filePath;
         QFileInfo filePathInfo(filePath);
         //如果字体文件已经不存在，则从t_manager表中删除
