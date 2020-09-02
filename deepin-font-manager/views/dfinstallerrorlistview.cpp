@@ -838,9 +838,9 @@ void DFInstallErrorListView::setSelection(const QRect &rect, QItemSelectionModel
         if (!itemModel.bSelectable) {
             return;
         }
-        if (selectionPoint.x() < FTM_ERROR_ITEM_FONTNAME_LEFT) {
+        //如果在图标设定范围内点击
+        if (getIconRect(visualRect(modelIndex)).contains(selectionPoint))
             emit onClickErrorListItem(modelIndex);
-        }
     }
 }
 
@@ -963,6 +963,21 @@ void DFInstallErrorListView::initSelectedItem()
                 break;
         }
     }
+}
+
+/*************************************************************************
+ <Function>      getIconRect
+ <Description>   获取图标范围
+ <Author>        UT000539
+ <Input>
+    <param1>     rect            Description:当前modelindex范围
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
+QRect DFInstallErrorListView::getIconRect(const QRect &rect)
+{
+    int checkBoxSize = 20 + 10;
+    return QRect(rect.left() + 15, rect.top() + 10, checkBoxSize, checkBoxSize);
 }
 
 /*************************************************************************

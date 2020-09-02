@@ -120,6 +120,8 @@ private:
     bool m_ifFirstFocus = true;
     //初始选中第一个可选项
     void initSelectedItem();
+    //获取图标范围
+    inline QRect getIconRect(const QRect &rect);
 signals:
     //发送item点击信号
     void onClickErrorListItem(QModelIndex index);
