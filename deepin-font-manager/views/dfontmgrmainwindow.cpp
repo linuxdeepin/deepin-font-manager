@@ -30,8 +30,6 @@
 #include <DDesktopServices>
 #include <DMessageManager>
 
-#include <unistd.h>
-
 class DFontMgrMainWindowPrivate
 {
 public:
@@ -106,7 +104,6 @@ DFontMgrMainWindow::DFontMgrMainWindow(bool isQuickMode, QWidget *parent)
     initShortcuts();
     //SP3--设置tab顺序--安装事件过滤器(539)
     installEventFilters();
-    initFontFiles();
 }
 
 /*************************************************************************
@@ -639,43 +636,6 @@ void DFontMgrMainWindow::initShortcuts()
                 fontInfoAction->trigger();
             }
         });
-    }
-}
-
-/*************************************************************************
- <Function>      initFontFiles
- <Description>   初始化字体文件
- <Author>
- <Input>         null
- <Return>        null            Description:null
- <Note>          null
-*************************************************************************/
-void DFontMgrMainWindow::initFontFiles()
-{
-    /* Bug#19657 sudo执行后，QDir::homePath路径不再是/home/user,导致新建数据库，
-     * 与fc-list查出来的数据差异，导致下面的代码删除了系统字体 UT000591  */
-    if (geteuid() == 0) {
-        return;
-    }
-
-    m_dbManager = DFMDBManager::instance();
-    DFontInfoManager *fontInfoMgr = DFontInfoManager::instance();
-
-    QStringList allFontsList = fontInfoMgr->getAllFontPath();
-
-    QStringList installFont = m_dbManager->getInstalledFontsPath();
-
-    for (QString &filePath : allFontsList) {
-        if (!m_dbManager->isSystemFont(filePath) && !installFont.contains(filePath)) {
-            QFileInfo openFile(filePath);
-            if (!QFile::remove(filePath))
-                continue;
-
-            QDir fileDir(openFile.path());
-            if (fileDir.isEmpty()) {
-                fileDir.removeRecursively();
-            }
-        }
     }
 }
 

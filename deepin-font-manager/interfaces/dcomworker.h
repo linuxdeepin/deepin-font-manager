@@ -45,6 +45,9 @@ public:
     void run();
 
 private:
+    void removeUserAddFonts();
+
+private:
     FontType m_type;
     bool m_isStartup;
 };

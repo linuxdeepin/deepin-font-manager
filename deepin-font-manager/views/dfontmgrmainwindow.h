@@ -133,8 +133,6 @@ protected:
     void initConnections();
     //初始化快捷键和处理函数
     void initShortcuts();
-    //初始化字体文件
-    void initFontFiles();
     //初始化titleBar
     void initTileBar();
     //初始化标题栏

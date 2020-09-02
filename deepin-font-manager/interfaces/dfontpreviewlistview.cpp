@@ -991,7 +991,6 @@ void DFontPreviewListView::deleteFontModelIndex(const QString &filePath)
 
         if (itemData.fontInfo.filePath == filePath) {
             m_fontPreviewProxyModel->sourceModel()->removeRow(i);
-            m_dataThread->removeFontData(itemData);
             break;
         }
     }
@@ -2304,21 +2303,25 @@ void DFontPreviewListView::updateChangedDir(const QString &path)
     //qDebug() << __FUNCTION__ << path << " begin ";
     Q_UNUSED(path);
     QMutexLocker locker(&m_mutex);
-    QList<DFontPreviewItemData> fontInfoList = m_dataThread->getFontModelList();
-    //qDebug() << __FUNCTION__ << fontInfoList.size();
-    for (int i = 0; i < fontInfoList.size(); ++i) {
-        DFontPreviewItemData itemData = fontInfoList.at(i);
-        QFileInfo filePathInfo(itemData.fontInfo.filePath);
+    qDebug() << __FUNCTION__ << m_dataThread->m_fontModelList.size();
+    QList<DFontPreviewItemData>::iterator iter = m_dataThread->m_fontModelList.begin();
+    while (iter != m_dataThread->m_fontModelList.end()) {
+        DFontPreviewItemData itemData = *iter;
+        QString filePath = (*iter).fontInfo.filePath;
+        QFileInfo filePathInfo(filePath);
         //如果字体文件已经不存在，则从t_manager表中删除
         if (!filePathInfo.exists()) {
             //删除字体之前启用字体，防止下次重新安装后就被禁用
-            enableFont(itemData.fontInfo.filePath);
-            DFMDBManager::instance()->deleteFontInfo(itemData);
-            Q_EMIT itemRemoved(itemData);
-//            m_dataThread->removeFontData(itemData);
+            enableFont((*iter).fontInfo.filePath);
+            DFMDBManager::instance()->deleteFontInfo(*iter);
             m_dataThread->removePathWatcher(filePathInfo.filePath());
+            iter = m_dataThread->getFontModelList().erase(iter);
+            Q_EMIT itemRemoved(itemData);
+        } else {
+            ++iter;
         }
     }
+
     DFMDBManager::instance()->commitDeleteFontInfo();
     enableFonts();
 
@@ -2360,23 +2363,27 @@ void DFontPreviewListView::deleteFontFiles(const QStringList &files, bool force)
 *************************************************************************/
 void DFontPreviewListView::deleteCurFonts(const QStringList &files, bool force)
 {
-    qDebug() << __FUNCTION__ << " before delete " << m_dataThread->getFontModelList().size() << m_fontPreviewProxyModel->rowCount()  << m_fontPreviewProxyModel->sourceModel()->rowCount();
-    QList<DFontPreviewItemData> fontInfoList = m_dataThread->getFontModelList();
-    qDebug() << fontInfoList.size() << __FUNCTION__ << files.size();
+    qDebug() << __FUNCTION__ << " before delete " << m_dataThread->getFontModelList().size() << m_fontPreviewProxyModel->rowCount();
+
     if (!force)
         updateSpinner(DFontSpinnerWidget::Delete, false);
-    for (DFontPreviewItemData &itemData : fontInfoList) {
-        QString filePath = itemData.fontInfo.filePath;
+
+    QList<DFontPreviewItemData>::iterator iter = m_dataThread->getFontModelList().begin();
+    while (iter != m_dataThread->getFontModelList().end()) {
+        QString filePath = (*iter).fontInfo.filePath;
         //如果字体文件已经不存在，则从t_manager表中删除
         if (files.contains(filePath)) {
             //删除字体之前启用字体，防止下次重新安装后就被禁用
-            enableFont(itemData.fontInfo.filePath);
-            DFMDBManager::instance()->deleteFontInfo(itemData);
-            QFontDatabase::removeApplicationFont(itemData.appFontId);
-            m_dataThread->removeFontData(itemData);
+            enableFont((*iter).fontInfo.filePath);
+            DFMDBManager::instance()->deleteFontInfo((*iter));
+            QFontDatabase::removeApplicationFont((*iter).appFontId);
             m_dataThread->removePathWatcher(filePath);
+            iter = m_dataThread->getFontModelList().erase(iter);
+        } else {
+            ++iter;
         }
     }
+
     DFMDBManager::instance()->commitDeleteFontInfo();
 
     enableFonts();
@@ -2406,7 +2413,9 @@ void DFontPreviewListView::changeFontFile(const QString &path, bool force)
     }
 
     qDebug() << __FUNCTION__ << path;
-    for (DFontPreviewItemData &itemData : m_dataThread->getFontModelList()) {
+    QList<DFontPreviewItemData>::iterator iter = m_dataThread->getFontModelList().begin();
+    while (iter != m_dataThread->getFontModelList().end()) {
+        DFontPreviewItemData itemData = *iter;
         QString filePath = itemData.fontInfo.filePath;
         QFileInfo filePathInfo(filePath);
         //如果字体文件已经不存在，则从t_manager表中删除
@@ -2414,11 +2423,13 @@ void DFontPreviewListView::changeFontFile(const QString &path, bool force)
             //删除字体之前启用字体，防止下次重新安装后就被禁用
             enableFont(itemData.fontInfo.filePath);
             DFMDBManager::instance()->deleteFontInfo(itemData);
-            Q_EMIT itemRemoved(itemData);
-//            m_dataThread->removeFontData(itemData);
             m_dataThread->removePathWatcher(filePath);
+            iter = m_dataThread->getFontModelList().erase(iter);
+            Q_EMIT itemRemoved(itemData);
             if (!isDir)
                 break;
+        } else {
+            ++iter;
         }
     }
     DFMDBManager::instance()->commitDeleteFontInfo();

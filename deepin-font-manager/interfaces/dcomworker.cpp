@@ -24,6 +24,10 @@
 #include "dfmdbmanager.h"
 
 #include <QThreadPool>
+#include <QFileInfo>
+#include <QDir>
+
+#include <unistd.h>
 
 DComWorker::DComWorker(QObject *parent) : QObject(parent)
 {
@@ -53,6 +57,7 @@ void GetFontList::run()
         thread->m_allFontPathList.clear();
         thread->m_allFontPathList = inst->getAllFontPath(m_isStartup);
         if (m_isStartup) {
+            removeUserAddFonts();
             qDebug() << __FUNCTION__ << m_isStartup;
             inst->refreshList(thread->m_allFontPathList);
             thread->m_fontModelList = DFMDBManager::instance()->getAllFontInfo(&thread->m_delFontInfoList);
@@ -66,6 +71,32 @@ void GetFontList::run()
         thread->m_monoSpaceFontPathList.clear();
         thread->m_monoSpaceFontPathList = inst->getAllMonoSpaceFontPath();
         break;
+    }
+}
+
+void GetFontList::removeUserAddFonts()
+{
+    if (geteuid() == 0) {
+        return;
+    }
+    QStringList installFont = DFMDBManager::instance()->getInstalledFontsPath();
+
+    QList<QString>::iterator iter = DFontPreviewListDataThread::instance()->m_allFontPathList.begin();
+    while (iter != DFontPreviewListDataThread::instance()->m_allFontPathList.end()) {
+        QString filePath = *iter;
+        if (!DFMDBManager::instance()->isSystemFont(filePath) && !installFont.contains(filePath)) {
+            QFileInfo openFile(filePath);
+            QFile::remove(filePath);
+
+            QDir fileDir(openFile.path());
+            if (fileDir.isEmpty()) {
+                fileDir.removeRecursively();
+            }
+
+            iter = DFontPreviewListDataThread::instance()->m_allFontPathList.erase(iter);
+        } else {
+            ++iter;
+        }
     }
 }
 
