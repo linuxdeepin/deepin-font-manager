@@ -19,7 +19,7 @@
     </message>
     <message>
         <source>Active</source>
-        <translation>Ativar</translation>
+        <translation>Ativas</translation>
     </message>
     <message>
         <source>Chinese</source>
@@ -135,19 +135,19 @@
     </message>
     <message>
         <source>The other %1 system fonts cannot be deleted</source>
-        <translation type="unfinished"/>
+        <translation>As outras %1 fontes do sistema não podem ser eliminadas</translation>
     </message>
     <message>
         <source>The font &quot;%1&quot; in use cannot be deleted</source>
-        <translation type="unfinished"/>
+        <translation>A fonte &quot;%1&quot; em uso não pode ser eliminada</translation>
     </message>
     <message>
         <source>The other %1 system fonts and the font &quot;%2&quot; in use cannot be deleted</source>
-        <translation type="unfinished"/>
+        <translation>As outras %1 fontes do sistema e a fonte &quot;%2&quot; em uso não podem ser eliminadas</translation>
     </message>
     <message>
         <source>Are you sure you want to delete %1 font(s)?</source>
-        <translation type="unfinished"/>
+        <translation>Tem a certeza que deseja eliminar %1 fonte(s)?</translation>
     </message>
     <message>
         <source>Delete</source>

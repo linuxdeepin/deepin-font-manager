@@ -12,7 +12,7 @@ Depends: ${shlibs:Depends}, ${misc:Depends}, libdeepin-font-manager( =${binary:V
 Replaces: deepin-font-installer
 Conflicts: deepin-font-installer
 Description: Deepin Font Manager binary
- Font Manager helps users install and manage fonts.
+ Font manager is a powerful font management tool. With Font Manager, you are not only able to search, install, enable, disable and delete fonts among others, but also preview fonts by inputting texts and setting the text size. It supports fonts in ttf, ttc and otf formats.
 
 Package: libdeepin-font-manager
 Architecture: any
