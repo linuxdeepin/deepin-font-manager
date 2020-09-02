@@ -112,8 +112,6 @@ private:
     QList<DFInstallErrorItemModel> m_installErrorFontModelList;
     QList<QString> m_errorFontlist;
     int beforeSelectRow = 0;
-
-    bool m_bLeftMouse;
     bool m_isMouseClicked = false;
     bool m_IsTabFocus = false;
     bool m_isInstallFocus = false;

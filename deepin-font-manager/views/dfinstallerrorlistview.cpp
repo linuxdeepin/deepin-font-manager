@@ -807,9 +807,12 @@ void DFInstallErrorListView::mousePressEvent(QMouseEvent *event)
 {
     m_isMouseClicked = true;
     if (event->button() == Qt::LeftButton) {
-        m_bLeftMouse = true;
-    } else {
-        m_bLeftMouse = false;
+        QPoint point = event->pos();
+        QModelIndex modelIndex = indexAt(point);
+        DFInstallErrorItemModel itemModel =
+            qvariant_cast<DFInstallErrorItemModel>(m_errorListSourceModel->data(modelIndex));
+        if (itemModel.bIsNormalUserFont && getIconRect(visualRect(modelIndex)).contains(point))
+            emit onClickErrorListItem(modelIndex);
     }
 
     DListView::mousePressEvent(event);
@@ -828,20 +831,6 @@ void DFInstallErrorListView::mousePressEvent(QMouseEvent *event)
 void DFInstallErrorListView::setSelection(const QRect &rect, QItemSelectionModel::SelectionFlags command)
 {
     DListView::setSelection(rect, command);
-
-    QPoint selectionPoint(rect.x(), rect.y());
-    QModelIndex modelIndex = indexAt(selectionPoint);
-
-    if (m_bLeftMouse) {
-        DFInstallErrorItemModel itemModel =
-            qvariant_cast<DFInstallErrorItemModel>(m_errorListSourceModel->data(modelIndex));
-        if (!itemModel.bSelectable) {
-            return;
-        }
-        //如果在图标设定范围内点击
-        if (getIconRect(visualRect(modelIndex)).contains(selectionPoint))
-            emit onClickErrorListItem(modelIndex);
-    }
 }
 
 /*************************************************************************
