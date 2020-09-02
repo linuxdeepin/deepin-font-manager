@@ -714,6 +714,12 @@ QString DSqliteUtil::escapeString(const QString &str)
     return str;
 }
 
+/**
+* @brief DSqliteUtil::updateSP3FamilyName sp3的familyName兼容sp2 update1及之前的版本
+* @param fontList 字体列表
+* @param inFontList 是否使用字体列表，true：使用 false：不使用
+* @return void
+*/
 void DSqliteUtil::updateSP3FamilyName(const QList<DFontInfo> &fontList, bool inFontList)
 {
     QStringList fileList;

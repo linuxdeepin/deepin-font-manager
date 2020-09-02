@@ -409,6 +409,12 @@ bool DFMDBManager::updateFontInfoByFontFilePath(const QString &strFontFilePath, 
     return m_sqlUtil->updateRecord(where, dataMap);
 }
 
+/**
+* @brief DFMDBManager::updateSP3FamilyName sp3的familyName兼容sp2 update1及之前的版本
+* @param fontList 字体列表
+* @param inFontList 是否使用字体列表，true：使用 false：不使用
+* @return void
+*/
 void DFMDBManager::updateSP3FamilyName(const QList<DFontInfo> &fontList, bool inFontList)
 {
     m_sqlUtil->updateSP3FamilyName(fontList, inFontList);

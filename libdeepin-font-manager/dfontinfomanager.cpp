@@ -836,6 +836,12 @@ void DFontInfoManager::getDefaultPreview(DFontInfo &data)
     data.defaultPreview = getDefaultPreview(data.filePath, data.previewLang);
 }
 
+/**
+* @brief DFontInfoManager::updateSP3FamilyName sp3的familyName兼容sp2 update1及之前的版本
+* @param fontList 字体列表
+* @param inFontList 是否使用字体列表，true：使用 false：不使用
+* @return void
+*/
 void DFontInfoManager::updateSP3FamilyName(const QList<DFontInfo> &fontList, bool inFontList)
 {
     if (fontList.isEmpty())
