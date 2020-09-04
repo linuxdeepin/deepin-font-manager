@@ -41,6 +41,8 @@ public:
     //判断当前字体是否为系统字体
     bool isSystemFont(DFontInfo &f);
 
+    void setAddBtnHasTabs(bool AddBtnHasTabs);
+
 protected:
     static constexpr int VERIFY_DELYAY_TIME = 50;
     //初始化主页面
@@ -140,7 +142,7 @@ private:
     // Skip popup exception dialog if true
     bool m_isNeedSkipException {false};
     bool m_isFristThreadEnd = false;
-
+    bool m_AddBtnHasTabs{false};
     InstallState m_installState {Install};
 
     DFontInfoManager *m_fontInfoManager;

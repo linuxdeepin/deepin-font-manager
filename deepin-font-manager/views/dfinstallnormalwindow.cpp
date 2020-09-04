@@ -63,6 +63,10 @@ DFInstallNormalWindow::~DFInstallNormalWindow()
     m_installedFontsFamilyname.clear();
     m_halfInstalledFiles.clear();
     this->hide();
+    if (m_AddBtnHasTabs) {
+        emit m_signalManager->requestSetTabFocusToAddBtn();
+        setAddBtnHasTabs(false);
+    }
     qDebug() << __func__ << "end" << this << endl;
 }
 
@@ -779,6 +783,20 @@ void DFInstallNormalWindow::showInstallErrDlg()
 
     m_pexceptionDlg->move(geometry().center() - m_pexceptionDlg->rect().center());
     m_pexceptionDlg->exec();
+}
+
+/*************************************************************************
+ <Function>      setAddBtnHasTabs
+ <Description>   记录addbutton是否有tab焦点
+ <Author>
+ <Input>
+    <param1>     AddBtnHasTabs   Description:是否有焦点
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
+void DFInstallNormalWindow::setAddBtnHasTabs(bool AddBtnHasTabs)
+{
+    m_AddBtnHasTabs = AddBtnHasTabs;
 }
 
 /*************************************************************************

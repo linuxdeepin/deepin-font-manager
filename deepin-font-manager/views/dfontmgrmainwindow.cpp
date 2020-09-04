@@ -228,8 +228,8 @@ void DFontMgrMainWindow::initConnections()
                      &DFontMgrMainWindow::handleAddFontEvent);
 
     QObject::connect(this, &DFontMgrMainWindow::fileSelected, this,
-    [this](const QStringList & files) {
-        this->installFont(files);
+    [this](const QStringList & files, bool isAddBtnHasTabs) {
+        this->installFont(files, isAddBtnHasTabs);
     });
 
     QObject::connect(this, &DFontMgrMainWindow::fileSelectedInSys, this,
@@ -363,7 +363,9 @@ void DFontMgrMainWindow::initConnections()
     });
 
     connect(m_signalManager, &SignalManager::requestSetTabFocusToAddBtn, [ = ] {
-        d->addFontButton->setFocus(Qt::TabFocusReason);
+        QTimer::singleShot(25, [ = ]{
+            d->addFontButton->setFocus(Qt::TabFocusReason);
+        });
     });
 
     connect(m_signalManager, &SignalManager::onMenuHidden, [ = ] {
@@ -1106,7 +1108,7 @@ void DFontMgrMainWindow::handleAddFontEvent()
     }
 
     m_previewText = d->textInputEdit->text();
-    Q_EMIT fileSelected(filelist);
+    Q_EMIT fileSelected(filelist, hasTabFocus);
 }
 
 /*************************************************************************
@@ -1183,7 +1185,7 @@ void DFontMgrMainWindow::handleMenuEvent(QAction *action)
  <Return>        bool            Description:return true 安装成功；return false 安装失败
  <Note>          null
 *************************************************************************/
-bool DFontMgrMainWindow::installFont(const QStringList &files)
+bool DFontMgrMainWindow::installFont(const QStringList &files, bool isAddBtnHasTabs)
 {
     QStringList installFiles = checkFilesSpace(files);
     if (installFiles.count() == 0) {
@@ -1200,6 +1202,8 @@ bool DFontMgrMainWindow::installFont(const QStringList &files)
     qDebug() << "installFont new DFInstallNormalWindow " << installFiles.size() << endl;
     m_installTm = QDateTime::currentMSecsSinceEpoch();
     m_dfNormalInstalldlg = new DFInstallNormalWindow(installFiles, this);
+    if (isAddBtnHasTabs)
+        m_dfNormalInstalldlg->setAddBtnHasTabs(true);
     emit m_signalManager->setSpliteWidgetScrollEnable(true);//开始安装
     if (m_isQuickMode) {
         m_dfNormalInstalldlg->setSkipException(true);
@@ -1252,7 +1256,7 @@ void DFontMgrMainWindow::installFontFromSys(const QStringList &files)
     } else if (m_isPopInstallErrorDialog) {
         emit m_signalManager->installDuringPopErrorDialog(reduceSameFiles);
     } else {
-        installFont(reduceSameFiles);
+        installFont(reduceSameFiles, false);
     }
 }
 
@@ -1320,7 +1324,7 @@ void DFontMgrMainWindow::InitQuickWindowIfNeeded()
         [this](const QStringList & files) {
             connect(m_quickInstallWnd.get(), &DFQuickInstallWindow::quickInstall, this,
             [this, files]() {
-                this->installFont(files);
+                this->installFont(files, false);
             });
             m_quickInstallWnd.get()->setWindowModality(Qt::WindowModal);
             m_quickInstallWnd->onFileSelected(files);
@@ -1886,7 +1890,7 @@ void DFontMgrMainWindow::dropEvent(QDropEvent *event)
         //Check if need to trigger installtion
         if (installFileList.size() > 0) {
             event->accept();
-            Q_EMIT fileSelected(installFileList);
+            Q_EMIT fileSelected(installFileList, false);
         } else {
             event->ignore();
         }
@@ -2102,7 +2106,7 @@ void DFontMgrMainWindow::waitForInsert()
     if (m_waitForInstall.isEmpty())
         return;
 
-    if (installFont(m_waitForInstall))
+    if (installFont(m_waitForInstall, false))
         m_waitForInstall.clear();
 }
 

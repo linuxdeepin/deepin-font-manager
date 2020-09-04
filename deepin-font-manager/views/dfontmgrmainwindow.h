@@ -154,7 +154,7 @@ protected:
     //添加字体文管页面处理函数
     void handleAddFontEvent();
     //安装字体入口函数
-    bool installFont(const QStringList &files);
+    bool installFont(const QStringList &files, bool isAddBtnHasTabs);
     //从系统中加载字体
     void installFontFromSys(const QStringList &files);
     //右键菜单：在文件管理器中显示字体文件位置
@@ -203,7 +203,7 @@ protected:
 
 signals:
     //信号-文管中选中字体打开
-    void fileSelected(const QStringList &files) const;
+    void fileSelected(const QStringList &files, bool isAddBtnHasTabs) const;
     //信号-文管中选中系统字体打开
     void fileSelectedInSys(const QStringList &files) const;
     //信号-设置正常安装模式
