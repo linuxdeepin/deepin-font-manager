@@ -1,428 +1,428 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="br" version="2.1">
 <context>
     <name>Category</name>
     <message>
         <source>All Fonts</source>
-        <translation>Wszystkie czcionki</translation>
+        <translation>An holl skriturioù</translation>
     </message>
     <message>
         <source>System</source>
-        <translation>System</translation>
+        <translation>Sistem</translation>
     </message>
     <message>
         <source>User</source>
-        <translation>Użytkownik</translation>
+        <translation>Implijader</translation>
     </message>
     <message>
         <source>Favorites</source>
-        <translation>Ulubione</translation>
+        <translation>Sinedoù</translation>
     </message>
     <message>
         <source>Active</source>
-        <translation>Aktywny</translation>
+        <translation>Oberiant</translation>
     </message>
     <message>
         <source>Chinese</source>
-        <translation>Chiński</translation>
+        <translation>Sinaeg</translation>
     </message>
     <message>
         <source>Monospaced</source>
-        <translation>Monospaced</translation>
+        <translation>Etrelinenn simpl</translation>
     </message>
 </context>
 <context>
     <name>DFDeleteDialog</name>
     <message>
         <source>Cancel</source>
-        <translation>Anuluj</translation>
+        <translation>Nullañ</translation>
     </message>
     <message>
         <source>Confirm</source>
-        <translation>Potwierdź</translation>
+        <translation>Kadarnat</translation>
     </message>
 </context>
 <context>
     <name>DFInstallErrorDialog</name>
     <message>
         <source>Broken file</source>
-        <translation>Uszkodzony plik</translation>
+        <translation>Restr torret</translation>
     </message>
     <message>
         <source>Same version installed</source>
-        <translation>Zainstalowano tę samą wersję</translation>
+        <translation>Memes stumm staliet</translation>
     </message>
     <message>
         <source>System Font</source>
-        <translation>Czcionka systemowa</translation>
+        <translation>Skritur ar sistem</translation>
     </message>
 </context>
 <context>
     <name>DFontMgrMainWindow</name>
     <message>
         <source>Ctrl+Shift+/</source>
-        <translation>Ctrl+Shift+/</translation>
+        <translation>Ktrl+Pennlizh+/</translation>
     </message>
     <message>
         <source>PgUp</source>
-        <translation>PgUp</translation>
+        <translation>PjUs</translation>
     </message>
     <message>
         <source>PgDown</source>
-        <translation>PgDown</translation>
+        <translation>PjTraoñ</translation>
     </message>
     <message>
         <source>Ctrl+Alt+F</source>
-        <translation>Ctrl+Alt+F</translation>
+        <translation>Ktrl+Alt+F</translation>
     </message>
     <message>
         <source>Ctrl+F</source>
-        <translation>Ctrl+F</translation>
+        <translation>Ktrl+F</translation>
     </message>
     <message>
         <source>Ctrl+O</source>
-        <translation>Ctrl+O</translation>
+        <translation>Ktrlo+O</translation>
     </message>
     <message>
         <source>Ctrl+K</source>
-        <translation>Ctrl+K</translation>
+        <translation>Ktrl+K</translation>
     </message>
     <message>
         <source>Ctrl+Shift+K</source>
-        <translation>Ctrl+Shift+K</translation>
+        <translation>Ktrl+Pennlizh+K</translation>
     </message>
     <message>
         <source>Alt+Return</source>
-        <translation>Alt+Return</translation>
+        <translation>Alt+Distreiñ</translation>
     </message>
     <message>
         <source>Fonts</source>
-        <translation>Czcionki</translation>
+        <translation>Skriturioù</translation>
     </message>
     <message>
         <source>Ctrl+=</source>
-        <translation>Ctrl+=</translation>
+        <translation>Ktrl+=</translation>
     </message>
     <message>
         <source>Ctrl+-</source>
-        <translation>Ctrl+-</translation>
+        <translation>Ktrl+-</translation>
     </message>
     <message>
         <source>Ctrl+0</source>
-        <translation>Ctrl+0</translation>
+        <translation>Ktrl+0</translation>
     </message>
     <message>
         <source>%1 font installed</source>
-        <translation>Zainstalowano czcionkę %1</translation>
+        <translation>%1 skritur staliet</translation>
     </message>
     <message>
         <source>%1 fonts installed</source>
-        <translation>Zainstalowano %1 czcionek</translation>
+        <translation>%1 skritur staliet</translation>
     </message>
 </context>
 <context>
     <name>DeleteConfirmDailog</name>
     <message>
         <source>Are you sure you want to delete this font?</source>
-        <translation>Czy na pewno chcesz usunąć tę czcionkę?</translation>
+        <translation>Ha fellout a ra deoc&apos;h dilemel ar skritur-mañ?</translation>
     </message>
     <message>
         <source>This font will not be available to applications</source>
-        <translation>Ta czcionka nie będzie dostępna dla aplikacji</translation>
+        <translation>Ne vo ket hegerz ken ar skritur-mañ evit an aplikasionoù</translation>
     </message>
     <message>
         <source>These fonts will not be available to applications</source>
-        <translation>Te czcionki nie będą dostępne dla aplikacji</translation>
+        <translation>Ne vo ket hegerz ken ar skriturioù-mañ evit an aplikasionoù</translation>
     </message>
     <message>
         <source>The other %1 system fonts cannot be deleted</source>
-        <translation>Nie można usunąć innych czcionek systemowych %1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>The font &quot;%1&quot; in use cannot be deleted</source>
-        <translation>Nie można usunąć używanej czcionki „%1”</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>The other %1 system fonts and the font &quot;%2&quot; in use cannot be deleted</source>
-        <translation>Nie można usunąć innych czcionek systemowych %1 i używanej czcionki „%2”</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Are you sure you want to delete %1 font(s)?</source>
-        <translation>Czy na pewno chcesz usunąć %1 czcionka(ek)?</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Delete</source>
-        <translation>Usuń</translation>
+        <translation>Dilemel</translation>
     </message>
 </context>
 <context>
     <name>Dfuninstalldialog</name>
     <message>
         <source>Deleting fonts, please wait...</source>
-        <translation>Usuwam czcionki, proszę czekać...</translation>
+        <translation>O tilemel ar skriturioù, gortozit mar plij...</translation>
     </message>
 </context>
 <context>
     <name>ExceptionWindow</name>
     <message>
         <source>Font Verification</source>
-        <translation>Weryfikacja czcionki</translation>
+        <translation>Gwiriañ ar skriturioù</translation>
     </message>
     <message>
         <source>Exit</source>
-        <translation>Wyjście</translation>
+        <translation>Kuitaat</translation>
     </message>
     <message>
         <source>Continue</source>
-        <translation>Kontynuuj</translation>
+        <translation>Kenderc&apos;hel</translation>
     </message>
     <message>
         <source>No fonts to be installed</source>
-        <translation>Brak czcionek do zainstalowania</translation>
+        <translation>Skritur ebet da staliañ</translation>
     </message>
 </context>
 <context>
     <name>Font</name>
     <message>
         <source>Don&apos;t let your dreams be dreams</source>
-        <translation>Nie pozwól, aby twoje sny były snami</translation>
+        <translation>Na lezit ket hoc&apos;h hunvreoù bezañ hunvreoù</translation>
     </message>
 </context>
 <context>
     <name>FontDetailDailog</name>
     <message>
         <source>Basic info</source>
-        <translation>Podstawowa informacja</translation>
+        <translation>Titour diazez</translation>
     </message>
     <message>
         <source>Style</source>
-        <translation>Styl</translation>
+        <translation>Stil</translation>
     </message>
     <message>
         <source>Type</source>
-        <translation>Typ</translation>
+        <translation>Doare</translation>
     </message>
     <message>
         <source>Version</source>
-        <translation>Wersja</translation>
+        <translation>Stumm</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation>Opis</translation>
+        <translation>Deskrivadur</translation>
     </message>
     <message>
         <source>Unknown</source>
-        <translation>Nieznany</translation>
+        <translation>Dizanv</translation>
     </message>
     <message>
         <source>Full name</source>
-        <translation>Pełna nazwa</translation>
+        <translation>Anv</translation>
     </message>
     <message>
         <source>Ps name</source>
-        <translation>Nazwa PS</translation>
+        <translation>Ps anv</translation>
     </message>
     <message>
         <source>Trademark</source>
-        <translation>Znak towarowy</translation>
+        <translation>Merkoù marilhet</translation>
     </message>
 </context>
 <context>
     <name>Main</name>
     <message>
         <source>Font Manager</source>
-        <translation>Zarządzanie czcionkami</translation>
+        <translation>Merer skriturioù</translation>
     </message>
     <message>
         <source>Font Manager helps users install and manage fonts.</source>
-        <translation>Menedżer czcionek pomaga użytkownikom instalować czcionki i zarządzać nimi.</translation>
+        <translation>Ar merer skriturioù a sikour an implijaderien da staliañ ha da verañ ar skriturioù.</translation>
     </message>
     <message>
         <source>Loading fonts, please wait...</source>
-        <translation>Ładowanie czcionek, proszę czekać...</translation>
+        <translation>O kargañ ar skriturioù, gortozit mar plij...</translation>
     </message>
     <message>
         <source>The font exported to your desktop</source>
-        <translation>Czcionka wyeksportowana na pulpit</translation>
+        <translation>Ar skritur a zo bet ezporzhiet d&apos;ho purev</translation>
     </message>
     <message>
         <source>%1 fonts exported to your desktop</source>
-        <translation>%1 czcionek wyeksportowanych na pulpit</translation>
+        <translation>%1 skritur ezporzhiet d&apos;ho purev</translation>
     </message>
     <message>
         <source>Failed to export 1 font. There is not enough disk space.</source>
-        <translation>Nie udało się wyeksportować 1 czcionki. Za mało miejsca na dysku.</translation>
+        <translation>N&apos;heller ket ezporzhiañ 1 skritur. N&apos;eus ket plas ebet ken en disk.</translation>
     </message>
     <message>
         <source>Failed to export %1 fonts. There is not enough disk space.</source>
-        <translation>Nie udało się wyeksportować %1 czcionek. Za mało miejsca na dysku.</translation>
+        <translation>N&apos;heller ket ezporzhiañ %1 skritur. N&apos;eus ket plas ebet ken en disk.</translation>
     </message>
 </context>
 <context>
     <name>Menu</name>
     <message>
         <source>Add font</source>
-        <translation>Dodaj czcionkę</translation>
+        <translation>Ouzhpennañ ar skritur</translation>
     </message>
     <message>
         <source>Enable</source>
-        <translation>Włącz</translation>
+        <translation>Enaouiñ</translation>
     </message>
     <message>
         <source>Disable</source>
-        <translation>Wyłącz</translation>
+        <translation>Lazhañ</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>Usuń</translation>
+        <translation>Dilemel</translation>
     </message>
     <message>
         <source>Favorite</source>
-        <translation>Ulubiony</translation>
+        <translation>Sinedoù</translation>
     </message>
     <message>
         <source>Unfavorite</source>
-        <translation>Usuń z ulubionych</translation>
+        <translation>Disinedet</translation>
     </message>
     <message>
         <source>Details</source>
-        <translation>Szczegóły</translation>
+        <translation>Munudoù</translation>
     </message>
     <message>
         <source>Display in file manager</source>
-        <translation>Wyświetl w menedżerze plików</translation>
+        <translation>Diskouez ar merer restroù</translation>
     </message>
     <message>
         <source>Export</source>
-        <translation>Eksport</translation>
+        <translation>Ezporzhiañ</translation>
     </message>
 </context>
 <context>
     <name>MessageManager</name>
     <message>
         <source>deactivated</source>
-        <translation>dezaktywowany</translation>
+        <translation>lazhet</translation>
     </message>
     <message>
         <source>The fonts have been deactivated</source>
-        <translation>Czcionki zostały dezaktywowane</translation>
+        <translation>Lazhet eo bet ar skriturioù</translation>
     </message>
     <message>
         <source>%1 is in use, so you cannot disable it</source>
-        <translation>%1 jest używana, więc nie możesz jej wyłączyć</translation>
+        <translation>%1 a zo war implij, setu ma n&apos;hallit ket lazhañ anezhañ</translation>
     </message>
     <message>
         <source>You cannot disable system fonts and the fonts in use</source>
-        <translation>Nie można wyłączyć czcionek systemowych ani używanych czcionek</translation>
+        <translation>N&apos;heller ket lazhañ skriturioù ar sistem hag ar re war implij kenebeut</translation>
     </message>
     <message>
         <source>You cannot disable system fonts</source>
-        <translation>Nie można wyłączyć czcionek systemowych</translation>
+        <translation>N&apos;heller ket lazhañ skriturioù ar sistem</translation>
     </message>
     <message>
         <source>Some fonts are not allowed to be disabled</source>
-        <translation>Niektórych czcionek nie można wyłączyć</translation>
+        <translation>N&apos;heller ket lazhañ skriturioù &apos;zo</translation>
     </message>
 </context>
 <context>
     <name>NormalInstallWindow</name>
     <message>
         <source>Install Font</source>
-        <translation>Zainstaluj czcionkę</translation>
+        <translation>Staliañ ar skritur</translation>
     </message>
     <message>
         <source>Verifying...</source>
-        <translation>Weryfikacja...</translation>
+        <translation>O wiriañ...</translation>
     </message>
 </context>
 <context>
     <name>QuickInstallWindow</name>
     <message>
         <source>Unknown</source>
-        <translation>Nieznany</translation>
+        <translation>Dizanv</translation>
     </message>
     <message>
         <source>Broken file</source>
-        <translation>Uszkodzony plik</translation>
+        <translation>Restr torret</translation>
     </message>
     <message>
         <source>Installed</source>
-        <translation>Zainstalowano</translation>
+        <translation>Staliet</translation>
     </message>
     <message>
         <source>Not Installed</source>
-        <translation>Nie zainstalowany</translation>
+        <translation>Nann-staliet</translation>
     </message>
     <message>
         <source>Install Font</source>
-        <translation>Zainstaluj czcionkę</translation>
+        <translation>Staliañ ar skritur</translation>
     </message>
 </context>
 <context>
     <name>SearchBar</name>
     <message>
         <source>Search</source>
-        <translation>Szukaj</translation>
+        <translation>Klask</translation>
     </message>
     <message>
         <source>No search results</source>
-        <translation>Brak wyników wyszukiwania</translation>
+        <translation>Disoc&apos;h ebet kavet</translation>
     </message>
     <message>
         <source>No fonts</source>
-        <translation>Brak czcionek</translation>
+        <translation>Skritur ebet</translation>
     </message>
 </context>
 <context>
     <name>Shortcut</name>
     <message>
         <source>Help</source>
-        <translation>Pomoc</translation>
+        <translation>Skoazell</translation>
     </message>
     <message>
         <source>Display shortcuts</source>
-        <translation>Wyświetl skróty</translation>
+        <translation>Diskouez ar berradurioù</translation>
     </message>
     <message>
         <source>Page up</source>
-        <translation>Strona w górę</translation>
+        <translation>Pajenn gent</translation>
     </message>
     <message>
         <source>Page down</source>
-        <translation>Strona w dół</translation>
+        <translation>Pajenn da-heul</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>Usuń</translation>
+        <translation>Dilemel</translation>
     </message>
     <message>
         <source>Add font</source>
-        <translation>Dodaj czcionkę</translation>
+        <translation>Ouzhpennañ ar skritur</translation>
     </message>
     <message>
         <source>Favorite</source>
-        <translation>Ulubiony</translation>
+        <translation>Sinedoù</translation>
     </message>
     <message>
         <source>Unfavorite</source>
-        <translation>Usuń z ulubionych</translation>
+        <translation>Disinedet</translation>
     </message>
     <message>
         <source>Font info</source>
-        <translation>Informacje o czcionce</translation>
+        <translation>Titouroù ar skritur</translation>
     </message>
 </context>
 <context>
     <name>StateBar</name>
     <message>
         <source>Input preview text</source>
-        <translation>Wprowadź tekst podglądu</translation>
+        <translation>Ebarzhit un destenn rakwelet</translation>
     </message>
 </context>
 <context>
     <name>DFontWidget</name>
     <message>
         <source>Broken file</source>
-        <translation>Uszkodzony plik</translation>
+        <translation>Restr torret</translation>
     </message>
 </context>
 </TS>

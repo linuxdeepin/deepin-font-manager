@@ -135,19 +135,19 @@
     </message>
     <message>
         <source>The other %1 system fonts cannot be deleted</source>
-        <translation type="unfinished"/>
+        <translation>Осталих %1 системских фонтова се не могу уклонити</translation>
     </message>
     <message>
         <source>The font &quot;%1&quot; in use cannot be deleted</source>
-        <translation type="unfinished"/>
+        <translation>Фонт &quot;%1&quot; се користи и не може се уклонити</translation>
     </message>
     <message>
         <source>The other %1 system fonts and the font &quot;%2&quot; in use cannot be deleted</source>
-        <translation type="unfinished"/>
+        <translation>Осталих %1 системких фонтова и фонт &quot;%2&quot; који се користи се не могу уклонити</translation>
     </message>
     <message>
         <source>Are you sure you want to delete %1 font(s)?</source>
-        <translation type="unfinished"/>
+        <translation>Заиста желите да обришете %1 фонт/а/ова?</translation>
     </message>
     <message>
         <source>Delete</source>
@@ -308,15 +308,15 @@
     </message>
     <message>
         <source>%1 is in use, so you cannot disable it</source>
-        <translation type="unfinished"/>
+        <translation>%1 се користи и не можете га онемогућити</translation>
     </message>
     <message>
         <source>You cannot disable system fonts and the fonts in use</source>
-        <translation type="unfinished"/>
+        <translation>Не можете онемогућити системке фонтове и фонтеве који се користе</translation>
     </message>
     <message>
         <source>You cannot disable system fonts</source>
-        <translation type="unfinished"/>
+        <translation>Не можете онемогућити системске фонтове</translation>
     </message>
     <message>
         <source>Some fonts are not allowed to be disabled</source>

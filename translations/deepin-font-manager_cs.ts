@@ -135,19 +135,19 @@
     </message>
     <message>
         <source>The other %1 system fonts cannot be deleted</source>
-        <translation type="unfinished"/>
+        <translation>Dalších %1 systémových písem není možné smazat</translation>
     </message>
     <message>
         <source>The font &quot;%1&quot; in use cannot be deleted</source>
-        <translation type="unfinished"/>
+        <translation>Písmo „%1“ je právě používáno a není ho proto možné smazat</translation>
     </message>
     <message>
         <source>The other %1 system fonts and the font &quot;%2&quot; in use cannot be deleted</source>
-        <translation type="unfinished"/>
+        <translation>Dalších %1 systémových písem a písmo „%2“ je právě používáno a není ho proto možné smazat</translation>
     </message>
     <message>
         <source>Are you sure you want to delete %1 font(s)?</source>
-        <translation type="unfinished"/>
+        <translation>Opravdu chcete %1 písem smazat?</translation>
     </message>
     <message>
         <source>Delete</source>

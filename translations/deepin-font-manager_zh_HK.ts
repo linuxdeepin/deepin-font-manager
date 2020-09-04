@@ -1,59 +1,59 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="zh_HK" version="2.1">
 <context>
     <name>Category</name>
     <message>
         <source>All Fonts</source>
-        <translation>Wszystkie czcionki</translation>
+        <translation>所有字體</translation>
     </message>
     <message>
         <source>System</source>
-        <translation>System</translation>
+        <translation>系統字體</translation>
     </message>
     <message>
         <source>User</source>
-        <translation>Użytkownik</translation>
+        <translation>用戶字體</translation>
     </message>
     <message>
         <source>Favorites</source>
-        <translation>Ulubione</translation>
+        <translation>我的收藏</translation>
     </message>
     <message>
         <source>Active</source>
-        <translation>Aktywny</translation>
+        <translation>已啟動</translation>
     </message>
     <message>
         <source>Chinese</source>
-        <translation>Chiński</translation>
+        <translation>中文字體</translation>
     </message>
     <message>
         <source>Monospaced</source>
-        <translation>Monospaced</translation>
+        <translation>等寬字體</translation>
     </message>
 </context>
 <context>
     <name>DFDeleteDialog</name>
     <message>
         <source>Cancel</source>
-        <translation>Anuluj</translation>
+        <translation>取消</translation>
     </message>
     <message>
         <source>Confirm</source>
-        <translation>Potwierdź</translation>
+        <translation>確定</translation>
     </message>
 </context>
 <context>
     <name>DFInstallErrorDialog</name>
     <message>
         <source>Broken file</source>
-        <translation>Uszkodzony plik</translation>
+        <translation>文件已損壞</translation>
     </message>
     <message>
         <source>Same version installed</source>
-        <translation>Zainstalowano tę samą wersję</translation>
+        <translation>已安裝相同版本</translation>
     </message>
     <message>
         <source>System Font</source>
-        <translation>Czcionka systemowa</translation>
+        <translation>系統字體</translation>
     </message>
 </context>
 <context>
@@ -96,7 +96,7 @@
     </message>
     <message>
         <source>Fonts</source>
-        <translation>Czcionki</translation>
+        <translation>字體</translation>
     </message>
     <message>
         <source>Ctrl+=</source>
@@ -112,317 +112,317 @@
     </message>
     <message>
         <source>%1 font installed</source>
-        <translation>Zainstalowano czcionkę %1</translation>
+        <translation>已安裝%1個字體</translation>
     </message>
     <message>
         <source>%1 fonts installed</source>
-        <translation>Zainstalowano %1 czcionek</translation>
+        <translation>已安裝%1個字體</translation>
     </message>
 </context>
 <context>
     <name>DeleteConfirmDailog</name>
     <message>
         <source>Are you sure you want to delete this font?</source>
-        <translation>Czy na pewno chcesz usunąć tę czcionkę?</translation>
+        <translation>您確定要刪除該字體嗎？</translation>
     </message>
     <message>
         <source>This font will not be available to applications</source>
-        <translation>Ta czcionka nie będzie dostępna dla aplikacji</translation>
+        <translation>刪除後該字體將不可用於其他應用程序</translation>
     </message>
     <message>
         <source>These fonts will not be available to applications</source>
-        <translation>Te czcionki nie będą dostępne dla aplikacji</translation>
+        <translation>刪除後這些字體將不可用於其他應用程序</translation>
     </message>
     <message>
         <source>The other %1 system fonts cannot be deleted</source>
-        <translation>Nie można usunąć innych czcionek systemowych %1</translation>
+        <translation>無法刪除其他%1個系統字體</translation>
     </message>
     <message>
         <source>The font &quot;%1&quot; in use cannot be deleted</source>
-        <translation>Nie można usunąć używanej czcionki „%1”</translation>
+        <translation>無法刪除正在使用的字體：%1</translation>
     </message>
     <message>
         <source>The other %1 system fonts and the font &quot;%2&quot; in use cannot be deleted</source>
-        <translation>Nie można usunąć innych czcionek systemowych %1 i używanej czcionki „%2”</translation>
+        <translation>無法刪除其他%1個系統字體和正在使用的字體：%2</translation>
     </message>
     <message>
         <source>Are you sure you want to delete %1 font(s)?</source>
-        <translation>Czy na pewno chcesz usunąć %1 czcionka(ek)?</translation>
+        <translation>您確定要刪除這%1個字體嗎？</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>Usuń</translation>
+        <translation>刪除</translation>
     </message>
 </context>
 <context>
     <name>Dfuninstalldialog</name>
     <message>
         <source>Deleting fonts, please wait...</source>
-        <translation>Usuwam czcionki, proszę czekać...</translation>
+        <translation>正在刪除字體，請稍候...</translation>
     </message>
 </context>
 <context>
     <name>ExceptionWindow</name>
     <message>
         <source>Font Verification</source>
-        <translation>Weryfikacja czcionki</translation>
+        <translation>字體驗證</translation>
     </message>
     <message>
         <source>Exit</source>
-        <translation>Wyjście</translation>
+        <translation>退出</translation>
     </message>
     <message>
         <source>Continue</source>
-        <translation>Kontynuuj</translation>
+        <translation>繼續</translation>
     </message>
     <message>
         <source>No fonts to be installed</source>
-        <translation>Brak czcionek do zainstalowania</translation>
+        <translation>無可用安裝字體</translation>
     </message>
 </context>
 <context>
     <name>Font</name>
     <message>
         <source>Don&apos;t let your dreams be dreams</source>
-        <translation>Nie pozwól, aby twoje sny były snami</translation>
+        <translation>因理想而出生，為責任而成長</translation>
     </message>
 </context>
 <context>
     <name>FontDetailDailog</name>
     <message>
         <source>Basic info</source>
-        <translation>Podstawowa informacja</translation>
+        <translation>基本訊息</translation>
     </message>
     <message>
         <source>Style</source>
-        <translation>Styl</translation>
+        <translation>樣式</translation>
     </message>
     <message>
         <source>Type</source>
-        <translation>Typ</translation>
+        <translation>類型</translation>
     </message>
     <message>
         <source>Version</source>
-        <translation>Wersja</translation>
+        <translation>版本</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation>Opis</translation>
+        <translation>描述</translation>
     </message>
     <message>
         <source>Unknown</source>
-        <translation>Nieznany</translation>
+        <translation>未知</translation>
     </message>
     <message>
         <source>Full name</source>
-        <translation>Pełna nazwa</translation>
+        <translation>全名</translation>
     </message>
     <message>
         <source>Ps name</source>
-        <translation>Nazwa PS</translation>
+        <translation>PS名稱</translation>
     </message>
     <message>
         <source>Trademark</source>
-        <translation>Znak towarowy</translation>
+        <translation>商標</translation>
     </message>
 </context>
 <context>
     <name>Main</name>
     <message>
         <source>Font Manager</source>
-        <translation>Zarządzanie czcionkami</translation>
+        <translation>字體管理器</translation>
     </message>
     <message>
         <source>Font Manager helps users install and manage fonts.</source>
-        <translation>Menedżer czcionek pomaga użytkownikom instalować czcionki i zarządzać nimi.</translation>
+        <translation>字體管理器是一款幫助用戶安裝和管理字體的工具。</translation>
     </message>
     <message>
         <source>Loading fonts, please wait...</source>
-        <translation>Ładowanie czcionek, proszę czekać...</translation>
+        <translation>正在加載字體，請稍候...</translation>
     </message>
     <message>
         <source>The font exported to your desktop</source>
-        <translation>Czcionka wyeksportowana na pulpit</translation>
+        <translation>該字體已導出到桌面</translation>
     </message>
     <message>
         <source>%1 fonts exported to your desktop</source>
-        <translation>%1 czcionek wyeksportowanych na pulpit</translation>
+        <translation>%1個字體已導出到桌面</translation>
     </message>
     <message>
         <source>Failed to export 1 font. There is not enough disk space.</source>
-        <translation>Nie udało się wyeksportować 1 czcionki. Za mało miejsca na dysku.</translation>
+        <translation>目標磁盤空間不足，1 個文件導出失敗</translation>
     </message>
     <message>
         <source>Failed to export %1 fonts. There is not enough disk space.</source>
-        <translation>Nie udało się wyeksportować %1 czcionek. Za mało miejsca na dysku.</translation>
+        <translation>目標磁盤空間不足，%1 個文件導出失敗</translation>
     </message>
 </context>
 <context>
     <name>Menu</name>
     <message>
         <source>Add font</source>
-        <translation>Dodaj czcionkę</translation>
+        <translation>添加字體</translation>
     </message>
     <message>
         <source>Enable</source>
-        <translation>Włącz</translation>
+        <translation>啟用字體</translation>
     </message>
     <message>
         <source>Disable</source>
-        <translation>Wyłącz</translation>
+        <translation>禁用字體</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>Usuń</translation>
+        <translation>刪除字體</translation>
     </message>
     <message>
         <source>Favorite</source>
-        <translation>Ulubiony</translation>
+        <translation>收藏</translation>
     </message>
     <message>
         <source>Unfavorite</source>
-        <translation>Usuń z ulubionych</translation>
+        <translation>取消收藏</translation>
     </message>
     <message>
         <source>Details</source>
-        <translation>Szczegóły</translation>
+        <translation>訊息</translation>
     </message>
     <message>
         <source>Display in file manager</source>
-        <translation>Wyświetl w menedżerze plików</translation>
+        <translation>在檔案管理員中顯示</translation>
     </message>
     <message>
         <source>Export</source>
-        <translation>Eksport</translation>
+        <translation>導出字體</translation>
     </message>
 </context>
 <context>
     <name>MessageManager</name>
     <message>
         <source>deactivated</source>
-        <translation>dezaktywowany</translation>
+        <translation>已禁用</translation>
     </message>
     <message>
         <source>The fonts have been deactivated</source>
-        <translation>Czcionki zostały dezaktywowane</translation>
+        <translation>字體已被禁用</translation>
     </message>
     <message>
         <source>%1 is in use, so you cannot disable it</source>
-        <translation>%1 jest używana, więc nie możesz jej wyłączyć</translation>
+        <translation>%1正在被使用，無法禁用</translation>
     </message>
     <message>
         <source>You cannot disable system fonts and the fonts in use</source>
-        <translation>Nie można wyłączyć czcionek systemowych ani używanych czcionek</translation>
+        <translation>不可禁用系統字體和使用中的字體</translation>
     </message>
     <message>
         <source>You cannot disable system fonts</source>
-        <translation>Nie można wyłączyć czcionek systemowych</translation>
+        <translation>不可禁用系統字體</translation>
     </message>
     <message>
         <source>Some fonts are not allowed to be disabled</source>
-        <translation>Niektórych czcionek nie można wyłączyć</translation>
+        <translation>部分系統字體不允許被禁用</translation>
     </message>
 </context>
 <context>
     <name>NormalInstallWindow</name>
     <message>
         <source>Install Font</source>
-        <translation>Zainstaluj czcionkę</translation>
+        <translation>安裝字體</translation>
     </message>
     <message>
         <source>Verifying...</source>
-        <translation>Weryfikacja...</translation>
+        <translation>正在驗證...</translation>
     </message>
 </context>
 <context>
     <name>QuickInstallWindow</name>
     <message>
         <source>Unknown</source>
-        <translation>Nieznany</translation>
+        <translation>未知</translation>
     </message>
     <message>
         <source>Broken file</source>
-        <translation>Uszkodzony plik</translation>
+        <translation>文件已損壞</translation>
     </message>
     <message>
         <source>Installed</source>
-        <translation>Zainstalowano</translation>
+        <translation>已安裝</translation>
     </message>
     <message>
         <source>Not Installed</source>
-        <translation>Nie zainstalowany</translation>
+        <translation>未安裝</translation>
     </message>
     <message>
         <source>Install Font</source>
-        <translation>Zainstaluj czcionkę</translation>
+        <translation>安裝字體</translation>
     </message>
 </context>
 <context>
     <name>SearchBar</name>
     <message>
         <source>Search</source>
-        <translation>Szukaj</translation>
+        <translation>搜索</translation>
     </message>
     <message>
         <source>No search results</source>
-        <translation>Brak wyników wyszukiwania</translation>
+        <translation>無搜索結果</translation>
     </message>
     <message>
         <source>No fonts</source>
-        <translation>Brak czcionek</translation>
+        <translation>暫無字體</translation>
     </message>
 </context>
 <context>
     <name>Shortcut</name>
     <message>
         <source>Help</source>
-        <translation>Pomoc</translation>
+        <translation>幫助</translation>
     </message>
     <message>
         <source>Display shortcuts</source>
-        <translation>Wyświetl skróty</translation>
+        <translation>顯示快捷鍵</translation>
     </message>
     <message>
         <source>Page up</source>
-        <translation>Strona w górę</translation>
+        <translation>上一頁</translation>
     </message>
     <message>
         <source>Page down</source>
-        <translation>Strona w dół</translation>
+        <translation>下一頁</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>Usuń</translation>
+        <translation>刪除</translation>
     </message>
     <message>
         <source>Add font</source>
-        <translation>Dodaj czcionkę</translation>
+        <translation>添加字體</translation>
     </message>
     <message>
         <source>Favorite</source>
-        <translation>Ulubiony</translation>
+        <translation>收藏</translation>
     </message>
     <message>
         <source>Unfavorite</source>
-        <translation>Usuń z ulubionych</translation>
+        <translation>取消收藏</translation>
     </message>
     <message>
         <source>Font info</source>
-        <translation>Informacje o czcionce</translation>
+        <translation>字體訊息</translation>
     </message>
 </context>
 <context>
     <name>StateBar</name>
     <message>
         <source>Input preview text</source>
-        <translation>Wprowadź tekst podglądu</translation>
+        <translation>輸入文本內容進行預覽</translation>
     </message>
 </context>
 <context>
     <name>DFontWidget</name>
     <message>
         <source>Broken file</source>
-        <translation>Uszkodzony plik</translation>
+        <translation>文件已損壞</translation>
     </message>
 </context>
 </TS>

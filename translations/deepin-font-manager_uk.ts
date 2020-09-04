@@ -135,19 +135,19 @@
     </message>
     <message>
         <source>The other %1 system fonts cannot be deleted</source>
-        <translation type="unfinished"/>
+        <translation>%1 інших загальносистемних шрифтів не може бути вилучено</translation>
     </message>
     <message>
         <source>The font &quot;%1&quot; in use cannot be deleted</source>
-        <translation type="unfinished"/>
+        <translation>Шрифт «%1» використовується — його не можна вилучати</translation>
     </message>
     <message>
         <source>The other %1 system fonts and the font &quot;%2&quot; in use cannot be deleted</source>
-        <translation type="unfinished"/>
+        <translation>Інші %1 загальносистемні шрифти і шрифт «%2», який використано у інших програмах, не може бути вилучено</translation>
     </message>
     <message>
         <source>Are you sure you want to delete %1 font(s)?</source>
-        <translation type="unfinished"/>
+        <translation>Ви справді хочете вилучити %1 шрифти?</translation>
     </message>
     <message>
         <source>Delete</source>
