@@ -110,9 +110,9 @@ public:
     //目录改动时触发的函数
     void updateChangedDir(const QString &path);
     //删除字体
-    void deleteFontFiles(const QStringList &files, bool force = false);
+    void deleteFontFiles(QStringList &files, bool force = false);
     //从字体库删除字体
-    void deleteCurFonts(const QStringList &files, bool force = false);
+    void deleteCurFonts(QStringList &files, bool force = false);
     //文件改动时触发的函数,对相应文件进行处理
     void changeFontFile(const QString &path, bool force = false);
     //选中字体,并通过传入参数获得各种字体的数目等信息.
@@ -130,7 +130,7 @@ public:
         }
     }
     //根据文件路径删除字体列表中项
-    void deleteFontModelIndex(const QString &filePath);
+    void deleteFontModelIndex(DFontPreviewItemData &itemData);
     //返回是否正在删除
     inline bool isDeleting();
     //获取线程锁
@@ -167,18 +167,14 @@ public:
     //返回当前在用字体的名称
     inline QString getCurFontStrName()
     {
-        return QString("%1").arg(m_curFontData.fontData.strFontName);
+        return QString("%1").arg(m_curFontData.strFontName);
     }
     //返回当前DFontData信息
-    inline DFontPreviewItemData getCurFontData()
+    inline FontData getCurFontData()
     {
         return m_curFontData;
     }
-    //获取FontData信息
-    inline static DFontPreviewItemData getFontData(const FontData &fontData)
-    {
-        return DFontPreviewListDataThread::instance()->getFontData(fontData);
-    }
+
     //获取是否为tab focus
     bool getIsTabFocus() const;
     //设置是否为tabfocus的标志位
@@ -217,10 +213,8 @@ private:
     inline QRect getCollectionIconRect(const QRect &rect);
     //获取复选框尺寸
     inline QRect getCheckboxRect(const QRect &rect);
-    //根据文件路径删除字体列表中项
-    void deleteFontModelIndex(const DFontInfo &fontInfo);
-    //判断这个字体是否为当前系统使用字体
-    bool isCurrentFont(DFontPreviewItemData &itemData);
+    //设置Font data
+    void setFontData(const QModelIndex &index, const DFontPreviewItemData &itemData);
     //对选中字体的索引按照row从大到小进行排序，为了在我的收藏界面和已激活界面进行操作时
     void sortModelIndexList(QModelIndexList &sourceList);
     //设置item移除后的选中
@@ -233,7 +227,17 @@ private:
     int getOnePageCount();
     //触摸屏点击响应函数
     void touchPanelClick(QMouseEvent *event);
+    //根据按键设置选中
+    void keyPressEventFilter(const QModelIndexList &list, bool isUp, bool isDown, bool isShiftModifier);
+    //检查当前是否无选中
+    void checkIfHasSelection();
+    //鼠标左键press事件处理函数
+    void onMouseLeftBtnPressed(const QModelIndex &modelIndex, const QPoint &point, bool isShiftMdf, bool isCtrlMdf);
+    //鼠标右键press事件处理函数
+    void onMouseRightBtnPressed(const QModelIndex &modelIndex, bool isShiftMdf);
+    void onMouseLeftBtnReleased(const QModelIndex &modelIndex, const QPoint &clickPoint);
 
+private:
     bool m_bLoadDataFinish = false;
     volatile bool m_fontChanged = false;
     bool m_bListviewAtButtom = false;
@@ -267,34 +271,26 @@ private:
     QStringList m_enableFontList;
     QStringList m_disableFontList;
     QStringList m_currentFont;
-    DFontPreviewItemData m_curFontData;
+    FontData m_curFontData;
     FontGroup m_currentFontGroup;
 
+    QList<int> m_recoverSelectStateList;
     QRect m_curRect;
     //是否需要恢复tab状态
     bool m_recoveryTabFocusState = false;
+    bool m_curFontSelected{false};
     int m_currentSelectedRow = -1;
     int m_selectAfterDel = -1;/*539 删除后的选中位置*/
     int m_tryCnt = 0;
-    QList<int> m_recoverSelectStateList;
-    bool m_curFontSelected{false};
     qint64 m_curTm {0};
-    //根据按键设置选中
-    void keyPressEventFilter(const QModelIndexList &list, bool isUp, bool isDown, bool isShiftModifier);
-    //检查当前是否无选中
-    void checkIfHasSelection();
-    //鼠标左键press事件处理函数
-    void onMouseLeftBtnPressed(const QModelIndex &modelIndex, const QPoint &point, bool isShiftMdf, bool isCtrlMdf);
-    //鼠标右键press事件处理函数
-    void onMouseRightBtnPressed(const QModelIndex &modelIndex, bool isShiftMdf);
-    void onMouseLeftBtnReleased(const QModelIndex &modelIndex, const QPoint &clickPoint);
+
 signals:
     //字体列表加载状态
     void onLoadFontsStatus(int type);
     //批量添加item请求
     void multiItemsAdded(QList<DFontPreviewItemData> &data, DFontSpinnerWidget::SpinnerStyles styles);
     //请求移除某一项的响应函数
-    void itemRemoved(const DFontPreviewItemData &data);
+    void itemRemoved(DFontPreviewItemData &data);
     //请求安装后的选中响应函数
     void itemsSelected(const QStringList &files, bool isFirstInstall = false);
     //请求字体列表数目改变函数
@@ -324,7 +320,7 @@ public slots:
     //应用字体变化时触发函数
     void onFontChanged(const QFont &font);
     //移除某一项响应函数
-    void onItemRemoved(const DFontPreviewItemData &itemData);
+    void onItemRemoved(DFontPreviewItemData &itemData);
     //切换界面时,更新之前记录的当前字体组的信息
     void updateCurrentFontGroup(int currentFontGroup);
     //删除字体后更新整个model

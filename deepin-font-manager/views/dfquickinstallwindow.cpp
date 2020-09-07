@@ -253,7 +253,7 @@ void DFQuickInstallWindow::onInstallBtnClicked()
  <Return>        null            Description:null
  <Note>          null
 *************************************************************************/
-void DFQuickInstallWindow::InitPreviewFont(DFontInfo fontInfo)
+void DFQuickInstallWindow::InitPreviewFont(DFontInfo &fontInfo)
 {
     qDebug() << __FUNCTION__ << "enter";
 

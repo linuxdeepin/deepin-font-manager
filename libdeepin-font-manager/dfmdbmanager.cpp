@@ -72,7 +72,7 @@ DFontPreviewItemData DFMDBManager::parseRecordToItemData(const QMap<QString, QSt
     itemData.fontData = FontData(record.value("fontName"), record.value("isEnabled").toInt()
                                  , record.value("isCollected").toInt()
                                  , record.value("isChineseFont").toInt()
-                                 , record.value("isMonoSpace").toInt(), TTF);
+                                 , record.value("isMonoSpace").toInt(), TTF, isSystemFont(filePath));
 
     itemData.fontInfo = getDFontInfo(record);
     itemData.fontData.setFontType(itemData.fontInfo.type);

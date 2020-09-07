@@ -90,7 +90,7 @@ signals:
     //重装完成信号
     void reInstallFinished(int state, const QStringList &fileList);
     //卸载完成信号
-    void uninstallFontFinished(const QStringList &uninstallIndex);
+    void uninstallFontFinished(QStringList &uninstallIndex);
     //卸载fc-cache命令执行完成信号
     void uninstallFcCacheFinish();
     //fc-cache命令完成信号

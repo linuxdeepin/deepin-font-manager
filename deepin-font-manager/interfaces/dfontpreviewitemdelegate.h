@@ -23,9 +23,13 @@ public:
     //获取当前listview一项尺寸的大小
     QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const Q_DECL_OVERRIDE;
 
-    enum {
+    enum FontRole {
         FontPreviewRole = Dtk::UserRole + 1,
         FontSizeRole = Dtk::UserRole + 2,
+        FontFamilyRole,
+        FontStyleRole,
+        FontOwnPreviewRole,
+        FontFamilyStylePreviewRole,
     };
 protected:
     //事件过滤器
@@ -43,7 +47,8 @@ private:
     //绘制字体预览列表中的收藏图标
     void paintForegroundCollectIcon(QPainter *painter, const QStyleOptionViewItem &option, const FontData &itemData) const;
     //绘制字体预览列表中的预览内容
-    void paintForegroundPreviewFont(QPainter *painter, const QStyleOptionViewItem &option, const DFontPreviewItemData &data, int fontPixelSize, QString &fontPreviewText) const;
+    void paintForegroundPreviewFont(QPainter *painter, const QStyleOptionViewItem &option, const QString &familyName,
+                                    const QString &styleName, bool isEnabled, int fontPixelSize, QString &fontPreviewText) const;
     //绘制字体预览列表的背景
     void paintBackground(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
     //绘制tab选中后的背景效果
@@ -52,7 +57,6 @@ private:
     void setPaintPath(const QRect &bgRect, QPainterPath &path, const int xDifference, const int yDifference, const int radius)const;
 
     DFontPreviewListView *m_parentView;
-    DFontPreviewItemData m_fontData;
 };
 
 #endif  // DFONTPREVIEWITEMDELEGATE_H

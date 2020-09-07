@@ -289,7 +289,7 @@ void DFontMgrMainWindow::initConnections()
     QObject::connect(d->leftSiderBar, SIGNAL(onListWidgetItemClicked(int)), this,
                      SLOT(onLeftSiderBarItemClicked(int)));
 
-    QObject::connect(m_fontManager, &DFontManager::uninstallFontFinished, this, [ = ](const QStringList & files) {
+    QObject::connect(m_fontManager, &DFontManager::uninstallFontFinished, this, [ = ](QStringList & files) {
         m_fontPreviewListView->updateSpinner(DFontSpinnerWidget::Delete);
         Q_EMIT DFontPreviewListDataThread::instance()->requestDeleted(files);
     });
@@ -1506,6 +1506,7 @@ void DFontMgrMainWindow::onLeftSiderBarItemClicked(int index)
     filterModel->setFilterGroup(filterGroup);
     //filterModel->setEditStatus(m_searchTextStatusIsEmpty);
 
+    qDebug() << __FUNCTION__ << "";
     onFontListViewRowCountChanged();
     onPreviewTextChanged();
     m_fontPreviewListView->clearSelection();
@@ -1716,7 +1717,7 @@ void DFontMgrMainWindow::onShowMessage(int successCount)
 *************************************************************************/
 void DFontMgrMainWindow::onShowSpinner(bool bShow, bool force, DFontSpinnerWidget::SpinnerStyles style)
 {
-    qDebug() << __FUNCTION__ << bShow << "begin";
+    qDebug() << __FUNCTION__ << bShow << force << "begin";
     if (bShow) {
         showSpinner(/*DFontSpinnerWidget::Delete*/style, force);
     } else {

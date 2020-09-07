@@ -30,7 +30,7 @@ public:
 protected:
     void initUI();
     void initConnections();
-    void InitPreviewFont(DFontInfo fontInfo);
+    void InitPreviewFont(DFontInfo &fontInfo);
     void installFont(const QStringList &files);
 
     void resizeEvent(QResizeEvent *event) override;

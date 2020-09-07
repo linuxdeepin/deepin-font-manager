@@ -102,9 +102,8 @@ bool DFontPreviewProxyModel::isCustomFilterAcceptsRow(const QModelIndex &modelIn
     }
 
     FontData fdata = varModel.value<FontData>();
-    DFontPreviewItemData itemData = DFontPreviewListDataThread::instance()->getFontData(fdata);
 
-    const QString &fontName = itemData.fontData.strFontName;
+    const QString &fontName = fdata.strFontName;
 
     switch (m_filterGroup) {
     //显示所有字体
@@ -116,42 +115,39 @@ bool DFontPreviewProxyModel::isCustomFilterAcceptsRow(const QModelIndex &modelIn
     }
     //只显示系统字体
     case DSplitListWidget::SysFont: {
-        QString fontFilePath = itemData.fontInfo.filePath;
-        if (fontFilePath.startsWith("/usr/share/fonts/") &&
-                !fontFilePath.contains("/.local/share/fonts/") &&
+        if (fdata.isSystemFont &&
                 isFontNameContainsPattern(fontName)) {
             return true;
         }
     } break;
     //只显示用户字体
     case DSplitListWidget::UserFont: {
-        QString fontFilePath = itemData.fontInfo.filePath;
-        if (fontFilePath.contains("/.local/share/fonts/") &&
+        if ((!fdata.isSystemFont) &&
                 isFontNameContainsPattern(fontName)) {
             return true;
         }
     } break;
     //只显示收藏字体
     case DSplitListWidget::CollectFont: {
-        if (itemData.fontData.isCollected() && isFontNameContainsPattern(fontName)) {
+        if (fdata.isCollected() && isFontNameContainsPattern(fontName)) {
             return true;
         }
     } break;
     //已激活(启用)字体
     case DSplitListWidget::ActiveFont: {
-        if (itemData.fontData.isEnabled() && isFontNameContainsPattern(fontName)) {
+        if (fdata.isEnabled() && isFontNameContainsPattern(fontName)) {
             return true;
         }
     } break;
     //中文字体
     case DSplitListWidget::ChineseFont: {
-        if (itemData.fontData.isChinese() && isFontNameContainsPattern(fontName)) {
+        if (fdata.isChinese() && isFontNameContainsPattern(fontName)) {
             return true;
         }
     } break;
     //等宽字体
     case DSplitListWidget::EqualWidthFont: {
-        if (itemData.fontData.isMonoSpace() && isFontNameContainsPattern(fontName)) {
+        if (fdata.isMonoSpace() && isFontNameContainsPattern(fontName)) {
             return true;
         }
 

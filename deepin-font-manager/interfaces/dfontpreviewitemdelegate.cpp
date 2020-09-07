@@ -209,12 +209,13 @@ QPoint DFontPreviewItemDelegate::adjustPreviewFontBaseLinePoint(const QRect &fon
  <Note>          null
 *************************************************************************/
 void DFontPreviewItemDelegate::paintForegroundPreviewFont(QPainter *painter, const QStyleOptionViewItem &option,
-                                                          const DFontPreviewItemData &itemData, int fontPixelSize, QString &fontPreviewText) const
+                                                          const QString &familyName, const QString &styleName, bool isEnabled,
+                                                          int fontPixelSize, QString &fontPreviewText) const
 {
     QFont previewFont;
-    QString familyName = itemData.fontInfo.sp3FamilyName.isEmpty() ? itemData.fontInfo.familyName : itemData.fontInfo.sp3FamilyName;
+
     previewFont.setFamily(familyName);
-    previewFont.setStyleName(itemData.fontInfo.styleName);
+    previewFont.setStyleName(styleName);
     previewFont.setPixelSize(fontPixelSize);
     painter->setFont(previewFont);
 
@@ -225,7 +226,7 @@ void DFontPreviewItemDelegate::paintForegroundPreviewFont(QPainter *painter, con
 //    painter->setPen(QPen(option.palette.color(DPalette::Text)));
     //SP3--禁用置灰(539)
     QColor color(option.palette.color(DPalette::Text));
-    if (!itemData.fontData.isEnabled())
+    if (!isEnabled)
         color.setAlphaF(0.6);
     painter->setPen(QPen(color));
 
@@ -389,24 +390,15 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
         painter->setRenderHint(QPainter::TextAntialiasing, true);
 
         FontData fontData = index.data(Qt::DisplayRole).value<FontData>();
-        DFontPreviewItemData itemData = m_parentView->getFontData(fontData);
-        if (itemData.fontInfo.filePath.isEmpty())
+        if (fontData.strFontName.isEmpty())
             return;
         int fontPixelSize = (index.data(FontSizeRole).isNull()) ? FTM_DEFAULT_PREVIEW_FONTSIZE : index.data(FontSizeRole).toInt();
         fontPixelSize = (fontPixelSize <= 0) ? FTM_DEFAULT_PREVIEW_FONTSIZE : fontPixelSize;
-        QString fontPreview = itemData.fontInfo.defaultPreview;
-        if (fontPreview.isEmpty()) {
-            if (itemData.fontInfo.previewLang == FONT_LANG_CHINESE) {
-                fontPreview = FTM_DEFAULT_PREVIEW_CN_TEXT;
-            } else if (itemData.fontInfo.previewLang & FONT_LANG_ENGLISH) {
-                fontPreview = FTM_DEFAULT_PREVIEW_EN_TEXT;
-            } else {
-                fontPreview = FTM_DEFAULT_PREVIEW_DIGIT_TEXT;
-            }
-        }
+        FontDelegateData dData = index.data(FontFamilyStylePreviewRole).value<FontDelegateData>();
 
-        QString fontPreviewContent = index.data(FontPreviewRole).toString().isEmpty() ? fontPreview : index.data(FontPreviewRole).toString();
-        if ((fontPreviewContent.isEmpty() || 0 == fontPixelSize) && itemData.fontData.strFontName.isEmpty()) {
+        QString fontPreviewContent = index.data(FontPreviewRole).toString().isEmpty()
+                                     ? dData.ownPreview : index.data(FontPreviewRole).toString();
+        if ((fontPreviewContent.isEmpty() || 0 == fontPixelSize)) {
             painter->restore();
             return;
         }
@@ -415,7 +407,9 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
         paintForegroundCheckBox(painter, option, fontData);
         paintForegroundFontName(painter, option, fontData);
         paintForegroundCollectIcon(painter, option, fontData);
-        paintForegroundPreviewFont(painter, option, itemData, fontPixelSize, fontPreviewContent);
+        paintForegroundPreviewFont(painter, option, dData.familyName,
+                                   dData.styleName, fontData.isEnabled(),
+                                   fontPixelSize, dData.ownPreview);
         painter->restore();
     } else {
         QStyledItemDelegate::paint(painter, option, index);

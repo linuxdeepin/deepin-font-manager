@@ -53,19 +53,13 @@ public:
     //通过DFontData信息获取DFontPreviewItemData
     inline static DFontPreviewItemData getFontData(const FontData &fontData)
     {
-        QList<DFontPreviewItemData> fontList = m_fontModelList;
-        /*        for (DFontPreviewItemData &itemdata : fontList) {
-                    if (itemdata.fontData == fontData)
-                        return itemdata;
-                }
-        */
         DFontPreviewItemData itemdata;
         itemdata.fontData = fontData;
 //        qDebug() << __FUNCTION__ << fontData.strFontName;
-        int index = fontList.indexOf(itemdata);
+        int index = m_fontModelList.indexOf(itemdata);
         if (index > -1) {
 //            qDebug() << __FUNCTION__ << fontData.strFontName << index;
-            return fontList.at(index);
+            return m_fontModelList.at(index);
         } else {
             qDebug() << __FUNCTION__ << " not found " << fontData.getFontType() << fontData.strFontName << DFontPreviewListDataThread::instance()->getFontModelList().size();
         }
@@ -74,11 +68,11 @@ public:
 
 signals:
     //发出删除字体文件请求
-    void requestDeleted(const QStringList &files);
+    void requestDeleted(QStringList &files);
     //发出添加字体文件请求
     void requestAdded(const QStringList &files, bool isFirstInstall = false);
     //请求删除字体文件
-    void requestForceDeleteFiles(const QStringList &files);
+    void requestForceDeleteFiles(QStringList &files);
     //请求重装继续
     void requestBatchReInstallContinue();
     //请求批量移除文件监视器
@@ -106,11 +100,11 @@ public slots:
     //移除特定路径的文件监视器
     void removePathWatcher(const QString &path);
     //文件删除响应函数
-    void onFileDeleted(const QStringList &files);
+    void onFileDeleted(QStringList &files);
     //增加文件响应函数
     void onFileAdded(const QStringList &files);
     //强制删除文件
-    void forceDeleteFiles(const QStringList &files);
+    void forceDeleteFiles(QStringList &files);
     //批量移除文件监视器
     void onRemoveFileWatchers(const QStringList &files);
     //添加特定文件夹的文件监视器

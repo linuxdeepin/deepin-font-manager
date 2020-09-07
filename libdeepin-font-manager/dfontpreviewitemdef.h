@@ -81,15 +81,17 @@ enum {
 *************************************************************************/
 struct FontData {
     QString strFontName;
-    int fontState;
+    short fontState;
+    bool isSystemFont;
     FontData()
     {
         strFontName = "";
         fontState = 0;
+        isSystemFont = false;
     }
 
     //拷贝构造
-    FontData(const QString &_strFontName, bool isEnabled, bool isCollected, bool isChinesed, bool isMono, FontType type)
+    FontData(const QString &_strFontName, bool isEnabled, bool isCollected, bool isChinesed, bool isMono, FontType type, bool _isSystemFont)
     {
         strFontName = _strFontName;
         fontState = 0;
@@ -98,10 +100,11 @@ struct FontData {
         setChinese(isChinesed);
         setMonoSpace(isMono);
         setFontType(type);
+        isSystemFont = _isSystemFont;
     }
 
     //重载拷贝构造
-    FontData(const QString &_strFontName, bool isEnabled, bool isCollected, bool isChinesed, bool isMono, const QString &type)
+    FontData(const QString &_strFontName, bool isEnabled, bool isCollected, bool isChinesed, bool isMono, const QString &type, bool _isSystemFont)
     {
         strFontName = _strFontName;
         fontState = 0;
@@ -110,6 +113,7 @@ struct FontData {
         setChinese(isChinesed);
         setMonoSpace(isMono);
         setFontType(type);
+        isSystemFont = _isSystemFont;
     }
 
 
@@ -200,6 +204,37 @@ struct FontData {
 
 Q_DECLARE_METATYPE(FontData)
 
+
+struct FontDelegateData {
+    QString familyName;
+    QString styleName;
+    QString ownPreview;
+
+    FontDelegateData()
+    {
+        familyName = "";
+        styleName = "";
+        ownPreview = "";
+    }
+
+    FontDelegateData(const QString &_familyName, const QString &_styleName,
+                     const QString &_ownPreview)
+    {
+        familyName = _familyName;
+        styleName = _styleName;
+        ownPreview = _ownPreview;
+    }
+
+    FontDelegateData(const FontDelegateData &other)
+    {
+        familyName = other.familyName;
+        styleName = other.styleName;
+        ownPreview = other.ownPreview;
+    }
+};
+
+Q_DECLARE_METATYPE(FontDelegateData)
+
 /*************************************************************************
  <Struct>        DFontPreviewItemData
  <Description>   ItemModel信息结构体
@@ -270,7 +305,7 @@ struct DFontPreviewItemData {
         fontInfo = DFontInfo(_filePath, _familyName, _styleName, _type, _version, _copyright, _desc, _sysVer, _fullname,
                              _psname, _trademark, _isInstalled, _isError, _isSystemFont, _sp3FamilyName);
 
-        fontData = FontData(_strFontName, _isEnabled, _isCollected, _isChinese, _isMono, _type);
+        fontData = FontData(_strFontName, _isEnabled, _isCollected, _isChinese, _isMono, _type, fontInfo.isSystemFont);
 
         strFontId = "";
         appFontId = -1;
