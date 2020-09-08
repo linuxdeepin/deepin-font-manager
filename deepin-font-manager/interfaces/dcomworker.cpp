@@ -54,6 +54,7 @@ void GetFontList::run()
     DFontPreviewListDataThread *thread = DFontPreviewListDataThread::instance();
     switch (m_type) {
     case ALL:
+        DFMDBManager::instance()->checkIfEmpty();
         thread->m_allFontPathList.clear();
         thread->m_allFontPathList = inst->getAllFontPath(m_isStartup);
         if (m_isStartup) {

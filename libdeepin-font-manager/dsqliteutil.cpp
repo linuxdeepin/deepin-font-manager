@@ -772,6 +772,22 @@ void DSqliteUtil::updateSP3FamilyName(const QList<DFontInfo> &fontList, bool inF
     } else {
         qDebug() << __FUNCTION__ << "true";
     }
+
+    finish();
+}
+
+/**
+* @brief DSqliteUtil::checkIfEmpty 删除非法空记录
+* @param void
+* @return void
+*/
+void DSqliteUtil::checkIfEmpty()
+{
+    QString sql = "delete from t_fontmanager where fontName like \"\"";
+    QMutexLocker m_locker(&mutex);
+    m_query->prepare(sql);
+    if (!m_query->exec(sql))
+        qDebug() << __FUNCTION__ << " not found empty fontName";
     finish();
 }
 

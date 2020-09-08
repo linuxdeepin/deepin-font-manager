@@ -66,6 +66,8 @@ public:
     QString escapeString(const QString &str);
     //更新sp2的sp3familyName
     void updateSP3FamilyName(const QList<DFontInfo> &fontList, bool inFontList = false);
+    //去除非法记录
+    void checkIfEmpty();
     //内联函数-执行结束处理函数
     inline void finish()
     {

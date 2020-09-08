@@ -36,6 +36,8 @@ public:
     void updateFontInfo(const DFontPreviewItemData &fontList, const QString &strKey);
     void updateFontInfo(const QList<DFontPreviewItemData> &fontList, const QString &strKey);
     void commitUpdateFontInfo();
+    //去除非法记录
+    void checkIfEmpty();
 
     void beginTransaction();
     void endTransaction();

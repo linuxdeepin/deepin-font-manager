@@ -558,6 +558,11 @@ void DFMDBManager::commitUpdateFontInfo()
     m_updateFontList.clear();
 }
 
+void DFMDBManager::checkIfEmpty()
+{
+    m_sqlUtil->checkIfEmpty();
+}
+
 /*************************************************************************
  <Function>      beginTransaction
  <Description>   开启事务

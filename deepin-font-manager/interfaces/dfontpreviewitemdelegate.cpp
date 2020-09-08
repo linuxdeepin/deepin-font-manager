@@ -390,8 +390,6 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
         painter->setRenderHint(QPainter::TextAntialiasing, true);
 
         FontData fontData = index.data(Qt::DisplayRole).value<FontData>();
-        if (fontData.strFontName.isEmpty())
-            return;
         int fontPixelSize = (index.data(FontSizeRole).isNull()) ? FTM_DEFAULT_PREVIEW_FONTSIZE : index.data(FontSizeRole).toInt();
         fontPixelSize = (fontPixelSize <= 0) ? FTM_DEFAULT_PREVIEW_FONTSIZE : fontPixelSize;
         FontDelegateData dData = index.data(FontFamilyStylePreviewRole).value<FontDelegateData>();
