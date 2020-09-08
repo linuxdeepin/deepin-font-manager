@@ -16,42 +16,18 @@
 #include <QPointer>
 
 
-DWIDGET_USE_NAMESPACE
+class DFontMgrMainWindow;
 /*************************************************************************
  <Class>         DFontPreviewListView
  <Description>   字体预览列表listview,负责显示每个字体的状态,字体基本信息以及预览效果
  <Author>
  <Note>          null
 *************************************************************************/
-
 class DFontPreviewListView : public QListView
 {
     Q_OBJECT
-public:
-    /*************************************************************************
-     <Enum>       FontGroup
-     <Description>  表明当前界面字体所在分组的枚举
-     <Author>        null
-     <Value>
-        <Value1>   AllFont      Description:所有字体
-        <Value2>   SysFont      Description:系统字体
-        <Value3>   UserFont      Description:用户字体
-        <Value4>   CollectFont      Description:收藏
-        <Value5>   ActiveFont      Description:已激活
-        <Value6>   ChineseFont      Description:中文
-        <Value7>   EqualWidthFont      Description:等宽
-     <Note>          null
-    *************************************************************************/
 
-    enum FontGroup {
-        AllFont,
-        SysFont,
-        UserFont,
-        CollectFont,
-        ActiveFont,
-        ChineseFont,
-        EqualWidthFont
-    };
+public:
     /*************************************************************************
      <Enum>          ClearType
      <Description>   设置对于收藏图标press状态的清空操作类型
@@ -65,7 +41,7 @@ public:
         MoveClear,
         PreviousClear
     };
-public:
+
     explicit DFontPreviewListView(QWidget *parent = nullptr);
     ~DFontPreviewListView() override;
     //初始化时,设置界面各个控件的状态
@@ -108,7 +84,7 @@ public:
     //文件改动时触发的函数
     void updateChangedFile(const QString &path);
     //目录改动时触发的函数
-    void updateChangedDir(const QString &path);
+    void updateChangedDir();
     //删除字体
     void deleteFontFiles(QStringList &files, bool force = false);
     //从字体库删除字体
@@ -196,8 +172,11 @@ public:
     //记录当前是否为tab聚焦状态
     void syncRecoveryTabStatus();
     void setFontViewHasFocus(bool FontViewHasFocus);
-
-    bool getFontViewHasFocus() const;
+    //获取操作前字体列表焦点状态
+    inline bool getFontViewHasFocus() const
+    {
+        return m_FontViewHasFocus;
+    }
 
 protected:
     //选中切换后触发函数
@@ -253,7 +232,7 @@ private:
     QPoint lastTouchBeginPos;
     QPointer<QTimer> touchCheckTimer;
 
-    QWidget *m_parentWidget;
+    DFontMgrMainWindow *m_parentWidget;
     QStandardItemModel *m_fontPreviewItemModel {nullptr};
 
     DFontPreviewItemDelegate *m_fontPreviewItemDelegate {nullptr};
@@ -272,7 +251,6 @@ private:
     QStringList m_disableFontList;
     QStringList m_currentFont;
     FontData m_curFontData;
-    FontGroup m_currentFontGroup;
 
     QList<int> m_recoverSelectStateList;
     QRect m_curRect;
@@ -321,8 +299,6 @@ public slots:
     void onFontChanged(const QFont &font);
     //移除某一项响应函数
     void onItemRemoved(DFontPreviewItemData &itemData);
-    //切换界面时,更新之前记录的当前字体组的信息
-    void updateCurrentFontGroup(int currentFontGroup);
     //删除字体后更新整个model
     void updateModel(bool showSpinner = true);
 };

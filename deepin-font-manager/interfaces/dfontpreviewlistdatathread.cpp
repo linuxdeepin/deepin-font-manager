@@ -142,7 +142,7 @@ void DFontPreviewListDataThread::initFileSystemWatcher()
         if (!f.isDir())
             return ;
 //        qDebug() << "directoryChanged" << path;
-        updateChangedDir(path);
+        updateChangedDir();
 
         if (!dir.exists()) {
             m_fsWatcher->removePath(FONTS_DIR);
@@ -173,9 +173,10 @@ void DFontPreviewListDataThread::updateChangedFile(const QString &path)
  <Return>        null            Description:null
  <Note>          null
 *************************************************************************/
-void DFontPreviewListDataThread::updateChangedDir(const QString &path)
+void DFontPreviewListDataThread::updateChangedDir()
 {
-    m_view->updateChangedDir(path);
+    QMutexLocker locker(m_mutex);
+    m_view->updateChangedDir();
 }
 
 /*************************************************************************
@@ -452,6 +453,7 @@ int DFontPreviewListDataThread::insertFontItemData(const QString &filePath,
     itemData.fontData.setChinese(chineseFontPathList.contains(filePath) && (itemData.fontInfo.previewLang & FONT_LANG_CHINESE));
     itemData.fontData.setMonoSpace(monoSpaceFontPathList.contains(filePath));
     itemData.fontData.setFontType(itemData.fontInfo.type);
+    itemData.fontData.isSystemFont = m_dbManager->isSystemFont(filePath);
 
     itemData.fontInfo.isInstalled = true;
 

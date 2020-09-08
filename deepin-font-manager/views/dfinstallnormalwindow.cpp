@@ -36,8 +36,6 @@ DFInstallNormalWindow::DFInstallNormalWindow(const QStringList &files, QWidget *
 
 {
     initUI();
-    getAllSysfiles();
-    verifyFontFiles();
     initConnections();
 }
 
@@ -148,8 +146,6 @@ void DFInstallNormalWindow::initVerifyTimer()
 {
     m_verifyTimer->setSingleShot(true);
     m_verifyTimer->setTimerType(Qt::PreciseTimer);
-    //这里设置了个定时器，不知道作用是什么，这个定时器导致了安装的开始部分出现卡顿现象，
-    //现在将这个定时器的时间缩短，没有发现问题
     m_verifyTimer->start(VERIFY_DELYAY_TIME);
 }
 
@@ -164,7 +160,14 @@ void DFInstallNormalWindow::initVerifyTimer()
 void DFInstallNormalWindow::initConnections()
 {
     // Install the font list ,which may be changed in exception window
-    connect(m_verifyTimer.get(), &QTimer::timeout, this, &DFInstallNormalWindow::batchInstall);
+    connect(m_verifyTimer.get(), &QTimer::timeout, this, [ = ]() {
+        getAllSysfiles();
+        // Check installed & damaged font file here
+        verifyFontFiles();
+
+        // Install the font list ,which may be changed in exception window
+        batchInstall();
+    });
 
     // Handle reinstall signal
     connect(this, &DFInstallNormalWindow::batchReinstall, this, &DFInstallNormalWindow::batchReInstall);
@@ -177,18 +180,6 @@ void DFInstallNormalWindow::initConnections()
     connect(m_fontManager, &DFontManager::installFinished, this, &DFInstallNormalWindow::onInstallFinished);
 
     connect(m_fontManager, &DFontManager::reInstallFinished, this, &DFInstallNormalWindow::onReInstallFinished);
-
-    connect(m_signalManager, &SignalManager::sendInstallMessage, this, [ = ](const QStringList & finishFileList) {
-        getInstallMessage = true;
-        getNoSameFilesCount(finishFileList);
-        checkShowMessage();
-    }, Qt::QueuedConnection);
-
-    connect(m_signalManager, &SignalManager::sendReInstallMessage, this, [ = ](const QStringList & finishFileList) {
-        getReInstallMessage = true;
-        getNoSameFilesCount(finishFileList);
-        checkShowMessage();
-    }, Qt::UniqueConnection);
 
     connect(DFontPreviewListDataThread::instance(), &DFontPreviewListDataThread::requestBatchReInstallContinue,
             this, &DFInstallNormalWindow::batchReInstallContinue);
@@ -263,7 +254,7 @@ void DFInstallNormalWindow::verifyFontFiles(bool isHalfwayInstall)
             m_systemFiles.append(it);
 
 #ifdef QT_QML_DEBUG
-//            qDebug() << __FUNCTION__ << " (" << it << " :Installed file)";
+//            qDebug() << __FUNCTION__ << " (" << it << " :System file)";
 #endif
         } else if (!fontInfos.contains(fontInfo)) {
             fontInfos.append(fontInfo);
@@ -366,21 +357,20 @@ void DFInstallNormalWindow::checkShowMessage()
         qDebug() << "install refresh over";
         getInstallMessage = false;
         getReInstallMessage = false;
-        emit m_signalManager->finishFontInstall(m_outfileList);
-        emit m_signalManager->installOver(m_installedFilesFontinfo.count());
-        m_outfileList.clear();
-    }
 
-    if (getInstallMessage == true && m_popedInstallErrorDialg == false) {
+        emit m_signalManager->finishFontInstall(m_outfileList);
+        m_outfileList.clear();
+        m_cancelInstall = false;
+        close();
+    } else if (getInstallMessage == true && m_popedInstallErrorDialg == false) {
         if (ifNeedShowExceptionWindow()) {
             qDebug() << "need reinstall " << endl;
             showInstallErrDlg();
         } else {
             qDebug() << "no need reinstall" << endl;
-            emit  m_signalManager->sendReInstallMessage(QStringList());
+            reInstallFinished(QStringList());
         }
     }
-    emit m_signalManager->setIsJustInstalled();
 }
 
 /*************************************************************************
@@ -394,6 +384,8 @@ void DFInstallNormalWindow::checkShowMessage()
 *************************************************************************/
 void DFInstallNormalWindow::getNoSameFilesCount(const QStringList &filesList)
 {
+    if (filesList.isEmpty())
+        return;
     DFontInfo fontInfo;
     for (auto &it : filesList) {
         fontInfo = m_fontInfoManager->getFontInfo(it);
@@ -435,6 +427,30 @@ void DFInstallNormalWindow::paintEvent(QPaintEvent *event)
     m_progressStepLabel->setFixedHeight(m_progressStepLabel->fontMetrics().height());
 }
 
+/**
+* @brief DFInstallNormalWindow::installFinished 新字体安装完成
+* @param fileList 传入的安装字体列表
+* @return void
+*/
+void DFInstallNormalWindow::installFinished(const QStringList &fileList)
+{
+    getInstallMessage = true;
+    getNoSameFilesCount(fileList);
+    checkShowMessage();
+}
+
+/**
+* @brief DFInstallNormalWindow::reInstallFinished 重复字体安装完成
+* @param fileList 传入的安装字体列表
+* @return void
+*/
+void DFInstallNormalWindow::reInstallFinished(const QStringList &fileList)
+{
+    getReInstallMessage = true;
+    getNoSameFilesCount(fileList);
+    checkShowMessage();
+}
+
 /*************************************************************************
  <Function>      closeEvent
  <Description>   重新实现关闭事件处理函数-停止字体管理线程
@@ -447,10 +463,12 @@ void DFInstallNormalWindow::paintEvent(QPaintEvent *event)
 void DFInstallNormalWindow::closeEvent(QCloseEvent *event)
 {
     Q_UNUSED(event);
-    qDebug() << __FUNCTION__;
+    qDebug() << __FUNCTION__ << m_cancelInstall;
 
-    m_fontManager->cancelInstall();
-    reject();
+    if (m_cancelInstall) {
+        m_fontManager->cancelInstall();
+        reject();
+    }
 }
 
 /*************************************************************************
@@ -472,7 +490,7 @@ void DFInstallNormalWindow::batchInstall()
         installList << m_newInstallFiles;
     } else {
         m_fontManager->setCacheStatus(DFontManager::NoNewFonts);
-        Q_EMIT m_signalManager->sendInstallMessage(installList);
+        installFinished(installList);
         return;
     }
 
@@ -729,7 +747,7 @@ void DFInstallNormalWindow::onInstallFinished(int state, const QStringList &file
             m_installedFontsFamilyname.append(familyName + styleName);
         }
     }
-    emit  m_signalManager->sendInstallMessage(fileList);
+    installFinished(fileList);
 }
 
 /*************************************************************************
@@ -757,7 +775,7 @@ void DFInstallNormalWindow::onReInstallFinished(int state, const QStringList &fi
 
         m_installFiles << m_damagedFiles;
     }
-    emit  m_signalManager->sendReInstallMessage(fileList);
+    reInstallFinished(fileList);
 }
 
 /*************************************************************************

@@ -217,6 +217,9 @@ void DFontMgrMainWindow::initConnections()
     connect(m_fontPreviewListView, &DFontPreviewListView::rowCountChanged, this,
             &DFontMgrMainWindow::onFontListViewRowCountChanged, Qt::UniqueConnection);
 
+    connect(m_fontPreviewListView, &DFontPreviewListView::requestShowSpinner, this,
+            &DFontMgrMainWindow::onShowSpinner);
+
     connect(m_fontPreviewListView, &DFontPreviewListView::deleteFinished, this, [ = ]() {
         setDeleteFinish();
     });
@@ -295,13 +298,13 @@ void DFontMgrMainWindow::initConnections()
     });
 
     QObject::connect(m_fontManager, &DFontManager::uninstallFcCacheFinish, this, &DFontMgrMainWindow::onUninstallFcCacheFinish);
-    QObject::connect(m_signalManager, &SignalManager::showInstallFloatingMessage, this, &DFontMgrMainWindow::onShowMessage);
 
     //安装结束后刷新字体列表
     connect(m_signalManager, &SignalManager::finishFontInstall, this,
             &DFontMgrMainWindow::onFontInstallFinished);
 
     connect(m_fontManager, &DFontManager::cacheFinish, this, [ = ] {
+        qDebug() << __FUNCTION__;
         m_cacheFinish = true;
         hideSpinner();
     });
@@ -327,12 +330,8 @@ void DFontMgrMainWindow::initConnections()
         m_isPopInstallErrorDialog = false;
     });
 
-    connect(m_signalManager, &SignalManager::installOver, this,
-            &DFontMgrMainWindow::respondToInstallOver);
-
     connect(m_fontManager, &DFontManager::requestCancelInstall, this, [ = ]() {
         m_isInstallOver = true;
-        m_successInstallCount = 0;
         m_fIsInstalling = false;
     });
 
@@ -369,7 +368,7 @@ void DFontMgrMainWindow::initConnections()
     });
 
     connect(m_signalManager, &SignalManager::onMenuHidden, [ = ] {
-        if (m_fontPreviewListView->getFontViewHasFocus() == true)
+        if (m_fontPreviewListView->getFontViewHasFocus())
         {
             m_fontPreviewListView->setFocus(Qt::TabFocusReason);
             if (!m_hasMenuTriggered)
@@ -659,31 +658,6 @@ void DFontMgrMainWindow::respondToValueChanged(int value)
     //调节右下角字体大小显示label显示内容/*UT000539*/
     autoLabelWidth(fontSizeText, d->fontSizeLabel, d->fontSizeLabel->fontMetrics());
     onFontSizeChanged(value);
-}
-
-/*************************************************************************
- <Function>      respondToInstallOver
- <Description>   响应安装结束
- <Author>        UT000539
- <Input>         value           Description:滑块值大小
- <Return>        null            Description:null
- <Note>          null
-*************************************************************************/
-void DFontMgrMainWindow::respondToInstallOver(int successInstallCount)
-{
-    m_isInstallOver = true;
-    m_successInstallCount = successInstallCount;
-
-    if (m_dfNormalInstalldlg->isVisible()) {
-        m_dfNormalInstalldlg->deleteLater();
-    }
-    if (successInstallCount > 0) {
-        showSpinner(DFontSpinnerWidget::Load);
-    } else {
-        //成功安装的字体数目为0时,在这里将安装标志位复位
-        qDebug() << __func__ << "install finish" << endl;
-        m_fIsInstalling = false;
-    }
 }
 
 /*************************************************************************
@@ -1189,7 +1163,7 @@ bool DFontMgrMainWindow::installFont(const QStringList &files, bool isAddBtnHasT
 {
     QStringList installFiles = checkFilesSpace(files);
     if (installFiles.count() == 0) {
-        emit m_signalManager->showInstallFloatingMessage(0);
+        onShowMessage(0);
         return false;
     }
 
@@ -1202,6 +1176,8 @@ bool DFontMgrMainWindow::installFont(const QStringList &files, bool isAddBtnHasT
     qDebug() << "installFont new DFInstallNormalWindow " << installFiles.size() << endl;
     m_installTm = QDateTime::currentMSecsSinceEpoch();
     m_dfNormalInstalldlg = new DFInstallNormalWindow(installFiles, this);
+    connect(m_dfNormalInstalldlg, &DFInstallNormalWindow::destroyed, this, &DFontMgrMainWindow::onInstallWindowDestroyed);
+
     if (isAddBtnHasTabs)
         m_dfNormalInstalldlg->setAddBtnHasTabs(true);
     emit m_signalManager->setSpliteWidgetScrollEnable(true);//开始安装
@@ -1216,9 +1192,10 @@ bool DFontMgrMainWindow::installFont(const QStringList &files, bool isAddBtnHasT
      * to set flag avoid
      */
     m_fIsInstalling = true;
-
+    m_installOutFileList.clear();
     Dtk::Widget::moveToCenter(m_dfNormalInstalldlg);
     m_dfNormalInstalldlg->exec();
+
     //m_dfNormalInstalldlg->setModal(true);
 
     //Clear installtion flag when NormalInstalltion window is closed
@@ -1497,7 +1474,6 @@ void DFontMgrMainWindow::onLeftSiderBarItemClicked(int index)
 
     qDebug() << __FUNCTION__ << index << endl;
     filterGroup = qvariant_cast<DSplitListWidget::FontGroup>(index);
-    emit m_signalManager->currentFontGroup(filterGroup);
 
     qDebug() << "filterGroup" << filterGroup << endl;
 
@@ -1525,10 +1501,9 @@ void DFontMgrMainWindow::onLeftSiderBarItemClicked(int index)
 *************************************************************************/
 void DFontMgrMainWindow::onFontInstallFinished(const QStringList &fileList)
 {
-    Q_D(DFontMgrMainWindow);
-
-    Q_EMIT DFontPreviewListDataThread::instance()->requestAdded(fileList);
-    d->textInputEdit->textChanged(d->textInputEdit->text());
+    qDebug() << __FUNCTION__ << fileList.size();
+    m_isInstallOver = true;
+    m_installOutFileList = fileList;
 }
 
 /*************************************************************************
@@ -1729,6 +1704,28 @@ void DFontMgrMainWindow::onShowSpinner(bool bShow, bool force, DFontSpinnerWidge
         onPreviewTextChanged();
     }
     qDebug() << __FUNCTION__ << bShow << "end";
+}
+
+void DFontMgrMainWindow::onInstallWindowDestroyed(QObject *)
+{
+    qDebug() << __FUNCTION__ << m_installOutFileList.size();
+    if (m_installOutFileList.size() > 0) {
+        showSpinner(DFontSpinnerWidget::Load);
+        //check if need to do cache
+        if (m_fontManager->needCache()) {
+            m_fontManager->setType(DFontManager::DoCache);
+            m_fontManager->start();
+        } else {
+            qDebug() << __FUNCTION__ << "no need doCache";
+        }
+        Q_EMIT DFontPreviewListDataThread::instance()->requestAdded(m_installOutFileList);
+        Q_D(DFontMgrMainWindow);
+        d->textInputEdit->textChanged(d->textInputEdit->text());
+    } else {
+        //成功安装的字体数目为0时,在这里将安装标志位复位
+        qDebug() << __func__ << "install finish" << endl;
+    }
+    m_fIsInstalling = false;
 }
 
 /*************************************************************************
@@ -2025,6 +2022,7 @@ void DFontMgrMainWindow::showInstalledFiles()
 void DFontMgrMainWindow::showSpinner(DFontSpinnerWidget::SpinnerStyles styles, bool force)
 {
     D_D(DFontMgrMainWindow);
+    qDebug() << __FUNCTION__ << styles << force;
     m_noInstallListView->hide();
     m_fontPreviewListView->hide();
     m_noResultListView->hide();
@@ -2051,47 +2049,46 @@ void DFontMgrMainWindow::showSpinner(DFontSpinnerWidget::SpinnerStyles styles, b
 *************************************************************************/
 void DFontMgrMainWindow::hideSpinner()
 {
-    qDebug() << __FUNCTION__ << m_cacheFinish << m_installFinish;
+    qDebug() << __FUNCTION__ << "m_cacheFinish : " << m_cacheFinish << m_installFinish;
     if (!m_cacheFinish || !m_installFinish) {
         return;
     }
-    //t000442 安装少量字体时,会出现闪屏现象,通过加短暂延迟解决.
-    QTimer::singleShot(50, this, [ = ]() {
-        m_fontLoadingSpinner->spinnerStop();
-        m_fontLoadingSpinner->hide();
-        m_isNoResultViewShow = false;
-        if (m_isInstallOver) {
-            emit m_signalManager->showInstallFloatingMessage(m_successInstallCount);
-            m_isInstallOver = false;
-        }
-        //安装刷新完成后启用菜单滚动功能
-        emit m_signalManager->setSpliteWidgetScrollEnable(false);
-        m_cacheFinish = false;
-        m_installFinish = false;
-        qDebug() << __func__ << "install finish" << endl;
-        m_fIsInstalling = false;
 
-        onFontListViewRowCountChanged();
-        onPreviewTextChanged();
-        //安装加载之后之后设置高亮状态以及listview的滚动
-        m_fontPreviewListView->selectedFonts(m_menuCurData, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, &m_menuAllMinusSysFontList);
-        int count = m_menuAllMinusSysFontList.count();
-        if (1 == count) {
+    m_fontLoadingSpinner->spinnerStop();
+    m_fontLoadingSpinner->hide();
+    m_isNoResultViewShow = false;
+    if (m_isInstallOver) {
+        onShowMessage(m_installOutFileList.size());
+        m_isInstallOver = false;
+        m_installOutFileList.clear();
+    }
+    //安装刷新完成后启用菜单滚动功能
+    emit m_signalManager->setSpliteWidgetScrollEnable(false);
+    m_cacheFinish = false;
+    m_installFinish = false;
+    qDebug() << __func__ << "install finish" << endl;
+    m_fIsInstalling = false;
+
+    onFontListViewRowCountChanged();
+    onPreviewTextChanged();
+    //安装加载之后之后设置高亮状态以及listview的滚动
+    m_fontPreviewListView->selectedFonts(m_menuCurData, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, &m_menuAllMinusSysFontList);
+    int count = m_menuAllMinusSysFontList.count();
+    if (1 == count) {
+        m_fontPreviewListView->setCurrentSelected(m_fontPreviewListView->selectionModel()->selectedIndexes().first().row());
+        //            scrollTo(currentIndex());
+        m_fontPreviewListView->scrollTo(m_fontPreviewListView->selectionModel()->selectedIndexes().first());
+    } else if (count > 1) {
+        if (m_fontPreviewListView->selectionModel()->selectedIndexes().count() > 0) {
             m_fontPreviewListView->setCurrentSelected(m_fontPreviewListView->selectionModel()->selectedIndexes().first().row());
-            //            scrollTo(currentIndex());
-            m_fontPreviewListView->scrollTo(m_fontPreviewListView->selectionModel()->selectedIndexes().first());
-        } else if (count > 1) {
-            if (m_fontPreviewListView->selectionModel()->selectedIndexes().count() > 0) {
-                m_fontPreviewListView->setCurrentSelected(m_fontPreviewListView->selectionModel()->selectedIndexes().first().row());
-            }
-
-            if (m_fontPreviewListView->selectionModel()->selectedIndexes().count() > 1) {
-                m_fontPreviewListView->scrollTo(m_fontPreviewListView->selectionModel()->selectedIndexes().first());
-            }
         }
 
-        m_fontPreviewListView->refreshFocuses();
-    });
+        if (m_fontPreviewListView->selectionModel()->selectedIndexes().count() > 1) {
+            m_fontPreviewListView->scrollTo(m_fontPreviewListView->selectionModel()->selectedIndexes().first());
+        }
+    }
+
+    m_fontPreviewListView->refreshFocuses();
 }
 
 /*************************************************************************

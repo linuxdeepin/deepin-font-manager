@@ -43,7 +43,7 @@ public:
         <Value2>     HalfwayInstall          Description:中途安装
      <Note>          null
     *************************************************************************/
-    enum Type { Install, ReInstall, UnInstall, HalfwayInstall, DefaultNullType};
+    enum Type { Install, ReInstall, UnInstall, HalfwayInstall, DoCache, DefaultNullType};
     /*************************************************************************
      <Enum>          InstallStatus
      <Description>   安装状态
@@ -75,6 +75,13 @@ public:
     void setInstallFileList(const QStringList &list);
     //传入待删除字体列表
     void setUnInstallFile(const QStringList &filePath);
+    //是否需要做fc-cache
+    inline bool needCache()
+    {
+        return ((m_type == Install && m_CacheStatus != NoNewFonts && !m_installCanceled)
+                || (m_type == ReInstall && (m_CacheStatus != NoNewFonts || !m_instFileList.isEmpty())));
+
+    }
     //执行fc-cache命令
     void doCache();
     //设置fc-cache命令执行的状态

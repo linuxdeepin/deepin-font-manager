@@ -380,26 +380,20 @@ QString DFontInfoManager::getFontType(const QString &filePath)
 *************************************************************************/
 DFontInfo DFontInfoManager::getFontInfo(const QString &filePath)
 {
-    FT_Library m_library = nullptr;
-    FT_Face m_face = nullptr;
-
     DFontInfo fontInfo;
     fontInfo.isSystemFont = isSystemFont(filePath);
 
-    if (m_library == nullptr)
-        FT_Init_FreeType(&m_library);
+    FT_Library library = nullptr;
+    FT_Init_FreeType(&library);
 
-    FT_Error error = 0;
-    if (m_face == nullptr)
-        error = FT_New_Face(m_library, filePath.toUtf8().constData(), 0, &m_face);
+    FT_Face face = nullptr;
+    FT_Error error = FT_New_Face(library, filePath.toUtf8().constData(), 0, &face);
 
     if (error != 0) {
         qDebug() << __FUNCTION__ << " error " << error << filePath;
         fontInfo.isError = true;
-        FT_Done_Face(m_face);
-        m_face = nullptr;
-        FT_Done_FreeType(m_library);
-        m_library = nullptr;
+        FT_Done_Face(face);
+        FT_Done_FreeType(library);
         return fontInfo;
     }
 
@@ -407,16 +401,16 @@ DFontInfo DFontInfoManager::getFontInfo(const QString &filePath)
     fontInfo.isError = false;
     fontInfo.filePath = filePath;
 
-    fontInfo.styleName = QString::fromLatin1(m_face->style_name);
+    fontInfo.styleName = QString::fromLatin1(face->style_name);
 
     fontInfo.type = getFontType(filePath);
 
-    if (FT_IS_SFNT(m_face)) {
+    if (FT_IS_SFNT(face)) {
         FT_SfntName sname;
-        const unsigned int count = FT_Get_Sfnt_Name_Count(m_face);
+        const unsigned int count = FT_Get_Sfnt_Name_Count(face);
 
         for (unsigned int i = 0; i < count; ++i) {
-            if (FT_Get_Sfnt_Name(m_face, i, &sname) != 0) {
+            if (FT_Get_Sfnt_Name(face, i, &sname) != 0) {
                 continue;
             }
 
@@ -461,23 +455,23 @@ DFontInfo DFontInfoManager::getFontInfo(const QString &filePath)
         fontInfo.familyName = fontInfo.fullname.replace(QRegExp(QString(" " + fontInfo.styleName + "$")), "");
 
     if (fontInfo.familyName.trimmed().length() < 1) {
-        fontInfo.familyName = QString::fromLatin1(m_face->family_name);
+        fontInfo.familyName = QString::fromLatin1(face->family_name);
     }
 
-    fontInfo.sp3FamilyName = QString::fromLatin1(m_face->family_name).trimmed();
+    fontInfo.sp3FamilyName = QString::fromLatin1(face->family_name).trimmed();
 
     //default preview text
     if (fontInfo.familyName == "Noto Sans Grantha") {
-        fontInfo.defaultPreview = getDefaultPreviewText(m_face, fontInfo.previewLang, INT_MAX);
+        fontInfo.defaultPreview = getDefaultPreviewText(face, fontInfo.previewLang, INT_MAX);
     } else {
-        fontInfo.defaultPreview = getDefaultPreviewText(m_face, fontInfo.previewLang);
+        fontInfo.defaultPreview = getDefaultPreviewText(face, fontInfo.previewLang);
     }
 
     // destroy object.
-    FT_Done_Face(m_face);
-    m_face = nullptr;
-    FT_Done_FreeType(m_library);
-    m_library = nullptr;
+    FT_Done_Face(face);
+    face = nullptr;
+    FT_Done_FreeType(library);
+    library = nullptr;
 
     checkStyleName(fontInfo);
 

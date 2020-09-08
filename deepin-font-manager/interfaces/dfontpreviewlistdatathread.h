@@ -94,7 +94,7 @@ public slots:
     //文件修改后触发函数
     void updateChangedFile(const QString &path);
     //文件夹修改后触发函数
-    void updateChangedDir(const QString &path);
+    void updateChangedDir();
     //添加文件监视器
     void addPathWatcher(const QString &path);
     //移除特定路径的文件监视器

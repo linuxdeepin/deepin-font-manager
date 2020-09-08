@@ -44,7 +44,7 @@ public:
     void setAddBtnHasTabs(bool AddBtnHasTabs);
 
 protected:
-    static constexpr int VERIFY_DELYAY_TIME = 50;
+    static constexpr int VERIFY_DELYAY_TIME = 10;
     //初始化主页面
     void initUI();
     //初始化信号和槽connect连接函数
@@ -72,6 +72,8 @@ private:
         QString familyName = (fontInfo.familyName.isEmpty() || fontInfo.familyName.contains(QChar('?'))) ? fontInfo.fullname : fontInfo.familyName;
         return familyName;
     }
+    void installFinished(const QStringList &fileList);
+    void reInstallFinished(const QStringList &fileList);
 
 protected slots:
     //批量安装处理函数
@@ -132,7 +134,7 @@ private:
 
     QList<DFontInfo> m_installedFilesFontinfo;
 
-    int totalSysFontCount = 0;
+    short totalSysFontCount = 0;
     bool getInstallMessage = false;
     bool getReInstallMessage = false;
     bool m_popedInstallErrorDialg = false;
@@ -141,7 +143,7 @@ private:
 
     // Skip popup exception dialog if true
     bool m_isNeedSkipException {false};
-    bool m_isFristThreadEnd = false;
+    bool m_cancelInstall = true;
     bool m_AddBtnHasTabs{false};
     InstallState m_installState {Install};
 

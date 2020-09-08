@@ -140,6 +140,8 @@ void DFontManager::run()
     case UnInstall:
         handleUnInstall();
         break;
+    case DoCache:
+        doCache();
     default:
         break;
     }
@@ -304,22 +306,14 @@ void DFontManager::onInstallResult(const QString &familyName, const QString &tar
     if (m_installedCount != totalCount)
         return;
 
-    qDebug() << __FUNCTION__ << m_installOutList.size();
+    qDebug() << __FUNCTION__ << m_installOutList.size() << m_CacheStatus;
     if (m_type == Install) {
         Q_EMIT installFinished(InstallStatus::InstallSuccess, m_installOutList);
-
-        if (m_CacheStatus == CacheNow && !m_installCanceled) {
-            doCache();
-        }
     } else if (m_type == ReInstall) {
         Q_EMIT reInstallFinished(0, m_installOutList);
-
-        if (m_CacheStatus != NoNewFonts || !m_instFileList.isEmpty())
-            doCache();
     }
 
     //clear
-    m_instFileList.clear();
     m_installOutList.clear();
     m_installedCount = 0;
 }
@@ -366,5 +360,6 @@ void DFontManager::doCache()
     QProcess process;
     process.start("fc-cache");
     process.waitForFinished(-1);
-    emit  cacheFinish();
+    Q_EMIT  cacheFinish();
+    qDebug() << __FUNCTION__ << "end";
 }

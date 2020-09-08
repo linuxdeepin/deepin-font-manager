@@ -397,6 +397,7 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
         QString fontPreviewContent = index.data(FontPreviewRole).toString().isEmpty()
                                      ? dData.ownPreview : index.data(FontPreviewRole).toString();
         if ((fontPreviewContent.isEmpty() || 0 == fontPixelSize)) {
+            qDebug() << __FUNCTION__ << fontPreviewContent << fontPixelSize;
             painter->restore();
             return;
         }

@@ -234,6 +234,8 @@ public slots:
     void onShowMessage(int totalCount);
     //显示或停止旋转进度图标
     void onShowSpinner(bool bShow, bool force, DFontSpinnerWidget::SpinnerStyles style);
+    //安装窗口销毁
+    void onInstallWindowDestroyed(QObject * = nullptr);
 
 protected:
     DFontPreviewListView *m_fontPreviewListView;
@@ -262,9 +264,9 @@ protected:
     QModelIndexList m_menuAllIndexList;
     QModelIndexList m_menuDisableIndexList;
     QStringList m_menuAllMinusSysFontList;
+    QStringList m_installOutFileList;
     DFontPreviewItemData m_menuCurData;
     DSplitListWidget::FontGroup filterGroup;
-    int m_successInstallCount = 0;
     //Main window Size
     short m_winHight;
     short m_winWidth;
