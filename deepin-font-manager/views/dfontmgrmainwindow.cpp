@@ -471,12 +471,12 @@ void DFontMgrMainWindow::initShortcuts()
 
     //Show next page --> PageDown
     if (nullptr == m_scPageDown) {
-        m_scDefaultSize = new QShortcut(this);
-        m_scDefaultSize->setKey(tr("PgDown"));
-        m_scDefaultSize->setContext(Qt::ApplicationShortcut);
-        m_scDefaultSize->setAutoRepeat(false);
+        m_scPageDown = new QShortcut(this);
+        m_scPageDown->setKey(tr("PgDown"));
+        m_scPageDown->setContext(Qt::ApplicationShortcut);
+        m_scPageDown->setAutoRepeat(false);
 
-        connect(m_scDefaultSize, &QShortcut::activated, this, [this] {
+        connect(m_scPageDown, &QShortcut::activated, this, [this] {
             //For: PageDown
             //Scrolling last visible item to top
             QRect visibleRect = m_fontPreviewListView->geometry();
@@ -2310,7 +2310,8 @@ void DFontMgrMainWindow::autoLabelWidth(QString text, DLabel *lab, QFontMetrics 
 }
 
 /*************************************************************************
- <Function>      keyPressEvent
+ <Function>
+Event
  <Description>   处理键盘press事件
  <Author>        UT000539
  <Input>
@@ -2322,6 +2323,8 @@ void DFontMgrMainWindow::keyPressEvent(QKeyEvent *event)
 {
     //UT000539 判断slider是否聚焦，调整预览字体大小
     D_D(DFontMgrMainWindow);
+
+    qDebug() << event->key() << endl;
     if (Qt::Key_Left == event->key() || Qt::Key_Down == event->key()) {
         if (d->fontScaleSlider->hasFocus()) {
             d->fontScaleSlider->setValue(d->fontScaleSlider->value() - 1);
