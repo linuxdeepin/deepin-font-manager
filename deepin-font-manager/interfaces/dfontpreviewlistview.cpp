@@ -893,19 +893,7 @@ void DFontPreviewListView::selectItemAfterRemoved(bool isAtBottom, bool isAtTop,
             if (this->count() > param) {
                 //删除第一页的字体
                 if (m_selectAfterDel <= param) {
-                    //既在顶部一页又在底部一页
-                    if (m_selectAfterDel >= this->count() - param) {
-                        if (isAtTop) {
-                            scrollToTop();
-                            return;
-                        } else if (isAtBottom) {
-                            scrollToBottom();
-                            return;
-                        }
-                        scrollTo(filterModel->index(m_selectAfterDel, 0));
-                        return;
-                    }
-                    if (m_selectAfterDel < param)
+                    if (isAtTop)
                         scrollToTop();
                     else {
                         scrollTo(filterModel->index(m_selectAfterDel, 0));
