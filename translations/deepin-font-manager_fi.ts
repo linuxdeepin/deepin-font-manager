@@ -7,11 +7,11 @@
     </message>
     <message>
         <source>System</source>
-        <translation>Järjestelmä</translation>
+        <translation>Järjestelmässä</translation>
     </message>
     <message>
         <source>User</source>
-        <translation>Käyttäjä</translation>
+        <translation>Käyttäjän</translation>
     </message>
     <message>
         <source>Favorites</source>
@@ -19,11 +19,11 @@
     </message>
     <message>
         <source>Active</source>
-        <translation>Aktiivinen</translation>
+        <translation>Aktiiviset</translation>
     </message>
     <message>
         <source>Chinese</source>
-        <translation>Kiinalainen</translation>
+        <translation>Kiinatuki</translation>
     </message>
     <message>
         <source>Monospaced</source>
@@ -34,7 +34,7 @@
     <name>DFDeleteDialog</name>
     <message>
         <source>Cancel</source>
-        <translation>Peru</translation>
+        <translation>Peruuta</translation>
     </message>
     <message>
         <source>Confirm</source>
@@ -169,7 +169,7 @@
     </message>
     <message>
         <source>Exit</source>
-        <translation>Ulos</translation>
+        <translation>Poistu</translation>
     </message>
     <message>
         <source>Continue</source>
