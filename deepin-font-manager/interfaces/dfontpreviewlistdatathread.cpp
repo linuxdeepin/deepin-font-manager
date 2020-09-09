@@ -381,7 +381,7 @@ void DFontPreviewListDataThread::onAutoDirWatchers()
 * @param fontList 要导出的文件列表
 * @return void
 */
-void DFontPreviewListDataThread::onExportFont(const QStringList &fontList)
+void DFontPreviewListDataThread::onExportFont(QStringList &fontList)
 {
     qDebug() << __FUNCTION__ << fontList.size();
 

@@ -80,7 +80,7 @@ signals:
     //添加特定文件夹的文件监视器
     void requestAutoDirWatchers();
     //发出导出字体的请求
-    void requestExportFont(const QStringList &files);
+    void requestExportFont(QStringList &files);
     //导出字体后，请求提示信息
     void exportFontFinished(int count);
 
@@ -110,7 +110,7 @@ public slots:
     //添加特定文件夹的文件监视器
     void onAutoDirWatchers();
     //导出字体文件
-    void onExportFont(const QStringList &fontList);
+    void onExportFont(QStringList &fontList);
 
 public:
     QStringList m_allFontPathList;

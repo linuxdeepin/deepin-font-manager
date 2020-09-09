@@ -22,6 +22,7 @@
 #include "dfontinfomanager.h"
 #include "dfontpreviewlistdatathread.h"
 #include "dfmdbmanager.h"
+#include "dcopyfilesmanager.h"
 
 #include <QThreadPool>
 #include <QFileInfo>
@@ -103,7 +104,7 @@ void GetFontList::removeUserAddFonts()
 
 void FontManager::getFontList(bool isStartup)
 {
-    QThreadPool *threadPool = QThreadPool::globalInstance();
+    QThreadPool *threadPool = DCopyFilesManager::instance()->getPool();
     GetFontList *getAll = new GetFontList(GetFontList::ALL, isStartup);
     threadPool->start(getAll);
     GetFontList *getChinese = new GetFontList(GetFontList::CHINESE, isStartup);

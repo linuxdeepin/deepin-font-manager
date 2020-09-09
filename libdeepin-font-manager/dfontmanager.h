@@ -115,13 +115,13 @@ protected:
 
 private:
     //线程执行函数
-    void doCmd(const QStringList &arguments);
+    void doCmd(QStringList &arguments);
     //字体安装-函数入口
     void handleInstall();
     //字体卸载-函数入口
     void handleUnInstall();
     //字体安装-具体执行函数
-    void doInstall(const QStringList &fileList);
+    void doInstall(QStringList &fileList);
     //字体卸载-具体执行函数
     void doUninstall(const QStringList &fileList);
 

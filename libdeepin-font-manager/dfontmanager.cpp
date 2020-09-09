@@ -117,6 +117,8 @@ void DFontManager::setInstallFileList(const QStringList &list)
 *************************************************************************/
 void DFontManager::setUnInstallFile(const QStringList &filePath)
 {
+    if (!m_uninstFile.isEmpty())
+        m_uninstFile.clear();
     m_uninstFile = filePath;
 }
 
@@ -156,7 +158,7 @@ void DFontManager::run()
  <Return>        null            Description:null
  <Note>          null
 *************************************************************************/
-void DFontManager::doCmd(const QStringList &arguments)
+void DFontManager::doCmd(QStringList &arguments)
 {
     qDebug() << "QProcess start";
     qDebug() << m_type << endl;
@@ -185,7 +187,7 @@ void DFontManager::doCmd(const QStringList &arguments)
 *************************************************************************/
 void DFontManager::handleInstall()
 {
-    doCmd(QStringList() << m_instFileList);
+    doCmd(m_instFileList);
 }
 
 /*************************************************************************
@@ -199,7 +201,7 @@ void DFontManager::handleInstall()
 void DFontManager::handleUnInstall()
 {
     qDebug() << "waitForFinished";
-    doCmd(QStringList() << m_uninstFile);
+    doCmd(m_uninstFile);
 //        qDebug() << __FUNCTION__ << m_uninstFile.size();
 //        emit uninstallFontFinished(m_uninstFile);
     //clear
@@ -215,7 +217,7 @@ void DFontManager::handleUnInstall()
  <Return>        null            Description:null
  <Note>          null
 *************************************************************************/
-void DFontManager::doInstall(const QStringList &fileList)
+void DFontManager::doInstall(QStringList &fileList)
 {
     qDebug() << __func__ << "s" << endl;
 

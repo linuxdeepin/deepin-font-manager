@@ -76,7 +76,7 @@ public:
 
     static DCopyFilesManager *instance();
     //拷贝文件列表
-    void copyFiles(CopyFontThread::OPType type, const QStringList &fontList);
+    void copyFiles(CopyFontThread::OPType type, QStringList &fontList);
     //取消安装
     static inline void cancelInstall()
     {
@@ -108,19 +108,16 @@ public:
     }
 
     //获取排序后的字体列表，默认升序
-    inline QStringList getSortList(const QStringList &fonts)
+    inline void sortFontList(QStringList &fonts)
     {
-        if (fonts.isEmpty() || fonts.size() == 1)
-            return fonts;
+        if (m_sortOrder == 0 || fonts.isEmpty() || fonts.size() == 1)
+            return;
 
-        if (m_sortOrder == 0)
-            return fonts;
+        int end = fonts.size() / 2;
 
-        QStringList results;
-        for (int i = fonts.size() - 1; i >= 0; --i) {
-            results << fonts.at(i);
+        for (int i = 0; i < end; ++i) {
+            fonts.swap(i, fonts.size() - 1 - i);
         }
-        return results;
     }
 
 private:
@@ -144,4 +141,6 @@ private:
     qint8 m_installMaxThreadCnt;
     //升序倒序 0: asc 1 : desc
     qint8 m_sortOrder;
+    //expiracy time
+    int m_expiryTimeout;
 };

@@ -105,8 +105,10 @@ DCopyFilesManager::DCopyFilesManager(QObject *parent)
     m_exportMaxThreadCnt = static_cast<qint8>(m_gs->get("export-max-thread-count").toInt());
     m_installMaxThreadCnt = static_cast<qint8>(m_gs->get("install-max-thread-count").toInt());
     m_sortOrder = static_cast<qint8>(m_gs->get("sort-order").toInt());
-    qDebug() << __FUNCTION__ << "ReadCfg: use global pool : " << m_useGlobalPool << ", max thread count : " << m_maxThreadCnt << ", export max thread count : "
-             << m_exportMaxThreadCnt << ", install max thread count : " << m_installMaxThreadCnt << ", sort order " << m_sortOrder;
+    m_expiryTimeout = m_gs->get("expiry-timeout").toInt();
+    qDebug() << __FUNCTION__ << "ReadCfg: use global pool : " << m_useGlobalPool << ", max thread count : "
+             << m_maxThreadCnt << ", export max thread count : " << m_exportMaxThreadCnt << ", install max thread count : "
+             << m_installMaxThreadCnt << ", sort order " << m_sortOrder << ", expiry timeout(ms) " << m_expiryTimeout;
     if (m_maxThreadCnt <= 0)
         m_maxThreadCnt = static_cast<qint8>(QThread::idealThreadCount());
 
@@ -127,7 +129,8 @@ DCopyFilesManager::DCopyFilesManager(QObject *parent)
     if (!m_useGlobalPool) {
         m_localPool = new QThreadPool(this);
         m_localPool->setMaxThreadCount(QThread::idealThreadCount());
-        m_localPool->setExpiryTimeout(10);
+        if (m_expiryTimeout > 0)
+            m_localPool->setExpiryTimeout(m_expiryTimeout);
     }
 }
 
@@ -142,12 +145,12 @@ DCopyFilesManager *DCopyFilesManager::instance()
 * @param fontList 要拷贝的源文件列表
 * @return void
 */
-void DCopyFilesManager::copyFiles(CopyFontThread::OPType type, const QStringList &fontList)
+void DCopyFilesManager::copyFiles(CopyFontThread::OPType type, QStringList &fontList)
 {
     if (fontList.isEmpty())
         return;
 
-    QStringList sortFontList = getSortList(fontList);
+    sortFontList(fontList);
     m_type = type;
     qint64 start = QDateTime::currentMSecsSinceEpoch();
     int tcount = 0;
@@ -164,12 +167,12 @@ void DCopyFilesManager::copyFiles(CopyFontThread::OPType type, const QStringList
     }
 
     //debug log
-    qDebug() << __FUNCTION__ << tcount  << type << sortFontList;
+    qDebug() << __FUNCTION__ << tcount  << type << fontList;
 
     int index = 0;
     int maxMod = (2 * tcount - 1) % (2 * tcount);
 
-    for (const QString &file : sortFontList) {
+    for (const QString &file : fontList) {
         int modVal = (index % (2 * tcount));
         if (modVal < tcount) {
             threads.at(modVal)->appendFile(file);
