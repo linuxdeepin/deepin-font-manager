@@ -408,7 +408,7 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
         paintForegroundCollectIcon(painter, option, fontData);
         paintForegroundPreviewFont(painter, option, dData.familyName,
                                    dData.styleName, fontData.isEnabled(),
-                                   fontPixelSize, dData.ownPreview);
+                                   fontPixelSize, fontPreviewContent);
         painter->restore();
     } else {
         QStyledItemDelegate::paint(painter, option, index);
