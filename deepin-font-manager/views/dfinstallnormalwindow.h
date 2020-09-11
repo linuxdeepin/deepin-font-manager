@@ -59,6 +59,8 @@ protected:
     bool ifNeedShowExceptionWindow() const;
     // 根据字体安装或重复安装状态更新标志位getInstallMessage
     void checkShowMessage();
+    //结束安装
+    void finishInstall();
     //获取新增字体文件
     void getNoSameFilesCount(const QStringList &filesList);
     //重新实现大小改变事件处理函数
@@ -74,6 +76,8 @@ private:
     }
     void installFinished(const QStringList &fileList);
     void reInstallFinished(const QStringList &fileList);
+    void keyPressEvent(QKeyEvent *event) override;
+    virtual void closeEvent(QCloseEvent *event) override;
 
 protected slots:
     //批量安装处理函数
@@ -138,8 +142,6 @@ private:
     bool getInstallMessage = false;
     bool getReInstallMessage = false;
     bool m_popedInstallErrorDialg = false;
-//    bool m_installFinishSent = false;
-//    bool m_installAdded = false;
 
     // Skip popup exception dialog if true
     bool m_isNeedSkipException {false};
@@ -161,8 +163,7 @@ private:
     DProgressBar *m_progressBar {nullptr};
 
     DFInstallErrorDialog *m_pexceptionDlg {nullptr};
-    void keyPressEvent(QKeyEvent *event) override;
-    virtual void closeEvent(QCloseEvent *event) override;
+
     QScopedPointer<QTimer> m_verifyTimer {nullptr};
 };
 

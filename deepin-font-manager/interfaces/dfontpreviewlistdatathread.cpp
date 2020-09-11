@@ -250,12 +250,8 @@ void DFontPreviewListDataThread::onFileDeleted(QStringList &files)
 void DFontPreviewListDataThread::onFileAdded(const QStringList &files)
 {
     if (files.isEmpty()) {
-//        if (isFirstInstall) {
-//            Q_EMIT SignalManager::instance()->showInstallErrorDialog();
-//        }
         return;
     }
-
 
     if (m_mutex != nullptr)
         QMutexLocker locker(m_mutex);
@@ -519,7 +515,7 @@ void DFontPreviewListDataThread::refreshFontListData(bool isStartup, const QStri
                 m_allFontPathList << filePath;
         }
     } else {
-        FontManager::getFontList(isStartup);
+        FontManager::getFontListInSequence(isStartup);
     }
 
     QSet<QString> dbFilePathSet;

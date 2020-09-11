@@ -355,22 +355,32 @@ void DFInstallNormalWindow::checkShowMessage()
 
     if (getInstallMessage == true && getReInstallMessage == true) {
         qDebug() << "install refresh over";
-        getInstallMessage = false;
-        getReInstallMessage = false;
-
-        emit m_signalManager->finishFontInstall(m_outfileList);
-        m_outfileList.clear();
-        m_cancelInstall = false;
-        close();
+        finishInstall();
     } else if (getInstallMessage == true && m_popedInstallErrorDialg == false) {
         if (ifNeedShowExceptionWindow()) {
             qDebug() << "need reinstall " << endl;
             showInstallErrDlg();
         } else {
             qDebug() << "no need reinstall" << endl;
-            reInstallFinished(QStringList());
+
+            finishInstall();
         }
     }
+}
+
+/**
+* @brief DFInstallNormalWindow::finishInstall 所有字体安装完成
+* @param void
+* @return void
+*/
+void DFInstallNormalWindow::finishInstall()
+{
+    getInstallMessage = false;
+    getReInstallMessage = false;
+
+    Q_EMIT m_signalManager->finishFontInstall(m_outfileList);
+    m_cancelInstall = false;
+    close();
 }
 
 /*************************************************************************
@@ -448,7 +458,10 @@ void DFInstallNormalWindow::reInstallFinished(const QStringList &fileList)
 {
     getReInstallMessage = true;
     getNoSameFilesCount(fileList);
-    checkShowMessage();
+    if (getInstallMessage == true && getReInstallMessage == true) {
+        qDebug() << "install refresh over";
+        finishInstall();
+    }
 }
 
 /*************************************************************************
@@ -664,7 +677,7 @@ void DFInstallNormalWindow::onCancelInstall()
     qDebug() << __FUNCTION__ << " called";
 #endif
     Q_EMIT DFontManager::instance()->cacheFinish();
-    onReInstallFinished(0, QStringList());
+    finishInstall();
 }
 
 /*************************************************************************

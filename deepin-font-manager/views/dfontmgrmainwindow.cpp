@@ -1405,6 +1405,7 @@ void DFontMgrMainWindow::onSearchTextChanged(const QString &currStr)
 *************************************************************************/
 void DFontMgrMainWindow::onPreviewTextChanged(const QString &text)
 {
+    qDebug() << __FUNCTION__ << text;
     m_previewText = text;
 
     onPreviewTextChanged();
@@ -1719,13 +1720,12 @@ void DFontMgrMainWindow::onInstallWindowDestroyed(QObject *)
             qDebug() << __FUNCTION__ << "no need doCache";
         }
         Q_EMIT DFontPreviewListDataThread::instance()->requestAdded(m_installOutFileList);
-        Q_D(DFontMgrMainWindow);
-        d->textInputEdit->textChanged(d->textInputEdit->text());
     } else {
         //成功安装的字体数目为0时,在这里将安装标志位复位
         qDebug() << __func__ << "install finish" << endl;
     }
     m_fIsInstalling = false;
+    qDebug() << __FUNCTION__ << "end";
 }
 
 /*************************************************************************
@@ -2035,8 +2035,8 @@ void DFontMgrMainWindow::showSpinner(DFontSpinnerWidget::SpinnerStyles styles, b
         m_fontLoadingSpinner->repaint();
         return;
     }
-    m_fontLoadingSpinner->show();
     m_fontLoadingSpinner->spinnerStart();
+    m_fontLoadingSpinner->show();
 }
 
 /*************************************************************************

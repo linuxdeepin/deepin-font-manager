@@ -40,6 +40,7 @@ public:
         ALL,
         CHINESE,
         MONOSPACE,
+        AllInSquence,
     };
     explicit GetFontList(FontType type, bool isStartup, QObject *parent = nullptr);
     void run();
@@ -58,4 +59,5 @@ class FontManager : public QObject
 public:
     FontManager();
     static void getFontList(bool isStartup);
+    static void getFontListInSequence(bool isStartup);
 };

@@ -51,11 +51,13 @@ GetFontList::GetFontList(GetFontList::FontType type, bool isStartup, QObject *pa
 
 void GetFontList::run()
 {
+    qDebug() << __FUNCTION__ << m_type << "begin";
     DFontInfoManager *inst = DFontInfoManager::instance();
     DFontPreviewListDataThread *thread = DFontPreviewListDataThread::instance();
-    switch (m_type) {
-    case ALL:
-        DFMDBManager::instance()->checkIfEmpty();
+    if (m_type == ALL || m_type == AllInSquence) {
+        if (m_isStartup) {
+            DFMDBManager::instance()->checkIfEmpty();
+        }
         thread->m_allFontPathList.clear();
         thread->m_allFontPathList = inst->getAllFontPath(m_isStartup);
         if (m_isStartup) {
@@ -64,16 +66,18 @@ void GetFontList::run()
             inst->refreshList(thread->m_allFontPathList);
             thread->m_fontModelList = DFMDBManager::instance()->getAllFontInfo(&thread->m_delFontInfoList);
         }
-        break;
-    case CHINESE:
+    }
+
+    if (m_type == CHINESE || m_type == AllInSquence) {
         thread->m_chineseFontPathList.clear();
         thread->m_chineseFontPathList = inst->getAllChineseFontPath();
-        break;
-    case MONOSPACE:
+    }
+
+    if (m_type == MONOSPACE || m_type == AllInSquence) {
         thread->m_monoSpaceFontPathList.clear();
         thread->m_monoSpaceFontPathList = inst->getAllMonoSpaceFontPath();
-        break;
     }
+    qDebug() << __FUNCTION__ << m_type << "end";
 }
 
 void GetFontList::removeUserAddFonts()
@@ -112,4 +116,10 @@ void FontManager::getFontList(bool isStartup)
     GetFontList *getMonospace = new GetFontList(GetFontList::MONOSPACE, isStartup);
     threadPool->start(getMonospace);
     threadPool->waitForDone();
+}
+
+void FontManager::getFontListInSequence(bool isStartup)
+{
+    GetFontList getFontList(GetFontList::AllInSquence, isStartup);
+    getFontList.run();
 }

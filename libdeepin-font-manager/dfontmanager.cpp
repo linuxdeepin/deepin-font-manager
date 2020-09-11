@@ -147,6 +147,7 @@ void DFontManager::run()
     default:
         break;
     }
+    qDebug() << __FUNCTION__ << "end" << m_type;
 }
 
 /*************************************************************************
