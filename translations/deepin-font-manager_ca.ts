@@ -135,19 +135,19 @@
     </message>
     <message>
         <source>The other %1 system fonts cannot be deleted</source>
-        <translation type="unfinished"/>
+        <translation>Les altres %1 lletres del sistema no es poden eliminar.</translation>
     </message>
     <message>
         <source>The font &quot;%1&quot; in use cannot be deleted</source>
-        <translation type="unfinished"/>
+        <translation>La lletra %1 en ús no es pot eliminar.</translation>
     </message>
     <message>
         <source>The other %1 system fonts and the font &quot;%2&quot; in use cannot be deleted</source>
-        <translation type="unfinished"/>
+        <translation>Les altres %1 lletres del sistema i la lletra %2 no es poden eliminar.</translation>
     </message>
     <message>
         <source>Are you sure you want to delete %1 font(s)?</source>
-        <translation type="unfinished"/>
+        <translation>Segur que voleu eliminar %1 lletra/es?</translation>
     </message>
     <message>
         <source>Delete</source>

@@ -1,9 +1,9 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="es" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="gl_ES" version="2.1">
 <context>
     <name>Category</name>
     <message>
         <source>All Fonts</source>
-        <translation>Todas las fuentes</translation>
+        <translation>Todas as fontes</translation>
     </message>
     <message>
         <source>System</source>
@@ -15,11 +15,11 @@
     </message>
     <message>
         <source>Favorites</source>
-        <translation>Favoritas</translation>
+        <translation>Favoritos</translation>
     </message>
     <message>
         <source>Active</source>
-        <translation>Activadas</translation>
+        <translation>Activo</translation>
     </message>
     <message>
         <source>Chinese</source>
@@ -27,7 +27,7 @@
     </message>
     <message>
         <source>Monospaced</source>
-        <translation>Monoespaciado</translation>
+        <translation>Monospacial</translation>
     </message>
 </context>
 <context>
@@ -45,131 +45,131 @@
     <name>DFInstallErrorDialog</name>
     <message>
         <source>Broken file</source>
-        <translation>Archivo roto</translation>
+        <translation>Ficheiro caído</translation>
     </message>
     <message>
         <source>Same version installed</source>
-        <translation>La misma versión está instalada</translation>
+        <translation>Instalouse a mesma versión</translation>
     </message>
     <message>
         <source>System Font</source>
-        <translation>Fuente del sistema</translation>
+        <translation>Fonte do sistema</translation>
     </message>
 </context>
 <context>
     <name>DFontMgrMainWindow</name>
     <message>
         <source>Ctrl+Shift+/</source>
-        <translation>Ctrl + Mayús + /</translation>
+        <translation>Ctrl+Shift+/</translation>
     </message>
     <message>
         <source>PgUp</source>
-        <translation>AvPág</translation>
+        <translation>PgUp</translation>
     </message>
     <message>
         <source>PgDown</source>
-        <translation>RePág</translation>
+        <translation>PgDown</translation>
     </message>
     <message>
         <source>Ctrl+Alt+F</source>
-        <translation>Ctrl + Alt + F</translation>
+        <translation>Ctrl+Alt+F</translation>
     </message>
     <message>
         <source>Ctrl+F</source>
-        <translation>Ctrl + F</translation>
+        <translation>Ctrl+F</translation>
     </message>
     <message>
         <source>Ctrl+O</source>
-        <translation>Ctrl + O</translation>
+        <translation>Ctrl+O</translation>
     </message>
     <message>
         <source>Ctrl+K</source>
-        <translation>Ctrl + K</translation>
+        <translation>Ctrl+K</translation>
     </message>
     <message>
         <source>Ctrl+Shift+K</source>
-        <translation>Ctrl + Mayús + K</translation>
+        <translation>Ctrl+Shift+K</translation>
     </message>
     <message>
         <source>Alt+Return</source>
-        <translation>Alt + Enter</translation>
+        <translation>Alt+Enter</translation>
     </message>
     <message>
         <source>Fonts</source>
-        <translation>Fuentes</translation>
+        <translation>Fontes</translation>
     </message>
     <message>
         <source>Ctrl+=</source>
-        <translation>Ctrl + =</translation>
+        <translation>Ctrl+=</translation>
     </message>
     <message>
         <source>Ctrl+-</source>
-        <translation>Ctrl + -</translation>
+        <translation>Ctrl+-</translation>
     </message>
     <message>
         <source>Ctrl+0</source>
-        <translation>Ctrl + 0</translation>
+        <translation>Ctrl+0</translation>
     </message>
     <message>
         <source>%1 font installed</source>
-        <translation>%1 fuente instalada</translation>
+        <translation>%1 fonte instalada</translation>
     </message>
     <message>
         <source>%1 fonts installed</source>
-        <translation>%1 fuentes instaladas</translation>
+        <translation>%1 fontes instaladas</translation>
     </message>
 </context>
 <context>
     <name>DeleteConfirmDailog</name>
     <message>
         <source>Are you sure you want to delete this font?</source>
-        <translation>¿Está seguro de que quiere borrar esta fuente?</translation>
+        <translation>Está seguro de que quere eliminar este tipo de letra?</translation>
     </message>
     <message>
         <source>This font will not be available to applications</source>
-        <translation>Esta fuente no estará disponible para las aplicaciones</translation>
+        <translation>Este tipo de letra non estará dispoñible para os aplicativos</translation>
     </message>
     <message>
         <source>These fonts will not be available to applications</source>
-        <translation>Estas fuentes no estarán disponibles para las aplicaciones</translation>
+        <translation>Estes tipos de letra non estarán dispoñibles para os aplicativos</translation>
     </message>
     <message>
         <source>The other %1 system fonts cannot be deleted</source>
-        <translation>Las otras fuentes del sistema %1 no pueden ser borradas</translation>
+        <translation>Non se poden eliminar os outros tipos de letra do sistema %1</translation>
     </message>
     <message>
         <source>The font &quot;%1&quot; in use cannot be deleted</source>
-        <translation>La fuente «%1» está en uso no puede ser eliminada</translation>
+        <translation>Non se pode eliminar a letra &quot;% 1&quot; en uso</translation>
     </message>
     <message>
         <source>The other %1 system fonts and the font &quot;%2&quot; in use cannot be deleted</source>
-        <translation>Las otras %1 fuentes del sistema y la fuente «%2» está en uso, no pueden ser borradas</translation>
+        <translation>Non se poden eliminar os outros tipos de letra do sistema% 1 e a fonte &quot;% 2&quot; en uso</translation>
     </message>
     <message>
         <source>Are you sure you want to delete %1 font(s)?</source>
-        <translation>¿Está seguro de que quieres borrar la(s) fuente(s) %1?</translation>
+        <translation>Está seguro de que desexa eliminar % 1 fonte (s)?</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>Borrar</translation>
+        <translation>Eliminar</translation>
     </message>
 </context>
 <context>
     <name>Dfuninstalldialog</name>
     <message>
         <source>Deleting fonts, please wait...</source>
-        <translation>Borrando fuentes, por favor, espere...</translation>
+        <translation>Eliminando fontes, agarde ...</translation>
     </message>
 </context>
 <context>
     <name>ExceptionWindow</name>
     <message>
         <source>Font Verification</source>
-        <translation>Verificación de fuente</translation>
+        <translation>Verificación da fonte</translation>
     </message>
     <message>
         <source>Exit</source>
-        <translation>Salir</translation>
+        <translation>Saír</translation>
     </message>
     <message>
         <source>Continue</source>
@@ -177,14 +177,14 @@
     </message>
     <message>
         <source>No fonts to be installed</source>
-        <translation>No hay fuentes para instalar</translation>
+        <translation>Non hai fontes a instalar</translation>
     </message>
 </context>
 <context>
     <name>Font</name>
     <message>
         <source>Don&apos;t let your dreams be dreams</source>
-        <translation>No dejes que tus sueños sean sueños</translation>
+        <translation>Don&apos;t let your dreams be dreams</translation>
     </message>
 </context>
 <context>
@@ -207,81 +207,81 @@
     </message>
     <message>
         <source>Description</source>
-        <translation>Descripción</translation>
+        <translation>Descrición</translation>
     </message>
     <message>
         <source>Unknown</source>
-        <translation>Desconocido</translation>
+        <translation>Descoñecido</translation>
     </message>
     <message>
         <source>Full name</source>
-        <translation>Nombre completo</translation>
+        <translation>Nome completo</translation>
     </message>
     <message>
         <source>Ps name</source>
-        <translation>Nombre PostScript</translation>
+        <translation>Nome Ps</translation>
     </message>
     <message>
         <source>Trademark</source>
-        <translation>Marca</translation>
+        <translation>Marca rexistrada</translation>
     </message>
 </context>
 <context>
     <name>Main</name>
     <message>
         <source>Font Manager</source>
-        <translation>Administrador de fuentes</translation>
+        <translation>Xestor de fontes</translation>
     </message>
     <message>
         <source>Font Manager helps users install and manage fonts.</source>
-        <translation>Administrador de fuentes de Deepin ayuda a instalar y gestionar fuentes.</translation>
+        <translation>Xestor de fontes axuda aos usuarios a instalar e administrar fontes.</translation>
     </message>
     <message>
         <source>Loading fonts, please wait...</source>
-        <translation>Cargando fuentes, por favor espere…</translation>
+        <translation>Cargando fontes, agarde...</translation>
     </message>
     <message>
         <source>The font exported to your desktop</source>
-        <translation>Fuente exportada al escritorio</translation>
+        <translation>O tipo de letra exportado ao escritorio</translation>
     </message>
     <message>
         <source>%1 fonts exported to your desktop</source>
-        <translation>%1 fuentes exportadas al escritorio</translation>
+        <translation>% 1 fontes exportadas ao escritorio</translation>
     </message>
     <message>
         <source>Failed to export 1 font. There is not enough disk space.</source>
-        <translation>La instalación de la fuente falló. El espacio en el disco es insuficiente.</translation>
+        <translation>Erro ao exportar 1 tipo de letra. Non hai espazo de disco suficiente.</translation>
     </message>
     <message>
         <source>Failed to export %1 fonts. There is not enough disk space.</source>
-        <translation>La exportación de %1 fuentes falló. El espacio en el disco es insuficiente.</translation>
+        <translation>Erro ao exportar fontes %1. Non hai espazo de disco suficiente.</translation>
     </message>
 </context>
 <context>
     <name>Menu</name>
     <message>
         <source>Add font</source>
-        <translation>Añadir fuente</translation>
+        <translation>Engadir fonte</translation>
     </message>
     <message>
         <source>Enable</source>
-        <translation>Habilitar</translation>
+        <translation>Activar</translation>
     </message>
     <message>
         <source>Disable</source>
-        <translation>Deshabilitar</translation>
+        <translation>Desactivar</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>Borrar</translation>
+        <translation>Eliminar</translation>
     </message>
     <message>
         <source>Favorite</source>
-        <translation>Favorita</translation>
+        <translation>Favorito</translation>
     </message>
     <message>
         <source>Unfavorite</source>
-        <translation>Quitar favoritas</translation>
+        <translation>Non favorito</translation>
     </message>
     <message>
         <source>Details</source>
@@ -289,7 +289,7 @@
     </message>
     <message>
         <source>Display in file manager</source>
-        <translation>Mostrar en el administrador de archivos</translation>
+        <translation>Amosar o xestor de ficheiros</translation>
     </message>
     <message>
         <source>Export</source>
@@ -304,57 +304,57 @@
     </message>
     <message>
         <source>The fonts have been deactivated</source>
-        <translation>Las fuentes han sido desactivadas</translation>
+        <translation>Desactiváronse as fontes</translation>
     </message>
     <message>
         <source>%1 is in use, so you cannot disable it</source>
-        <translation>%1 está en uso, por lo que no se puede desactivar</translation>
+        <translation>% 1 está en uso, polo que non pode deshabilitalo</translation>
     </message>
     <message>
         <source>You cannot disable system fonts and the fonts in use</source>
-        <translation>No se pueden desactivar las fuentes del sistema y las fuentes en uso</translation>
+        <translation>Non podes desactivar as fontes do sistema e as fontes en uso</translation>
     </message>
     <message>
         <source>You cannot disable system fonts</source>
-        <translation>No se pueden desactivar las fuentes del sistema</translation>
+        <translation>Non podes desactivar as fontes do sistema</translation>
     </message>
     <message>
         <source>Some fonts are not allowed to be disabled</source>
-        <translation>Algunas fuentes no se pueden deshabilitar</translation>
+        <translation>Algúns tipos de letra non se poden desactivar</translation>
     </message>
 </context>
 <context>
     <name>NormalInstallWindow</name>
     <message>
         <source>Install Font</source>
-        <translation>Instalar la fuente</translation>
+        <translation>Instalar fonte</translation>
     </message>
     <message>
         <source>Verifying...</source>
-        <translation>Verificando…</translation>
+        <translation>Verificando...</translation>
     </message>
 </context>
 <context>
     <name>QuickInstallWindow</name>
     <message>
         <source>Unknown</source>
-        <translation>Desconocido</translation>
+        <translation>Descoñecido</translation>
     </message>
     <message>
         <source>Broken file</source>
-        <translation>Archivo roto</translation>
+        <translation>Ficheiro caído</translation>
     </message>
     <message>
         <source>Installed</source>
-        <translation>Instalada</translation>
+        <translation>Instalado</translation>
     </message>
     <message>
         <source>Not Installed</source>
-        <translation>No instalada</translation>
+        <translation>Non instalado</translation>
     </message>
     <message>
         <source>Install Font</source>
-        <translation>Instalar la fuente</translation>
+        <translation>Instalar fonte</translation>
     </message>
 </context>
 <context>
@@ -365,64 +365,64 @@
     </message>
     <message>
         <source>No search results</source>
-        <translation>No hay resultados de la búsqueda</translation>
+        <translation>No search results</translation>
     </message>
     <message>
         <source>No fonts</source>
-        <translation>Sin fuentes</translation>
+        <translation>Non hai fontes</translation>
     </message>
 </context>
 <context>
     <name>Shortcut</name>
     <message>
         <source>Help</source>
-        <translation>Ayuda</translation>
+        <translation>Axuda</translation>
     </message>
     <message>
         <source>Display shortcuts</source>
-        <translation>Mostrar atajos</translation>
+        <translation>Amosar atallos</translation>
     </message>
     <message>
         <source>Page up</source>
-        <translation>Página arriba</translation>
+        <translation>Páxina enriba</translation>
     </message>
     <message>
         <source>Page down</source>
-        <translation>Página abajo</translation>
+        <translation>Páxina abaixo</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>Borrar</translation>
+        <translation>Eliminar</translation>
     </message>
     <message>
         <source>Add font</source>
-        <translation>Añadir fuente</translation>
+        <translation>Engadir fonte</translation>
     </message>
     <message>
         <source>Favorite</source>
-        <translation>Favorita</translation>
+        <translation>Favorito</translation>
     </message>
     <message>
         <source>Unfavorite</source>
-        <translation>Quitar favoritas</translation>
+        <translation>Non favorito</translation>
     </message>
     <message>
         <source>Font info</source>
-        <translation>Información de la fuente</translation>
+        <translation>Información da fonte</translation>
     </message>
 </context>
 <context>
     <name>StateBar</name>
     <message>
         <source>Input preview text</source>
-        <translation>Introducir texto de vista previa</translation>
+        <translation>Insira o texto anterior</translation>
     </message>
 </context>
 <context>
     <name>DFontWidget</name>
     <message>
         <source>Broken file</source>
-        <translation>Archivo roto</translation>
+        <translation>Ficheiro caído</translation>
     </message>
 </context>
 </TS>

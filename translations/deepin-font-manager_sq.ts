@@ -1,428 +1,428 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="es" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="sq" version="2.1">
 <context>
     <name>Category</name>
     <message>
         <source>All Fonts</source>
-        <translation>Todas las fuentes</translation>
+        <translation>Krejt shkronjat</translation>
     </message>
     <message>
         <source>System</source>
-        <translation>Sistema</translation>
+        <translation>Sistem</translation>
     </message>
     <message>
         <source>User</source>
-        <translation>Usuario</translation>
+        <translation>Përdorues</translation>
     </message>
     <message>
         <source>Favorites</source>
-        <translation>Favoritas</translation>
+        <translation>Të parapëlqyera</translation>
     </message>
     <message>
         <source>Active</source>
-        <translation>Activadas</translation>
+        <translation>Aktive</translation>
     </message>
     <message>
         <source>Chinese</source>
-        <translation>Chino</translation>
+        <translation>Kinezçe</translation>
     </message>
     <message>
         <source>Monospaced</source>
-        <translation>Monoespaciado</translation>
+        <translation>Të llojit Monospace</translation>
     </message>
 </context>
 <context>
     <name>DFDeleteDialog</name>
     <message>
         <source>Cancel</source>
-        <translation>Cancelar</translation>
+        <translation>Anuloje</translation>
     </message>
     <message>
         <source>Confirm</source>
-        <translation>Confirmar</translation>
+        <translation>Ripohojeni</translation>
     </message>
 </context>
 <context>
     <name>DFInstallErrorDialog</name>
     <message>
         <source>Broken file</source>
-        <translation>Archivo roto</translation>
+        <translation>Kartelë e dëmtuar</translation>
     </message>
     <message>
         <source>Same version installed</source>
-        <translation>La misma versión está instalada</translation>
+        <translation>I njëjti version i instaluar</translation>
     </message>
     <message>
         <source>System Font</source>
-        <translation>Fuente del sistema</translation>
+        <translation>Shkronja Sistemi</translation>
     </message>
 </context>
 <context>
     <name>DFontMgrMainWindow</name>
     <message>
         <source>Ctrl+Shift+/</source>
-        <translation>Ctrl + Mayús + /</translation>
+        <translation>Ctrl+Shift+/</translation>
     </message>
     <message>
         <source>PgUp</source>
-        <translation>AvPág</translation>
+        <translation>PgUp</translation>
     </message>
     <message>
         <source>PgDown</source>
-        <translation>RePág</translation>
+        <translation>PgDown</translation>
     </message>
     <message>
         <source>Ctrl+Alt+F</source>
-        <translation>Ctrl + Alt + F</translation>
+        <translation>Ctrl+Alt+F</translation>
     </message>
     <message>
         <source>Ctrl+F</source>
-        <translation>Ctrl + F</translation>
+        <translation>Ctrl+F</translation>
     </message>
     <message>
         <source>Ctrl+O</source>
-        <translation>Ctrl + O</translation>
+        <translation>Ctrl+O</translation>
     </message>
     <message>
         <source>Ctrl+K</source>
-        <translation>Ctrl + K</translation>
+        <translation>Ctrl+K</translation>
     </message>
     <message>
         <source>Ctrl+Shift+K</source>
-        <translation>Ctrl + Mayús + K</translation>
+        <translation>Ctrl+Shift+K</translation>
     </message>
     <message>
         <source>Alt+Return</source>
-        <translation>Alt + Enter</translation>
+        <translation>Alt+Return</translation>
     </message>
     <message>
         <source>Fonts</source>
-        <translation>Fuentes</translation>
+        <translation>Shkronja</translation>
     </message>
     <message>
         <source>Ctrl+=</source>
-        <translation>Ctrl + =</translation>
+        <translation>Ctrl+=</translation>
     </message>
     <message>
         <source>Ctrl+-</source>
-        <translation>Ctrl + -</translation>
+        <translation>Ctrl+-</translation>
     </message>
     <message>
         <source>Ctrl+0</source>
-        <translation>Ctrl + 0</translation>
+        <translation>Ctrl+0</translation>
     </message>
     <message>
         <source>%1 font installed</source>
-        <translation>%1 fuente instalada</translation>
+        <translation>Shkronjat %1 u instaluan</translation>
     </message>
     <message>
         <source>%1 fonts installed</source>
-        <translation>%1 fuentes instaladas</translation>
+        <translation>Shkronjat %1 u instaluan</translation>
     </message>
 </context>
 <context>
     <name>DeleteConfirmDailog</name>
     <message>
         <source>Are you sure you want to delete this font?</source>
-        <translation>¿Está seguro de que quiere borrar esta fuente?</translation>
+        <translation>Jeni i sigurt se doni të fshihet ky lloj shkronjash?</translation>
     </message>
     <message>
         <source>This font will not be available to applications</source>
-        <translation>Esta fuente no estará disponible para las aplicaciones</translation>
+        <translation>Ky lloj shkronjash s’do të jetë i passhëm për aplikacionet</translation>
     </message>
     <message>
         <source>These fonts will not be available to applications</source>
-        <translation>Estas fuentes no estarán disponibles para las aplicaciones</translation>
+        <translation>Këto lloje shkronjash s’do të jenë të passhme për aplikacionet</translation>
     </message>
     <message>
         <source>The other %1 system fonts cannot be deleted</source>
-        <translation>Las otras fuentes del sistema %1 no pueden ser borradas</translation>
+        <translation>%1 llojet e tjera të shkronjave të sistemit s’mund të fshihen</translation>
     </message>
     <message>
         <source>The font &quot;%1&quot; in use cannot be deleted</source>
-        <translation>La fuente «%1» está en uso no puede ser eliminada</translation>
+        <translation>Lloji &quot;%1&quot; i shkronjave në përdorim s’mund të fshihet</translation>
     </message>
     <message>
         <source>The other %1 system fonts and the font &quot;%2&quot; in use cannot be deleted</source>
-        <translation>Las otras %1 fuentes del sistema y la fuente «%2» está en uso, no pueden ser borradas</translation>
+        <translation>%1 llojet e tjera të shkronjave të sistemit dhe shkronjat &quot;%2&quot;s’mund të fshihen</translation>
     </message>
     <message>
         <source>Are you sure you want to delete %1 font(s)?</source>
-        <translation>¿Está seguro de que quieres borrar la(s) fuente(s) %1?</translation>
+        <translation>Jeni i sigurt se doni të fshihen %1 lloj(e) shkronjash?</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>Borrar</translation>
+        <translation>Fshije</translation>
     </message>
 </context>
 <context>
     <name>Dfuninstalldialog</name>
     <message>
         <source>Deleting fonts, please wait...</source>
-        <translation>Borrando fuentes, por favor, espere...</translation>
+        <translation>Po fshihen shkronja, ju lutemi, pritni…</translation>
     </message>
 </context>
 <context>
     <name>ExceptionWindow</name>
     <message>
         <source>Font Verification</source>
-        <translation>Verificación de fuente</translation>
+        <translation>Verifikim Shkronjash</translation>
     </message>
     <message>
         <source>Exit</source>
-        <translation>Salir</translation>
+        <translation>Dalje</translation>
     </message>
     <message>
         <source>Continue</source>
-        <translation>Continuar</translation>
+        <translation>Vazhdo</translation>
     </message>
     <message>
         <source>No fonts to be installed</source>
-        <translation>No hay fuentes para instalar</translation>
+        <translation>S’ka shkronja për instalim</translation>
     </message>
 </context>
 <context>
     <name>Font</name>
     <message>
         <source>Don&apos;t let your dreams be dreams</source>
-        <translation>No dejes que tus sueños sean sueños</translation>
+        <translation>Mos i lini ëndrrat tuaja të mbeten thjesht ëndrra</translation>
     </message>
 </context>
 <context>
     <name>FontDetailDailog</name>
     <message>
         <source>Basic info</source>
-        <translation>Información básica</translation>
+        <translation>Të dhëna elementare</translation>
     </message>
     <message>
         <source>Style</source>
-        <translation>Estilo</translation>
+        <translation>Stil</translation>
     </message>
     <message>
         <source>Type</source>
-        <translation>Tipo</translation>
+        <translation>Lloj</translation>
     </message>
     <message>
         <source>Version</source>
-        <translation>Versión</translation>
+        <translation>Version</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation>Descripción</translation>
+        <translation>Përshkrim</translation>
     </message>
     <message>
         <source>Unknown</source>
-        <translation>Desconocido</translation>
+        <translation>Të panjohura</translation>
     </message>
     <message>
         <source>Full name</source>
-        <translation>Nombre completo</translation>
+        <translation>Emër i plotë</translation>
     </message>
     <message>
         <source>Ps name</source>
-        <translation>Nombre PostScript</translation>
+        <translation>Emër Ps</translation>
     </message>
     <message>
         <source>Trademark</source>
-        <translation>Marca</translation>
+        <translation>Shenjë tregtare</translation>
     </message>
 </context>
 <context>
     <name>Main</name>
     <message>
         <source>Font Manager</source>
-        <translation>Administrador de fuentes</translation>
+        <translation>Përgjegjës Shkronjash</translation>
     </message>
     <message>
         <source>Font Manager helps users install and manage fonts.</source>
-        <translation>Administrador de fuentes de Deepin ayuda a instalar y gestionar fuentes.</translation>
+        <translation>Përgjegjësi i Shkronjave i ndihmon përdoruesit të instalojnë dhe administrojnë shkronja.</translation>
     </message>
     <message>
         <source>Loading fonts, please wait...</source>
-        <translation>Cargando fuentes, por favor espere…</translation>
+        <translation>Po ngarkohen shkronjat, ju lutemi, pritni…</translation>
     </message>
     <message>
         <source>The font exported to your desktop</source>
-        <translation>Fuente exportada al escritorio</translation>
+        <translation>Lloji i shkronjave u eksportuan në desktopin tuaj</translation>
     </message>
     <message>
         <source>%1 fonts exported to your desktop</source>
-        <translation>%1 fuentes exportadas al escritorio</translation>
+        <translation>%1 lloje shkronjash u eksportuan në desktopin tuaj</translation>
     </message>
     <message>
         <source>Failed to export 1 font. There is not enough disk space.</source>
-        <translation>La instalación de la fuente falló. El espacio en el disco es insuficiente.</translation>
+        <translation>S’u arrit të eksportohej 1 lloj shkronjash. S’ka hapësirë të mjaftueshme në disk.</translation>
     </message>
     <message>
         <source>Failed to export %1 fonts. There is not enough disk space.</source>
-        <translation>La exportación de %1 fuentes falló. El espacio en el disco es insuficiente.</translation>
+        <translation>S’u arrit të eksportoheshin %1 lloje shkronjash. S’ka hapësirë të mjaftueshme në disk.</translation>
     </message>
 </context>
 <context>
     <name>Menu</name>
     <message>
         <source>Add font</source>
-        <translation>Añadir fuente</translation>
+        <translation>Shtoni shkronja</translation>
     </message>
     <message>
         <source>Enable</source>
-        <translation>Habilitar</translation>
+        <translation>Aktivizoji</translation>
     </message>
     <message>
         <source>Disable</source>
-        <translation>Deshabilitar</translation>
+        <translation>Çaktivizoji</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>Borrar</translation>
+        <translation>Fshije</translation>
     </message>
     <message>
         <source>Favorite</source>
-        <translation>Favorita</translation>
+        <translation>Vëre si të parapëlqyer</translation>
     </message>
     <message>
         <source>Unfavorite</source>
-        <translation>Quitar favoritas</translation>
+        <translation>Hiqe si të parapëlqyer</translation>
     </message>
     <message>
         <source>Details</source>
-        <translation>Detalles</translation>
+        <translation>Hollësi</translation>
     </message>
     <message>
         <source>Display in file manager</source>
-        <translation>Mostrar en el administrador de archivos</translation>
+        <translation>Shfaqe te përgjegjës kartelash</translation>
     </message>
     <message>
         <source>Export</source>
-        <translation>Exportar</translation>
+        <translation>Eksportoji</translation>
     </message>
 </context>
 <context>
     <name>MessageManager</name>
     <message>
         <source>deactivated</source>
-        <translation>desactivado</translation>
+        <translation>të çaktivizuara</translation>
     </message>
     <message>
         <source>The fonts have been deactivated</source>
-        <translation>Las fuentes han sido desactivadas</translation>
+        <translation>Shkronjat janë çaktivizuar</translation>
     </message>
     <message>
         <source>%1 is in use, so you cannot disable it</source>
-        <translation>%1 está en uso, por lo que no se puede desactivar</translation>
+        <translation>Shkronjat %1 janë në përdorim, s’mund të çaktivizohen</translation>
     </message>
     <message>
         <source>You cannot disable system fonts and the fonts in use</source>
-        <translation>No se pueden desactivar las fuentes del sistema y las fuentes en uso</translation>
+        <translation>S’mund të çaktivizoni shkronja sistemi dhe shkronja që janë në përdorim</translation>
     </message>
     <message>
         <source>You cannot disable system fonts</source>
-        <translation>No se pueden desactivar las fuentes del sistema</translation>
+        <translation>S’mund të çaktivizoni shkronja sistemi</translation>
     </message>
     <message>
         <source>Some fonts are not allowed to be disabled</source>
-        <translation>Algunas fuentes no se pueden deshabilitar</translation>
+        <translation>Për disa lloje shkronjash nuk lejohet çaktivizimi</translation>
     </message>
 </context>
 <context>
     <name>NormalInstallWindow</name>
     <message>
         <source>Install Font</source>
-        <translation>Instalar la fuente</translation>
+        <translation>Instalo Shkronja</translation>
     </message>
     <message>
         <source>Verifying...</source>
-        <translation>Verificando…</translation>
+        <translation>Po verifikohet…</translation>
     </message>
 </context>
 <context>
     <name>QuickInstallWindow</name>
     <message>
         <source>Unknown</source>
-        <translation>Desconocido</translation>
+        <translation>Të panjohura</translation>
     </message>
     <message>
         <source>Broken file</source>
-        <translation>Archivo roto</translation>
+        <translation>Kartelë e dëmtuar</translation>
     </message>
     <message>
         <source>Installed</source>
-        <translation>Instalada</translation>
+        <translation>Të instaluara</translation>
     </message>
     <message>
         <source>Not Installed</source>
-        <translation>No instalada</translation>
+        <translation>Jo të Instaluara</translation>
     </message>
     <message>
         <source>Install Font</source>
-        <translation>Instalar la fuente</translation>
+        <translation>Instalo Shkronja</translation>
     </message>
 </context>
 <context>
     <name>SearchBar</name>
     <message>
         <source>Search</source>
-        <translation>Buscar</translation>
+        <translation>Kërko</translation>
     </message>
     <message>
         <source>No search results</source>
-        <translation>No hay resultados de la búsqueda</translation>
+        <translation>S’ka përfundime kërkimi</translation>
     </message>
     <message>
         <source>No fonts</source>
-        <translation>Sin fuentes</translation>
+        <translation>S’ka shkronja</translation>
     </message>
 </context>
 <context>
     <name>Shortcut</name>
     <message>
         <source>Help</source>
-        <translation>Ayuda</translation>
+        <translation>Ndihmë</translation>
     </message>
     <message>
         <source>Display shortcuts</source>
-        <translation>Mostrar atajos</translation>
+        <translation>Shfaq shkurtore</translation>
     </message>
     <message>
         <source>Page up</source>
-        <translation>Página arriba</translation>
+        <translation>Tasti Page Up</translation>
     </message>
     <message>
         <source>Page down</source>
-        <translation>Página abajo</translation>
+        <translation>Tasti Page Down</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>Borrar</translation>
+        <translation>Fshije</translation>
     </message>
     <message>
         <source>Add font</source>
-        <translation>Añadir fuente</translation>
+        <translation>Shtoni shkronja</translation>
     </message>
     <message>
         <source>Favorite</source>
-        <translation>Favorita</translation>
+        <translation>Vëre si të parapëlqyer</translation>
     </message>
     <message>
         <source>Unfavorite</source>
-        <translation>Quitar favoritas</translation>
+        <translation>Hiqe si të parapëlqyer</translation>
     </message>
     <message>
         <source>Font info</source>
-        <translation>Información de la fuente</translation>
+        <translation>Të dhëna shkronjash</translation>
     </message>
 </context>
 <context>
     <name>StateBar</name>
     <message>
         <source>Input preview text</source>
-        <translation>Introducir texto de vista previa</translation>
+        <translation>Tekst prove</translation>
     </message>
 </context>
 <context>
     <name>DFontWidget</name>
     <message>
         <source>Broken file</source>
-        <translation>Archivo roto</translation>
+        <translation>Kartelë e dëmtuar</translation>
     </message>
 </context>
 </TS>

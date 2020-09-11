@@ -135,19 +135,19 @@
     </message>
     <message>
         <source>The other %1 system fonts cannot be deleted</source>
-        <translation type="unfinished"/>
+        <translation>다른 %1 시스템 글꼴은 삭제할 수 없습니다</translation>
     </message>
     <message>
         <source>The font &quot;%1&quot; in use cannot be deleted</source>
-        <translation type="unfinished"/>
+        <translation>사용 중인 &quot;%1&quot; 글꼴은 삭제할 수 없습니다</translation>
     </message>
     <message>
         <source>The other %1 system fonts and the font &quot;%2&quot; in use cannot be deleted</source>
-        <translation type="unfinished"/>
+        <translation>사용 중인 다른 %1 시스템 글꼴과 &quot;%2&quot; 글꼴은 삭제할 수 없습니다</translation>
     </message>
     <message>
         <source>Are you sure you want to delete %1 font(s)?</source>
-        <translation type="unfinished"/>
+        <translation>%1개의 글꼴을 삭제하시겠습니까?</translation>
     </message>
     <message>
         <source>Delete</source>

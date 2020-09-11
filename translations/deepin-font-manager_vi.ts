@@ -1,428 +1,428 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="es" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="vi" version="2.1">
 <context>
     <name>Category</name>
     <message>
         <source>All Fonts</source>
-        <translation>Todas las fuentes</translation>
+        <translation>Tất cả font</translation>
     </message>
     <message>
         <source>System</source>
-        <translation>Sistema</translation>
+        <translation>Hệ thông</translation>
     </message>
     <message>
         <source>User</source>
-        <translation>Usuario</translation>
+        <translation>Tài khoản</translation>
     </message>
     <message>
         <source>Favorites</source>
-        <translation>Favoritas</translation>
+        <translation>Yêu thích</translation>
     </message>
     <message>
         <source>Active</source>
-        <translation>Activadas</translation>
+        <translation>Kích hoạt</translation>
     </message>
     <message>
         <source>Chinese</source>
-        <translation>Chino</translation>
+        <translation>Trung Quốc</translation>
     </message>
     <message>
         <source>Monospaced</source>
-        <translation>Monoespaciado</translation>
+        <translation>Monospaced</translation>
     </message>
 </context>
 <context>
     <name>DFDeleteDialog</name>
     <message>
         <source>Cancel</source>
-        <translation>Cancelar</translation>
+        <translation>Hủy</translation>
     </message>
     <message>
         <source>Confirm</source>
-        <translation>Confirmar</translation>
+        <translation>Xác nhận</translation>
     </message>
 </context>
 <context>
     <name>DFInstallErrorDialog</name>
     <message>
         <source>Broken file</source>
-        <translation>Archivo roto</translation>
+        <translation>File lỗi</translation>
     </message>
     <message>
         <source>Same version installed</source>
-        <translation>La misma versión está instalada</translation>
+        <translation>Giống với phiên bản đã được cài đặt</translation>
     </message>
     <message>
         <source>System Font</source>
-        <translation>Fuente del sistema</translation>
+        <translation>Font hệ thống</translation>
     </message>
 </context>
 <context>
     <name>DFontMgrMainWindow</name>
     <message>
         <source>Ctrl+Shift+/</source>
-        <translation>Ctrl + Mayús + /</translation>
+        <translation>Ctrl+Shift+/</translation>
     </message>
     <message>
         <source>PgUp</source>
-        <translation>AvPág</translation>
+        <translation>PgUp</translation>
     </message>
     <message>
         <source>PgDown</source>
-        <translation>RePág</translation>
+        <translation>PgDown</translation>
     </message>
     <message>
         <source>Ctrl+Alt+F</source>
-        <translation>Ctrl + Alt + F</translation>
+        <translation>Ctrl+Alt+F</translation>
     </message>
     <message>
         <source>Ctrl+F</source>
-        <translation>Ctrl + F</translation>
+        <translation>Ctrl+F</translation>
     </message>
     <message>
         <source>Ctrl+O</source>
-        <translation>Ctrl + O</translation>
+        <translation>Ctrl+O</translation>
     </message>
     <message>
         <source>Ctrl+K</source>
-        <translation>Ctrl + K</translation>
+        <translation>Ctrl+K</translation>
     </message>
     <message>
         <source>Ctrl+Shift+K</source>
-        <translation>Ctrl + Mayús + K</translation>
+        <translation>Ctrl+Shift+K</translation>
     </message>
     <message>
         <source>Alt+Return</source>
-        <translation>Alt + Enter</translation>
+        <translation>Alt+Return</translation>
     </message>
     <message>
         <source>Fonts</source>
-        <translation>Fuentes</translation>
+        <translation>Phông</translation>
     </message>
     <message>
         <source>Ctrl+=</source>
-        <translation>Ctrl + =</translation>
+        <translation>Ctrl+=</translation>
     </message>
     <message>
         <source>Ctrl+-</source>
-        <translation>Ctrl + -</translation>
+        <translation>Ctrl+-</translation>
     </message>
     <message>
         <source>Ctrl+0</source>
-        <translation>Ctrl + 0</translation>
+        <translation>Ctrl+0</translation>
     </message>
     <message>
         <source>%1 font installed</source>
-        <translation>%1 fuente instalada</translation>
+        <translation>%1 phông đã được cài đặt</translation>
     </message>
     <message>
         <source>%1 fonts installed</source>
-        <translation>%1 fuentes instaladas</translation>
+        <translation>%1 phông đã cài dặt</translation>
     </message>
 </context>
 <context>
     <name>DeleteConfirmDailog</name>
     <message>
         <source>Are you sure you want to delete this font?</source>
-        <translation>¿Está seguro de que quiere borrar esta fuente?</translation>
+        <translation>Bạn có muốn xóa phông này không?</translation>
     </message>
     <message>
         <source>This font will not be available to applications</source>
-        <translation>Esta fuente no estará disponible para las aplicaciones</translation>
+        <translation>Phông này không có sẵn cho các ứng dụng</translation>
     </message>
     <message>
         <source>These fonts will not be available to applications</source>
-        <translation>Estas fuentes no estarán disponibles para las aplicaciones</translation>
+        <translation>Những phông chữ này sẽ không có sẵn cho các ứng dụng</translation>
     </message>
     <message>
         <source>The other %1 system fonts cannot be deleted</source>
-        <translation>Las otras fuentes del sistema %1 no pueden ser borradas</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>The font &quot;%1&quot; in use cannot be deleted</source>
-        <translation>La fuente «%1» está en uso no puede ser eliminada</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>The other %1 system fonts and the font &quot;%2&quot; in use cannot be deleted</source>
-        <translation>Las otras %1 fuentes del sistema y la fuente «%2» está en uso, no pueden ser borradas</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Are you sure you want to delete %1 font(s)?</source>
-        <translation>¿Está seguro de que quieres borrar la(s) fuente(s) %1?</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Delete</source>
-        <translation>Borrar</translation>
+        <translation>Xóa</translation>
     </message>
 </context>
 <context>
     <name>Dfuninstalldialog</name>
     <message>
         <source>Deleting fonts, please wait...</source>
-        <translation>Borrando fuentes, por favor, espere...</translation>
+        <translation>Đang xóa phông, vui lòng đợi...</translation>
     </message>
 </context>
 <context>
     <name>ExceptionWindow</name>
     <message>
         <source>Font Verification</source>
-        <translation>Verificación de fuente</translation>
+        <translation>Xác minh phông chữ</translation>
     </message>
     <message>
         <source>Exit</source>
-        <translation>Salir</translation>
+        <translation>Thoát</translation>
     </message>
     <message>
         <source>Continue</source>
-        <translation>Continuar</translation>
+        <translation>Tiếp tục</translation>
     </message>
     <message>
         <source>No fonts to be installed</source>
-        <translation>No hay fuentes para instalar</translation>
+        <translation>Không có phông nào được cài đặt</translation>
     </message>
 </context>
 <context>
     <name>Font</name>
     <message>
         <source>Don&apos;t let your dreams be dreams</source>
-        <translation>No dejes que tus sueños sean sueños</translation>
+        <translation>Đừng để giấc mơ của bạn là giấc mơ</translation>
     </message>
 </context>
 <context>
     <name>FontDetailDailog</name>
     <message>
         <source>Basic info</source>
-        <translation>Información básica</translation>
+        <translation>Thông tin cơ bản</translation>
     </message>
     <message>
         <source>Style</source>
-        <translation>Estilo</translation>
+        <translation>Giao diện</translation>
     </message>
     <message>
         <source>Type</source>
-        <translation>Tipo</translation>
+        <translation>Loại</translation>
     </message>
     <message>
         <source>Version</source>
-        <translation>Versión</translation>
+        <translation>Phiên bản</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation>Descripción</translation>
+        <translation>Mô tả</translation>
     </message>
     <message>
         <source>Unknown</source>
-        <translation>Desconocido</translation>
+        <translation>Chưa xác định</translation>
     </message>
     <message>
         <source>Full name</source>
-        <translation>Nombre completo</translation>
+        <translation>Họ tên đầy đủ</translation>
     </message>
     <message>
         <source>Ps name</source>
-        <translation>Nombre PostScript</translation>
+        <translation>Ps name</translation>
     </message>
     <message>
         <source>Trademark</source>
-        <translation>Marca</translation>
+        <translation>Thương hiệu</translation>
     </message>
 </context>
 <context>
     <name>Main</name>
     <message>
         <source>Font Manager</source>
-        <translation>Administrador de fuentes</translation>
+        <translation>Quản lý Font</translation>
     </message>
     <message>
         <source>Font Manager helps users install and manage fonts.</source>
-        <translation>Administrador de fuentes de Deepin ayuda a instalar y gestionar fuentes.</translation>
+        <translation>Quản lý phông giúp người dùng cài đặt và quản lý phông</translation>
     </message>
     <message>
         <source>Loading fonts, please wait...</source>
-        <translation>Cargando fuentes, por favor espere…</translation>
+        <translation>Đang tải phông, vui lòng đợi...</translation>
     </message>
     <message>
         <source>The font exported to your desktop</source>
-        <translation>Fuente exportada al escritorio</translation>
+        <translation>Các phông đã được xuất ra ngoài màn hình chính</translation>
     </message>
     <message>
         <source>%1 fonts exported to your desktop</source>
-        <translation>%1 fuentes exportadas al escritorio</translation>
+        <translation>Phông %1 đã được xuất ra ngoài màn hình chính</translation>
     </message>
     <message>
         <source>Failed to export 1 font. There is not enough disk space.</source>
-        <translation>La instalación de la fuente falló. El espacio en el disco es insuficiente.</translation>
+        <translation>Không xuất được 1 phông, không đủ bộ nhớ</translation>
     </message>
     <message>
         <source>Failed to export %1 fonts. There is not enough disk space.</source>
-        <translation>La exportación de %1 fuentes falló. El espacio en el disco es insuficiente.</translation>
+        <translation>Không xuất được %1 phông, không đủ bộ nhớ</translation>
     </message>
 </context>
 <context>
     <name>Menu</name>
     <message>
         <source>Add font</source>
-        <translation>Añadir fuente</translation>
+        <translation>Thêm phông</translation>
     </message>
     <message>
         <source>Enable</source>
-        <translation>Habilitar</translation>
+        <translation>Bật</translation>
     </message>
     <message>
         <source>Disable</source>
-        <translation>Deshabilitar</translation>
+        <translation>Tắt</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>Borrar</translation>
+        <translation>Xóa</translation>
     </message>
     <message>
         <source>Favorite</source>
-        <translation>Favorita</translation>
+        <translation>Yêu thích</translation>
     </message>
     <message>
         <source>Unfavorite</source>
-        <translation>Quitar favoritas</translation>
+        <translation>Không thích</translation>
     </message>
     <message>
         <source>Details</source>
-        <translation>Detalles</translation>
+        <translation>Chi tiết</translation>
     </message>
     <message>
         <source>Display in file manager</source>
-        <translation>Mostrar en el administrador de archivos</translation>
+        <translation>Hiển thị ở Quản lý file</translation>
     </message>
     <message>
         <source>Export</source>
-        <translation>Exportar</translation>
+        <translation>Xuất</translation>
     </message>
 </context>
 <context>
     <name>MessageManager</name>
     <message>
         <source>deactivated</source>
-        <translation>desactivado</translation>
+        <translation>bỏ kích hoạt</translation>
     </message>
     <message>
         <source>The fonts have been deactivated</source>
-        <translation>Las fuentes han sido desactivadas</translation>
+        <translation>Phông đã bị tắt</translation>
     </message>
     <message>
         <source>%1 is in use, so you cannot disable it</source>
-        <translation>%1 está en uso, por lo que no se puede desactivar</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>You cannot disable system fonts and the fonts in use</source>
-        <translation>No se pueden desactivar las fuentes del sistema y las fuentes en uso</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>You cannot disable system fonts</source>
-        <translation>No se pueden desactivar las fuentes del sistema</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Some fonts are not allowed to be disabled</source>
-        <translation>Algunas fuentes no se pueden deshabilitar</translation>
+        <translation>Một số phông chữ không được phép vô hiệu hóa</translation>
     </message>
 </context>
 <context>
     <name>NormalInstallWindow</name>
     <message>
         <source>Install Font</source>
-        <translation>Instalar la fuente</translation>
+        <translation>Cài dặt phông</translation>
     </message>
     <message>
         <source>Verifying...</source>
-        <translation>Verificando…</translation>
+        <translation>Đang xác thực...</translation>
     </message>
 </context>
 <context>
     <name>QuickInstallWindow</name>
     <message>
         <source>Unknown</source>
-        <translation>Desconocido</translation>
+        <translation>Chưa xác định</translation>
     </message>
     <message>
         <source>Broken file</source>
-        <translation>Archivo roto</translation>
+        <translation>File lỗi</translation>
     </message>
     <message>
         <source>Installed</source>
-        <translation>Instalada</translation>
+        <translation>Đã cài đặt</translation>
     </message>
     <message>
         <source>Not Installed</source>
-        <translation>No instalada</translation>
+        <translation>Không cài dặt</translation>
     </message>
     <message>
         <source>Install Font</source>
-        <translation>Instalar la fuente</translation>
+        <translation>Cài dặt phông</translation>
     </message>
 </context>
 <context>
     <name>SearchBar</name>
     <message>
         <source>Search</source>
-        <translation>Buscar</translation>
+        <translation>Tìm kiếm</translation>
     </message>
     <message>
         <source>No search results</source>
-        <translation>No hay resultados de la búsqueda</translation>
+        <translation>Không có kết quả</translation>
     </message>
     <message>
         <source>No fonts</source>
-        <translation>Sin fuentes</translation>
+        <translation>Không có phông</translation>
     </message>
 </context>
 <context>
     <name>Shortcut</name>
     <message>
         <source>Help</source>
-        <translation>Ayuda</translation>
+        <translation>Hỗ trợ</translation>
     </message>
     <message>
         <source>Display shortcuts</source>
-        <translation>Mostrar atajos</translation>
+        <translation>Hiển thị shortcut</translation>
     </message>
     <message>
         <source>Page up</source>
-        <translation>Página arriba</translation>
+        <translation>Page up</translation>
     </message>
     <message>
         <source>Page down</source>
-        <translation>Página abajo</translation>
+        <translation>Page down</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>Borrar</translation>
+        <translation>Xóa</translation>
     </message>
     <message>
         <source>Add font</source>
-        <translation>Añadir fuente</translation>
+        <translation>Thêm phông</translation>
     </message>
     <message>
         <source>Favorite</source>
-        <translation>Favorita</translation>
+        <translation>Yêu thích</translation>
     </message>
     <message>
         <source>Unfavorite</source>
-        <translation>Quitar favoritas</translation>
+        <translation>Không thích</translation>
     </message>
     <message>
         <source>Font info</source>
-        <translation>Información de la fuente</translation>
+        <translation>Thông tin phông</translation>
     </message>
 </context>
 <context>
     <name>StateBar</name>
     <message>
         <source>Input preview text</source>
-        <translation>Introducir texto de vista previa</translation>
+        <translation>Nhập thử chữ xem trước</translation>
     </message>
 </context>
 <context>
     <name>DFontWidget</name>
     <message>
         <source>Broken file</source>
-        <translation>Archivo roto</translation>
+        <translation>File lỗi</translation>
     </message>
 </context>
 </TS>

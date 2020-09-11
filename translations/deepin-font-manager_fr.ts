@@ -135,19 +135,19 @@
     </message>
     <message>
         <source>The other %1 system fonts cannot be deleted</source>
-        <translation type="unfinished"/>
+        <translation>Les autres polices système %1 ne peuvent pas être supprimées</translation>
     </message>
     <message>
         <source>The font &quot;%1&quot; in use cannot be deleted</source>
-        <translation type="unfinished"/>
+        <translation>La police &quot;%1&quot; en cours d&apos;utilisation ne peut pas être supprimée</translation>
     </message>
     <message>
         <source>The other %1 system fonts and the font &quot;%2&quot; in use cannot be deleted</source>
-        <translation type="unfinished"/>
+        <translation>Les autres polices système %1 et la police &quot;%2&quot; en cours d&apos;utilisation ne peuvent pas être supprimées</translation>
     </message>
     <message>
         <source>Are you sure you want to delete %1 font(s)?</source>
-        <translation type="unfinished"/>
+        <translation>Voulez-vous vraiment supprimer %1 police(s) ?</translation>
     </message>
     <message>
         <source>Delete</source>
@@ -308,15 +308,15 @@
     </message>
     <message>
         <source>%1 is in use, so you cannot disable it</source>
-        <translation type="unfinished"/>
+        <translation>%1 est en cours d&apos;utilisation, vous ne pouvez donc pas le désactiver</translation>
     </message>
     <message>
         <source>You cannot disable system fonts and the fonts in use</source>
-        <translation type="unfinished"/>
+        <translation>Vous ne pouvez pas désactiver les polices système et les polices utilisées</translation>
     </message>
     <message>
         <source>You cannot disable system fonts</source>
-        <translation type="unfinished"/>
+        <translation>Vous ne pouvez pas désactiver les polices système</translation>
     </message>
     <message>
         <source>Some fonts are not allowed to be disabled</source>

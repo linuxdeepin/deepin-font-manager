@@ -135,19 +135,19 @@
     </message>
     <message>
         <source>The other %1 system fonts cannot be deleted</source>
-        <translation type="unfinished"/>
+        <translation>Nie można usunąć innych czcionek systemowych %1</translation>
     </message>
     <message>
         <source>The font &quot;%1&quot; in use cannot be deleted</source>
-        <translation type="unfinished"/>
+        <translation>Nie można usunąć używanej czcionki „%1”</translation>
     </message>
     <message>
         <source>The other %1 system fonts and the font &quot;%2&quot; in use cannot be deleted</source>
-        <translation type="unfinished"/>
+        <translation>Nie można usunąć innych czcionek systemowych %1 i używanej czcionki „%2”</translation>
     </message>
     <message>
         <source>Are you sure you want to delete %1 font(s)?</source>
-        <translation type="unfinished"/>
+        <translation>Czy na pewno chcesz usunąć %1 czcionka(ek)?</translation>
     </message>
     <message>
         <source>Delete</source>
@@ -250,11 +250,11 @@
     </message>
     <message>
         <source>Failed to export 1 font. There is not enough disk space.</source>
-        <translation type="unfinished"/>
+        <translation>Nie udało się wyeksportować 1 czcionki. Za mało miejsca na dysku.</translation>
     </message>
     <message>
         <source>Failed to export %1 fonts. There is not enough disk space.</source>
-        <translation type="unfinished"/>
+        <translation>Nie udało się wyeksportować %1 czcionek. Za mało miejsca na dysku.</translation>
     </message>
 </context>
 <context>
@@ -308,19 +308,19 @@
     </message>
     <message>
         <source>%1 is in use, so you cannot disable it</source>
-        <translation type="unfinished"/>
+        <translation>%1 jest używana, więc nie możesz jej wyłączyć</translation>
     </message>
     <message>
         <source>You cannot disable system fonts and the fonts in use</source>
-        <translation type="unfinished"/>
+        <translation>Nie można wyłączyć czcionek systemowych ani używanych czcionek</translation>
     </message>
     <message>
         <source>You cannot disable system fonts</source>
-        <translation type="unfinished"/>
+        <translation>Nie można wyłączyć czcionek systemowych</translation>
     </message>
     <message>
         <source>Some fonts are not allowed to be disabled</source>
-        <translation type="unfinished"/>
+        <translation>Niektórych czcionek nie można wyłączyć</translation>
     </message>
 </context>
 <context>
