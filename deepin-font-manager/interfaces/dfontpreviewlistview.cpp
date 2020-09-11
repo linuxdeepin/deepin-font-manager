@@ -1224,6 +1224,9 @@ void DFontPreviewListView::onMouseRightBtnPressed(const QModelIndex &modelIndex,
         fdata.setHoverState(IconNormal);
         m_fontPreviewProxyModel->setData(modelIndex, QVariant::fromValue(fdata), Qt::DisplayRole);
     }
+    //记录焦点状态
+    syncRecoveryTabStatus();
+    setFontViewHasFocus(hasFocus());
     //弹出右键菜单
     onListViewShowContextMenu();
     //菜单关闭之后
