@@ -139,7 +139,7 @@
     </message>
     <message>
         <source>The font &quot;%1&quot; in use cannot be deleted</source>
-        <translation>La police &quot;% 1&quot; utilisée ne peut pas être supprimée</translation>
+        <translation>La police &quot;%1&quot; en cours d&apos;utilisation ne peut pas être supprimée</translation>
     </message>
     <message>
         <source>The other %1 system fonts and the font &quot;%2&quot; in use cannot be deleted</source>
