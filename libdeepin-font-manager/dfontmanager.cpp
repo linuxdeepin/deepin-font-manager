@@ -309,7 +309,9 @@ void DFontManager::onInstallResult(const QString &familyName, const QString &tar
         return;
 
     qDebug() << __FUNCTION__ << m_installOutList.size() << m_CacheStatus;
-    if (m_type == Install) {
+    //  bug 47332 47325 Ut000442 在字体验证框弹出时进行安装，类型是HalfwayInstall，之前只对Install类型的做了
+    //  安装后的处理导致bug现象的出现
+    if (m_type == Install || m_type == HalfwayInstall) {
         Q_EMIT installFinished(InstallStatus::InstallSuccess, m_installOutList);
     } else if (m_type == ReInstall) {
         Q_EMIT reInstallFinished(0, m_installOutList);
