@@ -147,6 +147,8 @@ private:
     bool m_isNeedSkipException {false};
     bool m_cancelInstall = true;
     bool m_AddBtnHasTabs{false};
+    //是否为继续操作
+    bool m_continued{false};
     InstallState m_installState {Install};
 
     DFontInfoManager *m_fontInfoManager;
