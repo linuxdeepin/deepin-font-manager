@@ -600,6 +600,7 @@ void DFontPreviewListView::updateModel(bool showSpinner)
     selectItemAfterRemoved(m_bListviewAtButtom, m_bListviewAtTop, false, false);
 
     //删除之后设置焦点
+    qDebug() << m_FontViewHasFocus << endl;
     if (m_FontViewHasFocus) {
         refreshFocuses();
         setFontViewHasFocus(false);
@@ -1224,8 +1225,11 @@ void DFontPreviewListView::onMouseRightBtnPressed(const QModelIndex &modelIndex,
         fdata.setHoverState(IconNormal);
         m_fontPreviewProxyModel->setData(modelIndex, QVariant::fromValue(fdata), Qt::DisplayRole);
     }
+
+
     //记录焦点状态
     syncRecoveryTabStatus();
+    qDebug() << hasFocus() << endl;
     setFontViewHasFocus(hasFocus());
     //弹出右键菜单
     onListViewShowContextMenu();

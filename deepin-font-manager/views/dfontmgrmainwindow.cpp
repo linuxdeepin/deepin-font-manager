@@ -373,7 +373,11 @@ void DFontMgrMainWindow::initConnections()
             m_fontPreviewListView->setFocus(Qt::TabFocusReason);
             if (!m_hasMenuTriggered)
                 m_fontPreviewListView->syncTabStatus();
-            m_fontPreviewListView->setFontViewHasFocus(false);
+
+            //  菜单消失后就对这个标志位进行复位，此时删除过程还未结束，删除结束后检测此标志位时为false，
+            //  导致后面判断逻辑出错，没法正常设置焦点，所以删除之后无法全选 有因为在后面的代码中有复位
+            //  的逻辑所以取消这里代码。
+            //  m_fontPreviewListView->setFontViewHasFocus(false);
         }
         m_hasMenuTriggered = false;
     });
