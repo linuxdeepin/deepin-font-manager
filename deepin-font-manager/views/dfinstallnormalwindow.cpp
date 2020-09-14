@@ -62,13 +62,13 @@ DFInstallNormalWindow::~DFInstallNormalWindow()
     m_halfInstalledFiles.clear();
     this->hide();
     //如果有tab焦点且为取消或X号，则恢复tab焦点状态
-    if (m_AddBtnHasTabs && !m_continued) {
+    if (m_AddBtnHasTabs && !m_skipStateRecovery) {
         emit m_signalManager->requestSetTabFocusToAddBtn();
         //恢复标志位
         setAddBtnHasTabs(false);
     } else {
         //恢复标志位
-        m_continued = false;
+        m_skipStateRecovery = false;
     }
     qDebug() << __func__ << "end" << this << endl;
 }
@@ -367,7 +367,8 @@ void DFInstallNormalWindow::checkShowMessage()
             showInstallErrDlg();
         } else {
             qDebug() << "no need reinstall" << endl;
-
+            //不需恢复添加按钮tab状态
+            m_skipStateRecovery = true;
             finishInstall();
         }
     }
@@ -703,8 +704,8 @@ void DFInstallNormalWindow::onContinueInstall(const QStringList &continueInstall
 //ut000442 安装重复字体过程开始时,将之前的进度条清空
     m_progressBar->setValue(0);
     m_installState = InstallState::reinstall;
-    //继续安装标志位更新
-    m_continued = true;
+    //继续安装不需恢复添加按钮tab聚焦状态
+    m_skipStateRecovery = true;
     Q_EMIT batchReinstall(continueInstallFontFileList);
 }
 
