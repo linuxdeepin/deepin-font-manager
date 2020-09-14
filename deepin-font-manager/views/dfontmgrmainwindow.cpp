@@ -1727,6 +1727,8 @@ void DFontMgrMainWindow::onInstallWindowDestroyed(QObject *)
     } else {
         //成功安装的字体数目为0时,在这里将安装标志位复位
         qDebug() << __func__ << "install finish" << endl;
+        m_installFinish = true;
+        hideSpinner();
     }
     m_fIsInstalling = false;
     qDebug() << __FUNCTION__ << "end";
@@ -2062,7 +2064,8 @@ void DFontMgrMainWindow::hideSpinner()
     m_fontLoadingSpinner->hide();
     m_isNoResultViewShow = false;
     if (m_isInstallOver) {
-        onShowMessage(m_installOutFileList.size());
+        if (!m_installOutFileList.isEmpty())
+            onShowMessage(m_installOutFileList.size());
         m_isInstallOver = false;
         m_installOutFileList.clear();
     }
