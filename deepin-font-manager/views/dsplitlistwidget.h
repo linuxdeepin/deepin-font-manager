@@ -97,7 +97,8 @@ private:
 
     //判断是否为删除等过程中设置的焦点
     bool m_IsHalfWayFocus = false;
-
+    //用于判断是否弹出提示信息的鼠标状态标志位
+    bool m_isMouseMoved{false};
     FocusStatus m_currentStatus;
 
 signals:
@@ -109,6 +110,8 @@ protected:
     void mouseMoveEvent(QMouseEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
     void wheelEvent(QWheelEvent *event) override;
+    //鼠标释放事件
+    void mouseReleaseEvent(QMouseEvent *event) override;
     void keyPressEvent(QKeyEvent *event)override;
     bool eventFilter(QObject *obj, QEvent *event)override;
 };

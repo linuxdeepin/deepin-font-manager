@@ -406,6 +406,8 @@ void DSplitListWidget::setCurrentStatus(const FocusStatus &currentStatus)
 void DSplitListWidget::mouseMoveEvent(QMouseEvent *event)
 {
     Q_UNUSED(event)
+    //更新用于判断是否弹出提示信息的鼠标状态标志位
+    m_isMouseMoved = true;
     if (QToolTip::isVisible()) {
         QToolTip::hideText();
     }
@@ -480,6 +482,35 @@ void DSplitListWidget::wheelEvent(QWheelEvent *event)
             emit  onListWidgetItemClicked(next);
         }
     }
+}
+
+/*************************************************************************
+ <Function>      mouseReleaseEvent
+ <Description>   鼠标释放事件
+ <Author>        null
+ <Input>
+    <param1>     event           Description:事件对象
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
+void DSplitListWidget::mouseReleaseEvent(QMouseEvent *event)
+{
+    //如果鼠标释放时，位置在有效菜单项，则延时弹出提示信息
+    if (viewport()->visibleRegion().contains(event->pos())) {
+        //初始化鼠标状态标志位
+        m_isMouseMoved = false;
+        QModelIndex curIndex = indexAt(event->pos());
+        QPoint showPoint = event->globalPos();
+        const QString tooltip = curIndex.data(Qt::DisplayRole).toString();
+        QTimer::singleShot(500, [ = ] {
+            //如果悬停位置为空、位置为分割线或中途鼠标移动,不弹出提示信息
+            if (tooltip.isEmpty() || tooltip == "_split_" || m_isMouseMoved == true)
+                return;
+            QToolTip::showText(showPoint, tooltip, this);
+        });
+        return;
+    }
+    DListView::mouseReleaseEvent(event);
 }
 
 /*************************************************************************
