@@ -671,7 +671,7 @@ void DFInstallNormalWindow::batchReInstallContinue()
 
 /*************************************************************************
  <Function>      onCancelInstall
- <Description>   重装验证页面，取消按钮处理函数-QStringList()我安装了个寂寞
+ <Description>   重装验证页面，取消按钮处理函数-QStringList()
  <Author>
  <Input>         null
  <Return>        null            Description:null

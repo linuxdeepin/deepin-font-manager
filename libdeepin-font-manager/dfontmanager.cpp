@@ -347,8 +347,12 @@ void DFontManager::setCacheStatus(const CacheStatus &CacheStatus)
 *************************************************************************/
 void DFontManager::cancelInstall()
 {
+    if (m_installCanceled)
+        return;
+
     m_installCanceled = true;
     DCopyFilesManager::cancelInstall();
+    Q_EMIT cacheFinish();
 }
 
 /*************************************************************************
