@@ -402,11 +402,14 @@ void DFInstallNormalWindow::getNoSameFilesCount(const QStringList &filesList)
 {
     if (filesList.isEmpty())
         return;
-    DFontInfo fontInfo;
+
     for (auto &it : filesList) {
-        fontInfo = m_fontInfoManager->getFontInfo(it);
-        if (!m_installedFilesFontinfo.contains(fontInfo)) {
-            m_installedFilesFontinfo.append(fontInfo);
+        DFontInfo fontInfo = m_fontInfoManager->getFontInfo(it);
+        QString familyName = getFamilyName(fontInfo);
+        QString styleName = fontInfo.styleName;
+
+        if (!m_installedFontsFamilyname.contains(familyName + styleName)) {
+            m_installedFontsFamilyname.append(familyName + styleName);
             m_outfileList.append(fontInfo.filePath);
         }
     }
@@ -448,10 +451,9 @@ void DFInstallNormalWindow::paintEvent(QPaintEvent *event)
 * @param fileList 传入的安装字体列表
 * @return void
 */
-void DFInstallNormalWindow::installFinished(const QStringList &fileList)
+void DFInstallNormalWindow::installFinished()
 {
     getInstallMessage = true;
-    getNoSameFilesCount(fileList);
     checkShowMessage();
 }
 
@@ -509,7 +511,7 @@ void DFInstallNormalWindow::batchInstall()
         installList << m_newInstallFiles;
     } else {
         m_fontManager->setCacheStatus(DFontManager::NoNewFonts);
-        installFinished(installList);
+        installFinished();
         return;
     }
 
@@ -764,10 +766,13 @@ void DFInstallNormalWindow::onInstallFinished(int state, const QStringList &file
             DFontInfo fontInfo = m_fontInfoManager->getFontInfo(file);
             QString familyName = getFamilyName(fontInfo);
             QString styleName = fontInfo.styleName;
-            m_installedFontsFamilyname.append(familyName + styleName);
+            if (!m_installedFontsFamilyname.contains(familyName + styleName)) {
+                m_installedFontsFamilyname.append(familyName + styleName);
+                m_outfileList.append(fontInfo.filePath);
+            }
         }
     }
-    installFinished(fileList);
+    installFinished();
 }
 
 /*************************************************************************

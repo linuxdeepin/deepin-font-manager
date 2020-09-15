@@ -74,7 +74,7 @@ private:
         QString familyName = (fontInfo.familyName.isEmpty() || fontInfo.familyName.contains(QChar('?'))) ? fontInfo.fullname : fontInfo.familyName;
         return familyName;
     }
-    void installFinished(const QStringList &fileList);
+    void installFinished();
     void reInstallFinished(const QStringList &fileList);
     void keyPressEvent(QKeyEvent *event) override;
     virtual void closeEvent(QCloseEvent *event) override;
@@ -135,8 +135,6 @@ private:
     QStringList m_halfInstalledFiles;
     QStringList m_newHalfInstalledFiles;
     QStringList m_oldHalfInstalledFiles;
-
-    QList<DFontInfo> m_installedFilesFontinfo;
 
     short totalSysFontCount = 0;
     bool getInstallMessage = false;
