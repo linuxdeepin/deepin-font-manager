@@ -1483,6 +1483,9 @@ void DFontPreviewListView::keyPressEvent(QKeyEvent *event)
             emit m_signalManager->requestSetLeftSiderBarFocus();
             return;
         }
+        //事件为空格按键，不做响应，直接退出，如果以后要实现空格功能，在这里添加即可
+        else if (event->key() == Qt::Key_Space)
+            return;
         QListView::keyPressEvent(event);
     }
 }

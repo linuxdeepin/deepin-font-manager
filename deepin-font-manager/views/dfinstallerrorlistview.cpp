@@ -932,7 +932,8 @@ void DFInstallErrorListView::keyPressEvent(QKeyEvent *event)
         responseToPageUpAndPageDown(false);
         isEventResponsed = true;
     }
-    if (isEventResponsed)
+    //如果事件已被接收或事件为空格按键，不做响应，直接退出，如果以后要实现空格功能，在这里添加即可
+    if (isEventResponsed || event->key() == Qt::Key_Space)
         return;
     DListView::keyPressEvent(event);
 }
