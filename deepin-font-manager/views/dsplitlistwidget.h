@@ -63,21 +63,22 @@ public:
 
     void initListData();
 
+    void currentChanged(const QModelIndex &current, const QModelIndex &previous) override;
+
     SignalManager *m_signalManager = SignalManager::instance();
     QStringList m_titleStringList;
     QMap<QString, int> m_titleStringIndexMap;
     QStandardItemModel *m_categoryItemModell;
 
+
     void setIsHalfWayFocus(bool IsHalfWayFocus);
+
 
     bool IsTabFocus() const;
 
     FocusStatus &getStatus();
 
     void setCurrentStatus(const FocusStatus &currentStatus);
-
-private:
-    void setCurrentPage();
 
 private:
     bool m_refreshFinished = true;
@@ -97,10 +98,6 @@ private:
     //判断是否为删除等过程中设置的焦点
     bool m_IsHalfWayFocus = false;
 
-    bool m_IsMouseRelease = true;
-
-    //记录上一个界面对应的数字，用于之后的处理
-    int  m_LastPageNumber = -1;
     FocusStatus m_currentStatus;
 
 signals:
@@ -111,7 +108,6 @@ public slots:
 protected:
     void mouseMoveEvent(QMouseEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
-    void mouseReleaseEvent(QMouseEvent *event)override;
     void wheelEvent(QWheelEvent *event) override;
     void keyPressEvent(QKeyEvent *event)override;
     bool eventFilter(QObject *obj, QEvent *event)override;
