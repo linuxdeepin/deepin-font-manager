@@ -309,32 +309,6 @@ void DSplitListWidget::initListData()
 }
 
 /*************************************************************************
- <Function>      currentChanged
- <Description>   选中项改变触发函数
- <Author>        null
- <Input>
-    <param1>     current             Description:当前项索引
-    <param2>     previous            Description:下一项的索引
- <Return>        null            Description:null
- <Note>          null
-*************************************************************************/
-void DSplitListWidget::currentChanged(const QModelIndex &current, const QModelIndex &previous)
-{
-    Q_UNUSED(previous);
-    if (current.row() < 0 || FTM_SPLIT_LINE_INDEX == current.row()) {
-        return;
-    }
-
-    QStandardItem *item = m_categoryItemModell->item(current.row());
-    QVariant varUserData = item->data(Qt::DisplayRole).value<QVariant>();
-    int realIndex = m_titleStringIndexMap.value(varUserData.toString());
-
-    /*用于判断切换菜单后scrolltotop、nofocus...539*/
-    Q_EMIT m_signalManager->changeView();
-    emit onListWidgetItemClicked(realIndex);
-}
-
-/*************************************************************************
  <Function>      setIsHalfWayFocus
  <Description>   设置是否为其它原因获取的焦点
  <Author>        null
@@ -395,6 +369,32 @@ void DSplitListWidget::setCurrentStatus(const FocusStatus &currentStatus)
 }
 
 /*************************************************************************
+ <Function>      setCurrentPage
+ <Description>   进行操作后切换到当前的页面
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
+void DSplitListWidget::setCurrentPage()
+{
+    QModelIndex current = currentIndex();
+    QStandardItem *item = m_categoryItemModell->item(current.row());
+    QVariant varUserData = item->data(Qt::DisplayRole).value<QVariant>();
+    int realIndex = m_titleStringIndexMap.value(varUserData.toString());
+
+    if (current.row() < 0 || FTM_SPLIT_LINE_INDEX == current.row() || realIndex == m_LastPageNumber) 
+    {
+        return;
+    }
+
+    m_LastPageNumber = realIndex;
+    emit onListWidgetItemClicked(realIndex);
+    emit m_signalManager->changeView();
+}
+
+/*************************************************************************
  <Function>      mouseMoveEvent
  <Description>   鼠标移动事件
  <Author>        null
@@ -405,11 +405,10 @@ void DSplitListWidget::setCurrentStatus(const FocusStatus &currentStatus)
 *************************************************************************/
 void DSplitListWidget::mouseMoveEvent(QMouseEvent *event)
 {
-    Q_UNUSED(event)
     if (QToolTip::isVisible()) {
         QToolTip::hideText();
     }
-    return;
+    DListView::mouseMoveEvent(event);
 }
 
 /*************************************************************************
@@ -500,6 +499,7 @@ void DSplitListWidget::keyPressEvent(QKeyEvent *event)
         } else {
             DListView::keyPressEvent(event);
         }
+        setCurrentPage();
     } else if (event->key() == Qt::Key_Down) {
         if (currentIndex().row() == 7) {
             QModelIndex modelIndex = m_categoryItemModell->index(0, 0);
@@ -507,9 +507,11 @@ void DSplitListWidget::keyPressEvent(QKeyEvent *event)
         } else {
             DListView::keyPressEvent(event);
         }
+        setCurrentPage();
     } else {
         DListView::keyPressEvent(event);
     }
+
 }
 
 /*************************************************************************
@@ -637,4 +639,24 @@ void DSplitListWidget::mousePressEvent(QMouseEvent *event)
     if (modelIndex.row() == currentIndex().row())
         return;
     DListView::mousePressEvent(event);
+}
+
+//bug 47986 ut000442  之前界面切换是通过currentChanged函数进行相关信号的
+//处理，这就导致了move过程中多次触发了发送信号后的处理函数，导致整个过程变卡，
+//现在修改为mouseRelease时再进行发送
+/*************************************************************************
+ <Function>      mouseReleaseEvent
+ <Description>   鼠标按键释放事件
+ <Author>        ut000442
+ <Input>
+    <param1>     event           Description:鼠标事件
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
+void DSplitListWidget::mouseReleaseEvent(QMouseEvent *event)
+{
+    //松开鼠标后去切换到当前的界面
+    setCurrentPage();
+
+    DListView::mouseReleaseEvent(event);
 }
