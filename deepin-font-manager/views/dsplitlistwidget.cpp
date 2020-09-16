@@ -445,7 +445,13 @@ void DSplitListWidget::wheelEvent(QWheelEvent *event)
 {
     if (!m_refreshFinished)
         return;
-    int now = selectedIndexes().last().row();
+    int now = -1;
+    //bug47986处理方案中或出现选项在分隔符位置的场景，此时菜单选项为空，之前不需考虑为空的情况，所以需要增加以下判断
+    //选项为空则当前位置为分隔符
+    if (selectedIndexes().count() == 0)
+        now = FTM_SPLIT_LINE_INDEX;
+    else
+        now = selectedIndexes().last().row();
     int next = now;
     if (event->delta() > 0) {
         if (now > 0) {
