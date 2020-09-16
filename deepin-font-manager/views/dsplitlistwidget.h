@@ -63,23 +63,19 @@ public:
 
     void initListData();
 
-    void currentChanged(const QModelIndex &current, const QModelIndex &previous) override;
-
     SignalManager *m_signalManager = SignalManager::instance();
     QStringList m_titleStringList;
     QMap<QString, int> m_titleStringIndexMap;
     QStandardItemModel *m_categoryItemModell;
 
-
     void setIsHalfWayFocus(bool IsHalfWayFocus);
-
 
     bool IsTabFocus() const;
 
     FocusStatus &getStatus();
 
     void setCurrentStatus(const FocusStatus &currentStatus);
-
+    void setCurrentPage();
 private:
     bool m_refreshFinished = true;
     bool m_isFocusFromFontListView{false};
@@ -99,13 +95,24 @@ private:
     bool m_IsHalfWayFocus = false;
     //用于判断是否弹出提示信息的鼠标状态标志位
     bool m_isMouseMoved{false};
+
+    //记录上一个界面对应的数字，用于之后的处理
+    int m_LastPageNumber = -1;
+
+    //记录鼠标左键按下时的点用于之后判断
+    QPoint lastTouchBeginPos;
+
+    //记录鼠标移动的趋势
+    bool m_IsPositive = false;
+
     FocusStatus m_currentStatus;
 
 signals:
     void onListWidgetItemClicked(int index);
-//    void leftListviewHasFocus();
+
 public slots:
     void setRefreshFinished(bool isInstalling);
+
 protected:
     void mouseMoveEvent(QMouseEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;

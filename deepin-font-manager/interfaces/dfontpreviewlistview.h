@@ -229,7 +229,7 @@ private:
     bool m_isMousePressNow {false};
     //记录删除前字体列表焦点状态539
     bool m_FontViewHasFocus{false};
-    QPoint lastTouchBeginPos;
+//    QPoint lastTouchBeginPos;
     QPointer<QTimer> touchCheckTimer;
 
     DFontMgrMainWindow *m_parentWidget;
