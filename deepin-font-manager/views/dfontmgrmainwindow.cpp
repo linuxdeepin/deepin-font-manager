@@ -1374,6 +1374,7 @@ void DFontMgrMainWindow::cancelDelete()
 *************************************************************************/
 void DFontMgrMainWindow::onSearchTextChanged(const QString &currStr)
 {
+    Q_D(DFontMgrMainWindow);
     if (!m_fontPreviewListView->isListDataLoadFinished()) {
         return;
     }
@@ -1392,8 +1393,12 @@ void DFontMgrMainWindow::onSearchTextChanged(const QString &currStr)
     //filterModel->setEditStatus(m_searchTextStatusIsEmpty);
 
     qDebug() << __FUNCTION__ << "filter Count:" << filterModel->rowCount() << endl;
-
+    //记录搜索输入框焦点状态
+    bool seachEditHasFocus = d->searchFontEdit->lineEdit()->hasFocus();
     onFontListViewRowCountChanged();
+    //在字体列表为空时且清空搜索内容时会设置焦点在左侧菜单，此时焦点应保持在搜索栏,此操作旨在恢复输入框焦点状态,
+    if (seachEditHasFocus)
+        d->searchFontEdit->lineEdit()->setFocus(Qt::TabFocusReason);
     onPreviewTextChanged();
     m_fontPreviewListView->scrollToTop();
 }
