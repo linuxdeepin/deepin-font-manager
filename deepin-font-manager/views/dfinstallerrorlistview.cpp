@@ -4,6 +4,7 @@
 
 #include <QPainter>
 #include <QMouseEvent>
+#include <QPainterPath>
 
 #include <DLog>
 #include <DStyleHelper>

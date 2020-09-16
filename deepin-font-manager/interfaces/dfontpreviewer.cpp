@@ -4,6 +4,7 @@
 #include <QPainter>
 #include <QPaintEvent>
 #include <QRect>
+#include <QPainterPath>
 
 #include <DPalette>
 #include <DApplicationHelper>
