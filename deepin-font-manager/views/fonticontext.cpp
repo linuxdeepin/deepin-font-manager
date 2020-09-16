@@ -5,7 +5,6 @@
 
 #include <QBitmap>
 #include <QPainter>
-#include <QPainterPath>
 #include <QImage>
 #include <QDebug>
 

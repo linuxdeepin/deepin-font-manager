@@ -42,6 +42,7 @@ int main(int argc, char *argv[])
     // load dtk xcb plugin.
     //DEPRECATED API and remove it
     //DApplication::loadDXcbPlugin();
+    qputenv("QT_WAYLAND_SHELL_INTEGRATION","kwayland-shell");
     // init Dtk application's attrubites.
     SingleFontApplication app(argc, argv);
     app.setAttribute(Qt::AA_UseHighDpiPixmaps);

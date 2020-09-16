@@ -5,8 +5,8 @@
 #include <QPainter>
 #include <QMouseEvent>
 #include <QStandardItemModel>
+#include <QPainterPath>
 
-#include <DLog>
 #include <DStyleHelper>
 #include <DApplication>
 #include <DApplicationHelper>

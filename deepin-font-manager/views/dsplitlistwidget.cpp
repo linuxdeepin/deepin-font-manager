@@ -3,6 +3,7 @@
 #include "utils.h"
 #include <QPainter>
 #include <QMouseEvent>
+#include <QPainterPath>
 
 #include <DStyleHelper>
 #include <DApplication>

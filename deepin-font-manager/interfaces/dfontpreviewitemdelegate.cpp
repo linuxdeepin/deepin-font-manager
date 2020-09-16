@@ -4,6 +4,7 @@
 #include "utils.h"
 
 #include <QPainter>
+#include <QPainterPath>
 
 #include <DApplication>
 #include <DApplicationHelper>
