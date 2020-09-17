@@ -918,6 +918,8 @@ void DFontPreviewListView::deleteFontModelIndex(DFontPreviewItemData &itemData)
             continue;
 
         if (itemData.fontData == fdata) {
+            //记录待删除字体当前的位置索引
+            m_selectAfterDel = m_fontPreviewProxyModel->mapFromSource(modelIndex).row();
             m_fontPreviewProxyModel->sourceModel()->removeRow(i);
             break;
         }
@@ -2573,19 +2575,11 @@ void DFontPreviewListView::refreshRect()
 *************************************************************************/
 void DFontPreviewListView::updateSelection()
 {
-    if (m_selectAfterDel != -1) {
+    //如果删除的字体为当前选中的字体，则更新选中
+    if (m_currentSelectedRow == m_selectAfterDel) {
         m_bListviewAtButtom = isAtListviewBottom();
         m_bListviewAtTop = isAtListviewTop();
-        DFontPreviewProxyModel *filterModel = this->getFontPreviewProxyModel();
-        if (m_bListviewAtButtom && !m_bListviewAtTop) {
-            QModelIndex modelIndex = filterModel->index(m_selectAfterDel - 1, 0);
-            setCurrentIndex(modelIndex);
-        } else if (m_selectAfterDel == filterModel->rowCount()) {
-            QModelIndex modelIndex = filterModel->index(m_selectAfterDel - 1, 0);
-            setCurrentIndex(modelIndex);
-        } else {
-            QModelIndex modelIndex = filterModel->index(m_selectAfterDel, 0);
-            setCurrentIndex(modelIndex);
-        }
+        //执行删除后的选中逻辑
+        selectItemAfterRemoved(m_bListviewAtButtom, m_bListviewAtTop, false, false);
     }
 }
