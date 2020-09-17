@@ -7,6 +7,7 @@
 #include "views/dfdeletedialog.h"
 #include "views/dfontinfodialog.h"
 #include "views/dfquickinstallwindow.h"
+#include "performancemonitor.h"
 
 #include <QHBoxLayout>
 #include <QShortcut>
@@ -353,6 +354,7 @@ void DFontMgrMainWindow::initConnections()
     connect(DFontPreviewListDataThread::instance(), &DFontPreviewListDataThread::exportFontFinished,
     this, [ = ](int count) {
         showExportFontMessage(count, m_menuAllMinusSysFontList.count() - count);
+        PerformanceMonitor::exportFontFinish(count);
     });
 
     //安装字体刷新后，按下左键保持焦点正常切换至菜单
@@ -1165,6 +1167,8 @@ void DFontMgrMainWindow::handleMenuEvent(QAction *action)
 *************************************************************************/
 bool DFontMgrMainWindow::installFont(const QStringList &files, bool isAddBtnHasTabs)
 {
+    PerformanceMonitor::installFontStart();
+
     QStringList installFiles = checkFilesSpace(files);
     if (installFiles.count() == 0) {
         onShowMessage(0);
@@ -1653,6 +1657,8 @@ void DFontMgrMainWindow::onLoadStatus(int type)
                     emit d->searchFontEdit->textChanged(d->searchFontEdit->text());
                 }
                 m_openfirst = false;
+
+                PerformanceMonitor::loadFontFinish();
             }
             m_fontPreviewListView->onFontChanged(qApp->font());
             break;
@@ -1685,6 +1691,8 @@ void DFontMgrMainWindow::onShowMessage(int successCount)
     }
 
     DMessageManager::instance()->sendMessage(this, QIcon("://ok.svg"), message);
+
+    PerformanceMonitor::installFontFinish(successCount);
 
     qDebug() << __FUNCTION__ << " pop toast message " << message << " total (ms) :" << QDateTime::currentMSecsSinceEpoch() - m_installTm;
 }
@@ -1765,6 +1773,8 @@ void DFontMgrMainWindow::delCurrentFont(bool activatedByRightmenu)
     DFDeleteDialog *confirmDelDlg = new DFDeleteDialog(this, m_menuDelCnt, m_menuSysCnt, m_menuCurCnt > 0, this);
 
     connect(confirmDelDlg, &DFDeleteDialog::accepted, this, [ = ]() {
+        PerformanceMonitor::deleteFontStart();
+
         //记录移除前位置
         m_fontPreviewListView->markPositionBeforeRemoved(true, QModelIndexList());
         DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
@@ -1794,6 +1804,7 @@ void DFontMgrMainWindow::delCurrentFont(bool activatedByRightmenu)
 *************************************************************************/
 void DFontMgrMainWindow::exportFont()
 {
+    PerformanceMonitor::exportFontStart();
     QStringList exportFiles = checkFilesSpace(m_menuAllMinusSysFontList, false);
     if (exportFiles.count() == 0) {
         showExportFontMessage(0, m_menuAllMinusSysFontList.count());

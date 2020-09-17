@@ -41,7 +41,8 @@ HEADERS += utils.h \
     views/fonticontext.h \
     views/dfontinfoscrollarea.h \
     views/dfontspinner.h \
-    interfaces/dcomworker.h
+    interfaces/dcomworker.h \
+    performancemonitor.h
 
 SOURCES += main.cpp \
 	   utils.cpp \
@@ -66,7 +67,8 @@ SOURCES += main.cpp \
     views/fonticontext.cpp \
     views/dfontinfoscrollarea.cpp \
     views/dfontspinner.cpp \
-    interfaces/dcomworker.cpp
+    interfaces/dcomworker.cpp \
+    performancemonitor.cpp
 
 RESOURCES += ../deepin-font-manager-assets/deepin-font-manager.qrc
 TRANSLATIONS += ../translations/deepin-font-manager.ts

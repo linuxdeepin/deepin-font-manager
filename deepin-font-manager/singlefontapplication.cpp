@@ -3,6 +3,7 @@
 #include "views/dfquickinstallwindow.h"
 #include "globaldef.h"
 #include "utils.h"
+#include "performancemonitor.h"
 
 #include <QFileInfo>
 #include <QLocalServer>
@@ -211,6 +212,7 @@ void SingleFontApplication::activateWindow()
                                       Q_ARG(QStringList, m_selectedFiles));
         }
     }
+    PerformanceMonitor::initializeAppFinish();
 }
 
 /*************************************************************************
@@ -256,6 +258,7 @@ void SingleFontApplication::onFontInstallFinished(const QStringList &fileList)
 *************************************************************************/
 void SingleFontApplication::installFonts(const QStringList &fontPathList)
 {
+    PerformanceMonitor::installFontStart();
 //    qDebug() << __FUNCTION__ << fontPathList;
     for (QString fontPath : fontPathList) {
         if (Utils::isFontMimeType(fontPath)) {

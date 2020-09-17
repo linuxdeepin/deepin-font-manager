@@ -4,7 +4,7 @@
 #include "globaldef.h"
 #include "dfmxmlwrapper.h"
 #include "views/dfontmgrmainwindow.h"
-
+#include "performancemonitor.h"
 #include <DLog>
 #include <DMenu>
 #include <DGuiApplicationHelper>
@@ -44,6 +44,7 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
     /*切换listview后，scrolltotop UT000539*/
     connect(m_signalManager, &SignalManager::changeView, this, &DFontPreviewListView::viewChanged);
 
+    PerformanceMonitor::loadFontStart();
     m_dataThread = DFontPreviewListDataThread::instance(this);
 
     /*setAutoScroll(true);*/
@@ -609,6 +610,8 @@ void DFontPreviewListView::updateModel(bool showSpinner)
     Q_EMIT deleteFinished();
     syncTabStatus();
     m_recoveryTabFocusState = false;
+
+    PerformanceMonitor::deleteFontFinish(rowCnt);
 }
 
 /*************************************************************************
