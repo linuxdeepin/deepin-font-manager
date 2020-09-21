@@ -991,8 +991,7 @@ void DFontPreviewListView::selectFonts(const QStringList &fileList)
     }
 
     Q_EMIT SignalManager::instance()->requestInstallAdded();
-    //用于安装后刷新聚焦、安装后focus for ctrl+a UT000539
-    refreshFocuses();
+    //同步tab聚焦状态
     syncTabStatus();
 }
 

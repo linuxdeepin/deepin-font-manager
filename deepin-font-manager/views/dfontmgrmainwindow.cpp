@@ -2083,7 +2083,6 @@ void DFontMgrMainWindow::hideSpinner()
         if (!m_installOutFileList.isEmpty())
             onShowMessage(m_installOutFileList.size());
         m_isInstallOver = false;
-        m_installOutFileList.clear();
     }
     //安装刷新完成后启用菜单滚动功能
     emit m_signalManager->setSpliteWidgetScrollEnable(false);
@@ -2091,26 +2090,14 @@ void DFontMgrMainWindow::hideSpinner()
     m_installFinish = false;
     qDebug() << __func__ << "install finish" << endl;
     m_fIsInstalling = false;
-
+    //如果无新装字体，不做后续操作，直接return
+    if (m_installOutFileList.isEmpty())
+        return;
+    m_installOutFileList.clear();
     onFontListViewRowCountChanged();
     onPreviewTextChanged();
-    //安装加载之后之后设置高亮状态以及listview的滚动
-    m_fontPreviewListView->selectedFonts(m_menuCurData, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, &m_menuAllMinusSysFontList);
-    int count = m_menuAllMinusSysFontList.count();
-    if (1 == count) {
-        m_fontPreviewListView->setCurrentSelected(m_fontPreviewListView->selectionModel()->selectedIndexes().first().row());
-        //            scrollTo(currentIndex());
-        m_fontPreviewListView->scrollTo(m_fontPreviewListView->selectionModel()->selectedIndexes().first());
-    } else if (count > 1) {
-        if (m_fontPreviewListView->selectionModel()->selectedIndexes().count() > 0) {
-            m_fontPreviewListView->setCurrentSelected(m_fontPreviewListView->selectionModel()->selectedIndexes().first().row());
-        }
-
-        if (m_fontPreviewListView->selectionModel()->selectedIndexes().count() > 1) {
-            m_fontPreviewListView->scrollTo(m_fontPreviewListView->selectionModel()->selectedIndexes().first());
-        }
-    }
-
+    //更新选中位置和设置滚动
+    m_fontPreviewListView->scrollWithTheSelected();
     m_fontPreviewListView->refreshFocuses();
 }
 
