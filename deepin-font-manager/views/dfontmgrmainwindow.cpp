@@ -310,7 +310,7 @@ void DFontMgrMainWindow::initConnections()
         hideSpinner();
     });
 
-    connect(m_signalManager, &SignalManager::requestInstallAdded, this, [ = ] {
+    connect(m_fontPreviewListView, &DFontPreviewListView::requestInstFontsUiAdded, this, [ = ] {
         m_installFinish = true;
         hideSpinner();
     });
@@ -1729,6 +1729,7 @@ void DFontMgrMainWindow::onInstallWindowDestroyed(QObject *)
     qDebug() << __FUNCTION__ << m_installOutFileList.size();
     if (m_installOutFileList.size() > 0) {
         showSpinner(DFontSpinnerWidget::Load);
+        Q_EMIT DFontPreviewListDataThread::instance()->requestAdded(m_installOutFileList);
         //check if need to do cache
         if (m_fontManager->needCache()) {
             m_fontManager->setType(DFontManager::DoCache);
@@ -1736,7 +1737,6 @@ void DFontMgrMainWindow::onInstallWindowDestroyed(QObject *)
         } else {
             qDebug() << __FUNCTION__ << "no need doCache";
         }
-        Q_EMIT DFontPreviewListDataThread::instance()->requestAdded(m_installOutFileList);
     } else {
         //成功安装的字体数目为0时,在这里将安装标志位复位
         qDebug() << __func__ << "install finish" << endl;
@@ -2090,10 +2090,12 @@ void DFontMgrMainWindow::hideSpinner()
     m_installFinish = false;
     qDebug() << __func__ << "install finish" << endl;
     m_fIsInstalling = false;
+
     //如果无新装字体，不做后续操作，直接return
     if (m_installOutFileList.isEmpty())
         return;
     m_installOutFileList.clear();
+
     onFontListViewRowCountChanged();
     onPreviewTextChanged();
     //更新选中位置和设置滚动
@@ -2203,8 +2205,6 @@ QStringList DFontMgrMainWindow::checkFilesSpace(const QStringList &files, bool m
 
     return map.values();
 }
-
-
 
 /**
 *  @brief  对主窗口中的focusout事件进行检查后对相关控件标志位等进行处理

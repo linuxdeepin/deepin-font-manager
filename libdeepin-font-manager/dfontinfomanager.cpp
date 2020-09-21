@@ -175,7 +175,7 @@ void DFontInfoManager::refreshList(const QStringList &allFontPathList)
     }
 
     for (auto &path : allFontPathList) {
-        DFontInfo fontInfo = getFontInfo(path);
+        DFontInfo fontInfo = getFontInfo(path, true);
         fontInfo.isSystemFont = isSystemFont(path);
         dataList << fontInfo;
     }
@@ -378,7 +378,7 @@ QString DFontInfoManager::getFontType(const QString &filePath)
  <Return>        DFontInfo            Description:该字体文件的字体信息
  <Note>          null
 *************************************************************************/
-DFontInfo DFontInfoManager::getFontInfo(const QString &filePath)
+DFontInfo DFontInfoManager::getFontInfo(const QString &filePath, bool withPreviewTxt)
 {
     DFontInfo fontInfo;
     fontInfo.isSystemFont = isSystemFont(filePath);
@@ -461,10 +461,12 @@ DFontInfo DFontInfoManager::getFontInfo(const QString &filePath)
     fontInfo.sp3FamilyName = QString::fromLatin1(face->family_name).trimmed();
 
     //default preview text
-    if (fontInfo.familyName == "Noto Sans Grantha") {
-        fontInfo.defaultPreview = getDefaultPreviewText(face, fontInfo.previewLang, INT_MAX);
-    } else {
-        fontInfo.defaultPreview = getDefaultPreviewText(face, fontInfo.previewLang);
+    if (withPreviewTxt) {
+        if (fontInfo.familyName == "Noto Sans Grantha") {
+            fontInfo.defaultPreview = getDefaultPreviewText(face, fontInfo.previewLang, INT_MAX);
+        } else {
+            fontInfo.defaultPreview = getDefaultPreviewText(face, fontInfo.previewLang);
+        }
     }
 
     // destroy object.

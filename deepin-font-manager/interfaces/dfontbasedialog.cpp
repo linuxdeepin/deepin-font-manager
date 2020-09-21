@@ -93,8 +93,8 @@ void DFontBaseDialog::initUI()
 void DFontBaseDialog::InitConnections()
 {
     connect(m_closeButton, &DWindowCloseButton::clicked, this, [this]() {
-        this->close();
         Q_EMIT closeBtnClicked();
+        this->close();
     });
 }
 

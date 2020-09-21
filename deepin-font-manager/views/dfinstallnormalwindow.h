@@ -2,13 +2,11 @@
 #define DFINSTALLNORMALWINDOW_H
 
 #include "dfontbasedialog.h"
-#include "dfmdbmanager.h"
-#include "dfinstallerrordialog.h"
+
 #include "dfontinfomanager.h"
 #include "signalmanager.h"
 
 #include <QStringList>
-#include <QHash>
 #include <QTimer>
 
 #include <DDialog>
@@ -54,7 +52,7 @@ protected:
     //初始化文件过滤定时器
     void initVerifyTimer();
     //字体文件过滤器，过滤后得到需要新安装的字体，重复安装字体，损毁字体，系统字体,以及字体验证框弹出时安装的字体
-    void verifyFontFiles(bool isHalfwayInstall = false);
+    void verifyFontFiles();
     //检测是否要弹出字体验证框，存在重复安装字体，系统字体时，损坏字体时弹出字体验证框
     bool ifNeedShowExceptionWindow() const;
     // 根据字体安装或重复安装状态更新标志位getInstallMessage
@@ -63,10 +61,6 @@ protected:
     void finishInstall();
     //获取新增字体文件
     void getNoSameFilesCount(const QStringList &filesList);
-    //重新实现大小改变事件处理函数
-    void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
-    //重新实现重绘函数-根据字体属性刷新进度标签高度
-    void paintEvent(QPaintEvent *event) override;
 
 private:
     inline QString getFamilyName(const DFontInfo &fontInfo)
@@ -74,16 +68,21 @@ private:
         QString familyName = (fontInfo.familyName.isEmpty() || fontInfo.familyName.contains(QChar('?'))) ? fontInfo.fullname : fontInfo.familyName;
         return familyName;
     }
+    inline QString getFamilyStyleName(const DFontInfo &fontInfo)
+    {
+        QString familyName = (fontInfo.familyName.isEmpty() || fontInfo.familyName.contains(QChar('?'))) ? fontInfo.fullname : fontInfo.familyName;
+        return (familyName + fontInfo.styleName);
+    }
     void installFinished();
     void reInstallFinished(const QStringList &fileList);
     void keyPressEvent(QKeyEvent *event) override;
     virtual void closeEvent(QCloseEvent *event) override;
+    //批量重新安装处理函数
+    void batchReInstall(const QStringList &reinstallFiles);
 
 protected slots:
     //批量安装处理函数
     void batchInstall();
-    //批量重新安装处理函数
-    void batchReInstall(const QStringList &reinstallFiles);
     //字体验证框弹出时在文件管理器进行安装
     void batchHalfwayInstall(const QStringList &filelist);
     //重装验证页面，继续按钮处理函数-继续批量安装
@@ -94,7 +93,7 @@ protected slots:
     void onInstallFinished(int state, const QStringList &fileList);
     //字体重新安装后的处理函数
     void onReInstallFinished(int state, const QStringList &fileList);
-    //重装验证页面，取消按钮处理函数-QStringList()我安装了个寂寞
+    //重装验证页面，取消按钮处理函数
     void onCancelInstall();
     //重装验证页面，继续按钮处理函数-继续安装
     void onContinueInstall(const QStringList &continueInstallFontFileList);
@@ -102,8 +101,6 @@ protected slots:
     void showInstallErrDlg();
 
 signals:
-    //信号-批量重新安装
-    void batchReinstall(const QStringList &reinstallFiles);
     //信号-安装完成
     void finishFontInstall(const QStringList &fileList);
 
@@ -129,14 +126,12 @@ private:
     QStringList m_systemFiles;
     QStringList m_outfileList;
     QStringList m_errorList;
-    QStringList m_finishInstallFiles;
 
     QStringList m_installedFontsFamilyname;
     QStringList m_halfInstalledFiles;
     QStringList m_newHalfInstalledFiles;
     QStringList m_oldHalfInstalledFiles;
 
-    short totalSysFontCount = 0;
     bool getInstallMessage = false;
     bool getReInstallMessage = false;
     bool m_popedInstallErrorDialg = false;
@@ -144,6 +139,7 @@ private:
     // Skip popup exception dialog if true
     bool m_isNeedSkipException {false};
     bool m_cancelInstall = true;
+    bool m_errCancelInstall = false;
     bool m_AddBtnHasTabs{false};
     //是否无需恢复添加按钮tab状态
     bool m_skipStateRecovery{false};
@@ -153,9 +149,6 @@ private:
     DFontManager *m_fontManager;
     SignalManager *m_signalManager = SignalManager::instance();
 
-    DLabel *m_logoLabel {nullptr};
-    DLabel *m_titleLabel {nullptr};
-    QWidget *m_titleFrame {nullptr};
     QWidget *m_mainFrame {nullptr};
 
     DLabel *m_progressStepLabel {nullptr};

@@ -1,84 +1,21 @@
 #include "dfinstallerrordialog.h"
 #include "dfontinfomanager.h"
-#include "utils.h"
 #include "dfinstallnormalwindow.h"
+#include "dfinstallerrorlistview.h"
+#include "utils.h"
+
+#include <DApplication>
+#include <DApplicationHelper>
+#include <DVerticalLine>
 
 #include <QButtonGroup>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
-#include <QStylePainter>
-
-#include <DApplication>
-#include <DStyleHelper>
-#include <DGuiApplicationHelper>
-#include <DApplicationHelper>
-#include <DStyleOptionButton>
-#include <DVerticalLine>
-#include <DCheckBox>
-#include <DLog>
-
-#include "dstyleoption.h"
+#include <QFileInfo>
 
 #define LISTVIEW_LEFT_SPACING 2
 
 DWIDGET_USE_NAMESPACE
-/*************************************************************************
- <Function>      DFMSuggestButton
- <Description>   内部类构造函数
- <Author>
- <Input>
-    <param1>     parent          Description:父对象
- <Return>        null            Description:null
- <Note>          null
-*************************************************************************/
-DFMSuggestButton::DFMSuggestButton(QWidget *parent)
-    : QPushButton(parent)
-{
-
-}
-
-/*************************************************************************
- <Function>      DFMSuggestButton
- <Description>   内部类构造函数
- <Author>
- <Input>
-    <param1>     text            Description:构建文本信息
-    <param1>     parent          Description:父对象
- <Return>        null            Description:null
- <Note>          null
-*************************************************************************/
-DFMSuggestButton::DFMSuggestButton(const QString &text, QWidget *parent)
-    : QPushButton(text, parent)
-{
-}
-
-/*************************************************************************
- <Function>      paintEvent
- <Description>   绘图事件-绘制页面颜色
- <Author>
- <Input>
-    <param1>     event           Description:事件对象
- <Return>        null            Description:null
- <Note>          null
-*************************************************************************/
-void DFMSuggestButton::paintEvent(QPaintEvent *event)
-{
-    Q_UNUSED(event)
-
-    QStylePainter p(this);
-    DStyleOptionButton option;
-    initStyleOption(&option);
-    option.init(this);
-    option.features |= QStyleOptionButton::ButtonFeature(DStyleOptionButton::SuggestButton);
-
-    DGuiApplicationHelper *appHelper = DGuiApplicationHelper::instance();
-    DPalette pa = appHelper->standardPalette(appHelper->themeType());
-    option.palette.setColor(QPalette::ButtonText, pa.color(QPalette::HighlightedText));
-    option.palette.setBrush(QPalette::Light, pa.brush(DPalette::LightLively));
-    option.palette.setBrush(QPalette::Dark, pa.brush(DPalette::DarkLively));
-
-    p.drawControl(QStyle::CE_PushButton, option);
-}
 
 /*************************************************************************
  <Function>      DFInstallErrorDialog
@@ -95,6 +32,7 @@ void DFMSuggestButton::paintEvent(QPaintEvent *event)
 DFInstallErrorDialog::DFInstallErrorDialog(QWidget *parent, const QStringList &errorInstallFontFileList)
     : DFontBaseDialog(parent)
     , m_parent(qobject_cast<DFInstallNormalWindow *>(parent))
+    , m_signalManager(SignalManager::instance())
     , m_errorInstallFiles(errorInstallFontFileList)
 {
 //    setWindowOpacity(0.3); //Debug

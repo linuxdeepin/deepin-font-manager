@@ -271,6 +271,7 @@ signals:
     void itemRemoved(DFontPreviewItemData &data);
     //请求安装后的选中响应函数
     void itemsSelected(const QStringList &files, bool isFirstInstall = false);
+    void requestInstFontsUiAdded();
     //请求字体列表数目改变函数
     void rowCountChanged();
     //更新删除状态标志位

@@ -412,7 +412,7 @@ int DFontPreviewListDataThread::insertFontItemData(const QString &filePath,
 {
     DFontInfoManager *fontInfoMgr = DFontInfoManager::instance();
     DFontPreviewItemData itemData;
-    itemData.fontInfo = fontInfoMgr->getFontInfo(filePath);
+    itemData.fontInfo = fontInfoMgr->getFontInfo(filePath, true);
 
     QString familyName;
     if (itemData.fontInfo.sp3FamilyName.isEmpty() || itemData.fontInfo.sp3FamilyName.contains(QChar('?'))) {

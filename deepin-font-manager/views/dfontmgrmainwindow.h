@@ -208,8 +208,6 @@ signals:
     void fileSelectedInSys(const QStringList &files) const;
     //信号-设置正常安装模式
     void quickModeInstall(const QStringList files) const;
-    //信号-添加安装字体
-    void requestInstallAdded();
 
 public slots:
     //右键菜单弹出处理函数
