@@ -124,10 +124,8 @@ public:
     void scrollWithTheSelected();
     //更新shift选中的字体
     void updateShiftSelect(const QModelIndex &modelIndex);
-    //判断listview是否在底部
-    bool isAtListviewBottom();
-    //判断listview是否在顶部
-    bool isAtListviewTop();
+    //判断listview是否在底部和在顶部
+    void getAtListViewPosition();
     //记录当前选中行的行数
     void setCurrentSelected(int indexRow);
     //取消删除后,重置之前记录的删除后的位置
@@ -194,18 +192,12 @@ private:
     inline QRect getCheckboxRect(const QRect &rect);
     //设置Font data
     void setFontData(const QModelIndex &index, const DFontPreviewItemData &itemData);
-    //对选中字体的索引按照row从大到小进行排序，为了在我的收藏界面和已激活界面进行操作时
-    void sortModelIndexList(QModelIndexList &sourceList);
     //设置item移除后的选中
     void selectItemAfterRemoved(bool isAtBottom, bool isAtTop, bool isCollectionPage, bool hasDisableFailedFont); //设置item移除后的选中
-    //记录下当前选中的位置,用于局中显示
-    void refreshRect();
     //更新选中状态
     void updateSelection();
     //获取一页中列表项的个数
     int getOnePageCount();
-    //触摸屏点击响应函数
-    void touchPanelClick(QMouseEvent *event);
     //根据按键设置选中
     void keyPressEventFilter(const QModelIndexList &list, bool isUp, bool isDown, bool isShiftModifier);
     //检查当前是否无选中
@@ -223,7 +215,6 @@ private:
     bool m_bListviewAtTop = false;
     bool m_isLostFocusOfLeftKey{false};
 
-    bool m_IsNeedFocus = false;//是否需要设置聚焦
     bool m_isGetFocusFromSlider{false};
     bool m_IsTabFocus = false;
     bool m_isMousePressNow {false};
@@ -283,9 +274,9 @@ signals:
 
 public slots:
     //listview中启用禁用响应函数
-    void onEnableBtnClicked(const QModelIndexList &itemIndexes, int systemCnt, int curCnt, bool setValue, bool isFromActiveFont = false);
+    void onEnableBtnClicked(QModelIndexList &itemIndexes, int systemCnt, int curCnt, bool setValue, bool isFromActiveFont = false);
     //listview收藏界面点击后触发函数
-    void onCollectBtnClicked(const QModelIndexList &index, bool setValue, bool isFromCollectFont = false);
+    void onCollectBtnClicked(QModelIndexList &index, bool setValue, bool isFromCollectFont = false);
     //显示右键菜单
     void onListViewShowContextMenu();
     //数据加载完成响应函数
