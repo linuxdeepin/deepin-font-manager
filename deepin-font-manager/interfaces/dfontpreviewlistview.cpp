@@ -840,13 +840,16 @@ void DFontPreviewListView::selectItemAfterRemoved(bool isAtBottom, bool isAtTop,
             setCurrentIndex(filterModel->index(nextIndexRow, 0));
         }
         //不能删除的系统列表，恢复选中状态
-        if (m_recoverSelectStateList.count() > 0 && !isCollectionPage) {
-            DFontPreviewProxyModel *filterModel = this->getFontPreviewProxyModel();
-            for (auto idx : m_recoverSelectStateList) {
-                selectionModel()->select(filterModel->index(idx, 0), QItemSelectionModel::Select);
+        if (m_recoverSelectStateList.count() > 0) {
+            if (!isCollectionPage) {
+                DFontPreviewProxyModel *filterModel = this->getFontPreviewProxyModel();
+                for (auto &idx : m_recoverSelectStateList) {
+                    selectionModel()->select(filterModel->index(idx, 0), QItemSelectionModel::Select);
+                }
             }
             m_recoverSelectStateList.clear();
         }
+
         //操作前已选中的当前正在使用的用户字体，恢复选中状态
         if (m_curFontSelected) {
             for (int i = count() - 1; i >= 0; i--) {
@@ -2373,6 +2376,7 @@ void DFontPreviewListView::selectedFonts(const DFontPreviewItemData &curData,
         disableIndexList->clear();
     if (allMinusSysFontList != nullptr)
         allMinusSysFontList->clear();
+    m_recoverSelectStateList.clear();
 
     QModelIndexList list = selectedIndexes();
 
