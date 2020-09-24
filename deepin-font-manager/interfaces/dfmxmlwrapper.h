@@ -2,9 +2,6 @@
 #define DFMXMLWRAPPER_H
 
 #include <QtXml>
-#include <QString>
-#include <QMap>
-#include <QVector>
 
 typedef QMap<QString, QString> QSTRING_MAP;
 typedef QMap<QString, QString>::iterator QSTRING_MAP_ITER;

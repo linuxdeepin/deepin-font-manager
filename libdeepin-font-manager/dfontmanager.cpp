@@ -21,8 +21,6 @@
 #include "dcopyfilesmanager.h"
 
 #include <QDebug>
-#include <QJsonDocument>
-#include <QJsonObject>
 #include <QProcess>
 #include <QFileInfo>
 #include <QDir>

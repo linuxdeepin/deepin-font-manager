@@ -8,15 +8,13 @@
 #include "dfmdbmanager.h"
 #include "signalmanager.h"
 #include "../views/dfontspinnerwidget.h"
+
 #include <QScrollBar>
 #include <QListView>
-
-#include <QMouseEvent>
-#include <QSortFilterProxyModel>
 #include <QPointer>
 
-
 class DFontMgrMainWindow;
+
 /*************************************************************************
  <Class>         DFontPreviewListView
  <Description>   字体预览列表listview,负责显示每个字体的状态,字体基本信息以及预览效果

@@ -7,7 +7,6 @@
 #include <QString>
 #include <QDebug>
 
-//#define FTM_DEFAULT_PREVIEW_TEXT QString(tr("Don't let your dreams be dreams"))
 #define FTM_DEFAULT_PREVIEW_TEXT QString(DTK_WIDGET_NAMESPACE::DApplication::translate("Font", "Don't let your dreams be dreams"))
 #define FTM_DEFAULT_PREVIEW_CN_TEXT QString("因理想而出生，为责任而成长")
 #define FTM_DEFAULT_PREVIEW_EN_TEXT QString("Don't let your dreams be dreams")

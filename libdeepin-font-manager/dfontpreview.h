@@ -21,12 +21,13 @@
 #define DFONTPREVIEW_H
 
 #include <QWidget>
-#include <QVBoxLayout>
 #include <QLabel>
 #include <QFontDatabase>
 
 #include <ft2build.h>
+
 #include FT_FREETYPE_H
+
 /*************************************************************************
  <Class>         DFontPreview
  <Description>   字体预览视图类

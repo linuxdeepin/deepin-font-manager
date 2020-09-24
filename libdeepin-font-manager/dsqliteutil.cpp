@@ -2,13 +2,6 @@
 
 #include <QDir>
 
-#include <DLog>
-
-//#ifdef qDebug
-//#undef qDebug
-//#define qDebug while(false) QMessageLogger().noDebug
-//#endif
-
 /*************************************************************************
  <Function>      DSqliteUtil
  <Description>   构造函数-构造一个数据库处理类对象

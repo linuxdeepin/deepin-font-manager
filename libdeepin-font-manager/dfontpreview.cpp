@@ -22,13 +22,9 @@
 
 #include <QApplication>
 #include <QGuiApplication>
-#include <QDesktopWidget>
-#include <QTextStream>
 #include <QFileInfo>
 #include <QPainter>
-#include <QScreen>
 #include <QDebug>
-#include <QFile>
 
 #include <fontconfig/fontconfig.h>
 #include <fontconfig/fcfreetype.h>

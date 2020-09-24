@@ -20,19 +20,20 @@
 #ifndef DFONTWIDGET_H
 #define DFONTWIDGET_H
 
-#include <QWidget>
-#include <DScrollArea>
-#include <QStackedLayout>
 #include "dspinner.h"
 #include "dfontpreview.h"
 #include "dfontloadthread.h"
+
+#include <DScrollArea>
 #include <DApplication>
-#include <QScreen>
-#include <QGuiApplication>
+
+#include <QWidget>
+#include <QStackedLayout>
 #include <QScrollBar>
 #include <QTranslator>
 
 DWIDGET_USE_NAMESPACE
+
 /*************************************************************************
  <Class>         DFontWidget
  <Description>   字体预览类

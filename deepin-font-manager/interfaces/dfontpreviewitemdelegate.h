@@ -8,9 +8,8 @@
 
 #include <dstyleoption.h>
 
-//DWIDGET_USE_NAMESPACE
-
 class DFontPreviewListView;
+
 class DFontPreviewItemDelegate : public QStyledItemDelegate
 {
     Q_OBJECT

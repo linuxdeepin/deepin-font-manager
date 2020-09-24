@@ -11,11 +11,6 @@
 #include <DApplication>
 #include <DMessageManager>
 
-#include <QFontDatabase>
-#include <QSet>
-#include <QScroller>
-#include <QtAlgorithms>
-
 DWIDGET_USE_NAMESPACE
 
 DFontPreviewListView::DFontPreviewListView(QWidget *parent)

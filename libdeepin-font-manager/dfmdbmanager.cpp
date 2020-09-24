@@ -3,7 +3,6 @@
 
 #include <QDir>
 
-
 static DFMDBManager *INSTANCE = nullptr;
 
 DFMDBManager::DFMDBManager(QObject *parent)

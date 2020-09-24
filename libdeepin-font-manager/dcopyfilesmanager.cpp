@@ -18,19 +18,16 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
 #include "dcopyfilesmanager.h"
 #include "dfontmanager.h"
 
 #include <QDateTime>
-#include <QFile>
-#include <QFileInfo>
 #include <QThread>
 #include <QStandardPaths>
 #include <QApplication>
-#include <QThreadPool>
 #include <QDir>
 #include <QGSettings>
-#include <QVariant>
 #include <QDebug>
 
 const QString sysDir = QDir::homePath() + "/.local/share/fonts";

@@ -5,14 +5,8 @@
 
 #include <DApplication>
 #include <DApplicationHelper>
-#include <DStyleHelper>
-#include <DPalette>
-#include <DLog>
 #include <DCheckBox>
 #include <DLabel>
-#include <DFontSizeManager>
-
-#include <QPainter>
 
 DWIDGET_USE_NAMESPACE
 

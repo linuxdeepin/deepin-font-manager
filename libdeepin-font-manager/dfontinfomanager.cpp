@@ -25,27 +25,24 @@
 #include <QDebug>
 #include <QDir>
 #include <QFileInfo>
-#include <QFontDatabase>
 #include <QProcess>
 #include <QDateTime>
+#include <QDirIterator>
 
 #include <fontconfig/fontconfig.h>
 #include <ft2build.h>
 #include <iconv.h>
-#include <QDirIterator>
 
 #include FT_FREETYPE_H
 #include FT_TYPE1_TABLES_H
 #include FT_SFNT_NAMES_H
 #include FT_TRUETYPE_IDS_H
 
-
 static QList<DFontInfo> dataList;
 static DFontInfoManager *INSTANCE = nullptr;
 
 const QString FONT_USR_DIR = QDir::homePath() + "/.local/share/fonts/";
 const QString FONT_SYSTEM_DIR = "/usr/share/fonts/";
-
 
 /*************************************************************************
  <Function>      isSystemFont

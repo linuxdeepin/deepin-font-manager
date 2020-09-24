@@ -1,12 +1,10 @@
 #include "dfontpreviewer.h"
 #include "utils.h"
 
+#include <DApplicationHelper>
+
 #include <QPainter>
 #include <QPaintEvent>
-#include <QRect>
-
-#include <DPalette>
-#include <DApplicationHelper>
 
 DFontPreviewer::DFontPreviewer(QWidget *parent)
     : QWidget(parent)

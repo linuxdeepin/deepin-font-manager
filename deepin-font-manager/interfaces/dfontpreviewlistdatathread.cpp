@@ -8,6 +8,7 @@
 #include <QApplication>
 
 static DFontPreviewListDataThread *INSTANCE = nullptr;
+
 QList<DFontPreviewItemData> DFontPreviewListDataThread::m_fontModelList = QList<DFontPreviewItemData>();
 //系统字体路径
 const QString FONTS_DIR = QDir::homePath() + "/.local/share/fonts/";

@@ -3,8 +3,6 @@
 #include "views/dsplitlistwidget.h"
 #include "dfontpreviewlistdatathread.h"
 
-#include <DLog>
-
 DFontPreviewProxyModel::DFontPreviewProxyModel(QObject *parent)
     : QSortFilterProxyModel(parent)
     , m_filterGroup(DSplitListWidget::AllFont)

@@ -21,10 +21,6 @@
 #define DFONTINFO_H
 
 #include <QObject>
-#include <QMap>
-
-//#include <ft2build.h>
-//#include FT_FREETYPE_H
 
 const qint8 FONT_LANG_NONE = 0;
 const qint8 FONT_LANG_CHINESE = 1;

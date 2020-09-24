@@ -1,5 +1,6 @@
 #ifndef SIGNALMANAGER_H
 #define SIGNALMANAGER_H
+
 #include <QObject>
 #include <QString>
 

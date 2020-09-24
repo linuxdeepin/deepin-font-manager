@@ -1,7 +1,7 @@
 #include "interfaces/dfontmenumanager.h"
+
 #include <DApplicationHelper>
 #include <DApplication>
-#include <DLog>
 
 DWIDGET_USE_NAMESPACE
 DCORE_USE_NAMESPACE

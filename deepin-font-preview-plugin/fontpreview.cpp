@@ -14,7 +14,6 @@
  */
 
 #include "fontpreview.h"
-#include <QFileInfo>
 
 DFM_BEGIN_NAMESPACE
 
