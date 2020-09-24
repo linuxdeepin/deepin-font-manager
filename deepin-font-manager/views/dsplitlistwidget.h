@@ -76,6 +76,10 @@ public:
 
     void setCurrentStatus(const FocusStatus &currentStatus);
     void setCurrentPage();
+
+    //设置m_LastPageNumber接口
+    void setLastPageNumber(int LastPageNumber);
+
 private:
     bool m_refreshFinished = true;
     bool m_isFocusFromFontListView{false};

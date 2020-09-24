@@ -499,9 +499,22 @@ void DSplitListWidget::setCurrentPage()
     QVariant varUserData = item->data(Qt::DisplayRole).value<QVariant>();
     int realIndex = m_titleStringIndexMap.value(varUserData.toString());
 
-    m_LastPageNumber = current.row();
     emit onListWidgetItemClicked(realIndex);
     emit m_signalManager->changeView();
+}
+
+/*************************************************************************
+ <Function>      setLastPageNumber
+ <Description>   记录当前界面的上一个界面
+ <Author>        null
+ <Input>
+    <param1>     LastPageNumber            Description:当前界面的上一个界面
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
+void DSplitListWidget::setLastPageNumber(int LastPageNumber)
+{
+    m_LastPageNumber = LastPageNumber;
 }
 
 /*************************************************************************
