@@ -1,6 +1,5 @@
 #include "views/dfontmgrmainwindow.h"
 #include "dfinstallnormalwindow.h"
-
 #include "globaldef.h"
 #include "interfaces/dfontmenumanager.h"
 #include "utils.h"
@@ -9,11 +8,7 @@
 #include "views/dfquickinstallwindow.h"
 #include "performancemonitor.h"
 
-#include <QHBoxLayout>
-#include <QShortcut>
-#include <QFileSystemWatcher>
-#include <QDBusConnection>
-
+#include <DWidgetUtil>
 #include <DApplication>
 #include <DApplicationHelper>
 #include <DFontSizeManager>
@@ -27,9 +22,11 @@
 #include <DSlider>
 #include <DSplitter>
 #include <DTitlebar>
-#include <DWidgetUtil>
-#include <DDesktopServices>
 #include <DMessageManager>
+#include <DDesktopServices>
+
+#include <QFileSystemWatcher>
+#include <QDBusConnection>
 
 class DFontMgrMainWindowPrivate
 {

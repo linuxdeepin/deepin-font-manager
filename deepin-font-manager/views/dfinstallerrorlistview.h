@@ -6,9 +6,12 @@
 
 #include <DListView>
 
+#include <QMouseEvent>
+
 DWIDGET_USE_NAMESPACE
 
 class DFInstallErrorListView;
+
 /*************************************************************************
  <Class>         DFInstallErrorListDelegate
  <Description>   DFInstallErrorListViewd的绘图代理类，

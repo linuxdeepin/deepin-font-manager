@@ -1,7 +1,9 @@
 #pragma once
 
-#include <QWidget>
 #include <DSvgRenderer>
+
+#include <QWidget>
+
 /*************************************************************************
  <Class>         FontIconText
  <Description>   构造函数-构造字体图标对象

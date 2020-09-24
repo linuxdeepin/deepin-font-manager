@@ -5,14 +5,10 @@
 #include "utils.h"
 #include "performancemonitor.h"
 
-#include <QFileInfo>
-#include <QLocalServer>
-#include <QLocalSocket>
-#include <QCommandLineParser>
-//#include <QDebug>
-
 #include <DWidgetUtil>
 #include <DGuiApplicationHelper>
+
+#include <QCommandLineParser>
 
 #include <sys/types.h>
 #include <unistd.h>

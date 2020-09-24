@@ -3,6 +3,7 @@
 #include <QWidget>
 
 class DFontSpinnerPrivate;
+
 class DFontSpinner : public QWidget
 {
     Q_OBJECT

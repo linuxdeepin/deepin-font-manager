@@ -1,14 +1,12 @@
 #ifndef DSPLITLISTWIDGET_H
 #define DSPLITLISTWIDGET_H
 
-#include <DListView>
-#include <QModelIndex>
-#include <QMetaType>
-#include <DToolTip>
-#include <DStyledItemDelegate>
-#include <signalmanager.h>
-DWIDGET_USE_NAMESPACE
+#include "signalmanager.h"
 
+#include <DListView>
+#include <DStyledItemDelegate>
+
+DWIDGET_USE_NAMESPACE
 
 struct FocusStatus {
     bool m_IsMouseClicked {false};
@@ -17,6 +15,7 @@ struct FocusStatus {
 };
 
 class DSplitListWidget;
+
 class DNoFocusDelegate : public DStyledItemDelegate
 {
 public:

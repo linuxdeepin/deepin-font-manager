@@ -2,20 +2,20 @@
 #include "globaldef.h"
 #include "utils.h"
 
-#include <QPainter>
-#include <QMouseEvent>
-#include <QStandardItemModel>
-
-#include <DLog>
 #include <DStyleHelper>
 #include <DApplication>
 #include <DApplicationHelper>
 #include <DCheckBox>
 #include <DFontSizeManager>
 
-#define FTM_ERROR_ITEM_FONTNAME_LEFT    39
-#define FTM_PARAM_OF_WIDTH 350
+#include <QPainter>
+#include <QStandardItemModel>
+
 DWIDGET_USE_NAMESPACE
+
+#define FTM_ERROR_ITEM_FONTNAME_LEFT 39
+#define FTM_PARAM_OF_WIDTH 350
+
 /*************************************************************************
  <Function>      DFInstallErrorListDelegate
  <Description>   代理用于绘制字体验证框中的字体列表页面

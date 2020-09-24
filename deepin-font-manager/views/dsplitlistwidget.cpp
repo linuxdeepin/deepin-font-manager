@@ -1,15 +1,15 @@
 #include "dsplitlistwidget.h"
 #include "globaldef.h"
 #include "utils.h"
-#include <QPainter>
-#include <QMouseEvent>
 
-#include <DStyleHelper>
 #include <DApplication>
+#include <DStyleHelper>
 #include <DApplicationHelper>
 #include <DLog>
-#include <DFontSizeManager>
+
 #include <QToolTip>
+#include <QPainter>
+#include <QMouseEvent>
 
 #define FTM_SPLIT_TOP_SPACE_TAG "_space_"
 #define FTM_SPLIT_TOP_SPLIT_TAG "_split_"

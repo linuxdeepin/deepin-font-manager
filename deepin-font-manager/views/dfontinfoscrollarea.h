@@ -1,32 +1,18 @@
 #ifndef ATTRSCROLLWIDGET_H
 #define ATTRSCROLLWIDGET_H
 
-#include <map>
-#include <DFrame>
-#include <DWidget>
-#include <DLabel>
-#include <QGridLayout>
-#include <QTextLayout>
-#include <QHBoxLayout>
-#include <QVBoxLayout>
-#include <dfontpreviewitemdef.h>//
-#include <DApplication>
+#include <dfontpreviewitemdef.h>
 #include "dfontbasedialog.h"
-#include "dfontbasedialog.h"
-
-#include <QResizeEvent>
-#include <QPointF>
-#include <DFrame>
-#include <DLabel>
-#include <QTextEdit>
-#include <DWidget>
 #include "signalmanager.h"
-DWIDGET_USE_NAMESPACE
 
-/**
- * @brief The AttrScrollWidget class
- * @brief   属性显示
- */
+#include <DWidget>
+#include <DApplication>
+#include <DFrame>
+#include <DLabel>
+
+#include <QGridLayout>
+
+DWIDGET_USE_NAMESPACE
 
 /*************************************************************************
  <Class>         dfontinfoscrollarea

@@ -1,8 +1,9 @@
 #include "dfontinfoscrollarea.h"
-#include <QDebug>
+
 #include <DFontSizeManager>
 #include <DApplication>
 #include <DApplicationHelper>
+
 #include <QTimer>
 
 #define LAEBL_TEXT_WIDTH   165

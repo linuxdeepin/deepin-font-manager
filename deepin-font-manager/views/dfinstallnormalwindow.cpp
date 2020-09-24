@@ -1,6 +1,5 @@
 #include "dfinstallnormalwindow.h"
 #include "dfontmanager.h"
-
 #include "dfontpreviewlistdatathread.h"
 #include "dfinstallerrordialog.h"
 
@@ -10,7 +9,6 @@
 
 #include <QFileInfo>
 #include <QVBoxLayout>
-#include <QSizePolicy>
 
 DWIDGET_USE_NAMESPACE
 

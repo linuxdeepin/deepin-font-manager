@@ -9,13 +9,10 @@
 #include <DVerticalLine>
 
 #include <QButtonGroup>
-#include <QHBoxLayout>
-#include <QVBoxLayout>
 #include <QFileInfo>
 
-#define LISTVIEW_LEFT_SPACING 2
-
 DWIDGET_USE_NAMESPACE
+#define LISTVIEW_LEFT_SPACING 2
 
 /*************************************************************************
  <Function>      DFInstallErrorDialog

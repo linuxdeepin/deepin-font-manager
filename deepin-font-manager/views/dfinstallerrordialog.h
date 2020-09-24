@@ -13,7 +13,6 @@ DWIDGET_USE_NAMESPACE
 
 class DFInstallNormalWindow;
 class SignalManager;
-class DFontInfoManager;
 class DFInstallErrorListView;
 /*************************************************************************
  <Class>         DFInstallErrorDialog

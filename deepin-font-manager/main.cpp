@@ -23,16 +23,15 @@
 #include "views/dfontmgrmainwindow.h"
 #include "singlefontapplication.h"
 
-#include <QCommandLineParser>
-#include <QDebug>
-#include <QDBusConnection>
-#include <QDBusInterface>
-
 #include <DApplication>
 #include <DLog>
 #include <DWidgetUtil>
 #include <DApplicationSettings>
-#include <DGuiApplicationHelper>
+
+#include <QCommandLineParser>
+#include <QDebug>
+#include <QDBusConnection>
+#include <QDBusInterface>
 
 DWIDGET_USE_NAMESPACE
 DCORE_USE_NAMESPACE

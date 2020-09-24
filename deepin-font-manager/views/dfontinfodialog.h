@@ -2,20 +2,13 @@
 #define DFONTINFODIALOG_H
 #include "dfontbasedialog.h"
 #include "dfontinfoscrollarea.h"
-#include "signalmanager.h"
 
-#include <QResizeEvent>
-#include <QPointF>
-#include <DFrame>
-#include <DLabel>
-#include <QTextEdit>
-#include <DWidget>
-class QHBoxLayout;
 DWIDGET_USE_NAMESPACE
 
 //类声明
 struct DFontPreviewItemData;
 class FontIconText;
+
 /*************************************************************************
  <Class>         DFontInfoDialog
  <Description>  字体管理器信息页面，在本页面查看字体图标、名称、样式、类型、版本和描述、字形、类别等信息。

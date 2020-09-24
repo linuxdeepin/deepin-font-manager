@@ -8,24 +8,19 @@
 #include "dsplitlistwidget.h"
 #include "views/dfdeletedialog.h"
 
-#include <QShortcut>
-
-#include <DFrame>
 #include <DMainWindow>
-#include <QResizeEvent>
+#include <DFrame>
+
+#include <QShortcut>
 #include <QScreen>
 
 DWIDGET_USE_NAMESPACE
 
-/*
- * TODO:
- *     The font manager may need to be move to library.
- *
- */
 //类声明
 class DFQuickInstallWindow;
 class DFInstallNormalWindow;
 class DFontMgrMainWindowPrivate;
+
 /*************************************************************************
  <Class>         DFontMgrMainWindow
  <Description>   mainwindow，承担了字体管理器主页面初始化、重绘、字体安装、删除、收藏/取消收藏、启用/禁用等功能。

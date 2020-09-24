@@ -22,6 +22,7 @@
 
 #include <QObject>
 #include <QHash>
+
 /*************************************************************************
  <Class>         Utils
  <Description>   全文索引类

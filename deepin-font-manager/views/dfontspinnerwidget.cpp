@@ -1,9 +1,9 @@
 #include "dfontspinnerwidget.h"
 #include "dfontspinner.h"
-#include <QHBoxLayout>
-#include <QVBoxLayout>
+
 #include <DApplication>
-#include <QDebug>
+
+#include <QHBoxLayout>
 
 DWIDGET_USE_NAMESPACE
 

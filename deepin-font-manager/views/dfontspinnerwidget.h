@@ -1,9 +1,11 @@
 #pragma once
 
 #include <DWidget>
+
 #include <QLabel>
 
 class DFontSpinner;
+
 class DFontSpinnerWidget : public Dtk::Widget::DWidget
 {
 public:

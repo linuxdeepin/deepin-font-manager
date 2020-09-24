@@ -7,15 +7,13 @@
 #include "globaldef.h"
 #include "interfaces/dfontpreviewer.h"
 
+#include <DWidgetUtil>
 #include <DLog>
-#include <DPalette>
 #include <DPushButton>
 #include <DTitlebar>
 #include <DApplicationHelper>
-#include <DWidgetUtil>
 
 #include <QFontDatabase>
-#include <QResizeEvent>
 #include <QVBoxLayout>
 
 DFQuickInstallWindow::DFQuickInstallWindow(QStringList files, QWidget *parent)

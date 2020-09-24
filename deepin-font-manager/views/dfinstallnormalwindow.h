@@ -2,24 +2,22 @@
 #define DFINSTALLNORMALWINDOW_H
 
 #include "dfontbasedialog.h"
-
 #include "dfontinfomanager.h"
 #include "signalmanager.h"
 
-#include <QStringList>
-#include <QTimer>
-
-#include <DDialog>
 #include <DFrame>
 #include <DLabel>
 #include <DProgressBar>
-#include <DMessageManager>
+
+#include <QTimer>
 
 DWIDGET_USE_NAMESPACE
+
 //类声明
 class DFontManager;
 class DFontInfoManager;
 class DFInstallErrorDialog;
+
 /*************************************************************************
  <Class>         DFInstallNormalWindow
  <Description>   负责字体正常安装、中途安装、重复安装、取消安装等进程协调与调度工作。

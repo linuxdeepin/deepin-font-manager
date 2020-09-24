@@ -3,18 +3,12 @@
 #include "globaldef.h"
 #include "dfontmgrmainwindow.h"
 
-#include <QHBoxLayout>
-#include <QVBoxLayout>
-#include <QDebug>
-#include <QScrollBar>
-
-#include <DGuiApplicationHelper>
 #include <DApplication>
 #include <DApplicationHelper>
-#include <DFrame>
 #include <DFontSizeManager>
-#include <DTipLabel>
-#include <DScrollArea>
+
+#include <QHBoxLayout>
+
 /*************************************************************************
  <Function>      DFDeleteDialog
  <Description>   构造函数：此类为字体删除确认页面，主要功能为确认删除字体和取消删除字体

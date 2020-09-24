@@ -8,8 +8,6 @@
 
 DWIDGET_USE_NAMESPACE
 
-//class DSpinner;
-class QLocalServer;
 /*************************************************************************
  <Class>         SingleFontApplication
  <Description>   返回一个应用的单例对象

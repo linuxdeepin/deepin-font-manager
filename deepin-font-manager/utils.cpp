@@ -21,13 +21,8 @@
 #include "utils.h"
 #include "globaldef.h"
 
-#include <QUrl>
 #include <QDir>
-#include <QFile>
 #include <QDebug>
-#include <QFileInfo>
-#include <QFontInfo>
-#include <QMimeType>
 #include <QApplication>
 #include <QMimeDatabase>
 #include <QStandardPaths>

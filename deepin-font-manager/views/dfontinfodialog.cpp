@@ -4,18 +4,13 @@
 #include "fonticontext.h"
 #include "dfontinfoscrollarea.h"
 
-#include <QFileInfo>
-#include <QFontMetrics>
-#include <QTextBlock>
-#include <QVBoxLayout>
-#include <QScrollArea>
-#include <QScrollBar>
-
 #include <DApplication>
 #include <DApplicationHelper>
 #include <DLog>
 #include <DFontSizeManager>
-#include <DTipLabel>
+
+#include <QScrollArea>
+#include <QKeyEvent>
 #include <QBitmap>
 
 #define NAME_TITLE_WIDTH 300

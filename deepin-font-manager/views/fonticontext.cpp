@@ -1,16 +1,10 @@
 #include "fonticontext.h"
 
 #include <DStyle>
-#include <DFontSizeManager>
-
-#include <QBitmap>
-#include <QPainter>
-#include <QPainterPath>
-#include <QImage>
-#include <QDebug>
 
 DWIDGET_USE_NAMESPACE
 using DTK_GUI_NAMESPACE::DSvgRenderer;
+
 /*************************************************************************
  <Function>      FontIconText
  <Description>   构造函数-构造字体图标对象
