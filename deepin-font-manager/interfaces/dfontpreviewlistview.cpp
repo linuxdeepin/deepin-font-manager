@@ -311,17 +311,21 @@ void DFontPreviewListView::viewChanged()
  <Return>        null            Description:null
  <Note>          null
 *************************************************************************/
-void DFontPreviewListView::markPositionBeforeRemoved(bool isDelete, const QModelIndexList &list)
+void DFontPreviewListView::markPositionBeforeRemoved()
 {
-    if (isDelete) {
-        QModelIndexList deleteFontList = selectedIndexes();
-        if (deleteFontList.count() > 0) {
-            qSort(deleteFontList.begin(), deleteFontList.end(), qGreater<QModelIndex>());
+    QModelIndexList deleteFontList = selectedIndexes();
+    if (deleteFontList.count() > 0) {
+        qSort(deleteFontList.begin(), deleteFontList.end(), qGreater<QModelIndex>());
+        QVariant varModel = m_fontPreviewProxyModel->data(deleteFontList.last(), Qt::DisplayRole);
+        //获取首个选中字体，判断是否为系统字体
+        FontData fdata = varModel.value<FontData>();
+        DFontPreviewItemData itemData = m_dataThread->getFontData(fdata);
+        //如果为系统字体，更新变量值m_selectAfterDel为-2的状态
+        if (itemData.fontInfo.isSystemFont) {
+            m_selectAfterDel = -2;
+        } else {
             m_selectAfterDel = deleteFontList.last().row();
         }
-    } else {
-        if (list.count() > 0)
-            m_selectAfterDel = list.first().row();
     }
 }
 
@@ -781,63 +785,66 @@ void DFontPreviewListView::selectItemAfterRemoved(bool isAtBottom, bool isAtTop,
 {
     int param = getOnePageCount();
     if (m_selectAfterDel != -1) {
-        int nextIndexRow = -1;
+        //如果选中项不包含系统字体或当前为收藏页面
         DFontPreviewProxyModel *filterModel = this->getFontPreviewProxyModel();
-        //删除最后一个
-        if (m_selectAfterDel == this->count()) {
-            if (count() > 0) {
-                //上移选中
-                nextIndexRow = count() - 1;
-            }
-            scrollToBottom();
-        } else {
-            //超过一页时
-            if (this->count() > param) {
-                //删除第一页的字体
-                if (m_selectAfterDel <= param) {
-                    if (isAtTop)
-                        scrollToTop();
-                    else {
-                        scrollTo(filterModel->index(m_selectAfterDel, 0));
-                    }
-                    nextIndexRow = m_selectAfterDel;
+        if (m_selectAfterDel != -2 || isCollectionPage) {
+            int nextIndexRow = -1;
+            //删除最后一个
+            if (m_selectAfterDel == this->count()) {
+                if (count() > 0) {
+                    //上移选中
+                    nextIndexRow = count() - 1;
                 }
-                //删除最后一页的字体
-                else if (m_selectAfterDel >= this->count() - param) {
-                    if (isAtBottom) {
-                        nextIndexRow = m_selectAfterDel - 1;
-                        if (m_selectAfterDel == this->count() - param) {
-                            scrollTo(filterModel->index(m_selectAfterDel - 1, 0));
-                        } else {
-                            scrollToBottom();
+                scrollToBottom();
+            } else {
+                //超过一页时
+                if (this->count() > param) {
+                    //删除第一页的字体
+                    if (m_selectAfterDel <= param) {
+                        if (isAtTop)
+                            scrollToTop();
+                        else {
+                            scrollTo(filterModel->index(m_selectAfterDel, 0));
                         }
-                    } else {
                         nextIndexRow = m_selectAfterDel;
-                        scrollTo(filterModel->index(m_selectAfterDel, 0));
+                    }
+                    //删除最后一页的字体
+                    else if (m_selectAfterDel >= this->count() - param) {
+                        if (isAtBottom) {
+                            nextIndexRow = m_selectAfterDel - 1;
+                            if (m_selectAfterDel == this->count() - param) {
+                                scrollTo(filterModel->index(m_selectAfterDel - 1, 0));
+                            } else {
+                                scrollToBottom();
+                            }
+                        } else {
+                            nextIndexRow = m_selectAfterDel;
+                            scrollTo(filterModel->index(m_selectAfterDel, 0));
+                        }
+                    }
+                    //删除中间位置的字体
+                    else {
+                        nextIndexRow = m_selectAfterDel;
                     }
                 }
-                //删除中间位置的字体
+                //只有一页时
                 else {
-                    nextIndexRow = m_selectAfterDel;
-                }
-            }
-            //只有一页时
-            else {
-                if (m_selectAfterDel <= param) {
-                    if (filterModel->index(m_selectAfterDel, 0).isValid()) {
-                        nextIndexRow = m_selectAfterDel;
-                    } else {
-                        nextIndexRow = m_selectAfterDel - 1;
+                    if (m_selectAfterDel <= param) {
+                        if (filterModel->index(m_selectAfterDel, 0).isValid()) {
+                            nextIndexRow = m_selectAfterDel;
+                        } else {
+                            nextIndexRow = m_selectAfterDel - 1;
+                        }
+                        scrollToTop();
                     }
-                    scrollToTop();
                 }
             }
-        }
-        //更新选中位置
-        setCurrentSelected(nextIndexRow);
-        //不能禁用的系统字体，保留选中状态
-        if (!hasDisableFailedFont) {
-            setCurrentIndex(filterModel->index(nextIndexRow, 0));
+            //更新选中位置
+            setCurrentSelected(nextIndexRow);
+            //不能禁用的系统字体，保留选中状态
+            if (!hasDisableFailedFont) {
+                setCurrentIndex(filterModel->index(nextIndexRow, 0));
+            }
         }
         //不能删除的系统列表，恢复选中状态
         if (m_recoverSelectStateList.count() > 0) {
@@ -846,10 +853,11 @@ void DFontPreviewListView::selectItemAfterRemoved(bool isAtBottom, bool isAtTop,
                 for (auto &idx : m_recoverSelectStateList) {
                     selectionModel()->select(filterModel->index(idx, 0), QItemSelectionModel::Select);
                 }
+                //如果选中项包含系统字体，则删除后滚动到恢复选中的系统字体
+                scrollTo(selectedIndexes().last());
             }
             m_recoverSelectStateList.clear();
         }
-
         //操作前已选中的当前正在使用的用户字体，恢复选中状态
         if (m_curFontSelected) {
             for (int i = count() - 1; i >= 0; i--) {

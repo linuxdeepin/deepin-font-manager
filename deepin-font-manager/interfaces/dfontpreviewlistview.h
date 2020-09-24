@@ -133,7 +133,7 @@ public:
     //切换界面后,滚动到最上方
     void viewChanged();
     //记录移除前位置
-    void markPositionBeforeRemoved(bool isDelete, const QModelIndexList &list); //记录移除前位置
+    void markPositionBeforeRemoved();
     //设置focus状态、设置选中状态
     void refreshFocuses();
     //更新加载动画spinner

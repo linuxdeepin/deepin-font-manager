@@ -1782,7 +1782,7 @@ void DFontMgrMainWindow::delCurrentFont(bool activatedByRightmenu)
         PerformanceMonitor::deleteFontStart();
 
         //记录移除前位置
-        m_fontPreviewListView->markPositionBeforeRemoved(true, QModelIndexList());
+        m_fontPreviewListView->markPositionBeforeRemoved();
         DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
         qDebug() << "Confirm delete:" << currItemData.fontInfo.filePath
                  << " is system font:" << currItemData.fontInfo.isSystemFont;
