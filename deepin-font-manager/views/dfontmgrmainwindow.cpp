@@ -1770,6 +1770,7 @@ void DFontMgrMainWindow::delCurrentFont(bool activatedByRightmenu)
                                              &m_menuSysCnt, &m_menuCurCnt, nullptr, &m_menuDelFontList);
     if (m_menuDelCnt < 1) {
         m_fIsDeleting = UnDeleting;
+        m_fontPreviewListView->setUserFontInUseSelected(false);
         return;
     }
 

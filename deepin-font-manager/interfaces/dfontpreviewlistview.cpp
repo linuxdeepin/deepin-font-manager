@@ -248,7 +248,7 @@ void DFontPreviewListView::initConnections()
 {
     connect(m_signalManager, &SignalManager::clearRecoverList, this, [ = ] {
         m_recoverSelectStateList.clear();
-        m_curFontSelected = false;
+        setUserFontInUseSelected(false);
     });
 }
 
@@ -854,7 +854,7 @@ void DFontPreviewListView::selectItemAfterRemoved(bool isAtBottom, bool isAtTop,
             m_recoverSelectStateList.clear();
         }
         //操作前已选中的当前正在使用的用户字体，恢复选中状态
-        if (m_curFontSelected) {
+        if (m_userFontInUseSelected) {
             for (int i = count() - 1; i >= 0; i--) {
                 FontData fdata = qvariant_cast<FontData>(m_fontPreviewProxyModel->data(filterModel->index(i, 0)));
                 if (fdata == m_curFontData) {
@@ -862,7 +862,7 @@ void DFontPreviewListView::selectItemAfterRemoved(bool isAtBottom, bool isAtTop,
                     break;
                 }
             }
-            m_curFontSelected = false;
+            setUserFontInUseSelected(false);
         }
     }
 }
@@ -1303,6 +1303,20 @@ void DFontPreviewListView::onMouseLeftBtnReleased(const QModelIndex &modelIndex,
         fdata.setHoverState(IconNormal);
         m_fontPreviewProxyModel->setData(modelIndexNew, QVariant::fromValue(fdata), Qt::DisplayRole);
     }
+}
+
+/*************************************************************************
+ <Function>      setUserFontInUseSelected
+ <Description>   是否选中正在使用的用户字体状态更新
+ <Author>        UT000539
+ <Input>
+    <param1>     curFontSelected Description:状态参数
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
+void DFontPreviewListView::setUserFontInUseSelected(bool curFontSelected)
+{
+    m_userFontInUseSelected = curFontSelected;
 }
 
 /*************************************************************************
@@ -2433,7 +2447,7 @@ void DFontPreviewListView::selectedFonts(const DFontPreviewItemData &curData,
             if ((calCollect) && (curCollected == itemData.fontData.isCollected()))
                 *allIndexList << index;
             //不可删除字体包括当前使用中用户字体
-            m_curFontSelected = true;
+            setUserFontInUseSelected(true);
         } else {
             if (deleteCnt)
                 *deleteCnt += 1;

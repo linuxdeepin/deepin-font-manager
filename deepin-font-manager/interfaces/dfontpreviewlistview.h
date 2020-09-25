@@ -173,6 +173,8 @@ public:
     {
         return m_FontViewHasFocus;
     }
+    //更新是否选中,正在使用的用户字体标志位状态
+    void setUserFontInUseSelected(bool curFontSelected);
 
 protected:
     //选中切换后触发函数
@@ -245,7 +247,7 @@ private:
     QRect m_curRect;
     //是否需要恢复tab状态
     bool m_recoveryTabFocusState = false;
-    bool m_curFontSelected{false};
+    bool m_userFontInUseSelected{false};
     int m_currentSelectedRow = -1;
     int m_selectAfterDel = -1;/*539 删除后的选中位置*/
     int m_tryCnt = 0;
