@@ -1,8 +1,8 @@
 #ifndef DFONTPREVIEWLISTDATATHREAD_H
 #define DFONTPREVIEWLISTDATATHREAD_H
 
-#include "dfmdbmanager.h"
-#include "dfontinfomanager.h"
+#include "dfontpreviewitemdef.h"
+#include "dfontmanager.h"
 
 #include <QThread>
 #include <QMutex>
@@ -16,6 +16,9 @@
 
 class QFileSystemWatcher;
 class DFontPreviewListView;
+class DFontManager;
+class DFMDBManager;
+class DFontInfoManager;
 class DFontPreviewListDataThread : public QObject
 {
     Q_OBJECT
@@ -40,10 +43,6 @@ public:
                            bool isStartup = false, bool isEnabled = true);
     //获取当前列表所有项的数据链表
     QList<DFontPreviewItemData> getFontModelList();
-    //获取需要新增的字体数据链表
-    QList<DFontPreviewItemData> getDiffFontModelList() const;
-    //给线程锁赋值
-    void setMutex(QMutex *mutex);
     //更新itemDataList的itemData状态
     void updateItemStatus(int index, const DFontPreviewItemData &itemData);
     //更新字体信息中的fontid
@@ -63,6 +62,30 @@ public:
         }
         return itemdata;
     }
+    //检测是否要弹出字体验证框，存在重复安装字体，系统字体时，损坏字体时弹出字体验证框
+    bool ifNeedShowExceptionWindow(bool needSkipException = false);
+    //判断当前字体是否为系统字体
+    bool isSystemFont(const DFontInfo &f);
+
+private:
+    inline QString getFamilyName(const DFontInfo &fontInfo)
+    {
+        QString familyName = (fontInfo.familyName.isEmpty() || fontInfo.familyName.contains(QChar('?'))) ? fontInfo.fullname : fontInfo.familyName;
+        return familyName;
+    }
+    inline QString getFamilyStyleName(const DFontInfo &fontInfo)
+    {
+        QString familyName = (fontInfo.familyName.isEmpty() || fontInfo.familyName.contains(QChar('?'))) ? fontInfo.fullname : fontInfo.familyName;
+        return (familyName + fontInfo.styleName);
+    }
+    //获取所有的系统字体信息
+    void getAllSysFonts();
+    //字体文件过滤器，过滤后得到需要新安装的字体，重复安装字体，损毁字体，系统字体,以及字体验证框弹出时安装的字体
+    void verifyFontFiles();
+    //批量安装
+    void batchInstall();
+    //获取新增字体文件
+    void updateInstalledFontList(const QStringList &filesList);
 
 signals:
     //发出删除字体文件请求
@@ -81,6 +104,18 @@ signals:
     void requestExportFont(QStringList &files);
     //导出字体后，请求提示信息
     void exportFontFinished(int count);
+    //请求安装字体
+    void requestBatchInstall(const QStringList &fontList);
+    //请求重安装字体
+    void requestBatchReInstall(const QStringList &fontList);
+    //安装字体结束
+    void installFinished();
+    //重新安装字体结束
+    void reInstallFinished();
+    //取消重复安装
+    void requestCancelReinstall();
+    //请求弹“已安装xxx字体”消息框
+    void requstShowInstallToast(int fontCnt);
 
 protected slots:
     //线程函数
@@ -109,6 +144,20 @@ public slots:
     void onAutoDirWatchers();
     //导出字体文件
     void onExportFont(QStringList &fontList);
+    //字体安装后的处理函数
+    void onInstallFinished(int state, const QStringList &fileList);
+    //字体重新安装后的处理函数
+    void onReInstallFinished(int state, const QStringList &fileList);
+    //批量安装处理函数
+    void onBatchInstall(const QStringList &fontList);
+    //字体验证框弹出时在文件管理器进行安装
+    void batchHalfwayInstall(const QStringList &filelist);
+    //重装验证页面，继续按钮处理函数-继续批量安装
+    void batchReInstallContinue();
+    //批量重新安装槽函数
+    void onBatchReInstall(const QStringList &fontList);
+    //取消安装槽函数
+    void onCancelReinstall();
 
 public:
     QStringList m_allFontPathList;
@@ -117,14 +166,35 @@ public:
     static QList<DFontPreviewItemData> m_fontModelList;
     QList<DFontPreviewItemData> m_delFontInfoList;
 
+    //安装/重复安装
+    QStringList m_SystemFontsList;
+
+    QStringList m_installFiles;
+    QStringList m_installedFiles;
+    QStringList m_newInstallFiles;
+    QStringList m_damagedFiles;
+    QStringList m_systemFiles;
+    QStringList m_outfileList;
+    QStringList m_errorList;
+
+    QStringList m_installedFontsFamilyname;
+    QStringList m_halfInstalledFiles;
+    QStringList m_newHalfInstalledFiles;
+    QStringList m_oldHalfInstalledFiles;
+    DFontManager::Type m_installState {DFontManager::Install};
+    int m_installFontCnt;
+    bool m_isReinstall;
+
 protected:
     QThread mThread;
 
-    DFMDBManager *m_dbManager {nullptr};
     QList<DFontPreviewItemData> m_diffFontModelList;
+    DFMDBManager *m_dbManager {nullptr};
     DFontPreviewListView *m_view;
     QFileSystemWatcher *m_fsWatcher;
     QMutex *m_mutex;
+    DFontInfoManager *m_fontInfoManager;
+    DFontManager *m_fontManager;
 };
 
 #endif // DFONTPREVIEWLISTDATATHREAD_H

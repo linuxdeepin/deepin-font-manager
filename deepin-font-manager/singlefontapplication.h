@@ -37,7 +37,7 @@ private slots:
     //批量安装字体响应
     void slotBatchInstallFonts();
     //安装完成清空列表
-    void onFontInstallFinished(const QStringList &fileList);
+    void onFontInstallFinished(int fontCnt);
 
 private:
     QStringList m_selectedFiles;

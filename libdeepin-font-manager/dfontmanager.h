@@ -43,6 +43,16 @@ public:
         <Value2>     HalfwayInstall          Description:中途安装
      <Note>          null
     *************************************************************************/
+    /*************************************************************************
+     <Enum>          InstallState
+     <Description>   字体安装状态
+     <Author>
+     <Value>
+        <Value1>     Install               Description:安装
+        <Value2>     reinstall             Description:重新安装
+        <Value2>     damaged               Description:损坏字体
+     <Note>          null
+    *************************************************************************/
     enum Type { Install, ReInstall, UnInstall, HalfwayInstall, DoCache, DefaultNullType};
     /*************************************************************************
      <Enum>          InstallStatus
@@ -55,17 +65,7 @@ public:
      <Note>          null
     *************************************************************************/
     enum InstallStatus {InstallSuccess, HalfwayInstallSuccess, Failed};
-    /*************************************************************************
-     <Enum>          CacheStatus
-     <Description>   fc-cache命令执行状态
-     <Author>
-     <Value>
-        <Value1>     CacheNow               Description:立即执行
-        <Value2>     CacheLater             Description:稍后执行
-        <Value2>     NoNewFonts             Description:不执行
-     <Note>          null
-    *************************************************************************/
-    enum CacheStatus {CacheNow, CacheLater, NoNewFonts};
+
     static DFontManager *instance();
     DFontManager(QObject *parent = nullptr);
     ~DFontManager();
@@ -75,17 +75,8 @@ public:
     void setInstallFileList(const QStringList &list);
     //传入待删除字体列表
     void setUnInstallFile(const QStringList &filePath);
-    //是否需要做fc-cache
-    inline bool needCache()
-    {
-        return ((m_type == Install && m_CacheStatus != NoNewFonts && !m_installCanceled)
-                || (m_type == ReInstall && (m_CacheStatus != NoNewFonts || !m_instFileList.isEmpty())));
-
-    }
     //执行fc-cache命令
     void doCache();
-    //设置fc-cache命令执行的状态
-    void setCacheStatus(const CacheStatus &CacheStatus);
     //取消安装
     void cancelInstall();
 
@@ -131,7 +122,6 @@ private:
     QStringList m_uninstFile;
     volatile bool m_installCanceled = false;
     Type m_type{Type::DefaultNullType};
-    CacheStatus m_CacheStatus;
     int m_installedCount = 0;
 };
 

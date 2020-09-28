@@ -70,7 +70,6 @@ public slots:
     void onControlButtonClicked(int btnIndex);
 
 private:
-    DFInstallNormalWindow *m_parent;
     QWidget *m_mainFrame;
     QVBoxLayout *m_mainLayout;
 

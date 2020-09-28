@@ -215,8 +215,6 @@ public slots:
     void onFontSizeChanged(int fontSize);
     //左侧菜单项切换选项
     void onLeftSiderBarItemClicked(int index);
-    //安装后添加至listview
-    void onFontInstallFinished(const QStringList &fileList);
     //字体删除fc-cache操作后恢复标志位
     void onUninstallFcCacheFinish();
     //切换字体菜单后判断FontListView的结果并显示对应状态
@@ -253,11 +251,13 @@ protected:
     int m_menuDisableSysCnt;
     int m_menuSysCnt;
     int m_menuDisableCnt;
+
+    int m_installFontCnt;
     QStringList m_menuDelFontList;
     QModelIndexList m_menuAllIndexList;
     QModelIndexList m_menuDisableIndexList;
     QStringList m_menuAllMinusSysFontList;
-    QStringList m_installOutFileList;
+//    QStringList m_installOutFileList;
     DFontPreviewItemData m_menuCurData;
     DSplitListWidget::FontGroup filterGroup;
     //Main window Size
@@ -269,7 +269,6 @@ protected:
     bool m_isFromSys = false;
     bool m_isPopInstallErrorDialog = false;
     bool m_isNoResultViewShow = false;
-    bool m_isInstallOver = false;
     bool m_openfirst = true;//是否是第一次打开软件
     bool m_cacheFinish = false;
     bool m_installFinish = false;

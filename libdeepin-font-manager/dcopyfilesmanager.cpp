@@ -121,14 +121,14 @@ DCopyFilesManager::DCopyFilesManager(QObject *parent)
     if (m_installMaxThreadCnt <= 0)
         m_installMaxThreadCnt = static_cast<qint8>(QThread::idealThreadCount());
 
-    qDebug() << __FUNCTION__ << "export max thread count = " << m_exportMaxThreadCnt << ", install max thread count = " << m_installMaxThreadCnt;
-
     if (!m_useGlobalPool) {
         m_localPool = new QThreadPool(this);
         m_localPool->setMaxThreadCount(QThread::idealThreadCount());
         if (m_expiryTimeout > 0)
             m_localPool->setExpiryTimeout(m_expiryTimeout);
     }
+
+    qDebug() << __FUNCTION__ << "export max thread count = " << m_exportMaxThreadCnt << ", install max thread count = " << m_installMaxThreadCnt;
 }
 
 DCopyFilesManager *DCopyFilesManager::instance()
@@ -164,7 +164,7 @@ void DCopyFilesManager::copyFiles(CopyFontThread::OPType type, QStringList &font
     }
 
     //debug log
-    qDebug() << __FUNCTION__ << tcount  << type << fontList;
+    qDebug() << __FUNCTION__ << tcount  << type << fontList.size();
 
     int index = 0;
     int maxMod = (2 * tcount - 1) % (2 * tcount);

@@ -237,9 +237,9 @@ void SingleFontApplication::slotBatchInstallFonts()
  <Return>        null            Description:null
  <Note>          null
 *************************************************************************/
-void SingleFontApplication::onFontInstallFinished(const QStringList &fileList)
+void SingleFontApplication::onFontInstallFinished(int fontCnt)
 {
-    Q_UNUSED(fileList);
+    Q_UNUSED(fontCnt);
     m_selectedFiles.clear();
 }
 

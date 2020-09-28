@@ -963,7 +963,8 @@ void DFontPreviewListView::selectFonts(const QStringList &fileList)
         selection_model->select(selection, QItemSelectionModel::Select);
     }
 
-    Q_EMIT requestInstFontsUiAdded();
+    Q_EMIT m_dataThread->requstShowInstallToast(fileList.size());
+
     //同步tab聚焦状态
     syncTabStatus();
 }

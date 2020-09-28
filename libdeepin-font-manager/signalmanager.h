@@ -18,7 +18,7 @@ public:
     ~SignalManager();
 signals:
     //触发完成安装信号
-    void finishFontInstall(const QStringList &fileList);
+    void finishFontInstall(int fontCnt);
     //触发大小改变信号
     void sizeChange(int height);
     //触发弹出字体验证框请求

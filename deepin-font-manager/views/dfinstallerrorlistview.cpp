@@ -1,6 +1,6 @@
 #include "dfinstallerrorlistview.h"
-#include "globaldef.h"
-#include "utils.h"
+
+
 
 #include <DStyleHelper>
 #include <DApplication>
