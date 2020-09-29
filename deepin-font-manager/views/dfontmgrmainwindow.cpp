@@ -1477,8 +1477,6 @@ void DFontMgrMainWindow::showFontFilePostion()
 *************************************************************************/
 void DFontMgrMainWindow::onLeftSiderBarItemClicked(int index)
 {
-    D_D(DFontMgrMainWindow);
-
     if (!m_fontPreviewListView->isListDataLoadFinished()) {
         //save index to update
         m_leftIndex = static_cast<qint8>(index);
@@ -1486,9 +1484,6 @@ void DFontMgrMainWindow::onLeftSiderBarItemClicked(int index)
     }
 
     m_leftIndex = 0;
-
-    //ut000442 界面切换后记录上一个界面
-    d->leftSiderBar->setLastPageNumber(index);
 
     qDebug() << __FUNCTION__ << index << endl;
     filterGroup = qvariant_cast<DSplitListWidget::FontGroup>(index);
@@ -2014,6 +2009,7 @@ void DFontMgrMainWindow::showInstalledFiles()
     D_D(DFontMgrMainWindow);
     d->leftSiderBar->setCurrentIndex(d->leftSiderBar->model()->index(DSplitListWidget::UserFont, 0));
     onLeftSiderBarItemClicked(DSplitListWidget::UserFont);
+    d->leftSiderBar->setLastPageNumber(DSplitListWidget::UserFont);
 }
 
 /*************************************************************************

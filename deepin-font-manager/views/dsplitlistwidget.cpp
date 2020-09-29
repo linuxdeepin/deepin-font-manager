@@ -491,11 +491,14 @@ void DSplitListWidget::setCurrentPage()
 {
     QModelIndex current = currentIndex();
 
-    if (current.row() < 0 || FTM_SPLIT_LINE_INDEX == current.row() || current.row() == m_LastPageNumber) {
+    int row = current.row();
+    qDebug() << __FUNCTION__ << row << m_LastPageNumber;
+    if (row < 0 || FTM_SPLIT_LINE_INDEX == row || row == m_LastPageNumber) {
         return;
     }
 
-    QStandardItem *item = m_categoryItemModell->item(current.row());
+    m_LastPageNumber = row;
+    QStandardItem *item = m_categoryItemModell->item(row);
     QVariant varUserData = item->data(Qt::DisplayRole).value<QVariant>();
     int realIndex = m_titleStringIndexMap.value(varUserData.toString());
 
@@ -531,7 +534,7 @@ void DSplitListWidget::mouseReleaseEvent(QMouseEvent *event)
     QPoint clickPoint = event->pos();
     QModelIndex modelIndex = indexAt(clickPoint);
     //  根据移动趋势进行移动到分割线时的处理
-    if (modelIndex.row() == 5) {
+    if (modelIndex.row() == FTM_SPLIT_LINE_INDEX) {
         //
         if (m_IsPositive) {
             modelIndex = m_categoryItemModell->index(6, 0);
@@ -557,7 +560,6 @@ void DSplitListWidget::mouseReleaseEvent(QMouseEvent *event)
                 return;
             QToolTip::showText(showPoint, tooltip, this);
         });
-//        return;
     }
     DListView::mouseReleaseEvent(event);
 }
