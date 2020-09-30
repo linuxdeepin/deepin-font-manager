@@ -1971,7 +1971,7 @@ void DFontMgrMainWindow::showAllShortcut()
     QJsonArray fontJsonItems;
 
     for (QMap<QString, QString>::iterator it = shortcutKeymap.begin();
-            it != shortcutKeymap.end(); it++) {
+            it != shortcutKeymap.end(); ++it) {
         QJsonObject jsonItem;
         jsonItem.insert("name", DApplication::translate("Shortcuts", it.key().toUtf8()));
         jsonItem.insert("value", it.value().replace("Meta", "Super"));

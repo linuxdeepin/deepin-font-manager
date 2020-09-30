@@ -26,7 +26,7 @@ public:
     static DFontPreviewListDataThread *instance(DFontPreviewListView *view);
     static DFontPreviewListDataThread *instance();
 
-    DFontPreviewListDataThread(DFontPreviewListView *view);
+    explicit DFontPreviewListDataThread(DFontPreviewListView *view);
     virtual ~DFontPreviewListDataThread();
 
     //从fontconfig配置文件同步字体启用/禁用状态数据

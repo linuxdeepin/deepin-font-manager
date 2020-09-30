@@ -345,69 +345,6 @@ bool DFMDBManager::updateFontInfo(const QMap<QString, QString> &whereMap, const 
     return m_sqlUtil->updateRecord(whereMap, dataMap);
 }
 
-
-/*************************************************************************
- <Function>      updateFontInfoByFontId
- <Description>   通过fontid来更新数据库中的数据
- <Author>        null
- <Input>
-    <param1>     strFontId            Description:需要更新字体信息的fontid
-    <param2>     dataMap              Description:需要更新的字体信息
- <Return>        bool                 Description:是否更新成功
- <Note>          null
-*************************************************************************/
-bool DFMDBManager::updateFontInfoByFontId(const QString &strFontId, const QMap<QString, QString> &dataMap)
-{
-    QMap<QString, QString> where;
-    where.insert("fontId", strFontId);
-
-    return m_sqlUtil->updateRecord(where, dataMap);
-}
-
-/*************************************************************************
- <Function>      updateFontInfoByFontId
- <Description>   通过fontid来更新数据库中特定字节的数据
- <Author>        null
- <Input>
-    <param1>     strFontId            Description:需要更新字体信息的fontid
-    <param2>     strKey               Description:数据库中特定字节
-    <param3>     strValue             Description:数据
- <Return>        bool                 Description:是否更新成功
- <Note>          null
-*************************************************************************/
-bool DFMDBManager::updateFontInfoByFontId(const QString &strFontId, const QString &strKey, const QString &strValue)
-{
-    QMap<QString, QString> where;
-    where.insert("fontId", strFontId);
-
-    QMap<QString, QString> dataMap;
-    dataMap.insert(strKey, strValue);
-
-    return m_sqlUtil->updateRecord(where, dataMap);
-}
-
-/*************************************************************************
- <Function>      updateFontInfoByFontFilePath
- <Description>   通过FontFilePath来更新数据库中特定字节的数据
- <Author>        null
- <Input>
-    <param1>     strFontId            Description:需要更新字体信息的FontFilePath
-    <param2>     strKey               Description:数据库中特定字节
-    <param3>     strValue             Description:数据
- <Return>        bool                 Description:是否更新成功
- <Note>          null
-*************************************************************************/
-bool DFMDBManager::updateFontInfoByFontFilePath(const QString &strFontFilePath, const QString &strKey, const QString &strValue)
-{
-    QMap<QString, QString> where;
-    where.insert("filePath", strFontFilePath);
-
-    QMap<QString, QString> dataMap;
-    dataMap.insert(strKey, strValue);
-
-    return m_sqlUtil->updateRecord(where, dataMap);
-}
-
 /**
 * @brief DFMDBManager::updateSP3FamilyName sp3的familyName兼容sp2 update1及之前的版本
 * @param fontList 字体列表

@@ -21,10 +21,6 @@ public:
     bool addFontInfo(const DFontPreviewItemData &itemData);
     bool deleteFontInfoByFontMap(const QMap<QString, QString> &fontDelMap);
     bool updateFontInfo(const QMap<QString, QString> &whereMap, const QMap<QString, QString> &dataMap);
-    bool updateFontInfoByFontId(const QString &strFontId, const QMap<QString, QString> &dataMap);
-    bool updateFontInfoByFontId(const QString &strFontId, const QString &strKey, const QString &strValue);
-
-    bool updateFontInfoByFontFilePath(const QString &strFontFilePath, const QString &strKey, const QString &strValue);
     void updateSP3FamilyName(const QList<DFontInfo> &fontList, bool inFontList = false);
 
     // batch operation

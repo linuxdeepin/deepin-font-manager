@@ -51,7 +51,7 @@ void DNoFocusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
 
         QStyleOptionViewItem viewOption(option);  //用来在视图中画一个item
 
-        DPalette::ColorGroup cg = option.state & QStyle::State_Enabled
+        DPalette::ColorGroup cg = (option.state & QStyle::State_Enabled)
                                   ? DPalette::Normal : DPalette::Disabled;
         if (cg == DPalette::Normal && !(option.state & QStyle::State_Active)) {
             cg = DPalette::Inactive;
