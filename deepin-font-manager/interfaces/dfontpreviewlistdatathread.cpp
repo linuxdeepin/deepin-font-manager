@@ -429,9 +429,11 @@ void DFontPreviewListDataThread::onReInstallFinished(int state, const QStringLis
     }
 
     updateInstalledFontList(fileList);
-    onFileAdded(m_outfileList);
 
     Q_EMIT reInstallFinished();
+
+    onFileAdded(m_outfileList);
+
     qDebug() << __FUNCTION__ << m_outfileList.size();
 }
 
