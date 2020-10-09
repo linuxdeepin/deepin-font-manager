@@ -172,37 +172,6 @@ void DFontInfoDialog::initUI()
     pa.setBrush(DPalette::WindowText, pa.color(DPalette::ToolTipText));
     m_fontFileName->setPalette(pa);
 
-    /**************************Basic info panel****BEGIN*******************************/
-    m_basicInfoFrame = new DFrame(this);
-//    initConnections();//themeChanged
-
-
-    m_basicInfoFrame->setFrameShape(DFrame::Shape::NoFrame);
-    m_basicInfoFrame->setFixedWidth(275);
-    m_basicInfoFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-
-    m_baseicInfoLayout = new QVBoxLayout();
-    m_baseicInfoLayout->setAlignment(Qt::AlignTop /*| Qt::AlignVCenter*/);
-    m_baseicInfoLayout->setContentsMargins(10, 10, 40, 10);
-    m_baseicInfoLayout->setSpacing(0);
-
-    DLabel *panelName = new DLabel(this);
-    panelName->setWordWrap(true);
-//    panelName->setFixedWidth(200);
-    panelName->setFixedHeight(panelName->fontMetrics().height() + 2);
-//    panelName->setFixedHeight(40);
-
-    DFontSizeManager::instance()->bind(panelName, DFontSizeManager::T6);
-    panelName->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-//    panelName->setText(DApplication::translate("FontDetailDailog", "Basic info"));
-    m_baseicInfoLayout->addWidget(panelName);
-    m_baseicInfoLayout->addSpacing(4);
-
-    m_baseicInfoLayout->addStretch(2);
-    m_basicInfoFrame->setLayout(m_baseicInfoLayout);
-
-    /**************************Basic info panel****END*******************************/
-
     m_scrollArea = new QScrollArea();
 //    scrollArea->setLineWidth(120);
     m_scrollArea->setFixedSize(QSize(290, 375));
@@ -215,10 +184,8 @@ void DFontInfoDialog::initUI()
     p.setBrush(Qt::black);
     p.drawRoundedRect(bmp.rect(), 12, 12);
     p.setRenderHint(QPainter::Antialiasing);
+
     m_scrollArea->viewport()->setMask(bmp);
-
-//    m_basicInfoFrame->setAttribute(Qt::WA_TranslucentBackground);
-
     m_scrollArea->setFrameShape(QFrame::Shape::NoFrame);
 
     m_fontinfoArea = new dfontinfoscrollarea(m_fontInfo);
@@ -236,7 +203,6 @@ void DFontInfoDialog::initUI()
     mainLayout->addWidget(m_scrollArea);
     m_mainFrame->setLayout(mainLayout);
     addContent(m_mainFrame);
-
 
     if (DApplicationHelper::DarkType == DGuiApplicationHelper::instance()->themeType()) {
         DPalette paFrame = DApplicationHelper::instance()->palette(m_scrollArea->viewport());
@@ -276,13 +242,19 @@ void DFontInfoDialog::initConnections()
             colorFrame.setAlphaF(0.05);
             paFrame.setColor(DPalette::Base, colorFrame);
             DApplicationHelper::instance()->setPalette(m_scrollArea->viewport(), paFrame);
+            //通过m_fontFileName->setPalette(pa)未实现更新字体颜色，在此根据主题变化同步更新字体名称标签的颜色属性
+            DApplicationHelper::instance()->setPalette(m_fontFileName, paFrame);
+
         } else if (DApplicationHelper::LightType == themeType)
         {
-            DPalette paFrame = DApplicationHelper::instance()->palette(m_basicInfoFrame);
-            QColor colorFrame = paFrame.textLively().color();
+            DPalette paFrame = DApplicationHelper::instance()->palette(m_scrollArea->viewport());
+            //使用构造函数中有关设置，会导致颜色重叠的异常的情况，故在此使用固定颜色，与textLively中#FFFFFF同色号
+            QColor colorFrame(255, 255, 255);
             colorFrame.setAlphaF(0.70);
             paFrame.setColor(DPalette::Base, colorFrame);
-            DApplicationHelper::instance()->setPalette(m_basicInfoFrame, paFrame);
+            DApplicationHelper::instance()->setPalette(m_scrollArea->viewport(), paFrame);
+            //同时更新字体名称标签的颜色属性,跟随主题，原因同上
+            DApplicationHelper::instance()->setPalette(m_fontFileName, paFrame);
         }
     });
 }
@@ -333,11 +305,6 @@ void DFontInfoDialog::keyPressEvent(QKeyEvent *ev)
 void DFontInfoDialog::autoHeight(int height)
 {
     //repaint m_fontFileName/*UT000539*/
-    m_fontFileName->clear();//clear option will reset m_fontFileName's all attributes but faster
-    //reset color on m_fontFileName's font
-    DPalette pa = DApplicationHelper::instance()->palette(m_fontFileName);
-    pa.setBrush(DPalette::WindowText, pa.color(DPalette::ToolTipText));
-    m_fontFileName->setPalette(pa);
     m_fontFileName->setText(AutoFeed(m_FileName));
 
     if (height * 1.1 + 280 < DEFAULT_WINDOW_H) {
