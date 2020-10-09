@@ -132,7 +132,7 @@ void DFInstallNormalWindow::initConnections()
 
     connect(m_fontManager, &DFontManager::batchInstall, this, &DFInstallNormalWindow::onProgressChanged);
 
-    connect(m_dataThread, &DFontPreviewListDataThread::installFinished, this, &DFInstallNormalWindow::onInstallFinished);
+    connect(m_dataThread, &DFontPreviewListDataThread::installFinished, this, &DFInstallNormalWindow::onInstallFinished, Qt::BlockingQueuedConnection);
 
     connect(m_dataThread, &DFontPreviewListDataThread::reInstallFinished, this, &DFInstallNormalWindow::onReInstallFinished);
 
