@@ -59,9 +59,9 @@ signals:
 
 public slots:
     //勾选按钮点击或回车选中事件
-    void onListItemClicked(QModelIndex index);
+    void onListItemClicked(const QModelIndex &index);
     //用于处理字体验证框中选择多个字体后使用快捷键改变选中字体的选择状态
-    void onListItemsClicked(QModelIndexList indexList);
+    void onListItemsClicked(const QModelIndexList &indexList);
     ///*参数1 正常筛选后筛选出的错误字体  参数2 字体验证框弹出过程中安装的所有字体
     //参数3 新添加到字体验证框中的字体  参数4 之前添加到字体验证框中的字体   */
     void addData(QStringList &errorFileList, QStringList &halfInstalledFilelist,

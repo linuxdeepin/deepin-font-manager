@@ -315,21 +315,6 @@ bool DFMDBManager::addFontInfo(const DFontPreviewItemData &itemData)
 }
 
 /*************************************************************************
- <Function>      deleteFontInfoByFontMap
- <Description>   通过字体信息map删除数据库中记录的数据
- <Author>        null
- <Input>
-    <param1>     fontDelMap            Description:字体信息map
- <Return>        bool                  Description:删除是否成功
- <Note>          null
-*************************************************************************/
-bool DFMDBManager::deleteFontInfoByFontMap(const QMap<QString, QString> &fontDelMap)
-{
-    return m_sqlUtil->delRecord(fontDelMap);
-}
-
-
-/*************************************************************************
  <Function>      updateFontInfo
  <Description>   更新数据库中的数据
  <Author>        null

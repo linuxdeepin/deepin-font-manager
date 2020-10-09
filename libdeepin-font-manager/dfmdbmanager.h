@@ -9,7 +9,7 @@ class DFMDBManager: public QObject
     Q_OBJECT
 public:
     static DFMDBManager *instance();
-    DFMDBManager(QObject *parent = nullptr);
+    explicit DFMDBManager(QObject *parent = nullptr);
     ~DFMDBManager();
 
     QList<DFontPreviewItemData> getAllFontInfo(QList<DFontPreviewItemData> *deletedFontInfo = nullptr);
@@ -19,7 +19,6 @@ public:
     QString isFontInfoExist(const DFontInfo &newFileFontInfo);
 
     bool addFontInfo(const DFontPreviewItemData &itemData);
-    bool deleteFontInfoByFontMap(const QMap<QString, QString> &fontDelMap);
     bool updateFontInfo(const QMap<QString, QString> &whereMap, const QMap<QString, QString> &dataMap);
     void updateSP3FamilyName(const QList<DFontInfo> &fontList, bool inFontList = false);
 

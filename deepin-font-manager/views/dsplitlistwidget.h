@@ -19,7 +19,7 @@ class DSplitListWidget;
 class DNoFocusDelegate : public DStyledItemDelegate
 {
 public:
-    DNoFocusDelegate(QAbstractItemView *parent = nullptr);
+    explicit DNoFocusDelegate(QAbstractItemView *parent = nullptr);
 
     void paint(QPainter *painter, const QStyleOptionViewItem &option,
                const QModelIndex &index) const override;

@@ -24,8 +24,6 @@ public:
     ~SingleFontApplication();
     //激活应用窗口
     void activateWindow();
-    //设置主窗口属性
-    void setMainWindow(DMainWindow *mainWindow);
     //初始化命令行
     bool parseCmdLine();
 
