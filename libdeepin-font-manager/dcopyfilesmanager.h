@@ -77,14 +77,12 @@ public:
     explicit DCopyFilesManager(QObject *parent = nullptr);
 
     static DCopyFilesManager *instance();
+
     //拷贝文件列表
     void copyFiles(CopyFontThread::OPType type, QStringList &fontList);
     //取消安装
     static inline void cancelInstall()
     {
-        if (m_type != CopyFontThread::INSTALL)
-            return;
-
         m_installCanceled = true;
     }
 

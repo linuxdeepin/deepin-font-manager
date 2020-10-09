@@ -89,6 +89,7 @@ void CopyFontThread::appendFile(const QString &filePath)
 //文件拷贝类型：导出 安装
 DCopyFilesManager *DCopyFilesManager::inst = new DCopyFilesManager();
 qint8 DCopyFilesManager::m_type = CopyFontThread::INVALID;
+
 //安装是否被取消
 volatile bool DCopyFilesManager::m_installCanceled = false;
 

@@ -29,6 +29,7 @@ DFInstallNormalWindow::DFInstallNormalWindow(const QStringList &files, QWidget *
 {
     initUI();
     initConnections();
+
     Q_EMIT DFontPreviewListDataThread::instance()->requestBatchInstall(files);
     qDebug() << __FUNCTION__ << " end";
 }
