@@ -20,6 +20,15 @@ class DFInstallErrorListView;
 *************************************************************************/
 class DFInstallErrorListDelegate : public DStyledItemDelegate
 {
+public:
+    explicit DFInstallErrorListDelegate(QAbstractItemView *parent = nullptr);
+    //代理绘制字体列表入口
+    void paint(QPainter *painter, const QStyleOptionViewItem &option,
+               const QModelIndex &index) const override;
+    //获得当前QModelIndex对象size
+    QSize sizeHint(const QStyleOptionViewItem &option,
+                   const QModelIndex &index) const override;
+
 private:
     //代理绘制勾选按钮函数
     void drawCheckBox(QPainter *painter, DFInstallErrorItemModel itemModel, QRect bgRect)const;
@@ -39,15 +48,6 @@ private:
     QString lengthAutoFeed(QPainter *painter, QString sourceStr, int m_StatusWidth)const;
     //获取需要绘制区域的路径
     void setPaintPath(const QRect &bgRect, QPainterPath &path, const int xDifference, const int yDifference, const int radius)const;
-
-public:
-    DFInstallErrorListDelegate(QAbstractItemView *parent = nullptr);
-    //代理绘制字体列表入口
-    void paint(QPainter *painter, const QStyleOptionViewItem &option,
-               const QModelIndex &index) const override;
-    //获得当前QModelIndex对象size
-    QSize sizeHint(const QStyleOptionViewItem &option,
-                   const QModelIndex &index) const override;
 
 private:
     DFInstallErrorListView *m_parentView;

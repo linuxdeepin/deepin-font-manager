@@ -38,21 +38,6 @@ DFontInfoDialog::DFontInfoDialog(DFontPreviewItemData *fontInfo, QWidget *parent
 }
 
 /*************************************************************************
- <Function>      ~DFontInfoDialog
- <Description>   析构函数
- <Author>
- <Input>         null
- <Return>        null            Description:null
- <Note>          null
-*************************************************************************/
-DFontInfoDialog::~DFontInfoDialog()
-{
-    m_fontInfo = nullptr;
-    m_fontinfoArea = nullptr;
-    m_scrollArea = nullptr;
-}
-
-/*************************************************************************
  <Function>      AutoFeed
  <Description>   用于信息页面nametitle的宽度和字符串长度判断，
  <Author>        UT000539
@@ -126,7 +111,6 @@ QString DFontInfoDialog::adaptiveLengthForNameTitle(QFontMetrics fm, QString thi
 *************************************************************************/
 void DFontInfoDialog::initUI()
 {
-
     setFixedSize(QSize(DEFAULT_WINDOW_W, DEFAULT_WINDOW_H));
     setLogoVisable(false);
 
@@ -162,16 +146,14 @@ void DFontInfoDialog::initUI()
 //    m_fontFileName->setWordWrap(true);
 
     DFontSizeManager::instance()->bind(m_fontFileName, DFontSizeManager::T8);
-    m_FileName = QFileInfo(m_fontInfo->fontInfo.filePath).fileName();
-    QString text = AutoFeed(m_FileName);
-
-    m_fontFileName->setText(text);
+    m_FileName = AutoFeed(QFileInfo(m_fontInfo->fontInfo.filePath).fileName());
+    m_fontFileName->setText(m_FileName);
     // Set color
     DPalette pa = DApplicationHelper::instance()->palette(m_fontFileName);
     pa.setBrush(DPalette::WindowText, pa.color(DPalette::ToolTipText));
     m_fontFileName->setPalette(pa);
 
-    m_scrollArea = new QScrollArea();
+    m_scrollArea = new QScrollArea(this);
 //    scrollArea->setLineWidth(120);
     m_scrollArea->setFixedSize(QSize(290, 375));
 //    scrollArea->setContentsMargins(0,0,30,0);
@@ -187,7 +169,7 @@ void DFontInfoDialog::initUI()
     m_scrollArea->viewport()->setMask(bmp);
     m_scrollArea->setFrameShape(QFrame::Shape::NoFrame);
 
-    m_fontinfoArea = new dfontinfoscrollarea(m_fontInfo);
+    m_fontinfoArea = new dfontinfoscrollarea(m_fontInfo, this);
     m_fontinfoArea->setFixedWidth(290);
     m_scrollArea->setWidget(m_fontinfoArea);
     m_scrollArea->setWidgetResizable(true);
@@ -304,7 +286,7 @@ void DFontInfoDialog::keyPressEvent(QKeyEvent *ev)
 void DFontInfoDialog::autoHeight(int height)
 {
     //repaint m_fontFileName/*UT000539*/
-    m_fontFileName->setText(AutoFeed(m_FileName));
+    m_fontFileName->setText(m_FileName);
 
     if (height * 1.1 + 280 < DEFAULT_WINDOW_H) {
         this->setFixedHeight(static_cast<int>(height * 1.1 + 280));

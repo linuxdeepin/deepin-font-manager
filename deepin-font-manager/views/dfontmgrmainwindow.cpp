@@ -1649,6 +1649,7 @@ void DFontMgrMainWindow::onLoadStatus(int type)
             break;
         }
     }
+    qDebug() << __FUNCTION__ << type;
     //if (type == 1 && !m_fileList.isEmpty()) {
     //    showInstalledFiles(m_fileList);
     //}
@@ -2314,7 +2315,6 @@ void DFontMgrMainWindow::keyPressEvent(QKeyEvent *event)
             d->fontScaleSlider->setValue(d->fontScaleSlider->value() - 1);
         } else if (Qt::Key_Left == event->key() && (m_fontPreviewListView->hasFocus() || m_noInstallListView->hasFocus())) {
             emit m_signalManager->setLostFocusState(false);
-            m_fontPreviewListView->setIsLostFocusOfLeftKey(true);
             d->leftSiderBar->setFocus(Qt::MouseFocusReason);
         }
     }

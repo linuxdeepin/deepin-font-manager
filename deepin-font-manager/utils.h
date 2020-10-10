@@ -29,18 +29,11 @@
  <Author>
  <Note>          null
 *************************************************************************/
-class Utils : public QObject
+class Utils
 {
-    Q_OBJECT
-
 public:
-    Utils(QObject *parent = nullptr);
-    ~Utils();
-
     static QHash<QString, QPixmap> m_imgCacheHash;
     static QHash<QString, QString> m_fontNameCache;
-    //读取文件字符串内容
-    static QString getQssContent(const QString &filePath);
     //读取应用配置文件信息字符串
     static QString getConfigPath();
     //判断当前是否为MIME类型的数据库
@@ -49,12 +42,8 @@ public:
     static QString suffixList();
     //读取图像信息
     static QPixmap renderSVG(const QString &filePath, const QSize &size);
-    //获取字体familyName信息
-    static QString loadFontFamilyFromFiles(const QString &fontFileName);
-    //获取输入文本QTextLine信息
-    static const QString holdTextInRect(const QFont &font, QString text, const QSize &size);
     //转换成预览文本信息
-    static QString convertToPreviewString(QString fontFilePath, QString srcString);
+    static QString convertToPreviewString(const QString &fontFilePath, const QString &srcString);
 };
 
 #endif

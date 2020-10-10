@@ -67,7 +67,7 @@ public:
     enum InstallStatus {InstallSuccess, HalfwayInstallSuccess, Failed};
 
     static DFontManager *instance();
-    DFontManager(QObject *parent = nullptr);
+    explicit DFontManager(QObject *parent = nullptr);
     ~DFontManager();
     //设置线程执行类型
     void setType(Type type);

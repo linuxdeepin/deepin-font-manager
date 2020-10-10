@@ -30,8 +30,6 @@ SingleFontApplication::SingleFontApplication(int &argc, char **argv)
     , m_qspMainWnd(nullptr)
     , m_qspQuickWnd(nullptr)
 {
-    connect(SignalManager::instance(), &SignalManager::finishFontInstall, this,
-            &SingleFontApplication::onFontInstallFinished);
 }
 
 /*************************************************************************
@@ -69,7 +67,7 @@ bool SingleFontApplication::parseCmdLine()
     }
 
     QStringList paraList = parser.positionalArguments();
-    for (auto it : paraList) {
+    for (auto &it : paraList) {
         if (Utils::isFontMimeType(it)) {
             m_selectedFiles.append(it);
         }
