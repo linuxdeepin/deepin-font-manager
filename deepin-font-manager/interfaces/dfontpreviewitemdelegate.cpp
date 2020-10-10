@@ -272,7 +272,6 @@ void DFontPreviewItemDelegate::paintBackground(QPainter *painter, const QStyleOp
             //不是通过tab获取到的焦点的情况，再去绘制默认的选中状态，避免的tab选中状态时四个角会出现直角的问题
             DStyleHelper styleHelper;
             QColor fillColor = styleHelper.getColor(static_cast<const QStyleOption *>(&option), DPalette::ToolTipText);
-
             fillColor.setAlphaF(0.2);
             painter->setBrush(QBrush(fillColor));
             painter->fillPath(path, fillColor);

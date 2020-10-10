@@ -81,7 +81,7 @@ void DNoFocusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
 
             QRect backgroundRect = QRect(rect.left() + 10, rect.top(), rect.width() - 20, rect.height());
 
-            paintTabFocusBackground(painter, option, backgroundRect, cg);
+            paintBackground(painter, option, backgroundRect, cg);
 
             //绘制标题
             /* bug#20266 UT000591 */ /*bug 21075 ut000442*/
@@ -135,8 +135,8 @@ QSize DNoFocusDelegate::sizeHint(const QStyleOptionViewItem &option,
 
 
 /*************************************************************************
- <Function>      paintTabFocusBackground
- <Description>   绘制tab选中的效果
+ <Function>      paintBackground
+ <Description>   绘制背景
  <Author>        null
  <Input>
     <param1>     painter                   Description:绘制类指针
@@ -146,41 +146,85 @@ QSize DNoFocusDelegate::sizeHint(const QStyleOptionViewItem &option,
  <Return>        null            Description:null
  <Note>          null
 *************************************************************************/
-void DNoFocusDelegate::paintTabFocusBackground(QPainter *painter, const QStyleOptionViewItem &option, const QRect &backgroundRect, const QPalette::ColorGroup cg) const
+void DNoFocusDelegate::paintBackground(QPainter *painter, const QStyleOptionViewItem &option, const QRect &backgroundRect, const QPalette::ColorGroup cg) const
 {
     //绘制左侧列表外部高亮区域的路径
-    QPainterPath path;
+    QPainterPath pathFirst;
     const int radius = 8;
-    setPaintPath(backgroundRect, path, 0, 0, radius);
+    setPaintPath(backgroundRect, pathFirst, 0, 0, radius);
+    bool isTabFocus = m_parentView->IsTabFocus();
+    if(option.state & QStyle::State_Selected){
+        //判断是否为通过tab获得的焦点
+        if(isTabFocus){
+            //如果为hover状态，颜色亮度需要加亮
+            if(option.state & QStyle::State_MouseOver){
+                paintTabBackground(painter,option,backgroundRect,cg,true);
+            }else {
+                paintTabBackground(painter,option,backgroundRect,cg,false);
+            }
+        }else if(!isTabFocus){
+            QColor fillColor = option.palette.color(cg, DPalette::Highlight);
+            //如果为hover状态，颜色亮度需要加亮
+            if(option.state & QStyle::State_MouseOver){
+                fillColor = fillColor.light(120);
+            }
+            painter->setBrush(QBrush(fillColor));
+            painter->fillPath(pathFirst, painter->brush());
+        }
+    }else if(option.state & QStyle::State_MouseOver){
+        //未选中状态下的hover，需要有淡灰色背景
+        DStyleHelper styleHelper;
+        QColor fillColor = styleHelper.getColor(static_cast<const QStyleOption *>(&option), DPalette::ToolTipText);
+        fillColor.setAlphaF(0.1);
+        painter->setBrush(QBrush(fillColor));
+        painter->fillPath(pathFirst, painter->brush());
+    }
+}
+
+/*************************************************************************
+ <Function>      paintTabBackground
+ <Description>   绘制tab选中后的背景
+ <Author>        null
+ <Input>
+    <param1>     painter                   Description:绘制类指针
+    <param2>     option                    Description:listview中的一行成员
+    <param3>     backgroundRect            Description:绘制背景区域
+    <param4>     cg                        Description:ColorGroup
+    <param4>     isHover                   Description:是否为hover状态
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
+void DNoFocusDelegate::paintTabBackground(QPainter *painter, const QStyleOptionViewItem &option,
+                                          const QRect &backgroundRect, const QPalette::ColorGroup cg,const bool isHover) const
+{
+    //绘制左侧列表外部高亮区域的路径
+    QPainterPath pathFirst;
+    const int radius = 8;
+    setPaintPath(backgroundRect, pathFirst, 0, 0, radius);
 
     //绘制左侧列表窗口色区域的路径
-    QPainterPath path2;
-    setPaintPath(backgroundRect, path2, 2, 2, 6);
+    QPainterPath pathSecond;
+    setPaintPath(backgroundRect, pathSecond, 2, 2, 6);
 
     //绘制左侧列表内部高亮区域的路径
-    QPainterPath path3;
-    setPaintPath(backgroundRect, path3, 3, 3, 6);
+    QPainterPath pathThird;
+    setPaintPath(backgroundRect, pathThird, 3, 3, 6);
 
-    if (option.state & QStyle::State_Selected) {
-        if (m_parentView->IsTabFocus()) {
-            QColor fillColor = option.palette.color(cg, DPalette::Highlight);
-            painter->setBrush(QBrush(fillColor));
-            painter->fillPath(path, painter->brush());
-
-            QColor fillColor2 = option.palette.color(cg, DPalette::Window);
-            painter->setBrush(QBrush(fillColor2));
-            painter->fillPath(path2, painter->brush());
-
-            painter->setBrush(QBrush(fillColor));
-            painter->fillPath(path3, painter->brush());
-        } else {
-            //[CPPCHECK]
-            //局部变量重复，更名为backgroundFillColor，加入if else函数判断
-            QColor backgroundFillColor = option.palette.color(cg, DPalette::Highlight);
-            painter->setBrush(QBrush(backgroundFillColor));
-            painter->fillPath(path, painter->brush());
-        }
+    QColor fillColor = option.palette.color(cg, DPalette::Highlight);
+    //如果为hover状态，颜色亮度需要加亮
+    if(isHover){
+        fillColor = fillColor.light(120);
     }
+    painter->setBrush(QBrush(fillColor));
+    painter->fillPath(pathFirst, painter->brush());
+
+    QColor fillColor2 = option.palette.color(cg, DPalette::Window);
+    painter->setBrush(QBrush(fillColor2));
+    painter->fillPath(pathSecond, painter->brush());
+
+    painter->setBrush(QBrush(fillColor));
+    painter->fillPath(pathThird, painter->brush());
+
 }
 
 /*************************************************************************
