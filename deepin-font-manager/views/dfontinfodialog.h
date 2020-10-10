@@ -45,7 +45,6 @@ public slots:
 private:
     QWidget *m_mainFrame {nullptr};
     QString m_FileName;
-    QPoint m_faCenter;
     SignalManager *m_signalManager = SignalManager::instance();
 
     FontIconText *m_fontLogo {nullptr};

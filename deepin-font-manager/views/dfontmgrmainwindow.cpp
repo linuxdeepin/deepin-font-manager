@@ -2346,7 +2346,6 @@ bool DFontMgrMainWindow::eventFilter(QObject *obj, QEvent *event)
 {
     D_D(DFontMgrMainWindow);
     if (event->type() == QEvent::KeyPress) {
-        bool isShield_KeyTab = false;
         QKeyEvent *keyEvent = dynamic_cast<QKeyEvent *>(event);
         if (keyEvent->key() == Qt::Key_Tab) {
             if (obj == d->searchFontEdit->lineEdit()) {
@@ -2359,7 +2358,7 @@ bool DFontMgrMainWindow::eventFilter(QObject *obj, QEvent *event)
             } else {
                 setNextTabFocus(obj);
             }
-            isShield_KeyTab = true;
+            return true;
         } else if (keyEvent->key() == Qt::Key_Down || keyEvent->key() == Qt::Key_Up
                    || keyEvent->key() == Qt::Key_Left || keyEvent->key() == Qt::Key_Right) {
             //添加字体按钮聚焦，屏蔽上下左右键
@@ -2371,11 +2370,7 @@ bool DFontMgrMainWindow::eventFilter(QObject *obj, QEvent *event)
             if (obj == d->searchFontEdit->lineEdit())
                 d->searchFontEdit->lineEdit()->clear();
         }
-        if (isShield_KeyTab) {
-            return true;
-        } else {
-            return QWidget::eventFilter(obj, event);
-        }
+        return QWidget::eventFilter(obj, event);
     }
 
     if (event->type() == QEvent::FocusOut) {

@@ -254,29 +254,31 @@ void DFontPreview::initContents()
 *************************************************************************/
 QString DFontPreview::getSampleString()
 {
-    QString sampleString = nullptr;
+    //[CPPCHECK]
+    //局部变量sampleString与全局变量名称重复，更名sampString
+    QString sampString = nullptr;
     bool isAvailable = false;
 
     // check the current system language sample string.
-    sampleString = getLanguageSampleString(QLocale::system().name());
-    if (checkFontContainText(m_face, sampleString) && !sampleString.isEmpty()) {
+    sampString = getLanguageSampleString(QLocale::system().name());
+    if (checkFontContainText(m_face, sampString) && !sampString.isEmpty()) {
         isAvailable = true;
     }
 
     // check english sample string.
     if (!isAvailable) {
-        sampleString = getLanguageSampleString("en");
-        if (checkFontContainText(m_face, sampleString)) {
+        sampString = getLanguageSampleString("en");
+        if (checkFontContainText(m_face, sampString)) {
             isAvailable = true;
         }
     }
 
     // random string from available chars.
     if (!isAvailable) {
-        sampleString = buildCharlistForFace(m_face, 36);
+        sampString = buildCharlistForFace(m_face, 36);
     }
 
-    return sampleString;
+    return sampString;
 }
 
 /*************************************************************************
@@ -433,7 +435,10 @@ QString DFontPreview::buildCharlistForFace(FT_Face face, int length)
             for (uint i = 0; i < FC_CHARSET_MAP_SIZE; i++) {
                 if (map[i] == 0)
                     continue;
-                for (uint j = 0; j < 32; j++) {
+                //[CPPCHECK]
+                //此处出现int左移32位未定义的情况，原因为IA-32处理器(从Intel 286处理器开始)都会将移位计数掩盖为5位，从而导致最高计数为31位。
+                //超出31位则不受控，由编译器自主输出。
+                for (uint j = 0; j < 31; j++) {
                     if ((map[i] & (1 << j)) == 0)
                         continue;
 

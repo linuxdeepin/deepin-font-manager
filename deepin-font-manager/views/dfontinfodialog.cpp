@@ -31,11 +31,10 @@ DFontInfoDialog::DFontInfoDialog(DFontPreviewItemData *fontInfo, QWidget *parent
     , m_fontinfoArea(nullptr)
     , m_scrollArea(nullptr)
 {
-    m_faCenter = parent->geometry().center();
     connect(m_signalManager, &SignalManager::sizeChange, this, &DFontInfoDialog::autoHeight);
     initUI();
     initConnections();
-    this->move(m_faCenter - this->rect().center());
+    this->move(parent->geometry().center() - this->rect().center());
 }
 
 /*************************************************************************
@@ -309,7 +308,6 @@ void DFontInfoDialog::autoHeight(int height)
 
     if (height * 1.1 + 280 < DEFAULT_WINDOW_H) {
         this->setFixedHeight(static_cast<int>(height * 1.1 + 280));
-//            this->move(m_faCenter - this->rect().center());
         QPixmap bmp(QSize(280, (static_cast<int>(height * 1.1 + 10))));
         bmp.fill();
         QPainter p(&bmp);
@@ -322,7 +320,6 @@ void DFontInfoDialog::autoHeight(int height)
         m_scrollArea->setFixedHeight(static_cast<int>(height * 1.1 + 10));
     } else {
         this->setFixedHeight(DEFAULT_WINDOW_H);
-//            this->move(m_faCenter - this->rect().center());
         QPixmap bmp(QSize(280, 375));
         bmp.fill();
         QPainter p(&bmp);

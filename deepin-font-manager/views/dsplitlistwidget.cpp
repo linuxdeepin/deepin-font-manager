@@ -162,10 +162,6 @@ void DNoFocusDelegate::paintTabFocusBackground(QPainter *painter, const QStyleOp
     setPaintPath(backgroundRect, path3, 3, 3, 6);
 
     if (option.state & QStyle::State_Selected) {
-        QColor fillColor = option.palette.color(cg, DPalette::Highlight);
-        painter->setBrush(QBrush(fillColor));
-        painter->fillPath(path, painter->brush());
-
         if (m_parentView->IsTabFocus()) {
             QColor fillColor = option.palette.color(cg, DPalette::Highlight);
             painter->setBrush(QBrush(fillColor));
@@ -177,6 +173,12 @@ void DNoFocusDelegate::paintTabFocusBackground(QPainter *painter, const QStyleOp
 
             painter->setBrush(QBrush(fillColor));
             painter->fillPath(path3, painter->brush());
+        } else {
+            //[CPPCHECK]
+            //局部变量重复，更名为backgroundFillColor，加入if else函数判断
+            QColor backgroundFillColor = option.palette.color(cg, DPalette::Highlight);
+            painter->setBrush(QBrush(backgroundFillColor));
+            painter->fillPath(path, painter->brush());
         }
     }
 }
@@ -230,11 +232,9 @@ QString DNoFocusDelegate::adjustLength(QString &titleName, QFont &font) const
     QString finalTitle = "";
     QString m_curTitle = "";
 
-    int curWidth ;
     for (auto str : titleName) {
         m_curTitle += str;
-        curWidth = fontMetric.width(m_curTitle);
-        if (curWidth > TITLE_VISIBLE_WIDTH) {
+        if (fontMetric.width(m_curTitle) > TITLE_VISIBLE_WIDTH) {
             if (m_curTitle == titleName) {
                 finalTitle = m_curTitle;
                 break;
