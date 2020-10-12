@@ -29,15 +29,6 @@ public:
     //创建数据库表
     bool createTable();
 
-    //增加数据
-    bool addRecord(QMap<QString, QString> data, const QString &table_name = "t_fontmanager");
-
-    //删除一条记录
-    bool delRecord(QMap<QString, QString> where, const QString &table_name = "t_fontmanager");
-
-    //删除所有记录
-    bool delAllRecords(const QString &table_name = "t_fontmanager");
-
     //更新数据
     bool updateRecord(QMap<QString, QString> where, QMap<QString, QString> data,
                       const QString &table_name = "t_fontmanager");

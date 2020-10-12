@@ -14,7 +14,6 @@ public:
 public Q_SLOTS:
     void start();
     void stop();
-    void setBackgroundColor(QColor color);
 
 protected:
     void paintEvent(QPaintEvent *) Q_DECL_OVERRIDE;

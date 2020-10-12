@@ -8,49 +8,6 @@ DFMXmlWrapper::DFMXmlWrapper()
 {
 }
 
-
-/*************************************************************************
- <Function>      createXmlFile
- <Description>   新建xml文件
- <Author>        null
- <Input>
-    <param1>     fileName        Description: 文件名
-    <param2>     rootName        Description:根节点名
-    <param3>     version         Description:xml版本
-    <param4>     encoding        Description:xml编码（字符集）
- <Return>        bool            Description:表示新建结果
- <Note>          null
-*************************************************************************/
-bool DFMXmlWrapper::createXmlFile(const QString &fileName,
-                                  const QString &rootName,
-                                  const QString &version,
-                                  const QString &encoding,
-                                  const QString &standalone)
-{
-    QFile file(fileName);
-
-    // 只写方式打开，并清空以前的信息
-    if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
-        return false;
-    }
-
-    QDomDocument doc;
-    //添加处理指令（声明）
-    QDomProcessingInstruction instruction;
-    QString data;
-    data = "version=\"" + version + "\" encoding=\"" + encoding + "\" standalone=\"" + standalone + "\"";
-    instruction = doc.createProcessingInstruction("xml", data);
-    doc.appendChild(instruction);
-    QDomElement root = doc.createElement(rootName);
-    doc.appendChild(root); //添加根元素
-
-    QTextStream out(&file);
-    // 将文档保存到文件，4为子元素缩进字符数
-    doc.save(out, 4);
-    file.close();
-    return true;
-}
-
 /*************************************************************************
  <Function>      createFontConfigFile
  <Description>   新建fontconfig配置文件
@@ -102,30 +59,6 @@ bool DFMXmlWrapper::createFontConfigFile(const QString &xmlFilePath)
     writer.writeEndDocument();
 
     file.close();
-
-    return true;
-}
-
-/*************************************************************************
- <Function>      deleteXmlFile
- <Description>   删除文件
- <Author>        null
- <Input>
-    <param1>     fileName            Description:文件名
- <Return>        bool                Description: 是否成功删除文件
- <Note>          null
-*************************************************************************/
-bool DFMXmlWrapper::deleteXmlFile(const QString &fileName)
-{
-    if (fileName.isEmpty()) {
-        return false;
-    }
-
-    QFile file(fileName);
-    if (!file.setPermissions(QFile::WriteOwner)) // 修改文件属性
-        return false;
-    if (!QFile::remove(fileName)) // 删除文件
-        return false;
 
     return true;
 }
@@ -322,25 +255,6 @@ bool DFMXmlWrapper::addNodesWithTextList(const QString &fileName, const QString 
     return true;
 }
 
-bool DFMXmlWrapper::addPatternNodesWithText(const QString &fileName,
-                                            const QString &parentNodeName,
-                                            const QString &lastNodeText)
-{
-    QStringList nodeNameList;
-    nodeNameList << "pattern" << "patelt" << "string";
-    QList<QMap<QString, QString>> attributeList;
-    QMap<QString, QString> map1;
-    QMap<QString, QString> map2;
-    map2.insert("name", "file");
-    QMap<QString, QString> map3;
-    attributeList.push_back(map1);
-    attributeList.push_back(map2);
-    attributeList.push_back(map3);
-
-    bool ret = DFMXmlWrapper::addNodesWithText(fileName, parentNodeName, nodeNameList, attributeList, lastNodeText);
-    return ret;
-}
-
 bool DFMXmlWrapper::addPatternNodesWithTextList(const QString &fileName, const QString &parentNodeName, const QStringList &lastNodeTextList)
 {
     QStringList nodeNameList;
@@ -356,83 +270,6 @@ bool DFMXmlWrapper::addPatternNodesWithTextList(const QString &fileName, const Q
 
     bool ret = DFMXmlWrapper::addNodesWithTextList(fileName, parentNodeName, nodeNameList, attributeList, lastNodeTextList);
     return ret;
-}
-
-/*************************************************************************
- <Function>      deleteNodeWithText
- <Description>   删除节点
- <Author>        null
- <Input>
-    <param1>     fileName            Description:文件名
-    <param2>     nodeName            Description:节点名
-    <param3>     nodeText            Description:节点包含的文本
- <Return>        bool                Description:是否成功删除
- <Note>          null
-*************************************************************************/
-bool DFMXmlWrapper::deleteNodeWithText(const QString &fileName,
-                                       const QString &nodeName,
-                                       const QString &nodeText)
-{
-    if (fileName.isEmpty()) {
-        return false;
-    }
-
-    QFile file(fileName);
-    //打开文件
-    if (!file.open(QFile::ReadOnly))
-        return false;
-
-    QDomDocument doc;
-    if (!doc.setContent(&file)) {
-        file.close();
-        return false;
-    }
-    file.close();
-
-    QDomElement rootEle = doc.documentElement();
-    QDomElement nodeEle;
-    getNodeByName(rootEle, nodeName, nodeEle);
-
-    // 假如是根节点
-    if (rootEle == nodeEle) {
-        return false;
-    }
-
-    //根据节点包含的文本匹配到的节点，删除节点及其元素
-    QDomNode removeNode;
-    QDomNodeList list = nodeEle.parentNode().childNodes();
-    for (int i = 0; i < list.count(); i++) {
-        QDomNode node = list.at(i);
-        if (nodeEle.isElement()) {
-            if (node.toElement().text() == nodeText) {
-                removeNode = node;
-                break;
-            }
-        }
-    }
-
-    if (removeNode.isElement()) {
-        QDomNode parentNode = removeNode.parentNode();
-        if (parentNode.isElement()) {
-            parentNode.removeChild(removeNode);
-        } else {
-            qDebug() << "delete node failed!" << endl;
-            return false;
-        }
-    } else {
-        qDebug() << "delete node failed!" << endl;
-    }
-
-    if (!file.open(QFile::WriteOnly | QFile::Truncate)) {
-        return false;
-    }
-
-    //输出到文件
-    QTextStream out_stream(&file);
-    doc.save(out_stream, 4); //缩进4格
-    file.close();
-
-    return true;
 }
 
 /*************************************************************************

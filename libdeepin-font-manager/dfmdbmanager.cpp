@@ -48,10 +48,11 @@ bool DFMDBManager::isSystemFont(const QString &filePath)
 <Return>         bool                Description:是否为用户字体
  <Note>          null
 *************************************************************************/
-bool DFMDBManager::isUserFont(const QString &filePath)
-{
-    return filePath.contains(QDir::homePath() + "/.local/share/fonts");
-}
+//cppcheck警告未使用，注释留用
+//bool DFMDBManager::isUserFont(const QString &filePath)
+//{
+//    return filePath.contains(QDir::homePath() + "/.local/share/fonts");
+//}
 
 /*************************************************************************
  <Function>      parseRecordToItemData
@@ -259,43 +260,6 @@ QString DFMDBManager::isFontInfoExist(const DFontInfo &newFileFontInfo)
 }
 
 /*************************************************************************
- <Function>      mapItemData
- <Description>   通过itemdata来构建字体信息的map
- <Author>        null
- <Input>
-    <param1>     itemData                          Description:字体的itemdata
- <Return>        QMap<QString, QString>            Description:字体信息的map
- <Note>          null
-*************************************************************************/
-QMap<QString, QString> DFMDBManager::mapItemData(DFontPreviewItemData itemData)
-{
-    QMap<QString, QString> mapData;
-    //mapData.insert("fontId", itemData.strFontId);   //auto increament ,Don't need supply
-    mapData.insert("fontName", itemData.fontData.strFontName);
-    mapData.insert("isEnabled", QString::number(itemData.fontData.isEnabled()));
-    mapData.insert("isCollected", QString::number(itemData.fontData.isCollected()));
-    mapData.insert("isChineseFont", QString::number(itemData.fontData.isChinese()));
-    mapData.insert("isMonoSpace", QString::number(itemData.fontData.isMonoSpace()));
-    mapData.insert("filePath", itemData.fontInfo.filePath);
-    mapData.insert("familyName", itemData.fontInfo.familyName);
-    mapData.insert("styleName", itemData.fontInfo.styleName);
-    mapData.insert("type", itemData.fontInfo.type);
-    mapData.insert("version", itemData.fontInfo.version);
-    mapData.insert("copyright", itemData.fontInfo.copyright);
-    mapData.insert("description", itemData.fontInfo.description);
-    mapData.insert("sysVersion", itemData.fontInfo.sysVersion);
-    mapData.insert("isInstalled", QString::number(itemData.fontInfo.isInstalled));
-    mapData.insert("isError", QString::number(itemData.fontInfo.isError));
-    //add
-    mapData.insert("fullname", itemData.fontInfo.fullname);
-    mapData.insert("psname", itemData.fontInfo.psname);
-    mapData.insert("trademark", itemData.fontInfo.trademark);
-    mapData.insert("fontPreview", itemData.fontInfo.sp3FamilyName);
-
-    return mapData;
-}
-
-/*************************************************************************
  <Function>      addFontInfo
  <Description>   记录需要添加的字体数据,用于之后批量添加
  <Author>        null
@@ -311,7 +275,6 @@ bool DFMDBManager::addFontInfo(const DFontPreviewItemData &itemData)
 //        m_addFontList << itemData;
         m_addFontList.append(itemData);
     return true;
-//    return m_sqlUtil->addRecord(mapItemData(itemData));
 }
 
 /*************************************************************************

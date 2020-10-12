@@ -38,7 +38,6 @@ public:
     QWidget *contentWidget() const Q_DECL_OVERRIDE;
 
     QString title() const Q_DECL_OVERRIDE;
-    bool showStatusBarSeparator() const Q_DECL_OVERRIDE;
 
 private:
     DUrl m_url;

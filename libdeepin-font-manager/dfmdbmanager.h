@@ -38,11 +38,11 @@ public:
     void endTransaction();
 
     bool isSystemFont(const QString &filePath);
-    bool isUserFont(const QString &filePath);
+    //cppcheck警告未使用，注释留用
+    //bool isUserFont(const QString &filePath);
 
 private:
     DFontPreviewItemData parseRecordToItemData(const QMap<QString, QString> &record);
-    QMap<QString, QString> mapItemData(DFontPreviewItemData itemData);
     DFontInfo getDFontInfo(const QMap<QString, QString> &record);
     inline void appendAllKeys(QList<QString> &keyList);
 

@@ -95,10 +95,6 @@ public:
     QStandardItemModel *getErrorListSourceModel();
     //获取当前是否为tab聚焦状态
     bool getIsTabFocus() const;
-    //更新tab聚焦状态
-    void setIsInstallFocus(bool isInstallFocus);
-    //查看是否为列表新增获取的tab聚焦
-    bool getIsInstallFocus() const;
     //不可见则滚动到modelindex
     void ifNeedScrollTo(QModelIndex idx);
     //响应home和end快捷按键-fix bug 43109-便于父对象调用，整理成函数

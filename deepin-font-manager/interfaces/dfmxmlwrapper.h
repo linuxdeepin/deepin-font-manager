@@ -24,18 +24,8 @@ public:
 
 public:
 
-    //新建xml文件
-    static bool createXmlFile(const QString &fileName,
-                              const QString &rootName,
-                              const QString &version = "1.0",
-                              const QString &encoding = "gb2312",
-                              const QString &standalone = "yes");
-
     //新建fontconfig配置文件
     static bool createFontConfigFile(const QString &xmlFilePath);
-
-    //删除文件
-    static bool deleteXmlFile(const QString &fileName);
 
     // 根据节点名获取节点元素
     static bool getNodeByName(QDomElement &rootEle,
@@ -55,18 +45,9 @@ public:
                                      const QList<QSTRING_MAP> &nodeAttributeList,
                                      const QStringList &lastNodeTextList);
 
-    static bool addPatternNodesWithText(const QString &fileName,
-                                        const QString &parentNodeName,
-                                        const QString &lastNodeText);
-
     static bool addPatternNodesWithTextList(const QString &fileName,
                                             const QString &parentNodeName,
                                             const QStringList &lastNodeTextList);
-
-    //删除节点
-    static bool deleteNodeWithText(const QString &fileName,
-                                   const QString &nodeName,
-                                   const QString &nodeText);
 
     //删除节点
     static bool deleteNodeWithTextList(const QString &fileName,

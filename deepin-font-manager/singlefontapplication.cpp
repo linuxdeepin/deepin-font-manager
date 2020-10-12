@@ -211,21 +211,6 @@ void SingleFontApplication::slotBatchInstallFonts()
 }
 
 /*************************************************************************
- <Function>      onFontInstallFinished
- <Description>   安装完成清空列表
- <Author>
- <Input>
-    <param1>     fileList        Description:UnUsed
- <Return>        null            Description:null
- <Note>          null
-*************************************************************************/
-void SingleFontApplication::onFontInstallFinished(int fontCnt)
-{
-    Q_UNUSED(fontCnt);
-    m_selectedFiles.clear();
-}
-
-/*************************************************************************
  <Function>      installFonts
  <Description>   批量安装字体响应
  <Author>

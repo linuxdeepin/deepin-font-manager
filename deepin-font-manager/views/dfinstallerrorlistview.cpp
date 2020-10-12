@@ -768,33 +768,6 @@ bool DFInstallErrorListView::getIsTabFocus() const
 }
 
 /*************************************************************************
- <Function>      setIsInstallFocus
- <Description>   更新tab聚焦状态
- <Author>
- <Input>
-    <param1>     isInstallFocus  Description:用于设置tab聚焦标志位的参数
- <Return>        null            Description:null
- <Note>          null
-*************************************************************************/
-void DFInstallErrorListView::setIsInstallFocus(bool isInstallFocus)
-{
-    m_isInstallFocus = isInstallFocus;
-}
-
-/*************************************************************************
- <Function>      getIsInstallFocus
- <Description>   查看是否为列表新增获取的tab聚焦
- <Author>
- <Input>         null
- <Return>        m_isInstallFocus Description:是否为列表新增获取的tab聚焦
- <Note>          null
-*************************************************************************/
-bool DFInstallErrorListView::getIsInstallFocus() const
-{
-    return m_isInstallFocus;
-}
-
-/*************************************************************************
  <Function>      mousePressEvent
  <Description>   重写鼠标press事件
  <Author>
