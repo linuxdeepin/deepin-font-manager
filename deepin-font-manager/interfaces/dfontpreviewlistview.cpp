@@ -787,6 +787,8 @@ void DFontPreviewListView::selectFonts(const QStringList &fileList)
 {
     if (fileList.isEmpty())
         return;
+    DFontMgrMainWindow *mw = qobject_cast<DFontMgrMainWindow *>(m_parentWidget);
+    mw->showInstalledFiles();
 
     DFontMgrMainWindow *mw = qobject_cast<DFontMgrMainWindow *>(m_parentWidget);
     mw->showInstalledFiles();
@@ -2252,6 +2254,8 @@ void DFontPreviewListView::scrollWithTheSelected()
     for (auto &idx : indexes) {
         QRect rect = visualRect(idx);
         if (this->viewport()->visibleRegion().contains(rect.center())) {
+            //如果在刷新之前没有选中位置，则更新为首个选中项。
+            m_currentSelectedRow = (m_currentSelectedRow = -1) ? indexes.last().row() : m_currentSelectedRow;
             needScroll = false;
             break;
         }
