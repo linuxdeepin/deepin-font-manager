@@ -2062,6 +2062,9 @@ void DFontMgrMainWindow::hideSpinner()
     m_fontLoadingSpinner->hide();
     m_isNoResultViewShow = false;
 
+    //加载动画结束之后再切换左侧菜单的选项
+    showInstalledFiles();
+
     //安装刷新完成后启用菜单滚动功能
     emit m_signalManager->setSpliteWidgetScrollEnable(false);
 
