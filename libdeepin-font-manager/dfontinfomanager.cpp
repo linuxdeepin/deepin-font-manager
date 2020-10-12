@@ -26,7 +26,6 @@
 #include <QDir>
 #include <QFileInfo>
 #include <QProcess>
-#include <QDateTime>
 #include <QDirIterator>
 
 #include <fontconfig/fontconfig.h>

@@ -104,4 +104,18 @@ QString FontPreview::title() const
     return m_title;
 }
 
+/*************************************************************************
+ <Function>      showStatusBarSeparator
+ <Description>   是否显示状态栏分隔符
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        bool            Description:是否显示状态栏分隔符
+ <Note>          null
+*************************************************************************/
+bool FontPreview::showStatusBarSeparator() const
+{
+    return true;
+}
+
 DFM_END_NAMESPACE

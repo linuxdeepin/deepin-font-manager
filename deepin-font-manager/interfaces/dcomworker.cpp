@@ -54,12 +54,10 @@ void GetFontListWorker::run()
     DFontInfoManager *inst = DFontInfoManager::instance();
     DFontPreviewListDataThread *dataThread = DFontPreviewListDataThread::instance();
     if (m_type == ALL || m_type == AllInSquence) {
-        if (m_isStartup) {
-            DFMDBManager::instance()->checkIfEmpty();
-        }
         dataThread->m_allFontPathList.clear();
         dataThread->m_allFontPathList = inst->getAllFontPath(m_isStartup);
         if (m_isStartup) {
+            DFMDBManager::instance()->checkIfEmpty();
             removeUserAddFonts();
             qDebug() << __FUNCTION__ << m_isStartup;
             inst->refreshList(dataThread->m_allFontPathList);

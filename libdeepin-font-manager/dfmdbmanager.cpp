@@ -26,35 +26,6 @@ DFMDBManager *DFMDBManager::instance()
 }
 
 /*************************************************************************
- <Function>      isSystemFont
- <Description>   判断是否为系统字体
- <Author>        null
- <Input>
-    <param1>     filePath            Description:字体路径
- <Return>        bool                Description:是否为系统字体
- <Note>          null
-*************************************************************************/
-bool DFMDBManager::isSystemFont(const QString &filePath)
-{
-    return filePath.contains("/usr/share/fonts/");
-}
-
-/*************************************************************************
- <Function>      isUserFont
- <Description>   判断是否为用户字体
- <Author>        null
- <Input>
-    <param1>     filePath            Description:字体路径
-<Return>         bool                Description:是否为用户字体
- <Note>          null
-*************************************************************************/
-//cppcheck警告未使用，注释留用
-//bool DFMDBManager::isUserFont(const QString &filePath)
-//{
-//    return filePath.contains(QDir::homePath() + "/.local/share/fonts");
-//}
-
-/*************************************************************************
  <Function>      parseRecordToItemData
  <Description>   将查询记录转化为itemdata
  <Author>        null
@@ -65,17 +36,17 @@ bool DFMDBManager::isSystemFont(const QString &filePath)
 *************************************************************************/
 DFontPreviewItemData DFMDBManager::parseRecordToItemData(const QMap<QString, QString> &record)
 {
-    DFontPreviewItemData itemData;
+    DFontPreviewItemData itemData(record.value("filePath"), record.value("familyName"), record.value("styleName"),
+                                  record.value("type"), record.value("version"), record.value("copyright"),
+                                  record.value("description"), record.value("sysVersion"), record.value("fullname"),
+                                  record.value("psname"), record.value("trademark"), record.value("isInstalled").toInt(),
+                                  record.value("isError").toInt(), isSystemFont(record.value("filePath")),
+                                  record.value("isEnabled").toInt(), record.value("isCollected").toInt(),
+                                  record.value("isChineseFont").toInt(), record.value("isMonoSpace").toInt(),
+                                  record.value("fontName"),
+                                  record.value("fontPreview"), record.value("fontId"));
 
-    itemData.strFontId = record.value("fontId");
-    QString filePath = record.value("filePath");
-    itemData.fontData = FontData(record.value("fontName"), record.value("isEnabled").toInt()
-                                 , record.value("isCollected").toInt()
-                                 , record.value("isChineseFont").toInt()
-                                 , record.value("isMonoSpace").toInt(), TTF, isSystemFont(filePath));
-
-    itemData.fontInfo = getDFontInfo(record);
-    itemData.fontData.setFontType(itemData.fontInfo.type);
+    DFontInfoManager::instance()->getDefaultPreview(itemData.fontInfo);
     if (!itemData.fontData.strFontName.endsWith(itemData.fontInfo.styleName) && !itemData.fontInfo.styleName.isEmpty())
         itemData.fontData.strFontName += QString("-%1").arg(itemData.fontInfo.styleName);
 
@@ -445,32 +416,4 @@ void DFMDBManager::commitUpdateFontInfo()
 void DFMDBManager::checkIfEmpty()
 {
     m_sqlUtil->checkIfEmpty();
-}
-
-/*************************************************************************
- <Function>      beginTransaction
- <Description>   开启事务
- <Author>        null
- <Input>
-    <param1>     null            Description:null
- <Return>        null            Description:null
- <Note>          null
-*************************************************************************/
-void DFMDBManager::beginTransaction()
-{
-    m_sqlUtil->m_db.transaction();
-}
-
-/*************************************************************************
- <Function>      endTransaction
- <Description>   关闭事务
- <Author>        null
- <Input>
-    <param1>     null            Description:null
- <Return>        null            Description:null
- <Note>          null
-*************************************************************************/
-void DFMDBManager::endTransaction()
-{
-    m_sqlUtil->m_db.commit();
 }

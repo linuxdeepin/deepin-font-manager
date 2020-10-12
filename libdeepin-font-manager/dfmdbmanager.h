@@ -34,12 +34,22 @@ public:
     //去除非法记录
     void checkIfEmpty();
 
-    void beginTransaction();
-    void endTransaction();
+    //开启事务
+    void beginTransaction()
+    {
+        m_sqlUtil->m_db.transaction();
+    }
 
-    bool isSystemFont(const QString &filePath);
-    //cppcheck警告未使用，注释留用
-    //bool isUserFont(const QString &filePath);
+    //关闭事务
+    void endTransaction()
+    {
+        m_sqlUtil->m_db.commit();
+    }
+
+    bool isSystemFont(const QString &filePath)
+    {
+        return filePath.contains("/usr/share/fonts/");
+    }
 
 private:
     DFontPreviewItemData parseRecordToItemData(const QMap<QString, QString> &record);
