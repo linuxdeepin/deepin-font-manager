@@ -91,7 +91,7 @@ deepin_font_manager(){
 
     #二 从启动到加载字体完成时长
     local font_startup_load_duration=`echo "$font_grab" | grep "DEEPIN_FONT_MANAGER-0007" | sed -e 's/.*DEEPIN_FONT_MANAGER-0007\(.*\)#.*/\1/g' -e 's/ //g'`
-    #echo "启动至加载字体完成时长: $font_startup_load_duration 毫秒" >> $font_result
+    echo "启动至加载字体完成时长: $font_startup_load_duration 毫秒" >> $font_result
     #font_startup_tot_duration=$[$font_startup_load_duration + $font_startup_duration];
     #echo "启动时长: $font_startup_tot_duration 毫秒" >> $font_result
 
