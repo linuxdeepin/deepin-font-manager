@@ -29,7 +29,7 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
     qRegisterMetaType<QStringList>("QStringList &");
     m_fontPreviewItemModel->setColumnCount(1);
     setFrameShape(QFrame::NoFrame);
-    connect(this, &DFontPreviewListView::itemsSelected, this, [=](const QStringList &list,bool isFirstInstall = false){
+    connect(this, &DFontPreviewListView::itemsSelected, this, [ = ](const QStringList &list, bool isFirstInstall = false) {
         Q_UNUSED(isFirstInstall)
         emit m_dataThread->requstShowInstallToast(list);
     });
@@ -1241,6 +1241,9 @@ void DFontPreviewListView::keyPressEvent(QKeyEvent *event)
 {
     //检查当前是否有选中，恢复起始位
     checkIfHasSelection();
+    //fix bug 50743,有关滚动条位置状态更新的函数被修改，导致上下键不能循环选中。
+    //在顶部或底部的状态于此处更新，用作上下键或其他按键功能的判断依据
+    getAtListViewPosition();
     if (event->key() == Qt::Key_End) {
         if (event->modifiers() == Qt::NoModifier) {
             setCurrentIndex(m_fontPreviewProxyModel->index(count() - 1, 0));
