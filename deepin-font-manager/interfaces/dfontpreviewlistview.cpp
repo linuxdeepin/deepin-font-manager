@@ -29,7 +29,10 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
     qRegisterMetaType<QStringList>("QStringList &");
     m_fontPreviewItemModel->setColumnCount(1);
     setFrameShape(QFrame::NoFrame);
-    connect(this, &DFontPreviewListView::itemsSelected, this, &DFontPreviewListView::selectFonts);
+    connect(this, &DFontPreviewListView::itemsSelected, this, [=](const QStringList &list,bool isFirstInstall = false){
+        Q_UNUSED(isFirstInstall)
+        emit m_dataThread->requstShowInstallToast(list);
+    });
     connect(this, &DFontPreviewListView::multiItemsAdded, this, &DFontPreviewListView::onMultiItemsAdded);
     connect(this, &DFontPreviewListView::itemRemoved, this, &DFontPreviewListView::onItemRemoved);
     connect(this, &DFontPreviewListView::requestUpdateModel, this, &DFontPreviewListView::updateModel);
@@ -787,9 +790,6 @@ void DFontPreviewListView::selectFonts(const QStringList &fileList)
 {
     if (fileList.isEmpty())
         return;
-    DFontMgrMainWindow *mw = qobject_cast<DFontMgrMainWindow *>(m_parentWidget);
-    mw->showInstalledFiles();
-
     QItemSelection selection;
     qDebug() << __FUNCTION__ << " fileList size " << fileList.size() << ", row count " << getFontPreviewProxyModel()->rowCount();
     for (int i = 0; i < getFontPreviewProxyModel()->rowCount(); ++i) {
@@ -816,11 +816,6 @@ void DFontPreviewListView::selectFonts(const QStringList &fileList)
         selection_model->reset();
         selection_model->select(selection, QItemSelectionModel::Select);
     }
-
-    Q_EMIT m_dataThread->requstShowInstallToast(fileList.size());
-
-    //同步tab聚焦状态
-    syncTabStatus();
 }
 
 /*************************************************************************

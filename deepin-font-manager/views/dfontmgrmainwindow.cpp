@@ -313,9 +313,11 @@ void DFontMgrMainWindow::initConnections()
     });
 
     connect(DFontPreviewListDataThread::instance(), &DFontPreviewListDataThread::requstShowInstallToast,
-    this, [ = ](int fontCnt) {
+    this, [ = ](QStringList installedFiles) {
         m_installFinish = true;
-        m_installFontCnt = fontCnt;
+        m_installFontCnt = installedFiles.count();
+
+        m_InstalledFiles = installedFiles;
         hideSpinner();
     });
 
@@ -2070,6 +2072,9 @@ void DFontMgrMainWindow::hideSpinner()
     m_fontLoadingSpinner->hide();
     m_isNoResultViewShow = false;
 
+    //spinner结束之后再对左侧菜单位置等进行设置
+    showInstalledFiles();
+
     //安装刷新完成后启用菜单滚动功能
     emit m_signalManager->setSpliteWidgetScrollEnable(false);
 
@@ -2084,6 +2089,13 @@ void DFontMgrMainWindow::hideSpinner()
 
     onFontListViewRowCountChanged();
     onPreviewTextChanged();
+
+    //菜单位置设置后选中安装的选中状态出现问题，取消之前的设置选中逻辑，在此进行设置
+    m_fontPreviewListView->selectFonts(m_InstalledFiles);
+    m_InstalledFiles.clear();
+    //同步tab聚焦状态
+    m_fontPreviewListView->syncTabStatus();
+
     //更新选中位置和设置滚动
     m_fontPreviewListView->scrollWithTheSelected();
     m_fontPreviewListView->refreshFocuses();

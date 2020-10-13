@@ -115,7 +115,7 @@ signals:
     //取消重复安装
     void requestCancelReinstall();
     //请求弹“已安装xxx字体”消息框
-    void requstShowInstallToast(int fontCnt);
+    void requstShowInstallToast(QStringList list);
 
 protected slots:
     //线程函数

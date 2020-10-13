@@ -304,6 +304,7 @@ protected:
     QShortcut *m_scShowMenu      {nullptr};  //ShowMenu           -->Alt+M//SP3--Alt+M右键菜单
 
     QStringList m_waitForInstall;
+    QStringList m_InstalledFiles;
 
     DFInstallNormalWindow  *m_dfNormalInstalldlg {nullptr};
 
