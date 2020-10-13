@@ -790,9 +790,6 @@ void DFontPreviewListView::selectFonts(const QStringList &fileList)
     DFontMgrMainWindow *mw = qobject_cast<DFontMgrMainWindow *>(m_parentWidget);
     mw->showInstalledFiles();
 
-    DFontMgrMainWindow *mw = qobject_cast<DFontMgrMainWindow *>(m_parentWidget);
-    mw->showInstalledFiles();
-
     QItemSelection selection;
     qDebug() << __FUNCTION__ << " fileList size " << fileList.size() << ", row count " << getFontPreviewProxyModel()->rowCount();
     for (int i = 0; i < getFontPreviewProxyModel()->rowCount(); ++i) {

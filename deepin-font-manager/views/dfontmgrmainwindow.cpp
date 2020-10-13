@@ -16,7 +16,6 @@
 #include <DIconButton>
 #include <DLabel>
 #include <DLineEdit>
-#include <DLog>
 #include <DMenu>
 #include <DSearchEdit>
 #include <DSlider>
@@ -25,7 +24,16 @@
 #include <DMessageManager>
 #include <DDesktopServices>
 
-#include <QFileSystemWatcher>
+#include <QSettings>
+#include <QDateTime>
+#include <QMimeData>
+#include <QJsonArray>
+#include <QJsonObject>
+#include <QJsonDocument>
+#include <QProcess>
+#include <QStorageInfo>
+#include <QStandardPaths>
+#include <QStandardItem>
 #include <QDBusConnection>
 
 class DFontMgrMainWindowPrivate
