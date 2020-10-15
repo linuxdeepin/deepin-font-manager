@@ -578,8 +578,9 @@ void DFontMgrMainWindow::initShortcuts()
                 }
             } else
             {
-                m_fontPreviewListView->syncRecoveryTabStatus();
-                m_fontPreviewListView->setFontViewHasFocus(m_fontPreviewListView->hasFocus());
+                //如果为安装加载或删除过程中，取消弹出菜单操作
+                if (m_fontLoadingSpinner->isVisible() || UnDeleting != 0)
+                    return;
                 m_fontPreviewListView->onRightMenuShortCutActivated();
                 emit m_signalManager->onMenuHidden();
             }

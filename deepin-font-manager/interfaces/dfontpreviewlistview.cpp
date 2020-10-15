@@ -1556,11 +1556,12 @@ void DFontPreviewListView::updateShiftSelect(const QModelIndex &modelIndex)
 /*SP3--Alt+M右键菜单--弹出*/
 void DFontPreviewListView::onRightMenuShortCutActivated()
 {
-    m_isMousePressNow = false;
-//    m_previousPressPos = -1;////
     if (selectedIndexes().count() == 0) {
         return;
     }
+    m_isMousePressNow = false;
+    syncRecoveryTabStatus();
+    setFontViewHasFocus(hasFocus());
     DFontMgrMainWindow *mw = qobject_cast<DFontMgrMainWindow *>(m_parentWidget);
     QModelIndexList indexes = selectedIndexes();
     qSort(indexes.begin(), indexes.end());
