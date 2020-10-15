@@ -35,6 +35,7 @@
 #include <QStandardPaths>
 #include <QStandardItem>
 #include <QDBusConnection>
+#include <QContextMenuEvent>
 
 class DFontMgrMainWindowPrivate
 {
