@@ -531,7 +531,8 @@ void DFontMgrMainWindow::initShortcuts()
         connect(m_scDeleteFont, &QShortcut::activated, this, [this] {
             //Only can't delete user font
             //first disable delete
-            if (m_cacheFinish || m_installFinish)
+            qDebug() << m_cacheFinish << m_installFinish << "______________" << endl;
+            if (m_fIsInstalling)
                 return;
             m_fontPreviewListView->syncRecoveryTabStatus();
             delCurrentFont(false);
