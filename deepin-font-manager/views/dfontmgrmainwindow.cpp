@@ -2278,10 +2278,12 @@ void DFontMgrMainWindow::mainwindowFocusInCheck(QObject *obj, QEvent *event)
     if (obj == m_fontPreviewListView) {
         QFocusEvent *focusEvent = dynamic_cast<QFocusEvent *>(event);
         if (focusEvent->reason() == Qt::ActiveWindowFocusReason) {
-            m_fontPreviewListView->syncTabStatus(false);
-//            else {
-//                m_fontPreviewListView->setIsTabFocus(m_previewListViewTabFocus);
-//            }
+            //如果是窗口隐藏失去焦点，则根据m_fontPreviewListView标志位恢复tab状态，否则根据m_recoveryTabFocusState进行恢复
+            if (m_previewListViewTabFocus)
+                m_fontPreviewListView->setIsTabFocus(true);
+            else {
+                m_fontPreviewListView->syncTabStatus(false);
+            }
         }
     } else {
         m_fontPreviewListView->setIsGetFocusFromSlider(false);
