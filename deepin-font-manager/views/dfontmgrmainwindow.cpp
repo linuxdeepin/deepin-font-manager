@@ -1041,7 +1041,8 @@ void DFontMgrMainWindow::handleAddFontEvent()
     bool hasTabFocus = d->addFontButton->hasFocus();
     if (hasTabFocus)
         titlebar()->setFocus(Qt::TabFocusReason);
-    DFileDialog dialog;
+    //bug 51084 使用this指定父窗口
+    DFileDialog dialog(this);
     dialog.setFileMode(DFileDialog::ExistingFiles);
     dialog.setNameFilter(Utils::suffixList());
 

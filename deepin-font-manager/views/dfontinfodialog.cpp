@@ -146,8 +146,10 @@ void DFontInfoDialog::initUI()
 //    m_fontFileName->setWordWrap(true);
 
     DFontSizeManager::instance()->bind(m_fontFileName, DFontSizeManager::T8);
-    m_FileName = AutoFeed(QFileInfo(m_fontInfo->fontInfo.filePath).fileName());
-    m_fontFileName->setText(m_FileName);
+    m_FileName = QFileInfo(m_fontInfo->fontInfo.filePath).fileName();
+    QString text = AutoFeed(m_FileName);
+    m_fontFileName->setText(text);
+
     // Set color
     DPalette pa = DApplicationHelper::instance()->palette(m_fontFileName);
     pa.setBrush(DPalette::WindowText, pa.color(DPalette::ToolTipText));
@@ -286,7 +288,7 @@ void DFontInfoDialog::keyPressEvent(QKeyEvent *ev)
 void DFontInfoDialog::autoHeight(int height)
 {
     //repaint m_fontFileName/*UT000539*/
-    m_fontFileName->setText(m_FileName);
+    m_fontFileName->setText(AutoFeed(m_FileName));
 
     if (height * 1.1 + 280 < DEFAULT_WINDOW_H) {
         this->setFixedHeight(static_cast<int>(height * 1.1 + 280));
