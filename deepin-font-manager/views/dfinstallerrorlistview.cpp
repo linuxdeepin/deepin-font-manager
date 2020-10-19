@@ -269,7 +269,7 @@ void DFInstallErrorListDelegate::paintTabFocusBackground(QPainter *painter, cons
     QPainterPath path3;
     setPaintPath(bgRect, path3, 6, 3, 6);
 
-    DPalette::ColorGroup cg = option.state & QStyle::State_Enabled
+    DPalette::ColorGroup cg = (option.state & QStyle::State_Enabled)
                               ? DPalette::Normal : DPalette::Disabled;
     if (cg == DPalette::Normal && !(option.state & QStyle::State_Active)) {
         cg = DPalette::Inactive;
@@ -384,7 +384,7 @@ void DFInstallErrorListDelegate::paint(QPainter *painter, const QStyleOptionView
         DFInstallErrorItemModel itemModel = varErrorItem.value<DFInstallErrorItemModel>();
         QStyleOptionViewItem viewOption(option);  //用来在视图中画一个item
 
-        DPalette::ColorGroup cg = option.state & QStyle::State_Enabled
+        DPalette::ColorGroup cg = (option.state & QStyle::State_Enabled)
                                   ? DPalette::Normal : DPalette::Disabled;
         if (cg == DPalette::Normal && !(option.state & QStyle::State_Active)) {
             cg = DPalette::Inactive;

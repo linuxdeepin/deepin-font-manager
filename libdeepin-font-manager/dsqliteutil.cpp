@@ -147,7 +147,7 @@ bool DSqliteUtil::addRecord(QMap<QString, QString> data, const QString &table_na
     QString values = " values(";
     QMutexLocker m_locker(&mutex);
     for (QMap<QString, QString>::const_iterator it = data.constBegin(); it != data.constEnd();
-            it++) {
+            ++it) {
         sql += it.key() + ", ";
         QString escapeValue = it.value();
         escapeValue = escapeValue.replace("'", "''");
@@ -189,7 +189,7 @@ bool DSqliteUtil::delRecord(QMap<QString, QString> where, const QString &table_n
     sql += " where ";
     QMutexLocker m_locker(&mutex);
     for (QMap<QString, QString>::const_iterator it = where.constBegin(); it != where.constEnd();
-            it++) {
+            ++it) {
         //转义字符 ' -> ''
         QString value = it.value();
         value = value.replace("'", "''");
@@ -230,14 +230,14 @@ bool DSqliteUtil::updateRecord(QMap<QString, QString> where, QMap<QString, QStri
     QString sql = "update " + table_name + " set ";
     QMutexLocker m_locker(&mutex);
     for (QMap<QString, QString>::const_iterator it = data.constBegin(); it != data.constEnd();
-            it++) {
+            ++it) {
         sql += it.key() + "=";
         sql += "'" + it.value() + "',";
     }
     sql.chop(1);
     sql += " where ";
     for (QMap<QString, QString>::const_iterator it = where.constBegin(); it != where.constEnd();
-            it++) {
+            ++it) {
         sql += it.key() + "=";
         sql += "'" + it.value() + "'";
     }
@@ -378,7 +378,7 @@ bool DSqliteUtil::findRecords(const QList<QString> &key, const QMap<QString, QSt
     sql += " from " + table_name;
     sql += " where ";
     for (QMap<QString, QString>::const_iterator it = where.constBegin(); it != where.constEnd();
-            it++) {
+            ++it) {
         sql += it.key() + "=\"" + escapeString(it.value()) + "\" and ";
     }
     sql.chop(5);

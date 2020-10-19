@@ -83,36 +83,37 @@ struct FontData {
     short fontState;
     bool isSystemFont;
     FontData()
+        : strFontName("")
+        , fontState(0)
+        , isSystemFont(false)
     {
-        strFontName = "";
-        fontState = 0;
-        isSystemFont = false;
     }
 
     //拷贝构造
     FontData(const QString &_strFontName, bool isEnabled, bool isCollected, bool isChinesed, bool isMono, FontType type, bool _isSystemFont)
+        : strFontName(_strFontName)
+        , fontState(0)
+        , isSystemFont(_isSystemFont)
     {
-        strFontName = _strFontName;
-        fontState = 0;
         setEnabled(isEnabled);
         setCollected(isCollected);
         setChinese(isChinesed);
         setMonoSpace(isMono);
         setFontType(type);
-        isSystemFont = _isSystemFont;
     }
 
     //重载拷贝构造
     FontData(const QString &_strFontName, bool isEnabled, bool isCollected, bool isChinesed, bool isMono, const QString &type, bool _isSystemFont)
+        : strFontName(_strFontName)
+        , fontState(0)
+        , isSystemFont(_isSystemFont)
     {
-        strFontName = _strFontName;
-        fontState = 0;
+
         setEnabled(isEnabled);
         setCollected(isCollected);
         setChinese(isChinesed);
         setMonoSpace(isMono);
         setFontType(type);
-        isSystemFont = _isSystemFont;
     }
 
 
@@ -210,25 +211,28 @@ struct FontDelegateData {
     QString ownPreview;
 
     FontDelegateData()
+        : familyName("")
+        , styleName("")
+        , ownPreview("")
     {
-        familyName = "";
-        styleName = "";
-        ownPreview = "";
+
     }
 
     FontDelegateData(const QString &_familyName, const QString &_styleName,
                      const QString &_ownPreview)
+        : familyName(_familyName)
+        , styleName(_styleName)
+        , ownPreview(_ownPreview)
+
     {
-        familyName = _familyName;
-        styleName = _styleName;
-        ownPreview = _ownPreview;
     }
 
     FontDelegateData(const FontDelegateData &other)
+        : familyName(other.familyName)
+        , styleName(other.styleName)
+        , ownPreview(other.ownPreview)
     {
-        familyName = other.familyName;
-        styleName = other.styleName;
-        ownPreview = other.ownPreview;
+
     }
 };
 
@@ -272,6 +276,8 @@ struct DFontPreviewItemData {
     int appFontId;
 
     DFontPreviewItemData()
+        : strFontId("")
+        , appFontId(-1)
     {
         fontInfo.filePath = "";
         fontInfo.familyName = "";
@@ -290,9 +296,6 @@ struct DFontPreviewItemData {
         fontInfo.defaultPreview = "";
         fontInfo.previewLang = FONT_LANG_NONE;
         fontInfo.sp3FamilyName = "";
-
-        strFontId = "";
-        appFontId = -1;
     }
 
     DFontPreviewItemData(const QString &_filePath, const QString &_familyName, const QString &_styleName, const QString &_type,
@@ -300,17 +303,20 @@ struct DFontPreviewItemData {
                          const QString &_fullname, const QString &_psname, const QString &_trademark, bool _isInstalled,
                          bool _isError, bool _isSystemFont, bool _isEnabled, bool _isCollected, bool _isChinese,
                          bool _isMono, const QString &_strFontName, const QString &_sp3FamilyName)
+        : fontInfo(DFontInfo(_filePath, _familyName, _styleName, _type, _version, _copyright, _desc, _sysVer, _fullname,
+                             _psname, _trademark, _isInstalled, _isError, _isSystemFont, _sp3FamilyName))
+        , fontData(FontData(_strFontName, _isEnabled, _isCollected, _isChinese, _isMono, _type, fontInfo.isSystemFont))
+        , strFontId("")
+        , appFontId(-1)
     {
-        fontInfo = DFontInfo(_filePath, _familyName, _styleName, _type, _version, _copyright, _desc, _sysVer, _fullname,
-                             _psname, _trademark, _isInstalled, _isError, _isSystemFont, _sp3FamilyName);
 
-        fontData = FontData(_strFontName, _isEnabled, _isCollected, _isChinese, _isMono, _type, fontInfo.isSystemFont);
-
-        strFontId = "";
-        appFontId = -1;
     }
 
     DFontPreviewItemData(const DFontPreviewItemData &other)
+        : fontData(other.fontData)
+        , strFontId(other.strFontId)
+        , appFontId(other.appFontId)
+
     {
         fontInfo.filePath = other.fontInfo.filePath;
         fontInfo.familyName = other.fontInfo.familyName;
@@ -329,10 +335,6 @@ struct DFontPreviewItemData {
         fontInfo.defaultPreview = other.fontInfo.defaultPreview;
         fontInfo.previewLang = other.fontInfo.previewLang;
         fontInfo.sp3FamilyName = other.fontInfo.sp3FamilyName;
-
-        fontData = other.fontData;
-        strFontId = other.strFontId;
-        appFontId = other.appFontId;
     }
 
     bool operator==(const DFontPreviewItemData &info)

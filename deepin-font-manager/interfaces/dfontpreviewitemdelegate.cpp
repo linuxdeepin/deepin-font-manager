@@ -110,7 +110,7 @@ void DFontPreviewItemDelegate::paintForegroundCollectIcon(QPainter *painter, con
     DGuiApplicationHelper *appHelper = DGuiApplicationHelper::instance();
     QString strImgPrefix = (DGuiApplicationHelper::DarkType == appHelper->themeType()) ? QString("dark_") : QString("");
 
-    QString iconStatus = QString("press");
+    QString iconStatus;
     IconStatus status = itemData.getHoverState();
     if (IconHover == status) {
         iconStatus = QString("hover");
@@ -313,7 +313,7 @@ void DFontPreviewItemDelegate::paintTabFocusBackground(QPainter *painter, const 
     QPainterPath path3;
     setPaintPath(bgRect, path3, 3, 3, 6);
 
-    DPalette::ColorGroup cg = option.state & QStyle::State_Enabled
+    DPalette::ColorGroup cg = (option.state & QStyle::State_Enabled)
                               ? DPalette::Normal : DPalette::Disabled;
     if (cg == DPalette::Normal && !(option.state & QStyle::State_Active)) {
         cg = DPalette::Inactive;
