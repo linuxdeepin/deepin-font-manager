@@ -39,7 +39,7 @@ class DFontPreview : public QWidget
     Q_OBJECT
 
 public:
-    DFontPreview(QWidget *parent = nullptr);
+    explicit DFontPreview(QWidget *parent = nullptr);
     ~DFontPreview();
     //传入当前预览字体的路径
     void setFileUrl(const QString &url);

@@ -1770,22 +1770,8 @@ void DFontPreviewListView::onRightMenuShortCutActivated()
 
     DFontMgrMainWindow *mw = qobject_cast<DFontMgrMainWindow *>(m_parentWidget);
     QModelIndexList indexes = selectedIndexes();
-    QModelIndex temp;
-    bool flag;
     //排序选中项
-    for (int i = 0; i < indexes.count() - 1; i++) {
-        flag = false;
-        for (int j = indexes.count() - 1; j > i; j--) {
-            if (indexes[j].row() < indexes[j - 1].row()) {
-                temp = indexes[j];
-                indexes[j] = indexes[j - 1];
-                indexes[j - 1] = temp;
-                flag = true;
-            }
-        }
-        if (!flag)
-            break;
-    }
+    qSort(indexes.begin(), indexes.end());
     //菜单弹出位置
     QPoint showMenuPosition;
     //记录鼠标位置下的QModelIndex

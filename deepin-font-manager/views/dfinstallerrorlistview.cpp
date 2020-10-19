@@ -812,7 +812,7 @@ void DFInstallErrorListView::mousePressEvent(QMouseEvent *event)
         DFInstallErrorItemModel itemModel =
             qvariant_cast<DFInstallErrorItemModel>(m_errorListSourceModel->data(modelIndex));
         if (itemModel.bIsNormalUserFont && getIconRect(visualRect(modelIndex)).contains(point))
-            emit onClickErrorListItem(modelIndex);
+            emit clickedErrorListItem(modelIndex);
     }
 
     DListView::mousePressEvent(event);
@@ -1035,34 +1035,6 @@ void DFInstallErrorListView::ifNeedScrollTo(QModelIndex idx)
 {
     if (!viewport()->visibleRegion().contains(visualRect(idx).center()))
         scrollTo(idx);
-}
-
-/*************************************************************************/
-/*                                                                       */
-/* <Function>    sortModelIndexList                                      */
-/*                                                                       */
-/* <Description> 对传入的indexlist进行从大到小的排序                         */
-/*                                                                       */
-/* <para>       需要排序的indexlist的引用                                   */
-/*                                                                       */
-/* <Return>     无返回值                                                  */
-void DFInstallErrorListView::sortModelIndexList(QModelIndexList &sourceList)
-{
-    QModelIndex temp;
-    bool flag;
-    for (int i = 0; i < sourceList.count() - 1; i++) {
-        flag = false;
-        for (int j = sourceList.count() - 1; j > i; j--) {
-            if (sourceList[j].row() > sourceList[j - 1].row()) {
-                temp = sourceList[j];
-                sourceList[j] = sourceList[j - 1];
-                sourceList[j - 1] = temp;
-                flag = true;
-            }
-        }
-        if (!flag)
-            break;
-    }
 }
 
 /*************************************************************************

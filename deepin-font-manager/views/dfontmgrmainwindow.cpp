@@ -31,7 +31,7 @@
 class DFontMgrMainWindowPrivate
 {
 public:
-    DFontMgrMainWindowPrivate(DFontMgrMainWindow *q)
+    explicit DFontMgrMainWindowPrivate(DFontMgrMainWindow *q)
         : settingsQsPtr(new QSettings(QDir(Utils::getConfigPath()).filePath("config.conf"),
                                       QSettings::IniFormat))
         , q_ptr(q)
@@ -2379,8 +2379,8 @@ void DFontMgrMainWindow::keyPressEvent(QKeyEvent *event)
 bool DFontMgrMainWindow::eventFilter(QObject *obj, QEvent *event)
 {
     D_D(DFontMgrMainWindow);
-    bool isShield_KeyTab = false;
     if (event->type() == QEvent::KeyPress) {
+        bool isShield_KeyTab = false;
         QKeyEvent *keyEvent = dynamic_cast<QKeyEvent *>(event);
         if (keyEvent->key() == Qt::Key_Tab) {
             if (obj == d->searchFontEdit->lineEdit()) {

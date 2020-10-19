@@ -47,22 +47,6 @@ SingleFontApplication::~SingleFontApplication()
 }
 
 /*************************************************************************
- <Function>      setMainWindow
- <Description>   设置主窗口属性
- <Author>
- <Input>
-    <param1>     mainWindow      Description:主窗口对象
- <Return>        null            Description:null
- <Note>          null
-*************************************************************************/
-void SingleFontApplication::setMainWindow(DMainWindow *mainWindow)
-{
-    m_qspMainWnd.reset(mainWindow);
-    m_qspMainWnd->setMinimumSize(DEFAULT_WINDOWS_WIDTH, DEFAULT_WINDOWS_HEIGHT);
-    m_qspMainWnd->setWindowIcon(QIcon::fromTheme(DEEPIN_FONT_MANAGER));
-}
-
-/*************************************************************************
  <Function>      parseCmdLine
  <Description>   初始化命令行
  <Author>

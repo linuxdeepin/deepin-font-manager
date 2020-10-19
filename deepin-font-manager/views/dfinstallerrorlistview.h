@@ -101,8 +101,6 @@ public:
     bool getIsInstallFocus() const;
     //不可见则滚动到modelindex
     void ifNeedScrollTo(QModelIndex idx);
-    //对传入的indexlist进行从大到小的排序
-    void sortModelIndexList(QModelIndexList &sourceList);
     //响应home和end快捷按键-fix bug 43109-便于父对象调用，整理成函数
     void responseToHomeAndEnd(bool isHomeKeyPressed);
     //响应PageUp和PageDown快捷按键-便于父对象调用，整理成函数
@@ -125,7 +123,7 @@ private:
     inline QRect getIconRect(const QRect &rect);
 signals:
     //发送item点击信号
-    void onClickErrorListItem(QModelIndex index);
+    void clickedErrorListItem(const QModelIndex &index);
 
 private slots:
 protected:

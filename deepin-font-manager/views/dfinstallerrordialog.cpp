@@ -294,7 +294,7 @@ void DFInstallErrorDialog::initInstallErrorFontViews()
     m_mainLayout->addWidget(btnFrame);
     m_mainLayout->addStretch();
 
-    connect(m_installErrorListView, SIGNAL(onClickErrorListItem(QModelIndex)), this,
+    connect(m_installErrorListView, SIGNAL(clickedErrorListItem(QModelIndex)), this,
             SLOT(onListItemClicked(QModelIndex)));
 }
 
@@ -400,7 +400,7 @@ void DFInstallErrorDialog::closeEvent(QCloseEvent *event)
  <Return>        null            Description:null
  <Note>          null
 *************************************************************************/
-void DFInstallErrorDialog::onListItemClicked(QModelIndex index)
+void DFInstallErrorDialog::onListItemClicked(const QModelIndex &index)
 {
     DFInstallErrorItemModel itemModel =
         qvariant_cast<DFInstallErrorItemModel>(m_installErrorListView->getErrorListSourceModel()->data(index));
@@ -423,13 +423,16 @@ void DFInstallErrorDialog::onListItemClicked(QModelIndex index)
 /* <para>       所有选中项的index构成的indexlist                            */
 /*                                                                       */
 /* <Return>     无返回值                                                  */
-void DFInstallErrorDialog::onListItemsClicked(QModelIndexList indexList)
+void DFInstallErrorDialog::onListItemsClicked(const QModelIndexList &indexList)
 {
-    m_installErrorListView->sortModelIndexList(indexList);
-
+    QModelIndex firstIndex;
+    for (auto &it : indexList) {
+        if (!firstIndex.isValid() || firstIndex.row() > it.row())
+            firstIndex = it;
+    }
 
     DFInstallErrorItemModel itemModel =
-        qvariant_cast<DFInstallErrorItemModel>(m_installErrorListView->getErrorListSourceModel()->data(indexList.last()));
+        qvariant_cast<DFInstallErrorItemModel>(m_installErrorListView->getErrorListSourceModel()->data(firstIndex));
 
     for (auto &it : indexList) {
         qDebug() << it.row() << "++++++++++++++++++++++++++++++" << endl;
