@@ -121,14 +121,16 @@ DCopyFilesManager::DCopyFilesManager(QObject *parent)
     if (m_installMaxThreadCnt <= 0)
         m_installMaxThreadCnt = static_cast<qint8>(QThread::idealThreadCount());
 
+    if (!m_useGlobalPool)
+        m_localPool = new QThreadPool(this);
+
+    int maxThreadCnt = m_maxThreadCnt > 0 ? m_maxThreadCnt : QThread::idealThreadCount();
+    getPool()->setMaxThreadCount(maxThreadCnt);
+    if (m_expiryTimeout > 0)
+        getPool()->setExpiryTimeout(m_expiryTimeout);
+
     qDebug() << __FUNCTION__ << "export max thread count = " << m_exportMaxThreadCnt << ", install max thread count = " << m_installMaxThreadCnt;
 
-    if (!m_useGlobalPool) {
-        m_localPool = new QThreadPool(this);
-        m_localPool->setMaxThreadCount(QThread::idealThreadCount());
-        if (m_expiryTimeout > 0)
-            m_localPool->setExpiryTimeout(m_expiryTimeout);
-    }
 }
 
 DCopyFilesManager *DCopyFilesManager::instance()

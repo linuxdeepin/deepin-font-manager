@@ -258,6 +258,7 @@ protected:
     QModelIndexList m_menuDisableIndexList;
     QStringList m_menuAllMinusSysFontList;
     QStringList m_installOutFileList;
+
     DFontPreviewItemData m_menuCurData;
     DSplitListWidget::FontGroup filterGroup;
     //Main window Size

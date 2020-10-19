@@ -2342,13 +2342,11 @@ void DFontMgrMainWindow::keyPressEvent(QKeyEvent *event)
     //UT000539 判断slider是否聚焦，调整预览字体大小
     D_D(DFontMgrMainWindow);
 
-    qDebug() << event->key() << endl;
     if (Qt::Key_Left == event->key() || Qt::Key_Down == event->key()) {
         if (d->fontScaleSlider->hasFocus()) {
             d->fontScaleSlider->setValue(d->fontScaleSlider->value() - 1);
         } else if (Qt::Key_Left == event->key() && (m_fontPreviewListView->hasFocus() || m_noInstallListView->hasFocus())) {
             emit m_signalManager->setLostFocusState(false);
-            m_fontPreviewListView->setIsLostFocusOfLeftKey(true);
             d->leftSiderBar->setFocus(Qt::MouseFocusReason);
         }
     }

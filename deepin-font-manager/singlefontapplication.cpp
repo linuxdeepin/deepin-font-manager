@@ -69,7 +69,7 @@ bool SingleFontApplication::parseCmdLine()
     }
 
     QStringList paraList = parser.positionalArguments();
-    for (auto it : paraList) {
+    for (auto &it : paraList) {
         if (Utils::isFontMimeType(it)) {
             m_selectedFiles.append(it);
         }

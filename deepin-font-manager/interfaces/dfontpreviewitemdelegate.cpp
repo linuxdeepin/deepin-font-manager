@@ -5,8 +5,11 @@
 
 #include <DApplication>
 #include <DApplicationHelper>
-#include <DCheckBox>
-#include <DLabel>
+#include <DStyleHelper>
+
+#include <QPainter>
+#include <QCheckBox>
+
 
 DWIDGET_USE_NAMESPACE
 
@@ -55,7 +58,7 @@ void DFontPreviewItemDelegate::paintForegroundCheckBox(QPainter *painter, const 
     checkBoxOption.state |= itemData.isEnabled() ? QStyle::State_On : QStyle::State_Off;
     checkBoxOption.rect = rect;
 
-    DCheckBox checkBox;
+    QCheckBox checkBox;
     DApplication::style()->drawPrimitive(QStyle::PE_IndicatorCheckBox, &checkBoxOption, painter, &checkBox);
 }
 

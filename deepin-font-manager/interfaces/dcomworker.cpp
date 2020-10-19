@@ -30,7 +30,8 @@
 
 #include <unistd.h>
 
-DComWorker::DComWorker(QObject *parent) : QObject(parent)
+DComWorker::DComWorker(QObject *parent)
+    : QObject(parent)
 {
     if (!autoDelete())
         setAutoDelete(true);
@@ -38,18 +39,16 @@ DComWorker::DComWorker(QObject *parent) : QObject(parent)
 
 void DComWorker::run()
 {
-
 }
 
-GetFontList::GetFontList(GetFontList::FontType type, bool isStartup, QObject *parent)
+GetFontListWorker::GetFontListWorker(GetFontListWorker::FontType type, bool isStartup, QObject *parent)
     : DComWorker(parent)
     , m_type(type)
     , m_isStartup(isStartup)
 {
-
 }
 
-void GetFontList::run()
+void GetFontListWorker::run()
 {
     qDebug() << __FUNCTION__ << m_type << "begin";
     DFontInfoManager *inst = DFontInfoManager::instance();
@@ -77,7 +76,7 @@ void GetFontList::run()
     qDebug() << __FUNCTION__ << m_type << "end";
 }
 
-void GetFontList::removeUserAddFonts()
+void GetFontListWorker::removeUserAddFonts()
 {
     if (geteuid() == 0) {
         return;
@@ -106,17 +105,18 @@ void GetFontList::removeUserAddFonts()
 void FontManager::getFontList(bool isStartup)
 {
     QThreadPool *threadPool = DCopyFilesManager::instance()->getPool();
-    GetFontList *getAll = new GetFontList(GetFontList::ALL, isStartup);
+
+    GetFontListWorker *getAll = new GetFontListWorker(GetFontListWorker::ALL, isStartup);
     threadPool->start(getAll);
-    GetFontList *getChinese = new GetFontList(GetFontList::CHINESE, isStartup);
+    GetFontListWorker *getChinese = new GetFontListWorker(GetFontListWorker::CHINESE, isStartup);
     threadPool->start(getChinese);
-    GetFontList *getMonospace = new GetFontList(GetFontList::MONOSPACE, isStartup);
+    GetFontListWorker *getMonospace = new GetFontListWorker(GetFontListWorker::MONOSPACE, isStartup);
     threadPool->start(getMonospace);
     threadPool->waitForDone();
 }
 
 void FontManager::getFontListInSequence(bool isStartup)
 {
-    GetFontList getFontList(GetFontList::AllInSquence, isStartup);
+    GetFontListWorker getFontList(GetFontListWorker::AllInSquence, isStartup);
     getFontList.run();
 }
