@@ -15,7 +15,7 @@ DWIDGET_USE_NAMESPACE
 
 //类声明
 class DFontManager;
-class DFontPreviewListDataThread;
+class DFontInfoManager;
 class DFInstallErrorDialog;
 
 /*************************************************************************
@@ -34,6 +34,8 @@ public:
     void setSkipException(bool skip);
     //打断安装操作-关闭验证框
     void breakInstalltion();
+    //判断当前字体是否为系统字体
+    bool isSystemFont(DFontInfo &f);
 
     void setAddBtnHasTabs(bool AddBtnHasTabs);
 
@@ -43,23 +45,52 @@ protected:
     void initUI();
     //初始化信号和槽connect连接函数
     void initConnections();
+    //从数据库中读取系统字体，用于之后的判断
+    void getAllSysfiles();
+    //初始化文件过滤定时器
+    void initVerifyTimer();
+    //字体文件过滤器，过滤后得到需要新安装的字体，重复安装字体，损毁字体，系统字体,以及字体验证框弹出时安装的字体
+    void verifyFontFiles();
+    //检测是否要弹出字体验证框，存在重复安装字体，系统字体时，损坏字体时弹出字体验证框
+    bool ifNeedShowExceptionWindow() const;
     // 根据字体安装或重复安装状态更新标志位getInstallMessage
-    void nextInstallStep();
+    void checkShowMessage();
     //结束安装
     void finishInstall();
+    //获取新增字体文件
+    void getNoSameFilesCount(const QStringList &filesList);
 
 private:
+    inline QString getFamilyName(const DFontInfo &fontInfo)
+    {
+        QString familyName = (fontInfo.familyName.isEmpty() || fontInfo.familyName.contains(QChar('?'))) ? fontInfo.fullname : fontInfo.familyName;
+        return familyName;
+    }
+    inline QString getFamilyStyleName(const DFontInfo &fontInfo)
+    {
+        QString familyName = (fontInfo.familyName.isEmpty() || fontInfo.familyName.contains(QChar('?'))) ? fontInfo.fullname : fontInfo.familyName;
+        return (familyName + fontInfo.styleName);
+    }
+    void installFinished();
     void reInstallFinished(const QStringList &fileList);
     void keyPressEvent(QKeyEvent *event) override;
     virtual void closeEvent(QCloseEvent *event) override;
+    //批量重新安装处理函数
+    void batchReInstall(const QStringList &reinstallFiles);
 
 protected slots:
+    //批量安装处理函数
+    void batchInstall();
+    //字体验证框弹出时在文件管理器进行安装
+    void batchHalfwayInstall(const QStringList &filelist);
+    //重装验证页面，继续按钮处理函数-继续批量安装
+    void batchReInstallContinue();
     //刷新安装进度显示内容
     void onProgressChanged(const QString &familyName, const double &percent);
     //字体安装后的处理函数
-    void onInstallFinished();
+    void onInstallFinished(int state, const QStringList &fileList);
     //字体重新安装后的处理函数
-    void onReInstallFinished();
+    void onReInstallFinished(int state, const QStringList &fileList);
     //重装验证页面，取消按钮处理函数
     void onCancelInstall();
     //重装验证页面，继续按钮处理函数-继续安装
@@ -72,6 +103,33 @@ signals:
     void finishFontInstall(const QStringList &fileList);
 
 private:
+    /*************************************************************************
+     <Enum>          InstallState
+     <Description>   字体安装状态
+     <Author>
+     <Value>
+        <Value1>     Install               Description:安装
+        <Value2>     reinstall             Description:重新安装
+        <Value2>     damaged               Description:损坏字体
+     <Note>          null
+    *************************************************************************/
+    enum InstallState { Install, reinstall, damaged };
+
+    QStringList m_AllSysFilesfamilyName;
+
+    QStringList m_installFiles;
+    QStringList m_installedFiles;
+    QStringList m_newInstallFiles;
+    QStringList m_damagedFiles;
+    QStringList m_systemFiles;
+    QStringList m_outfileList;
+    QStringList m_errorList;
+
+    QStringList m_installedFontsFamilyname;
+    QStringList m_halfInstalledFiles;
+    QStringList m_newHalfInstalledFiles;
+    QStringList m_oldHalfInstalledFiles;
+
     bool getInstallMessage = false;
     bool getReInstallMessage = false;
     bool m_popedInstallErrorDialg = false;
@@ -83,7 +141,9 @@ private:
     bool m_AddBtnHasTabs{false};
     //是否无需恢复添加按钮tab状态
     bool m_skipStateRecovery{false};
+    InstallState m_installState {Install};
 
+    DFontInfoManager *m_fontInfoManager;
     DFontManager *m_fontManager;
     SignalManager *m_signalManager = SignalManager::instance();
 
@@ -94,7 +154,8 @@ private:
     DProgressBar *m_progressBar {nullptr};
 
     DFInstallErrorDialog *m_pexceptionDlg {nullptr};
-    DFontPreviewListDataThread *m_dataThread;
+
+    QScopedPointer<QTimer> m_verifyTimer {nullptr};
 };
 
 #endif  // DFINSTALLNORMALWINDOW_H

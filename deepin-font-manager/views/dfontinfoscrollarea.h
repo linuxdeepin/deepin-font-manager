@@ -6,6 +6,7 @@
 #include "signalmanager.h"
 
 #include <DWidget>
+#include <DApplication>
 #include <DFrame>
 #include <DLabel>
 
@@ -22,6 +23,7 @@ DWIDGET_USE_NAMESPACE
 class dfontinfoscrollarea: public DFrame
 {
     Q_OBJECT
+    Q_DISABLE_COPY(dfontinfoscrollarea)
 
 public:
     explicit dfontinfoscrollarea(DFontPreviewItemData *pData, DWidget *parent  = nullptr);
@@ -31,7 +33,6 @@ public:
     void updateText();
     //重新计算信息详情页面高度参数
     void autoHeight();
-
 protected:
     //事件过滤器-过滤到字体改变事件后更新详情页字体信息与页面高度
     bool eventFilter(QObject *obj, QEvent *e) override;
@@ -39,20 +40,19 @@ protected:
     SignalManager *m_signalManager = SignalManager::instance();
     //初始化信息页面中详情页面
     void initUi();
-
 private:
-    Q_DISABLE_COPY(dfontinfoscrollarea)
     //初始话信息页面详情中信息部分标签内容
     void createLabel(QGridLayout *layout, const int &index, const QString &objName, const QString &sData);
+private:
     //初始话信息页面详情中标题部分标签内容
     DFrame *addTitleFrame(const QString &sData, const QString &objName);
-    QString elideText(QString &titleName) const;
+    int m_leftminwidth;
 
-private:
     DFontPreviewItemData *m_fontInfo;//字体信息
     DLabel *basicLabel = nullptr;
     std::map<QLabel *, QString> pTitleMap;//存储信息title键值对
     std::map<QLabel *, QString> pLabelMap;//存储信息info label键值对
+    QString elideText(QString &titleName) const;
 };
 
 #endif // ATTRSCROLLWIDGET_H

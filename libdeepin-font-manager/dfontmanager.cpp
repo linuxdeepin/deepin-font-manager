@@ -81,7 +81,7 @@ DFontManager::~DFontManager() {}
 *************************************************************************/
 void DFontManager::setType(Type type)
 {
-    qDebug() << type << QThread::currentThreadId() << endl;
+    qDebug() << type << endl;
     m_type = type;
 }
 
@@ -130,7 +130,7 @@ void DFontManager::setUnInstallFile(const QStringList &filePath)
 *************************************************************************/
 void DFontManager::run()
 {
-    qDebug() << __FUNCTION__ << "start" << m_type << QThread::currentThreadId() << endl;
+    qDebug() << __FUNCTION__ << "start" << m_type << endl;
     switch (m_type) {
     case Install:
     case HalfwayInstall:
@@ -218,7 +218,7 @@ void DFontManager::handleUnInstall()
 *************************************************************************/
 void DFontManager::doInstall(QStringList &fileList)
 {
-    qDebug() << __func__ << fileList.size() << endl;
+    qDebug() << __func__ << "s" << endl;
 
     m_installOutList.clear();
     m_installCanceled = false;
@@ -307,7 +307,7 @@ void DFontManager::onInstallResult(const QString &familyName, const QString &tar
     if (m_installedCount != totalCount)
         return;
 
-    qDebug() << __FUNCTION__ << m_installOutList.size();
+    qDebug() << __FUNCTION__ << m_installOutList.size() << m_CacheStatus;
     //  bug 47332 47325 Ut000442 在字体验证框弹出时进行安装，类型是HalfwayInstall，之前只对Install类型的做了
     //  安装后的处理导致bug现象的出现
     if (m_type == Install || m_type == HalfwayInstall) {
@@ -319,6 +319,20 @@ void DFontManager::onInstallResult(const QString &familyName, const QString &tar
     //clear
     m_installOutList.clear();
     m_installedCount = 0;
+}
+
+/*************************************************************************
+ <Function>      setCacheStatus
+ <Description>   设置fc-cache命令执行的状态
+ <Author>
+ <Input>
+    <param1>     CacheStatus     Description:命令执行状态的枚举
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
+void DFontManager::setCacheStatus(const CacheStatus &CacheStatus)
+{
+    m_CacheStatus = CacheStatus;
 }
 
 /*************************************************************************

@@ -19,7 +19,6 @@ FontIconText::FontIconText(const QString picPath, QWidget *parent)
     : QWidget(parent)
     , m_picPath(picPath)
     , render(new DSvgRenderer(this))
-    , m_isTtf(false)
 {
     render->load(picPath);
     QSize defaultSize = render->defaultSize();

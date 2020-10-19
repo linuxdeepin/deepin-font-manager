@@ -16,6 +16,7 @@ class DFontPreviewItemDelegate : public QStyledItemDelegate
 
 public:
     explicit DFontPreviewItemDelegate(QAbstractItemView *parent = nullptr);
+//    static void setNoFont(bool noFont);
     //代理的绘画函数
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const Q_DECL_OVERRIDE;
     //获取当前listview一项尺寸的大小
@@ -50,9 +51,9 @@ private:
     //绘制字体预览列表的背景
     void paintBackground(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
     //绘制tab选中后的背景效果
-    void paintTabFocusBackground(QPainter *painter, const QStyleOptionViewItem &option, const QRect &bgRect) const;
+    void paintTabFocusBackground(QPainter *painter, const QStyleOptionViewItem &option, const QRect &bgRect)const;
     //获取需要绘制区域的路径
-    void setPaintPath(const QRect &bgRect, QPainterPath &path, const int xDifference, const int yDifference, const int radius) const;
+    void setPaintPath(const QRect &bgRect, QPainterPath &path, const int xDifference, const int yDifference, const int radius)const;
 
     DFontPreviewListView *m_parentView;
 };

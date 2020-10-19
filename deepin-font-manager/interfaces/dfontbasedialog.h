@@ -30,6 +30,9 @@ public:
     //设置IconLabel的显示内容
     void setIconPixmap(const QPixmap &iconPixmap);
 
+    //获取窗口中使用主布局的控件的函数
+    QWidget *getContent() const;
+
     //获取右上角关闭按钮的函数
     DWindowCloseButton *getCloseButton() const;
 

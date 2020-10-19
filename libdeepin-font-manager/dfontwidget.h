@@ -45,7 +45,7 @@ class DFontWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit DFontWidget(QWidget *parent = nullptr);
+    DFontWidget(QWidget *parent = nullptr);
     ~DFontWidget() override;
     //传入字体路径
     void setFileUrl(const QString &url);

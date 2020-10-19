@@ -48,6 +48,8 @@ public:
     static void loadFontStart();
     static void loadFontFinish();
 
+    static qint64 calcInitAndLoadTime();
+
     static void installFontStart();
     static void installFontFinish(int fontCount);
 

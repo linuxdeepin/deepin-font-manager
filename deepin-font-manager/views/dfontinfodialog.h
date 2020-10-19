@@ -25,22 +25,18 @@ public:
     static constexpr int DEFAULT_WINDOW_H = 640;
 
 protected:
-    //大小变化处理函数
-    void resizeEvent(QResizeEvent *event) override;
-    //重新实现键盘press事件-信息页面打开快捷键关闭本窗口
-    void keyPressEvent(QKeyEvent *ev) override;
-
-private:
     //初始化信息页面
     void initUI();
     //初始化信号与槽连接处理函数-主题变化信号和槽
     void initConnections();
     //用于nametitle的第三行判断，由AutoFeed调用
     QString adaptiveLengthForNameTitle(QFontMetrics fm, QString thirdText, int lineWidth);
+    //大小变化处理函数
+    void resizeEvent(QResizeEvent *event) override;
+    //重新实现键盘press事件-信息页面打开快捷键关闭本窗口
+    void keyPressEvent(QKeyEvent *ev) override;
     //自适应变化信息详情页面高度
     void autoHeight(int height);
-    QString AutoFeed(QString text);
-
 signals:
 
 public slots:
@@ -48,10 +44,18 @@ public slots:
 private:
     QWidget *m_mainFrame {nullptr};
     QString m_FileName;
+    QPoint m_faCenter;
     SignalManager *m_signalManager = SignalManager::instance();
+
     FontIconText *m_fontLogo {nullptr};
     DLabel *m_fontFileName {nullptr};
+
+    QFrame *m_basicInfoFrame {nullptr};
+    QString AutoFeed(QString text);
+    QVBoxLayout *m_baseicInfoLayout;
+
     DFontPreviewItemData *m_fontInfo;
+
     dfontinfoscrollarea *m_fontinfoArea;
     DScrollArea *m_scrollArea;
 };

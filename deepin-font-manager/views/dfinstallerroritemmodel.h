@@ -27,14 +27,14 @@ struct DFInstallErrorItemModel {
     QString strFontInstallStatus;
 
     DFInstallErrorItemModel()
-        : bChecked(false)
-        , bSelectable(false)
-        , bSystemFont(false)
-        , bIsNormalUserFont(false) //SP3--安装验证页面，回车取消/选中(539)--初始化字体状态
-        , strFontFileName("")
-        , strFontFilePath("")
-        , strFontInstallStatus("")
     {
+        bChecked = false;
+        bSelectable = true;
+        bSystemFont = false;
+        bIsNormalUserFont = false;//SP3--安装验证页面，回车取消/选中(539)--初始化字体状态
+        strFontFileName = "";
+        strFontFilePath = "";
+        strFontInstallStatus = "";
     }
 };
 

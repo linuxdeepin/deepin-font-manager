@@ -20,15 +20,6 @@ class DFInstallErrorListView;
 *************************************************************************/
 class DFInstallErrorListDelegate : public DStyledItemDelegate
 {
-public:
-    explicit DFInstallErrorListDelegate(QAbstractItemView *parent = nullptr);
-    //代理绘制字体列表入口
-    void paint(QPainter *painter, const QStyleOptionViewItem &option,
-               const QModelIndex &index) const override;
-    //获得当前QModelIndex对象size
-    QSize sizeHint(const QStyleOptionViewItem &option,
-                   const QModelIndex &index) const override;
-
 private:
     //代理绘制勾选按钮函数
     void drawCheckBox(QPainter *painter, DFInstallErrorItemModel itemModel, QRect bgRect)const;
@@ -48,6 +39,15 @@ private:
     QString lengthAutoFeed(QPainter *painter, QString sourceStr, int m_StatusWidth)const;
     //获取需要绘制区域的路径
     void setPaintPath(const QRect &bgRect, QPainterPath &path, const int xDifference, const int yDifference, const int radius)const;
+
+public:
+    DFInstallErrorListDelegate(QAbstractItemView *parent = nullptr);
+    //代理绘制字体列表入口
+    void paint(QPainter *painter, const QStyleOptionViewItem &option,
+               const QModelIndex &index) const override;
+    //获得当前QModelIndex对象size
+    QSize sizeHint(const QStyleOptionViewItem &option,
+                   const QModelIndex &index) const override;
 
 private:
     DFInstallErrorListView *m_parentView;
@@ -95,14 +95,20 @@ public:
     QStandardItemModel *getErrorListSourceModel();
     //获取当前是否为tab聚焦状态
     bool getIsTabFocus() const;
+    //更新tab聚焦状态
+    void setIsInstallFocus(bool isInstallFocus);
+    //查看是否为列表新增获取的tab聚焦
+    bool getIsInstallFocus() const;
     //不可见则滚动到modelindex
     void ifNeedScrollTo(QModelIndex idx);
+    //对传入的indexlist进行从大到小的排序
+    void sortModelIndexList(QModelIndexList &sourceList);
     //响应home和end快捷按键-fix bug 43109-便于父对象调用，整理成函数
     void responseToHomeAndEnd(bool isHomeKeyPressed);
     //响应PageUp和PageDown快捷按键-便于父对象调用，整理成函数
     void responseToPageUpAndPageDown(bool isPageUpPressed);
-
 private:
+
     DFontInfoManager *m_fontInfoManager;
     DFInstallErrorListDelegate *m_errorListItemDelegate;
     QStandardItemModel *m_errorListSourceModel;
@@ -117,10 +123,9 @@ private:
     void initSelectedItem();
     //获取图标范围
     inline QRect getIconRect(const QRect &rect);
-
 signals:
     //发送item点击信号
-    void clickedErrorListItem(const QModelIndex &index);
+    void onClickErrorListItem(QModelIndex index);
 
 private slots:
 protected:

@@ -30,6 +30,8 @@ SingleFontApplication::SingleFontApplication(int &argc, char **argv)
     , m_qspMainWnd(nullptr)
     , m_qspQuickWnd(nullptr)
 {
+    connect(SignalManager::instance(), &SignalManager::finishFontInstall, this,
+            &SingleFontApplication::onFontInstallFinished);
 }
 
 /*************************************************************************
@@ -42,6 +44,22 @@ SingleFontApplication::SingleFontApplication(int &argc, char **argv)
 *************************************************************************/
 SingleFontApplication::~SingleFontApplication()
 {
+}
+
+/*************************************************************************
+ <Function>      setMainWindow
+ <Description>   设置主窗口属性
+ <Author>
+ <Input>
+    <param1>     mainWindow      Description:主窗口对象
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
+void SingleFontApplication::setMainWindow(DMainWindow *mainWindow)
+{
+    m_qspMainWnd.reset(mainWindow);
+    m_qspMainWnd->setMinimumSize(DEFAULT_WINDOWS_WIDTH, DEFAULT_WINDOWS_HEIGHT);
+    m_qspMainWnd->setWindowIcon(QIcon::fromTheme(DEEPIN_FONT_MANAGER));
 }
 
 /*************************************************************************
@@ -67,7 +85,7 @@ bool SingleFontApplication::parseCmdLine()
     }
 
     QStringList paraList = parser.positionalArguments();
-    for (auto &it : paraList) {
+    for (auto it : paraList) {
         if (Utils::isFontMimeType(it)) {
             m_selectedFiles.append(it);
         }
@@ -208,6 +226,21 @@ void SingleFontApplication::slotBatchInstallFonts()
     activateWindow();
     m_selectedFiles.clear();
     waitForInstallSet.clear();
+}
+
+/*************************************************************************
+ <Function>      onFontInstallFinished
+ <Description>   安装完成清空列表
+ <Author>
+ <Input>
+    <param1>     fileList        Description:UnUsed
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
+void SingleFontApplication::onFontInstallFinished(const QStringList &fileList)
+{
+    Q_UNUSED(fileList);
+    m_selectedFiles.clear();
 }
 
 /*************************************************************************

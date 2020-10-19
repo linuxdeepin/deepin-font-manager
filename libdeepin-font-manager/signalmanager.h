@@ -16,8 +16,9 @@ class SignalManager : public QObject
 public:
     static SignalManager *instance();
     ~SignalManager();
-
 signals:
+    //触发完成安装信号
+    void finishFontInstall(const QStringList &fileList);
     //触发大小改变信号
     void sizeChange(int height);
     //触发弹出字体验证框请求
@@ -47,7 +48,6 @@ signals:
     void requestSetTabFocusToAddBtn();
     //右键菜单关闭请求触发操作
     void onMenuHidden();
-
 private:
     explicit SignalManager(QObject *parent = nullptr);
 

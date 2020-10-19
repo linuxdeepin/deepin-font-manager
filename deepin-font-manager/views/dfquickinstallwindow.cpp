@@ -321,6 +321,11 @@ void DFQuickInstallWindow::installFont(const QStringList &files)
 
     dfNormalInstalldlg.setSkipException(true);
 
+
+    //Update db after install finish
+    connect(SignalManager::instance(), &SignalManager::finishFontInstall, this,
+            &DFQuickInstallWindow::onFontInstallFinished);
+
     Dtk::Widget::moveToCenter(&dfNormalInstalldlg);
     dfNormalInstalldlg.exec();
 }

@@ -89,7 +89,6 @@ void CopyFontThread::appendFile(const QString &filePath)
 //文件拷贝类型：导出 安装
 DCopyFilesManager *DCopyFilesManager::inst = new DCopyFilesManager();
 qint8 DCopyFilesManager::m_type = CopyFontThread::INVALID;
-
 //安装是否被取消
 volatile bool DCopyFilesManager::m_installCanceled = false;
 
@@ -122,15 +121,14 @@ DCopyFilesManager::DCopyFilesManager(QObject *parent)
     if (m_installMaxThreadCnt <= 0)
         m_installMaxThreadCnt = static_cast<qint8>(QThread::idealThreadCount());
 
-    if (!m_useGlobalPool)
-        m_localPool = new QThreadPool(this);
-
-    int maxThreadCnt = m_maxThreadCnt > 0 ? m_maxThreadCnt : QThread::idealThreadCount();
-    getPool()->setMaxThreadCount(maxThreadCnt);
-    if (m_expiryTimeout > 0)
-        getPool()->setExpiryTimeout(m_expiryTimeout);
-
     qDebug() << __FUNCTION__ << "export max thread count = " << m_exportMaxThreadCnt << ", install max thread count = " << m_installMaxThreadCnt;
+
+    if (!m_useGlobalPool) {
+        m_localPool = new QThreadPool(this);
+        m_localPool->setMaxThreadCount(QThread::idealThreadCount());
+        if (m_expiryTimeout > 0)
+            m_localPool->setExpiryTimeout(m_expiryTimeout);
+    }
 }
 
 DCopyFilesManager *DCopyFilesManager::instance()
@@ -166,7 +164,7 @@ void DCopyFilesManager::copyFiles(CopyFontThread::OPType type, QStringList &font
     }
 
     //debug log
-    qDebug() << __FUNCTION__ << tcount  << type << fontList.size();
+    qDebug() << __FUNCTION__ << tcount  << type << fontList;
 
     int index = 0;
     int maxMod = (2 * tcount - 1) % (2 * tcount);

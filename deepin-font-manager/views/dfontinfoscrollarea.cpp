@@ -2,6 +2,7 @@
 
 #include <DFontSizeManager>
 #include <DApplication>
+#include <DApplicationHelper>
 
 #include <QTimer>
 
@@ -43,6 +44,15 @@ void dfontinfoscrollarea::initUi()
     auto gridLayout = new QGridLayout;
     gridLayout->setContentsMargins(0, 6, 0, 6);
     gridLayout->setSpacing(3);
+
+    QLocale locale;
+    QFontMetrics fm(font());
+
+    if (locale.language() == QLocale::English) {
+        m_leftminwidth = fm.horizontalAdvance(("Time modified"));
+    } else if (locale.language() == QLocale::Chinese) {
+        m_leftminwidth = fm.horizontalAdvance("页面大小");
+    }
 
     createLabel(gridLayout, 0, DApplication::translate("FontDetailDailog", "Style")
                 , m_fontInfo->fontInfo.styleName);
@@ -295,12 +305,12 @@ void dfontinfoscrollarea::updateText()
 *************************************************************************/
 void dfontinfoscrollarea::autoHeight()
 {
-    int totalHeight = 0;
+    int m_totalHeight = 0;
     for (auto plabeliter : pLabelMap) {
         if (!plabeliter.first) {
             continue;
         }
-        totalHeight = totalHeight + plabeliter.first->height();
+        m_totalHeight = m_totalHeight + plabeliter.first->height();
     }
-    emit m_signalManager->sizeChange(totalHeight + 76 + basicLabel->height());
+    emit m_signalManager->sizeChange(m_totalHeight + 76 + basicLabel->height());
 }

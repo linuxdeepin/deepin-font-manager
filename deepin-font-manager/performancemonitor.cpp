@@ -164,6 +164,22 @@ void PerformanceMonitor::installFontFinish(int fontCount)
 }
 
 /*************************************************************************
+ <Function>     calcInitAndLoadTime
+ <Description>  统计程序启动到字体加载完成的时间
+ <Author>       Xiao Zhiguo <xiaozhiguo@uniontech.com>
+ <Maintainer>
+ <Input>
+ <Return>
+ <Note>
+*************************************************************************/
+qint64 PerformanceMonitor::calcInitAndLoadTime()
+{
+    qint64 time = loadFontFinishMs - initializeAppStartMs;
+    qDebug() << LOG_FLAG << "init app and load fonts cost time(ms): " << time;
+    return time;
+}
+
+/*************************************************************************
  <Function>     exportFontStart
  <Description>  记录字体导出的开始时间
  <Author>       Xiao Zhiguo <xiaozhiguo@uniontech.com>
