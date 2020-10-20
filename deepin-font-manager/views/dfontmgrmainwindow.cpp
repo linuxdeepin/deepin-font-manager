@@ -236,6 +236,8 @@ void DFontMgrMainWindow::initConnections()
     QObject::connect(this, &DFontMgrMainWindow::fileSelectedInSys, this,
     [this](const QStringList & files) {
         this->installFontFromSys(files);
+        //在此停止listview中的计时器，否则在系统中选择字体安装时会卡死
+        m_fontPreviewListView->getFontLoadTimer()->stop();
     });
 
     // Menu event
@@ -302,7 +304,7 @@ void DFontMgrMainWindow::initConnections()
             &DFontMgrMainWindow::onFontInstallFinished);
 
     connect(m_fontManager, &DFontManager::cacheFinish, this, [ = ] {
-        qDebug() << __FUNCTION__;
+        qDebug() << "cache finish";
         m_cacheFinish = true;
         hideSpinner();
     });
@@ -1737,6 +1739,7 @@ void DFontMgrMainWindow::onInstallWindowDestroyed(QObject *)
         Q_EMIT DFontPreviewListDataThread::instance()->requestAdded(m_installOutFileList);
         //check if need to do cache
         if (m_fontManager->needCache()) {
+            qDebug() << __FUNCTION__ << "need doCache";
             m_fontManager->setType(DFontManager::DoCache);
             m_fontManager->start();
         } else {

@@ -220,6 +220,8 @@ public:
         m_userFontInUseSelected = curFontSelected;
     }
 
+    //获取加载数据计时器
+    QTimer *getFontLoadTimer() const;
 
 protected:
     //选中切换后触发函数
@@ -266,7 +268,7 @@ private:
     //记录删除前字体列表焦点状态539
     bool m_FontViewHasFocus{false};
 //    QPoint lastTouchBeginPos;
-    QPointer<QTimer> touchCheckTimer;
+//    QPointer<QTimer> touchCheckTimer;
 
     DFontMgrMainWindow *m_parentWidget;
     QStandardItemModel *m_fontPreviewItemModel {nullptr};
@@ -278,6 +280,9 @@ private:
 
     DFontPreviewListDataThread *m_dataThread;
     QTimer *m_fontChangeTimer;
+
+    // 打开应用加载数据计时器
+    QTimer *m_fontLoadTimer;
     QFont m_curAppFont;
     QModelIndex m_currModelIndex;
     QModelIndex m_pressModelIndex;

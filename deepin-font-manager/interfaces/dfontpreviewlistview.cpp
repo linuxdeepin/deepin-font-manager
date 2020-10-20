@@ -34,6 +34,21 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
     connect(this, &DFontPreviewListView::itemRemoved, this, &DFontPreviewListView::onItemRemoved);
     connect(this, &DFontPreviewListView::requestUpdateModel, this, &DFontPreviewListView::updateModel);
 
+    m_fontLoadTimer = new QTimer(this);
+    connect(m_fontLoadTimer, &QTimer::timeout, this, [ = ] {
+        //打开应用后每隔一段时间去检测一次后台数据加载状态，加载完成后，将所有数据刷新出来
+        if (m_bLoadDataFinish)
+        {
+            qDebug() << m_dataThread->m_fontModelList.size();
+            QList<DFontPreviewItemData> data = m_dataThread->m_fontModelList.mid(50, m_dataThread->m_fontModelList.size());
+            Q_EMIT multiItemsAdded(data, DFontSpinnerWidget::StartupLoad);
+            m_dataThread->m_isAllLoaded = true;
+            m_fontLoadTimer->stop();
+        }
+    });
+
+    m_fontLoadTimer->start(500);
+
     connect(m_fontChangeTimer, &QTimer::timeout, this, &DFontPreviewListView::onUpdateCurrentFont);
 
     connect(m_signalManager, &SignalManager::cancelDel, this, &DFontPreviewListView::cancelDel);
@@ -1141,6 +1156,20 @@ void DFontPreviewListView::onMouseLeftBtnReleased(const QModelIndex &modelIndex,
         fdata.setHoverState(IconNormal);
         m_fontPreviewProxyModel->setData(modelIndexNew, QVariant::fromValue(fdata), Qt::DisplayRole);
     }
+}
+
+/*************************************************************************
+ <Function>      getTimer
+ <Description>   获取字体加载数据定时器
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
+QTimer *DFontPreviewListView::getFontLoadTimer() const
+{
+    return m_fontLoadTimer;
 }
 
 /*************************************************************************

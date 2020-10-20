@@ -116,7 +116,8 @@ public:
     QStringList m_monoSpaceFontPathList;
     static QList<DFontPreviewItemData> m_fontModelList;
     QList<DFontPreviewItemData> m_delFontInfoList;
-
+    //判断启动过程中初始数据是否全部加载完毕的标志位
+    bool m_isAllLoaded = false;
 protected:
     QThread mThread;
 

@@ -562,10 +562,17 @@ void DFontPreviewListDataThread::refreshFontListData(bool isStartup, const QStri
     qDebug() << __FUNCTION__ << " end " << QThread::currentThreadId() << m_diffFontModelList.size() << m_fontModelList.size();
 
     if (!isStartup && !installFont.isEmpty()) {
-        Q_EMIT m_view->multiItemsAdded(m_diffFontModelList, DFontSpinnerWidget::Load);
+        if (!m_isAllLoaded) {
+            //之前如果初始数据没有全加载时，安装字体后加载全部的数据。主要出现在文管中直接打开字体文件进行安装
+            QList<DFontPreviewItemData> list = m_fontModelList.mid(50, m_fontModelList.size());
+            Q_EMIT m_view->multiItemsAdded(list, DFontSpinnerWidget::NoLabel);
+        } else {
+            Q_EMIT m_view->multiItemsAdded(m_diffFontModelList, DFontSpinnerWidget::NoLabel);
+        }
         Q_EMIT m_view->itemsSelected(installFont);
     } else if (isStartup) {
-        Q_EMIT m_view->multiItemsAdded(m_fontModelList, DFontSpinnerWidget::StartupLoad);
+        QList<DFontPreviewItemData> list = m_fontModelList.mid(0, 50);
+        Q_EMIT m_view->multiItemsAdded(list, DFontSpinnerWidget::StartupLoad);
     } else {
         Q_EMIT m_view->multiItemsAdded(m_fontModelList, DFontSpinnerWidget::Load);
     }
