@@ -297,15 +297,24 @@ void DFontManager::doUninstall(const QStringList &fileList)
 */
 void DFontManager::onInstallResult(const QString &familyName, const QString &target)
 {
+
     m_installedCount += 1;
     m_installOutList << target;
     const int totalCount = m_instFileList.count();
 
     double percent = m_installedCount / double(totalCount) * 100;
-    Q_EMIT batchInstall(familyName, percent);
+    /* 此处需要优化,信号太频繁,进度每增加1%发送一次信号即可 UT000591 */
+    static double lastSendPercent = 0.0;
+    if ( (lastSendPercent < 0.001) || (percent - lastSendPercent > 0.999) || (percent - lastSendPercent < -0.001)) {
+        Q_EMIT batchInstall(familyName, percent);
+        lastSendPercent = percent;
+    }
 
-    if (m_installedCount != totalCount)
+    if (m_installedCount != totalCount) {
         return;
+    } else {
+        lastSendPercent = 0.0;
+    }
 
     qDebug() << __FUNCTION__ << m_installOutList.size() << m_CacheStatus;
     //  bug 47332 47325 Ut000442 在字体验证框弹出时进行安装，类型是HalfwayInstall，之前只对Install类型的做了
