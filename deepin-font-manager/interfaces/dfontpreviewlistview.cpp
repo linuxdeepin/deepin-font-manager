@@ -450,7 +450,7 @@ void DFontPreviewListView::updateSpinner(DFontSpinnerWidget::SpinnerStyles style
  <Return>        null            Description:null
  <Note>          null
 *************************************************************************/
-void DFontPreviewListView::updateModel(bool showSpinner)
+void DFontPreviewListView::updateModel(int deleteCount, bool showSpinner)
 {
     Q_UNUSED(showSpinner)
     getAtListViewPosition();
@@ -500,7 +500,7 @@ void DFontPreviewListView::updateModel(bool showSpinner)
     syncTabStatus();
     m_recoveryTabFocusState = false;
 
-    PerformanceMonitor::deleteFontFinish(rowCnt);
+    PerformanceMonitor::deleteFontFinish(deleteCount);
 }
 
 /*************************************************************************
@@ -1684,6 +1684,8 @@ void DFontPreviewListView::checkHoverState()
 void DFontPreviewListView::onEnableBtnClicked(QModelIndexList &itemIndexes, int systemCnt,
                                               int curCnt, bool setValue, bool isFromActiveFont)
 {
+    PerformanceMonitor::activeFontStart();
+
     if (itemIndexes.isEmpty())
         return;
 
@@ -1733,6 +1735,7 @@ void DFontPreviewListView::onEnableBtnClicked(QModelIndexList &itemIndexes, int 
     if (setValue) {
         enableFonts();
         qDebug() << __FUNCTION__ << " after " << currModelIndex().row() << currentIndex().row();
+        PerformanceMonitor::activeFontFinish(false, itemIndexes.count());
         return;
     } else {
         disableFonts();
@@ -1766,6 +1769,8 @@ void DFontPreviewListView::onEnableBtnClicked(QModelIndexList &itemIndexes, int 
 
     qDebug() << __FUNCTION__ << " after " << currModelIndex().row() << currentIndex().row();
     Q_EMIT rowCountChanged();
+
+    PerformanceMonitor::activeFontFinish(true, itemIndexes.count());
 }
 
 /*************************************************************************
@@ -1781,6 +1786,8 @@ void DFontPreviewListView::onEnableBtnClicked(QModelIndexList &itemIndexes, int 
 *************************************************************************/
 void DFontPreviewListView::onCollectBtnClicked(QModelIndexList &indexList, bool setValue, bool isFromCollectFont)
 {
+    PerformanceMonitor::favoriteFontStart();
+
     if (indexList.isEmpty())
         return;
 
@@ -1816,6 +1823,7 @@ void DFontPreviewListView::onCollectBtnClicked(QModelIndexList &indexList, bool 
     DFMDBManager::instance()->commitUpdateFontInfo();
 
     Q_EMIT rowCountChanged();
+    PerformanceMonitor::favoriteFontFinish(setValue, indexList.count());
 
     qDebug() << __FUNCTION__ << " after " << currModelIndex().row() << currentIndex().row();
 }
@@ -2059,6 +2067,8 @@ void DFontPreviewListView::deleteCurFonts(QStringList &files, bool force)
 {
     qDebug() << __FUNCTION__ << " before delete " << m_dataThread->getFontModelList().size() << m_fontPreviewProxyModel->rowCount();
 
+    int deleteCount = files.count();
+
     if (!force)
         updateSpinner(DFontSpinnerWidget::Delete, false);
 
@@ -2084,7 +2094,7 @@ void DFontPreviewListView::deleteCurFonts(QStringList &files, bool force)
 
     enableFonts();
 
-    Q_EMIT requestUpdateModel(!force);
+    Q_EMIT requestUpdateModel(deleteCount, !force);
     m_dataThread->onAutoDirWatchers();
 }
 

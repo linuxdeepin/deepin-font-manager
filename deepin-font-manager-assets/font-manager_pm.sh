@@ -118,16 +118,60 @@ deepin_font_manager(){
         echo "导出字体数: $font_export_number 个,导出时长: $font_export_duration 毫秒"
     done >> $font_result
 
-#    #五 删除字体
-#    local font_delete_times=`echo "$font_grab" | grep "DEEPIN_FONT_MANAGER-0005" | wc -l`
-#    echo $"删除次数为 $font_delete_times 次" >> $font_result
-#    local font_delete_data=`echo "$font_grab" | grep "DEEPIN_FONT_MANAGER-0005"  | sed -e 's/.*DEEPIN_FONT_MANAGER-0005\(.*\)#.*/\1/g' | sed 's/^[ ]*\(.*\)/\1/g' | nl -w1 -s : -n ln`
-#    # 导出字体个数和导出时长
-#    for((i =1;i <= $font_delete_times; i++));do
-#        local font_delete_number=`echo "$font_delete_data" | grep "$i:" | sed -e 's/.*:\(.*\)/\1/g' | cut -d ' ' -f 1`
-#        local font_delete_duration=`echo "$font_delete_data" | grep "$i:" | sed -e 's/.*:\(.*\)/\1/g' | cut -d ' ' -f 2`
-#        echo "删除字体数: $font_delete_number 个,删除时长: $font_delete_duration 毫秒"
-#    done >> $font_result
+    #五 删除字体
+    local font_delete_times=`echo "$font_grab" | grep "DEEPIN_FONT_MANAGER-0005" | wc -l`
+    echo $"删除次数为 $font_delete_times 次" >> $font_result
+    local font_delete_data=`echo "$font_grab" | grep "DEEPIN_FONT_MANAGER-0005"  | sed -e 's/.*DEEPIN_FONT_MANAGER-0005\(.*\)#.*/\1/g' | sed 's/^[ ]*\(.*\)/\1/g' | nl -w1 -s : -n ln`
+    # 删除字体个数和删除时长
+    for((i =1;i <= $font_delete_times; i++));do
+        local font_delete_number=`echo "$font_delete_data" | grep "$i:" | sed -e 's/.*:\(.*\)/\1/g' | cut -d ' ' -f 1`
+        local font_delete_duration=`echo "$font_delete_data" | grep "$i:" | sed -e 's/.*:\(.*\)/\1/g' | cut -d ' ' -f 2`
+        echo "删除字体数: $font_delete_number 个,删除时长: $font_delete_duration 毫秒"
+    done >> $font_result
+
+    #六 禁用字体
+    local font_deactive_times=`echo "$font_grab" | grep "DEEPIN_FONT_MANAGER-0009" | wc -l`
+    echo $"禁用次数为 $font_deactive_times 次" >> $font_result
+    local font_deactive_data=`echo "$font_grab" | grep "DEEPIN_FONT_MANAGER-0009"  | sed -e 's/.*DEEPIN_FONT_MANAGER-0009\(.*\)#.*/\1/g' | sed 's/^[ ]*\(.*\)/\1/g' | nl -w1 -s : -n ln`
+    # 禁用字体个数和禁用时常
+    for((i =1;i <= $font_deactive_times; i++));do
+        local font_deactive_number=`echo "$font_deactive_data" | grep "$i:" | sed -e 's/.*:\(.*\)/\1/g' | cut -d ' ' -f 1`
+        local font_deactive_duration=`echo "$font_deactive_data" | grep "$i:" | sed -e 's/.*:\(.*\)/\1/g' | cut -d ' ' -f 2`
+        echo "禁用字体数: $font_deactive_number 个,禁用时长: $font_deactive_duration 毫秒"
+    done >> $font_result
+
+    #七 启用字体
+    local font_active_times=`echo "$font_grab" | grep "DEEPIN_FONT_MANAGER-0008" | wc -l`
+    echo $"启用次数为 $font_active_times 次" >> $font_result
+    local font_active_data=`echo "$font_grab" | grep "DEEPIN_FONT_MANAGER-0008"  | sed -e 's/.*DEEPIN_FONT_MANAGER-0008\(.*\)#.*/\1/g' | sed 's/^[ ]*\(.*\)/\1/g' | nl -w1 -s : -n ln`
+    # 启用字体个数和启用时长
+    for((i =1;i <= $font_active_times; i++));do
+        local font_active_number=`echo "$font_active_data" | grep "$i:" | sed -e 's/.*:\(.*\)/\1/g' | cut -d ' ' -f 1`
+        local font_active_duration=`echo "$font_active_data" | grep "$i:" | sed -e 's/.*:\(.*\)/\1/g' | cut -d ' ' -f 2`
+        echo "启用字体数: $font_active_number 个,启用时长: $font_active_duration 毫秒"
+    done >> $font_result
+
+    #八 收藏字体
+    local font_favorite_times=`echo "$font_grab" | grep "DEEPIN_FONT_MANAGER-0006" | wc -l`
+    echo $"收藏次数为 $font_favorite_times 次" >> $font_result
+    local font_favorite_data=`echo "$font_grab" | grep "DEEPIN_FONT_MANAGER-0006"  | sed -e 's/.*DEEPIN_FONT_MANAGER-0006\(.*\)#.*/\1/g' | sed 's/^[ ]*\(.*\)/\1/g' | nl -w1 -s : -n ln`
+    # 收藏字体个数和收藏时长
+    for((i =1;i <= $font_favorite_times; i++));do
+        local font_favorite_number=`echo "$font_favorite_data" | grep "$i:" | sed -e 's/.*:\(.*\)/\1/g' | cut -d ' ' -f 1`
+        local font_favorite_duration=`echo "$font_favorite_data" | grep "$i:" | sed -e 's/.*:\(.*\)/\1/g' | cut -d ' ' -f 2`
+        echo "收藏字体数: $font_favorite_number 个,收藏时长: $font_favorite_duration 毫秒"
+    done >> $font_result
+
+    #九 取消收藏字体
+    local font_unfavorite_times=`echo "$font_grab" | grep "DEEPIN_FONT_MANAGER-0010" | wc -l`
+    echo $"取消收藏次数为 $font_unfavorite_times 次" >> $font_result
+    local font_unfavorite_data=`echo "$font_grab" | grep "DEEPIN_FONT_MANAGER-0010"  | sed -e 's/.*DEEPIN_FONT_MANAGER-0010\(.*\)#.*/\1/g' | sed 's/^[ ]*\(.*\)/\1/g' | nl -w1 -s : -n ln`
+    # 取消收藏字体个数和时长
+    for((i =1;i <= $font_unfavorite_times; i++));do
+        local font_unfavorite_number=`echo "$font_unfavorite_data" | grep "$i:" | sed -e 's/.*:\(.*\)/\1/g' | cut -d ' ' -f 1`
+        local font_unfavorite_duration=`echo "$font_unfavorite_data" | grep "$i:" | sed -e 's/.*:\(.*\)/\1/g' | cut -d ' ' -f 2`
+        echo "取消收藏字体数: $font_unfavorite_number 个,取消收藏时长: $font_unfavorite_duration 毫秒"
+    done >> $font_result
 
     echo  "分析结果:"
     cat < $font_result

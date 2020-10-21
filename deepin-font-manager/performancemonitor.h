@@ -26,16 +26,6 @@
 
 #include <QObject>
 
-const QString GRAB_POINT = "[GRABPOINT]";
-const QString APP_NAME = "DEEPIN_FONT_MANAGER";
-const QString INIT_APP_TIME = "0001";
-const QString LOAD_FONTS_TIME = "0002";
-const QString INSTALL_FONTS_TIME = "0003";
-const QString EXPORT_FONTS_TIME = "0004";
-const QString DELETE_FONTS_TIME = "0005";
-const QString FAVOURITE_FONTS_TIME = "0006";
-const QString INIT_AND_LOAD_TIME = "0007";
-
 class PerformanceMonitor : public QObject
 {
     Q_OBJECT
@@ -59,6 +49,12 @@ public:
     static void deleteFontStart();
     static void deleteFontFinish(int fontCount);
 
+    static void activeFontStart();
+    static void activeFontFinish(bool isDeActive, int fontCount);
+
+    static void favoriteFontStart();
+    static void favoriteFontFinish(bool isFavorite, int fontCount);
+
 private:
     Q_DISABLE_COPY(PerformanceMonitor)
 
@@ -74,6 +70,9 @@ private:
     static qint64 deleteFontFinishMs;
     static qint64 favoriteFontStartMs;
     static qint64 favoriteFontFinishMs;
+    static qint64 activeFontStartMs;
+    static qint64 activeFontFinishMs;
+
 };
 
 #endif // PERFORMANCEMONITOR_H

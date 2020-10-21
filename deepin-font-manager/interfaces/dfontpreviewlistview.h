@@ -318,7 +318,7 @@ signals:
     //更新删除状态标志位
     void deleteFinished();
     //请求刷新QStandardItemModel信息
-    void requestUpdateModel(bool showSpinner);
+    void requestUpdateModel(int deleteCount, bool showSpinner);
     //请求刷新加载图标
     void requestShowSpinner(bool bShow, bool force, DFontSpinnerWidget::SpinnerStyles style);
 
@@ -342,7 +342,7 @@ public slots:
     //移除某一项响应函数
     void onItemRemoved(DFontPreviewItemData &itemData);
     //删除字体后更新整个model
-    void updateModel(bool showSpinner = true);
+    void updateModel(int deleteCount, bool showSpinner = true);
     //切换界面后,滚动到最上方
     void viewChanged();
     //取消删除后,重置之前记录的删除后的位置
