@@ -566,6 +566,9 @@ void DFontPreviewListDataThread::refreshFontListData(bool isStartup, const QStri
             //之前如果初始数据没有全加载时，安装字体后加载全部的数据。主要出现在文管中直接打开字体文件进行安装
             QList<DFontPreviewItemData> list = m_fontModelList.mid(50, m_fontModelList.size());
             Q_EMIT m_view->multiItemsAdded(list, DFontSpinnerWidget::NoLabel);
+
+            // 数据完成完全加载，将标志位设置为true；
+            m_isAllLoaded = true;
         } else {
             Q_EMIT m_view->multiItemsAdded(m_diffFontModelList, DFontSpinnerWidget::NoLabel);
         }
