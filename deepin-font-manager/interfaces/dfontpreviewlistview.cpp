@@ -29,45 +29,21 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
     qRegisterMetaType<QStringList>("QStringList &");
     m_fontPreviewItemModel->setColumnCount(1);
     setFrameShape(QFrame::NoFrame);
-    connect(this, &DFontPreviewListView::itemsSelected, this, &DFontPreviewListView::selectFonts);
-    connect(this, &DFontPreviewListView::multiItemsAdded, this, &DFontPreviewListView::onMultiItemsAdded);
-    connect(this, &DFontPreviewListView::itemRemoved, this, &DFontPreviewListView::onItemRemoved);
-    connect(this, &DFontPreviewListView::requestUpdateModel, this, &DFontPreviewListView::updateModel);
 
+    //启动检测加载状态的定时器
     m_fontLoadTimer = new QTimer(this);
-    connect(m_fontLoadTimer, &QTimer::timeout, this, [ = ] {
-        //打开应用后每隔一段时间去检测一次后台数据加载状态，加载完成后，将所有数据刷新出来
-        if (m_bLoadDataFinish)
-        {
-            qDebug() << m_dataThread->m_fontModelList.size();
-            QList<DFontPreviewItemData> data = m_dataThread->m_fontModelList.mid(50, m_dataThread->m_fontModelList.size());
-            Q_EMIT multiItemsAdded(data, DFontSpinnerWidget::StartupLoad);
-            m_dataThread->m_isAllLoaded = true;
-            m_fontLoadTimer->stop();
-        }
-    });
-
     m_fontLoadTimer->start(500);
-
-    connect(m_fontChangeTimer, &QTimer::timeout, this, &DFontPreviewListView::onUpdateCurrentFont);
-
-    connect(m_signalManager, &SignalManager::cancelDel, this, &DFontPreviewListView::cancelDel);
-    /*切换listview后，scrolltotop UT000539*/
-    connect(m_signalManager, &SignalManager::changeView, this, &DFontPreviewListView::viewChanged);
 
     PerformanceMonitor::loadFontStart();
     m_dataThread = DFontPreviewListDataThread::instance(this);
 
-    /*setAutoScroll(true);*/
     setMouseTracking(true);
     setUpdatesEnabled(true);
-    setSelectionMode(QAbstractItemView::ExtendedSelection);
+    setSelectionMode(QAbstractItemView::SingleSelection);
 
     initFontListData();
-
     initDelegate();
     initConnections();
-
     installEventFilter(this);
 
     grabGesture(Qt::TapGesture);
@@ -261,10 +237,22 @@ void DFontPreviewListView::initDelegate()
 *************************************************************************/
 void DFontPreviewListView::initConnections()
 {
+    connect(this, &DFontPreviewListView::itemsSelected, this, &DFontPreviewListView::selectFonts);
+    connect(this, &DFontPreviewListView::multiItemsAdded, this, &DFontPreviewListView::onMultiItemsAdded);
+    connect(this, &DFontPreviewListView::itemRemoved, this, &DFontPreviewListView::onItemRemoved);
+    connect(this, &DFontPreviewListView::requestUpdateModel, this, &DFontPreviewListView::updateModel);
+
+    connect(m_signalManager, &SignalManager::cancelDel, this, &DFontPreviewListView::cancelDel);
+    /*切换listview后，scrolltotop UT000539*/
+    connect(m_signalManager, &SignalManager::changeView, this, &DFontPreviewListView::viewChanged);
     connect(m_signalManager, &SignalManager::clearRecoverList, this, [ = ] {
         m_recoverSelectStateList.clear();
         setUserFontInUseSelected(false);
     });
+
+    //打开应用后每隔一段时间去检测一次后台数据加载状态，加载完成后，将所有数据刷新出来
+    connect(m_fontLoadTimer, &QTimer::timeout, this,&DFontPreviewListView::loadLeftFonts);
+    connect(m_fontChangeTimer, &QTimer::timeout, this, &DFontPreviewListView::onUpdateCurrentFont);
 }
 
 /*************************************************************************
@@ -294,6 +282,27 @@ void DFontPreviewListView::cancelDel()
 {
     m_selectAfterDel = -1;
     setFontViewHasFocus(false);
+}
+
+/*************************************************************************
+ <Function>      loadLeftFonts
+ <Description>   加载启动过程中未加载的字体
+ <Author>        UT000442
+ <Input>
+    <param1>     null            Description:null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
+void DFontPreviewListView::loadLeftFonts()
+{
+    if (!m_dataThread->m_isAllLoaded)
+    {
+        qDebug() << m_dataThread->m_fontModelList.size();
+        QList<DFontPreviewItemData> data = m_dataThread->m_fontModelList.mid(50, m_dataThread->m_fontModelList.size());
+        Q_EMIT multiItemsAdded(data, DFontSpinnerWidget::StartupLoad);
+        m_dataThread->m_isAllLoaded = true;
+        m_fontLoadTimer->stop();
+    }
 }
 
 /*************************************************************************

@@ -1210,6 +1210,10 @@ bool DFontMgrMainWindow::installFont(const QStringList &files, bool isAddBtnHasT
     Dtk::Widget::moveToCenter(m_dfNormalInstalldlg);
     m_dfNormalInstalldlg->exec();
 
+    if(!DFontPreviewListDataThread::instance()->m_isAllLoaded){
+         m_fontPreviewListView->getFontLoadTimer()->start();
+    }
+
     //m_dfNormalInstalldlg->setModal(true);
 
     //Clear installtion flag when NormalInstalltion window is closed

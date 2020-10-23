@@ -211,6 +211,7 @@ void DNoFocusDelegate::paintTabBackground(QPainter *painter, const QStyleOptionV
     setPaintPath(backgroundRect, pathThird, 3, 3, 6);
 
     QColor fillColor = option.palette.color(cg, DPalette::Highlight);
+
     //如果为hover状态，颜色亮度需要加亮
     if (isHover) {
         fillColor = fillColor.light(120);

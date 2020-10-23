@@ -347,7 +347,8 @@ public slots:
     void viewChanged();
     //取消删除后,重置之前记录的删除后的位置
     void cancelDel();
-
+    //加载启动过程中未加载的字体
+    void loadLeftFonts();
 };
 
 #endif  // DFONTPREVIEWLISTVIEW_H
