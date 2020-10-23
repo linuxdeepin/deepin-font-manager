@@ -605,6 +605,7 @@ void DSplitListWidget::mouseReleaseEvent(QMouseEvent *event)
             QToolTip::showText(showPoint, tooltip, this);
         });
     }
+
     DListView::mouseReleaseEvent(event);
 }
 

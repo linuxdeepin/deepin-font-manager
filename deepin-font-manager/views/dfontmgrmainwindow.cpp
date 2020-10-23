@@ -2092,12 +2092,14 @@ void DFontMgrMainWindow::hideSpinner()
     m_fontLoadingSpinner->hide();
     m_isNoResultViewShow = false;
 
-//    DFontMgrMainWindow *mw = qobject_cast<DFontMgrMainWindow *>(m_parentWidget);
+    //如果无新装字体，不做后续操作，直接return
+    if (m_installOutFileList.isEmpty())
+        return;
+
     showInstalledFiles();
 
     if (m_isInstallOver) {
-        if (!m_installOutFileList.isEmpty())
-            onShowMessage(m_installOutFileList.size());
+        onShowMessage(m_installOutFileList.size());
         m_isInstallOver = false;
     }
 
@@ -2108,9 +2110,6 @@ void DFontMgrMainWindow::hideSpinner()
     qDebug() << __func__ << "install finish" << endl;
     m_fIsInstalling = false;
 
-    //如果无新装字体，不做后续操作，直接return
-    if (m_installOutFileList.isEmpty())
-        return;
     m_installOutFileList.clear();
 
     onFontListViewRowCountChanged();
