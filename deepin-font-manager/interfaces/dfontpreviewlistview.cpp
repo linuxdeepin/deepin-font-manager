@@ -251,7 +251,7 @@ void DFontPreviewListView::initConnections()
     });
 
     //打开应用后每隔一段时间去检测一次后台数据加载状态，加载完成后，将所有数据刷新出来
-    connect(m_fontLoadTimer, &QTimer::timeout, this,&DFontPreviewListView::loadLeftFonts);
+    connect(m_fontLoadTimer, &QTimer::timeout, this, &DFontPreviewListView::loadLeftFonts);
     connect(m_fontChangeTimer, &QTimer::timeout, this, &DFontPreviewListView::onUpdateCurrentFont);
 }
 
@@ -295,8 +295,7 @@ void DFontPreviewListView::cancelDel()
 *************************************************************************/
 void DFontPreviewListView::loadLeftFonts()
 {
-    if (m_bLoadDataFinish)
-    {
+    if (m_bLoadDataFinish && !m_dataThread->m_isAllLoaded) {
         qDebug() << m_dataThread->m_fontModelList.size();
         QList<DFontPreviewItemData> data = m_dataThread->m_fontModelList.mid(50, m_dataThread->m_fontModelList.size());
         Q_EMIT multiItemsAdded(data, DFontSpinnerWidget::StartupLoad);
