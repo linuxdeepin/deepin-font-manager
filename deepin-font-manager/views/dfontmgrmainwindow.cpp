@@ -237,6 +237,7 @@ void DFontMgrMainWindow::initConnections()
     [this](const QStringList & files) {
         this->installFontFromSys(files);
         //在此停止listview中的计时器，否则在系统中选择字体安装时会卡死
+
         m_fontPreviewListView->getFontLoadTimer()->stop();
     });
 
@@ -1212,9 +1213,7 @@ bool DFontMgrMainWindow::installFont(const QStringList &files, bool isAddBtnHasT
     Dtk::Widget::moveToCenter(m_dfNormalInstalldlg);
     m_dfNormalInstalldlg->exec();
 
-    if(!DFontPreviewListDataThread::instance()->m_isAllLoaded){
-         m_fontPreviewListView->getFontLoadTimer()->start();
-    }
+
 
     //m_dfNormalInstalldlg->setModal(true);
 
@@ -1756,6 +1755,11 @@ void DFontMgrMainWindow::onInstallWindowDestroyed(QObject *)
         //成功安装的字体数目为0时,在这里将安装标志位复位
         qDebug() << __func__ << "install finish" << endl;
         m_installFinish = true;
+
+        if(!DFontPreviewListDataThread::instance()->m_isAllLoaded){
+             m_fontPreviewListView->getFontLoadTimer()->start(500);
+        }
+
         hideSpinner();
     }
     m_fIsInstalling = false;

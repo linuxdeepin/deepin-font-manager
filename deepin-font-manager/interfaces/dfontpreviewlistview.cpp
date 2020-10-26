@@ -30,7 +30,7 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
     m_fontPreviewItemModel->setColumnCount(1);
     setFrameShape(QFrame::NoFrame);
 
-    //启动检测加载状态的定时器
+//    //启动检测加载状态的定时器
     m_fontLoadTimer = new QTimer(this);
     m_fontLoadTimer->start(500);
 
