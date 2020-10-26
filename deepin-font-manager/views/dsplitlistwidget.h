@@ -82,6 +82,8 @@ public:
     //设置m_LastPageNumber接口
     void setLastPageNumber(int LastPageNumber);
 
+    void setIsIstalling(bool isIstalling);
+
 private:
     bool m_refreshFinished = true;
     bool m_isFocusFromFontListView{false};
@@ -102,6 +104,7 @@ private:
     //用于判断是否弹出提示信息的鼠标状态标志位
     bool m_isMouseMoved{false};
 
+    bool m_isIstalling = false;
     //记录上一个界面对应的数字，用于之后的处理
     int m_LastPageNumber = -1;
 

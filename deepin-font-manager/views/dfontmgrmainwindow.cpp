@@ -1175,6 +1175,7 @@ bool DFontMgrMainWindow::installFont(const QStringList &files, bool isAddBtnHasT
 {
     PerformanceMonitor::installFontStart();
 
+    Q_D(DFontMgrMainWindow);
     QStringList installFiles = checkFilesSpace(files);
     if (installFiles.count() == 0) {
         onShowMessage(0);
@@ -1206,6 +1207,7 @@ bool DFontMgrMainWindow::installFont(const QStringList &files, bool isAddBtnHasT
      * to set flag avoid
      */
     m_fIsInstalling = true;
+    d->leftSiderBar->setIsIstalling(true);
     m_installOutFileList.clear();
     Dtk::Widget::moveToCenter(m_dfNormalInstalldlg);
     m_dfNormalInstalldlg->exec();
@@ -2087,6 +2089,8 @@ void DFontMgrMainWindow::showSpinner(DFontSpinnerWidget::SpinnerStyles styles, b
 *************************************************************************/
 void DFontMgrMainWindow::hideSpinner()
 {
+    Q_D(DFontMgrMainWindow);
+
     qDebug() << __FUNCTION__ << "m_cacheFinish : " << m_cacheFinish << m_installFinish;
     if (!m_cacheFinish || !m_installFinish) {
         return;
@@ -2096,6 +2100,7 @@ void DFontMgrMainWindow::hideSpinner()
     m_fontLoadingSpinner->hide();
     m_isNoResultViewShow = false;
 
+    d->leftSiderBar->setIsIstalling(false);
     //如果无新装字体，不做后续操作，直接return
     if (m_installOutFileList.isEmpty())
         return;

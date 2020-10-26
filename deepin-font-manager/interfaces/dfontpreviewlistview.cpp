@@ -39,7 +39,7 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
 
     setMouseTracking(true);
     setUpdatesEnabled(true);
-    setSelectionMode(QAbstractItemView::SingleSelection);
+    setSelectionMode(QAbstractItemView::ExtendedSelection);
 
     initFontListData();
     initDelegate();
@@ -295,7 +295,7 @@ void DFontPreviewListView::cancelDel()
 *************************************************************************/
 void DFontPreviewListView::loadLeftFonts()
 {
-    if (!m_dataThread->m_isAllLoaded)
+    if (m_bLoadDataFinish)
     {
         qDebug() << m_dataThread->m_fontModelList.size();
         QList<DFontPreviewItemData> data = m_dataThread->m_fontModelList.mid(50, m_dataThread->m_fontModelList.size());

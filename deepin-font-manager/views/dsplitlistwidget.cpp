@@ -424,6 +424,11 @@ void DSplitListWidget::setCurrentStatus(const FocusStatus &currentStatus)
 *************************************************************************/
 void DSplitListWidget::mouseMoveEvent(QMouseEvent *event)
 {
+    //正在安装过程中，禁止鼠标事件
+    if(m_isIstalling){
+        return;
+    }
+
     //更新用于判断是否弹出提示信息的鼠标状态标志位
     m_isMouseMoved = true;
     if (QToolTip::isVisible()) {
@@ -565,6 +570,11 @@ void DSplitListWidget::setLastPageNumber(int LastPageNumber)
     m_LastPageNumber = LastPageNumber;
 }
 
+void DSplitListWidget::setIsIstalling(bool isIstalling)
+{
+    m_isIstalling = isIstalling;
+}
+
 /*************************************************************************
  <Function>      mouseReleaseEvent
  <Description>   鼠标释放事件
@@ -576,6 +586,9 @@ void DSplitListWidget::setLastPageNumber(int LastPageNumber)
 *************************************************************************/
 void DSplitListWidget::mouseReleaseEvent(QMouseEvent *event)
 {
+    //正在安装过程中，禁止鼠标事件
+    if(m_isIstalling)
+        return;
     QPoint clickPoint = event->pos();
     QModelIndex modelIndex = indexAt(clickPoint);
     //  根据移动趋势进行移动到分割线时的处理
@@ -755,7 +768,8 @@ void DSplitListWidget::mousePressEvent(QMouseEvent *event)
     QModelIndex modelIndex = indexAt(clickPoint);
 
     m_IsMouseClicked = true;
-    if (Qt::RightButton == event->button() || Qt::MiddleButton == event->button()) {
+    //正在安装过程中，禁止鼠标事件
+    if (Qt::RightButton == event->button() || Qt::MiddleButton == event->button() || m_isIstalling) {
         return;
     }
 
