@@ -305,15 +305,16 @@ void DFontMgrMainWindow::initConnections()
             &DFontMgrMainWindow::onFontInstallFinished);
 
     connect(m_fontManager, &DFontManager::cacheFinish, this, [ = ] {
-        qDebug() << "cache finish";
+        qDebug() << "set m_cacheFinish = true";
         m_cacheFinish = true;
         hideSpinner();
-    });
+    }, Qt::QueuedConnection);
 
     connect(m_fontPreviewListView, &DFontPreviewListView::requestInstFontsUiAdded, this, [ = ] {
+        qDebug() << "set m_installFinish = true";
         m_installFinish = true;
         hideSpinner();
-    });
+    }, Qt::QueuedConnection);
 
     /*调节右下角字体大小显示label显示内容 UT000539*/
     connect(qApp, &DApplication::fontChanged, this, [ = ]() {
@@ -1176,6 +1177,11 @@ bool DFontMgrMainWindow::installFont(const QStringList &files, bool isAddBtnHasT
 {
     PerformanceMonitor::installFontStart();
 
+    //安装前将这两个标志位复位，避免出现异常情况
+
+    m_cacheFinish = false;
+    m_installFinish = false;
+
     Q_D(DFontMgrMainWindow);
     QStringList installFiles = checkFilesSpace(files);
     if (installFiles.count() == 0) {
@@ -1567,6 +1573,7 @@ void DFontMgrMainWindow::onFontListViewRowCountChanged()
     DFontPreviewProxyModel *filterModel = m_fontPreviewListView->getFontPreviewProxyModel();
     if (filterModel == nullptr)
         return;
+
     if (0 == filterModel->rowCount()) {
         if (m_searchTextStatusIsEmpty) {
             bShow = 2;
@@ -1574,6 +1581,7 @@ void DFontMgrMainWindow::onFontListViewRowCountChanged()
             bShow = 1; //未找到字体
         }
     }
+    qDebug() << filterModel->rowCount() << "-------" << bShow << endl;
     bool isSpinnerHidden = m_fontLoadingSpinner->isHidden();
     switch (bShow) {
     case 0:
@@ -1753,11 +1761,11 @@ void DFontMgrMainWindow::onInstallWindowDestroyed(QObject *)
         }
     } else {
         //成功安装的字体数目为0时,在这里将安装标志位复位
-        qDebug() << __func__ << "install finish" << endl;
+        qDebug() << __func__ << "install finish" << " set m_installFinish = true";
         m_installFinish = true;
 
-        if(!DFontPreviewListDataThread::instance()->m_isAllLoaded){
-             m_fontPreviewListView->getFontLoadTimer()->start(500);
+        if (!DFontPreviewListDataThread::instance()->m_isAllLoaded) {
+            m_fontPreviewListView->getFontLoadTimer()->start(500);
         }
 
         hideSpinner();
