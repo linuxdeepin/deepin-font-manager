@@ -64,8 +64,7 @@ int main(int argc, char *argv[])
     app.setProductIcon(QIcon::fromTheme(DEEPIN_FONT_MANAGER));
     app.setProductName(DApplication::translate("Main", "Font Manager"));
     app.setApplicationDescription(DApplication::translate("Main", "Font Manager helps users install and manage fonts."));
-    app.setApplicationDisplayName(QApplication::translate("CalendarWindow", "Calendar"));
-
+  
     DApplicationSettings savetheme;
 
     DLogManager::registerConsoleAppender();
