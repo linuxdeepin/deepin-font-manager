@@ -53,6 +53,7 @@ int main(int argc, char *argv[])
     app.setApplicationAcknowledgementPage("https://www.deepin.org/original/deepin-font-installer/");
     app.setProductIcon(QIcon::fromTheme(DEEPIN_FONT_MANAGER));
     app.setProductName(DApplication::translate("Main", "Font Manager"));
+    app.setApplicationDisplayName(DApplication::translate("Main", "Font Manager"));
     app.setApplicationDescription(DApplication::translate("Main", "Font Manager helps users install and manage fonts."));
 
     DApplicationSettings savetheme;
