@@ -46,12 +46,6 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
     initConnections();
     installEventFilter(this);
 
-    grabGesture(Qt::TapGesture);
-    grabGesture(Qt::TapAndHoldGesture);
-    grabGesture(Qt::PanGesture);
-    grabGesture(Qt::PinchGesture);
-    grabGesture(Qt::SwipeGesture);
-
     m_curAppFont.setFamily(QString());
     m_curAppFont.setStyleName(QString());
 }
@@ -384,50 +378,6 @@ int DFontPreviewListView::getOnePageCount()
     int  count = height / itemHeight;
     return count;
 }
-
-/*************************************************************************
- <Function>      touchPanelClick
- <Description>   触摸屏点击响应函数
- <Author>        ut000442
- <Input>
-    <param1>     event           Description:鼠标点击事件
- <Return>        null            Description:null
- <Note>          null
-*************************************************************************/
-//void DFontPreviewListView::touchPanelClick(QMouseEvent *event)
-//{
-//    lastTouchBeginPos = event->pos();
-
-//    // 清空触屏滚动操作，因为在鼠标按下时还不知道即将进行的是触屏滚动还是文件框选
-//    if (QScroller::hasScroller(this)) {
-//        QScroller::scroller(this)->deleteLater();
-//    }
-
-//    if (touchCheckTimer) {
-//        touchCheckTimer->stop();
-//    } else {
-//        touchCheckTimer = new QTimer(this);
-//        touchCheckTimer->setSingleShot(true);
-
-//        //读取dde配置的按压时长
-//        static QObject *theme_settings = reinterpret_cast<QObject *>(qvariant_cast<quintptr>(qApp->property("_d_theme_settings_object")));
-//        QVariant touchFlickBeginMoveDelay;
-//        if (theme_settings) {
-//            touchFlickBeginMoveDelay = theme_settings->property("touchFlickBeginMoveDelay");
-//        }
-//        //若dde配置了则使用dde的配置，若没有则使用默认的200ms
-//        touchCheckTimer->setInterval(touchFlickBeginMoveDelay.isValid() ? touchFlickBeginMoveDelay.toInt() : DEFAULT_PRESSTIME_LENGTH);
-
-//        connect(touchCheckTimer, &QTimer::timeout, touchCheckTimer, &QTimer::deleteLater);
-//    }
-
-//    touchCheckTimer->start();
-
-////    mouseLastPressedIndex = QModelIndex();
-////    QListView::mousePressEvent(event);
-////    return;
-//}
-
 
 /*************************************************************************
  <Function>      updateSpinner
@@ -907,34 +857,7 @@ void DFontPreviewListView::mouseMoveEvent(QMouseEvent *event)
             }
         }
     }
-
-//    const QPoint difference_pos = event->pos() - lastTouchBeginPos;
-
-//    if (event->source() == Qt::MouseEventSynthesizedByQt) {
-//        if (QScroller::hasScroller(this))
-//            return;
-
-//        // 在定时器期间收到鼠标move事件且距离大于一定值则认为触发视图滚动,没有收到就是认为触发多选
-//        if (touchCheckTimer && touchCheckTimer->isActive()) {
-//            qDebug() << qAbs(difference_pos.x()) << "++++++++++++++++" << qAbs(difference_pos.y()) << "+++++++++++++++++++++++++" << endl;
-//            if (qAbs(difference_pos.x()) > 200
-//                    || qAbs(difference_pos.y()) > 200) {
-//                QScroller::grabGesture(this);
-//                QScroller *scroller = QScroller::scroller(this);
-
-//                scroller->handleInput(QScroller::InputPress, event->localPos(), static_cast<qint64>(event->timestamp()));
-//                scroller->handleInput(QScroller::InputMove, event->localPos(), static_cast<qint64>(event->timestamp()));
-//            }
-//            return;
-//        }
-//    }
-
-//    if (qAbs(difference_pos.x()) > 5
-//            || qAbs(difference_pos.y()) > 5)
     return  QListView::mouseMoveEvent(event);
-
-//    QListView::mouseMoveEvent(event);
-
 }
 
 /*************************************************************************
