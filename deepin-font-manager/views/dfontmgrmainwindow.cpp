@@ -1189,7 +1189,8 @@ bool DFontMgrMainWindow::installFont(const QStringList &files, bool isAddBtnHasT
         return false;
     }
 
-    if (m_fIsInstalling) {
+    //ut000442 bug 54129
+    if (m_fIsInstalling || m_fontLoadingSpinner->isVisible()) {
         qDebug() << "Already exist a installtion flow";
         return false;
     }
