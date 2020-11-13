@@ -762,9 +762,12 @@ void DFontPreviewListView::selectFonts(const QStringList &fileList)
         return;
 
     QItemSelection selection;
-    qDebug() << __FUNCTION__ << " fileList size " << fileList.size() << ", row count " << getFontPreviewProxyModel()->rowCount();
-    for (int i = 0; i < getFontPreviewProxyModel()->rowCount(); ++i) {
-        QModelIndex index = getFontPreviewProxyModel()->index(i, 0);
+    DFontPreviewProxyModel *filterModel = getFontPreviewProxyModel();
+    filterModel->setFilterGroup(DSplitListWidget::UserFont);
+
+    qDebug() << __FUNCTION__ << " fileList size " << fileList.size() << ", row count " << filterModel->rowCount();
+    for (int i = 0; i < filterModel->rowCount(); ++i) {
+        QModelIndex index = filterModel->index(i, 0);
         FontData fdata = qvariant_cast<FontData>(m_fontPreviewProxyModel->data(index));
         DFontPreviewItemData itemData = m_dataThread->getFontData(fdata);
         if (itemData.fontInfo.filePath.isEmpty()) {
