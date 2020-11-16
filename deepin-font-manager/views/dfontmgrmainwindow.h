@@ -277,6 +277,7 @@ protected:
 
     bool m_leftListViewTabFocus = false;
     bool m_previewListViewTabFocus = false;
+    bool m_needWaitThreadStop = false;
 
     bool m_isSearchLineEditMenuPoped{false};
     bool m_isInputLineEditMunuPoped{false};

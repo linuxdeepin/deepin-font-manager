@@ -85,6 +85,7 @@ void DFontPreviewListDataThread::doWork()
     QStringList disableFontList = DFMXmlWrapper::getFontConfigDisableFontPathList();
 
     FontManager::getFontList(true);
+
     if (!m_fontModelList.isEmpty()) {
         //从fontconfig配置文件同步字体启用/禁用状态数据
         syncFontEnableDisableStatusData(disableFontList);
@@ -506,7 +507,7 @@ int DFontPreviewListDataThread::insertFontItemData(const QString &filePath,
  <Return>        null            Description:null
  <Note>          null
 *************************************************************************/
-void DFontPreviewListDataThread::refreshFontListData(bool isStartup, const QStringList &installFont)
+void DFontPreviewListDataThread:: refreshFontListData(bool isStartup, const QStringList &installFont)
 {
     qDebug() << __FUNCTION__ << " begin" << isStartup << installFont.size() << QThread::currentThreadId() << m_fontModelList.size();
 
