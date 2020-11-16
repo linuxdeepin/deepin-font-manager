@@ -129,7 +129,9 @@ private:
     QStringList m_instFileList;
     QStringList m_installOutList;
     QStringList m_uninstFile;
+
     volatile bool m_installCanceled = false;
+
     Type m_type{Type::DefaultNullType};
     CacheStatus m_CacheStatus;
     int m_installedCount = 0;

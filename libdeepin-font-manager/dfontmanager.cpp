@@ -130,7 +130,7 @@ void DFontManager::setUnInstallFile(const QStringList &filePath)
 *************************************************************************/
 void DFontManager::run()
 {
-    qDebug() << __FUNCTION__ << "start" << m_type << endl;
+    qInfo() << __FUNCTION__ << "start" << m_type << endl;
     switch (m_type) {
     case Install:
     case HalfwayInstall:
@@ -142,10 +142,11 @@ void DFontManager::run()
         break;
     case DoCache:
         doCache();
+        break;
     default:
         break;
     }
-    qDebug() << __FUNCTION__ << "end" << m_type;
+    qInfo() << __FUNCTION__ << "end" << m_type;
 }
 
 /*************************************************************************
@@ -305,7 +306,7 @@ void DFontManager::onInstallResult(const QString &familyName, const QString &tar
     double percent = m_installedCount / double(totalCount) * 100;
     /* 此处需要优化,信号太频繁,进度每增加1%发送一次信号即可 UT000591 */
     static double lastSendPercent = 0.0;
-    if ( (lastSendPercent < 0.001) || (percent - lastSendPercent > 0.999) || (percent - lastSendPercent < -0.001)) {
+    if ((lastSendPercent < 0.001) || (percent - lastSendPercent > 0.999) || (percent - lastSendPercent < -0.001)) {
         Q_EMIT batchInstall(familyName, percent);
         lastSendPercent = percent;
     }

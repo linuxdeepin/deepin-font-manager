@@ -384,6 +384,15 @@ void DFontMgrMainWindow::initConnections()
         }
         m_hasMenuTriggered = false;
     });
+
+    connect(m_fontManager, &QThread::finished, this, [ = ] {
+        if (m_needWaitThreadStop)
+        {
+            m_fontManager->setType(DFontManager::DoCache);
+            m_fontManager->start();
+            m_needWaitThreadStop = false;
+        }
+    });
 }
 
 /*************************************************************************
@@ -1755,8 +1764,12 @@ void DFontMgrMainWindow::onInstallWindowDestroyed(QObject *)
         //check if need to do cache
         if (m_fontManager->needCache()) {
             qDebug() << __FUNCTION__ << "need doCache";
-            m_fontManager->setType(DFontManager::DoCache);
-            m_fontManager->start();
+            if (m_fontManager->isFinished()) {
+                m_fontManager->setType(DFontManager::DoCache);
+                m_fontManager->start();
+            } else {
+                m_needWaitThreadStop = true;
+            }
         } else {
             qDebug() << __FUNCTION__ << "no need doCache";
         }
@@ -1940,6 +1953,7 @@ void DFontMgrMainWindow::dropEvent(QDropEvent *event)
         if (installFileList.size() > 0) {
             event->accept();
             Q_EMIT fileSelected(installFileList, false);
+            qDebug() << installFileList << "drop in files :" << endl;
         } else {
             event->ignore();
         }
