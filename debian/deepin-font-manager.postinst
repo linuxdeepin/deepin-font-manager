@@ -1,4 +1,0 @@
-#! /bin/bash
-
-mkdir -p /usr/share/fonts/deepin-font-install
-mkdir -p ~/.deepin-font-manager/

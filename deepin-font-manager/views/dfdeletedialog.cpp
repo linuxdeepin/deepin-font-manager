@@ -8,6 +8,7 @@
 #include <DFontSizeManager>
 
 #include <QHBoxLayout>
+#include <QKeyEvent>
 
 /*************************************************************************
  <Function>      DFDeleteDialog

@@ -10,6 +10,7 @@
 
 #include <QApplication>
 #include <QMenu>
+#include <QMouseEvent>
 
 DWIDGET_USE_NAMESPACE
 

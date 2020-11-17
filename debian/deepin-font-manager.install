@@ -1,5 +1,0 @@
-usr/bin/*
-usr/share/applications/deepin-font-manager.desktop
-usr/share/deepin-font-manager/translations/*.qm
-/usr/lib/*/dde-file-manager/plugins/previews/*.so
-/usr/share/icons/hicolor/scalable/apps/*

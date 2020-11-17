@@ -225,7 +225,8 @@ void DFontPreview::isNeedScroll(const int width)
 *************************************************************************/
 void DFontPreview::initContents()
 {
-    QFile file("/usr/share/deepin-font-manager/CONTENTS.txt");
+    // libfont-manager.so中已经有CONTENTS.txt，需要重命名为contents.txt才可以安装。
+    QFile file("/usr/share/deepin-font-manager/contents.txt");
 
     if (!file.open(QIODevice::ReadOnly)) {
         return;

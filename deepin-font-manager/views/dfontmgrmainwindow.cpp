@@ -27,6 +27,9 @@
 
 #include <QFileSystemWatcher>
 #include <QDBusConnection>
+#include <QContextMenuEvent>
+#include <QDragEnterEvent>
+#include <QDropEvent>
 
 class DFontMgrMainWindowPrivate
 {
