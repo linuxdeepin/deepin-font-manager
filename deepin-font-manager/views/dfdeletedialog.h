@@ -4,15 +4,14 @@
 #include "dfontbasedialog.h"
 #include "signalmanager.h"
 
-
 #include <DLabel>
 #include <DPushButton>
 #include <DWarningButton>
 
+DWIDGET_USE_NAMESPACE
+
 class DFontMgrMainWindow;
 
-
-DWIDGET_USE_NAMESPACE
 /*************************************************************************
  <Class>         DFontBaseDialog
  <Description>   此类为字体删除确认页面，主要功能为确认删除字体和取消删除字体

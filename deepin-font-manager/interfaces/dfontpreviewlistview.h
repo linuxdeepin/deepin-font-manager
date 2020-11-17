@@ -8,15 +8,13 @@
 #include "dfmdbmanager.h"
 #include "signalmanager.h"
 #include "../views/dfontspinnerwidget.h"
+
 #include <QScrollBar>
 #include <QListView>
-
-#include <QMouseEvent>
-#include <QSortFilterProxyModel>
 #include <QPointer>
 
-
 class DFontMgrMainWindow;
+
 /*************************************************************************
  <Class>         DFontPreviewListView
  <Description>   字体预览列表listview,负责显示每个字体的状态,字体基本信息以及预览效果
@@ -76,7 +74,10 @@ public:
     //返回当前项的itemdata
     DFontPreviewItemData currModelData();
     //获取listview的model
-    DFontPreviewProxyModel *getFontPreviewProxyModel();
+    DFontPreviewProxyModel *getFontPreviewProxyModel()
+    {
+        return m_fontPreviewProxyModel;
+    }
     //清空收藏图标的press状态
     void clearPressState(ClearType clearType, int nowPressedPos = -2);
     //清空hover状态
@@ -107,10 +108,11 @@ public:
     }
     //根据文件路径删除字体列表中项
     void deleteFontModelIndex(DFontPreviewItemData &itemData);
-    //返回是否正在删除
-    inline bool isDeleting();
     //获取线程锁
-    QMutex *getMutex();
+    QMutex *getMutex()
+    {
+        return &m_mutex;
+    }
     QMenu *m_rightMenu {nullptr};
     //加入启用字体列表
     void enableFont(const QString &filePath);
@@ -124,18 +126,19 @@ public:
     void scrollWithTheSelected();
     //更新shift选中的字体
     void updateShiftSelect(const QModelIndex &modelIndex);
-    //判断listview是否在底部
-    bool isAtListviewBottom();
-    //判断listview是否在顶部
-    bool isAtListviewTop();
+    //判断listview是否在底部和在顶部
+    void getAtListViewPosition()
+    {
+        m_bListviewAtButtom = (verticalScrollBar()->value() >= this->verticalScrollBar()->maximum());
+        m_bListviewAtTop = (verticalScrollBar()->value() <= this->verticalScrollBar()->minimum());
+    }
     //记录当前选中行的行数
-    void setCurrentSelected(int indexRow);
-    //取消删除后,重置之前记录的删除后的位置
-    void cancelDel();
-    //切换界面后,滚动到最上方
-    void viewChanged();
+    void setCurrentSelected(int indexRow)
+    {
+        m_currentSelectedRow = indexRow;
+    }
     //记录移除前位置
-    void markPositionBeforeRemoved(bool isDelete, const QModelIndexList &list); //记录移除前位置
+    void markPositionBeforeRemoved();
     //设置focus状态、设置选中状态
     void refreshFocuses();
     //更新加载动画spinner
@@ -152,30 +155,60 @@ public:
     }
 
     //获取是否为tab focus
-    bool getIsTabFocus() const;
+    bool getIsTabFocus() const
+    {
+        return m_IsTabFocus;
+    }
     //设置是否为tabfocus的标志位
-    void setIsTabFocus(bool IsTabFocus);
+    void setIsTabFocus(bool IsTabFocus)
+    {
+        m_IsTabFocus = IsTabFocus;
+    }
     //Alt+M右键菜单--弹出
     void onRightMenuShortCutActivated();//SP3--Alt+M右键菜单
     //检查鼠标是否处于hover状态
     void checkHoverState();
     //记录操作前的tabfocus状态,用于进行操作后还原
-    void setRecoveryTabFocusState(bool recoveryTabFocusState);
-    //是否由左侧菜单而来的焦点
-    void setIsLostFocusOfLeftKey(bool isLostFocusOfLeftKey);
+    void setRecoveryTabFocusState(bool recoveryTabFocusState)
+    {
+        m_recoveryTabFocusState = recoveryTabFocusState;
+    }
     //是否由slider获取的焦点
-    void setIsGetFocusFromSlider(bool isGetFocusFromSlider);
+    void setIsGetFocusFromSlider(bool isGetFocusFromSlider)
+    {
+        m_isGetFocusFromSlider = isGetFocusFromSlider;
+    }
     //根据是否需要恢复tab聚焦状态进行恢复
-    void syncTabStatus(bool restoreFlag = true);
+    void syncTabStatus(bool restoreFlag = true)
+    {
+        setIsTabFocus(m_recoveryTabFocusState);
+        if (restoreFlag)
+            m_recoveryTabFocusState = false;
+    }
     //是否需要恢复tab聚焦状态
-    bool getRecoveryTabFocusState() const;
+    bool getRecoveryTabFocusState() const
+    {
+        return m_recoveryTabFocusState;
+    }
     //记录当前是否为tab聚焦状态
-    void syncRecoveryTabStatus();
-    void setFontViewHasFocus(bool FontViewHasFocus);
+    void syncRecoveryTabStatus()
+    {
+        setRecoveryTabFocusState(m_IsTabFocus);
+    }
+    //记录操作前字体列表有无焦点
+    void setFontViewHasFocus(bool FontViewHasFocus)
+    {
+        m_FontViewHasFocus = FontViewHasFocus;
+    }
     //获取操作前字体列表焦点状态
     inline bool getFontViewHasFocus() const
     {
         return m_FontViewHasFocus;
+    }
+    //更新是否选中,正在使用的用户字体标志位状态
+    void setUserFontInUseSelected(bool curFontSelected)
+    {
+        m_userFontInUseSelected = curFontSelected;
     }
 
 protected:
@@ -194,18 +227,12 @@ private:
     inline QRect getCheckboxRect(const QRect &rect);
     //设置Font data
     void setFontData(const QModelIndex &index, const DFontPreviewItemData &itemData);
-    //对选中字体的索引按照row从大到小进行排序，为了在我的收藏界面和已激活界面进行操作时
-    void sortModelIndexList(QModelIndexList &sourceList);
     //设置item移除后的选中
     void selectItemAfterRemoved(bool isAtBottom, bool isAtTop, bool isCollectionPage, bool hasDisableFailedFont); //设置item移除后的选中
-    //记录下当前选中的位置,用于局中显示
-    void refreshRect();
     //更新选中状态
     void updateSelection();
     //获取一页中列表项的个数
     int getOnePageCount();
-    //触摸屏点击响应函数
-    void touchPanelClick(QMouseEvent *event);
     //根据按键设置选中
     void keyPressEventFilter(const QModelIndexList &list, bool isUp, bool isDown, bool isShiftModifier);
     //检查当前是否无选中
@@ -221,16 +248,12 @@ private:
     volatile bool m_fontChanged = false;
     bool m_bListviewAtButtom = false;
     bool m_bListviewAtTop = false;
-    bool m_isLostFocusOfLeftKey{false};
 
-    bool m_IsNeedFocus = false;//是否需要设置聚焦
     bool m_isGetFocusFromSlider{false};
     bool m_IsTabFocus = false;
     bool m_isMousePressNow {false};
     //记录删除前字体列表焦点状态539
     bool m_FontViewHasFocus{false};
-    QPoint lastTouchBeginPos;
-    QPointer<QTimer> touchCheckTimer;
 
     DFontMgrMainWindow *m_parentWidget;
     QStandardItemModel *m_fontPreviewItemModel {nullptr};
@@ -256,7 +279,7 @@ private:
     QRect m_curRect;
     //是否需要恢复tab状态
     bool m_recoveryTabFocusState = false;
-    bool m_curFontSelected{false};
+    bool m_userFontInUseSelected{false};
     int m_currentSelectedRow = -1;
     int m_selectAfterDel = -1;/*539 删除后的选中位置*/
     int m_tryCnt = 0;
@@ -282,9 +305,9 @@ signals:
 
 public slots:
     //listview中启用禁用响应函数
-    void onEnableBtnClicked(const QModelIndexList &itemIndexes, int systemCnt, int curCnt, bool setValue, bool isFromActiveFont = false);
+    void onEnableBtnClicked(QModelIndexList &itemIndexes, int systemCnt, int curCnt, bool setValue, bool isFromActiveFont = false);
     //listview收藏界面点击后触发函数
-    void onCollectBtnClicked(const QModelIndexList &index, bool setValue, bool isFromCollectFont = false);
+    void onCollectBtnClicked(QModelIndexList &index, bool setValue, bool isFromCollectFont = false);
     //显示右键菜单
     void onListViewShowContextMenu();
     //数据加载完成响应函数
@@ -301,6 +324,10 @@ public slots:
     void onItemRemoved(DFontPreviewItemData &itemData);
     //删除字体后更新整个model
     void updateModel(bool showSpinner = true);
+    //切换界面后,滚动到最上方
+    void viewChanged();
+    //取消删除后,重置之前记录的删除后的位置
+    void cancelDel();
 };
 
 #endif  // DFONTPREVIEWLISTVIEW_H

@@ -7,15 +7,13 @@
 #include "globaldef.h"
 #include "interfaces/dfontpreviewer.h"
 
+#include <DWidgetUtil>
 #include <DLog>
-#include <DPalette>
 #include <DPushButton>
 #include <DTitlebar>
 #include <DApplicationHelper>
-#include <DWidgetUtil>
 
 #include <QFontDatabase>
-#include <QResizeEvent>
 #include <QVBoxLayout>
 
 DFQuickInstallWindow::DFQuickInstallWindow(QStringList files, QWidget *parent)
@@ -279,23 +277,24 @@ void DFQuickInstallWindow::InitPreviewFont(DFontInfo &fontInfo)
             preivewFont.setItalic(true);
         }
 
-        if (styleName.contains("Regular")) {
+        //之前代码顺序出现问题，导致有的时候contains判断出错 比如DemiBold与Bold，现在调整代码顺序
+        if (styleName.contains("Regular", Qt::CaseInsensitive)) {
             preivewFont.setWeight(QFont::Normal);
-        } else if (styleName.contains("Bold")) {
-            preivewFont.setWeight(QFont::Bold);
-        } else if (styleName.contains("Light")) {
-            preivewFont.setWeight(QFont::Light);
-        } else if (styleName.contains("Thin")) {
-            preivewFont.setWeight(QFont::Thin);
-        } else if (styleName.contains("ExtraLight")) {
-            preivewFont.setWeight(QFont::ExtraLight);
-        } else if (styleName.contains("ExtraBold")) {
-            preivewFont.setWeight(QFont::ExtraBold);
-        } else if (styleName.contains("Medium")) {
-            preivewFont.setWeight(QFont::Medium);
-        } else if (styleName.contains("DemiBold")) {
+        } else if (styleName.contains("DemiBold", Qt::CaseInsensitive)) {
             preivewFont.setWeight(QFont::DemiBold);
-        } else if (styleName.contains("Black")) {
+        } else if (styleName.contains("ExtraBold", Qt::CaseInsensitive)) {
+            preivewFont.setWeight(QFont::ExtraBold);
+        } else if (styleName.contains("Bold", Qt::CaseInsensitive)) {
+            preivewFont.setWeight(QFont::Bold);
+        } else if (styleName.contains("ExtraLight", Qt::CaseInsensitive)) {
+            preivewFont.setWeight(QFont::ExtraLight);
+        } else if (styleName.contains("Light", Qt::CaseInsensitive)) {
+            preivewFont.setWeight(QFont::Light);
+        } else if (styleName.contains("Thin", Qt::CaseInsensitive)) {
+            preivewFont.setWeight(QFont::Thin);
+        } else if (styleName.contains("Medium", Qt::CaseInsensitive)) {
+            preivewFont.setWeight(QFont::Medium);
+        } else if (styleName.contains("Black", Qt::CaseInsensitive)) {
             preivewFont.setWeight(QFont::Black);
         }
 
@@ -321,11 +320,6 @@ void DFQuickInstallWindow::installFont(const QStringList &files)
     DFInstallNormalWindow dfNormalInstalldlg(files, nullptr);
 
     dfNormalInstalldlg.setSkipException(true);
-
-
-    //Update db after install finish
-    connect(SignalManager::instance(), &SignalManager::finishFontInstall, this,
-            &DFQuickInstallWindow::onFontInstallFinished);
 
     Dtk::Widget::moveToCenter(&dfNormalInstalldlg);
     dfNormalInstalldlg.exec();

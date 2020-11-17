@@ -93,8 +93,8 @@ void DFontBaseDialog::initUI()
 void DFontBaseDialog::InitConnections()
 {
     connect(m_closeButton, &DWindowCloseButton::clicked, this, [this]() {
-        this->close();
         Q_EMIT closeBtnClicked();
+        this->close();
     });
 }
 
@@ -200,15 +200,3 @@ DWindowCloseButton *DFontBaseDialog::getCloseButton() const
     return m_closeButton;
 }
 
-/*************************************************************************
- <Function>      getContent
- <Description>   获取窗口中使用主布局的控件
- <Author>        null
- <Input>         null
- <Return>        null
- <Note>          null
-*************************************************************************/
-QWidget *DFontBaseDialog::getContent() const
-{
-    return m_content;
-}

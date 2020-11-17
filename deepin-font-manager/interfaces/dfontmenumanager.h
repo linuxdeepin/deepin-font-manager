@@ -2,16 +2,11 @@
 #define DFONTMENUMANAGER_H
 #include "dfontpreviewitemdef.h"
 
-#include <QAction>
-#include <QActionGroup>
-#include <QObject>
-#include <QSet>
-#include <QVector>
-#include <QFontDatabase>
-
 #include <DMenu>
 
 DWIDGET_USE_NAMESPACE
+
+struct DFontPreviewItemData;
 
 /*************************************************************************
  <Class>         DFontMenuManager
@@ -19,8 +14,6 @@ DWIDGET_USE_NAMESPACE
  <Author>
  <Note>          null
 *************************************************************************/
-
-struct DFontPreviewItemData;
 class DFontMenuManager : public QObject
 {
     Q_OBJECT

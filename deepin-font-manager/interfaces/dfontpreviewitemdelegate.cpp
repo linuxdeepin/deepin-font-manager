@@ -6,13 +6,9 @@
 #include <DApplication>
 #include <DApplicationHelper>
 #include <DStyleHelper>
-#include <DPalette>
-#include <DLog>
-#include <DCheckBox>
-#include <DLabel>
-#include <DFontSizeManager>
 
 #include <QPainter>
+#include <QCheckBox>
 
 DWIDGET_USE_NAMESPACE
 
@@ -61,7 +57,7 @@ void DFontPreviewItemDelegate::paintForegroundCheckBox(QPainter *painter, const 
     checkBoxOption.state |= itemData.isEnabled() ? QStyle::State_On : QStyle::State_Off;
     checkBoxOption.rect = rect;
 
-    DCheckBox checkBox;
+    QCheckBox checkBox;
     DApplication::style()->drawPrimitive(QStyle::PE_IndicatorCheckBox, &checkBoxOption, painter, &checkBox);
 }
 
@@ -116,7 +112,7 @@ void DFontPreviewItemDelegate::paintForegroundCollectIcon(QPainter *painter, con
     DGuiApplicationHelper *appHelper = DGuiApplicationHelper::instance();
     QString strImgPrefix = (DGuiApplicationHelper::DarkType == appHelper->themeType()) ? QString("dark_") : QString("");
 
-    QString iconStatus = QString("press");
+    QString iconStatus;
     IconStatus status = itemData.getHoverState();
     if (IconHover == status) {
         iconStatus = QString("hover");
@@ -278,7 +274,6 @@ void DFontPreviewItemDelegate::paintBackground(QPainter *painter, const QStyleOp
             //不是通过tab获取到的焦点的情况，再去绘制默认的选中状态，避免的tab选中状态时四个角会出现直角的问题
             DStyleHelper styleHelper;
             QColor fillColor = styleHelper.getColor(static_cast<const QStyleOption *>(&option), DPalette::ToolTipText);
-
             fillColor.setAlphaF(0.2);
             painter->setBrush(QBrush(fillColor));
             painter->fillPath(path, fillColor);
@@ -319,7 +314,7 @@ void DFontPreviewItemDelegate::paintTabFocusBackground(QPainter *painter, const 
     QPainterPath path3;
     setPaintPath(bgRect, path3, 3, 3, 6);
 
-    DPalette::ColorGroup cg = option.state & QStyle::State_Enabled
+    DPalette::ColorGroup cg = (option.state & QStyle::State_Enabled)
                               ? DPalette::Normal : DPalette::Disabled;
     if (cg == DPalette::Normal && !(option.state & QStyle::State_Active)) {
         cg = DPalette::Inactive;
@@ -408,7 +403,7 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
         paintForegroundCollectIcon(painter, option, fontData);
         paintForegroundPreviewFont(painter, option, dData.familyName,
                                    dData.styleName, fontData.isEnabled(),
-                                   fontPixelSize, dData.ownPreview);
+                                   fontPixelSize, fontPreviewContent);
         painter->restore();
     } else {
         QStyledItemDelegate::paint(painter, option, index);

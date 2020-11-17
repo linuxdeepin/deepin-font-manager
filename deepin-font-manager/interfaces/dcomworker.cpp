@@ -1,4 +1,5 @@
 /*
+ *
 * Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd.
 *
 * Author:     lilinling <lilinling@uniontech.com>
@@ -18,19 +19,19 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
 #include "dcomworker.h"
 #include "dfontinfomanager.h"
 #include "dfontpreviewlistdatathread.h"
 #include "dfmdbmanager.h"
 #include "dcopyfilesmanager.h"
 
-#include <QThreadPool>
-#include <QFileInfo>
 #include <QDir>
 
 #include <unistd.h>
 
-DComWorker::DComWorker(QObject *parent) : QObject(parent)
+DComWorker::DComWorker(QObject *parent)
+    : QObject(parent)
 {
     if (!autoDelete())
         setAutoDelete(true);
@@ -38,45 +39,45 @@ DComWorker::DComWorker(QObject *parent) : QObject(parent)
 
 void DComWorker::run()
 {
-
 }
 
-GetFontList::GetFontList(GetFontList::FontType type, bool isStartup, QObject *parent)
+GetFontListWorker::GetFontListWorker(GetFontListWorker::FontType type, bool isStartup, QObject *parent)
     : DComWorker(parent)
     , m_type(type)
     , m_isStartup(isStartup)
 {
-
 }
 
-void GetFontList::run()
+void GetFontListWorker::run()
 {
+    qDebug() << __FUNCTION__ << m_type << "begin";
     DFontInfoManager *inst = DFontInfoManager::instance();
-    DFontPreviewListDataThread *thread = DFontPreviewListDataThread::instance();
-    switch (m_type) {
-    case ALL:
-        DFMDBManager::instance()->checkIfEmpty();
-        thread->m_allFontPathList.clear();
-        thread->m_allFontPathList = inst->getAllFontPath(m_isStartup);
+    DFontPreviewListDataThread *dataThread = DFontPreviewListDataThread::instance();
+    if (m_type == ALL || m_type == AllInSquence) {
+        dataThread->m_allFontPathList.clear();
+        dataThread->m_allFontPathList = inst->getAllFontPath(m_isStartup);
         if (m_isStartup) {
+            DFMDBManager::instance()->checkIfEmpty();
             removeUserAddFonts();
             qDebug() << __FUNCTION__ << m_isStartup;
-            inst->refreshList(thread->m_allFontPathList);
-            thread->m_fontModelList = DFMDBManager::instance()->getAllFontInfo(&thread->m_delFontInfoList);
+            inst->refreshList(dataThread->m_allFontPathList);
+            dataThread->m_fontModelList = DFMDBManager::instance()->getAllFontInfo(&dataThread->m_delFontInfoList);
         }
-        break;
-    case CHINESE:
-        thread->m_chineseFontPathList.clear();
-        thread->m_chineseFontPathList = inst->getAllChineseFontPath();
-        break;
-    case MONOSPACE:
-        thread->m_monoSpaceFontPathList.clear();
-        thread->m_monoSpaceFontPathList = inst->getAllMonoSpaceFontPath();
-        break;
     }
+
+    if (m_type == CHINESE || m_type == AllInSquence) {
+        dataThread->m_chineseFontPathList.clear();
+        dataThread->m_chineseFontPathList = inst->getAllChineseFontPath();
+    }
+
+    if (m_type == MONOSPACE || m_type == AllInSquence) {
+        dataThread->m_monoSpaceFontPathList.clear();
+        dataThread->m_monoSpaceFontPathList = inst->getAllMonoSpaceFontPath();
+    }
+    qDebug() << __FUNCTION__ << m_type << "end";
 }
 
-void GetFontList::removeUserAddFonts()
+void GetFontListWorker::removeUserAddFonts()
 {
     if (geteuid() == 0) {
         return;
@@ -105,11 +106,18 @@ void GetFontList::removeUserAddFonts()
 void FontManager::getFontList(bool isStartup)
 {
     QThreadPool *threadPool = DCopyFilesManager::instance()->getPool();
-    GetFontList *getAll = new GetFontList(GetFontList::ALL, isStartup);
+
+    GetFontListWorker *getAll = new GetFontListWorker(GetFontListWorker::ALL, isStartup);
     threadPool->start(getAll);
-    GetFontList *getChinese = new GetFontList(GetFontList::CHINESE, isStartup);
+    GetFontListWorker *getChinese = new GetFontListWorker(GetFontListWorker::CHINESE, isStartup);
     threadPool->start(getChinese);
-    GetFontList *getMonospace = new GetFontList(GetFontList::MONOSPACE, isStartup);
+    GetFontListWorker *getMonospace = new GetFontListWorker(GetFontListWorker::MONOSPACE, isStartup);
     threadPool->start(getMonospace);
     threadPool->waitForDone();
+}
+
+void FontManager::getFontListInSequence(bool isStartup)
+{
+    GetFontListWorker getFontList(GetFontListWorker::AllInSquence, isStartup);
+    getFontList.run();
 }

@@ -8,8 +8,6 @@
 
 DWIDGET_USE_NAMESPACE
 
-//class DSpinner;
-class QLocalServer;
 /*************************************************************************
  <Class>         SingleFontApplication
  <Description>   返回一个应用的单例对象
@@ -26,8 +24,6 @@ public:
     ~SingleFontApplication();
     //激活应用窗口
     void activateWindow();
-    //设置主窗口属性
-    void setMainWindow(DMainWindow *mainWindow);
     //初始化命令行
     bool parseCmdLine();
 
@@ -38,8 +34,6 @@ public slots:
 private slots:
     //批量安装字体响应
     void slotBatchInstallFonts();
-    //安装完成清空列表
-    void onFontInstallFinished(const QStringList &fileList);
 
 private:
     QStringList m_selectedFiles;

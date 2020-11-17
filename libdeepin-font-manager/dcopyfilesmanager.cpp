@@ -18,19 +18,16 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
 #include "dcopyfilesmanager.h"
 #include "dfontmanager.h"
 
 #include <QDateTime>
-#include <QFile>
-#include <QFileInfo>
 #include <QThread>
 #include <QStandardPaths>
 #include <QApplication>
-#include <QThreadPool>
 #include <QDir>
 #include <QGSettings>
-#include <QVariant>
 #include <QDebug>
 
 const QString sysDir = QDir::homePath() + "/.local/share/fonts";
@@ -92,6 +89,7 @@ void CopyFontThread::appendFile(const QString &filePath)
 //文件拷贝类型：导出 安装
 DCopyFilesManager *DCopyFilesManager::inst = new DCopyFilesManager();
 qint8 DCopyFilesManager::m_type = CopyFontThread::INVALID;
+
 //安装是否被取消
 volatile bool DCopyFilesManager::m_installCanceled = false;
 
@@ -124,14 +122,15 @@ DCopyFilesManager::DCopyFilesManager(QObject *parent)
     if (m_installMaxThreadCnt <= 0)
         m_installMaxThreadCnt = static_cast<qint8>(QThread::idealThreadCount());
 
-    qDebug() << __FUNCTION__ << "export max thread count = " << m_exportMaxThreadCnt << ", install max thread count = " << m_installMaxThreadCnt;
-
-    if (!m_useGlobalPool) {
+    if (!m_useGlobalPool)
         m_localPool = new QThreadPool(this);
-        m_localPool->setMaxThreadCount(QThread::idealThreadCount());
-        if (m_expiryTimeout > 0)
-            m_localPool->setExpiryTimeout(m_expiryTimeout);
-    }
+
+    int maxThreadCnt = m_maxThreadCnt > 0 ? m_maxThreadCnt : QThread::idealThreadCount();
+    getPool()->setMaxThreadCount(maxThreadCnt);
+    if (m_expiryTimeout > 0)
+        getPool()->setExpiryTimeout(m_expiryTimeout);
+
+    qDebug() << __FUNCTION__ << "export max thread count = " << m_exportMaxThreadCnt << ", install max thread count = " << m_installMaxThreadCnt;
 }
 
 DCopyFilesManager *DCopyFilesManager::instance()
@@ -167,7 +166,7 @@ void DCopyFilesManager::copyFiles(CopyFontThread::OPType type, QStringList &font
     }
 
     //debug log
-    qDebug() << __FUNCTION__ << tcount  << type << fontList;
+    qDebug() << __FUNCTION__ << tcount  << type << fontList.size();
 
     int index = 0;
     int maxMod = (2 * tcount - 1) % (2 * tcount);

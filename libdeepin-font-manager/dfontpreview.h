@@ -21,12 +21,13 @@
 #define DFONTPREVIEW_H
 
 #include <QWidget>
-#include <QVBoxLayout>
 #include <QLabel>
 #include <QFontDatabase>
 
 #include <ft2build.h>
+
 #include FT_FREETYPE_H
+
 /*************************************************************************
  <Class>         DFontPreview
  <Description>   字体预览视图类
@@ -38,7 +39,7 @@ class DFontPreview : public QWidget
     Q_OBJECT
 
 public:
-    DFontPreview(QWidget *parent = nullptr);
+    explicit DFontPreview(QWidget *parent = nullptr);
     ~DFontPreview();
     //传入当前预览字体的路径
     void setFileUrl(const QString &url);

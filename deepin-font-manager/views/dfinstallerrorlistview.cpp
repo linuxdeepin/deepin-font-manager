@@ -1,21 +1,21 @@
 #include "dfinstallerrorlistview.h"
-#include "globaldef.h"
-#include "utils.h"
 
-#include <QPainter>
-#include <QMouseEvent>
-#include <QStandardItemModel>
 
-#include <DLog>
+
 #include <DStyleHelper>
 #include <DApplication>
 #include <DApplicationHelper>
 #include <DCheckBox>
 #include <DFontSizeManager>
 
-#define FTM_ERROR_ITEM_FONTNAME_LEFT    39
-#define FTM_PARAM_OF_WIDTH 350
+#include <QPainter>
+#include <QStandardItemModel>
+
 DWIDGET_USE_NAMESPACE
+
+#define FTM_ERROR_ITEM_FONTNAME_LEFT 39
+#define FTM_PARAM_OF_WIDTH 350
+
 /*************************************************************************
  <Function>      DFInstallErrorListDelegate
  <Description>   代理用于绘制字体验证框中的字体列表页面
@@ -269,7 +269,7 @@ void DFInstallErrorListDelegate::paintTabFocusBackground(QPainter *painter, cons
     QPainterPath path3;
     setPaintPath(bgRect, path3, 6, 3, 6);
 
-    DPalette::ColorGroup cg = option.state & QStyle::State_Enabled
+    DPalette::ColorGroup cg = (option.state & QStyle::State_Enabled)
                               ? DPalette::Normal : DPalette::Disabled;
     if (cg == DPalette::Normal && !(option.state & QStyle::State_Active)) {
         cg = DPalette::Inactive;
@@ -384,7 +384,7 @@ void DFInstallErrorListDelegate::paint(QPainter *painter, const QStyleOptionView
         DFInstallErrorItemModel itemModel = varErrorItem.value<DFInstallErrorItemModel>();
         QStyleOptionViewItem viewOption(option);  //用来在视图中画一个item
 
-        DPalette::ColorGroup cg = option.state & QStyle::State_Enabled
+        DPalette::ColorGroup cg = (option.state & QStyle::State_Enabled)
                                   ? DPalette::Normal : DPalette::Disabled;
         if (cg == DPalette::Normal && !(option.state & QStyle::State_Active)) {
             cg = DPalette::Inactive;
@@ -768,33 +768,6 @@ bool DFInstallErrorListView::getIsTabFocus() const
 }
 
 /*************************************************************************
- <Function>      setIsInstallFocus
- <Description>   更新tab聚焦状态
- <Author>
- <Input>
-    <param1>     isInstallFocus  Description:用于设置tab聚焦标志位的参数
- <Return>        null            Description:null
- <Note>          null
-*************************************************************************/
-void DFInstallErrorListView::setIsInstallFocus(bool isInstallFocus)
-{
-    m_isInstallFocus = isInstallFocus;
-}
-
-/*************************************************************************
- <Function>      getIsInstallFocus
- <Description>   查看是否为列表新增获取的tab聚焦
- <Author>
- <Input>         null
- <Return>        m_isInstallFocus Description:是否为列表新增获取的tab聚焦
- <Note>          null
-*************************************************************************/
-bool DFInstallErrorListView::getIsInstallFocus() const
-{
-    return m_isInstallFocus;
-}
-
-/*************************************************************************
  <Function>      mousePressEvent
  <Description>   重写鼠标press事件
  <Author>
@@ -812,7 +785,7 @@ void DFInstallErrorListView::mousePressEvent(QMouseEvent *event)
         DFInstallErrorItemModel itemModel =
             qvariant_cast<DFInstallErrorItemModel>(m_errorListSourceModel->data(modelIndex));
         if (itemModel.bIsNormalUserFont && getIconRect(visualRect(modelIndex)).contains(point))
-            emit onClickErrorListItem(modelIndex);
+            emit clickedErrorListItem(modelIndex);
     }
 
     DListView::mousePressEvent(event);
@@ -932,7 +905,8 @@ void DFInstallErrorListView::keyPressEvent(QKeyEvent *event)
         responseToPageUpAndPageDown(false);
         isEventResponsed = true;
     }
-    if (isEventResponsed)
+    //如果事件已被接收或事件为空格按键，不做响应，直接退出，如果以后要实现空格功能，在这里添加即可
+    if (isEventResponsed || event->key() == Qt::Key_Space)
         return;
     DListView::keyPressEvent(event);
 }
@@ -1034,34 +1008,6 @@ void DFInstallErrorListView::ifNeedScrollTo(QModelIndex idx)
 {
     if (!viewport()->visibleRegion().contains(visualRect(idx).center()))
         scrollTo(idx);
-}
-
-/*************************************************************************/
-/*                                                                       */
-/* <Function>    sortModelIndexList                                      */
-/*                                                                       */
-/* <Description> 对传入的indexlist进行从大到小的排序                         */
-/*                                                                       */
-/* <para>       需要排序的indexlist的引用                                   */
-/*                                                                       */
-/* <Return>     无返回值                                                  */
-void DFInstallErrorListView::sortModelIndexList(QModelIndexList &sourceList)
-{
-    QModelIndex temp;
-    bool flag;
-    for (int i = 0; i < sourceList.count() - 1; i++) {
-        flag = false;
-        for (int j = sourceList.count() - 1; j > i; j--) {
-            if (sourceList[j].row() > sourceList[j - 1].row()) {
-                temp = sourceList[j];
-                sourceList[j] = sourceList[j - 1];
-                sourceList[j - 1] = temp;
-                flag = true;
-            }
-        }
-        if (!flag)
-            break;
-    }
 }
 
 /*************************************************************************

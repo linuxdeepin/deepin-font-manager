@@ -18,20 +18,20 @@
  */
 
 #include "globaldef.h"
+#include "performancemonitor.h"
 #include "utils.h"
 #include "views/dfontmgrmainwindow.h"
 #include "singlefontapplication.h"
-
-#include <QCommandLineParser>
-#include <QDebug>
-#include <QDBusConnection>
-#include <QDBusInterface>
 
 #include <DApplication>
 #include <DLog>
 #include <DWidgetUtil>
 #include <DApplicationSettings>
-#include <DGuiApplicationHelper>
+
+#include <QCommandLineParser>
+#include <QDebug>
+#include <QDBusConnection>
+#include <QDBusInterface>
 
 DWIDGET_USE_NAMESPACE
 DCORE_USE_NAMESPACE
@@ -48,10 +48,12 @@ DCORE_USE_NAMESPACE
 *************************************************************************/
 int main(int argc, char *argv[])
 {
+    PerformanceMonitor::initializeAppStart();
     // load dtk xcb plugin.
     //DEPRECATED API and remove it
     //DApplication::loadDXcbPlugin();
     // init Dtk application's attrubites.
+
     SingleFontApplication app(argc, argv);
     app.setAttribute(Qt::AA_UseHighDpiPixmaps);
     app.loadTranslator();

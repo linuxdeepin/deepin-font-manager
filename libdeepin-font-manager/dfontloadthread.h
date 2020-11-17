@@ -27,7 +27,7 @@ class DFontLoadThread : public QThread
     Q_OBJECT
 
 public:
-    DFontLoadThread(QObject *parent = nullptr);
+    explicit DFontLoadThread(QObject *parent = nullptr);
     ~DFontLoadThread();
 
     void run();

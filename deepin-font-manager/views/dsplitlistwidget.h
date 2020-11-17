@@ -1,14 +1,12 @@
 #ifndef DSPLITLISTWIDGET_H
 #define DSPLITLISTWIDGET_H
 
-#include <DListView>
-#include <QModelIndex>
-#include <QMetaType>
-#include <DToolTip>
-#include <DStyledItemDelegate>
-#include <signalmanager.h>
-DWIDGET_USE_NAMESPACE
+#include "signalmanager.h"
 
+#include <DListView>
+#include <DStyledItemDelegate>
+
+DWIDGET_USE_NAMESPACE
 
 struct FocusStatus {
     bool m_IsMouseClicked {false};
@@ -17,20 +15,24 @@ struct FocusStatus {
 };
 
 class DSplitListWidget;
+
 class DNoFocusDelegate : public DStyledItemDelegate
 {
 public:
-    DNoFocusDelegate(QAbstractItemView *parent = nullptr);
+    explicit DNoFocusDelegate(QAbstractItemView *parent = nullptr);
 
     void paint(QPainter *painter, const QStyleOptionViewItem &option,
                const QModelIndex &index) const override;
 
     QSize sizeHint(const QStyleOptionViewItem &option,
                    const QModelIndex &index) const override;
-
-    // 绘制tab选中之后的背景
-    void paintTabFocusBackground(QPainter *painter, const QStyleOptionViewItem &option,
+    //绘制菜单项背景
+    void paintBackground(QPainter *painter, const QStyleOptionViewItem &option,
                                  const QRect &backgroundRect, const DPalette::ColorGroup cg)const;
+
+    void paintTabBackground(QPainter *painter, const QStyleOptionViewItem &option,
+                            const QRect &backgroundRect, const DPalette::ColorGroup cg,const bool isHover)const;
+
     //获取需要绘制区域的路径
     void setPaintPath(const QRect &bgRect, QPainterPath &path, const int xDifference, const int yDifference, const int radius)const;
 
@@ -63,22 +65,22 @@ public:
 
     void initListData();
 
-    void currentChanged(const QModelIndex &current, const QModelIndex &previous) override;
-
     SignalManager *m_signalManager = SignalManager::instance();
     QStringList m_titleStringList;
     QMap<QString, int> m_titleStringIndexMap;
     QStandardItemModel *m_categoryItemModell;
 
-
     void setIsHalfWayFocus(bool IsHalfWayFocus);
-
 
     bool IsTabFocus() const;
 
     FocusStatus &getStatus();
 
     void setCurrentStatus(const FocusStatus &currentStatus);
+    void setCurrentPage();
+
+    //设置m_LastPageNumber接口
+    void setLastPageNumber(int LastPageNumber);
 
 private:
     bool m_refreshFinished = true;
@@ -97,18 +99,32 @@ private:
 
     //判断是否为删除等过程中设置的焦点
     bool m_IsHalfWayFocus = false;
+    //用于判断是否弹出提示信息的鼠标状态标志位
+    bool m_isMouseMoved{false};
+
+    //记录上一个界面对应的数字，用于之后的处理
+    int m_LastPageNumber = -1;
+
+    //记录鼠标左键按下时的点用于之后判断
+    QPoint lastTouchBeginPos;
+
+    //记录鼠标移动的趋势
+    bool m_IsPositive = false;
 
     FocusStatus m_currentStatus;
 
 signals:
     void onListWidgetItemClicked(int index);
-//    void leftListviewHasFocus();
+
 public slots:
     void setRefreshFinished(bool isInstalling);
+
 protected:
     void mouseMoveEvent(QMouseEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
     void wheelEvent(QWheelEvent *event) override;
+    //鼠标释放事件
+    void mouseReleaseEvent(QMouseEvent *event) override;
     void keyPressEvent(QKeyEvent *event)override;
     bool eventFilter(QObject *obj, QEvent *event)override;
 };

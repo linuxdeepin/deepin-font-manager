@@ -38,7 +38,7 @@
     </message>
     <message>
         <source>Confirm</source>
-        <translation>Megerősít</translation>
+        <translation>Megerősítés</translation>
     </message>
 </context>
 <context>
@@ -49,7 +49,7 @@
     </message>
     <message>
         <source>Same version installed</source>
-        <translation>Ugyanaz a verzió telepítve</translation>
+        <translation>Ugyanaz a verzió már telepítve</translation>
     </message>
     <message>
         <source>System Font</source>
@@ -135,7 +135,7 @@
     </message>
     <message>
         <source>The other %1 system fonts cannot be deleted</source>
-        <translation>A többi %1 rendszer betűtípus nem törölhető</translation>
+        <translation>A többi %1 rendszer betűtípusok nem törölhetőek</translation>
     </message>
     <message>
         <source>The font &quot;%1&quot; in use cannot be deleted</source>
@@ -143,11 +143,11 @@
     </message>
     <message>
         <source>The other %1 system fonts and the font &quot;%2&quot; in use cannot be deleted</source>
-        <translation>A többi használt %1 rendszer betűtípus, és a &quot;%2&quot; betűtípus nem törölhető</translation>
+        <translation>A többi %1 rendszer betűtípusok és a használatban lévő &quot;%2&quot; betűtípus nem törölhető</translation>
     </message>
     <message>
         <source>Are you sure you want to delete %1 font(s)?</source>
-        <translation>Biztosan törli a %1 betűtípus(oka)t?</translation>
+        <translation>Biztosan törölni szeretné a %1 betűtípus(oka)t?</translation>
     </message>
     <message>
         <source>Delete</source>
@@ -158,14 +158,14 @@
     <name>Dfuninstalldialog</name>
     <message>
         <source>Deleting fonts, please wait...</source>
-        <translation>Betűtípus törlése, kérem várjon...</translation>
+        <translation>Betűtípusok törlése, kérjük várjon...</translation>
     </message>
 </context>
 <context>
     <name>ExceptionWindow</name>
     <message>
         <source>Font Verification</source>
-        <translation>Betűtípus-ellenőrzés</translation>
+        <translation>Betűtípus ellenőrzése</translation>
     </message>
     <message>
         <source>Exit</source>
@@ -230,15 +230,15 @@
     <name>Main</name>
     <message>
         <source>Font Manager</source>
-        <translation>Betűkészlet-kezelő</translation>
+        <translation>Betűkészlet kezelő</translation>
     </message>
     <message>
         <source>Font Manager helps users install and manage fonts.</source>
-        <translation>A betűkészlet-kezelő segít a felhasználóknak a betűtípusok telepítésében és kezelésében.</translation>
+        <translation>A Betűkészlet kezelő segít a felhasználóknak a betűtípusok telepítésében és kezelésében.</translation>
     </message>
     <message>
         <source>Loading fonts, please wait...</source>
-        <translation>betűtípusok betöltése, kérjük várjon...</translation>
+        <translation>Betűtípusok betöltése, kérjük várjon...</translation>
     </message>
     <message>
         <source>The font exported to your desktop</source>
@@ -246,7 +246,7 @@
     </message>
     <message>
         <source>%1 fonts exported to your desktop</source>
-        <translation>%1 betűtípus exportálva az asztalra</translation>
+        <translation>%1 betűtípus az asztalra exportálva</translation>
     </message>
     <message>
         <source>Failed to export 1 font. There is not enough disk space.</source>
@@ -281,7 +281,7 @@
     </message>
     <message>
         <source>Unfavorite</source>
-        <translation>Nem kedvenc</translation>
+        <translation>Eltávolítás a kedvencekből</translation>
     </message>
     <message>
         <source>Details</source>
@@ -300,11 +300,11 @@
     <name>MessageManager</name>
     <message>
         <source>deactivated</source>
-        <translation>Letiltva</translation>
+        <translation>felfüggesztve</translation>
     </message>
     <message>
         <source>The fonts have been deactivated</source>
-        <translation>A betűtípusok letiltásra kerültek</translation>
+        <translation>A betűtípusok felfüggesztésre kerültek</translation>
     </message>
     <message>
         <source>%1 is in use, so you cannot disable it</source>
@@ -376,7 +376,7 @@
     <name>Shortcut</name>
     <message>
         <source>Help</source>
-        <translation>Súgó</translation>
+        <translation>Segítség</translation>
     </message>
     <message>
         <source>Display shortcuts</source>
@@ -400,11 +400,11 @@
     </message>
     <message>
         <source>Favorite</source>
-        <translation>Kedvencek</translation>
+        <translation>Kedvenc</translation>
     </message>
     <message>
         <source>Unfavorite</source>
-        <translation>Nem kedvenc</translation>
+        <translation>Eltávolítás a kedvencekből</translation>
     </message>
     <message>
         <source>Font info</source>
@@ -415,7 +415,7 @@
     <name>StateBar</name>
     <message>
         <source>Input preview text</source>
-        <translation>Előnézeti szövegbevitel</translation>
+        <translation>Szövegbevitel előnézete</translation>
     </message>
 </context>
 <context>

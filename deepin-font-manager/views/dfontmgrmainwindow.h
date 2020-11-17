@@ -8,24 +8,19 @@
 #include "dsplitlistwidget.h"
 #include "views/dfdeletedialog.h"
 
-#include <QShortcut>
-
-#include <DFrame>
 #include <DMainWindow>
-#include <QResizeEvent>
+#include <DFrame>
+
+#include <QShortcut>
 #include <QScreen>
 
 DWIDGET_USE_NAMESPACE
 
-/*
- * TODO:
- *     The font manager may need to be move to library.
- *
- */
 //类声明
 class DFQuickInstallWindow;
 class DFInstallNormalWindow;
 class DFontMgrMainWindowPrivate;
+
 /*************************************************************************
  <Class>         DFontMgrMainWindow
  <Description>   mainwindow，承担了字体管理器主页面初始化、重绘、字体安装、删除、收藏/取消收藏、启用/禁用等功能。
@@ -208,8 +203,6 @@ signals:
     void fileSelectedInSys(const QStringList &files) const;
     //信号-设置正常安装模式
     void quickModeInstall(const QStringList files) const;
-    //信号-添加安装字体
-    void requestInstallAdded();
 
 public slots:
     //右键菜单弹出处理函数
@@ -222,8 +215,6 @@ public slots:
     void onFontSizeChanged(int fontSize);
     //左侧菜单项切换选项
     void onLeftSiderBarItemClicked(int index);
-    //安装后添加至listview
-    void onFontInstallFinished(const QStringList &fileList);
     //字体删除fc-cache操作后恢复标志位
     void onUninstallFcCacheFinish();
     //切换字体菜单后判断FontListView的结果并显示对应状态
@@ -260,11 +251,13 @@ protected:
     int m_menuDisableSysCnt;
     int m_menuSysCnt;
     int m_menuDisableCnt;
+
+    int m_installFontCnt;
     QStringList m_menuDelFontList;
     QModelIndexList m_menuAllIndexList;
     QModelIndexList m_menuDisableIndexList;
     QStringList m_menuAllMinusSysFontList;
-    QStringList m_installOutFileList;
+
     DFontPreviewItemData m_menuCurData;
     DSplitListWidget::FontGroup filterGroup;
     //Main window Size
@@ -276,7 +269,6 @@ protected:
     bool m_isFromSys = false;
     bool m_isPopInstallErrorDialog = false;
     bool m_isNoResultViewShow = false;
-    bool m_isInstallOver = false;
     bool m_openfirst = true;//是否是第一次打开软件
     bool m_cacheFinish = false;
     bool m_installFinish = false;

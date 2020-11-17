@@ -48,6 +48,7 @@ GenericName[tr]=Yazı Tipi Kurucu
 GenericName[uk]=Встановлення шрифтів
 GenericName[zh_CN]=字体管理器
 GenericName[zh_TW]=字體管理器
+GenericName[zh_HK]=字體管理器
 Name[ar]=مُنصب الخطوط Deepin
 Name[ast]=Deepin Font Installer
 Name[bg]=Deepin инсталатор на шрифт
@@ -84,4 +85,5 @@ Name[tr]=Deepin Yazı Tipi Kurucu
 Name[uk]=Встановлення шрифтів Deepin
 Name[zh_CN]=深度字体管理器
 Name[zh_TW]=Deepin 字體管理器
+Name[zh_HK]=Deepin 字體管理器
 

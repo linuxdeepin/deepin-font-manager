@@ -21,8 +21,6 @@
 #include "dcopyfilesmanager.h"
 
 #include <QDebug>
-#include <QJsonDocument>
-#include <QJsonObject>
 #include <QProcess>
 #include <QFileInfo>
 #include <QDir>
@@ -83,7 +81,7 @@ DFontManager::~DFontManager() {}
 *************************************************************************/
 void DFontManager::setType(Type type)
 {
-    qDebug() << type << endl;
+    qDebug() << type << QThread::currentThreadId() << endl;
     m_type = type;
 }
 
@@ -132,7 +130,7 @@ void DFontManager::setUnInstallFile(const QStringList &filePath)
 *************************************************************************/
 void DFontManager::run()
 {
-    qDebug() << __FUNCTION__ << "start" << m_type << endl;
+    qDebug() << __FUNCTION__ << "start" << m_type << QThread::currentThreadId() << endl;
     switch (m_type) {
     case Install:
     case HalfwayInstall:
@@ -147,6 +145,7 @@ void DFontManager::run()
     default:
         break;
     }
+    qDebug() << __FUNCTION__ << "end" << m_type;
 }
 
 /*************************************************************************
@@ -219,7 +218,7 @@ void DFontManager::handleUnInstall()
 *************************************************************************/
 void DFontManager::doInstall(QStringList &fileList)
 {
-    qDebug() << __func__ << "s" << endl;
+    qDebug() << __func__ << fileList.size() << endl;
 
     m_installOutList.clear();
     m_installCanceled = false;
@@ -308,8 +307,10 @@ void DFontManager::onInstallResult(const QString &familyName, const QString &tar
     if (m_installedCount != totalCount)
         return;
 
-    qDebug() << __FUNCTION__ << m_installOutList.size() << m_CacheStatus;
-    if (m_type == Install) {
+    qDebug() << __FUNCTION__ << m_installOutList.size();
+    //  bug 47332 47325 Ut000442 在字体验证框弹出时进行安装，类型是HalfwayInstall，之前只对Install类型的做了
+    //  安装后的处理导致bug现象的出现
+    if (m_type == Install || m_type == HalfwayInstall) {
         Q_EMIT installFinished(InstallStatus::InstallSuccess, m_installOutList);
     } else if (m_type == ReInstall) {
         Q_EMIT reInstallFinished(0, m_installOutList);
@@ -318,20 +319,6 @@ void DFontManager::onInstallResult(const QString &familyName, const QString &tar
     //clear
     m_installOutList.clear();
     m_installedCount = 0;
-}
-
-/*************************************************************************
- <Function>      setCacheStatus
- <Description>   设置fc-cache命令执行的状态
- <Author>
- <Input>
-    <param1>     CacheStatus     Description:命令执行状态的枚举
- <Return>        null            Description:null
- <Note>          null
-*************************************************************************/
-void DFontManager::setCacheStatus(const CacheStatus &CacheStatus)
-{
-    m_CacheStatus = CacheStatus;
 }
 
 /*************************************************************************
@@ -344,8 +331,12 @@ void DFontManager::setCacheStatus(const CacheStatus &CacheStatus)
 *************************************************************************/
 void DFontManager::cancelInstall()
 {
+    if (m_installCanceled)
+        return;
+
     m_installCanceled = true;
     DCopyFilesManager::cancelInstall();
+    Q_EMIT cacheFinish();
 }
 
 /*************************************************************************

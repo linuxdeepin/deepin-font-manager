@@ -25,27 +25,23 @@
 #include <QDebug>
 #include <QDir>
 #include <QFileInfo>
-#include <QFontDatabase>
 #include <QProcess>
-#include <QDateTime>
+#include <QDirIterator>
 
 #include <fontconfig/fontconfig.h>
 #include <ft2build.h>
 #include <iconv.h>
-#include <QDirIterator>
 
 #include FT_FREETYPE_H
 #include FT_TYPE1_TABLES_H
 #include FT_SFNT_NAMES_H
 #include FT_TRUETYPE_IDS_H
 
-
 static QList<DFontInfo> dataList;
 static DFontInfoManager *INSTANCE = nullptr;
 
 const QString FONT_USR_DIR = QDir::homePath() + "/.local/share/fonts/";
 const QString FONT_SYSTEM_DIR = "/usr/share/fonts/";
-
 
 /*************************************************************************
  <Function>      isSystemFont
@@ -175,7 +171,7 @@ void DFontInfoManager::refreshList(const QStringList &allFontPathList)
     }
 
     for (auto &path : allFontPathList) {
-        DFontInfo fontInfo = getFontInfo(path);
+        DFontInfo fontInfo = getFontInfo(path, true);
         fontInfo.isSystemFont = isSystemFont(path);
         dataList << fontInfo;
     }
@@ -378,7 +374,7 @@ QString DFontInfoManager::getFontType(const QString &filePath)
  <Return>        DFontInfo            Description:该字体文件的字体信息
  <Note>          null
 *************************************************************************/
-DFontInfo DFontInfoManager::getFontInfo(const QString &filePath)
+DFontInfo DFontInfoManager::getFontInfo(const QString &filePath, bool withPreviewTxt)
 {
     DFontInfo fontInfo;
     fontInfo.isSystemFont = isSystemFont(filePath);
@@ -461,10 +457,12 @@ DFontInfo DFontInfoManager::getFontInfo(const QString &filePath)
     fontInfo.sp3FamilyName = QString::fromLatin1(face->family_name).trimmed();
 
     //default preview text
-    if (fontInfo.familyName == "Noto Sans Grantha") {
-        fontInfo.defaultPreview = getDefaultPreviewText(face, fontInfo.previewLang, INT_MAX);
-    } else {
-        fontInfo.defaultPreview = getDefaultPreviewText(face, fontInfo.previewLang);
+    if (withPreviewTxt) {
+        if (fontInfo.familyName == "Noto Sans Grantha") {
+            fontInfo.defaultPreview = getDefaultPreviewText(face, fontInfo.previewLang, INT_MAX);
+        } else {
+            fontInfo.defaultPreview = getDefaultPreviewText(face, fontInfo.previewLang);
+        }
     }
 
     // destroy object.
@@ -855,49 +853,46 @@ void DFontInfoManager::updateSP3FamilyName(const QList<DFontInfo> &fontList, boo
 *************************************************************************/
 void DFontInfoManager::checkStyleName(DFontInfo &f)
 {
-    QStringList str;
-    str << "Regular" << "Bold" << "Light" << "Thin" << "ExtraLight" << "ExtraBold" << "Medium" << "DemiBold" << "Black"
-        << "AnyStretch" << "UltraCondensed" << "ExtraCondensed" << "Condensed" << "SemiCondensed" << "Unstretched" << "SemiExpanded" << "Expanded"
-        << "ExtraExpanded" << "UltraExpanded";
-//有些字体文件因为不规范导致的stylename为空，通过psname来判断该字体的stylename。
+    //有些字体文件因为不规范导致的stylename为空，通过psname来判断该字体的stylename。
+    //之前代码顺序出现问题，导致有的时候contains判断出错 比如DemiBold与Bold，现在调整代码顺序
     if (f.styleName.contains("?")) {
         if (f.psname != "") {
-            if (f.psname.contains("Regular")) {
+            if (f.psname.contains("Regular", Qt::CaseInsensitive)) {
                 f.styleName = "Regular";
-            } else if (f.psname.contains("Bold")) {
-                f.styleName = "Bold";
-            } else if (f.psname.contains("Light")) {
-                f.styleName = "Light";
-            } else if (f.psname.contains("Thin")) {
-                f.styleName = "Thin";
-            } else if (f.psname.contains("ExtraLight")) {
-                f.styleName = "ExtraLight";
-            } else if (f.psname.contains("ExtraBold")) {
-                f.styleName = "ExtraBold";
-            } else if (f.psname.contains("Medium")) {
-                f.styleName = "Medium";
-            } else if (f.psname.contains("DemiBold")) {
+            } else if (f.psname.contains("DemiBold", Qt::CaseInsensitive)) {
                 f.styleName = "DemiBold";
-            } else if (f.psname.contains("AnyStretch")) {
+            } else if (f.psname.contains("ExtraBold", Qt::CaseInsensitive)) {
+                f.styleName = "ExtraBold";
+            } else if (f.psname.contains("Bold", Qt::CaseInsensitive)) {
+                f.styleName = "Bold";
+            } else if (f.psname.contains("ExtraLight", Qt::CaseInsensitive)) {
+                f.styleName = "ExtraLight";
+            } else if (f.psname.contains("Light", Qt::CaseInsensitive)) {
+                f.styleName = "Light";
+            } else if (f.psname.contains("Thin", Qt::CaseInsensitive)) {
+                f.styleName = "Thin";
+            } else if (f.psname.contains("Medium", Qt::CaseInsensitive)) {
+                f.styleName = "Medium";
+            } else if (f.psname.contains("AnyStretch", Qt::CaseInsensitive)) {
                 f.styleName = "AnyStretch";
-            } else if (f.psname.contains("UltraCondensed")) {
+            } else if (f.psname.contains("UltraCondensed", Qt::CaseInsensitive)) {
                 f.styleName = "UltraCondensed";
-            } else if (f.psname.contains("ExtraCondensed")) {
+            } else if (f.psname.contains("ExtraCondensed", Qt::CaseInsensitive)) {
                 f.styleName = "ExtraCondensed";
-            } else if (f.psname.contains("Condensed")) {
-                f.styleName = "Condensed";
-            } else if (f.psname.contains("SemiCondensed")) {
+            } else if (f.psname.contains("SemiCondensed", Qt::CaseInsensitive)) {
                 f.styleName = "SemiCondensed";
-            } else if (f.psname.contains("Unstretched")) {
+            } else if (f.psname.contains("Condensed", Qt::CaseInsensitive)) {
+                f.styleName = "Condensed";
+            } else if (f.psname.contains("Unstretched", Qt::CaseInsensitive)) {
                 f.styleName = "Unstretched";
-            } else if (f.psname.contains("SemiExpanded")) {
+            } else if (f.psname.contains("SemiExpanded", Qt::CaseInsensitive)) {
                 f.styleName = "SemiExpanded";
-            } else if (f.psname.contains("Expanded")) {
-                f.styleName = "Expanded";
-            } else if (f.psname.contains("ExtraExpanded")) {
+            } else if (f.psname.contains("ExtraExpanded", Qt::CaseInsensitive)) {
                 f.styleName = "ExtraExpanded";
-            } else if (f.psname.contains("UltraExpanded")) {
+            } else if (f.psname.contains("UltraExpanded", Qt::CaseInsensitive)) {
                 f.styleName = "UltraExpanded";
+            } else if (f.psname.contains("Expanded", Qt::CaseInsensitive)) {
+                f.styleName = "Expanded";
             } else {
                 f.styleName = "Unknown";
             }

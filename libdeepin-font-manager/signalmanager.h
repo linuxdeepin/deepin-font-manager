@@ -1,5 +1,6 @@
 #ifndef SIGNALMANAGER_H
 #define SIGNALMANAGER_H
+
 #include <QObject>
 #include <QString>
 
@@ -15,13 +16,10 @@ class SignalManager : public QObject
 public:
     static SignalManager *instance();
     ~SignalManager();
+
 signals:
-    //触发完成安装信号
-    void finishFontInstall(const QStringList &fileList);
     //触发大小改变信号
     void sizeChange(int height);
-    //触发安装请求
-    void requestInstallAdded();
     //触发弹出字体验证框请求
     void popInstallErrorDialog();
     //触发字体验证框隐藏信号
@@ -49,6 +47,7 @@ signals:
     void requestSetTabFocusToAddBtn();
     //右键菜单关闭请求触发操作
     void onMenuHidden();
+
 private:
     explicit SignalManager(QObject *parent = nullptr);
 

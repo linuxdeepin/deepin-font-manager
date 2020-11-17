@@ -3,6 +3,7 @@
 #include <QWidget>
 
 class DFontSpinnerPrivate;
+
 class DFontSpinner : public QWidget
 {
     Q_OBJECT
@@ -13,7 +14,6 @@ public:
 public Q_SLOTS:
     void start();
     void stop();
-    void setBackgroundColor(QColor color);
 
 protected:
     void paintEvent(QPaintEvent *) Q_DECL_OVERRIDE;

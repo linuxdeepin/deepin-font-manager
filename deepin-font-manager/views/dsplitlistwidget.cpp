@@ -1,15 +1,15 @@
 #include "dsplitlistwidget.h"
 #include "globaldef.h"
 #include "utils.h"
-#include <QPainter>
-#include <QMouseEvent>
 
-#include <DStyleHelper>
 #include <DApplication>
+#include <DStyleHelper>
 #include <DApplicationHelper>
 #include <DLog>
-#include <DFontSizeManager>
+
 #include <QToolTip>
+#include <QPainter>
+#include <QMouseEvent>
 
 #define FTM_SPLIT_TOP_SPACE_TAG "_space_"
 #define FTM_SPLIT_TOP_SPLIT_TAG "_split_"
@@ -51,7 +51,7 @@ void DNoFocusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
 
         QStyleOptionViewItem viewOption(option);  //用来在视图中画一个item
 
-        DPalette::ColorGroup cg = option.state & QStyle::State_Enabled
+        DPalette::ColorGroup cg = (option.state & QStyle::State_Enabled)
                                   ? DPalette::Normal : DPalette::Disabled;
         if (cg == DPalette::Normal && !(option.state & QStyle::State_Active)) {
             cg = DPalette::Inactive;
@@ -81,7 +81,7 @@ void DNoFocusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
 
             QRect backgroundRect = QRect(rect.left() + 10, rect.top(), rect.width() - 20, rect.height());
 
-            paintTabFocusBackground(painter, option, backgroundRect, cg);
+            paintBackground(painter, option, backgroundRect, cg);
 
             //绘制标题
             /* bug#20266 UT000591 */ /*bug 21075 ut000442*/
@@ -135,8 +135,8 @@ QSize DNoFocusDelegate::sizeHint(const QStyleOptionViewItem &option,
 
 
 /*************************************************************************
- <Function>      paintTabFocusBackground
- <Description>   绘制tab选中的效果
+ <Function>      paintBackground
+ <Description>   绘制背景
  <Author>        null
  <Input>
     <param1>     painter                   Description:绘制类指针
@@ -146,39 +146,85 @@ QSize DNoFocusDelegate::sizeHint(const QStyleOptionViewItem &option,
  <Return>        null            Description:null
  <Note>          null
 *************************************************************************/
-void DNoFocusDelegate::paintTabFocusBackground(QPainter *painter, const QStyleOptionViewItem &option, const QRect &backgroundRect, const QPalette::ColorGroup cg) const
+void DNoFocusDelegate::paintBackground(QPainter *painter, const QStyleOptionViewItem &option, const QRect &backgroundRect, const QPalette::ColorGroup cg) const
 {
     //绘制左侧列表外部高亮区域的路径
-    QPainterPath path;
+    QPainterPath pathFirst;
     const int radius = 8;
-    setPaintPath(backgroundRect, path, 0, 0, radius);
+    setPaintPath(backgroundRect, pathFirst, 0, 0, radius);
+    bool isTabFocus = m_parentView->IsTabFocus();
+    if(option.state & QStyle::State_Selected){
+        //判断是否为通过tab获得的焦点
+        if(isTabFocus){
+            //如果为hover状态，颜色亮度需要加亮
+            if(option.state & QStyle::State_MouseOver){
+                paintTabBackground(painter,option,backgroundRect,cg,true);
+            }else {
+                paintTabBackground(painter,option,backgroundRect,cg,false);
+            }
+        }else if(!isTabFocus){
+            QColor fillColor = option.palette.color(cg, DPalette::Highlight);
+            //如果为hover状态，颜色亮度需要加亮
+            if(option.state & QStyle::State_MouseOver){
+                fillColor = fillColor.light(120);
+            }
+            painter->setBrush(QBrush(fillColor));
+            painter->fillPath(pathFirst, painter->brush());
+        }
+    }else if(option.state & QStyle::State_MouseOver){
+        //未选中状态下的hover，需要有淡灰色背景
+        DStyleHelper styleHelper;
+        QColor fillColor = styleHelper.getColor(static_cast<const QStyleOption *>(&option), DPalette::ToolTipText);
+        fillColor.setAlphaF(0.1);
+        painter->setBrush(QBrush(fillColor));
+        painter->fillPath(pathFirst, painter->brush());
+    }
+}
+
+/*************************************************************************
+ <Function>      paintTabBackground
+ <Description>   绘制tab选中后的背景
+ <Author>        null
+ <Input>
+    <param1>     painter                   Description:绘制类指针
+    <param2>     option                    Description:listview中的一行成员
+    <param3>     backgroundRect            Description:绘制背景区域
+    <param4>     cg                        Description:ColorGroup
+    <param4>     isHover                   Description:是否为hover状态
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
+void DNoFocusDelegate::paintTabBackground(QPainter *painter, const QStyleOptionViewItem &option,
+                                          const QRect &backgroundRect, const QPalette::ColorGroup cg,const bool isHover) const
+{
+    //绘制左侧列表外部高亮区域的路径
+    QPainterPath pathFirst;
+    const int radius = 8;
+    setPaintPath(backgroundRect, pathFirst, 0, 0, radius);
 
     //绘制左侧列表窗口色区域的路径
-    QPainterPath path2;
-    setPaintPath(backgroundRect, path2, 2, 2, 6);
+    QPainterPath pathSecond;
+    setPaintPath(backgroundRect, pathSecond, 2, 2, 6);
 
     //绘制左侧列表内部高亮区域的路径
-    QPainterPath path3;
-    setPaintPath(backgroundRect, path3, 3, 3, 6);
+    QPainterPath pathThird;
+    setPaintPath(backgroundRect, pathThird, 3, 3, 6);
 
-    if (option.state & QStyle::State_Selected) {
-        QColor fillColor = option.palette.color(cg, DPalette::Highlight);
-        painter->setBrush(QBrush(fillColor));
-        painter->fillPath(path, painter->brush());
-
-        if (m_parentView->IsTabFocus()) {
-            QColor fillColor = option.palette.color(cg, DPalette::Highlight);
-            painter->setBrush(QBrush(fillColor));
-            painter->fillPath(path, painter->brush());
-
-            QColor fillColor2 = option.palette.color(cg, DPalette::Window);
-            painter->setBrush(QBrush(fillColor2));
-            painter->fillPath(path2, painter->brush());
-
-            painter->setBrush(QBrush(fillColor));
-            painter->fillPath(path3, painter->brush());
-        }
+    QColor fillColor = option.palette.color(cg, DPalette::Highlight);
+    //如果为hover状态，颜色亮度需要加亮
+    if(isHover){
+        fillColor = fillColor.light(120);
     }
+    painter->setBrush(QBrush(fillColor));
+    painter->fillPath(pathFirst, painter->brush());
+
+    QColor fillColor2 = option.palette.color(cg, DPalette::Window);
+    painter->setBrush(QBrush(fillColor2));
+    painter->fillPath(pathSecond, painter->brush());
+
+    painter->setBrush(QBrush(fillColor));
+    painter->fillPath(pathThird, painter->brush());
+
 }
 
 /*************************************************************************
@@ -230,11 +276,9 @@ QString DNoFocusDelegate::adjustLength(QString &titleName, QFont &font) const
     QString finalTitle = "";
     QString m_curTitle = "";
 
-    int curWidth ;
     for (auto str : titleName) {
         m_curTitle += str;
-        curWidth = fontMetric.width(m_curTitle);
-        if (curWidth > TITLE_VISIBLE_WIDTH) {
+        if (fontMetric.width(m_curTitle) > TITLE_VISIBLE_WIDTH) {
             if (m_curTitle == titleName) {
                 finalTitle = m_curTitle;
                 break;
@@ -309,32 +353,6 @@ void DSplitListWidget::initListData()
 }
 
 /*************************************************************************
- <Function>      currentChanged
- <Description>   选中项改变触发函数
- <Author>        null
- <Input>
-    <param1>     current             Description:当前项索引
-    <param2>     previous            Description:下一项的索引
- <Return>        null            Description:null
- <Note>          null
-*************************************************************************/
-void DSplitListWidget::currentChanged(const QModelIndex &current, const QModelIndex &previous)
-{
-    Q_UNUSED(previous);
-    if (current.row() < 0 || FTM_SPLIT_LINE_INDEX == current.row()) {
-        return;
-    }
-
-    QStandardItem *item = m_categoryItemModell->item(current.row());
-    QVariant varUserData = item->data(Qt::DisplayRole).value<QVariant>();
-    int realIndex = m_titleStringIndexMap.value(varUserData.toString());
-
-    /*用于判断切换菜单后scrolltotop、nofocus...539*/
-    Q_EMIT m_signalManager->changeView();
-    emit onListWidgetItemClicked(realIndex);
-}
-
-/*************************************************************************
  <Function>      setIsHalfWayFocus
  <Description>   设置是否为其它原因获取的焦点
  <Author>        null
@@ -405,11 +423,27 @@ void DSplitListWidget::setCurrentStatus(const FocusStatus &currentStatus)
 *************************************************************************/
 void DSplitListWidget::mouseMoveEvent(QMouseEvent *event)
 {
-    Q_UNUSED(event)
+    //更新用于判断是否弹出提示信息的鼠标状态标志位
+    m_isMouseMoved = true;
     if (QToolTip::isVisible()) {
         QToolTip::hideText();
     }
-    return;
+
+    QPoint difference_pos = event->pos() - lastTouchBeginPos;
+
+    //通过亮的点的y值差距获得移动的趋势
+    if (difference_pos.y() > 0) {
+        m_IsPositive = true;
+    } else {
+        m_IsPositive = false;
+    }
+
+    QPoint clickPoint = event->pos();
+    QModelIndex modelIndex = indexAt(clickPoint);
+
+    if (modelIndex.row() == 5)
+        return;
+    DListView::mouseMoveEvent(event);
 }
 
 /*************************************************************************
@@ -443,7 +477,13 @@ void DSplitListWidget::wheelEvent(QWheelEvent *event)
 {
     if (!m_refreshFinished)
         return;
-    int now = selectedIndexes().last().row();
+    int now = -1;
+    //bug47986处理方案中或出现选项在分隔符位置的场景，此时菜单选项为空，之前不需考虑为空的情况，所以需要增加以下判断
+    //选项为空则当前位置为分隔符
+    if (selectedIndexes().count() == 0)
+        now = FTM_SPLIT_LINE_INDEX;
+    else
+        now = selectedIndexes().last().row();
     int next = now;
     if (event->delta() > 0) {
         if (now > 0) {
@@ -483,6 +523,92 @@ void DSplitListWidget::wheelEvent(QWheelEvent *event)
 }
 
 /*************************************************************************
+ <Function>      setCurrentPage
+ <Description>   进行操作后切换到当前的页面
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
+void DSplitListWidget::setCurrentPage()
+{
+    QModelIndex current = currentIndex();
+
+    int row = current.row();
+    qDebug() << __FUNCTION__ << row << m_LastPageNumber;
+    if (row < 0 || FTM_SPLIT_LINE_INDEX == row || row == m_LastPageNumber) {
+        return;
+    }
+
+    m_LastPageNumber = row;
+    QStandardItem *item = m_categoryItemModell->item(row);
+    QVariant varUserData = item->data(Qt::DisplayRole).value<QVariant>();
+    int realIndex = m_titleStringIndexMap.value(varUserData.toString());
+
+    emit onListWidgetItemClicked(realIndex);
+    emit m_signalManager->changeView();
+}
+
+/*************************************************************************
+ <Function>      setLastPageNumber
+ <Description>   记录当前界面的上一个界面
+ <Author>        null
+ <Input>
+    <param1>     LastPageNumber            Description:当前界面的上一个界面
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
+void DSplitListWidget::setLastPageNumber(int LastPageNumber)
+{
+    m_LastPageNumber = LastPageNumber;
+}
+
+/*************************************************************************
+ <Function>      mouseReleaseEvent
+ <Description>   鼠标释放事件
+ <Author>        null
+ <Input>
+    <param1>     event           Description:事件对象
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
+void DSplitListWidget::mouseReleaseEvent(QMouseEvent *event)
+{
+    QPoint clickPoint = event->pos();
+    QModelIndex modelIndex = indexAt(clickPoint);
+    //  根据移动趋势进行移动到分割线时的处理
+    if (modelIndex.row() == FTM_SPLIT_LINE_INDEX) {
+        //
+        if (m_IsPositive) {
+            modelIndex = m_categoryItemModell->index(6, 0);
+            setCurrentIndex(modelIndex);
+        } else {
+            modelIndex = m_categoryItemModell->index(4, 0);
+            setCurrentIndex(modelIndex);
+        }
+    }
+    setCurrentPage();
+
+    //如果鼠标释放时，位置在有效菜单项，则延时弹出提示信息
+    if (viewport()->visibleRegion().contains(event->pos())) {
+        //初始化鼠标状态标志位
+        m_isMouseMoved = false;
+
+        QModelIndex curIndex = indexAt(event->pos());
+        QPoint showPoint = event->globalPos();
+        const QString tooltip = curIndex.data(Qt::DisplayRole).toString();
+        QTimer::singleShot(500, [ = ] {
+            //如果悬停位置为空、位置为分割线或中途鼠标移动,不弹出提示信息
+            if (tooltip.isEmpty() || tooltip == "_split_" || m_isMouseMoved == true)
+                return;
+            QToolTip::showText(showPoint, tooltip, this);
+        });
+    }
+    DListView::mouseReleaseEvent(event);
+}
+
+/*************************************************************************
  <Function>      keyPressEvent
  <Description>   鼠标点击事件
  <Author>        null
@@ -500,6 +626,7 @@ void DSplitListWidget::keyPressEvent(QKeyEvent *event)
         } else {
             DListView::keyPressEvent(event);
         }
+        setCurrentPage();
     } else if (event->key() == Qt::Key_Down) {
         if (currentIndex().row() == 7) {
             QModelIndex modelIndex = m_categoryItemModell->index(0, 0);
@@ -507,6 +634,7 @@ void DSplitListWidget::keyPressEvent(QKeyEvent *event)
         } else {
             DListView::keyPressEvent(event);
         }
+        setCurrentPage();
     } else {
         DListView::keyPressEvent(event);
     }
@@ -628,6 +756,10 @@ void DSplitListWidget::mousePressEvent(QMouseEvent *event)
     if (Qt::RightButton == event->button() || Qt::MiddleButton == event->button()) {
         return;
     }
+
+    //鼠标按下时记录点击的点，用作后面获得移动的趋势
+    lastTouchBeginPos = event->pos();
+
     //应该设置焦点，否则鼠标在其他区域release会导致缺失焦点。
     setFocus(Qt::MouseFocusReason);
 //    if (!hasFocus() && m_IsTabFocus) {

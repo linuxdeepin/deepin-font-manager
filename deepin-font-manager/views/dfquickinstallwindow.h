@@ -3,10 +3,8 @@
 
 #include <DApplication>
 #include <DComboBox>
-#include <DFrame>
 #include <DLabel>
 #include <DMainWindow>
-#include <DTextEdit>
 
 DWIDGET_USE_NAMESPACE
 

@@ -3,15 +3,12 @@
 #include "views/dfquickinstallwindow.h"
 #include "globaldef.h"
 #include "utils.h"
-
-#include <QFileInfo>
-#include <QLocalServer>
-#include <QLocalSocket>
-#include <QCommandLineParser>
-//#include <QDebug>
+#include "performancemonitor.h"
 
 #include <DWidgetUtil>
 #include <DGuiApplicationHelper>
+
+#include <QCommandLineParser>
 
 #include <sys/types.h>
 #include <unistd.h>
@@ -33,8 +30,6 @@ SingleFontApplication::SingleFontApplication(int &argc, char **argv)
     , m_qspMainWnd(nullptr)
     , m_qspQuickWnd(nullptr)
 {
-    connect(SignalManager::instance(), &SignalManager::finishFontInstall, this,
-            &SingleFontApplication::onFontInstallFinished);
 }
 
 /*************************************************************************
@@ -47,22 +42,6 @@ SingleFontApplication::SingleFontApplication(int &argc, char **argv)
 *************************************************************************/
 SingleFontApplication::~SingleFontApplication()
 {
-}
-
-/*************************************************************************
- <Function>      setMainWindow
- <Description>   设置主窗口属性
- <Author>
- <Input>
-    <param1>     mainWindow      Description:主窗口对象
- <Return>        null            Description:null
- <Note>          null
-*************************************************************************/
-void SingleFontApplication::setMainWindow(DMainWindow *mainWindow)
-{
-    m_qspMainWnd.reset(mainWindow);
-    m_qspMainWnd->setMinimumSize(DEFAULT_WINDOWS_WIDTH, DEFAULT_WINDOWS_HEIGHT);
-    m_qspMainWnd->setWindowIcon(QIcon::fromTheme(DEEPIN_FONT_MANAGER));
 }
 
 /*************************************************************************
@@ -88,7 +67,7 @@ bool SingleFontApplication::parseCmdLine()
     }
 
     QStringList paraList = parser.positionalArguments();
-    for (auto it : paraList) {
+    for (auto &it : paraList) {
         if (Utils::isFontMimeType(it)) {
             m_selectedFiles.append(it);
         }
@@ -211,6 +190,7 @@ void SingleFontApplication::activateWindow()
                                       Q_ARG(QStringList, m_selectedFiles));
         }
     }
+    PerformanceMonitor::initializeAppFinish();
 }
 
 /*************************************************************************
@@ -231,21 +211,6 @@ void SingleFontApplication::slotBatchInstallFonts()
 }
 
 /*************************************************************************
- <Function>      onFontInstallFinished
- <Description>   安装完成清空列表
- <Author>
- <Input>
-    <param1>     fileList        Description:UnUsed
- <Return>        null            Description:null
- <Note>          null
-*************************************************************************/
-void SingleFontApplication::onFontInstallFinished(const QStringList &fileList)
-{
-    Q_UNUSED(fileList);
-    m_selectedFiles.clear();
-}
-
-/*************************************************************************
  <Function>      installFonts
  <Description>   批量安装字体响应
  <Author>
@@ -256,6 +221,7 @@ void SingleFontApplication::onFontInstallFinished(const QStringList &fileList)
 *************************************************************************/
 void SingleFontApplication::installFonts(const QStringList &fontPathList)
 {
+    PerformanceMonitor::installFontStart();
 //    qDebug() << __FUNCTION__ << fontPathList;
     for (QString fontPath : fontPathList) {
         if (Utils::isFontMimeType(fontPath)) {

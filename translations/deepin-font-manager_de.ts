@@ -60,39 +60,39 @@
     <name>DFontMgrMainWindow</name>
     <message>
         <source>Ctrl+Shift+/</source>
-        <translation>Ctrl+Shift+/</translation>
+        <translation>Strg+Umschalt+/</translation>
     </message>
     <message>
         <source>PgUp</source>
-        <translation>BildHoch</translation>
+        <translation>BildAuf</translation>
     </message>
     <message>
         <source>PgDown</source>
-        <translation>BildRunter</translation>
+        <translation>BildAb</translation>
     </message>
     <message>
         <source>Ctrl+Alt+F</source>
-        <translation>Ctrl+Alt+F</translation>
+        <translation>Strg+Alt+F</translation>
     </message>
     <message>
         <source>Ctrl+F</source>
-        <translation>Ctrl+F</translation>
+        <translation>Strg+F</translation>
     </message>
     <message>
         <source>Ctrl+O</source>
-        <translation>Ctrl+O</translation>
+        <translation>Strg+O</translation>
     </message>
     <message>
         <source>Ctrl+K</source>
-        <translation>Ctrl+K</translation>
+        <translation>Strg+K</translation>
     </message>
     <message>
         <source>Ctrl+Shift+K</source>
-        <translation>Ctrl+Shift+K</translation>
+        <translation>Strg+Umschalt+K</translation>
     </message>
     <message>
         <source>Alt+Return</source>
-        <translation>Alt+Return</translation>
+        <translation>Alt+Eingabe</translation>
     </message>
     <message>
         <source>Fonts</source>
@@ -100,15 +100,15 @@
     </message>
     <message>
         <source>Ctrl+=</source>
-        <translation>Ctrl+=</translation>
+        <translation>Strg+=</translation>
     </message>
     <message>
         <source>Ctrl+-</source>
-        <translation>Ctrl+-</translation>
+        <translation>Strg+-</translation>
     </message>
     <message>
         <source>Ctrl+0</source>
-        <translation>Ctrl+0</translation>
+        <translation>Strg+0</translation>
     </message>
     <message>
         <source>%1 font installed</source>
@@ -158,7 +158,7 @@
     <name>Dfuninstalldialog</name>
     <message>
         <source>Deleting fonts, please wait...</source>
-        <translation>Lösche Schriftarten, bitte warten...</translation>
+        <translation>Schriftarten werden gelöscht, bitte warten ...</translation>
     </message>
 </context>
 <context>
@@ -238,7 +238,7 @@
     </message>
     <message>
         <source>Loading fonts, please wait...</source>
-        <translation>Schriftarten werden geladen, bitte warten...</translation>
+        <translation>Schriftarten werden geladen, bitte warten ...</translation>
     </message>
     <message>
         <source>The font exported to your desktop</source>
@@ -331,7 +331,7 @@
     </message>
     <message>
         <source>Verifying...</source>
-        <translation>Überprüfung läuft ...</translation>
+        <translation>Wird verifiziert ...</translation>
     </message>
 </context>
 <context>

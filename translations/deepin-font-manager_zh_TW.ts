@@ -169,7 +169,7 @@
     </message>
     <message>
         <source>Exit</source>
-        <translation>退出</translation>
+        <translation>離開</translation>
     </message>
     <message>
         <source>Continue</source>
@@ -376,7 +376,7 @@
     <name>Shortcut</name>
     <message>
         <source>Help</source>
-        <translation>幫助</translation>
+        <translation>說明</translation>
     </message>
     <message>
         <source>Display shortcuts</source>

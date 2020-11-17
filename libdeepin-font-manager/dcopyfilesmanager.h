@@ -1,4 +1,5 @@
 /*
+ *
 * Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd.
 *
 * Author:     lilinling <lilinling@uniontech.com>
@@ -18,6 +19,7 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
 #pragma once
 
 #include <QObject>
@@ -75,14 +77,12 @@ public:
     explicit DCopyFilesManager(QObject *parent = nullptr);
 
     static DCopyFilesManager *instance();
+
     //拷贝文件列表
     void copyFiles(CopyFontThread::OPType type, QStringList &fontList);
     //取消安装
     static inline void cancelInstall()
     {
-        if (m_type != CopyFontThread::INSTALL)
-            return;
-
         m_installCanceled = true;
     }
 

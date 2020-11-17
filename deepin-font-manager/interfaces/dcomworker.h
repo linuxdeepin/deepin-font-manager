@@ -29,10 +29,9 @@ class DComWorker : public QObject, public QRunnable
 public:
     explicit DComWorker(QObject *parent = nullptr);
     void run();
-
 };
 
-class GetFontList  : public DComWorker
+class GetFontListWorker  : public DComWorker
 {
     Q_OBJECT
 public:
@@ -40,8 +39,9 @@ public:
         ALL,
         CHINESE,
         MONOSPACE,
+        AllInSquence,
     };
-    explicit GetFontList(FontType type, bool isStartup, QObject *parent = nullptr);
+    explicit GetFontListWorker(FontType type, bool isStartup, QObject *parent = nullptr);
     void run();
 
 private:
@@ -52,10 +52,9 @@ private:
     bool m_isStartup;
 };
 
-class FontManager : public QObject
+class FontManager
 {
-    Q_OBJECT
 public:
-    FontManager();
     static void getFontList(bool isStartup);
+    static void getFontListInSequence(bool isStartup);
 };
