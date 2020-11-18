@@ -35,8 +35,8 @@ INSTALL(FILES ${TRANSLATION_FILES} DESTINATION share/${APP_BIN}/translations)
 #libdeepin-font-manager
 SET(LIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../libdeepin-font-manager)
 FILE(GLOB LIB_SRC_FILES ${LIB_DIR}/*.cpp ${LIB_DIR}/*.h)
-INSTALL(FILES ${LIB_DIR}/schemas/com.deepin.font-manager.gschema.xml
-        DESTINATION /usr/share/glib-2.0/schemas)
+#INSTALL(FILES ${LIB_DIR}/schemas/com.deepin.font-manager.gschema.xml
+#        DESTINATION /usr/share/glib-2.0/schemas)
 
 #可执行文件
 FILE(GLOB SRC_FILES ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/*.h
@@ -53,7 +53,7 @@ TARGET_INCLUDE_DIRECTORIES(${APP_BIN} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/interf
 
 TARGET_LINK_LIBRARIES(${APP_BIN} PUBLIC Qt5::Core Qt5::Widgets Qt5::Gui Qt5::Sql Qt5::Xml Qt5::Svg Qt5::DBus Qt5::Network
                                         ${DtkCore_LIBRARIES} ${DtkWidget_LIBRARIES} ${FREETYPE_LIBRARIES}
-                                        ${FREETYPE_LIBRARIES} PkgConfig::FontConfig PkgConfig::QGsettings )
+                                        ${FREETYPE_LIBRARIES} PkgConfig::FontConfig)
 
 INSTALL(TARGETS ${APP_BIN} RUNTIME DESTINATION bin)
 

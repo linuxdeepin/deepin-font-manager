@@ -27,7 +27,6 @@
 #include <QStandardPaths>
 #include <QApplication>
 #include <QDir>
-#include <QGSettings>
 #include <QDebug>
 
 const QString sysDir = QDir::homePath() + "/.local/share/fonts";
@@ -94,43 +93,34 @@ volatile bool DCopyFilesManager::m_installCanceled = false;
 
 DCopyFilesManager::DCopyFilesManager(QObject *parent)
     : QObject(parent)
-    , m_gs(new QGSettings("com.deepin.font-manager", QByteArray(), this))
     , m_localPool(nullptr)
 {
-    m_useGlobalPool = (m_gs->get("use-global-pool").toInt());
-    m_maxThreadCnt = static_cast<qint8>(m_gs->get("max-thread-count").toInt());
-    m_exportMaxThreadCnt = static_cast<qint8>(m_gs->get("export-max-thread-count").toInt());
-    m_installMaxThreadCnt = static_cast<qint8>(m_gs->get("install-max-thread-count").toInt());
-    m_sortOrder = static_cast<qint8>(m_gs->get("sort-order").toInt());
-    m_expiryTimeout = m_gs->get("expiry-timeout").toInt();
-    qDebug() << __FUNCTION__ << "ReadCfg: use global pool : " << m_useGlobalPool << ", max thread count : "
-             << m_maxThreadCnt << ", export max thread count : " << m_exportMaxThreadCnt << ", install max thread count : "
-             << m_installMaxThreadCnt << ", sort order " << m_sortOrder << ", expiry timeout(ms) " << m_expiryTimeout;
-    if (m_maxThreadCnt <= 0)
-        m_maxThreadCnt = static_cast<qint8>(QThread::idealThreadCount());
+    // libdeepin-font-manger.so在安装时需要安装com.deepin.font-manager.gschema.xml
+    // 到目录/usr/share/glib-2.0/schemas中。
+    // 现在取消libdeepin-font-manger.so，且此配置文件并没有实际作用，故不再使用此文件，
+    // 所有配置与原配置文件中数据一致，不改变原业务逻辑。
+    m_useGlobalPool = false;
+    m_expiryTimeout = -1;
+    m_sortOrder = 1;
+    m_maxThreadCnt = static_cast<qint8>(QThread::idealThreadCount());
+    m_exportMaxThreadCnt = static_cast<qint8>(QThread::idealThreadCount());
 
-    if (m_exportMaxThreadCnt > m_maxThreadCnt)
-        m_exportMaxThreadCnt = m_maxThreadCnt;
-
-    if (m_exportMaxThreadCnt <= 0)
-        m_exportMaxThreadCnt = static_cast<qint8>(QThread::idealThreadCount());
-
-    if (m_installMaxThreadCnt > m_maxThreadCnt)
-        m_installMaxThreadCnt = m_maxThreadCnt;
-
-    if (m_installMaxThreadCnt <= 0)
-        m_installMaxThreadCnt = static_cast<qint8>(QThread::idealThreadCount());
-
-    if (!m_useGlobalPool)
+    m_installMaxThreadCnt = static_cast<qint8>(QThread::idealThreadCount());
+    if (!m_useGlobalPool) {
         m_localPool = new QThreadPool(this);
+        m_localPool->setMaxThreadCount(QThread::idealThreadCount());
+        if (m_expiryTimeout > 0) {
+            m_localPool->setExpiryTimeout(m_expiryTimeout);
+        }
+    }
 
     int maxThreadCnt = m_maxThreadCnt > 0 ? m_maxThreadCnt : QThread::idealThreadCount();
     getPool()->setMaxThreadCount(maxThreadCnt);
-    if (m_expiryTimeout > 0)
+    if (m_expiryTimeout > 0) {
         getPool()->setExpiryTimeout(m_expiryTimeout);
+    }
 
     qDebug() << __FUNCTION__ << "export max thread count = " << m_exportMaxThreadCnt << ", install max thread count = " << m_installMaxThreadCnt;
-
 }
 
 DCopyFilesManager *DCopyFilesManager::instance()

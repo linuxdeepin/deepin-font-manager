@@ -120,8 +120,6 @@ public:
     }
 
 private:
-    //配置文件
-    QGSettings *m_gs;
     //单例
     static DCopyFilesManager *inst;
     //专有线程池
