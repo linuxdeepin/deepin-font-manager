@@ -1,7 +1,6 @@
 #include "dfinstallerrordialog.h"
 #include "dfontinfomanager.h"
 #include "dfinstallnormalwindow.h"
-#include "dfinstallerrorlistview.h"
 #include "utils.h"
 
 #include <DApplication>

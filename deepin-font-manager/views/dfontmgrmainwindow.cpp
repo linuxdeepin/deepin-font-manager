@@ -31,46 +31,6 @@
 #include <QDragEnterEvent>
 #include <QDropEvent>
 
-class DFontMgrMainWindowPrivate
-{
-public:
-    explicit DFontMgrMainWindowPrivate(DFontMgrMainWindow *q)
-        : settingsQsPtr(new QSettings(QDir(Utils::getConfigPath()).filePath("config.conf"),
-                                      QSettings::IniFormat))
-        , q_ptr(q)
-    {
-    }
-
-    //~DFontMgrMainWindowPrivate() {}
-    QWidget *titleActionArea {nullptr};
-    DIconButton *addFontButton {nullptr};
-    DSearchEdit *searchFontEdit {nullptr};
-
-    QWidget *fontShowArea {nullptr};
-
-    //Shadow line of StateBar
-    DHorizontalLine  *sbarShadowLine {nullptr};
-
-    QWidget *stateBar {nullptr};
-    DLineEdit *textInputEdit {nullptr};
-    DSlider *fontScaleSlider {nullptr};
-    DLabel *fontSizeLabel {nullptr};
-
-    DSplitter *mainWndSpliter {nullptr};
-    QWidget *leftBarHolder {nullptr};
-    QWidget *rightViewHolder {nullptr};
-
-    // Menu
-    DMenu *toolBarMenu {nullptr};
-    DMenu *rightKeyMenu {nullptr};
-
-    DSplitListWidget *leftSiderBar {nullptr};
-
-    QScopedPointer<QSettings> settingsQsPtr;
-    DFontMgrMainWindow *q_ptr;
-
-    Q_DECLARE_PUBLIC(DFontMgrMainWindow)
-};
 
 /*************************************************************************
  <Function>      DFontMgrMainWindow
@@ -2217,7 +2177,7 @@ qint64 DFontMgrMainWindow::getDiskSpace(bool m_bInstall)
     QStorageInfo storage;
     if (m_bInstall) {
         storage = QStorageInfo(QDir::homePath());
-        qDebug() << __FUNCTION__ << "storage.bytesAvailable:" << storage.bytesAvailable();
+//        qDebug() << __FUNCTION__ << "storage.bytesAvailable:" << storage.bytesAvailable();
     } else {
         QString desktopPath = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
         storage = QStorageInfo(desktopPath);
@@ -2389,6 +2349,7 @@ void DFontMgrMainWindow::keyPressEvent(QKeyEvent *event)
     D_D(DFontMgrMainWindow);
 
     if (Qt::Key_Left == event->key() || Qt::Key_Down == event->key()) {
+        qDebug() << d->fontScaleSlider << endl;
         if (d->fontScaleSlider->hasFocus()) {
             d->fontScaleSlider->setValue(d->fontScaleSlider->value() - 1);
         } else if (Qt::Key_Left == event->key() && (m_fontPreviewListView->hasFocus() || m_noInstallListView->hasFocus())) {

@@ -2,6 +2,7 @@
 #define DFINSTALLERRORDIALOG_H
 
 #include "interfaces/dfontbasedialog.h"
+#include "dfinstallerrorlistview.h"
 #include "dfinstallerroritemmodel.h"
 
 #include <DPushButton>

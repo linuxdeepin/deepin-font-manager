@@ -7,10 +7,16 @@
 #include "signalmanager.h"
 #include "dsplitlistwidget.h"
 #include "views/dfdeletedialog.h"
+#include "utils.h"
 
+#include <DSearchEdit>
+#include <DSlider>
+#include <DHorizontalLine>
 #include <DMainWindow>
 #include <DFrame>
 
+#include <QSettings>
+#include <QDir>
 #include <QShortcut>
 #include <QScreen>
 
@@ -20,6 +26,48 @@ DWIDGET_USE_NAMESPACE
 class DFQuickInstallWindow;
 class DFInstallNormalWindow;
 class DFontMgrMainWindowPrivate;
+
+class DFontMgrMainWindowPrivate
+{
+public:
+    explicit DFontMgrMainWindowPrivate(DFontMgrMainWindow *q)
+        : settingsQsPtr(new QSettings(QDir(Utils::getConfigPath()).filePath("config.conf"),
+                                      QSettings::IniFormat))
+        , q_ptr(q)
+    {
+    }
+
+    //~DFontMgrMainWindowPrivate() {}
+    QWidget *titleActionArea {nullptr};
+    DIconButton *addFontButton {nullptr};
+    DSearchEdit *searchFontEdit {nullptr};
+
+    QWidget *fontShowArea {nullptr};
+
+    //Shadow line of StateBar
+    DHorizontalLine  *sbarShadowLine {nullptr};
+
+    QWidget *stateBar {nullptr};
+    DLineEdit *textInputEdit {nullptr};
+    DSlider *fontScaleSlider {nullptr};
+    DLabel *fontSizeLabel {nullptr};
+
+    DSplitter *mainWndSpliter {nullptr};
+    QWidget *leftBarHolder {nullptr};
+    QWidget *rightViewHolder {nullptr};
+
+    // Menu
+    DMenu *toolBarMenu {nullptr};
+    DMenu *rightKeyMenu {nullptr};
+
+    DSplitListWidget *leftSiderBar {nullptr};
+
+    QScopedPointer<QSettings> settingsQsPtr;
+    DFontMgrMainWindow *q_ptr;
+
+    Q_DECLARE_PUBLIC(DFontMgrMainWindow)
+};
+
 
 /*************************************************************************
  <Class>         DFontMgrMainWindow

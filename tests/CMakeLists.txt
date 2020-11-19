@@ -1,0 +1,90 @@
+﻿#/*****************************************************************************
+#* Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd.
+#*
+#* Author:     Xiao Zhiguo <xiaozhiguo@uniontech.com>
+#* Date:       2020-09-09
+#*
+#* Maintainer: Xiao Zhiguo <xiaozhiguo@uniontech.com>
+#*
+#* This program is free software: you can redistribute it and/or modify
+#* it under the terms of the GNU General Public License as published by
+#* the Free Software Foundation, either version 3 of the License, or
+#* any later version.
+#*
+#* This program is distributed in the hope that it will be useful,
+#* but WITHOUT ANY WARRANTY; without even the implied warranty of
+#* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#* GNU General Public License for more details.
+#*
+#* You should have received a copy of the GNU General Public License
+#* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#*
+#*****************************************************************************/
+
+
+ADD_COMPILE_OPTIONS(-fno-access-control)
+
+find_package(Qt5Test REQUIRED)
+
+find_package(GTest REQUIRED)
+include_directories(${GTEST_INCLUDE_DIRS})
+
+set(PROJECT_NAME_TEST ${PROJECT_NAME}-test)
+#ADD_EXECUTABLE(${PROJECT_NAME_TEST} "")
+#翻译文件
+SET(TRANSLATE_SHELL ${CMAKE_CURRENT_LIST_DIR}/../deepin-font-manager-assets/translate_generation.sh)
+SET(TRANSLATION_DIR ${CMAKE_CURRENT_LIST_DIR}/../translations)
+EXECUTE_PROCESS(COMMAND ${TRANSLATE_SHELL} WORKING_DIRECTORY ${TRANSLATION_DIR})
+
+FILE(GLOB TRANSLATION_FILES ${CMAKE_CURRENT_LIST_DIR}/../translations/*.qm)
+INSTALL(FILES ${TRANSLATION_FILES} DESTINATION share/${APP_BIN}/translations)
+
+#libdeepin-font-manager
+SET(LIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../libdeepin-font-manager)
+
+INSTALL(FILES ${LIB_DIR}/schemas/com.deepin.font-manager.gschema.xml
+        DESTINATION /usr/share/glib-2.0/schemas)
+
+#include_directories(third-party/googletest)                           #一下三行添加包含以便测试用例代码的编写
+#include_directories(third-party/googletest/googlemock/include)
+#include_directories(third-party/googletest/googletest/include)
+#add_subdirectory(third-party/googletest)
+
+FILE (GLOB allSource
+     ${CMAKE_CURRENT_SOURCE_DIR}/../deepin-font-manager/*.cpp
+     ${CMAKE_CURRENT_SOURCE_DIR}/../deepin-font-manager/views/*.cpp
+     ${CMAKE_CURRENT_SOURCE_DIR}/../deepin-font-manager/interfaces/*.cpp
+    )
+list(REMOVE_ITEM allSource "${CMAKE_CURRENT_SOURCE_DIR}/../deepin-font-manager/main.cpp")
+
+FILE (GLOB allHeaders
+     ${CMAKE_CURRENT_SOURCE_DIR}/../deepin-font-manager/*.h
+     ${CMAKE_CURRENT_SOURCE_DIR}/../deepin-font-manager/views/*.h
+     ${CMAKE_CURRENT_SOURCE_DIR}/../deepin-font-manager/interfaces/*.h
+    )
+
+SET(LIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../libdeepin-font-manager)
+FILE(GLOB LIB_SRC_FILES ${LIB_DIR}/*.cpp ${LIB_DIR}/*.h)
+
+file(GLOB_RECURSE FONT_SRC_TEST1 ${CMAKE_CURRENT_LIST_DIR}/src/*.cpp)
+
+add_executable(${PROJECT_NAME_TEST} ${FONT_SRC_TEST1} ${allHeaders} ${allSource} ${LIB_SRC_FILES})
+
+TARGET_INCLUDE_DIRECTORIES(${PROJECT_NAME_TEST} PUBLIC ${LIB_DIR})
+TARGET_INCLUDE_DIRECTORIES(${PROJECT_NAME_TEST} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/)
+TARGET_INCLUDE_DIRECTORIES(${PROJECT_NAME_TEST} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../deepin-font-manager/)
+TARGET_INCLUDE_DIRECTORIES(${PROJECT_NAME_TEST} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../deepin-font-manager/views)
+TARGET_INCLUDE_DIRECTORIES(${PROJECT_NAME_TEST} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../deepin-font-manager/interfaces)
+
+# 生成测试可执行程序的依赖库
+target_link_libraries(${PROJECT_NAME_TEST} gtest gtest_main -pthread)
+
+
+target_include_directories(${PROJECT_NAME_TEST} PUBLIC ${DtkWidget_INCLUDE_DIRS}
+                                                       ${DtkCore_INCLUDE_DIRS}
+                                                        ${DtkGui_INCLUDE_DIRS})
+
+TARGET_LINK_LIBRARIES(${PROJECT_NAME_TEST} Qt5::Core Qt5::Widgets Qt5::Gui Qt5::Sql Qt5::Xml Qt5::Svg Qt5::DBus Qt5::Network
+                                        Qt5::Test ${DtkCore_LIBRARIES} ${DtkWidget_LIBRARIES} ${FREETYPE_LIBRARIES}
+                                        ${FREETYPE_LIBRARIES} PkgConfig::FontConfig  ${GTEST_LIBRARYS} ${GTEST_MAIN_LIBRARYS})
+

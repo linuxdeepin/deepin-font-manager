@@ -24,6 +24,8 @@
 SET(APP_BIN deepin-font-manager)
 ADD_EXECUTABLE(${APP_BIN} "")
 
+ADD_COMPILE_OPTIONS(-fno-access-control)
+
 #编译翻译文件
 SET(TRANSLATE_SHELL ${CMAKE_CURRENT_LIST_DIR}/../deepin-font-manager-assets/translate_generation.sh)
 SET(TRANSLATION_DIR ${CMAKE_CURRENT_LIST_DIR}/../translations)
