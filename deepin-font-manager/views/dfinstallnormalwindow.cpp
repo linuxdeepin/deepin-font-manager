@@ -196,8 +196,10 @@ void DFInstallNormalWindow::getAllSysfiles()
         if (Q_UNLIKELY(font.fontInfo.filePath.contains("/usr/share/"))) {
             QString systemFileName;
             systemFileName.append(font.fontInfo.familyName).append(font.fontInfo.styleName);
-
+            m_fontName.append(font.fontData.strFontName);
+            qDebug() << font.fontInfo.fullname << endl;
             m_AllSysFilesfamilyName.append(systemFileName);
+
         }
     }
 }
@@ -329,6 +331,7 @@ bool DFInstallNormalWindow::ifNeedShowExceptionWindow() const
 bool DFInstallNormalWindow::isSystemFont(DFontInfo &f)
 {
     QString fontFullname = f.familyName + f.styleName;
+
 
     return (m_AllSysFilesfamilyName.contains(fontFullname));
 }

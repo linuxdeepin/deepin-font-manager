@@ -65,6 +65,10 @@ DFontMgrMainWindow::DFontMgrMainWindow(bool isQuickMode, QWidget *parent)
     initShortcuts();
     //SP3--设置tab顺序--安装事件过滤器(539)
     installEventFilters();
+
+//    moveToThread(m_thread);
+
+//    m_thread->start();
 }
 
 /*************************************************************************
@@ -1741,7 +1745,8 @@ void DFontMgrMainWindow::onInstallWindowDestroyed(QObject *)
         qDebug() << __func__ << "install finish" << " set m_installFinish = true";
         m_installFinish = true;
 
-        if (!DFontPreviewListDataThread::instance()->m_isAllLoaded) {
+        if (!SignalManager::m_isDataLoadFinish) {
+            qDebug() << "~~~~~~~~~" << endl;
             m_fontPreviewListView->getFontLoadTimer()->start(500);
         }
 

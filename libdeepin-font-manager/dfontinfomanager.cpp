@@ -375,7 +375,7 @@ QString DFontInfoManager::getFontType(const QString &filePath)
  <Return>        DFontInfo            Description:该字体文件的字体信息
  <Note>          null
 *************************************************************************/
-DFontInfo DFontInfoManager::getFontInfo(const QString &filePath, bool withPreviewTxt)
+DFontInfo DFontInfoManager:: getFontInfo(const QString &filePath, bool withPreviewTxt)
 {
     DFontInfo fontInfo;
     fontInfo.isSystemFont = isSystemFont(filePath);
@@ -482,9 +482,9 @@ DFontInfo DFontInfoManager::getFontInfo(const QString &filePath, bool withPrevie
         } else {
             fontInfo.isInstalled = true;
         }
-    } else {
+    } /*else {
         fontInfo.isInstalled = isFontInstalled(fontInfo);
-    }
+    }*/
 
     return fontInfo;
 }
@@ -818,13 +818,13 @@ bool DFontInfoManager::isFontInstalled(DFontInfo &data)
 *************************************************************************/
 void DFontInfoManager::getDefaultPreview(DFontInfo &data)
 {
-    for (DFontInfo &item : dataList) {
-        if (data == item) {
-            data.defaultPreview = item.defaultPreview;
-            data.previewLang = item.previewLang;
-            return;
-        }
-    }
+//    for (DFontInfo &item : dataList) {
+//        if (data == item) {
+//            data.defaultPreview = item.defaultPreview;
+//            data.previewLang = item.previewLang;
+//            return;
+//        }
+//    }
 
     data.defaultPreview = getDefaultPreview(data.filePath, data.previewLang);
 }

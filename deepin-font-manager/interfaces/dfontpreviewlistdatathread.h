@@ -30,6 +30,9 @@ public:
     void syncFontEnableDisableStatusData(const QStringList &disableFontPathList);
     //刷新字体列表的数据
     void refreshFontListData(bool isStartup = false, const QStringList &list = QStringList());
+
+    void refreshStartupFontListData();
+
     //从字体信息链表中删除需要删除的项
     void removeFontData(const DFontPreviewItemData &removeItemData);
     //将需要添加项的字体数据收集放人list中
@@ -48,6 +51,9 @@ public:
     void updateItemStatus(int index, const DFontPreviewItemData &itemData);
     //更新字体信息中的fontid
     void updateFontId(const DFontPreviewItemData &itemData, int id);
+    //获取previewlistview接口
+    DFontPreviewListView *getView() const;
+
     //通过DFontData信息获取DFontPreviewItemData
     inline static DFontPreviewItemData getFontData(const FontData &fontData)
     {
@@ -115,9 +121,11 @@ public:
     QStringList m_chineseFontPathList;
     QStringList m_monoSpaceFontPathList;
     static QList<DFontPreviewItemData> m_fontModelList;
+    static QList<DFontPreviewItemData> m_startModelList;
     QList<DFontPreviewItemData> m_delFontInfoList;
     //判断启动过程中初始数据是否全部加载完毕的标志位
     bool m_isAllLoaded = false;
+
 protected:
     QThread mThread;
 
@@ -127,5 +135,8 @@ protected:
     QFileSystemWatcher *m_fsWatcher;
     QMutex *m_mutex;
 };
+
+
+
 
 #endif // DFONTPREVIEWLISTDATATHREAD_H

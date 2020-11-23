@@ -1,6 +1,10 @@
 #include "signalmanager.h"
+bool SignalManager::m_isOnLoad = false;
+bool SignalManager::m_isOnStartupLoad = false;
+bool SignalManager::m_isDataLoadFinish = false;
 
 SignalManager *SignalManager::m_signalManager = nullptr;
+
 
 /*************************************************************************
  <Function>      instance

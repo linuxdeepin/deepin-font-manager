@@ -10,6 +10,7 @@
 static DFontPreviewListDataThread *INSTANCE = nullptr;
 
 QList<DFontPreviewItemData> DFontPreviewListDataThread::m_fontModelList = QList<DFontPreviewItemData>();
+QList<DFontPreviewItemData> DFontPreviewListDataThread::m_startModelList = QList<DFontPreviewItemData>();
 //系统字体路径
 const QString FONTS_DIR = QDir::homePath() + "/.local/share/fonts/";
 
@@ -81,16 +82,18 @@ void DFontPreviewListDataThread::doWork()
     m_fontModelList.clear();
 
     qDebug() << "doWork thread id = " << QThread::currentThreadId();
-
     QStringList disableFontList = DFMXmlWrapper::getFontConfigDisableFontPathList();
 
-    FontManager::getFontList(true);
-
-    if (!m_fontModelList.isEmpty()) {
-        //从fontconfig配置文件同步字体启用/禁用状态数据
+    if (disableFontList.count()  > 0) {
         syncFontEnableDisableStatusData(disableFontList);
-        refreshFontListData(true, disableFontList);
+    }
 
+    FontManager::getStartFontList();
+
+    if (!m_startModelList.isEmpty()) {
+        //从fontconfig配置文件同步字体启用/禁用状态数据
+//        syncFontEnableDisableStatusData(disableFontList);
+        refreshStartupFontListData();
         m_view->onFinishedDataLoad();
         return;
     }
@@ -391,6 +394,11 @@ void DFontPreviewListDataThread::onExportFont(QStringList &fontList)
     Q_EMIT exportFontFinished(fontList.size());
 }
 
+DFontPreviewListView *DFontPreviewListDataThread::getView() const
+{
+    return m_view;
+}
+
 /*************************************************************************
  <Function>      insertFontItemData
  <Description>   将需要添加项的字体数据收集放人list中.
@@ -520,6 +528,28 @@ void DFontPreviewListDataThread:: refreshFontListData(bool isStartup, const QStr
         FontManager::getFontListInSequence(isStartup);
     }
 
+    QList<DFontPreviewItemData> list;
+    if (SignalManager::m_isDataLoadFinish == false) {
+        list = DFMDBManager::instance()->getFontInfo(DFMDBManager::recordList, &m_delFontInfoList);
+
+        m_fontModelList.append(list);
+        for (DFontPreviewItemData &itemData : m_delFontInfoList) {
+            //如果字体文件已经不存在，则从t_manager表中删除
+            //删除字体之前启用字体，防止下次重新安装后就被禁用
+            m_view ->enableFont(itemData.fontInfo.filePath);
+            DFMDBManager::instance()->deleteFontInfo(itemData);
+        }
+
+        DFMDBManager::instance()->commitDeleteFontInfo();
+        m_view->enableFonts();
+
+        foreach (auto it, m_startModelList) {
+            addPathWatcher(it.fontInfo.filePath);
+        }
+        m_delFontInfoList.clear();
+        SignalManager::m_isDataLoadFinish = true;
+    }
+
     QSet<QString> dbFilePathSet;
     for (DFontPreviewItemData &itemData : m_fontModelList) {
         QString filePath = itemData.fontInfo.filePath.trimmed();
@@ -547,7 +577,8 @@ void DFontPreviewListDataThread:: refreshFontListData(bool isStartup, const QStr
     //根据文件路径比较出不同的字体文件
     QSet<QString> allFontListSet = m_allFontPathList.toSet();
     QSet<QString> diffSet = allFontListSet.subtract(dbFilePathSet);
-    qDebug() << "diffSet count:" << diffSet.count();
+
+    qInfo() << "diffSet count:" << diffSet.count();
     if (diffSet.count() > 0) {
         int maxFontId = m_dbManager->getCurrMaxFontId();
         QList<QString> diffFilePathList = diffSet.toList();
@@ -560,19 +591,11 @@ void DFontPreviewListDataThread:: refreshFontListData(bool isStartup, const QStr
         }
         m_dbManager->commitAddFontInfo();
     }
-    qDebug() << __FUNCTION__ << " end " << QThread::currentThreadId() << m_diffFontModelList.size() << m_fontModelList.size();
+    qInfo() << __FUNCTION__ << " end " << QThread::currentThreadId() << m_diffFontModelList.size() << m_fontModelList.size();
 
     if (!isStartup && !installFont.isEmpty()) {
-        if (!m_isAllLoaded) {
-            //之前如果初始数据没有全加载时，安装字体后加载全部的数据。主要出现在文管中直接打开字体文件进行安装
-            QList<DFontPreviewItemData> list = m_fontModelList.mid(50, m_fontModelList.size());
-            Q_EMIT m_view->multiItemsAdded(list, DFontSpinnerWidget::NoLabel);
-
-            // 数据完成完全加载，将标志位设置为true；
-            m_isAllLoaded = true;
-        } else {
-            Q_EMIT m_view->multiItemsAdded(m_diffFontModelList, DFontSpinnerWidget::NoLabel);
-        }
+        Q_EMIT m_view->multiItemsAdded(list, DFontSpinnerWidget::NoLabel);
+        Q_EMIT m_view->multiItemsAdded(m_diffFontModelList, DFontSpinnerWidget::NoLabel);
         Q_EMIT m_view->itemsSelected(installFont);
     } else if (isStartup) {
         QList<DFontPreviewItemData> list = m_fontModelList.mid(0, 50);
@@ -581,6 +604,37 @@ void DFontPreviewListDataThread:: refreshFontListData(bool isStartup, const QStr
         Q_EMIT m_view->multiItemsAdded(m_fontModelList, DFontSpinnerWidget::Load);
     }
 }
+
+/*************************************************************************
+ <Function>      refreshStartupFontListData
+ <Description>   启动时把已经处理好的50个数据添加到listview里
+ <Author>        null
+ <Input>
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
+void DFontPreviewListDataThread::refreshStartupFontListData()
+{
+    for (DFontPreviewItemData &itemData : m_delFontInfoList) {
+        //如果字体文件已经不存在，则从t_manager表中删除
+        //删除字体之前启用字体，防止下次重新安装后就被禁用
+        m_view->enableFont(itemData.fontInfo.filePath);
+        DFMDBManager::instance()->deleteFontInfo(itemData);
+    }
+
+    DFMDBManager::instance()->commitDeleteFontInfo();
+    m_view->enableFonts();
+
+    foreach (auto it, m_startModelList) {
+        addPathWatcher(it.fontInfo.filePath);
+    }
+
+    Q_EMIT m_view->multiItemsAdded(m_startModelList, DFontSpinnerWidget::StartupLoad);
+
+    m_delFontInfoList.clear();
+
+}
+
 
 /*************************************************************************
  <Function>      syncFontEnableDisableStatusData

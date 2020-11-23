@@ -8,6 +8,7 @@
 #include "dfmdbmanager.h"
 #include "signalmanager.h"
 #include "../views/dfontspinnerwidget.h"
+#include "loadfontdatathread.h"
 
 #include <QScrollBar>
 #include <QListView>
@@ -279,6 +280,7 @@ private:
     DFontPreviewProxyModel *m_fontPreviewProxyModel {nullptr};
 
     DFontPreviewListDataThread *m_dataThread;
+    LoadFontDataThread *m_dataLoadThread = nullptr;
     QTimer *m_fontChangeTimer;
 
     // 打开应用加载数据计时器

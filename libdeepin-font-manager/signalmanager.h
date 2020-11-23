@@ -50,6 +50,10 @@ signals:
     void onMenuHidden();
 private:
     explicit SignalManager(QObject *parent = nullptr);
+public:
+    static bool m_isOnLoad;
+    static bool m_isOnStartupLoad;
+    static bool m_isDataLoadFinish;
 
 private:
     static SignalManager *m_signalManager;

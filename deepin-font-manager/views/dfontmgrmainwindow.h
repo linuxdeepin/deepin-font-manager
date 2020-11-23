@@ -83,6 +83,8 @@ public:
     explicit DFontMgrMainWindow(bool isQuickMode = false, QWidget *parent = nullptr);
     ~DFontMgrMainWindow() override;
 
+    QThread *m_thread;
+
     //静态变量
     static constexpr char const *FMT_FONT_SIZE = "%dpx";
     static constexpr int MIN_FONT_SIZE = 6;
@@ -106,7 +108,8 @@ public:
         Delete_Deleting = 2,
         Deleting = Delete_Cacheing | Delete_Deleting,
     };
-
+    //通过styles来决定标签显示内容
+    void showSpinner(DFontSpinnerWidget::SpinnerStyles styles, bool force = false);
     //设置快速安装标志位
     void setQuickInstallMode(bool isQuick);
     //隐藏快速安装页面
@@ -210,8 +213,7 @@ protected:
     void showExportFontMessage(int successCount, int abandonFilesCount);
     //调用显示快捷键的说明页面
     void showAllShortcut();
-    //通过styles来决定标签显示内容
-    void showSpinner(DFontSpinnerWidget::SpinnerStyles styles, bool force = false);
+
     //判断是否需要隐藏旋转进度图标
     void hideSpinner();
     //更新待安装列表

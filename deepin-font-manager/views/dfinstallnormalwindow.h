@@ -115,6 +115,7 @@ private:
     *************************************************************************/
     enum InstallState { Install, reinstall, damaged };
 
+    QStringList m_fontName;
     QStringList m_AllSysFilesfamilyName;
 
     QStringList m_installFiles;

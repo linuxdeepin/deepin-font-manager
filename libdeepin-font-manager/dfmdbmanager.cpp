@@ -1,9 +1,11 @@
 #include "dfmdbmanager.h"
 #include "dfontinfomanager.h"
 
+
 #include <QDir>
 
 static DFMDBManager *INSTANCE = nullptr;
+QList<QMap<QString, QString>> DFMDBManager::recordList = QList<QMap<QString, QString>>();
 
 DFMDBManager::DFMDBManager(QObject *parent)
     : QObject(parent)
@@ -147,6 +149,58 @@ QList<DFontPreviewItemData> DFMDBManager::getAllFontInfo(QList<DFontPreviewItemD
         if (record.size() > 0) {
             DFontPreviewItemData itemData = parseRecordToItemData(record);
             if (QFileInfo(itemData.fontInfo.filePath).exists()) {
+                fontItemDataList.push_back(itemData);
+            } else {
+                if (deletedFontInfo != nullptr)
+                    deletedFontInfo->push_back(itemData);
+            }
+        }
+    }
+
+    return fontItemDataList;
+}
+
+QList<DFontPreviewItemData> DFMDBManager::getFontInfo(const int count, QList<DFontPreviewItemData> *deletedFontInfo)
+{
+    QMutex m_mutex;
+    QMutexLocker locker(&m_mutex);
+    QList<DFontPreviewItemData> fontItemDataList;
+    QList<QMap<QString, QString>> list ;
+
+    if (count > recordList.count()) {
+        list = recordList;
+    } else {
+        list = recordList.mid(0, count);
+    }
+
+    for (QMap<QString, QString> &record : list) {
+        if (record.size() > 0) {
+            DFontPreviewItemData itemData = parseRecordToItemData(record);
+            if (QFileInfo(itemData.fontInfo.filePath).exists()) {
+//                DFontPreviewListDataThread::instance()->addPathWatcher(itemData.fontInfo.filePath);
+                fontItemDataList.push_back(itemData);
+            } else {
+                if (deletedFontInfo != nullptr)
+                    deletedFontInfo->push_back(itemData);
+            }
+        }
+    }
+
+    recordList = recordList.mid(count, recordList.count());
+
+    return fontItemDataList;
+
+}
+
+QList<DFontPreviewItemData> DFMDBManager::getFontInfo(QList<QMap<QString, QString> > list, QList<DFontPreviewItemData> *deletedFontInfo)
+{
+    QList<DFontPreviewItemData> fontItemDataList;
+
+    for (QMap<QString, QString> &record : list) {
+        if (record.size() > 0) {
+            DFontPreviewItemData itemData = parseRecordToItemData(record);
+            if (QFileInfo(itemData.fontInfo.filePath).exists()) {
+//                DFontPreviewListDataThread::instance()->addPathWatcher(itemData.fontInfo.filePath);
                 fontItemDataList.push_back(itemData);
             } else {
                 if (deletedFontInfo != nullptr)
@@ -450,6 +504,16 @@ void DFMDBManager::commitUpdateFontInfo()
     m_sqlUtil->updateFontInfo(m_updateFontList, m_strKey);
     endTransaction();
     m_updateFontList.clear();
+}
+
+void DFMDBManager::getAllRecords()
+{
+    QList<DFontPreviewItemData> fontItemDataList;
+
+    QList<QString> keyList;
+    appendAllKeys(keyList);
+
+    m_sqlUtil->findAllRecords(keyList, recordList);
 }
 
 void DFMDBManager::checkIfEmpty()

@@ -7,12 +7,17 @@
 class DFMDBManager: public QObject
 {
     Q_OBJECT
+
+
 public:
     static DFMDBManager *instance();
+    static QList<QMap<QString, QString>> recordList;
     explicit DFMDBManager(QObject *parent = nullptr);
     ~DFMDBManager();
 
     QList<DFontPreviewItemData> getAllFontInfo(QList<DFontPreviewItemData> *deletedFontInfo = nullptr);
+    QList<DFontPreviewItemData> getFontInfo(const int count, QList<DFontPreviewItemData> *deletedFontInfo = nullptr);
+    QList<DFontPreviewItemData> getFontInfo(QList<QMap<QString, QString>> list, QList<DFontPreviewItemData> *deletedFontInfo = nullptr);
     int getRecordCount();
     int getCurrMaxFontId();
     QStringList getInstalledFontsPath();
@@ -32,6 +37,7 @@ public:
     void updateFontInfo(const DFontPreviewItemData &fontList, const QString &strKey);
     void updateFontInfo(const QList<DFontPreviewItemData> &fontList, const QString &strKey);
     void commitUpdateFontInfo();
+    void getAllRecords();
     //去除非法记录
     void checkIfEmpty();
     //开启事务

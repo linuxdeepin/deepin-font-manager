@@ -42,6 +42,7 @@ public:
         AllInSquence,
     };
     explicit GetFontListWorker(FontType type, bool isStartup, QObject *parent = nullptr);
+    explicit GetFontListWorker();
     void run();
 
 private:
@@ -57,4 +58,5 @@ class FontManager
 public:
     static void getFontList(bool isStartup);
     static void getFontListInSequence(bool isStartup);
+    static void getStartFontList();
 };

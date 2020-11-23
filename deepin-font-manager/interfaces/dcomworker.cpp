@@ -48,6 +48,23 @@ GetFontListWorker::GetFontListWorker(GetFontListWorker::FontType type, bool isSt
 {
 }
 
+GetFontListWorker::GetFontListWorker()
+{
+    DFontInfoManager *inst = DFontInfoManager::instance();
+    DFontPreviewListDataThread *thread = DFontPreviewListDataThread::instance();
+
+    thread->m_allFontPathList.clear();
+    thread->m_allFontPathList = inst->getAllFontPath(true);
+
+    removeUserAddFonts();
+
+    DFMDBManager::instance()->getAllRecords();
+    QList<DFontPreviewItemData> list = DFMDBManager::instance()->getFontInfo(50, &thread->m_delFontInfoList);
+    thread->m_startModelList = list;
+    thread->m_fontModelList.append(list);
+}
+
+
 void GetFontListWorker::run()
 {
     qDebug() << __FUNCTION__ << m_type << "begin";
@@ -119,4 +136,26 @@ void FontManager::getFontListInSequence(bool isStartup)
 {
     GetFontListWorker getFontList(GetFontListWorker::AllInSquence, isStartup);
     getFontList.run();
+}
+
+
+/*************************************************************************
+ <Function>      getStartFontList
+ <Description>   获取启动时的需要用到的字体列表
+ <Author>        null
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
+void FontManager::getStartFontList()
+{
+    QThreadPool *threadPool = DCopyFilesManager::instance()->getPool();
+
+    GetFontListWorker *getAll = new GetFontListWorker();
+    threadPool->start(getAll);
+    GetFontListWorker *getChinese = new GetFontListWorker(GetFontListWorker::CHINESE, true);
+    threadPool->start(getChinese);
+    GetFontListWorker *getMonospace = new GetFontListWorker(GetFontListWorker::MONOSPACE, true);
+    threadPool->start(getMonospace);
+    threadPool->waitForDone();
 }

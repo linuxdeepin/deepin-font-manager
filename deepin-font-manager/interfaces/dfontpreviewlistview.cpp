@@ -5,6 +5,8 @@
 #include "dfmxmlwrapper.h"
 #include "views/dfontmgrmainwindow.h"
 #include "performancemonitor.h"
+#include "dcomworker.h"
+
 
 #include <DMessageManager>
 
@@ -31,12 +33,12 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
     m_fontPreviewItemModel->setColumnCount(1);
     setFrameShape(QFrame::NoFrame);
 
-//    //启动检测加载状态的定时器
+    PerformanceMonitor::loadFontStart();
+
+    m_dataThread = DFontPreviewListDataThread::instance(this);
+    //启动检测加载状态的定时器
     m_fontLoadTimer = new QTimer(this);
     m_fontLoadTimer->start(500);
-
-    PerformanceMonitor::loadFontStart();
-    m_dataThread = DFontPreviewListDataThread::instance(this);
 
     setMouseTracking(true);
     setUpdatesEnabled(true);
@@ -115,7 +117,7 @@ void DFontPreviewListView::onMultiItemsAdded(QList<DFontPreviewItemData> &data, 
 
     QMutexLocker locker(&m_mutex);
     int rows = m_fontPreviewItemModel->rowCount();
-    qDebug() << __FUNCTION__ << data.size() << rows;
+    qInfo() << __FUNCTION__ << data.size() << rows;
 
     int i = 0;
     bool res = m_fontPreviewItemModel->insertRows(rows, data.size());
@@ -124,7 +126,7 @@ void DFontPreviewListView::onMultiItemsAdded(QList<DFontPreviewItemData> &data, 
         return;
     }
 
-    qDebug() << __FUNCTION__ << "rows = " << m_fontPreviewItemModel->rowCount();
+    qInfo() << __FUNCTION__ << "rows = " << m_fontPreviewItemModel->rowCount();
     QList<DFontInfo> fontList;
     for (DFontPreviewItemData &itemData : data) {
         if (itemData.appFontId < 0) {
@@ -132,6 +134,7 @@ void DFontPreviewListView::onMultiItemsAdded(QList<DFontPreviewItemData> &data, 
             itemData.appFontId = appFontId;
 
             //compitable with SP2 Update1
+
             QString familyName;
             if (!itemData.fontInfo.isSystemFont
                     && (itemData.fontInfo.sp3FamilyName.isEmpty() || itemData.fontInfo.sp3FamilyName.contains(QChar('?')))) {
@@ -176,8 +179,6 @@ void DFontPreviewListView::onMultiItemsAdded(QList<DFontPreviewItemData> &data, 
 
     if (styles == DFontSpinnerWidget::StartupLoad)
         Q_EMIT onLoadFontsStatus(1);
-
-    qDebug() << __FUNCTION__ << "end";
 }
 
 /*************************************************************************
@@ -248,6 +249,8 @@ void DFontPreviewListView::initConnections()
     //打开应用后每隔一段时间去检测一次后台数据加载状态，加载完成后，将所有数据刷新出来
     connect(m_fontLoadTimer, &QTimer::timeout, this, &DFontPreviewListView::loadLeftFonts);
     connect(m_fontChangeTimer, &QTimer::timeout, this, &DFontPreviewListView::onUpdateCurrentFont);
+
+
 }
 
 /*************************************************************************
@@ -290,12 +293,16 @@ void DFontPreviewListView::cancelDel()
 *************************************************************************/
 void DFontPreviewListView::loadLeftFonts()
 {
-    if (m_bLoadDataFinish && !m_dataThread->m_isAllLoaded) {
-        qDebug() << m_dataThread->m_fontModelList.size();
-        QList<DFontPreviewItemData> data = m_dataThread->m_fontModelList.mid(50, m_dataThread->m_fontModelList.size());
-        Q_EMIT multiItemsAdded(data, DFontSpinnerWidget::StartupLoad);
-        m_dataThread->m_isAllLoaded = true;
+    qInfo() << QThread::currentThreadId() << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!";
+    if (isListDataLoadFinished()) {
         m_fontLoadTimer->stop();
+//        m_parentWidget->showSpinner(DFontSpinnerWidget::Load);
+        qDebug() << DFMDBManager::recordList.count() << endl;
+        m_dataLoadThread = new LoadFontDataThread(DFMDBManager::recordList);
+        m_dataLoadThread->start();
+        connect(m_dataLoadThread, &LoadFontDataThread::dataLoadFinish, this, [ = ](QList<DFontPreviewItemData> &dataList) {
+            emit multiItemsAdded(dataList, DFontSpinnerWidget::StartupLoad);
+        });
     }
 }
 
@@ -2201,6 +2208,7 @@ void DFontPreviewListView::selectedFonts(const DFontPreviewItemData &curData,
         }
     }
 
+    qInfo() << allIndexList->count() << "1111111111" << endl;
     if (delFontList && deleteCnt)
         qDebug() << __FUNCTION__ << delFontList->size() << *deleteCnt;
 }
