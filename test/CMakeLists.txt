@@ -40,6 +40,8 @@ FILE(GLOB TRANSLATION_FILES ${CMAKE_CURRENT_LIST_DIR}/../translations/*.qm)
 INSTALL(FILES ${TRANSLATION_FILES} DESTINATION share/${APP_BIN}/translations)
 
 #libdeepin-font-manager
+
+SET(QRC_FILES ${CMAKE_CURRENT_SOURCE_DIR}/../deepin-font-manager-assets/deepin-font-manager.qrc)
 SET(LIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../libdeepin-font-manager)
 
 INSTALL(FILES ${LIB_DIR}/schemas/com.deepin.font-manager.gschema.xml
@@ -64,11 +66,12 @@ FILE (GLOB allHeaders
     )
 
 SET(LIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../libdeepin-font-manager)
+
 FILE(GLOB LIB_SRC_FILES ${LIB_DIR}/*.cpp ${LIB_DIR}/*.h)
 
 file(GLOB_RECURSE FONT_SRC_TEST1 ${CMAKE_CURRENT_LIST_DIR}/src/*.cpp)
 
-add_executable(${PROJECT_NAME_TEST} ${FONT_SRC_TEST1} ${allHeaders} ${allSource} ${LIB_SRC_FILES})
+add_executable(${PROJECT_NAME_TEST} ${FONT_SRC_TEST1} ${allHeaders} ${allSource} ${LIB_SRC_FILES} ${QRC_FILES})
 
 TARGET_INCLUDE_DIRECTORIES(${PROJECT_NAME_TEST} PUBLIC ${LIB_DIR})
 TARGET_INCLUDE_DIRECTORIES(${PROJECT_NAME_TEST} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/)
@@ -81,10 +84,48 @@ target_link_libraries(${PROJECT_NAME_TEST} gtest gtest_main -pthread)
 
 
 target_include_directories(${PROJECT_NAME_TEST} PUBLIC ${DtkWidget_INCLUDE_DIRS}
-                                                       ${DtkCore_INCLUDE_DIRS}
-                                                        ${DtkGui_INCLUDE_DIRS})
+                           ${DtkCore_INCLUDE_DIRS}
+                            ${DtkGui_INCLUDE_DIRS})
 
 TARGET_LINK_LIBRARIES(${PROJECT_NAME_TEST} Qt5::Core Qt5::Widgets Qt5::Gui Qt5::Sql Qt5::Xml Qt5::Svg Qt5::DBus Qt5::Network
-                                        Qt5::Test ${DtkCore_LIBRARIES} ${DtkWidget_LIBRARIES} ${FREETYPE_LIBRARIES}
-                                        ${FREETYPE_LIBRARIES} PkgConfig::FontConfig  ${GTEST_LIBRARYS} ${GTEST_MAIN_LIBRARYS})
+            Qt5::Test ${DtkCore_LIBRARIES} ${DtkWidget_LIBRARIES} ${FREETYPE_LIBRARIES}
+            ${FREETYPE_LIBRARIES} PkgConfig::FontConfig  ${GTEST_LIBRARYS} ${GTEST_MAIN_LIBRARYS})
+
+add_custom_target(test
+#    #执行mkdir -p 创建 coverageResult
+#    COMMAND mkdir -p test/coverageResult
+#    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+)
+
+add_custom_command(TARGET test
+        COMMAND echo " =================== TEST BEGIN ==================== "
+        #    #1.清理原先的gcov信息
+        #    COMMAND lcov --directory ./test/CMakeFiles/${PROJECT_NAME_TEST}.dir --zerocounters
+        #    COMMAND lcov --directory ./test/CMakeFiles/${PROJECT_NAME}.dir --zerocounters
+        COMMAND ${CMAKE_BINARY_DIR}/test/${PROJECT_NAME_TEST}
+        #    #2.收集gcov信息到.info文件中
+        #    COMMAND lcov --directory . --capture --output-file ./test/coverageResult/${PROJECT_NAME}_Coverage.info
+
+        #    #3.过滤一些我们不感兴趣的文件的覆盖率信息
+        #    COMMAND echo " =================== do filter begin ==================== "
+        #    COMMAND lcov --remove ./test/coverageResult/${PROJECT_NAME}_Coverage.info
+        #    '*/${PROJECT_NAME_TEST}_autogen/*' '*/${PROJECT_NAME}_autogen/*' '*/usr/include/*' '*/dbuslogin1manager*' '*/test/*' '*/googletest/*'
+        #    -o ./test/coverageResult/${PROJECT_NAME}_Coverage.info
+        #    COMMAND echo " =================== do filter end ==================== "
+
+        #    #3.将.info信息生成报告到reprot文件夹中
+        #    COMMAND genhtml -o ./test/coverageResult/report ./test/coverageResult/${PROJECT_NAME}_Coverage.info
+
+        COMMAND echo " =================== TEST END ==================== "
+
+        #    COMMAND echo " Coverage files have been output to ${CMAKE_BINARY_DIR}/coverageResult/report "
+
+        #    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+)
+
+##'make test'命令依赖与我们的测试程序
+add_dependencies(test ${PROJECT_NAME_TEST})
+
+## 设置添加gocv相关信息的输出
+#set(CMAKE_CXX_FLAGS "-g -fprofile-arcs -ftest-coverage")
 

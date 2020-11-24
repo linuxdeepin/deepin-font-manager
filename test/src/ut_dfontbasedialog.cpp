@@ -1,6 +1,4 @@
-
 #include "dfontbasedialog.h"
-
 
 #include <gtest/gtest.h>
 
@@ -35,7 +33,8 @@ protected:
 
 TEST_F(TestDFontBaseDialog, checkSetIconPixmap)
 {
-    QPixmap map(Utils::renderSVG("://exception-logo.svg", QSize(32, 32)));
+    QPixmap map(Utils::renderSVG("://ok.svg", QSize(32, 32)));
+
     fm->setIconPixmap(map);
 
     EXPECT_TRUE(fm->m_logoIcon->pixmap()->size() == QSize(32, 32));

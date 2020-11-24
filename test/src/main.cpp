@@ -6,6 +6,7 @@ int main(int argc, char *argv[])
 {
     qDebug() << "start libdeepin-font-manager test cases ..............";
 
+    qputenv("QT_QPA_PLATFORM", "offscreen");
     QApplication application(argc, argv);
 
     ::testing::InitGoogleTest(&argc, argv);

@@ -52,21 +52,21 @@ TEST_F(TestDFontPreview, checkSetFileUrl)
 
 }
 
-TEST_F(TestDFontPreview, checkFontContainText)
-{
-    FT_Library m_library = nullptr;
-    FT_Face m_face = nullptr;
-    QString filepath = "/usr/share/fonts/fonts-cesi/CESI_KT_GB2312.TTF";
-    FT_Init_FreeType(&m_library);
-    int  error = FT_New_Face(m_library, filepath.toUtf8().constData(), 0, &m_face);
+//TEST_F(TestDFontPreview, checkFontContainText)
+//{
+//    FT_Library m_library = nullptr;
+//    FT_Face m_face = nullptr;
+//    QString filepath = "/usr/share/fonts/fonts-cesi/CESI_KT_GB2312.TTF";
+//    FT_Init_FreeType(&m_library);
+//    int  error = FT_New_Face(m_library, filepath.toUtf8().constData(), 0, &m_face);
 
-    //断言可以正常获取到字体信息
-    EXPECT_EQ(true, error == 0);
+//    //断言可以正常获取到字体信息
+//    EXPECT_EQ(true, error == 0);
 
-    //断言该字体可以显示中文字体
-    EXPECT_EQ(true, fp->checkFontContainText(m_face, FTM_DEFAULT_PREVIEW_CN_TEXT));
-    delete  fp;
-}
+//    //断言该字体可以显示中文字体
+//    EXPECT_EQ(true, fp->checkFontContainText(m_face, FTM_DEFAULT_PREVIEW_CN_TEXT));
+//    delete  fp;
+//}
 
 TEST_F(TestDFontPreview, checkPaintEvent)
 {

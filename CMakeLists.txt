@@ -60,8 +60,5 @@ ENDIF()
 ADD_SUBDIRECTORY(deepin-font-manager)
 ADD_SUBDIRECTORY(deepin-font-preview-plugin)
 
-option(USE_TEST "UT" no)
-if (USE_TEST)
-add_subdirectory(tests)
-endif(USE_TEST)
+add_subdirectory(test)
 
