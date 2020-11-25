@@ -22,6 +22,7 @@
 #include "utils.h"
 #include "views/dfontmgrmainwindow.h"
 #include "singlefontapplication.h"
+#include "environments.h"
 
 #include <DApplication>
 #include <DLog>
@@ -59,7 +60,7 @@ int main(int argc, char *argv[])
     app.loadTranslator();
     app.setApplicationName("deepin-font-manager");
     app.setOrganizationName("deepin");
-    app.setApplicationVersion(DApplication::buildVersion("1.0"));
+    app.setApplicationVersion(VERSION);
     app.setApplicationAcknowledgementPage("https://www.deepin.org/original/deepin-font-installer/");
     app.setProductIcon(QIcon::fromTheme(DEEPIN_FONT_MANAGER));
     app.setProductName(DApplication::translate("Main", "Font Manager"));
