@@ -2208,7 +2208,7 @@ void DFontPreviewListView::selectedFonts(const DFontPreviewItemData &curData,
         }
     }
 
-    qInfo() << allIndexList->count() << "1111111111" << endl;
+//    qInfo() << allIndexList->count() << "1111111111" << endl;
     if (delFontList && deleteCnt)
         qDebug() << __FUNCTION__ << delFontList->size() << *deleteCnt;
 }
