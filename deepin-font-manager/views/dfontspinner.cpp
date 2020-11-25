@@ -82,22 +82,22 @@ void DFontSpinner::stop()
     m_ptr->refreshTimer.stop();
 }
 
-/*************************************************************************
- <Function>      setBackgroundColor
- <Description>   设置背景色
- <Author>        null
- <Input>
-    <param1>     color            Description:背景色
- <Return>        null            Description:null
- <Note>          null
-*************************************************************************/
-void DFontSpinner::setBackgroundColor(QColor color)
-{
-    setAutoFillBackground(true);
-    QPalette pal = palette();
-    pal.setColor(QPalette::Background, color);
-    setPalette(pal);
-}
+///*************************************************************************
+// <Function>      setBackgroundColor
+// <Description>   设置背景色
+// <Author>        null
+// <Input>
+//    <param1>     color            Description:背景色
+// <Return>        null            Description:null
+// <Note>          null
+//*************************************************************************/
+//void DFontSpinner::setBackgroundColor(QColor color)
+//{
+//    setAutoFillBackground(true);
+//    QPalette pal = palette();
+//    pal.setColor(QPalette::Background, color);
+//    setPalette(pal);
+//}
 
 /*************************************************************************
  <Function>      paintEvent

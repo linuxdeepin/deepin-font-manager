@@ -113,15 +113,15 @@ TEST_F(TestDFMDBManager, check_getRecordCount)
 //    EXPECT_EQ(true, fmd->getInstalledFontsPath().contains("first"));
 }
 
-TEST_F(TestDFMDBManager, checkMapItemData)
-{
-    DFontPreviewItemData data;
-    data.fontInfo.psname = "first";
+//TEST_F(TestDFMDBManager, checkMapItemData)
+//{
+//    DFontPreviewItemData data;
+//    data.fontInfo.psname = "first";
 
-    QMap<QString, QString> dataMap = fmd->mapItemData(data);
+//    QMap<QString, QString> dataMap = fmd->mapItemData(data);
 
-    EXPECT_TRUE(dataMap.value("psname") == "first");
-}
+//    EXPECT_TRUE(dataMap.value("psname") == "first");
+//}
 
 TEST_F(TestDFMDBManager, checkGetAllFontInfo)
 {

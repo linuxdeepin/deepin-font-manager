@@ -200,15 +200,15 @@ DWindowCloseButton *DFontBaseDialog::getCloseButton() const
     return m_closeButton;
 }
 
-/*************************************************************************
- <Function>      getContent
- <Description>   获取窗口中使用主布局的控件
- <Author>        null
- <Input>         null
- <Return>        null
- <Note>          null
-*************************************************************************/
-QWidget *DFontBaseDialog::getContent() const
-{
-    return m_content;
-}
+///*************************************************************************
+// <Function>      getContent
+// <Description>   获取窗口中使用主布局的控件
+// <Author>        null
+// <Input>         null
+// <Return>        null
+// <Note>          null
+//*************************************************************************/
+//QWidget *DFontBaseDialog::getContent() const
+//{
+//    return m_content;
+//}

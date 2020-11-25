@@ -178,21 +178,21 @@ void PerformanceMonitor::installFontFinish(int fontCount)
     qInfo() << QString("%1 %2-%3 %4 %5 #(Install fonts time)").arg(GRAB_POINT).arg(APP_NAME).arg(INSTALL_FONTS_TIME).arg(fontCount).arg(time);
 }
 
-/*************************************************************************
- <Function>     calcInitAndLoadTime
- <Description>  统计程序启动到字体加载完成的时间
- <Author>       Xiao Zhiguo <xiaozhiguo@uniontech.com>
- <Maintainer>
- <Input>
- <Return>
- <Note>
-*************************************************************************/
-qint64 PerformanceMonitor::calcInitAndLoadTime()
-{
-    qint64 time = loadFontFinishMs - initializeAppStartMs;
-    qDebug() << LOG_FLAG << "init app and load fonts cost time(ms): " << time;
-    return time;
-}
+///*************************************************************************
+// <Function>     calcInitAndLoadTime
+// <Description>  统计程序启动到字体加载完成的时间
+// <Author>       Xiao Zhiguo <xiaozhiguo@uniontech.com>
+// <Maintainer>
+// <Input>
+// <Return>
+// <Note>
+//*************************************************************************/
+//qint64 PerformanceMonitor::calcInitAndLoadTime()
+//{
+//    qint64 time = loadFontFinishMs - initializeAppStartMs;
+//    qDebug() << LOG_FLAG << "init app and load fonts cost time(ms): " << time;
+//    return time;
+//}
 
 /*************************************************************************
  <Function>     exportFontStart

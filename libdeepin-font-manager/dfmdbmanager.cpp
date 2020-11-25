@@ -56,39 +56,39 @@ DFontPreviewItemData DFMDBManager::parseRecordToItemData(const QMap<QString, QSt
     return itemData;
 }
 
-/*************************************************************************
- <Function>      getDFontInfo
- <Description>   通过查询记录获取字体信息
- <Author>        null
- <Input>
-    <param1>     record               Description:查询记录
- <Return>        DFontInfo            Description:字体信息
- <Note>          null
-*************************************************************************/
-DFontInfo DFMDBManager::getDFontInfo(const QMap<QString, QString> &record)
-{
-    DFontInfo fontInfo;
+///*************************************************************************
+// <Function>      getDFontInfo
+// <Description>   通过查询记录获取字体信息
+// <Author>        null
+// <Input>
+//    <param1>     record               Description:查询记录
+// <Return>        DFontInfo            Description:字体信息
+// <Note>          null
+//*************************************************************************/
+//DFontInfo DFMDBManager::getDFontInfo(const QMap<QString, QString> &record)
+//{
+//    DFontInfo fontInfo;
 
-    fontInfo.filePath = record.value("filePath");
-    fontInfo.familyName = record.value("familyName");
-    fontInfo.styleName = record.value("styleName");
-    fontInfo.type = record.value("type");
-    fontInfo.version = record.value("version");
-    fontInfo.copyright = record.value("copyright");
-    fontInfo.description = record.value("description");
-    fontInfo.sysVersion = record.value("sysVersion");
-    fontInfo.isInstalled = record.value("isInstalled").toInt();
-    fontInfo.isError = record.value("isError").toInt();
-    fontInfo.isSystemFont = isSystemFont(fontInfo.filePath);
-    //add
-    fontInfo.fullname = record.value("fullname");
-    fontInfo.psname = record.value("psname");
-    fontInfo.trademark = record.value("trademark");
-    fontInfo.sp3FamilyName = record.value("fontPreview");
-    DFontInfoManager::instance()->getDefaultPreview(fontInfo);
+//    fontInfo.filePath = record.value("filePath");
+//    fontInfo.familyName = record.value("familyName");
+//    fontInfo.styleName = record.value("styleName");
+//    fontInfo.type = record.value("type");
+//    fontInfo.version = record.value("version");
+//    fontInfo.copyright = record.value("copyright");
+//    fontInfo.description = record.value("description");
+//    fontInfo.sysVersion = record.value("sysVersion");
+//    fontInfo.isInstalled = record.value("isInstalled").toInt();
+//    fontInfo.isError = record.value("isError").toInt();
+//    fontInfo.isSystemFont = isSystemFont(fontInfo.filePath);
+//    //add
+//    fontInfo.fullname = record.value("fullname");
+//    fontInfo.psname = record.value("psname");
+//    fontInfo.trademark = record.value("trademark");
+//    fontInfo.sp3FamilyName = record.value("fontPreview");
+//    DFontInfoManager::instance()->getDefaultPreview(fontInfo);
 
-    return fontInfo;
-}
+//    return fontInfo;
+//}
 
 
 /*************************************************************************
@@ -285,42 +285,42 @@ QString DFMDBManager::isFontInfoExist(const DFontInfo &newFileFontInfo)
     return QString();
 }
 
-/*************************************************************************
- <Function>      mapItemData
- <Description>   通过itemdata来构建字体信息的map
- <Author>        null
- <Input>
-    <param1>     itemData                          Description:字体的itemdata
- <Return>        QMap<QString, QString>            Description:字体信息的map
- <Note>          null
-*************************************************************************/
-QMap<QString, QString> DFMDBManager::mapItemData(DFontPreviewItemData itemData)
-{
-    QMap<QString, QString> mapData;
-    //mapData.insert("fontId", itemData.strFontId);   //auto increament ,Don't need supply
-    mapData.insert("fontName", itemData.fontData.strFontName);
-    mapData.insert("isEnabled", QString::number(itemData.fontData.isEnabled()));
-    mapData.insert("isCollected", QString::number(itemData.fontData.isCollected()));
-    mapData.insert("isChineseFont", QString::number(itemData.fontData.isChinese()));
-    mapData.insert("isMonoSpace", QString::number(itemData.fontData.isMonoSpace()));
-    mapData.insert("filePath", itemData.fontInfo.filePath);
-    mapData.insert("familyName", itemData.fontInfo.familyName);
-    mapData.insert("styleName", itemData.fontInfo.styleName);
-    mapData.insert("type", itemData.fontInfo.type);
-    mapData.insert("version", itemData.fontInfo.version);
-    mapData.insert("copyright", itemData.fontInfo.copyright);
-    mapData.insert("description", itemData.fontInfo.description);
-    mapData.insert("sysVersion", itemData.fontInfo.sysVersion);
-    mapData.insert("isInstalled", QString::number(itemData.fontInfo.isInstalled));
-    mapData.insert("isError", QString::number(itemData.fontInfo.isError));
-    //add
-    mapData.insert("fullname", itemData.fontInfo.fullname);
-    mapData.insert("psname", itemData.fontInfo.psname);
-    mapData.insert("trademark", itemData.fontInfo.trademark);
-    mapData.insert("fontPreview", itemData.fontInfo.sp3FamilyName);
+///*************************************************************************
+// <Function>      mapItemData
+// <Description>   通过itemdata来构建字体信息的map
+// <Author>        null
+// <Input>
+//    <param1>     itemData                          Description:字体的itemdata
+// <Return>        QMap<QString, QString>            Description:字体信息的map
+// <Note>          null
+//*************************************************************************/
+//QMap<QString, QString> DFMDBManager::mapItemData(DFontPreviewItemData itemData)
+//{
+//    QMap<QString, QString> mapData;
+//    //mapData.insert("fontId", itemData.strFontId);   //auto increament ,Don't need supply
+//    mapData.insert("fontName", itemData.fontData.strFontName);
+//    mapData.insert("isEnabled", QString::number(itemData.fontData.isEnabled()));
+//    mapData.insert("isCollected", QString::number(itemData.fontData.isCollected()));
+//    mapData.insert("isChineseFont", QString::number(itemData.fontData.isChinese()));
+//    mapData.insert("isMonoSpace", QString::number(itemData.fontData.isMonoSpace()));
+//    mapData.insert("filePath", itemData.fontInfo.filePath);
+//    mapData.insert("familyName", itemData.fontInfo.familyName);
+//    mapData.insert("styleName", itemData.fontInfo.styleName);
+//    mapData.insert("type", itemData.fontInfo.type);
+//    mapData.insert("version", itemData.fontInfo.version);
+//    mapData.insert("copyright", itemData.fontInfo.copyright);
+//    mapData.insert("description", itemData.fontInfo.description);
+//    mapData.insert("sysVersion", itemData.fontInfo.sysVersion);
+//    mapData.insert("isInstalled", QString::number(itemData.fontInfo.isInstalled));
+//    mapData.insert("isError", QString::number(itemData.fontInfo.isError));
+//    //add
+//    mapData.insert("fullname", itemData.fontInfo.fullname);
+//    mapData.insert("psname", itemData.fontInfo.psname);
+//    mapData.insert("trademark", itemData.fontInfo.trademark);
+//    mapData.insert("fontPreview", itemData.fontInfo.sp3FamilyName);
 
-    return mapData;
-}
+//    return mapData;
+//}
 
 /*************************************************************************
  <Function>      addFontInfo

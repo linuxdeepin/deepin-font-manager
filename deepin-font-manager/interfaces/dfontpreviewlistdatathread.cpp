@@ -297,33 +297,33 @@ void DFontPreviewListDataThread::updateItemStatus(int index, const DFontPreviewI
     m_fontModelList.replace(index, itemData);
 }
 
-/*************************************************************************
- <Function>      getDiffFontModelList
- <Description>   获取需要新增的字体数据链表
- <Author>        null
- <Input>
-    <param1>     null            Description:null
- <Return>        QList<DFontPreviewItemData>            Description:新增的字体数据链表
- <Note>          null
-*************************************************************************/
-QList<DFontPreviewItemData> DFontPreviewListDataThread::getDiffFontModelList() const
-{
-    return m_diffFontModelList;
-}
+///*************************************************************************
+// <Function>      getDiffFontModelList
+// <Description>   获取需要新增的字体数据链表
+// <Author>        null
+// <Input>
+//    <param1>     null            Description:null
+// <Return>        QList<DFontPreviewItemData>            Description:新增的字体数据链表
+// <Note>          null
+//*************************************************************************/
+//QList<DFontPreviewItemData> DFontPreviewListDataThread::getDiffFontModelList() const
+//{
+//    return m_diffFontModelList;
+//}
 
-/*************************************************************************
- <Function>      setMutex
- <Description>   给线程锁赋值
- <Author>        null
- <Input>
-    <param1>     mutex            Description:线程锁赋的值
- <Return>        null            Description:null
- <Note>          null
-*************************************************************************/
-void DFontPreviewListDataThread::setMutex(QMutex *mutex)
-{
-    m_mutex = mutex;
-}
+///*************************************************************************
+// <Function>      setMutex
+// <Description>   给线程锁赋值
+// <Author>        null
+// <Input>
+//    <param1>     mutex            Description:线程锁赋的值
+// <Return>        null            Description:null
+// <Note>          null
+//*************************************************************************/
+//void DFontPreviewListDataThread::setMutex(QMutex *mutex)
+//{
+//    m_mutex = mutex;
+//}
 
 /*************************************************************************
  <Function>      forceDeleteFiles
