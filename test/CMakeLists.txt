@@ -24,28 +24,19 @@
 
 ADD_COMPILE_OPTIONS(-fno-access-control)
 
-find_package(Qt5Test REQUIRED)
+FIND_PACKAGE(Qt5Test REQUIRED)
 
-find_package(GTest REQUIRED)
-include_directories(${GTEST_INCLUDE_DIRS})
+FIND_PACKAGE(GTest REQUIRED)
+INCLUDE_DIRECTORIES(${GTEST_INCLUDE_DIRS})
 
-set(PROJECT_NAME_TEST ${PROJECT_NAME}-test)
+SET(PROJECT_NAME_TEST ${PROJECT_NAME}-test)
 #ADD_EXECUTABLE(${PROJECT_NAME_TEST} "")
-#翻译文件
-SET(TRANSLATE_SHELL ${CMAKE_CURRENT_LIST_DIR}/../deepin-font-manager-assets/translate_generation.sh)
-SET(TRANSLATION_DIR ${CMAKE_CURRENT_LIST_DIR}/../translations)
-EXECUTE_PROCESS(COMMAND ${TRANSLATE_SHELL} WORKING_DIRECTORY ${TRANSLATION_DIR})
-
-FILE(GLOB TRANSLATION_FILES ${CMAKE_CURRENT_LIST_DIR}/../translations/*.qm)
-INSTALL(FILES ${TRANSLATION_FILES} DESTINATION share/${APP_BIN}/translations)
 
 #libdeepin-font-manager
 
 SET(QRC_FILES ${CMAKE_CURRENT_SOURCE_DIR}/../deepin-font-manager-assets/deepin-font-manager.qrc)
 SET(LIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../libdeepin-font-manager)
 
-INSTALL(FILES ${LIB_DIR}/schemas/com.deepin.font-manager.gschema.xml
-        DESTINATION /usr/share/glib-2.0/schemas)
 
 #include_directories(third-party/googletest)                           #一下三行添加包含以便测试用例代码的编写
 #include_directories(third-party/googletest/googlemock/include)
@@ -57,7 +48,8 @@ FILE (GLOB allSource
      ${CMAKE_CURRENT_SOURCE_DIR}/../deepin-font-manager/views/*.cpp
      ${CMAKE_CURRENT_SOURCE_DIR}/../deepin-font-manager/interfaces/*.cpp
     )
-list(REMOVE_ITEM allSource "${CMAKE_CURRENT_SOURCE_DIR}/../deepin-font-manager/main.cpp")
+
+LIST(REMOVE_ITEM allSource "${CMAKE_CURRENT_SOURCE_DIR}/../deepin-font-manager/main.cpp")
 
 FILE (GLOB allHeaders
      ${CMAKE_CURRENT_SOURCE_DIR}/../deepin-font-manager/*.h
@@ -69,9 +61,9 @@ SET(LIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../libdeepin-font-manager)
 
 FILE(GLOB LIB_SRC_FILES ${LIB_DIR}/*.cpp ${LIB_DIR}/*.h)
 
-file(GLOB_RECURSE FONT_SRC_TEST1 ${CMAKE_CURRENT_LIST_DIR}/src/*.cpp)
+FILE(GLOB_RECURSE FONT_SRC_TEST1 ${CMAKE_CURRENT_LIST_DIR}/src/*.cpp)
 
-add_executable(${PROJECT_NAME_TEST} ${FONT_SRC_TEST1} ${allHeaders} ${allSource} ${LIB_SRC_FILES} ${QRC_FILES})
+ADD_EXECUTABLE(${PROJECT_NAME_TEST} ${FONT_SRC_TEST1} ${allHeaders} ${allSource} ${LIB_SRC_FILES} ${QRC_FILES})
 
 TARGET_INCLUDE_DIRECTORIES(${PROJECT_NAME_TEST} PUBLIC ${LIB_DIR})
 TARGET_INCLUDE_DIRECTORIES(${PROJECT_NAME_TEST} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/)
@@ -80,10 +72,10 @@ TARGET_INCLUDE_DIRECTORIES(${PROJECT_NAME_TEST} PUBLIC ${CMAKE_CURRENT_SOURCE_DI
 TARGET_INCLUDE_DIRECTORIES(${PROJECT_NAME_TEST} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../deepin-font-manager/interfaces)
 
 # 生成测试可执行程序的依赖库
-target_link_libraries(${PROJECT_NAME_TEST} gtest gtest_main -pthread)
+TARGET_LINK_LIBRARIES(${PROJECT_NAME_TEST} gtest gtest_main -pthread)
 
 
-target_include_directories(${PROJECT_NAME_TEST} PUBLIC ${DtkWidget_INCLUDE_DIRS}
+TARGET_INCLUDE_DIRECTORIES(${PROJECT_NAME_TEST} PUBLIC ${DtkWidget_INCLUDE_DIRS}
                            ${DtkCore_INCLUDE_DIRS}
                             ${DtkGui_INCLUDE_DIRS})
 
@@ -91,13 +83,13 @@ TARGET_LINK_LIBRARIES(${PROJECT_NAME_TEST} Qt5::Core Qt5::Widgets Qt5::Gui Qt5::
             Qt5::Test ${DtkCore_LIBRARIES} ${DtkWidget_LIBRARIES} ${FREETYPE_LIBRARIES}
             ${FREETYPE_LIBRARIES} PkgConfig::FontConfig  ${GTEST_LIBRARYS} ${GTEST_MAIN_LIBRARYS})
 
-add_custom_target(test
+ADD_CUSTOM_TARGET( test
 #    #执行mkdir -p 创建 coverageResult
 #    COMMAND mkdir -p test/coverageResult
 #    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
 )
 
-add_custom_command(TARGET test
+ADD_CUSTOM_COMMAND(TARGET test
         COMMAND echo " =================== TEST BEGIN ==================== "
         #    #1.清理原先的gcov信息
         #    COMMAND lcov --directory ./test/CMakeFiles/${PROJECT_NAME_TEST}.dir --zerocounters
@@ -124,7 +116,7 @@ add_custom_command(TARGET test
 )
 
 ##'make test'命令依赖与我们的测试程序
-add_dependencies(test ${PROJECT_NAME_TEST})
+ADD_DEPENDENCIES(test ${PROJECT_NAME_TEST})
 
 ## 设置添加gocv相关信息的输出
 #set(CMAKE_CXX_FLAGS "-g -fprofile-arcs -ftest-coverage")
