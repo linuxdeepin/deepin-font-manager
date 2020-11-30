@@ -24,8 +24,6 @@
 SET(APP_BIN deepin-font-manager)
 ADD_EXECUTABLE(${APP_BIN} "")
 
-ADD_COMPILE_OPTIONS(-fno-access-control)
-
 #编译翻译文件
 SET(TRANSLATE_SHELL ${CMAKE_CURRENT_LIST_DIR}/../deepin-font-manager-assets/translate_generation.sh)
 SET(TRANSLATION_DIR ${CMAKE_CURRENT_LIST_DIR}/../translations)
@@ -42,7 +40,6 @@ FILE(GLOB LIB_SRC_FILES ${LIB_DIR}/*.cpp ${LIB_DIR}/*.h)
 #用deepin-turbo对Dapplication进行加速
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wl,--as-need -fPIE")
 SET(CMAKE_EXE_LINKER_FLAGS "-pie")
-SET(CMAKE_CXX_FLAGS "-g -fprofile-arcs -ftest-coverage")
 
 #可执行文件
 FILE(GLOB SRC_FILES ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/*.h
