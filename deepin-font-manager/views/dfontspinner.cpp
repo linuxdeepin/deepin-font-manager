@@ -4,6 +4,7 @@
 #include <QPainter>
 #include <QtMath>
 #include <QEvent>
+#include <QPainterPath>
 
 class DFontSpinnerPrivate : public QObject
 {

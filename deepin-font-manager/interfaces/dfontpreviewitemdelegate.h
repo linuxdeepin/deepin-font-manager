@@ -5,6 +5,7 @@
 
 #include <QFontDatabase>
 #include <QStyledItemDelegate>
+#include <QPainterPath>
 
 #include <dstyleoption.h>
 

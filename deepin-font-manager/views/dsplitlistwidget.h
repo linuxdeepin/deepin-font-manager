@@ -6,6 +6,8 @@
 #include <DListView>
 #include <DStyledItemDelegate>
 
+#include <QPainterPath>
+
 DWIDGET_USE_NAMESPACE
 
 struct FocusStatus {

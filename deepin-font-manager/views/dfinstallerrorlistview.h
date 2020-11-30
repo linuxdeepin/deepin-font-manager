@@ -6,6 +6,7 @@
 
 #include <DListView>
 
+#include <QPainterPath>
 #include <QMouseEvent>
 
 DWIDGET_USE_NAMESPACE

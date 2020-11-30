@@ -23,6 +23,7 @@
 
 
 ADD_COMPILE_OPTIONS(-fno-access-control)
+SET(CMAKE_CXX_FLAGS "-g -fprofile-arcs -ftest-coverage")
 
 FIND_PACKAGE(Qt5Test REQUIRED)
 
