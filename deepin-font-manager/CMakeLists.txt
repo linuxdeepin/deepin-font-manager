@@ -39,6 +39,10 @@ SET(LIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../libdeepin-font-manager)
 FILE(GLOB LIB_SRC_FILES ${LIB_DIR}/*.cpp ${LIB_DIR}/*.h)
 #INSTALL(FILES ${LIB_DIR}/schemas/com.deepin.font-manager.gschema.xml
 #        DESTINATION /usr/share/glib-2.0/schemas)
+#用deepin-turbo对Dapplication进行加速
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wl,--as-need -fPIE")
+SET(CMAKE_EXE_LINKER_FLAGS "-pie")
+SET(CMAKE_CXX_FLAGS "-g -fprofile-arcs -ftest-coverage")
 
 #可执行文件
 FILE(GLOB SRC_FILES ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/*.h

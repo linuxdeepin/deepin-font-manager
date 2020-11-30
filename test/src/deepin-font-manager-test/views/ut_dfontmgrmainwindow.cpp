@@ -1,209 +1,209 @@
-﻿//#include "views/dfontmgrmainwindow.h"
+﻿#include "views/dfontmgrmainwindow.h"
 
-//#include <gtest/gtest.h>
-//#include "../third-party/stub/stub.h"
-//#include "views/dfinstallnormalwindow.h"
+#include <gtest/gtest.h>
+#include "../third-party/stub/stub.h"
+#include "views/dfinstallnormalwindow.h"
 
-//#include "globaldef.h"
-//#include "interfaces/dfontmenumanager.h"
-//#include "utils.h"
-//#include "views/dfdeletedialog.h"
-//#include "views/dfontinfodialog.h"
-//#include "views/dfquickinstallwindow.h"
+#include "globaldef.h"
+#include "interfaces/dfontmenumanager.h"
+#include "utils.h"
+#include "views/dfdeletedialog.h"
+#include "views/dfontinfodialog.h"
+#include "views/dfquickinstallwindow.h"
 
-//#include <QTest>
-//#include <QSignalSpy>
-//#include <QHBoxLayout>
-//#include <QShortcut>
-//#include <QFileSystemWatcher>
-//#include <QDBusConnection>
+#include <QTest>
+#include <QSignalSpy>
+#include <QHBoxLayout>
+#include <QShortcut>
+#include <QFileSystemWatcher>
+#include <QDBusConnection>
 
-//#include "dobject.h"
-//#include <DApplication>
-//#include <DApplicationHelper>
-//#include <DFontSizeManager>
-//#include <DFileDialog>
-//#include <DIconButton>
-//#include <DLabel>
-//#include <DLineEdit>
-//#include <DLog>
-//#include <DMenu>
-//#include <DSearchEdit>
-//#include <DSlider>
-//#include <DSplitter>
-//#include <DTitlebar>
-//#include <DWidgetUtil>
-//#include <DDesktopServices>
-//#include <DMessageManager>
+#include "dobject.h"
+#include <DApplication>
+#include <DApplicationHelper>
+#include <DFontSizeManager>
+#include <DFileDialog>
+#include <DIconButton>
+#include <DLabel>
+#include <DLineEdit>
+#include <DLog>
+#include <DMenu>
+#include <DSearchEdit>
+#include <DSlider>
+#include <DSplitter>
+#include <DTitlebar>
+#include <DWidgetUtil>
+#include <DDesktopServices>
+#include <DMessageManager>
 
-//#include <unistd.h>
+#include <unistd.h>
 
-//namespace {
-//class TestDFontMgrMainWindow : public testing::Test
-//{
+namespace {
+class TestDFontMgrMainWindow : public testing::Test
+{
 
-//protected:
-//    void SetUp()
-//    {
-//        fm = new DFontMgrMainWindow();
-//    }
-//    void TearDown()
-//    {
-//        delete fm;
-//    }
+protected:
+    void SetUp()
+    {
+        fm = new DFontMgrMainWindow();
+    }
+    void TearDown()
+    {
+        delete fm;
+    }
 
-//    DFontMgrMainWindow *fm;
-//};
+    DFontMgrMainWindow *fm;
+};
 
-//bool stub_false()
-//{
-//    return false;
-//}
+bool stub_false()
+{
+    return false;
+}
 
-//bool stub_true()
-//{
-//    return true;
-//}
+bool stub_true()
+{
+    return true;
+}
 
-//void stub_return()
-//{
-//    return ;
-//}
+void stub_return()
+{
+    return ;
+}
 
-//qint64 stub_getDiskSpace()
-//{
+qint64 stub_getDiskSpace()
+{
 
-//    return 1000;
-//}
+    return 1000;
+}
 
-//qint64 stub_getSizeL()
-//{
-//    return 1500;
-//}
+qint64 stub_getSizeL()
+{
+    return 1500;
+}
 
-//qint64 stub_getSizeS()
-//{
-//    return 500;
-//}
+qint64 stub_getSizeS()
+{
+    return 500;
+}
 
-//qint64 stub_bytesAvailable()
-//{
-//    return 1500;
-//}
-
-
-//void stub_show()
-//{
-//    return;
-//}
-
-//void  stub_onLeftSiderBarItemClicked()
-//{
-//    return ;
-//}
+qint64 stub_bytesAvailable()
+{
+    return 1500;
+}
 
 
-//QList<QUrl> stub_urlssin()
-//{
-//    QList<QUrl> list;
-//    list << QUrl();
+void stub_show()
+{
+    return;
+}
 
-//    return list;
-//}
+void  stub_onLeftSiderBarItemClicked()
+{
+    return ;
+}
 
-//QList<QUrl> stub_urls()
-//{
-//    QList<QUrl> list;
-//    list << QUrl() << QUrl();
 
-//    return list;
-//}
+QList<QUrl> stub_urlssin()
+{
+    QList<QUrl> list;
+    list << QUrl();
 
-//QStringList stub_checkFilesSpace()
-//{
+    return list;
+}
 
-//    QStringList list;
-//    list << "first";
+QList<QUrl> stub_urls()
+{
+    QList<QUrl> list;
+    list << QUrl() << QUrl();
 
-//    return list;
-//}
+    return list;
+}
 
-//DFontPreviewItemData stub_currModelData()
+QStringList stub_checkFilesSpace()
+{
+
+    QStringList list;
+    list << "first";
+
+    return list;
+}
+
+DFontPreviewItemData stub_currModelData()
+{
+    DFontPreviewItemData data;
+    data.strFontId = 1;
+    data.fontInfo.filePath = "first";
+
+    return data;
+}
+
+
+Qt::WindowStates stub_windowStateMax()
+{
+    return Qt::WindowMaximized;
+}
+
+Qt::WindowStates stub_windowStateNo()
+{
+    return Qt::WindowNoState;
+}
+
+//DFontPreviewItemData stub_getFontData()
 //{
 //    DFontPreviewItemData data;
-//    data.strFontId = 1;
-//    data.fontInfo.filePath = "first";
 
+//    data.fontData.strFontName = "first";
+
+//    data.fontInfo.filePath = "first";
+//    data.fontInfo.isSystemFont = false;
 //    return data;
 //}
 
-
-//Qt::WindowStates stub_windowStateMax()
+//int stub_exec()
 //{
-//    return Qt::WindowMaximized;
+//    return 1;
 //}
 
-//Qt::WindowStates stub_windowStateNo()
-//{
-//    return Qt::WindowNoState;
-//}
+QStringList stub_getInstalledFontsPath()
+{
 
-////DFontPreviewItemData stub_getFontData()
-////{
-////    DFontPreviewItemData data;
+    QStringList list;
+    list << "first";
 
-////    data.fontData.strFontName = "first";
+    return list;
 
-////    data.fontInfo.filePath = "first";
-////    data.fontInfo.isSystemFont = false;
-////    return data;
-////}
+}
 
-////int stub_exec()
-////{
-////    return 1;
-////}
+QStringList stub_getAllFontPath()
+{
 
-//QStringList stub_getInstalledFontsPath()
-//{
+    QStringList list;
+    list << "second";
 
-//    QStringList list;
-//    list << "first";
+    return list;
 
-//    return list;
+}
 
-//}
+}
 
-//QStringList stub_getAllFontPath()
-//{
+TEST_F(TestDFontMgrMainWindow, checkSetNextTabFocus)
+{
+    fm->setNextTabFocus(fm->m_ptr->addFontButton);
+//    代码setfocus成功，但是检测焦点状态有问题
+//    EXPECT_TRUE(fm->m_ptr->searchFontEdit->lineEdit()->hasFocus());
+    fm->setNextTabFocus(fm->m_ptr->searchFontEdit->lineEdit());
+    fm->setNextTabFocus(fm->m_fontPreviewListView);
+    fm->setNextTabFocus(fm->m_ptr->leftSiderBar);
 
-//    QStringList list;
-//    list << "second";
-
-//    return list;
-
-//}
-
-//}
-
-//TEST_F(TestDFontMgrMainWindow, checkSetNextTabFocus)
-//{
-//    fm->setNextTabFocus(fm->m_ptr->addFontButton);
-////    代码setfocus成功，但是检测焦点状态有问题
-////    EXPECT_TRUE(fm->m_ptr->searchFontEdit->lineEdit()->hasFocus());
-//    fm->setNextTabFocus(fm->m_ptr->searchFontEdit->lineEdit());
-//    fm->setNextTabFocus(fm->m_fontPreviewListView);
-//    fm->setNextTabFocus(fm->m_ptr->leftSiderBar);
-
-//    Stub s;
-//    s.set(ADDR(QWidget, isVisible), stub_true);
-//    fm->setNextTabFocus(fm->m_ptr->leftSiderBar);
+    Stub s;
+    s.set(ADDR(QWidget, isVisible), stub_true);
+    fm->setNextTabFocus(fm->m_ptr->leftSiderBar);
 
 
-//    fm->setNextTabFocus(fm->m_ptr->fontScaleSlider);
-//    fm->setNextTabFocus(fm->m_ptr->fontShowArea);
-//    s.reset(ADDR(QWidget, isVisible));
-//}
+    fm->setNextTabFocus(fm->m_ptr->fontScaleSlider);
+    fm->setNextTabFocus(fm->m_ptr->fontShowArea);
+    s.reset(ADDR(QWidget, isVisible));
+}
 
 //TEST_F(TestDFontMgrMainWindow, checkKeyPressEvent)
 //{
@@ -226,81 +226,81 @@
 //    EXPECT_TRUE(fm->m_ptr->fontScaleSlider->value() == 10);
 //}
 
-//TEST_F(TestDFontMgrMainWindow, checkEventFilterKeypress)
-//{
-//    //没有可检测的数据
-//    QTest::keyPress(fm->m_ptr->searchFontEdit->lineEdit(), Qt::Key_Tab);
-//    QTest::keyPress(fm->m_ptr->textInputEdit->lineEdit(), Qt::Key_Tab);
-//    QTest::keyPress(fm->m_ptr->leftSiderBar, Qt::Key_Tab);
+TEST_F(TestDFontMgrMainWindow, checkEventFilterKeypress)
+{
+    //没有可检测的数据
+    QTest::keyPress(fm->m_ptr->searchFontEdit->lineEdit(), Qt::Key_Tab);
+    QTest::keyPress(fm->m_ptr->textInputEdit->lineEdit(), Qt::Key_Tab);
+    QTest::keyPress(fm->m_ptr->leftSiderBar, Qt::Key_Tab);
 
-//    QTest::keyPress(fm->m_ptr->addFontButton, Qt::Key_Right);
+    QTest::keyPress(fm->m_ptr->addFontButton, Qt::Key_Right);
 
-//    QTest::keyPress(fm->m_ptr->searchFontEdit->lineEdit(), Qt::Key_Escape);
-//    EXPECT_TRUE(fm->m_ptr->searchFontEdit->lineEdit()->text().isEmpty());
+    QTest::keyPress(fm->m_ptr->searchFontEdit->lineEdit(), Qt::Key_Escape);
+    EXPECT_TRUE(fm->m_ptr->searchFontEdit->lineEdit()->text().isEmpty());
 
-//    QTest::keyPress(fm->m_ptr->textInputEdit->lineEdit(), Qt::Key_Escape);
-//    EXPECT_TRUE(fm->m_ptr->textInputEdit->lineEdit()->text().isEmpty());
-//}
+    QTest::keyPress(fm->m_ptr->textInputEdit->lineEdit(), Qt::Key_Escape);
+    EXPECT_TRUE(fm->m_ptr->textInputEdit->lineEdit()->text().isEmpty());
+}
 
-//TEST_F(TestDFontMgrMainWindow, checkEventFilterFocusOut)
-//{
-//    QFocusEvent *e = new QFocusEvent(QEvent::FocusOut, Qt::ActiveWindowFocusReason);
-//    fm->eventFilter(fm->m_ptr->leftSiderBar, e);
-//    EXPECT_FALSE(fm->m_leftListViewTabFocus);
+TEST_F(TestDFontMgrMainWindow, checkEventFilterFocusOut)
+{
+    QFocusEvent *e = new QFocusEvent(QEvent::FocusOut, Qt::ActiveWindowFocusReason);
+    fm->eventFilter(fm->m_ptr->leftSiderBar, e);
+    EXPECT_FALSE(fm->m_leftListViewTabFocus);
 
-//    Stub s;
-//    s.set(ADDR(DSplitListWidget, IsTabFocus), stub_true);
+    Stub s;
+    s.set(ADDR(DSplitListWidget, IsTabFocus), stub_true);
 
-//    fm->eventFilter(fm->m_ptr->leftSiderBar, e);
-//    EXPECT_TRUE(fm->m_currentStatus.m_IsFirstFocus);
+    fm->eventFilter(fm->m_ptr->leftSiderBar, e);
+    EXPECT_TRUE(fm->m_currentStatus.m_IsFirstFocus);
 
-//    fm->eventFilter(fm->m_fontPreviewListView, e);
-//    EXPECT_FALSE(fm->m_previewListViewTabFocus);
+    fm->eventFilter(fm->m_fontPreviewListView, e);
+    EXPECT_FALSE(fm->m_previewListViewTabFocus);
 
-//    fm->eventFilter(fm->m_ptr->fontScaleSlider, e);
-//    EXPECT_TRUE(fm->m_fontPreviewListView->m_isGetFocusFromSlider);
+    fm->eventFilter(fm->m_ptr->fontScaleSlider, e);
+    EXPECT_TRUE(fm->m_fontPreviewListView->m_isGetFocusFromSlider);
 
-//}
+}
 
-//TEST_F(TestDFontMgrMainWindow, checkEventFilterFocusIn)
-//{
-//    QSignalSpy spy(fm->m_signalManager, SIGNAL(setLostFocusState(bool)));
+TEST_F(TestDFontMgrMainWindow, checkEventFilterFocusIn)
+{
+    QSignalSpy spy(fm->m_signalManager, SIGNAL(setLostFocusState(bool)));
 
 
-//    QFocusEvent *e = new QFocusEvent(QEvent::FocusIn, Qt::ActiveWindowFocusReason);
-//    fm->m_leftListViewTabFocus = true;
-//    fm->eventFilter(fm->m_ptr->leftSiderBar, e);
-//    EXPECT_FALSE(fm->m_leftListViewTabFocus);
+    QFocusEvent *e = new QFocusEvent(QEvent::FocusIn, Qt::ActiveWindowFocusReason);
+    fm->m_leftListViewTabFocus = true;
+    fm->eventFilter(fm->m_ptr->leftSiderBar, e);
+    EXPECT_FALSE(fm->m_leftListViewTabFocus);
 
-//    fm->m_leftListViewTabFocus = false;
-//    fm->eventFilter(fm->m_ptr->leftSiderBar, e);
-//    EXPECT_TRUE(fm->m_ptr->leftSiderBar->m_IsHalfWayFocus);
+    fm->m_leftListViewTabFocus = false;
+    fm->eventFilter(fm->m_ptr->leftSiderBar, e);
+    EXPECT_TRUE(fm->m_ptr->leftSiderBar->m_IsHalfWayFocus);
 
-//    fm->eventFilter(fm->m_fontPreviewListView, e);
-//    EXPECT_TRUE(spy.count() == 1);
-//    EXPECT_FALSE(fm->m_fontPreviewListView->m_IsTabFocus);
+    fm->eventFilter(fm->m_fontPreviewListView, e);
+    EXPECT_TRUE(spy.count() == 1);
+    EXPECT_FALSE(fm->m_fontPreviewListView->m_IsTabFocus);
 
-//    fm->eventFilter(fm->m_ptr->searchFontEdit->lineEdit(), e);
-//    EXPECT_FALSE(fm->m_isSearchLineEditMenuPoped);
+    fm->eventFilter(fm->m_ptr->searchFontEdit->lineEdit(), e);
+    EXPECT_FALSE(fm->m_isSearchLineEditMenuPoped);
 
-//    fm->eventFilter(fm->m_ptr->textInputEdit->lineEdit(), e);
-//    EXPECT_FALSE(fm->m_isSearchLineEditMenuPoped);
+    fm->eventFilter(fm->m_ptr->textInputEdit->lineEdit(), e);
+    EXPECT_FALSE(fm->m_isSearchLineEditMenuPoped);
 
-//}
+}
 
-//TEST_F(TestDFontMgrMainWindow, checkEventFilterMouse)
-//{
-//    QSignalSpy spy(fm->m_signalManager, SIGNAL(setLostFocusState(bool)));
+TEST_F(TestDFontMgrMainWindow, checkEventFilterMouse)
+{
+    QSignalSpy spy(fm->m_signalManager, SIGNAL(setLostFocusState(bool)));
 
-//    QTest::mousePress(fm->m_ptr->searchFontEdit->lineEdit(), Qt::RightButton);
-//    EXPECT_TRUE(fm->m_isSearchLineEditMenuPoped);
+    QTest::mousePress(fm->m_ptr->searchFontEdit->lineEdit(), Qt::RightButton);
+    EXPECT_TRUE(fm->m_isSearchLineEditMenuPoped);
 
-//    QTest::mousePress(fm->m_ptr->textInputEdit->lineEdit(), Qt::RightButton);
-//    EXPECT_TRUE(fm->m_isSearchLineEditMenuPoped);
+    QTest::mousePress(fm->m_ptr->textInputEdit->lineEdit(), Qt::RightButton);
+    EXPECT_TRUE(fm->m_isSearchLineEditMenuPoped);
 
-//    QTest::mousePress(fm->m_ptr->addFontButton, Qt::RightButton);
+    QTest::mousePress(fm->m_ptr->addFontButton, Qt::RightButton);
 
-//}
+}
 
 //TEST_F(TestDFontMgrMainWindow, checkCheckFilesSpace)
 //{
@@ -330,41 +330,41 @@
 
 //}
 
-//TEST_F(TestDFontMgrMainWindow, checkOnPreviewTextChanged)
-//{
-//    fm->m_fontPreviewListView->m_bLoadDataFinish = true;
-////    fm->onPreviewTextChanged();
-
-//    fm->m_fontPreviewListView->getFontPreviewProxyModel()->insertRows(0, 5);
+TEST_F(TestDFontMgrMainWindow, checkOnPreviewTextChanged)
+{
+    fm->m_fontPreviewListView->m_bLoadDataFinish = true;
 //    fm->onPreviewTextChanged();
 
-//    fm->onPreviewTextChanged("first");
-//    fm->onPreviewTextChanged();
-//}
+    fm->m_fontPreviewListView->getFontPreviewProxyModel()->insertRows(0, 5);
+    fm->onPreviewTextChanged();
 
-//TEST_F(TestDFontMgrMainWindow, checkWaitForInsert)
-//{
-//    fm->m_waitForInstall.clear();
+    fm->onPreviewTextChanged("first");
+    fm->onPreviewTextChanged();
+}
 
-//    fm->waitForInsert();
+TEST_F(TestDFontMgrMainWindow, checkWaitForInsert)
+{
+    fm->m_waitForInstall.clear();
 
-//    fm->m_waitForInstall.append("first");
+    fm->waitForInsert();
 
-//    Stub s;
-//    s.set(ADDR(DFontMgrMainWindow, installFont), stub_true);
-//    fm->waitForInsert();
+    fm->m_waitForInstall.append("first");
 
-//    EXPECT_TRUE(fm->m_waitForInstall.isEmpty());
-//}
+    Stub s;
+    s.set(ADDR(DFontMgrMainWindow, installFont), stub_true);
+    fm->waitForInsert();
 
-//TEST_F(TestDFontMgrMainWindow, checkHideSpinner)
-//{
-//    fm->m_cacheFinish = true;
-//    fm->m_installFinish = true;
+    EXPECT_TRUE(fm->m_waitForInstall.isEmpty());
+}
 
-//    fm->hideSpinner();
-//    //定时器触发lambda函数，无法测试到
-//}
+TEST_F(TestDFontMgrMainWindow, checkHideSpinner)
+{
+    fm->m_cacheFinish = true;
+    fm->m_installFinish = true;
+
+    fm->hideSpinner();
+    //定时器触发lambda函数，无法测试到
+}
 
 //TEST_F(TestDFontMgrMainWindow, checkShowSpinner)
 //{
@@ -376,32 +376,32 @@
 //    fm->showSpinner(DFontSpinnerWidget::Load, true);
 //}
 
-//TEST_F(TestDFontMgrMainWindow, checkShowInstalledFiles)
-//{
-//    Stub s;
-//    s.set(ADDR(DFontMgrMainWindow, onLeftSiderBarItemClicked), stub_onLeftSiderBarItemClicked);
+TEST_F(TestDFontMgrMainWindow, checkShowInstalledFiles)
+{
+    Stub s;
+    s.set(ADDR(DFontMgrMainWindow, onLeftSiderBarItemClicked), stub_onLeftSiderBarItemClicked);
 
-//    fm->showInstalledFiles();
-//}
+    fm->showInstalledFiles();
+}
 
-//TEST_F(TestDFontMgrMainWindow, checkShowAllShortcut)
-//{
-//    //startDetached函数打桩失败，导致会有界面弹出。之后再研究这里如何打桩
-//    fm->showAllShortcut();
-//}
+TEST_F(TestDFontMgrMainWindow, checkShowAllShortcut)
+{
+    //startDetached函数打桩失败，导致会有界面弹出。之后再研究这里如何打桩
+    fm->showAllShortcut();
+}
 
-//TEST_F(TestDFontMgrMainWindow, checkResizeEvent)
-//{
+TEST_F(TestDFontMgrMainWindow, checkResizeEvent)
+{
 
-//    QResizeEvent *e = new QResizeEvent(QSize(), QSize());
+    QResizeEvent *e = new QResizeEvent(QSize(), QSize());
 
-//    fm->resizeEvent(e);
+    fm->resizeEvent(e);
 
-//    QScreen *screen = QGuiApplication::primaryScreen();
-//    QRect screenRect =  screen->availableVirtualGeometry();
-//    fm->resize(screenRect.size());
-//    fm->resizeEvent(e);
-//}
+    QScreen *screen = QGuiApplication::primaryScreen();
+    QRect screenRect =  screen->availableVirtualGeometry();
+    fm->resize(screenRect.size());
+    fm->resizeEvent(e);
+}
 
 //TEST_F(TestDFontMgrMainWindow, checkDropEvent)
 //{
@@ -491,32 +491,32 @@
 //    EXPECT_TRUE(spy.count() == 1);
 //}
 
-//////还需要研究exec如何打桩，否则无法运行测试程序，运行就会崩溃
-////TEST_F(TestDFontMgrMainWindow, checkDelCurrentFont)
-////{
+////还需要研究exec如何打桩，否则无法运行测试程序，运行就会崩溃
+//TEST_F(TestDFontMgrMainWindow, checkDelCurrentFont)
+//{
 
-////    fm->m_fontPreviewListView->m_bLoadDataFinish = true;
-//////    fm->onPreviewTextChanged();
+//    fm->m_fontPreviewListView->m_bLoadDataFinish = true;
+////    fm->onPreviewTextChanged();
 
-////    fm->m_fontPreviewListView->getFontPreviewProxyModel()->insertRows(0, 5);
+//    fm->m_fontPreviewListView->getFontPreviewProxyModel()->insertRows(0, 5);
 
-////    typedef int (QDialog::*fptr)();
-////    fptr Qdialog_exec = (fptr)(&QDialog::exec);   //获取虚函数地址
+//    typedef int (QDialog::*fptr)();
+//    fptr Qdialog_exec = (fptr)(&QDialog::exec);   //获取虚函数地址
 
-////    Stub stub;
-////    stub.set(Qdialog_exec, stub_exec);
+//    Stub stub;
+//    stub.set(Qdialog_exec, stub_exec);
 
-////    fm->m_fontPreviewListView->selectAll();
-////    fm->m_fIsDeleting = DFontMgrMainWindow::UnDeleting;
-////    DFontPreviewItemData data;
-////    data.fontData.strFontName = "aaa";
-////    fm->m_fontPreviewListView->m_curFontData  = data;
-////    Stub s1;
-////    s1.set(ADDR(DFontPreviewListDataThread, getFontData), stub_getFontData);
+//    fm->m_fontPreviewListView->selectAll();
+//    fm->m_fIsDeleting = DFontMgrMainWindow::UnDeleting;
+//    DFontPreviewItemData data;
+//    data.fontData.strFontName = "aaa";
+//    fm->m_fontPreviewListView->m_curFontData  = data;
+//    Stub s1;
+//    s1.set(ADDR(DFontPreviewListDataThread, getFontData), stub_getFontData);
 
-////    fm->delCurrentFont(false);
+//    fm->delCurrentFont(false);
 
-////}
+//}
 
 //TEST_F(TestDFontMgrMainWindow, checkOnShowMessage)
 //{

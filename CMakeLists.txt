@@ -48,11 +48,7 @@ PKG_SEARCH_MODULE(FontConfig REQUIRED fontconfig IMPORTED_TARGET)
 #CMAKE 3.14版本才有的模块
 #INCLUDE(FindFontconfig)
 SET(CMAKE_INSTALL_PREFIX /usr)
-
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall ")
-#用deepin-turbo对Dapplication进行加速
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wl,--as-need -fPIE")
-SET(CMAKE_EXE_LINKER_FLAGS "-pie")
 
 IF (${CMAKE_SYSTEM_PROCESSOR} MATCHES "sw_64")
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mieee")
@@ -64,5 +60,5 @@ ENDIF()
 ADD_SUBDIRECTORY(deepin-font-manager)
 ADD_SUBDIRECTORY(deepin-font-preview-plugin)
 
-add_subdirectory(test)
+ADD_SUBDIRECTORY(test)
 

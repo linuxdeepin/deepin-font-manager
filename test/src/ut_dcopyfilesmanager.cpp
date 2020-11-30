@@ -59,7 +59,11 @@ TEST_F(TestDCopyFilesManager, checkRunInstall)
     Stub s;
     s.set(ADDR(DCopyFilesManager, getTargetPath), stub_getTargetPath);
     t->appendFile("first");
+    DCopyFilesManager::m_installCanceled = false;
     t->run();
+
+    qDebug() << spy.count() << endl;
+
     EXPECT_TRUE(spy.count() == 1);
     delete  t;
 }

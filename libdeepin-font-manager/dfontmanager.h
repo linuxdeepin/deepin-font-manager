@@ -20,7 +20,7 @@
 #pragma once
 
 #include <QThread>
-
+#include <QMutex>
 /*************************************************************************
  <Class>         DFontManager
  <Description>   字体管理线程类-线程执行字体安装、批量安装、中途安装、重新安装、删除、批量删除等操作
@@ -67,6 +67,7 @@ public:
     *************************************************************************/
     enum CacheStatus {CacheNow, CacheLater, NoNewFonts};
     static DFontManager *instance();
+
     explicit DFontManager(QObject *parent = nullptr);
     ~DFontManager();
     //设置线程执行类型
@@ -131,7 +132,6 @@ private:
     QStringList m_uninstFile;
 
     volatile bool m_installCanceled = false;
-
     Type m_type{Type::DefaultNullType};
     CacheStatus m_CacheStatus;
     int m_installedCount = 0;

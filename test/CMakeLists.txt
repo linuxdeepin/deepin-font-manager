@@ -61,9 +61,14 @@ SET(LIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../libdeepin-font-manager)
 
 FILE(GLOB LIB_SRC_FILES ${LIB_DIR}/*.cpp ${LIB_DIR}/*.h)
 
-FILE(GLOB_RECURSE FONT_SRC_TEST1 ${CMAKE_CURRENT_LIST_DIR}/src/*.cpp)
+#FILE(GLOB_RECURSE FONT_SRC_TEST1 ${CMAKE_CURRENT_LIST_DIR}/src/*.cpp)
 
-ADD_EXECUTABLE(${PROJECT_NAME_TEST} ${FONT_SRC_TEST1} ${allHeaders} ${allSource} ${LIB_SRC_FILES} ${QRC_FILES})
+FILE(GLOB_RECURSE FONT_SRC_TEST_INTERFACE ${CMAKE_CURRENT_LIST_DIR}/src/deepin-font-manager-test/interfaces/*.cpp)
+FILE(GLOB_RECURSE FONT_SRC_TEST_VIEWS ${CMAKE_CURRENT_LIST_DIR}/src/deepin-font-manager-test/views/*.cpp)
+FILE(GLOB_RECURSE FONT_SRC_TEST_A ${CMAKE_CURRENT_LIST_DIR}/src/*.cpp)
+
+
+ADD_EXECUTABLE(${PROJECT_NAME_TEST} ${FONT_SRC_TEST_INTERFACE} ${FONT_SRC_TEST_VIEWS} ${FONT_SRC_TEST_A} ${allHeaders} ${allSource} ${LIB_SRC_FILES} ${QRC_FILES})
 
 TARGET_INCLUDE_DIRECTORIES(${PROJECT_NAME_TEST} PUBLIC ${LIB_DIR})
 TARGET_INCLUDE_DIRECTORIES(${PROJECT_NAME_TEST} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/)
@@ -90,34 +95,11 @@ ADD_CUSTOM_TARGET( test
 )
 
 ADD_CUSTOM_COMMAND(TARGET test
-        COMMAND echo " =================== TEST BEGIN ==================== "
-        #    #1.清理原先的gcov信息
-        #    COMMAND lcov --directory ./test/CMakeFiles/${PROJECT_NAME_TEST}.dir --zerocounters
-        #    COMMAND lcov --directory ./test/CMakeFiles/${PROJECT_NAME}.dir --zerocounters
+        COMMAND echo " =================== TEST BEGIN ===================="
         COMMAND ${CMAKE_BINARY_DIR}/test/${PROJECT_NAME_TEST}
-        #    #2.收集gcov信息到.info文件中
-        #    COMMAND lcov --directory . --capture --output-file ./test/coverageResult/${PROJECT_NAME}_Coverage.info
-
-        #    #3.过滤一些我们不感兴趣的文件的覆盖率信息
-        #    COMMAND echo " =================== do filter begin ==================== "
-        #    COMMAND lcov --remove ./test/coverageResult/${PROJECT_NAME}_Coverage.info
-        #    '*/${PROJECT_NAME_TEST}_autogen/*' '*/${PROJECT_NAME}_autogen/*' '*/usr/include/*' '*/dbuslogin1manager*' '*/test/*' '*/googletest/*'
-        #    -o ./test/coverageResult/${PROJECT_NAME}_Coverage.info
-        #    COMMAND echo " =================== do filter end ==================== "
-
-        #    #3.将.info信息生成报告到reprot文件夹中
-        #    COMMAND genhtml -o ./test/coverageResult/report ./test/coverageResult/${PROJECT_NAME}_Coverage.info
-
-        COMMAND echo " =================== TEST END ==================== "
-
-        #    COMMAND echo " Coverage files have been output to ${CMAKE_BINARY_DIR}/coverageResult/report "
-
-        #    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+        COMMAND echo " =================== TEST END ===================="
 )
 
 ##'make test'命令依赖与我们的测试程序
 ADD_DEPENDENCIES(test ${PROJECT_NAME_TEST})
-
-## 设置添加gocv相关信息的输出
-#set(CMAKE_CXX_FLAGS "-g -fprofile-arcs -ftest-coverage")
 
