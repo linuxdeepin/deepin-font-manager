@@ -463,7 +463,7 @@ void DFInstallErrorDialog::addData(QStringList &errorFileList, QStringList &half
 
     for (auto &it : errorFileList) {
         fontInfo = fontInfoManager->getFontInfo(it);
-
+        qDebug() << "getfontinfo success!!!!!!!!!!1" << endl;
         DFInstallErrorItemModel itemModel;
         if (fontInfo.isError) {
             QFileInfo fileInfo(it);
