@@ -35,28 +35,27 @@ class GetFontListWorker  : public DComWorker
 {
     Q_OBJECT
 public:
-    enum FontType {
+    enum Type {
         ALL,
         CHINESE,
         MONOSPACE,
         AllInSquence,
+        Startup,
     };
-    explicit GetFontListWorker(FontType type, bool isStartup, QObject *parent = nullptr);
-    explicit GetFontListWorker();
+    explicit GetFontListWorker(Type type, QObject *parent = nullptr);
     void run();
 
 private:
     void removeUserAddFonts();
 
 private:
-    FontType m_type;
-    bool m_isStartup;
+    Type m_type;
 };
 
 class FontManager
 {
 public:
-    static void getFontList(bool isStartup);
-    static void getFontListInSequence(bool isStartup);
+    static void getFontList();
+    static void getFontListInSequence();
     static void getStartFontList();
 };

@@ -525,7 +525,7 @@ void DFontPreviewListDataThread:: refreshFontListData(bool isStartup, const QStr
                 m_allFontPathList << filePath;
         }
     } else {
-        FontManager::getFontListInSequence(isStartup);
+        FontManager::getFontListInSequence();
     }
 
     QList<DFontPreviewItemData> list;
