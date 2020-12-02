@@ -30,8 +30,6 @@
 #include <QContextMenuEvent>
 #include <QDragEnterEvent>
 #include <QDropEvent>
-
-
 /*************************************************************************
  <Function>      DFontMgrMainWindow
  <Description>   构造函数
@@ -65,10 +63,6 @@ DFontMgrMainWindow::DFontMgrMainWindow(bool isQuickMode, QWidget *parent)
     initShortcuts();
     //SP3--设置tab顺序--安装事件过滤器(539)
     installEventFilters();
-
-//    moveToThread(m_thread);
-
-//    m_thread->start();
 }
 
 /*************************************************************************

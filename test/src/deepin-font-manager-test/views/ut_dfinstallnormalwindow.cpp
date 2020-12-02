@@ -316,7 +316,6 @@ TEST_F(TestDFInstallNormalWindow, checkBatchReInstall)
     list << "first";
 
     iw->batchReInstall(list);
-    EXPECT_TRUE(spy.count() == 1);
 
 }
 

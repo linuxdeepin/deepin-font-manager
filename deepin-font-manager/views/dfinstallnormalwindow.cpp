@@ -515,46 +515,10 @@ void DFInstallNormalWindow::batchInstall()
 *************************************************************************/
 void DFInstallNormalWindow::batchReInstall(const QStringList &reinstallFiles)
 {
-    // Reinstall the user selected files
-    m_installFiles.clear();
-    m_installState = InstallState::reinstall;
-
-    m_installFiles << reinstallFiles;
-#ifdef QT_QML_DEBUG
-//        qDebug() << __FUNCTION__ << " [reinstallFiles=" << m_installFiles << "]";
-#endif
-
-    QStringList installList;
-
-    if (m_installState == InstallState::reinstall) {
-        if (m_installFiles.size() > 0) {
-            QStringList filesInstalled;
-            for (auto &it : m_installFiles) {
-                installList.append(it);
-                //delete the font file first
-                DFontInfo fi = m_fontInfoManager->getFontInfo(it);
-                QString filePath = DFMDBManager::instance()->isFontInfoExist(fi);
-                if (QFileInfo(filePath).fileName() == QFileInfo(it).fileName()) {
-//                    qDebug() << __FUNCTION__ << "same file " << it << " will be overrided ";
-                    continue;
-                }
-                filesInstalled << filePath;
-            }
-            //force delete fonts installed
-            DFontPreviewListDataThread *dataThread = DFontPreviewListDataThread::instance();
-            if (!filesInstalled.empty()) {
-                Q_EMIT dataThread->requestForceDeleteFiles(filesInstalled);
-                //exit
-                return;
-//                qDebug() << __FUNCTION__ << " remove found installed font : " << filesInstalled;
-            }
-        }
-
-        m_installedFiles.clear();
-    }
+    qDebug() << "start" << __FUNCTION__ << endl;
 
     QStringList installListWithFamliyName;
-    for (auto &it : installList) {
+    for (auto &it : reinstallFiles) {
         DFontInfo fontInfo = m_fontInfoManager->getFontInfo(it);
         QString familyName = getFamilyName(fontInfo);
         installListWithFamliyName.append(it + "|" + familyName);
@@ -658,9 +622,7 @@ void DFInstallNormalWindow::onCancelInstall()
 *************************************************************************/
 void DFInstallNormalWindow::onContinueInstall(const QStringList &continueInstallFontFileList)
 {
-#ifdef QT_QML_DEBUG
-//    qDebug() << __FUNCTION__ << " called:" << continueInstallFontFileList;
-#endif
+    qDebug() << __FUNCTION__ << " called:" << continueInstallFontFileList;
 
 //ut000442 安装重复字体过程开始时,将之前的进度条清空
     m_progressBar->setValue(0);
