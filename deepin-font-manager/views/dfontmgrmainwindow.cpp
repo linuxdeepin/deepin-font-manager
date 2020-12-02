@@ -1185,12 +1185,6 @@ void DFontMgrMainWindow::handleMenuEvent(QAction *action)
 bool DFontMgrMainWindow::installFont(const QStringList &files, bool isAddBtnHasTabs)
 {
     PerformanceMonitor::installFontStart();
-
-    //安装前将这两个标志位复位，避免出现异常情况
-
-    m_cacheFinish = false;
-    m_installFinish = false;
-
     Q_D(DFontMgrMainWindow);
     QStringList installFiles = checkFilesSpace(files);
     if (installFiles.count() == 0) {
@@ -1203,6 +1197,10 @@ bool DFontMgrMainWindow::installFont(const QStringList &files, bool isAddBtnHasT
         qDebug() << "Already exist a installtion flow";
         return false;
     }
+
+    //安装前将这两个标志位复位，避免出现异常情况
+    m_cacheFinish = false;
+    m_installFinish = false;
 
     //m_fontPreviewListView->clearSelection();//取消安装不清空选中状态
     qDebug() << "installFont new DFInstallNormalWindow " << installFiles.size() << endl;
