@@ -302,33 +302,33 @@ TEST_F(TestDFontMgrMainWindow, checkEventFilterMouse)
 
 }
 
-//TEST_F(TestDFontMgrMainWindow, checkCheckFilesSpace)
-//{
-//    Stub s;
-//    s.set(ADDR(DFontMgrMainWindow, getDiskSpace), stub_getDiskSpace);
+TEST_F(TestDFontMgrMainWindow, checkCheckFilesSpace)
+{
+    Stub s;
+    s.set(ADDR(DFontMgrMainWindow, getDiskSpace), stub_getDiskSpace);
 
-//    Stub s1;
-//    s1.set(ADDR(QFileInfo, size), stub_getSizeL);
+    Stub s1;
+    s1.set(ADDR(QFileInfo, size), stub_getSizeL);
 
-//    QStringList list;
-//    list << "first";
+    QStringList list;
+    list << "first";
 
-//    EXPECT_TRUE(fm->checkFilesSpace(list).isEmpty());
+    EXPECT_TRUE(fm->checkFilesSpace(list).isEmpty());
 
-//    s1.set(ADDR(QFileInfo, size), stub_getSizeS);
-//    EXPECT_TRUE(fm->checkFilesSpace(list).contains("first"));
+    s1.set(ADDR(QFileInfo, size), stub_getSizeS);
+    EXPECT_TRUE(fm->checkFilesSpace(list).contains("first"));
 
-//}
+}
 
-//TEST_F(TestDFontMgrMainWindow, checkGetDiskSpace)
-//{
-//    Stub s;
-//    s.set(ADDR(QStorageInfo, bytesAvailable), stub_bytesAvailable);
+TEST_F(TestDFontMgrMainWindow, checkGetDiskSpace)
+{
+    Stub s;
+    s.set(ADDR(QStorageInfo, bytesAvailable), stub_bytesAvailable);
 
-//    EXPECT_TRUE(1500 == fm->getDiskSpace());
-//    EXPECT_TRUE(1500 == fm->getDiskSpace(false));
+    EXPECT_TRUE(1500 == fm->getDiskSpace());
+    EXPECT_TRUE(1500 == fm->getDiskSpace(false));
 
-//}
+}
 
 TEST_F(TestDFontMgrMainWindow, checkOnPreviewTextChanged)
 {
@@ -840,7 +840,6 @@ TEST_F(TestDFontMgrMainWindow, checkHandleMenuEvent)
 //    fm->respondToInstallOver(12);
 //}
 
-//mark
 //TEST_F(TestDFontMgrMainWindow, checkInitFontFiles)
 //{
 //    Stub s;

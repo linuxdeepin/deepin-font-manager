@@ -1546,6 +1546,7 @@ void DFontPreviewListView::onRightMenuShortCutActivated()
     QPoint showMenuPosition;
     //记录鼠标位置下的QModelIndex
     QModelIndex n_currentIdx = indexAt(mapFromGlobal(QCursor::pos()));
+    qDebug() << n_currentIdx.row();
     if (selectedIndexes().count() == 1) {
         QRect curRect = visualRect(selectedIndexes().first());
         //判断选中是否可见
@@ -1574,14 +1575,21 @@ void DFontPreviewListView::onRightMenuShortCutActivated()
             showMenuPosition = QPoint(n_firstPosCenter.x() + mw->pos().x() + POSITION_PARAM_X, n_firstPosCenter.y() + mw->pos().y() + POSITION_PARAM_Y);
         }
     }
+    qDebug() << "!!!!!!!1" << endl;
     //恢复normal状态
     FontData itemData = qvariant_cast<FontData>(m_fontPreviewProxyModel->data(n_currentIdx));
+    qDebug() << "!!!!!!!2" << endl;
+    itemData.getHoverState();
+    qDebug() << "!!!!!!!3";
     if (itemData.getHoverState() != IconNormal) {
+        qDebug() << "!!!!!!!4" << endl;
         itemData.setHoverState(IconNormal);
         m_fontPreviewProxyModel->setData(n_currentIdx, QVariant::fromValue(itemData), Qt::DisplayRole);
     }
     if (!m_rightMenu->isVisible()) {
+        qDebug() << "!!!!!!!5";
         m_rightMenu->exec(showMenuPosition);
+        qDebug() << "!!!!!!!6";
         return;
     }
 }

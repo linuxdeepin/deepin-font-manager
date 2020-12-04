@@ -72,12 +72,12 @@ void stub_commitAddFontInfo()
 TEST_F(TestDFontPreviewListDataThread, checkInitFileSystemWatcher)
 {
     dfdatathead->initFileSystemWatcher();
-//    QString FONTS_DIR = QDir::homePath() + "/.local/share/fonts/";
-//    QDir d(FONTS_DIR);
-//    d.removeRecursively();
-//    dfdatathead->initFileSystemWatcher();
-//    QDir d2(FONTS_DIR);
-//    d2.mkdir(".");
+    QString FONTS_DIR = QDir::homePath() + "/.local/share/fonts/";
+    QDir d(FONTS_DIR);
+    d.removeRecursively();
+    dfdatathead->initFileSystemWatcher();
+    QDir d2(FONTS_DIR);
+    d2.mkdir(".");
 
 }
 
@@ -103,31 +103,31 @@ TEST_F(TestDFontPreviewListDataThread, checkUpdateChangedDir)
 //    EXPECT_TRUE(dfdatathead->m_fsWatcher->directories().contains(FONTS_DIR));
 //}
 
-//TEST_F(TestDFontPreviewListDataThread, checkRefreshFontListData)
-//{
-//    Stub s;
-//    s.set(ADDR(DFMDBManager, getAllFontInfo), stub_getAllFontInfo);
+TEST_F(TestDFontPreviewListDataThread, checkRefreshFontListData)
+{
+    Stub s;
+    s.set(ADDR(DFMDBManager, getAllFontInfo), stub_getAllFontInfo);
 
-//    Stub s2;
-//    s2.set(ADDR(DFMDBManager, commitAddFontInfo), stub_commitAddFontInfo);
-//    QSignalSpy spy(dfdatathead->m_view, SIGNAL(itemsSelected(const QStringList & files, bool isFirstInstall = false)));
-////    QSignalSpy spy(flt, SIGNAL(loadFinished(QByteArray)));
-//    QSignalSpy spy2(dfdatathead->m_view, SIGNAL(multiItemsAdded(QList<DFontPreviewItemData> &, DFontSpinnerWidget::SpinnerStyles)));
+    Stub s2;
+    s2.set(ADDR(DFMDBManager, commitAddFontInfo), stub_commitAddFontInfo);
+    QSignalSpy spy(dfdatathead->m_view, SIGNAL(itemsSelected(const QStringList & files, bool isFirstInstall = false)));
+//    QSignalSpy spy(flt, SIGNAL(loadFinished(QByteArray)));
+    QSignalSpy spy2(dfdatathead->m_view, SIGNAL(multiItemsAdded(QList<DFontPreviewItemData> &, DFontSpinnerWidget::SpinnerStyles)));
 
-////    dfdatathead->m_fontModelList.clear();
-////    qDebug() << dfdatathead->m_fontModelList.count() << endl;
-//    dfdatathead->refreshFontListData(true, QStringList());
-//    qDebug() << spy2.count() << endl;
-//    EXPECT_TRUE(spy2.count() == 1);
-
-////    qDebug() << dfdatathead->m_fontModelList.count() << endl;
-//    EXPECT_TRUE(dfdatathead->m_fontModelList.isEmpty());
 //    dfdatathead->m_fontModelList.clear();
-//    dfdatathead->refreshFontListData(false, QStringList());
-//    EXPECT_TRUE(spy2.count() == 2);
 //    qDebug() << dfdatathead->m_fontModelList.count() << endl;
-//    EXPECT_FALSE(dfdatathead->m_fontModelList.isEmpty());
-//}
+    dfdatathead->refreshFontListData(true, QStringList());
+    qDebug() << spy2.count() << endl;
+    EXPECT_TRUE(spy2.count() == 1);
+
+//    qDebug() << dfdatathead->m_fontModelList.count() << endl;
+    EXPECT_TRUE(dfdatathead->m_fontModelList.isEmpty());
+    dfdatathead->m_fontModelList.clear();
+    dfdatathead->refreshFontListData(false, QStringList());
+    EXPECT_TRUE(spy2.count() == 2);
+    qDebug() << dfdatathead->m_fontModelList.count() << endl;
+    EXPECT_FALSE(dfdatathead->m_fontModelList.isEmpty());
+}
 
 TEST_F(TestDFontPreviewListDataThread, checkRemovePathWatcher)
 {

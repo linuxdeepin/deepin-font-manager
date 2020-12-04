@@ -60,7 +60,13 @@ bool stub_False()
 
 bool stub_True()
 {
+    qDebug() << "!!!!!!!!!!!11111" << endl;
     return true;
+}
+
+IconStatus stub_getIconStatus()
+{
+    return IconStatus::IconNormal;
 }
 
 void  stub_Return()
@@ -89,6 +95,13 @@ DFontPreviewItemData stub_getFontData()
     DFontPreviewItemData data;
     data.fontInfo.filePath = "first";
 
+    return data;
+}
+
+FontData stub_returnFontdata()
+{
+    FontData data;
+    data.fontState = IconStatus::IconNormal;
     return data;
 }
 
@@ -332,32 +345,26 @@ TEST_F(TestDFontPreviewListView, checkOnUpdateCurrentFont)
 
 
 ////UpdateSelection maek
-//TEST_F(TestDFontPreviewListView, checkUpdateSelection)
-//{
-//    QStandardItemModel *m_fontPreviewItemModel = new QStandardItemModel;
-//    m_fontPreviewItemModel->setColumnCount(1);
-//    DFontPreviewProxyModel *fpm = new DFontPreviewProxyModel;
-//    fpm->setSourceModel(m_fontPreviewItemModel);
+TEST_F(TestDFontPreviewListView, checkUpdateSelection)
+{
+    QStandardItemModel *m_fontPreviewItemModel = new QStandardItemModel;
+    m_fontPreviewItemModel->setColumnCount(1);
+    DFontPreviewProxyModel *fpm = new DFontPreviewProxyModel;
+    fpm->setSourceModel(m_fontPreviewItemModel);
 
-//    listview->setModel(fpm);
-////    m_fontPreviewItemModel->insertRows(0, 5);
-//    listview->m_fontPreviewProxyModel->insertRows(0, 5);
+    listview->setModel(fpm);
+//    m_fontPreviewItemModel->insertRows(0, 5);
+    listview->m_fontPreviewProxyModel->insertRows(0, 5);
 
-//    listview->m_selectAfterDel = 1;
+    listview->m_selectAfterDel = 1;
 
-//    listview->updateSelection();
+    listview->updateSelection();
 
-//    listview->m_selectAfterDel = 5;
-//    listview->updateSelection();
+    listview->m_selectAfterDel = 5;
+    listview->updateSelection();
 
-//    Stub s;
-//    s.set(ADDR(DFontPreviewListView, isAtListviewTop), stub_False);
 
-//    Stub s2;
-//    s2.set(ADDR(DFontPreviewListView, isAtListviewBottom), stub_True);
-//    listview->updateSelection();
-
-//}
+}
 
 //TEST_F(TestDFontPreviewListView, refreshRect)
 //{
@@ -408,39 +415,39 @@ TEST_F(TestDFontPreviewListView, checkChangeFontFileForce)
     listview->changeFontFile("", true);
 }
 
-//TEST_F(TestDFontPreviewListView, checkChangeFontFileUnForce)
-//{
-//    Stub s;
-//    s.set(ADDR(QFileInfo, isDir), stub_True);
+TEST_F(TestDFontPreviewListView, checkChangeFontFileUnForce)
+{
+    Stub s;
+    s.set(ADDR(QFileInfo, isDir), stub_True);
 
-//    Stub s1;
-//    s1.set(ADDR(DFontPreviewListDataThread, getFontModelList), stub_getFontModelList);
+    Stub s1;
+    s1.set(ADDR(DFontPreviewListDataThread, getFontModelList), stub_getFontModelList);
 
 
-//    listview->changeFontFile("first", false);
+    listview->changeFontFile("first", false);
 
-//}
+}
 
-//TEST_F(TestDFontPreviewListView, checkDeleteCurFonts)
-//{
-//    QSignalSpy spy(listview, SIGNAL(requestUpdateModel(int, bool)));
+TEST_F(TestDFontPreviewListView, checkDeleteCurFonts)
+{
+    QSignalSpy spy(listview, SIGNAL(requestUpdateModel(int, bool)));
 
-//    QStringList list;
+    QStringList list;
 
-//    listview->deleteCurFonts(list, false);
-//    qDebug() << spy.count();
-//    EXPECT_TRUE(spy.count() == 1);
+    listview->deleteCurFonts(list, false);
+    qDebug() << spy.count();
+    EXPECT_TRUE(spy.count() == 1);
 
-//    Stub s1;
-//    s1.set(ADDR(DFontPreviewListDataThread, getFontModelList), stub_getFontModelList);
+    Stub s1;
+    s1.set(ADDR(DFontPreviewListDataThread, getFontModelList), stub_getFontModelList);
 
-//    list << "first";
+    list << "first";
 
-//    listview->deleteCurFonts(list, true);
-//    qDebug() << spy.count() << endl;
-//    EXPECT_TRUE(spy.count() == 2);
+    listview->deleteCurFonts(list, true);
+    qDebug() << spy.count() << endl;
+    EXPECT_TRUE(spy.count() == 2);
 
-//}
+}
 
 TEST_F(TestDFontPreviewListView, checkUpdateChangedDir)
 {
@@ -685,19 +692,28 @@ TEST_F(TestDFontPreviewListView, checkOnEnableBtnClickedEnable)
     listview->onEnableBtnClicked(list, 0, 0, false, true);
 
 }
+TEST_F(TestDFontPreviewListView, checkHoverState)
+{
+    Stub s1;
+    s1.set(ADDR(QWidget, isVisible), stub_True);
 
-//TEST_F(TestDFontPreviewListView, checkHoverState)
-//{
-//    Stub s1;
-//    s1.set(ADDR(QWidget, isVisible), stub_True);
 
-//    listview->m_fontPreviewProxyModel->insertRows(0, 5);
+    listview->m_fontPreviewProxyModel->insertRows(0, 1);
 
-//    listview->selectAll();
-//    listview->onRightMenuShortCutActivated();
-//}
 
-//mark
+    FontData data;
+    data.strFontName = "first";
+
+    QModelIndex index = listview->m_fontPreviewProxyModel->index(0, 0);
+    listview->m_fontPreviewProxyModel->setData(index, QVariant::fromValue(data));
+
+    DFontMgrMainWindow *mw = new DFontMgrMainWindow;
+    listview->m_parentWidget = mw;
+    listview->setParent(mw);
+    listview->selectAll();
+    listview->onRightMenuShortCutActivated();
+}
+
 //TEST_F(TestDFontPreviewListView, checkIsAtListviewTopTrue)
 //{
 //    listview->verticalScrollBar()->setMinimum(100);
@@ -705,7 +721,7 @@ TEST_F(TestDFontPreviewListView, checkOnEnableBtnClickedEnable)
 //    EXPECT_TRUE(listview->isAtListviewTop());
 //}
 
-//mark
+
 //TEST_F(TestDFontPreviewListView, checkIsAtListviewTopFalse)
 //{
 //    listview->verticalScrollBar()->setMinimum(100);
@@ -716,7 +732,6 @@ TEST_F(TestDFontPreviewListView, checkOnEnableBtnClickedEnable)
 //    EXPECT_FALSE(listview->isAtListviewTop());
 //}
 
-//mark
 //TEST_F(TestDFontPreviewListView, checkIsAtListviewBottomTrue)
 //{
 //    listview->verticalScrollBar()->setMinimum(100);
@@ -732,6 +747,7 @@ TEST_F(TestDFontPreviewListView, checkOnEnableBtnClickedEnable)
 //    listview->verticalScrollBar()->setValue(100);
 //    EXPECT_TRUE(listview->isAtListviewTop());
 //}
+
 
 TEST_F(TestDFontPreviewListView, checkUpdateShiftSelect)
 {
