@@ -38,7 +38,7 @@ void LoadFontDataThread::doWork()
     DFMDBManager::instance()->commitDeleteFontInfo();
     thread->getView()->enableFonts();
 
-    foreach (auto it, m_startModelList) {
+    foreach (auto it, fontinfoList) {
         thread->addPathWatcher(it.fontInfo.filePath);
     }
     m_delFontInfoList.clear();

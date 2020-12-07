@@ -23,8 +23,8 @@
 
 
 ADD_COMPILE_OPTIONS(-fno-access-control)
-SET(CMAKE_CXX_FLAGS "-g -fprofile-arcs -ftest-coverage")
-SET(CMAKE_CXX_FLAGS "-fno-inline")
+SET(CMAKE_CXX_FLAGS "-g -fprofile-arcs -ftest-coverage -fno-inline")
+
 FIND_PACKAGE(Qt5Test REQUIRED)
 
 FIND_PACKAGE(GTest REQUIRED)
