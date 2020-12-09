@@ -476,7 +476,7 @@ void DFontMgrMainWindow::initShortcuts()
             if (this->windowState() & Qt::WindowMaximized)
             {
                 this->showNormal();
-            } else if (this->windowState() == Qt::WindowNoState)
+            } else
             {
                 this->showMaximized();
             }
