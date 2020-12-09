@@ -300,7 +300,6 @@ protected:
     QShortcut *m_scPageDown      {nullptr};  //Show next page     --> PageDown
     QShortcut *m_scWndReize      {nullptr};  //Resize Window      --> Ctrl+Alt+F
     QShortcut *m_scFindFont      {nullptr};  //Find font          --> Ctrl+F
-    QShortcut *m_scDeleteFont    {nullptr};  //Delete font        --> Delete
     QShortcut *m_scAddNewFont    {nullptr};  //Add Font           --> Ctrl+O
     QShortcut *m_scFontInfo      {nullptr};  //Font information   --> CTRL+I
     QShortcut *m_scAddOrCancelFavFont   {nullptr};  //Add or cancel favorite    -->.

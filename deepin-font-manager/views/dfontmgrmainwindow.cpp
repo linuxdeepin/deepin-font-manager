@@ -534,24 +534,6 @@ void DFontMgrMainWindow::initShortcuts()
         });
     }
 
-    //Delete font --> Delete
-    if (nullptr == m_scDeleteFont) {
-        m_scDeleteFont = new QShortcut(this);
-        m_scDeleteFont->setKey(Qt::Key_Delete);
-        m_scDeleteFont->setContext(Qt::ApplicationShortcut);
-        m_scDeleteFont->setAutoRepeat(false);
-
-        connect(m_scDeleteFont, &QShortcut::activated, this, [this] {
-            //Only can't delete user font
-            //first disable delete
-            qDebug() << m_cacheFinish << m_installFinish << "______________" << endl;
-            if (m_fIsInstalling)
-                return;
-            m_fontPreviewListView->syncRecoveryTabStatus();
-            delCurrentFont(false);
-        }, Qt::UniqueConnection);
-    }
-
     //ShowMenu --> Alt+M//SP3--Alt+M菜单--快捷键
     if (nullptr == m_scShowMenu) {
         m_scShowMenu = new QShortcut(this);
@@ -1226,8 +1208,6 @@ bool DFontMgrMainWindow::installFont(const QStringList &files, bool isAddBtnHasT
     m_installOutFileList.clear();
     Dtk::Widget::moveToCenter(m_dfNormalInstalldlg);
     m_dfNormalInstalldlg->exec();
-
-
 
     //m_dfNormalInstalldlg->setModal(true);
 
@@ -2418,8 +2398,19 @@ void DFontMgrMainWindow::keyPressEvent(QKeyEvent *event)
 bool DFontMgrMainWindow::eventFilter(QObject *obj, QEvent *event)
 {
     D_D(DFontMgrMainWindow);
+
     if (event->type() == QEvent::KeyPress) {
         QKeyEvent *keyEvent = dynamic_cast<QKeyEvent *>(event);
+
+        //bug 57416 ,偶现窗口快捷键失效,改为在事件过滤器中检测delete按键执行删除
+        if (keyEvent->key() == Qt::Key_Delete) {
+            //正在安装时返回,不执行删除
+            if (m_fIsInstalling)
+                return true;
+            m_fontPreviewListView->syncRecoveryTabStatus();
+            delCurrentFont(false);
+        }
+
         if (keyEvent->key() == Qt::Key_Tab) {
             if (obj == d->searchFontEdit->lineEdit()) {
                 setNextTabFocus(obj);
