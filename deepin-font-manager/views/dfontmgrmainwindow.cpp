@@ -1872,8 +1872,6 @@ void DFontMgrMainWindow::dragEnterEvent(QDragEnterEvent *event)
                 return;
             }
         } else {
-            //Multi-drag just accept all file at start
-            //will filter non-font files in drapEvent
             event->accept();
             return;
         }
@@ -1915,7 +1913,12 @@ void DFontMgrMainWindow::dropEvent(QDropEvent *event)
         //Check if need to trigger installtion
         if (installFileList.size() > 0) {
             event->accept();
-            Q_EMIT fileSelected(installFileList, false);
+
+            //bug 57422,拖入文件这个事件处理导致的问题,这里加入延时后bug现象消失 ut000442
+            QTimer::singleShot(50, [ = ] {
+                installFont(installFileList, false);
+            });
+
             qDebug() << installFileList << "drop in files :" << endl;
         } else {
             event->ignore();
@@ -1923,6 +1926,7 @@ void DFontMgrMainWindow::dropEvent(QDropEvent *event)
     } else {
         event->ignore();
     }
+
 }
 
 /*************************************************************************

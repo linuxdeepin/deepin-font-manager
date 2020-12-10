@@ -169,7 +169,6 @@ public:
 
     //安装完成后切换至用户字体页面
     void showInstalledFiles();
-
 protected:
     //初始化应用数据
     void initData();
