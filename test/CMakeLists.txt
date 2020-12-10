@@ -1,4 +1,4 @@
-﻿#/*****************************************************************************
+#/*****************************************************************************
 #* Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd.
 #*
 #* Author:     Xiao Zhiguo <xiaozhiguo@uniontech.com>
@@ -26,7 +26,6 @@ ADD_COMPILE_OPTIONS(-fno-access-control)
 SET(CMAKE_CXX_FLAGS "-g -fprofile-arcs -ftest-coverage -fno-inline")
 
 FIND_PACKAGE(Qt5Test REQUIRED)
-
 FIND_PACKAGE(GTest REQUIRED)
 INCLUDE_DIRECTORIES(${GTEST_INCLUDE_DIRS})
 

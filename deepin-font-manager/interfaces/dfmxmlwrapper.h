@@ -25,11 +25,11 @@ public:
 public:
 
     //新建xml文件
-    static bool createXmlFile(const QString &fileName,
-                              const QString &rootName,
-                              const QString &version = "1.0",
-                              const QString &encoding = "gb2312",
-                              const QString &standalone = "yes");
+//    static bool createXmlFile(const QString &fileName,
+//                              const QString &rootName,
+//                              const QString &version = "1.0",
+//                              const QString &encoding = "gb2312",
+//                              const QString &standalone = "yes");
 
     //新建fontconfig配置文件
     static bool createFontConfigFile(const QString &xmlFilePath);
@@ -64,19 +64,9 @@ public:
                                             const QStringList &lastNodeTextList);
 
     //删除节点
-    static bool deleteNodeWithText(const QString &fileName,
-                                   const QString &nodeName,
-                                   const QString &nodeText);
-
-    //删除节点
     static bool deleteNodeWithTextList(const QString &fileName,
                                        const QString &nodeName,
                                        const QStringList &nodeTextList);
-
-    //查询所有子节点文本
-    static bool queryAllChildNodes_Text(const QString &fileName,
-                                        const QString &nodeName,
-                                        QSTRING_VECTOR &textVector);
 
     // 查询所有子节点文本
     static bool queryAllChildNodes_Text(const QString &fileName,

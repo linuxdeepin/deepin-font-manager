@@ -279,7 +279,9 @@ bool DFMXmlWrapper::addNodesWithTextList(const QString &fileName, const QString 
 
     QDomElement rootEle = doc.documentElement();
     QDomElement parentNode;
-    getNodeByName(rootEle, parentNodeName, parentNode);
+    if (!getNodeByName(rootEle, parentNodeName, parentNode)) {
+        return false;
+    }
 
     for (const QString &lastNodeText : lastNodeTextList) {
         QDomElement currParentNode = parentNode;
@@ -466,7 +468,9 @@ bool DFMXmlWrapper::deleteNodeWithTextList(const QString &fileName, const QStrin
 
     QDomElement rootEle = doc.documentElement();
     QDomElement nodeEle;
-    getNodeByName(rootEle, nodeName, nodeEle);
+    if (!getNodeByName(rootEle, nodeName, nodeEle)) {
+        return false;
+    }
 
     // 假如是根节点
     if (rootEle == nodeEle) {
@@ -516,57 +520,6 @@ bool DFMXmlWrapper::deleteNodeWithTextList(const QString &fileName, const QStrin
  <Description>   查询所有子节点文本
  <Author>        null
  <Input>
-    <param1>     fileName              Description:文件名
-    <param2>     nodeName              Description:节点名
-    <param3>     textVector            Description:子节点文本
- <Return>        bool                  Description:查询是否成功
- <Note>          null
-*************************************************************************/
-bool DFMXmlWrapper::queryAllChildNodes_Text(const QString &fileName,
-                                            const QString &nodeName,
-                                            QSTRING_VECTOR &textVector)
-{
-    if (fileName.isEmpty()) {
-        return false;
-    }
-
-    // 新建QDomDocument类对象，它代表一个XML文档
-    QDomDocument doc;
-    // 建立指向“fileName”文件的QFile对象
-    QFile file(fileName);
-    // 以只读方式打开
-    if (!file.open(QIODevice::ReadOnly)) {
-        return false;
-    }
-
-    // 将文件内容读到doc中
-    if (!doc.setContent(&file)) {
-        file.close();
-        return false;
-    }
-    // 关闭文件
-    file.close();
-
-    //根元素
-    QDomElement rootEle = doc.documentElement();
-    QDomElement node;
-    getNodeByName(rootEle, nodeName, node);
-
-    QDomNodeList list = node.childNodes();
-    for (int i = 0; i < list.count(); i++) {
-        QDomNode n = list.at(i);
-        if (node.isElement()) {
-            textVector.insert(i, n.toElement().text());
-        }
-    }
-    return true;
-}
-
-/*************************************************************************
- <Function>      queryAllChildNodes_Text
- <Description>   查询所有子节点文本
- <Author>        null
- <Input>
     <param1>     fileName            Description:文件名
     <param2>     nodeName            Description:节点名
     <param3>     textList            Description:子节点文本
@@ -601,7 +554,9 @@ bool DFMXmlWrapper::queryAllChildNodes_Text(const QString &fileName,
     //根元素
     QDomElement rootEle = doc.documentElement();
     QDomElement node;
-    getNodeByName(rootEle, nodeName, node);
+    if (!getNodeByName(rootEle, nodeName, node)) {
+        return false;
+    }
 
     QDomNodeList list = node.childNodes();
     for (int i = 0; i < list.count(); i++) {
@@ -633,3 +588,5 @@ QStringList DFMXmlWrapper::getFontConfigDisableFontPathList()
 
     return strDisableFontPathList;
 }
+
+
