@@ -238,6 +238,7 @@ protected:
 
     //处理窗口大小变化事件
     void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
+    void changeEvent(QEvent *event)Q_DECL_OVERRIDE;
     //调节右下角字体大小显示label显示内容
     void autoLabelWidth(QString text, DLabel *lab, QFontMetrics fm);
     //设置tab聚焦顺序

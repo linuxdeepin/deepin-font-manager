@@ -719,9 +719,8 @@ void DFontMgrMainWindow::initMainVeiws()
 
     d->mainWndSpliter = new DSplitter(Qt::Horizontal, this);
     m_fontLoadingSpinner = new DFontSpinnerWidget(this);
-//    m_fontDeletingSpinner = new DFontSpinnerWidget(this);
-    // For Debug
-    // d->mainWndSpliter->setStyleSheet("QSplitter::handle { background-color: red }");
+
+
 
     initLeftSideBar();
     initRightFontView();
@@ -1958,6 +1957,30 @@ void DFontMgrMainWindow::resizeEvent(QResizeEvent *event)
     }
 
     DMainWindow::resizeEvent(event);
+}
+
+//ut000442 bug40397 listview代理一直在刷新，导致放大时绘制窗口时需要绘制的东西很多
+//降低了窗口绘制的速度导致这个现象比较明显，放大前先将listview进行隐藏
+void DFontMgrMainWindow::changeEvent(QEvent *event)
+{
+    if (event->type() != QEvent::WindowStateChange) {
+        DMainWindow::changeEvent(event);
+        return;
+    }
+
+    if (this->windowState() == Qt::WindowMaximized) {
+        //放大之前如果字体预览列表可见，将其隐藏
+        if(m_fontPreviewListView->isVisible()){
+            m_fontPreviewListView->hide();
+        }
+
+        //刚启动程序时，进行放大不需要在此讲预览listview显示出来
+        if(m_fontPreviewListView->isListDataLoadFinished()){
+            QTimer::singleShot(100, [ = ] {
+                m_fontPreviewListView->show();
+            });
+        }
+    }
 }
 
 /*************************************************************************
