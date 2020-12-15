@@ -1909,14 +1909,18 @@ void DFontPreviewListView::clearHoverState()
  <Return>        null            Description:null
  <Note>          null
 *************************************************************************/
-void DFontPreviewListView::updateChangedFile(const QString &path)
+void DFontPreviewListView::updateChangedFile(const QStringList &pathlist)
 {
-    qDebug() << __FUNCTION__ << path << " begin ";
+    qDebug() << __FUNCTION__ << pathlist << " begin ";
     QMutexLocker locker(&m_mutex);
-    changeFontFile(path);
+
+    foreach (auto it, pathlist) {
+        changeFontFile(it);
+    }
+
 
     Q_EMIT rowCountChanged();
-    qDebug() << __FUNCTION__ << path << " end ";
+    qDebug() << __FUNCTION__ << pathlist << " end ";
 }
 
 /*************************************************************************

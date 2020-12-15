@@ -89,8 +89,6 @@ protected slots:
     void initFileSystemWatcher();
 
 public slots:
-    //文件修改后触发函数
-    void updateChangedFile(const QString &path);
     //文件夹修改后触发函数
     void updateChangedDir();
     //添加文件监视器
@@ -118,6 +116,7 @@ public:
     QList<DFontPreviewItemData> m_delFontInfoList;
     //判断启动过程中初始数据是否全部加载完毕的标志位
     bool m_isAllLoaded = false;
+
 protected:
     QThread mThread;
 
@@ -126,6 +125,11 @@ protected:
     DFontPreviewListView *m_view;
     QFileSystemWatcher *m_fsWatcher;
     QMutex *m_mutex;
+
+private:
+    QTimer *m_deleteFileRecivetimer = nullptr;
+    QStringList m_waitForDeleteFiles;
+
 };
 
 #endif // DFONTPREVIEWLISTDATATHREAD_H
