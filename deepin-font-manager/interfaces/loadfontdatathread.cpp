@@ -5,21 +5,9 @@
 LoadFontDataThread::LoadFontDataThread(QList<QMap<QString, QString> > &list)
 {
     m_list = list;
-    moveToThread(&mThread);
-    QObject::connect(&mThread, &QThread::started, this, &LoadFontDataThread::doWork);
-
-    QTimer::singleShot(3, [this] {
-        mThread.start();
-    });
 }
 
 void LoadFontDataThread::run()
-{
-
-}
-
-
-void LoadFontDataThread::doWork()
 {
     qDebug() << QThread::currentThreadId() << __func__ << "------------";
     SignalManager::m_isOnLoad = true;
@@ -47,3 +35,4 @@ void LoadFontDataThread::doWork()
 
     emit dataLoadFinish(fontinfoList);
 }
+

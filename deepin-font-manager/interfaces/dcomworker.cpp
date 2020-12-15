@@ -47,6 +47,7 @@ GetFontListWorker::GetFontListWorker(GetFontListWorker::Type type, QObject *pare
 {
 }
 
+
 void GetFontListWorker::run()
 {
     qDebug() << __FUNCTION__ << m_type << "begin";

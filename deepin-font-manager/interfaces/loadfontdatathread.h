@@ -16,9 +16,6 @@ public:
 protected:
     void run();
 
-protected slots:
-    //线程函数
-    void doWork();
 
 signals:
     void dataLoadFinish(QList<DFontPreviewItemData> &);

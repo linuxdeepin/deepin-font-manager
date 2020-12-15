@@ -34,8 +34,9 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
     setFrameShape(QFrame::NoFrame);
 
     PerformanceMonitor::loadFontStart();
-
     m_dataThread = DFontPreviewListDataThread::instance(this);
+
+
     //启动检测加载状态的定时器
     m_fontLoadTimer = new QTimer(this);
     m_fontLoadTimer->start(500);
@@ -49,12 +50,15 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
     initConnections();
     installEventFilter(this);
 
+
+
     m_curAppFont.setFamily(QString());
     m_curAppFont.setStyleName(QString());
 }
 
 DFontPreviewListView::~DFontPreviewListView()
 {
+    QFontDatabase::removeAllApplicationFonts();
 }
 
 /*************************************************************************
@@ -131,10 +135,10 @@ void DFontPreviewListView::onMultiItemsAdded(QList<DFontPreviewItemData> &data, 
     for (DFontPreviewItemData &itemData : data) {
         if (itemData.appFontId < 0) {
             int appFontId = QFontDatabase::addApplicationFont(itemData.fontInfo.filePath);
+
             itemData.appFontId = appFontId;
 
             //compitable with SP2 Update1
-
             QString familyName;
             if (!itemData.fontInfo.isSystemFont
                     && (itemData.fontInfo.sp3FamilyName.isEmpty() || itemData.fontInfo.sp3FamilyName.contains(QChar('?')))) {
@@ -179,6 +183,44 @@ void DFontPreviewListView::onMultiItemsAdded(QList<DFontPreviewItemData> &data, 
 
     if (styles == DFontSpinnerWidget::StartupLoad)
         Q_EMIT onLoadFontsStatus(1);
+}
+
+
+/*************************************************************************
+ <Function>      onStartupMultiItemAdded
+ <Description>   启动过程中listview中添加项响应函数
+ <Author>        null
+ <Input>
+    <param1>     data              Description:需要添加项的数据列表
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
+void DFontPreviewListView::onStartupMultiItemAdded(QList<DFontPreviewItemData> &data)
+{
+    QMutexLocker locker(&m_mutex);
+    int rows = m_fontPreviewItemModel->rowCount();
+    qInfo() << __FUNCTION__ << data.size() << rows;
+
+    bool res = m_fontPreviewItemModel->insertRows(rows, data.size());
+    if (!res) {
+        qDebug() << __FUNCTION__ << "insertRows fail";
+        return;
+    }
+    int i = 0;
+
+    for (DFontPreviewItemData &itemData : data) {
+        FontData fdata = itemData.fontData;
+        QModelIndex index = m_fontPreviewItemModel->index(rows + i,   0);
+        res = m_fontPreviewItemModel->setData(index, QVariant::fromValue(fdata), Qt::DisplayRole);
+
+        if (!res)
+            qDebug() << __FUNCTION__ << "setData fail";
+        setFontData(index, itemData);
+        i++;
+    }
+
+//    Q_EMIT onLoadFontsStatus(1);
+
 }
 
 /*************************************************************************
@@ -235,8 +277,14 @@ void DFontPreviewListView::initConnections()
 {
     connect(this, &DFontPreviewListView::itemsSelected, this, &DFontPreviewListView::selectFonts);
     connect(this, &DFontPreviewListView::multiItemsAdded, this, &DFontPreviewListView::onMultiItemsAdded);
+    connect(this, &DFontPreviewListView::startupMultiItemsAdded, this, &DFontPreviewListView::onStartupMultiItemAdded);
     connect(this, &DFontPreviewListView::itemRemoved, this, &DFontPreviewListView::onItemRemoved);
     connect(this, &DFontPreviewListView::requestUpdateModel, this, &DFontPreviewListView::updateModel);
+
+    //在拖动滚动条时对字体进行清理,之前在代理中进行清理,减少了清理的次数,避免卡顿
+    connect(this->verticalScrollBar(), &QScrollBar::valueChanged, this, [ = ] {
+        QFont::cleanup();
+    });
 
     connect(m_signalManager, &SignalManager::cancelDel, this, &DFontPreviewListView::cancelDel);
     /*切换listview后，scrolltotop UT000539*/
@@ -293,16 +341,22 @@ void DFontPreviewListView::cancelDel()
 *************************************************************************/
 void DFontPreviewListView::loadLeftFonts()
 {
-    qInfo() << QThread::currentThreadId() << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!";
+    qInfo() << QThread::currentThreadId() << "DFontPreviewListView" << __func__;
     if (isListDataLoadFinished()) {
         m_fontLoadTimer->stop();
 //        m_parentWidget->showSpinner(DFontSpinnerWidget::Load);
         qDebug() << DFMDBManager::recordList.count() << endl;
+        qDebug() << QThread::currentThreadId() << __func__ << "------------";
+
         m_dataLoadThread = new LoadFontDataThread(DFMDBManager::recordList);
         m_dataLoadThread->start();
+
         connect(m_dataLoadThread, &LoadFontDataThread::dataLoadFinish, this, [ = ](QList<DFontPreviewItemData> &dataList) {
-            emit multiItemsAdded(dataList, DFontSpinnerWidget::StartupLoad);
+            m_dataLoadThread->quit();
+            m_dataLoadThread->wait();
+            emit startupMultiItemsAdded(dataList);
         });
+
     }
 }
 

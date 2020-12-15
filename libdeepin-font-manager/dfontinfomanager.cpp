@@ -654,29 +654,8 @@ QString DFontInfoManager::getFontPath()
 *************************************************************************/
 QStringList DFontInfoManager::getFontFamilyStyle(const QString &filePah)
 {
+
     QStringList fontFamilyList;
-#if 0
-    QProcess process;
-
-    process.start("fc-list |grep " + filePah);
-    process.waitForFinished(-1);
-
-    QString output = process.readAllStandardOutput();
-    QStringList lines = output.split(QChar('\n'));
-    for (QString &line : lines) {
-        qDebug() << __FUNCTION__ << line;
-        QStringList retStrList = line.split(":");
-        if (retStrList.size() != 3) {
-            continue;
-        }
-        QString families = const_cast<const QString &>(retStrList.at(1)).simplified();
-        fontFamilyList = families.split(",");
-        for (QString &fontStr : fontFamilyList) {
-            fontStr.remove(QChar('\\'));
-        }
-
-    }
-#endif
     const FcChar8 *format = reinterpret_cast<const FcChar8 *>("%{=fclist}");
     FcObjectSet *os = FcObjectSetBuild(FC_FAMILY, FC_STYLE, FC_FILE, nullptr);
     FcPattern *pat = FcPatternCreate();
@@ -686,7 +665,6 @@ QStringList DFontInfoManager::getFontFamilyStyle(const QString &filePah)
         FcObjectSetDestroy(os);
     if (pat)
         FcPatternDestroy(pat);
-
     if (fs) {
         for (int j = 0; j < fs->nfont; j++) {
             FcChar8 *s = FcPatternFormat(fs->fonts[j], format);
@@ -695,6 +673,7 @@ QStringList DFontInfoManager::getFontFamilyStyle(const QString &filePah)
 
             QString str = QString(reinterpret_cast<char *>(s));
             QStringList retStrList = str.split(":");
+
             if (retStrList.size() != 3) {
                 FcStrFree(s);
                 continue;

@@ -45,17 +45,17 @@ QList<DFontPreviewItemData> stub_getFontInfo()
 }
 
 
-TEST_F(TestLoadFontDataThread, checkDowork)
-{
-    Stub s;
-    s.set((QList<DFontPreviewItemData>(DFMDBManager::*)(QList<QMap<QString, QString> >, QList<DFontPreviewItemData> *))ADDR(DFMDBManager, getFontInfo), stub_getFontInfo);
+//TEST_F(TestLoadFontDataThread, checkDowork)
+//{
+//    Stub s;
+//    s.set((QList<DFontPreviewItemData>(DFMDBManager::*)(QList<QMap<QString, QString> >, QList<DFontPreviewItemData> *))ADDR(DFMDBManager, getFontInfo), stub_getFontInfo);
 
-    QSignalSpy spy(fpm, SIGNAL(dataLoadFinish(QList<DFontPreviewItemData> &)));
-    DFontPreviewItemData data;
-    data.appFontId = 2;
+//    QSignalSpy spy(fpm, SIGNAL(dataLoadFinish(QList<DFontPreviewItemData> &)));
+//    DFontPreviewItemData data;
+//    data.appFontId = 2;
 
-    fpm->m_delFontInfoList << data;
-    fpm->doWork();
+//    fpm->m_delFontInfoList << data;
+//    fpm->doWork();
 
-    EXPECT_TRUE(spy.count() == 1);
-}
+//    EXPECT_TRUE(spy.count() == 1);
+//}

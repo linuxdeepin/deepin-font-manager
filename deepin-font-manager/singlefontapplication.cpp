@@ -172,8 +172,8 @@ void SingleFontApplication::activateWindow()
             }
 
             Dtk::Widget::moveToCenter(m_qspMainWnd.get());
-
             m_qspMainWnd->show();
+
         } else {
             bool IsWindowMax = reinterpret_cast<DFontMgrMainWindow *>(
                                    m_qspMainWnd.get())->getIsMaximized();

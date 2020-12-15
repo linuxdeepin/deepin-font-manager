@@ -2342,7 +2342,7 @@ Event
     <param1>     event          Description:事件对象
  <Return>        Null           Description:Null
  <Note>          Null
-*************************************************************************/\
+*************************************************************************/
 void DFontMgrMainWindow::keyPressEvent(QKeyEvent *event)
 {
     //UT000539 判断slider是否聚焦，调整预览字体大小

@@ -305,11 +305,14 @@ private:
     int m_tryCnt = 0;
     qint64 m_curTm {0};
 
+
 signals:
     //字体列表加载状态
     void onLoadFontsStatus(int type);
     //批量添加item请求
     void multiItemsAdded(QList<DFontPreviewItemData> &data, DFontSpinnerWidget::SpinnerStyles styles);
+    //启动时批量添加item请求
+    void startupMultiItemsAdded(QList<DFontPreviewItemData> &data);
     //请求移除某一项的响应函数
     void itemRemoved(DFontPreviewItemData &data);
     //请求安装后的选中响应函数
@@ -337,6 +340,10 @@ public slots:
     void selectFonts(const QStringList &fileList);
     //listview中添加项响应函数
     void onMultiItemsAdded(QList<DFontPreviewItemData> &data, DFontSpinnerWidget::SpinnerStyles styles);
+
+    //启动时向listview添加项
+    void onStartupMultiItemAdded(QList<DFontPreviewItemData> &data);
+
     //更新当前字体
     void onUpdateCurrentFont();
     //应用字体变化时触发函数
