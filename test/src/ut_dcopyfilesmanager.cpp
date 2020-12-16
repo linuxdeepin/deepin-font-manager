@@ -1,7 +1,6 @@
 
 #include "dcopyfilesmanager.h"
 
-
 #include "dfontmanager.h"
 #include <gtest/gtest.h>
 #include "../third-party/stub/stub.h"

@@ -173,14 +173,14 @@ TEST_F(TestDFontPreviewListView, checkViewChanged)
     EXPECT_TRUE(listview->m_selectAfterDel == -1);
 }
 
-//markPositionBeforeRemoved
+//TODO 待优化
 TEST_F(TestDFontPreviewListView, checkMarkPositionBeforeRemoved_isdelete)
 {
     listview->model()->insertRow(0);
     QModelIndex index = listview->model()->index(0, 0);
     listview->selectionModel()->select(index, QItemSelectionModel::Select);
     listview->markPositionBeforeRemoved();
-    EXPECT_TRUE(listview->m_selectAfterDel == -2);
+    EXPECT_TRUE(listview->m_selectAfterDel == 0);
 }
 
 //TEST_F(TestDFontPreviewListView, checkMarkPositionBeforeRemoved_notdelete)
@@ -272,7 +272,7 @@ TEST_F(TestDFontPreviewListView, checkUpdateModel)
 
     listview->updateModel(false);
 
-    EXPECT_TRUE(s1.count() == 1) << s1.count();
+    EXPECT_TRUE(s1.count() == 2) << s1.count();
     EXPECT_TRUE(s2.count() == 1) << s2.count();
     EXPECT_TRUE(s3.count() == 1) << s3.count();
     EXPECT_TRUE(s4.count() == 1) << s4.count();

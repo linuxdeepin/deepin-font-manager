@@ -8,6 +8,7 @@
 
 #include "dfmxmlwrapper.h"
 #include "dfontpreviewlistview.h"
+#include "dcomworker.h"
 
 #include <QFontDatabase>
 #include <QApplication>
@@ -48,9 +49,16 @@ QList<DFontPreviewItemData> stub_getAllFontInfo()
 
 }
 
-void stub_commitAddFontInfo()
+void stub_return()
 {
     return ;
+}
+
+QStringList stub_getFontDisableFontlist()
+{
+    QStringList list;
+    list << "first";
+    return list;
 }
 
 //QList<DFontPreviewItemData>  stub_getFontModelList()
@@ -109,7 +117,7 @@ TEST_F(TestDFontPreviewListDataThread, checkRefreshFontListData)
     s.set(ADDR(DFMDBManager, getAllFontInfo), stub_getAllFontInfo);
 
     Stub s2;
-    s2.set(ADDR(DFMDBManager, commitAddFontInfo), stub_commitAddFontInfo);
+    s2.set(ADDR(DFMDBManager, commitUpdateFontInfo), stub_return);
     QSignalSpy spy(dfdatathead->m_view, SIGNAL(itemsSelected(const QStringList & files, bool isFirstInstall = false)));
 //    QSignalSpy spy(flt, SIGNAL(loadFinished(QByteArray)));
     QSignalSpy spy2(dfdatathead->m_view, SIGNAL(multiItemsAdded(QList<DFontPreviewItemData> &, DFontSpinnerWidget::SpinnerStyles)));
@@ -209,6 +217,66 @@ TEST_F(TestDFontPreviewListDataThread, checkGetFontData)
 }
 
 
+TEST_F(TestDFontPreviewListDataThread, checkSyncFontEnableDisableStatusData)
+{
+    Stub s;
+    s.set(ADDR(DFMDBManager, commitUpdateFontInfo), stub_return);
+
+    Stub s1;
+    s1.set((void (DFMDBManager::*)(const DFontPreviewItemData &, const QString &))ADDR(DFMDBManager, updateFontInfo), stub_return);
+
+    //    QSignalSpy spy(fpm, SIGNAL(dataLoadFinish(QList<DFontPreviewItemData> &)));
+
+    QStringList disableFontPathList;
+    disableFontPathList << "first";
+
+    DFontPreviewItemData data;
+    data.fontData.setEnabled(false);
+    data.fontInfo.filePath = "first";
+    dfdatathead->m_fontModelList.clear();
+    dfdatathead->m_fontModelList.append(data);
+    dfdatathead->syncFontEnableDisableStatusData(disableFontPathList);
+
+    data.fontData.setEnabled(true);
+    data.fontInfo.filePath = "first";
+    dfdatathead->m_fontModelList.clear();
+    dfdatathead->m_fontModelList.append(data);
+    dfdatathead->syncFontEnableDisableStatusData(disableFontPathList);
+    EXPECT_FALSE(dfdatathead->m_fontModelList.first().fontData.isEnabled());
+}
+
+
+TEST_F(TestDFontPreviewListDataThread, checkDoWork)
+{
+    Stub s;
+    s.set(ADDR(DFMXmlWrapper, getFontConfigDisableFontPathList), stub_getFontDisableFontlist);
+
+    Stub s1;
+    s1.set(ADDR(FontManager, getStartFontList), stub_return);
+
+    Stub s2;
+    s2.set(ADDR(DFMDBManager, commitUpdateFontInfo), stub_return);
+
+    Stub s3;
+    s3.set(ADDR(DFontPreviewListView, onMultiItemsAdded), stub_return);
+
+    Stub s4;
+    s4.set(ADDR(DFMDBManager, commitDeleteFontInfo), stub_return);
+
+    QSignalSpy spy(dfdatathead->m_view, SIGNAL(multiItemsAdded(QList<DFontPreviewItemData> &, DFontSpinnerWidget::SpinnerStyles)));
+
+    dfdatathead->m_fontModelList.clear();
+    dfdatathead->m_allFontPathList.clear();
+    dfdatathead->m_allFontPathList << "second";
+
+    dfdatathead->doWork();
+
+    EXPECT_TRUE(spy.count() == 1);
+
+    DFontPreviewItemData data;
+    dfdatathead->m_fontModelList << data;
+    dfdatathead->doWork();
+}
 
 
 
