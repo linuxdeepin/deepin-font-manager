@@ -474,19 +474,19 @@ TEST_F(TestDFontPreviewListView, checkUpdateChangedDir)
     EXPECT_TRUE(spy2.count() == 1);
 }
 
-TEST_F(TestDFontPreviewListView, checkUpdateChangedFile)
-{
-    Stub s1;
-    s1.set(ADDR(DFontPreviewListView, changeFontFile), stub_Return);
+//TEST_F(TestDFontPreviewListView, checkUpdateChangedFile)
+//{
+//    Stub s1;
+//    s1.set(ADDR(DFontPreviewListView, changeFontFile), stub_Return);
 
 
-    QSignalSpy spy(listview, SIGNAL(rowCountChanged()));
+//    QSignalSpy spy(listview, SIGNAL(rowCountChanged()));
 
-    listview->updateChangedFile("first");
+//    listview->updateChangedFile("first");
 
-    EXPECT_TRUE(spy.count() == 1);
+//    EXPECT_TRUE(spy.count() == 1);
 
-}
+//}
 
 TEST_F(TestDFontPreviewListView, checkClearHoverState)
 {

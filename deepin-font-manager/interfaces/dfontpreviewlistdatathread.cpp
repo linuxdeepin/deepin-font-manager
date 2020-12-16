@@ -133,12 +133,27 @@ void DFontPreviewListDataThread::initFileSystemWatcher()
     if (!dir.exists())
         dir.mkpath(FONTS_DIR);
 
+    m_deleteFileRecivetimer = new QTimer;
+
     m_fsWatcher->addPath(FONTS_DIR);
     m_fsWatcher->addPath(FONTS_UP_DIR);
+
     connect(m_fsWatcher, &QFileSystemWatcher::fileChanged,
     this, [ = ](const QString & path) {
-        qDebug() << "fileChanged" << path;
-        updateChangedFile(path);
+        //启动定时器收集需要删除的字体
+        m_deleteFileRecivetimer->start(20);
+        m_waitForDeleteFiles << path;
+    });
+
+    //定时器停止表示没有需要删除的字体了,开始进行进行删除
+    connect(m_deleteFileRecivetimer, &QTimer::timeout, this, [ = ] {
+        qDebug() << m_waitForDeleteFiles.count();
+        //删除前显示加载动画
+        m_view->updateSpinner(DFontSpinnerWidget::Delete, false);
+        m_view->updateChangedFile(m_waitForDeleteFiles);
+        //删除后加载动画消失
+        Q_EMIT m_view->requestShowSpinner(false, true, DFontSpinnerWidget::Delete);
+        m_waitForDeleteFiles.clear();
     });
 
     connect(m_fsWatcher, &QFileSystemWatcher::directoryChanged,
@@ -146,8 +161,13 @@ void DFontPreviewListDataThread::initFileSystemWatcher()
         QFileInfo f(path);
         if (!f.isDir())
             return ;
-//        qDebug() << "directoryChanged" << path;
+
+        //删除前显示加载动画
+        m_view->updateSpinner(DFontSpinnerWidget::Delete, false);
         updateChangedDir();
+
+        //删除后加载动画消失
+        Q_EMIT m_view->requestShowSpinner(false, true, DFontSpinnerWidget::Delete);
 
         if (!dir.exists()) {
             m_fsWatcher->removePath(FONTS_DIR);
@@ -164,10 +184,10 @@ void DFontPreviewListDataThread::initFileSystemWatcher()
  <Return>        null            Description:null
  <Note>          null
 *************************************************************************/
-void DFontPreviewListDataThread::updateChangedFile(const QString &path)
-{
-    m_view->updateChangedFile(path);
-}
+//void DFontPreviewListDataThread::updateChangedFile(const QString &path)
+//{
+//    m_view->updateChangedFile(path);
+//}
 
 /*************************************************************************
  <Function>      updateChangedDir

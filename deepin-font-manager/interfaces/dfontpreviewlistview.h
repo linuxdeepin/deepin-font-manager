@@ -84,7 +84,7 @@ public:
     //清空hover状态
     void clearHoverState();
     //文件改动时触发的函数
-    void updateChangedFile(const QString &path);
+    void updateChangedFile(const QStringList &pathlist);
     //目录改动时触发的函数
     void updateChangedDir();
     //删除字体

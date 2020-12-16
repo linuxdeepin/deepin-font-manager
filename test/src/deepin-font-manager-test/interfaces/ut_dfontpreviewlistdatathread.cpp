@@ -81,11 +81,11 @@ TEST_F(TestDFontPreviewListDataThread, checkInitFileSystemWatcher)
 
 }
 
-TEST_F(TestDFontPreviewListDataThread, checkUpdateChangedFile)
-{
-    QString filepath = "/home/zhaogongqiang/Desktop/1048字体/ArkanaScriptRough.otf";
-    dfdatathead->updateChangedFile(filepath);
-}
+//TEST_F(TestDFontPreviewListDataThread, checkUpdateChangedFile)
+//{
+//    QString filepath = "/home/zhaogongqiang/Desktop/1048字体/ArkanaScriptRough.otf";
+//    dfdatathead->updateChangedFile(filepath);
+//}
 
 TEST_F(TestDFontPreviewListDataThread, checkUpdateChangedDir)
 {

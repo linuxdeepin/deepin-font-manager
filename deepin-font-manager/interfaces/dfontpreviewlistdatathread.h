@@ -5,6 +5,7 @@
 #include "dfontinfomanager.h"
 
 #include <QThread>
+#include <QTimer>
 #include <QMutex>
 
 /*************************************************************************
@@ -95,8 +96,6 @@ protected slots:
     void initFileSystemWatcher();
 
 public slots:
-    //文件修改后触发函数
-    void updateChangedFile(const QString &path);
     //文件夹修改后触发函数
     void updateChangedDir();
     //添加文件监视器
@@ -134,6 +133,11 @@ protected:
     DFontPreviewListView *m_view;
     QFileSystemWatcher *m_fsWatcher;
     QMutex *m_mutex;
+
+private:
+    QTimer *m_deleteFileRecivetimer = nullptr;
+    QStringList m_waitForDeleteFiles;
+
 };
 
 
