@@ -472,7 +472,6 @@ void DFontPreviewListView::updateSpinner(DFontSpinnerWidget::SpinnerStyles style
 *************************************************************************/
 void DFontPreviewListView::updateModel(int deleteCount, bool showSpinner)
 {
-    Q_UNUSED(showSpinner)
     getAtListViewPosition();
     int rowCnt = m_fontPreviewItemModel->rowCount();
     m_fontPreviewItemModel->removeRows(0, rowCnt);

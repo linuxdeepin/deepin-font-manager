@@ -202,29 +202,13 @@ QStringList DFontInfoManager::getAllFontPath(bool isStartup) const
 
     QString output = process.readAllStandardOutput();
     QStringList lines = output.split(QChar('\n'));
+
     for (QString &line : lines) {
         QString filePath = line.remove(QChar(':')).simplified();
         if (filePath.length() > 0 && !pathList.contains(filePath)) {
             pathList << filePath;
         }
     }
-    //pathList << "/home/lx777/.local/share/fonts/Unifont Sample/unifontsample(1).ttf";
-
-    /*qSort(pathList.begin(), pathList.end(), [](const QString & s1, const QString & s2) {
-        return s1 < s2;
-    });*/
-
-
-//    QStringList dirlist = getDirPathOfSplDir(FONT_DIR);
-//    foreach (QString str, dirlist) {
-//        QStringList namelist = getFileNames(str);
-//        for (int i = 0; i < namelist.count(); i++) {
-//            QString filepath = str + "/" +  namelist.at(i);
-//            if (!pathList.contains(filepath)) {
-//                pathList << filepath;
-//            }
-//        }
-//    }
 
     if (isStartup) {
         //系统字体文件

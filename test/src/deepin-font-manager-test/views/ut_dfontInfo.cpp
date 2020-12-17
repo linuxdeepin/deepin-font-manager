@@ -101,7 +101,25 @@ DFontInfo stub_getFontinfo()
     return info;
 }
 
+bool stub_returnTrue()
+{
+    return true;
 }
+
+}
+
+QString stub_returnStr()
+{
+    return QString();
+}
+
+QStringList stub_getFilenames()
+{
+    QStringList list;
+    list << "first";
+    return list;
+}
+
 
 //refreshList
 TEST_F(TestDFontInfoManager, checkRefreshList)
@@ -162,41 +180,35 @@ TEST_F(TestDFontInfo, tostring_is_normal)
     EXPECT_EQ(true, str == fontInfo.toString());
 }
 
-//TEST_F(TestDFontInfoGetFileNames, getFileNames_Is_Normal)
-//{
-//    returnList = dfm->getFileNames(path2);
+TEST_F(TestDFontInfoManager, checkGetFileNames)
+{
+    QString path = "null";
+    QStringList list = dfm->getFileNames(path);
+    EXPECT_TRUE(list.count() == 0);
 
-//    qDebug() << returnList.count();
-//    //不含字体文件的路径返回的list断言为空
-//    EXPECT_EQ(true, 0 == returnList.count());
+    path = "/usr/share/fonts/truetype/";
+    list = dfm->getFileNames(path);
+    EXPECT_TRUE(list.count() != 0);
+}
 
-//    returnList.clear();
-//    returnList = dfm->getFileNames(path);
+TEST_F(TestDFontInfoManager, checkGetAllFontPath)
+{
+    Stub s;
+    s.set(ADDR(QProcess, readAllStandardOutput), stub_returnStr);
 
-////    std::cout << returnList.first().toStdString();
-//    qDebug() << returnList.count();
-//    //指定路径下只有一个字体文件 断言返回链表长度为一
-//    EXPECT_EQ(true, 1 == returnList.count());
+    Stub s1;
+    s1.set(ADDR(DFontInfoManager, getFileNames), stub_getFilenames);
 
-//    //.pfb格式的字体无法被检测到 getfilenames函数出现问题
-//    returnList.clear();
-//    returnList = dfm->getFileNames(path3);
-//    qDebug() << returnList.count();
-//    EXPECT_TRUE(returnList.count() == 0);
-//    delete dfm;
-//}
+    QStringList list = dfm->getAllFontPath(false);
+    EXPECT_TRUE(list.count() == 1);
+    EXPECT_TRUE(list.first() == "first");
 
-//mark
-//TEST_F(TestDFontInfoGetFileNames, getAllFontPath_is_normal)
-//{
-////  非第一次启动时获取所有字体路径，获取数目应该与在终端中执行fc-list ： file读出来的数目相同。 //这个方式应该不对//
-//    returnList = dfm->getAllFontPath(false);
-//    EXPECT_EQ(334, returnList.count()) << L"Call getAllFontPath when false returnList.size =  " << returnList.count();;
+    list = dfm->getAllFontPath(true);
+    EXPECT_TRUE(list.count() == 1);
+    EXPECT_TRUE(list.first() == "first");
+}
 
-//    //第一次启动时，获取字体的数目应该为用户字体文件夹下所有字体的数目加上系统字体文件夹下所有字体的数目,
-//    returnList.clear();
-//    returnList = dfm->getAllFontPath(true);
-//}
+
 
 TEST_F(TestDFontInfoManager, getFontType_is_normal)
 {
@@ -215,7 +227,6 @@ TEST_F(TestDFontInfoManager, getFontType_is_normal)
 
 }
 
-//checkStyleName 函数出错 20200806
 TEST_P(TestcheckStyleNameFirst, checkStyleName_Is_Normal)
 {
     QString n =  GetParam();
@@ -276,6 +287,16 @@ TEST_F(TestDFontInfoManager, getDefaultPreview_is_normal)
 //    EXPECT_EQ(false, fontinfo.isError);
 //    EXPECT_EQ("TrueType", fontinfo.type);
 //}
+
+//TODO 第三方库代码暂时不知道怎么打桩,返回值无法确定,无法断言
+TEST_F(TestDFontInfoManager, checkgetFonts)
+{
+    QStringList list = dfm->getFonts(DFontInfoManager::All);
+
+    list = dfm->getFonts(DFontInfoManager::Chinese);
+
+    list = dfm->getFonts(DFontInfoManager::MonoSpace);
+}
 
 TEST_F(TestDFontInfoManager, getAllChineseFontCount_is_normal)
 {

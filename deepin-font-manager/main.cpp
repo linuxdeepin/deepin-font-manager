@@ -54,7 +54,6 @@ int main(int argc, char *argv[])
     //DEPRECATED API and remove it
     //DApplication::loadDXcbPlugin();
     // init Dtk application's attrubites.
-
     SingleFontApplication app(argc, argv);
     app.setAttribute(Qt::AA_UseHighDpiPixmaps);
     app.loadTranslator();

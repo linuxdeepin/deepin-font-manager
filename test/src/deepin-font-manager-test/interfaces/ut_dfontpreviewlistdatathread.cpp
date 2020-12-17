@@ -278,8 +278,23 @@ TEST_F(TestDFontPreviewListDataThread, checkDoWork)
     dfdatathead->doWork();
 }
 
+TEST_F(TestDFontPreviewListDataThread, checkGetFontModelList)
+{
+    dfdatathead->m_fontModelList.clear();
+    DFontPreviewItemData data;
+    data.fontData.setEnabled(true);
+    dfdatathead->m_fontModelList << data;
+    dfdatathead->m_view->onFinishedDataLoad();
 
+    QList<DFontPreviewItemData> list = dfdatathead->getFontModelList();
+    EXPECT_TRUE(list.count() == 1);
+    EXPECT_TRUE(list.first().fontData.isEnabled());
 
+    dfdatathead->m_view->m_bLoadDataFinish = false;
+    list = dfdatathead->getFontModelList();
+    EXPECT_TRUE(list.count() == 0);
+
+}
 
 
 
