@@ -1189,8 +1189,10 @@ bool DFontMgrMainWindow::installFont(const QStringList &files, bool isAddBtnHasT
     m_dfNormalInstalldlg = new DFInstallNormalWindow(installFiles, this);
     connect(m_dfNormalInstalldlg, &DFInstallNormalWindow::destroyed, this, &DFontMgrMainWindow::onInstallWindowDestroyed);
 
-    if (isAddBtnHasTabs)
+    if (isAddBtnHasTabs) {
         m_dfNormalInstalldlg->setAddBtnHasTabs(true);
+    }
+
     emit m_signalManager->setSpliteWidgetScrollEnable(true);//开始安装
     if (m_isQuickMode) {
         m_dfNormalInstalldlg->setSkipException(true);
@@ -1206,6 +1208,9 @@ bool DFontMgrMainWindow::installFont(const QStringList &files, bool isAddBtnHasT
     d->leftSiderBar->setIsIstalling(true);
     m_installOutFileList.clear();
     Dtk::Widget::moveToCenter(m_dfNormalInstalldlg);
+
+    //安装开始前,移除之前监视的用户字体目录,避免多次触发不必要的槽函数
+    emit  DFontPreviewListDataThread::instance()->requestRemoveFileWatchers(QStringList());
     m_dfNormalInstalldlg->exec();
 
     //m_dfNormalInstalldlg->setModal(true);
@@ -1761,6 +1766,9 @@ void DFontMgrMainWindow::onInstallWindowDestroyed(QObject *)
 
         hideSpinner();
     }
+
+    //文件复制结束后,将之前移除的文件监视器添加回来
+    emit  DFontPreviewListDataThread::instance()->requestAutoDirWatchers();
     m_fIsInstalling = false;
     qDebug() << __FUNCTION__ << "end";
 }
@@ -1985,12 +1993,12 @@ void DFontMgrMainWindow::changeEvent(QEvent *event)
 
     if (this->windowState() == Qt::WindowMaximized) {
         //放大之前如果字体预览列表可见，将其隐藏
-        if(m_fontPreviewListView->isVisible()){
+        if (m_fontPreviewListView->isVisible()) {
             m_fontPreviewListView->hide();
         }
 
         //刚启动程序时，进行放大不需要在此讲预览listview显示出来
-        if(m_fontPreviewListView->isListDataLoadFinished()){
+        if (m_fontPreviewListView->isListDataLoadFinished()) {
             QTimer::singleShot(100, [ = ] {
                 m_fontPreviewListView->show();
             });
