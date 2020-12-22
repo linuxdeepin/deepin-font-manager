@@ -946,7 +946,7 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
     QModelIndex modelIndex = indexAt(clickPoint);
 
     bool isShiftMd = (event->modifiers() == Qt::ShiftModifier) ? true : false;
-    bool isCtrlMd = (event->modifiers() == Qt::CTRL) ? true : false;
+    bool isCtrlMd = (event->modifiers() == Qt::ControlModifier) ? true : false;
 
     if (modelIndex.isValid()) {
         if (event->button() == Qt::LeftButton) {

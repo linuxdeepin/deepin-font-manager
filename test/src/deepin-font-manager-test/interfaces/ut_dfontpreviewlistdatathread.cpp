@@ -296,6 +296,23 @@ TEST_F(TestDFontPreviewListDataThread, checkGetFontModelList)
 
 }
 
+TEST_F(TestDFontPreviewListDataThread, refreshStartupFontListData)
+{
 
+    Stub s;
+    s.set(ADDR(DFontPreviewListView, onMultiItemsAdded), stub_return);
+
+    dfdatathead->m_delFontInfoList.clear();
+    dfdatathead->m_startModelList.clear();
+
+    DFontPreviewItemData data;
+    data.fontData.setChinese(true);
+
+    dfdatathead->m_delFontInfoList << data;
+    dfdatathead->m_startModelList << data;
+
+    dfdatathead->refreshStartupFontListData();
+    EXPECT_TRUE(dfdatathead->m_delFontInfoList.isEmpty());
+}
 
 

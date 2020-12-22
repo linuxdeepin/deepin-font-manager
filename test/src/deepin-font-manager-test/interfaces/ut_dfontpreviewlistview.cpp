@@ -188,7 +188,6 @@ TEST_F(TestDFontPreviewListView, checkViewChanged)
     EXPECT_TRUE(listview->m_selectAfterDel == -1);
 }
 
-//TODO 待优化
 TEST_F(TestDFontPreviewListView, checkMarkPositionBeforeRemoved_isdelete)
 {
     listview->model()->insertRow(0);
@@ -910,6 +909,63 @@ TEST_F(TestDFontPreviewListView, checkIfHasSelection)
     listview->checkIfHasSelection();
     EXPECT_TRUE(listview->m_currentSelectedRow == -1);
 }
+
+
+TEST_F(TestDFontPreviewListView, checkMousePressEventLeft)
+{
+    listview->m_fontPreviewProxyModel->insertRows(0, 5);
+    QMouseEvent *e = new QMouseEvent(QEvent::MouseButtonPress, QPoint(), Qt::LeftButton, Qt::NoButton, Qt::NoModifier);
+    listview->mousePressEvent(e);
+    delete  e;
+}
+
+
+TEST_F(TestDFontPreviewListView, checkMousePressEventRight)
+{
+    Stub s;
+    s.set(ADDR(DFontPreviewListView, onMouseRightBtnPressed), stub_Return);
+
+    listview->m_fontPreviewProxyModel->insertRows(0, 5);
+    QMouseEvent *e = new QMouseEvent(QEvent::MouseButtonPress, QPoint(), Qt::RightButton, Qt::NoButton, Qt::NoModifier);
+    listview->mousePressEvent(e);
+    delete  e;
+}
+
+TEST_F(TestDFontPreviewListView, checkMousePressEventMid)
+{
+    listview->m_fontPreviewProxyModel->insertRows(0, 5);
+    listview->selectAll();
+    QMouseEvent *e = new QMouseEvent(QEvent::MouseButtonPress, QPoint(), Qt::MidButton, Qt::NoButton, Qt::NoModifier);
+    listview->mousePressEvent(e);
+    EXPECT_TRUE(listview->selectionModel()->selectedRows().count() == 1);
+    delete  e;
+
+    listview->clearSelection();
+    QMouseEvent *e2 = new QMouseEvent(QEvent::MouseButtonPress, QPoint(), Qt::MidButton, Qt::NoButton, Qt::ShiftModifier);
+    listview->mousePressEvent(e2);
+    EXPECT_FALSE(listview->m_IsTabFocus);
+    delete  e2;
+
+    listview->selectAll();
+    QMouseEvent *e3 = new QMouseEvent(QEvent::MouseButtonPress, QPoint(), Qt::MidButton, Qt::NoButton, Qt::ShiftModifier);
+    listview->mousePressEvent(e3);
+    delete  e3;
+
+    QMouseEvent *e4 = new QMouseEvent(QEvent::MouseButtonPress, QPoint(), Qt::MidButton, Qt::NoButton, Qt::ControlModifier);
+    listview->mousePressEvent(e4);
+    delete  e4;
+
+    Stub s;
+    s.set(ADDR(QModelIndex, isValid), stub_False);
+    listview->selectAll();
+    QMouseEvent *e5 = new QMouseEvent(QEvent::MouseButtonPress, QPoint(), Qt::MidButton, Qt::NoButton, Qt::NoModifier);
+    listview->mousePressEvent(e5);
+    EXPECT_TRUE(listview->selectionModel()->selectedRows().count() == 0);
+
+
+}
+
+
 
 //TEST_F(TestDFontPreviewListView, checkOnMouseLeftBtnReleased)
 //{

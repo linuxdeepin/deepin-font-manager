@@ -719,7 +719,7 @@ void DFontMgrMainWindow::initMainVeiws()
 
     d->mainWndSpliter = new DSplitter(Qt::Horizontal, this);
     m_fontLoadingSpinner = new DFontSpinnerWidget(this);
-  
+
     initLeftSideBar();
     initRightFontView();
 
@@ -1144,8 +1144,6 @@ bool DFontMgrMainWindow::installFont(const QStringList &files, bool isAddBtnHasT
 {
     PerformanceMonitor::installFontStart();
 
-
-
     Q_D(DFontMgrMainWindow);
     QStringList installFiles = checkFilesSpace(files);
     if (installFiles.count() == 0) {
@@ -1169,10 +1167,10 @@ bool DFontMgrMainWindow::installFont(const QStringList &files, bool isAddBtnHasT
     m_dfNormalInstalldlg = new DFInstallNormalWindow(installFiles, this);
     connect(m_dfNormalInstalldlg, &DFInstallNormalWindow::destroyed, this, &DFontMgrMainWindow::onInstallWindowDestroyed);
 
-    if (isAddBtnHasTabs){
-      m_dfNormalInstalldlg->setAddBtnHasTabs(true);
+    if (isAddBtnHasTabs) {
+        m_dfNormalInstalldlg->setAddBtnHasTabs(true);
     }
-        
+
     emit m_signalManager->setSpliteWidgetScrollEnable(true);//开始安装
     if (m_isQuickMode) {
         m_dfNormalInstalldlg->setSkipException(true);
@@ -1738,7 +1736,6 @@ void DFontMgrMainWindow::onInstallWindowDestroyed(QObject *)
         m_installFinish = true;
 
         if (!SignalManager::m_isDataLoadFinish) {
-            qDebug() << "~~~~~~~~~" << endl;
             m_fontPreviewListView->getFontLoadTimer()->start(500);
         }
 

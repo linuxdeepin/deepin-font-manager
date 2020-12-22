@@ -50,11 +50,11 @@ DFontPreviewListDataThread::DFontPreviewListDataThread(DFontPreviewListView *vie
     m_dbManager = DFMDBManager::instance();
     moveToThread(&mThread);
     QObject::connect(&mThread, SIGNAL(started()), this, SLOT(doWork()));
-    connect(this, &DFontPreviewListDataThread::requestDeleted, this, &DFontPreviewListDataThread::onFileDeleted/*, Qt::QueuedConnection*/);
-    connect(this, &DFontPreviewListDataThread::requestAdded, this, &DFontPreviewListDataThread::onFileAdded/*, Qt::QueuedConnection*/);
+    connect(this, &DFontPreviewListDataThread::requestDeleted, this, &DFontPreviewListDataThread::onFileDeleted);
+    connect(this, &DFontPreviewListDataThread::requestAdded, this, &DFontPreviewListDataThread::onFileAdded);
     connect(this, &DFontPreviewListDataThread::requestForceDeleteFiles, this, &DFontPreviewListDataThread::forceDeleteFiles);
-    connect(this, &DFontPreviewListDataThread::requestRemoveFileWatchers, this, &DFontPreviewListDataThread::onRemoveFileWatchers, Qt::BlockingQueuedConnection);
-    connect(this, &DFontPreviewListDataThread::requestAutoDirWatchers, this, &DFontPreviewListDataThread::onAutoDirWatchers, Qt::BlockingQueuedConnection);
+    connect(this, &DFontPreviewListDataThread::requestRemoveFileWatchers, this, &DFontPreviewListDataThread::onRemoveFileWatchers);
+    connect(this, &DFontPreviewListDataThread::requestAutoDirWatchers, this, &DFontPreviewListDataThread::onAutoDirWatchers);
     connect(this, &DFontPreviewListDataThread::requestExportFont, this, &DFontPreviewListDataThread::onExportFont);
 
     QTimer::singleShot(3, [this] {
@@ -153,6 +153,8 @@ void DFontPreviewListDataThread::initFileSystemWatcher()
         m_view->updateChangedFile(m_waitForDeleteFiles);
         //删除后加载动画消失
         Q_EMIT m_view->requestShowSpinner(false, true, DFontSpinnerWidget::Delete);
+        m_deleteFileRecivetimer->stop();
+
         m_waitForDeleteFiles.clear();
     });
 

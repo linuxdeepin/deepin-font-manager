@@ -163,6 +163,19 @@ TEST_F(TestDFInstallNormalWindow, checkVerifyFontFilesInstalled)
     EXPECT_TRUE(iw->m_installedFiles.contains("first"));
 }
 
+TEST_F(TestDFInstallNormalWindow, checkInlineFunction)
+{
+
+    DFontInfo info;
+    info.familyName = "first";
+    info.styleName = "second";
+    EXPECT_TRUE(iw->getFamilyName(info) == "first");
+
+    EXPECT_TRUE(iw->getFamilyStyleName(info) == "firstsecond");
+
+}
+
+
 TEST_F(TestDFInstallNormalWindow, checkVerifyFontFilesSystem)
 {
     Stub s;

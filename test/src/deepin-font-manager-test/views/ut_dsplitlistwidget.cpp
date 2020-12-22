@@ -36,6 +36,13 @@ protected:
     QWidget *w = new QWidget;
     DSplitListWidget *dsp;
 };
+
+int stub_returnRow()
+{
+    return 5;
+}
+
+
 }
 
 TEST_F(TestDSplitListWidget, checkMousePressEvent)
@@ -229,7 +236,20 @@ TEST_F(TestDSplitListWidget, checkPaint)
 
 }
 
+TEST_F(TestDSplitListWidget, checkMouseReleaseEvent)
+{
+    dsp->m_isIstalling = true;
+    QMouseEvent *e = new QMouseEvent(QEvent::MouseButtonRelease, QPoint(), Qt::LeftButton, Qt::NoButton, Qt::NoModifier);
+    dsp->mouseMoveEvent(e);
 
+    Stub s;
+    s.set(ADDR(QModelIndex, row), stub_returnRow);
+
+//    dsp->m_IsPositive = true;
+//    dsp->mouseReleaseEvent(e);
+
+
+}
 
 
 

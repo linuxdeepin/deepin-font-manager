@@ -62,6 +62,5 @@ ENDIF()
 ADD_SUBDIRECTORY(deepin-font-manager)
 ADD_SUBDIRECTORY(deepin-font-preview-plugin)
 
-IF (${CMAKE_SYSTEM_PROCESSOR} MATCHES "x86_64")
-    ADD_SUBDIRECTORY(test)
-ENDIF()
+ADD_SUBDIRECTORY(test)
+

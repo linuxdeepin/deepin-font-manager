@@ -390,11 +390,9 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
         int fontPixelSize = (index.data(FontSizeRole).isNull()) ? FTM_DEFAULT_PREVIEW_FONTSIZE : index.data(FontSizeRole).toInt();
         fontPixelSize = (fontPixelSize <= 0) ? FTM_DEFAULT_PREVIEW_FONTSIZE : fontPixelSize;
         FontDelegateData dData = index.data(FontFamilyStylePreviewRole).value<FontDelegateData>();
-
         QString fontPreviewContent = index.data(FontPreviewRole).toString().isEmpty()
                                      ? dData.ownPreview : index.data(FontPreviewRole).toString();
         if ((fontPreviewContent.isEmpty() || 0 == fontPixelSize)) {
-            qDebug() << __FUNCTION__ << fontPreviewContent << fontPixelSize;
             painter->restore();
             return;
         }

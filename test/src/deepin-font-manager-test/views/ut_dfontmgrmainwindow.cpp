@@ -189,6 +189,8 @@ QStringList stub_getAllFontPath()
 TEST_F(TestDFontMgrMainWindow, checkSetNextTabFocus)
 {
     fm->setNextTabFocus(fm->m_ptr->addFontButton);
+
+
 //    代码setfocus成功，但是检测焦点状态有问题
 //    EXPECT_TRUE(fm->m_ptr->searchFontEdit->lineEdit()->hasFocus());
     fm->setNextTabFocus(fm->m_ptr->searchFontEdit->lineEdit());
@@ -205,26 +207,18 @@ TEST_F(TestDFontMgrMainWindow, checkSetNextTabFocus)
     s.reset(ADDR(QWidget, isVisible));
 }
 
-//TEST_F(TestDFontMgrMainWindow, checkKeyPressEvent)
-//{
-////
-//    Stub s;
-//    s.set(ADDR(QWidget, hasFocus), stub_true);
+TEST_F(TestDFontMgrMainWindow, checkKeyPressEvent)
+{
+    Stub s;
+    s.set(ADDR(QWidget, hasFocus), stub_true);
 
-////    Stub *s = new Stub;
-////    s->set(ADDR(QWidget, hasFocus), stub_true);
+    fm->m_ptr->fontScaleSlider->setValue(10);
+    QTest::keyPress(fm, Qt::Key_Down);
+    EXPECT_TRUE(fm->m_ptr->fontScaleSlider->value() == 9);
 
-
-//    // QSignalSpy spy(fm->m_signalManager, SIGNAL(setLostFocusState(bool)));
-//    // fm->m_ptr->fontScaleSlider;
-//    auto is = fm->m_ptr->fontScaleSlider->hasFocus();
-//    fm->m_ptr->fontScaleSlider->setValue(10);
-//    QTest::keyPress(fm, Qt::Key_Down);
-//    EXPECT_TRUE(fm->m_ptr->fontScaleSlider->value() == 9);
-
-//    QTest::keyPress(fm, Qt::Key_Up);
-//    EXPECT_TRUE(fm->m_ptr->fontScaleSlider->value() == 10);
-//}
+    QTest::keyPress(fm, Qt::Key_Up);
+    EXPECT_TRUE(fm->m_ptr->fontScaleSlider->value() == 10);
+}
 
 TEST_F(TestDFontMgrMainWindow, checkEventFilterKeypress)
 {
@@ -240,6 +234,52 @@ TEST_F(TestDFontMgrMainWindow, checkEventFilterKeypress)
 
     QTest::keyPress(fm->m_ptr->textInputEdit->lineEdit(), Qt::Key_Escape);
     EXPECT_TRUE(fm->m_ptr->textInputEdit->lineEdit()->text().isEmpty());
+}
+
+TEST_F(TestDFontMgrMainWindow, checkOnInstallWindowDestroyedNoFile)
+{
+    Stub s1;
+    s1.set(ADDR(DFontMgrMainWindow, hideSpinner), stub_return);
+
+    Stub s2;
+    s2.set(ADDR(DFontPreviewListDataThread, onAutoDirWatchers), stub_return);
+
+    QSignalSpy spy(DFontPreviewListDataThread::instance(), SIGNAL(requestAutoDirWatchers()));
+
+    fm->m_installOutFileList.clear();
+    SignalManager::m_isDataLoadFinish = true;
+    fm->onInstallWindowDestroyed();
+    EXPECT_TRUE(spy.count() == 1);
+
+    EXPECT_TRUE(fm->m_installFinish);
+    EXPECT_FALSE(fm->m_fIsInstalling);
+
+    SignalManager::m_isDataLoadFinish = false;
+    fm->onInstallWindowDestroyed();
+    EXPECT_TRUE(fm->m_fontPreviewListView->getFontLoadTimer()->isActive());
+    EXPECT_TRUE(spy.count() == 2);
+}
+
+TEST_F(TestDFontMgrMainWindow, checkOnInstallWindowDestroyed)
+{
+    fm->onInstallWindowDestroyed();
+
+    Stub s;
+    s.set(ADDR(DFontManager, needCache), stub_true);
+
+    fm->m_installOutFileList.clear();
+    fm->m_installOutFileList << "first";
+
+    QSignalSpy spy(DFontPreviewListDataThread::instance(), SIGNAL(requestAutoDirWatchers()));
+
+    fm->onInstallWindowDestroyed();
+
+    Stub s1;
+    s1.set(ADDR(QThread, isFinished), stub_false);
+    fm->onInstallWindowDestroyed();
+
+    EXPECT_TRUE(fm->m_needWaitThreadStop);
+    EXPECT_TRUE(spy.count() == 2);
 }
 
 TEST_F(TestDFontMgrMainWindow, checkEventFilterFocusOut)
@@ -664,8 +704,6 @@ TEST_F(TestDFontMgrMainWindow, checkShowFontFilePostion)
     Stub s1;
     typedef bool (*FP)(QString, const QString &);
 
-
-
 //    s1.set((bool(DDesktopServices::*)(QString, const QString &))ADDR(DDesktopServices, showFileItem), stub_show);
     s1.set(FP ADDR(DDesktopServices, showFileItem), stub_return);
 //    Stub s1;
@@ -815,45 +853,6 @@ TEST_F(TestDFontMgrMainWindow, checkHandleMenuEvent)
     fm->handleMenuEvent(actionList.last());
 }
 
-//TEST_F(TestDFontMgrMainWindow, checkHandleAddFontEvent)
-//{
-//    Stub s;
-//    Stub s2;
-
-//    s.set(ADDR(DFontMgrMainWindow, installFont), stub_return);
-//    s2.set(ADDR(dfontinfoscrollarea, autoHeight), stub_return);
-
-//    fm->handleAddFontEvent();
-//}
-
-//TEST_F(TestDFontMgrMainWindow, checkRespondToInstallOver)
-//{
-//    Stub s;
-//    s.set(ADDR(QWidget, isVisible), stub_true);
-
-//    Stub s2;
-//    s2.set(ADDR(DFontMgrMainWindow, showSpinner), stub_return);
-
-//    fm->respondToInstallOver(0);
-//    EXPECT_FALSE(fm->m_fIsInstalling);
-
-//    fm->respondToInstallOver(12);
-//}
-
-//TEST_F(TestDFontMgrMainWindow, checkInitFontFiles)
-//{
-//    Stub s;
-//    s.set(ADDR(DFMDBManager, isSystemFont), stub_false);
-
-//    Stub s2;
-//    s2.set(ADDR(DFMDBManager, getInstalledFontsPath), stub_getInstalledFontsPath);
-
-//    Stub s3;
-//    s2.set(ADDR(DFontInfoManager, getAllFontPath), stub_getAllFontPath);
-
-//    fm->initFontFiles();
-//}
-
 TEST_F(TestDFontMgrMainWindow, checkinitShortcutsFontSize)
 {
     fm->m_previewFontSize = 10;
@@ -866,6 +865,23 @@ TEST_F(TestDFontMgrMainWindow, checkinitShortcutsFontSize)
 
     emit fm->m_scDefaultSize->activated();
     EXPECT_TRUE(fm->m_previewFontSize == DFontMgrMainWindow::DEFAULT_FONT_SIZE);
+}
+
+
+TEST_F(TestDFontMgrMainWindow, checkInlineFunction)
+{
+    fm->filterGroup = DSplitListWidget::AllFont;
+    EXPECT_TRUE(fm->currentFontGroup() == DSplitListWidget::AllFont);
+
+    fm->m_winHight = 10;
+    EXPECT_TRUE(fm->m_winHight == 10);
+
+    fm->m_winWidth = 10;
+    EXPECT_TRUE(fm->m_winWidth == 10);
+
+    fm->m_IsWindowMax = false;
+    EXPECT_FALSE(fm->m_IsWindowMax);
+
 }
 
 
@@ -951,8 +967,6 @@ TEST_F(TestDFontMgrMainWindow, checkinitShortcutsElse)
 
     emit fm->m_scFindFont->activated();
 }
-
-
 
 
 
