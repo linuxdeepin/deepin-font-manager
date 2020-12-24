@@ -10,9 +10,11 @@
 #include "dfontpreviewlistview.h"
 #include "dcomworker.h"
 
+#include <QMutexLocker>
 #include <QFontDatabase>
 #include <QApplication>
 #include <QFileSystemWatcher>
+#include <QFile>
 
 #include <gtest/gtest.h>
 #include "../third-party/stub/stub.h"
@@ -315,4 +317,49 @@ TEST_F(TestDFontPreviewListDataThread, refreshStartupFontListData)
     EXPECT_TRUE(dfdatathead->m_delFontInfoList.isEmpty());
 }
 
+TEST_F(TestDFontPreviewListDataThread, checkOnFileDeleted)
+{
+    QStringList list;
+    dfdatathead->onFileDeleted(list);
+}
+
+TEST_F(TestDFontPreviewListDataThread, checkOnFileAdded)
+{
+    QStringList list;
+    dfdatathead->onFileAdded(list);
+
+    list << "first";
+
+    Stub s;
+    s.set(ADDR(DFontPreviewListDataThread, refreshFontListData), stub_return);
+    dfdatathead->onFileAdded(list);
+
+}
+
+TEST_F(TestDFontPreviewListDataThread, checkUpdateItemStatus)
+{
+    DFontPreviewItemData data;
+    data.fontData.setChinese(true);
+
+    dfdatathead->m_startModelList.append(data);
+
+    DFontPreviewItemData data2;
+    data2.fontData.setChinese(false);
+    dfdatathead->updateItemStatus(0, data2);
+}
+
+TEST_F(TestDFontPreviewListDataThread, checkForceDeleteFiles)
+{
+    Stub s;
+    s.set(ADDR(DFontPreviewListView, deleteFontFiles), stub_return);
+
+    QSignalSpy spy(dfdatathead, SIGNAL(requestBatchReInstallContinue()));
+
+    QStringList list;
+    list << "first";
+
+    dfdatathead->forceDeleteFiles(list);
+
+    EXPECT_TRUE(spy.count() == 1);
+}
 

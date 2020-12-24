@@ -73,6 +73,7 @@ private:
     FT_Library m_library;
     FT_Face m_face;
     FT_Error m_error = 1;
+    QHash<QString, QString> m_contents;
 };
 
 #endif  // DFONTPREVIEW_H

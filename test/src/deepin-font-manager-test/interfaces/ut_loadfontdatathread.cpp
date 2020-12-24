@@ -22,8 +22,6 @@ protected:
     }
     void TearDown()
     {
-        fpm->quit();
-        fpm->wait();
         delete fpm;
     }
     // Some expensive resource shared by all tests.
@@ -55,7 +53,7 @@ QList<DFontPreviewItemData> stub_getFontInfo()
 //    data.appFontId = 2;
 
 //    fpm->m_delFontInfoList << data;
-//    fpm->doWork();
+//    fpm->run();
 
 //    EXPECT_TRUE(spy.count() == 1);
 //}

@@ -3,6 +3,7 @@
 #include "dfontpreviewitemdelegate.h"
 #include "globaldef.h"
 #include "dfmxmlwrapper.h"
+#include "dcomworker.h"
 #include "views/dfontmgrmainwindow.h"
 
 #include <DLog>
@@ -79,6 +80,13 @@ QPoint stub_pos()
     return QPoint(626, 22) ;
 }
 
+QRect stub_returnRect()
+{
+
+    QRect r(QPoint(623, 23), QSize(10, 10));
+    return r;
+}
+
 QList<DFontPreviewItemData> stub_getFontModelList()
 {
     QList<DFontPreviewItemData> list;
@@ -127,6 +135,10 @@ DFontPreviewItemData stub_returnNotSysItemdata()
     return data;
 }
 
+IconStatus stub_getHoverState()
+{
+    return IconStatus::IconPress;
+}
 
 }
 
@@ -590,7 +602,6 @@ TEST_F(TestDFontPreviewListView, checkOnCollectBtnClicked)
     QModelIndexList list;
 
     listview->onCollectBtnClicked(list, true, true);
-    qDebug() << spy.count();
     EXPECT_TRUE(spy.count() == 0);
 
     Stub s;
@@ -961,20 +972,135 @@ TEST_F(TestDFontPreviewListView, checkMousePressEventMid)
     QMouseEvent *e5 = new QMouseEvent(QEvent::MouseButtonPress, QPoint(), Qt::MidButton, Qt::NoButton, Qt::NoModifier);
     listview->mousePressEvent(e5);
     EXPECT_TRUE(listview->selectionModel()->selectedRows().count() == 0);
-
-
 }
 
+TEST_F(TestDFontPreviewListView, checkLoadLeftFonts)
+{
+    Stub s;
+    s.set(ADDR(DFontPreviewListView, isListDataLoadFinished), stub_True);
 
+    QSignalSpy spy(listview, SIGNAL(startupMultiItemsAdded(QList<DFontPreviewItemData> &)));
 
-//TEST_F(TestDFontPreviewListView, checkOnMouseLeftBtnReleased)
-//{
-////    Stub s1;
-////    s1.set((bool(QRect::*)(const QPoint &, bool)) ADDR(QRect, contains), stub_show);
+    listview->loadLeftFonts();
+    QList<DFontPreviewItemData> str;
 
-////    Stub stub;
-////        stub.set((bool(QRect::*)(const QPoint &,bool))ADDR(QRect,contains), foo_stub_int);
-//}
+    emit listview->m_dataLoadThread->dataLoadFinish(str);
+
+    qDebug() << spy.count() << endl;
+    EXPECT_TRUE(spy.count() == 1);
+}
+
+TEST_F(TestDFontPreviewListView, checkSelectFonts)
+{
+    Stub s1;
+    s1.set(ADDR(DFontPreviewProxyModel, setFilterGroup), stub_Return);
+
+    Stub s2;
+    s2.set(ADDR(DFontPreviewListDataThread, getFontData), stub_getFontData);
+
+    QSignalSpy spy(listview, SIGNAL(requestInstFontsUiAdded()));
+    listview->m_fontPreviewProxyModel->insertRows(0, 5);
+
+    //传入参数为空
+    listview->selectFonts(QStringList());
+    EXPECT_TRUE(spy.count() == 0);
+
+    QStringList list;
+    list << "first";
+
+    listview->selectFonts(list);
+    EXPECT_TRUE(spy.count() == 1);
+}
+
+TEST_F(TestDFontPreviewListView, checkmouseMoveEvent)
+{
+    listview->m_fontPreviewProxyModel->insertRows(0, 5);
+    QMouseEvent *e = new QMouseEvent(QEvent::MouseMove, QPoint(623, 23), Qt::LeftButton, Qt::NoButton, Qt::NoModifier);
+    listview->mouseMoveEvent(e);
+    EXPECT_TRUE(listview->m_hoverModelIndex.row() == 0);
+
+    listview->m_isMousePressNow = true;
+    QMouseEvent *e2 = new QMouseEvent(QEvent::MouseMove, QPoint(623, 23), Qt::LeftButton, Qt::NoButton, Qt::NoModifier);
+    listview->mouseMoveEvent(e2);
+    EXPECT_TRUE(listview->m_previousPressPos == 0);
+
+    QMouseEvent *e3 = new QMouseEvent(QEvent::MouseMove, QPoint(423, 23), Qt::LeftButton, Qt::NoButton, Qt::NoModifier);
+    listview->mouseMoveEvent(e3);
+}
+
+TEST_F(TestDFontPreviewListView, checkonMouseLeftBtnPressed)
+{
+    Stub s1;
+    s1.set(ADDR(DFontPreviewListView, updateShiftSelect), stub_Return);
+
+    Stub s2;
+    s2.set(ADDR(DFontPreviewListView, setIsTabFocus), stub_Return);
+
+    listview->m_fontPreviewProxyModel->insertRows(0, 5);
+    listview->selectAll();
+    QModelIndex index = listview->selectionModel()->selectedIndexes().first();
+    listview->clearSelection();
+
+    listview->onMouseLeftBtnPressed(index, QPoint(623, 23), true, false);
+
+    listview->onMouseLeftBtnPressed(index, QPoint(623, 23), false, true);
+
+    listview->onMouseLeftBtnPressed(index, QPoint(596, 10), false, false);
+}
+
+TEST_F(TestDFontPreviewListView, checkOnMouseRightBtnPressedNotShift)
+{
+    Stub s1;
+    s1.set(ADDR(DFontPreviewListView, onListViewShowContextMenu), stub_Return);
+
+    Stub s2;
+    s2.set(ADDR(FontData, getHoverState), stub_getHoverState);
+
+    QSignalSpy spy(listview->m_signalManager, SIGNAL(onMenuHidden()));
+
+    listview->m_fontPreviewProxyModel->insertRows(0, 5);
+    listview->selectAll();
+    QModelIndex index = listview->selectionModel()->selectedIndexes().first();
+    listview->clearSelection();
+
+    listview->onMouseRightBtnPressed(index, false);
+
+    EXPECT_TRUE(spy.count() == 1);
+}
+
+TEST_F(TestDFontPreviewListView, checkOnMouseRightBtnPressedShift)
+{
+    Stub s1;
+    s1.set(ADDR(DFontPreviewListView, onListViewShowContextMenu), stub_Return);
+
+    Stub s2;
+    s2.set(ADDR(FontData, getHoverState), stub_getHoverState);
+
+    QSignalSpy spy(listview->m_signalManager, SIGNAL(onMenuHidden()));
+
+    listview->m_fontPreviewProxyModel->insertRows(0, 5);
+    listview->selectAll();
+    QModelIndex index = listview->selectionModel()->selectedIndexes().first();
+    QModelIndex index2 = listview->selectionModel()->selectedIndexes().last();
+    listview->clearSelection();
+
+    listview->m_currentSelectedRow = 2;
+    listview->onMouseRightBtnPressed(index, true);
+
+    listview->m_currentSelectedRow = 0;
+    listview->onMouseRightBtnPressed(index2, true);
+}
+
+//FontManager类,依附于previewlistview,再此进行测试
+TEST_F(TestDFontPreviewListView, checkgetStartFontList)
+{
+    DFontPreviewListDataThread *thread = DFontPreviewListDataThread::instance();
+
+    FontManager::instance()->getStartFontList();
+    EXPECT_FALSE(thread->m_allFontPathList.isEmpty());
+    EXPECT_FALSE(thread->m_monoSpaceFontPathList.isEmpty());
+}
+
 
 
 

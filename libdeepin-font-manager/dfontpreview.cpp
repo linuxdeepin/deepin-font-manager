@@ -35,9 +35,10 @@ static const QString punctuationTextStock = "0123456789.:,;(*!?')";
 static const int textWidth = 1204;
 const int FIXED_WIDTH = 1280;
 const int FIXED_HEIGHT = 720;
+
 static QString sampleString = nullptr;
 static QString styleName = nullptr;
-static QHash<QString, QString> contents = {};
+
 
 /*************************************************************************
  <Function>      DFontPreview
@@ -165,6 +166,7 @@ void DFontPreview::paintEvent(QPaintEvent *e)
         painter.drawText(baseLinePoint.x(), baseLinePoint.y(), punctuationTextStock);
         y += punHeight;
     }
+
     for (int i = 0; i < 20; ++i) {
         fontSize += 3;
         font.setPointSize(fontSize);
@@ -241,7 +243,7 @@ void DFontPreview::initContents()
         const QString line = stream.readLine();
         const QStringList items = line.split(QChar(':'));
 
-        contents.insert(items.at(0), items.at(1));
+        m_contents.insert(items.at(0), items.at(1));
     }
 }
 
@@ -295,19 +297,18 @@ QString DFontPreview::getLanguageSampleString(const QString &language)
 {
     QString result = nullptr;
     QString key = nullptr;
-
-    if (contents.contains(language)) {
+    if (m_contents.contains(language)) {
         key = language;
     } else {
         const QStringList parseList = language.split("_", QString::SkipEmptyParts);
         if (parseList.length() > 0 &&
-                contents.contains(parseList.first())) {
+                m_contents.contains(parseList.first())) {
             key = parseList.first();
         }
     }
 
-    if (contents.contains(key)) {
-        auto findResult = contents.find(key);
+    if (m_contents.contains(key)) {
+        auto findResult = m_contents.find(key);
         result.append(findResult.value());
     }
 

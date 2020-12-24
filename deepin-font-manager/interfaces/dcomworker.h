@@ -55,7 +55,13 @@ private:
 class FontManager
 {
 public:
-    static void getFontList();
-    static void getFontListInSequence();
-    static void getStartFontList();
+    static FontManager *instance();
+
+public:
+    void getFontList();
+    void getFontListInSequence();
+    void getStartFontList();
+
+private:
+    static FontManager *m_fontManager;
 };

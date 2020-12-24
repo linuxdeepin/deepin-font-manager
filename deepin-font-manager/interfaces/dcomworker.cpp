@@ -30,6 +30,17 @@
 
 #include <unistd.h>
 
+FontManager *FontManager::m_fontManager = nullptr;
+
+FontManager *FontManager::instance()
+{
+    if (m_fontManager == nullptr) {
+        m_fontManager = new FontManager;
+    }
+
+    return m_fontManager;
+}
+
 DComWorker::DComWorker(QObject *parent)
     : QObject(parent)
 {

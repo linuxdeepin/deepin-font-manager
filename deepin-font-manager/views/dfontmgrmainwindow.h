@@ -289,7 +289,7 @@ protected:
     DFontManager *m_fontManager;
     SignalManager *m_signalManager = SignalManager::instance();
     QShortcut *m_scFullScreen;  //全屏快捷键F11
-    QShortcut *m_scZoomIn;        //放大字体快捷键Ctrl+=
+    QShortcut *m_scZoomIn {nullptr};     //放大字体快捷键Ctrl+=
     QShortcut *m_scZoomOut;       //放大字体快捷键Ctrl+-
     QShortcut *m_scDefaultSize;   //默认⼤⼩字体快捷键Ctrl+0
     QString m_previewText;

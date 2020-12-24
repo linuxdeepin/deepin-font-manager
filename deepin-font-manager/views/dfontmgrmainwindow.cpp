@@ -369,7 +369,7 @@ void DFontMgrMainWindow::initShortcuts()
     D_D(DFontMgrMainWindow);
 
     //设置字体放大快捷键
-    if (!m_scZoomIn) {
+    if (nullptr == m_scZoomIn) {
         m_scZoomIn = new QShortcut(this);
         m_scZoomIn->setKey(tr("Ctrl+="));
         m_scZoomIn->setContext(Qt::ApplicationShortcut);
@@ -1152,6 +1152,7 @@ bool DFontMgrMainWindow::installFont(const QStringList &files, bool isAddBtnHasT
     }
 
     //ut000442 bug 54129
+    qDebug() << m_fIsInstalling << endl;
     if (m_fIsInstalling || m_fontLoadingSpinner->isVisible()) {
         qDebug() << "Already exist a installtion flow";
         return false;

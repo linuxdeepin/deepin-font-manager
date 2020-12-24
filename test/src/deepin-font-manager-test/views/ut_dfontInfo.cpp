@@ -188,6 +188,8 @@ TEST_F(TestDFontInfoManager, checkGetFileNames)
 
     path = "/usr/share/fonts/truetype/";
     list = dfm->getFileNames(path);
+    //通过这行看编译环境中可能存在的字体文件,用来调整测试用例
+    qDebug() << list << "+++++++++++++++++++++++++++++++++++++++++++" << endl;
     EXPECT_TRUE(list.count() != 0);
 }
 
@@ -258,7 +260,12 @@ TEST_F(TestDFontInfoManager, getDefaultPreview_is_normal)
     EXPECT_EQ(true, str.isNull());
 }
 
-
+TEST_F(TestDFontInfoManager, checkGetFontFamilyStyle)
+{
+    QString filepath = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf";
+    QStringList list = dfm->getFontFamilyStyle(filepath);
+    EXPECT_TRUE(list.contains("DejaVu Sans"));
+}
 
 ////getFontInfo 函数出错 获取系统字体信息时,安装状态被检测为未安装 20200813
 //TEST_F(TestDFontInfoManager, getSystemFontInfo_Is_normal)

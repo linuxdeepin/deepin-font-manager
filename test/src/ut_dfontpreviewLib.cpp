@@ -12,6 +12,7 @@
 #include <QDebug>
 #include <QPaintEvent>
 #include <QFile>
+#include <QDir>
 
 #include <fontconfig/fontconfig.h>
 #include <fontconfig/fcfreetype.h>
@@ -38,6 +39,7 @@ protected:
     // Some expensive resource shared by all tests.
     DFontPreview *fp;
 };
+
 }
 
 TEST_F(TestDFontPreview, checkSetFileUrl)
@@ -52,26 +54,11 @@ TEST_F(TestDFontPreview, checkSetFileUrl)
 
 }
 
-//TEST_F(TestDFontPreview, checkFontContainText)
-//{
-//    FT_Library m_library = nullptr;
-//    FT_Face m_face = nullptr;
-//    QString filepath = "/usr/share/fonts/fonts-cesi/CESI_KT_GB2312.TTF";
-//    FT_Init_FreeType(&m_library);
-//    int  error = FT_New_Face(m_library, filepath.toUtf8().constData(), 0, &m_face);
-
-//    //断言可以正常获取到字体信息
-//    EXPECT_EQ(true, error == 0);
-
-//    //断言该字体可以显示中文字体
-//    EXPECT_EQ(true, fp->checkFontContainText(m_face, FTM_DEFAULT_PREVIEW_CN_TEXT));
-//    delete  fp;
-//}
-
 TEST_F(TestDFontPreview, checkPaintEvent)
 {
+
     QRect r;
-    QString filepath = "/home/zhaogongqiang/Desktop/1048字体/ArkanaScriptRough.otf";
+    QString filepath = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf";
     QFile file(filepath);
     file.open(QIODevice::ReadOnly);
     QByteArray fileContent = file.readAll();
@@ -80,6 +67,29 @@ TEST_F(TestDFontPreview, checkPaintEvent)
 
     fp->setFileUrl(filepath);
     QPaintEvent *p = new QPaintEvent(r);
+    fp->m_error = false;
+    //不要滚动条
     fp->paintEvent(p);
+
+    //要滚动条
+    fp->currentMaxWidth = 1500;
+    fp->paintEvent(p);
+
     delete  fp;
 }
+
+TEST_F(TestDFontPreview, checkGetLanguageSampleString)
+{
+    fp->m_contents.clear();
+    fp->m_contents.insert("es", "first");
+    //不存在的语言
+    EXPECT_TRUE(fp->getLanguageSampleString("first").isEmpty());
+
+    //构建特殊语言
+    EXPECT_TRUE(fp->getLanguageSampleString("es_first") == "first");
+    delete  fp;
+}
+
+
+
+

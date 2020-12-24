@@ -9,7 +9,7 @@ LoadFontDataThread::LoadFontDataThread(QList<QMap<QString, QString> > &list)
 
 void LoadFontDataThread::run()
 {
-    qDebug() << QThread::currentThreadId() << __func__ << "------------";
+//    qDebug() << QThread::currentThreadId() << __func__ << "------------";
     SignalManager::m_isOnLoad = true;
     DFontPreviewListDataThread *thread = DFontPreviewListDataThread::instance();
     QList<DFontPreviewItemData> fontinfoList = DFMDBManager::instance()->getFontInfo(m_list, &m_delFontInfoList);

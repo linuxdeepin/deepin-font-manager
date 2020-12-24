@@ -824,6 +824,7 @@ TEST_F(TestDFontMgrMainWindow, checkInstallFontFromSys)
     fm->installFontFromSys(list);
 }
 
+
 TEST_F(TestDFontMgrMainWindow, checkHandleMenuEvent)
 {
     Stub s;
@@ -942,10 +943,6 @@ TEST_F(TestDFontMgrMainWindow, checkinitShortcutsAdd)
     emit fm->m_scAddNewFont->activated();
 }
 
-TEST_F(TestDFontMgrMainWindow, checkinitShortcutsFav)
-{
-
-}
 
 TEST_F(TestDFontMgrMainWindow, checkinitShortcutsElse)
 {

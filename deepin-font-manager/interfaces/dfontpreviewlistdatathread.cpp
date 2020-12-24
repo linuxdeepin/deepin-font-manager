@@ -88,7 +88,7 @@ void DFontPreviewListDataThread::doWork()
         syncFontEnableDisableStatusData(disableFontList);
     }
 
-    FontManager::getStartFontList();
+    FontManager::instance()->getStartFontList();
 
     if (!m_startModelList.isEmpty()) {
         //从fontconfig配置文件同步字体启用/禁用状态数据
@@ -176,20 +176,6 @@ void DFontPreviewListDataThread::initFileSystemWatcher()
         }
     });
 }
-
-/*************************************************************************
- <Function>      updateChangedFile
- <Description>   文件修改后触发函数
- <Author>        null
- <Input>
-    <param1>     path            Description:路径
- <Return>        null            Description:null
- <Note>          null
-*************************************************************************/
-//void DFontPreviewListDataThread::updateChangedFile(const QString &path)
-//{
-//    m_view->updateChangedFile(path);
-//}
 
 /*************************************************************************
  <Function>      updateChangedDir
@@ -318,34 +304,6 @@ void DFontPreviewListDataThread::updateItemStatus(int index, const DFontPreviewI
 {
     m_fontModelList.replace(index, itemData);
 }
-
-///*************************************************************************
-// <Function>      getDiffFontModelList
-// <Description>   获取需要新增的字体数据链表
-// <Author>        null
-// <Input>
-//    <param1>     null            Description:null
-// <Return>        QList<DFontPreviewItemData>            Description:新增的字体数据链表
-// <Note>          null
-//*************************************************************************/
-//QList<DFontPreviewItemData> DFontPreviewListDataThread::getDiffFontModelList() const
-//{
-//    return m_diffFontModelList;
-//}
-
-///*************************************************************************
-// <Function>      setMutex
-// <Description>   给线程锁赋值
-// <Author>        null
-// <Input>
-//    <param1>     mutex            Description:线程锁赋的值
-// <Return>        null            Description:null
-// <Note>          null
-//*************************************************************************/
-//void DFontPreviewListDataThread::setMutex(QMutex *mutex)
-//{
-//    m_mutex = mutex;
-//}
 
 /*************************************************************************
  <Function>      forceDeleteFiles
@@ -547,7 +505,7 @@ void DFontPreviewListDataThread:: refreshFontListData(bool isStartup, const QStr
                 m_allFontPathList << filePath;
         }
     } else {
-        FontManager::getFontListInSequence();
+        FontManager::instance()->getFontListInSequence();
     }
 
     QList<DFontPreviewItemData> list;
