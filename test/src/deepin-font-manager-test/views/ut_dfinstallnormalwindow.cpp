@@ -103,6 +103,12 @@ bool stub_isSystemFont(DFontInfo &f)
     return true;
 }
 
+bool stub_true()
+{
+    return true;
+}
+
+
 bool stub_isSystemFontFalse(DFontInfo &f)
 {
     Q_UNUSED(f)
@@ -412,6 +418,9 @@ TEST_F(TestDFInstallNormalWindow, checkSetSkipException)
 
 TEST_F(TestDFInstallNormalWindow, checkBreakInstalltion)
 {
+    Stub s;
+    s.set(ADDR(DFInstallErrorDialog, isVisible), stub_true);
+
     iw->m_pexceptionDlg = new DFInstallErrorDialog();
     iw->breakInstalltion();
 }
@@ -420,4 +429,19 @@ TEST_F(TestDFInstallNormalWindow, checkKeyPressEvent)
 {
     QTest::keyPress(iw, Qt::Key_Escape);
 }
+
+TEST_F(TestDFInstallNormalWindow, checkGetFamilyName)
+{
+    DFontInfo info;
+    info.fullname = "first";
+
+    EXPECT_TRUE("first" == iw->getFamilyName(info));
+}
+
+
+
+
+
+
+
 

@@ -1614,7 +1614,6 @@ void DFontPreviewListView::onRightMenuShortCutActivated()
         }
         showMenuPosition = curRect.center();
         showMenuPosition = QPoint(showMenuPosition.x() + mw->pos().x() + POSITION_PARAM_X, showMenuPosition.y() + mw->pos().y() + POSITION_PARAM_Y);
-        //TODO
     } else if (selectedIndexes().count() > 1) {
         bool n_needScroll = true;
         for (auto idx : indexes) {
@@ -1659,7 +1658,6 @@ void DFontPreviewListView::onRightMenuShortCutActivated()
 void DFontPreviewListView::checkHoverState()
 {
     //记录鼠标位置下的QModelIndex
-    //TODO
     QModelIndex n_currentIdx = indexAt(mapFromGlobal(QCursor::pos()));
     QRect collectIconRect = getCollectionIconRect(visualRect(n_currentIdx));
     FontData itemData = qvariant_cast<FontData>(m_fontPreviewProxyModel->data(n_currentIdx));
@@ -1716,7 +1714,6 @@ void DFontPreviewListView::onEnableBtnClicked(QModelIndexList &itemIndexes, int 
         if (setValue) {
             enableFont(itemData.fontInfo.filePath);
         } else {
-            //TODO
             if (systemCnt > 0 || curCnt > 0) {
                 needShowTips = true;
             }
@@ -1742,7 +1739,6 @@ void DFontPreviewListView::onEnableBtnClicked(QModelIndexList &itemIndexes, int 
         qDebug() << __FUNCTION__ << " after " << currModelIndex().row() << currentIndex().row();
         PerformanceMonitor::activeFontFinish(false, itemIndexes.count());
         return;
-        //TODO
     } else {
         disableFonts();
     }

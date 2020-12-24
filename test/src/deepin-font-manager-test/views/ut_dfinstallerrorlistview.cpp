@@ -54,7 +54,7 @@ TEST_F(TestDFInstallErrorListView, checkPaint)
     model1.bChecked = true;
     iEListview->m_installErrorFontModelList.append(model1);
 
-    model1.bSelectable = false;
+    model1.bSelectable = true;
     iEListview->m_installErrorFontModelList.append(model1);
 
     iEListview->initErrorListData();
@@ -67,6 +67,8 @@ TEST_F(TestDFInstallErrorListView, checkPaint)
     iEListview->m_errorListItemDelegate->paint(p, option, index);
 
     index = iEListview->getErrorListSourceModel()->index(2, 0);
+    iEListview->m_IsTabFocus = true;
+    option.state.setFlag(QStyle::State_Selected);
     iEListview->m_errorListItemDelegate->paint(p, option, index);
 
 //    iEListview->selectAll();
@@ -150,40 +152,6 @@ TEST_F(TestDFInstallErrorListView, checkLengthAutoFeed)
     str = iEListview->m_errorListItemDelegate->lengthAutoFeed(p, str, 50);
     qDebug() << str << endl;
 }
-
-//mark
-//TEST_F(TestDFInstallErrorListView, checkSortModelIndexList)
-//{
-//    DFInstallErrorItemModel model1;
-//    model1.bIsNormalUserFont = true;
-//    model1.bChecked = false;
-//    iEListview->m_installErrorFontModelList.append(model1);
-
-//    model1.bChecked = true;
-//    iEListview->m_installErrorFontModelList.append(model1);
-
-//    model1.bSelectable = false;
-//    iEListview->m_installErrorFontModelList.append(model1);
-
-//    iEListview->initErrorListData();
-
-//    QModelIndex index;
-//    QModelIndexList indexList;
-
-//    index = iEListview->getErrorListSourceModel()->index(0, 0);
-//    iEListview->m_errorListItemDelegate->paint(p, option, index);
-//    indexList.append(index);
-
-
-//    index = iEListview->getErrorListSourceModel()->index(1, 0);
-//    iEListview->m_errorListItemDelegate->paint(p, option, index);
-//    indexList.append(index);
-
-//    iEListview->sortModelIndexList(indexList);
-
-//    EXPECT_TRUE(indexList.first().row() == 1);
-
-//}
 
 
 

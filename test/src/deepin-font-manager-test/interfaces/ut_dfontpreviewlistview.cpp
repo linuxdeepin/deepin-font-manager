@@ -32,10 +32,8 @@ protected:
     }
     void TearDown()
     {
-
     }
     QString filepath = "/home/zhaogongqiang/Desktop/1048字体/ArkanaScriptRough.otf";
-
     DFontPreviewListView *listview;
 };
 
@@ -124,6 +122,7 @@ DFontPreviewItemData stub_getFontDataPath()
 DFontPreviewItemData stub_returnSysItemdata()
 {
     DFontPreviewItemData data;
+    data.fontInfo.filePath = "first";
     data.fontInfo.isSystemFont = true;
     return data;
 }
@@ -131,7 +130,9 @@ DFontPreviewItemData stub_returnSysItemdata()
 DFontPreviewItemData stub_returnNotSysItemdata()
 {
     DFontPreviewItemData data;
+    data.fontInfo.filePath = "first";
     data.fontInfo.isSystemFont = false;
+    data.fontData.strFontName = "second";
     return data;
 }
 
@@ -674,8 +675,9 @@ TEST_F(TestDFontPreviewListView, checkOnEnableBtnClickedEnable)
     listview->setParent(mw);
     listview->m_parentWidget = mw;
     listview->onEnableBtnClicked(list, 1, 1, false, true);
-    listview->onEnableBtnClicked(list, 0, 0, false, true);
-
+    listview->onEnableBtnClicked(list, 0, 0, false, false);
+    listview->onEnableBtnClicked(list, 1, 1, false, false);
+    listview->onEnableBtnClicked(list, 1, 0, false, false);
 }
 TEST_F(TestDFontPreviewListView, checkHoverState)
 {
@@ -1090,6 +1092,112 @@ TEST_F(TestDFontPreviewListView, checkOnMouseRightBtnPressedShift)
     listview->m_currentSelectedRow = 0;
     listview->onMouseRightBtnPressed(index2, true);
 }
+
+TEST_F(TestDFontPreviewListView, checkMouseReleaseEvent)
+{
+    Stub s;
+    s.set(ADDR(DFontPreviewListView, onMouseLeftBtnReleased), stub_Return);
+
+    QMouseEvent *e1 = new QMouseEvent(QEvent::MouseButtonRelease, QPoint(623, 23), Qt::MidButton, Qt::NoButton, Qt::NoModifier);
+    listview->mouseReleaseEvent(e1);
+
+    QMouseEvent *e2 = new QMouseEvent(QEvent::MouseButtonRelease, QPoint(623, 23), Qt::LeftButton, Qt::NoButton, Qt::NoModifier);
+    listview->mouseReleaseEvent(e2);
+}
+
+TEST_F(TestDFontPreviewListView, checkSelectedFontsSystemFont)
+{
+    DFontPreviewItemData data;
+    data.fontInfo.psname = "first";
+
+    listview->m_fontPreviewProxyModel->insertRows(0, 5);
+    listview->selectAll();
+    QModelIndexList indexlist = listview->selectionModel()->selectedIndexes();
+    QModelIndex index = indexlist.first();
+
+    int deleteCnt;
+    int disableSysCnt;
+    int systemCnt;
+    qint8 curFontCnt;
+    int disableCnt;
+    QStringList list;
+    QModelIndexList disableIndexList;
+    QStringList allMinusSysFontList;
+
+    Stub s;
+    s.set(ADDR(DFontPreviewListDataThread, getFontData), stub_returnSysItemdata);
+
+    listview->selectedFonts(data, &deleteCnt, &disableSysCnt, &systemCnt, &curFontCnt, &disableCnt,
+                            &list, &indexlist, &disableIndexList, &allMinusSysFontList);
+
+//    qDebug() << deleteCnt << disableSysCnt << systemCnt << curFontCnt << disableCnt << list.count() << disableIndexList.count() << allMinusSysFontList.count() << endl;
+    EXPECT_TRUE(systemCnt == 5);
+    EXPECT_TRUE(disableCnt == 5);
+    EXPECT_TRUE(disableIndexList.count() == 5);
+}
+
+TEST_F(TestDFontPreviewListView, checkSelectedFontsNotSystem)
+{
+    DFontPreviewItemData data;
+    data.fontInfo.psname = "first";
+
+    listview->m_fontPreviewProxyModel->insertRows(0, 5);
+    listview->selectAll();
+    QModelIndexList indexlist = listview->selectionModel()->selectedIndexes();
+    QModelIndex index = indexlist.first();
+
+    int deleteCnt;
+    int disableSysCnt;
+    int systemCnt;
+    qint8 curFontCnt;
+    int disableCnt;
+    QStringList list;
+    QModelIndexList disableIndexList;
+    QStringList allMinusSysFontList;
+
+    Stub s;
+    s.set(ADDR(DFontPreviewListDataThread, getFontData), stub_returnNotSysItemdata);
+
+    listview->selectedFonts(data, &deleteCnt, &disableSysCnt, &systemCnt, &curFontCnt, &disableCnt,
+                            &list, &indexlist, &disableIndexList, &allMinusSysFontList);
+
+//    qDebug() << deleteCnt << disableSysCnt << systemCnt << curFontCnt << disableCnt << list.count() << disableIndexList.count() << allMinusSysFontList.count() << endl;
+    EXPECT_TRUE(allMinusSysFontList.count() == 1);
+}
+
+TEST_F(TestDFontPreviewListView, checkSelectedFontsNotElse)
+{
+    DFontPreviewItemData data;
+    data.fontInfo.psname = "first";
+
+    listview->m_fontPreviewProxyModel->insertRows(0, 5);
+    listview->selectAll();
+    QModelIndexList indexlist = listview->selectionModel()->selectedIndexes();
+    QModelIndex index = indexlist.first();
+
+    int deleteCnt;
+    int disableSysCnt;
+    int systemCnt;
+    qint8 curFontCnt;
+    int disableCnt;
+    QStringList list;
+    QModelIndexList disableIndexList;
+    QStringList allMinusSysFontList;
+
+    Stub s;
+    s.set(ADDR(DFontPreviewListDataThread, getFontData), stub_returnNotSysItemdata);
+
+    listview->selectedFonts(data, &deleteCnt, &disableSysCnt, &systemCnt, &curFontCnt, &disableCnt,
+                            &list, &indexlist, &disableIndexList, &allMinusSysFontList);
+
+    qDebug() << deleteCnt << disableSysCnt << systemCnt << curFontCnt << disableCnt << list.count() << disableIndexList.count() << allMinusSysFontList.count() << endl;
+
+    EXPECT_TRUE(deleteCnt == 5);
+    EXPECT_TRUE(disableCnt == 5);
+    EXPECT_TRUE(list.count() == 1);
+}
+
+
 
 //FontManager类,依附于previewlistview,再此进行测试
 TEST_F(TestDFontPreviewListView, checkgetStartFontList)

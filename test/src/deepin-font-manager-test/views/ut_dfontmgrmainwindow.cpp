@@ -12,6 +12,7 @@
 #include "views/dfquickinstallwindow.h"
 
 #include <QTest>
+#include <QRegion>
 #include <QSignalSpy>
 #include <QHBoxLayout>
 #include <QShortcut>
@@ -148,6 +149,14 @@ Qt::WindowStates stub_windowStateNo()
     return Qt::WindowNoState;
 }
 
+QRegion stub_getRegin()
+{
+
+    QRect t(QPoint(42, 41), QSize(10, 10));
+    QRegion re(t);
+    return re;
+}
+
 //DFontPreviewItemData stub_getFontData()
 //{
 //    DFontPreviewItemData data;
@@ -183,6 +192,15 @@ QStringList stub_getAllFontPath()
     return list;
 
 }
+
+QAction *stub_exec(const QPoint &pos, QAction *at = nullptr)
+{
+    Q_UNUSED(pos)
+    Q_UNUSED(at)
+
+    return nullptr;
+}
+
 
 }
 
@@ -875,13 +893,13 @@ TEST_F(TestDFontMgrMainWindow, checkInlineFunction)
     EXPECT_TRUE(fm->currentFontGroup() == DSplitListWidget::AllFont);
 
     fm->m_winHight = 10;
-    EXPECT_TRUE(fm->m_winHight == 10);
+    EXPECT_TRUE(fm->getWinHeight() == 10);
 
     fm->m_winWidth = 10;
-    EXPECT_TRUE(fm->m_winWidth == 10);
+    EXPECT_TRUE(fm->getWinWidth() == 10);
 
     fm->m_IsWindowMax = false;
-    EXPECT_FALSE(fm->m_IsWindowMax);
+    EXPECT_FALSE(fm->getIsMaximized());
 
 }
 
@@ -965,7 +983,21 @@ TEST_F(TestDFontMgrMainWindow, checkinitShortcutsElse)
     emit fm->m_scFindFont->activated();
 }
 
+//listview->onRightMenuShortCutActivated
+TEST_F(TestDFontMgrMainWindow, checkonRightMenuShortCutActivated)
+{
+    Stub s;
+    s.set((QAction * (QMenu::*)(const QPoint &, QAction *))ADDR(QMenu, exec), stub_exec);
 
+    fm->m_fontPreviewListView->getFontPreviewProxyModel()->insertRows(0, 5);
+    fm->m_fontPreviewListView->selectAll();
+
+    fm->m_fontPreviewListView->onRightMenuShortCutActivated();
+
+    Stub s1;
+    s1.set(ADDR(QWidget, visibleRegion), stub_getRegin);
+    fm->m_fontPreviewListView->onRightMenuShortCutActivated();
+}
 
 
 

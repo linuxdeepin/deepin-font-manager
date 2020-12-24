@@ -425,7 +425,7 @@ void DSplitListWidget::setCurrentStatus(const FocusStatus &currentStatus)
 void DSplitListWidget::mouseMoveEvent(QMouseEvent *event)
 {
     //正在安装过程中，禁止鼠标事件
-    if(m_isIstalling){
+    if (m_isIstalling) {
         return;
     }
 
@@ -586,8 +586,9 @@ void DSplitListWidget::setIsIstalling(bool isIstalling)
 *************************************************************************/
 void DSplitListWidget::mouseReleaseEvent(QMouseEvent *event)
 {
+    //TODO
     //正在安装过程中，禁止鼠标事件
-    if(m_isIstalling)
+    if (m_isIstalling)
         return;
     QPoint clickPoint = event->pos();
     QModelIndex modelIndex = indexAt(clickPoint);
