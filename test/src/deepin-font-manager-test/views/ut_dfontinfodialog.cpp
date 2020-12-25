@@ -19,6 +19,7 @@
 #include <QScrollArea>
 #include <QScrollBar>
 
+#include <DGuiApplicationHelper>
 #include <DApplication>
 #include <DApplicationHelper>
 #include <DLog>
@@ -46,6 +47,11 @@ protected:
     DFontInfoDialog *dFontInforDialog;
 
 };
+
+DGuiApplicationHelper::ColorType stub_darktype()
+{
+    return DGuiApplicationHelper::DarkType;
+}
 
 }
 
@@ -119,7 +125,20 @@ TEST_F(TestDFontInfoDialog, checkInfoScroolArea)
     Q_UNUSED(dialog)
 }
 
+TEST_F(TestDFontInfoDialog, checkDarkType)
+{
+    Stub s;
+    s.set(ADDR(DGuiApplicationHelper, themeType), stub_darktype);
+    DFontPreviewItemData d2;
+    d2.fontInfo.version = "first";
+    d2.fontInfo.description = "second";
+    QWidget *w2 = new QWidget;
+    DFontInfoDialog *dialog = new DFontInfoDialog(&d2, w2);
 
+    emit DApplicationHelper::instance()->themeTypeChanged(DApplicationHelper::DarkType);
+    delete dialog;
+
+}
 
 
 

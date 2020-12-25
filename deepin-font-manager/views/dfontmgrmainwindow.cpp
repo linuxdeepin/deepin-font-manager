@@ -1145,6 +1145,7 @@ bool DFontMgrMainWindow::installFont(const QStringList &files, bool isAddBtnHasT
     PerformanceMonitor::installFontStart();
 
     Q_D(DFontMgrMainWindow);
+
     QStringList installFiles = checkFilesSpace(files);
     if (installFiles.count() == 0) {
         onShowMessage(0);
@@ -1190,6 +1191,7 @@ bool DFontMgrMainWindow::installFont(const QStringList &files, bool isAddBtnHasT
 
     //安装开始前,移除之前监视的用户字体目录,避免多次触发不必要的槽函数
     emit  DFontPreviewListDataThread::instance()->requestRemoveFileWatchers(QStringList());
+
     m_dfNormalInstalldlg->exec();
 
     return true;
@@ -1713,6 +1715,24 @@ void DFontMgrMainWindow::onShowSpinner(bool bShow, bool force, DFontSpinnerWidge
     qDebug() << __FUNCTION__ << bShow << "end";
 }
 
+void DFontMgrMainWindow::onconfirmDelDlgAccept()
+{
+    PerformanceMonitor::deleteFontStart();
+
+    //记录移除前位置
+    m_fontPreviewListView->markPositionBeforeRemoved();
+    DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
+    qDebug() << "Confirm delete:" << currItemData.fontInfo.filePath
+             << " is system font:" << currItemData.fontInfo.isSystemFont;
+    //force delete all fonts
+    //disable file system watcher
+    onShowSpinner(true, false, DFontSpinnerWidget::Delete);
+    Q_EMIT DFontPreviewListDataThread::instance(m_fontPreviewListView)->requestRemoveFileWatchers(m_menuDelFontList);
+    DFontManager::instance()->setType(DFontManager::UnInstall);
+    DFontManager::instance()->setUnInstallFile(m_menuDelFontList);
+    DFontManager::instance()->start();
+}
+
 void DFontMgrMainWindow::onInstallWindowDestroyed(QObject *)
 {
     qDebug() << __FUNCTION__ << m_installOutFileList.size();
@@ -1775,22 +1795,7 @@ void DFontMgrMainWindow::delCurrentFont(bool activatedByRightmenu)
 
     DFDeleteDialog *confirmDelDlg = new DFDeleteDialog(this, m_menuDelCnt, m_menuSysCnt, m_menuCurCnt > 0, this);
 
-    connect(confirmDelDlg, &DFDeleteDialog::accepted, this, [ = ]() {
-        PerformanceMonitor::deleteFontStart();
-
-        //记录移除前位置
-        m_fontPreviewListView->markPositionBeforeRemoved();
-        DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
-        qDebug() << "Confirm delete:" << currItemData.fontInfo.filePath
-                 << " is system font:" << currItemData.fontInfo.isSystemFont;
-        //force delete all fonts
-        //disable file system watcher
-        onShowSpinner(true, false, DFontSpinnerWidget::Delete);
-        Q_EMIT DFontPreviewListDataThread::instance(m_fontPreviewListView)->requestRemoveFileWatchers(m_menuDelFontList);
-        DFontManager::instance()->setType(DFontManager::UnInstall);
-        DFontManager::instance()->setUnInstallFile(m_menuDelFontList);
-        DFontManager::instance()->start();
-    });
+    connect(confirmDelDlg, &DFDeleteDialog::accepted, this, &DFontMgrMainWindow::onconfirmDelDlgAccept);
 
     //confirmDelDlg->move((this->width() - confirmDelDlg->width() - 230 + mapToGlobal(QPoint(0, 0)).x()), (mapToGlobal(QPoint(0, 0)).y() + 180));
     confirmDelDlg->move(this->geometry().center() - confirmDelDlg->rect().center());

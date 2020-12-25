@@ -95,103 +95,104 @@ bool SingleFontApplication::parseCmdLine()
 void SingleFontApplication::activateWindow()
 {
     //If quick install mode
-    if (m_selectedFiles.size() < 0) {
-        qDebug() << "Active quick install window to install file:" << m_selectedFiles;
+    //不符合逻辑的代码
+//    if (m_selectedFiles.size() < 0) {
+//        qDebug() << "Active quick install window to install file:" << m_selectedFiles;
 
-        //Hide normal window in quick mode
-        if (nullptr != m_qspMainWnd.get()) {
-            //Force quit installtion
-            reinterpret_cast<DFontMgrMainWindow *>(
-                m_qspMainWnd.get())->forceNoramlInstalltionQuitIfNeeded();
+//        //Hide normal window in quick mode
+//        if (nullptr != m_qspMainWnd.get()) {
+//            //Force quit installtion
+//            reinterpret_cast<DFontMgrMainWindow *>(
+//                m_qspMainWnd.get())->forceNoramlInstalltionQuitIfNeeded();
 
-            m_qspMainWnd->hide();
+//            m_qspMainWnd->hide();
+//        }
+
+//        //Init quick window at first time
+//        if (nullptr == m_qspQuickWnd.get()) {
+//            m_qspQuickWnd.reset(new DFQuickInstallWindow());
+//            Dtk::Widget::moveToCenter(m_qspQuickWnd.get());
+
+//            DFQuickInstallWindow *qw = qobject_cast<DFQuickInstallWindow *>(m_qspQuickWnd.get());
+
+//            connect(qw, &DFQuickInstallWindow::requestShowMainWindow, this, [ = ](const QStringList & fileList) {
+//                qDebug() << "requestShowMainWindow " << fileList;
+//                if (nullptr == m_qspMainWnd.get()) {
+//                    m_qspMainWnd.reset(new
+//                                       DFontMgrMainWindow());
+//                    int windowWidth = reinterpret_cast<DFontMgrMainWindow *>(
+//                                          m_qspMainWnd.get())->getWinWidth();
+//                    int windowHeight = reinterpret_cast<DFontMgrMainWindow *>(
+//                                           m_qspMainWnd.get())->getWinHeight();
+
+//                    m_qspMainWnd->setMinimumSize(DEFAULT_WINDOWS_WIDTH, DEFAULT_WINDOWS_HEIGHT);
+//                    if (DEFAULT_WINDOWS_WIDTH <= windowWidth && DEFAULT_WINDOWS_HEIGHT <= windowHeight) {
+//                        m_qspMainWnd->resize(windowWidth, windowHeight);
+//                    }
+
+//                    Dtk::Widget::moveToCenter(m_qspMainWnd.get());
+
+//                    m_qspMainWnd->show();
+//                    DFontMgrMainWindow *mw = qobject_cast<DFontMgrMainWindow *>(m_qspMainWnd.get());
+//                    Q_UNUSED(mw);
+////                    mw->setFileList(fileList);
+//                } else {
+//                    m_qspMainWnd->setWindowState(Qt::WindowActive);
+//                    m_qspMainWnd->activateWindow(); // Reactive main window
+//                    //m_qspMainWnd->resize(DEFAULT_WINDOWS_WIDTH, DEFAULT_WINDOWS_HEIGHT);
+//                }
+//            });
+
+//            m_qspQuickWnd->show();
+//        } else {
+//            m_qspQuickWnd->setWindowState(Qt::WindowActive);
+//            m_qspQuickWnd->activateWindow(); // Reactive main window
+//        }
+
+//        QMetaObject::invokeMethod(m_qspQuickWnd.get(), "fileSelectedInSys", Qt::QueuedConnection,
+//                                  Q_ARG(QStringList, m_selectedFiles));
+
+//    } else {
+    qDebug() << "++Active quick install window to install file:" << m_selectedFiles;
+    //Hide quick window in normal mode
+    if (nullptr != m_qspQuickWnd.get()) {
+        m_qspQuickWnd->hide();
+    }
+
+    //Init Normal window at first time
+    if (nullptr == m_qspMainWnd.get()) {
+        m_qspMainWnd.reset(new DFontMgrMainWindow());
+        int windowWidth = reinterpret_cast<DFontMgrMainWindow *>(
+                              m_qspMainWnd.get())->getWinWidth();
+        int windowHeight = reinterpret_cast<DFontMgrMainWindow *>(
+                               m_qspMainWnd.get())->getWinHeight();
+        //.toInt(&hWinDataStatus);
+        m_qspMainWnd->setMinimumSize(DEFAULT_WINDOWS_WIDTH, DEFAULT_WINDOWS_HEIGHT);
+        if (DEFAULT_WINDOWS_WIDTH <= windowWidth && DEFAULT_WINDOWS_HEIGHT <= windowHeight) {
+            m_qspMainWnd->resize(windowWidth, windowHeight);
         }
 
-        //Init quick window at first time
-        if (nullptr == m_qspQuickWnd.get()) {
-            m_qspQuickWnd.reset(new DFQuickInstallWindow());
-            Dtk::Widget::moveToCenter(m_qspQuickWnd.get());
-
-            DFQuickInstallWindow *qw = qobject_cast<DFQuickInstallWindow *>(m_qspQuickWnd.get());
-
-            connect(qw, &DFQuickInstallWindow::requestShowMainWindow, this, [ = ](const QStringList & fileList) {
-                qDebug() << "requestShowMainWindow " << fileList;
-                if (nullptr == m_qspMainWnd.get()) {
-                    m_qspMainWnd.reset(new
-                                       DFontMgrMainWindow());
-                    int windowWidth = reinterpret_cast<DFontMgrMainWindow *>(
-                                          m_qspMainWnd.get())->getWinWidth();
-                    int windowHeight = reinterpret_cast<DFontMgrMainWindow *>(
-                                           m_qspMainWnd.get())->getWinHeight();
-
-                    m_qspMainWnd->setMinimumSize(DEFAULT_WINDOWS_WIDTH, DEFAULT_WINDOWS_HEIGHT);
-                    if (DEFAULT_WINDOWS_WIDTH <= windowWidth && DEFAULT_WINDOWS_HEIGHT <= windowHeight) {
-                        m_qspMainWnd->resize(windowWidth, windowHeight);
-                    }
-
-                    Dtk::Widget::moveToCenter(m_qspMainWnd.get());
-
-                    m_qspMainWnd->show();
-                    DFontMgrMainWindow *mw = qobject_cast<DFontMgrMainWindow *>(m_qspMainWnd.get());
-                    Q_UNUSED(mw);
-//                    mw->setFileList(fileList);
-                } else {
-                    m_qspMainWnd->setWindowState(Qt::WindowActive);
-                    m_qspMainWnd->activateWindow(); // Reactive main window
-                    //m_qspMainWnd->resize(DEFAULT_WINDOWS_WIDTH, DEFAULT_WINDOWS_HEIGHT);
-                }
-            });
-
-            m_qspQuickWnd->show();
-        } else {
-            m_qspQuickWnd->setWindowState(Qt::WindowActive);
-            m_qspQuickWnd->activateWindow(); // Reactive main window
-        }
-
-        QMetaObject::invokeMethod(m_qspQuickWnd.get(), "fileSelectedInSys", Qt::QueuedConnection,
-                                  Q_ARG(QStringList, m_selectedFiles));
+        Dtk::Widget::moveToCenter(m_qspMainWnd.get());
+        m_qspMainWnd->show();
 
     } else {
-        qDebug() << "++Active quick install window to install file:" << m_selectedFiles;
-        //Hide quick window in normal mode
-        if (nullptr != m_qspQuickWnd.get()) {
-            m_qspQuickWnd->hide();
-        }
-
-        //Init Normal window at first time
-        if (nullptr == m_qspMainWnd.get()) {
-            m_qspMainWnd.reset(new DFontMgrMainWindow());
-            int windowWidth = reinterpret_cast<DFontMgrMainWindow *>(
-                                  m_qspMainWnd.get())->getWinWidth();
-            int windowHeight = reinterpret_cast<DFontMgrMainWindow *>(
-                                   m_qspMainWnd.get())->getWinHeight();
-            //.toInt(&hWinDataStatus);
-            m_qspMainWnd->setMinimumSize(DEFAULT_WINDOWS_WIDTH, DEFAULT_WINDOWS_HEIGHT);
-            if (DEFAULT_WINDOWS_WIDTH <= windowWidth && DEFAULT_WINDOWS_HEIGHT <= windowHeight) {
-                m_qspMainWnd->resize(windowWidth, windowHeight);
-            }
-
-            Dtk::Widget::moveToCenter(m_qspMainWnd.get());
-            m_qspMainWnd->show();
-
+        bool IsWindowMax = reinterpret_cast<DFontMgrMainWindow *>(
+                               m_qspMainWnd.get())->getIsMaximized();
+        if (IsWindowMax == true) {
+            m_qspMainWnd->setWindowState(Qt::WindowMaximized);
         } else {
-            bool IsWindowMax = reinterpret_cast<DFontMgrMainWindow *>(
-                                   m_qspMainWnd.get())->getIsMaximized();
-            if (IsWindowMax == true) {
-                m_qspMainWnd->setWindowState(Qt::WindowMaximized);
-            } else {
-                m_qspMainWnd->setWindowState(Qt::WindowActive);
-            }
-            m_qspMainWnd->activateWindow();
-            //m_qspMainWnd->resize(DEFAULT_WINDOWS_WIDTH, DEFAULT_WINDOWS_HEIGHT);
+            m_qspMainWnd->setWindowState(Qt::WindowActive);
         }
-        //For: Drag files on task bar app icon
-        //need start installtion flow
-        if (m_selectedFiles.size() > 0) {
-            QMetaObject::invokeMethod(m_qspMainWnd.get(), "fileSelectedInSys", Qt::QueuedConnection,
-                                      Q_ARG(QStringList, m_selectedFiles));
-        }
+        m_qspMainWnd->activateWindow();
+        //m_qspMainWnd->resize(DEFAULT_WINDOWS_WIDTH, DEFAULT_WINDOWS_HEIGHT);
     }
+    //For: Drag files on task bar app icon
+    //need start installtion flow
+    if (m_selectedFiles.size() > 0) {
+        QMetaObject::invokeMethod(m_qspMainWnd.get(), "fileSelectedInSys", Qt::QueuedConnection,
+                                  Q_ARG(QStringList, m_selectedFiles));
+    }
+//    }
     PerformanceMonitor::initializeAppFinish();
 }
 

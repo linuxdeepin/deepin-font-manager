@@ -231,9 +231,19 @@ TEST_F(TestDSplitListWidget, checkPaint)
     dsp->m_IsTabFocus = true;
     dsp->itemDelegate()->paint(p, option, modelIndex1);
 
-    modelIndex1 = dsp->m_categoryItemModell->index(5, 0);
+    option.state.setFlag(QStyle::State_MouseOver);
+    dsp->m_IsTabFocus = true;
+
+
+    dsp->m_IsTabFocus = false;
+    option.state.setFlag(QStyle::State_Selected);
     dsp->itemDelegate()->paint(p, option, modelIndex1);
 
+    option.state.setFlag(QStyle::State_MouseOver);
+    dsp->itemDelegate()->paint(p, option, modelIndex1);
+
+    modelIndex1 = dsp->m_categoryItemModell->index(5, 0);
+    dsp->itemDelegate()->paint(p, option, modelIndex1);
 }
 
 TEST_F(TestDSplitListWidget, checkMouseReleaseEvent)
@@ -244,11 +254,6 @@ TEST_F(TestDSplitListWidget, checkMouseReleaseEvent)
 
     Stub s;
     s.set(ADDR(QModelIndex, row), stub_returnRow);
-
-//    dsp->m_IsPositive = true;
-//    dsp->mouseReleaseEvent(e);
-
-
 }
 
 

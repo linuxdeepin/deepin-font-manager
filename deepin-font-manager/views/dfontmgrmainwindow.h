@@ -245,7 +245,6 @@ protected:
     void setNextTabFocus(QObject *obj);//SP3--设置tab顺序(539)
     //事件过滤器：用于过滤事件
     bool eventFilter(QObject *obj, QEvent *event)Q_DECL_OVERRIDE;//SP3--设置tab顺序(539)
-
 signals:
     //信号-文管中选中字体打开
     void fileSelected(const QStringList &files, bool isAddBtnHasTabs) const;
@@ -277,6 +276,7 @@ public slots:
     void onShowMessage(int totalCount);
     //显示或停止旋转进度图标
     void onShowSpinner(bool bShow, bool force, DFontSpinnerWidget::SpinnerStyles style);
+    void onconfirmDelDlgAccept();
     //安装窗口销毁
     void onInstallWindowDestroyed(QObject * = nullptr);
 

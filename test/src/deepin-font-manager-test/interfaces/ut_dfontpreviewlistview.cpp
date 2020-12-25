@@ -679,14 +679,13 @@ TEST_F(TestDFontPreviewListView, checkOnEnableBtnClickedEnable)
     listview->onEnableBtnClicked(list, 1, 1, false, false);
     listview->onEnableBtnClicked(list, 1, 0, false, false);
 }
-TEST_F(TestDFontPreviewListView, checkHoverState)
+
+TEST_F(TestDFontPreviewListView, checkOnRightMenuShortCutActivated)
 {
     Stub s1;
     s1.set(ADDR(QWidget, isVisible), stub_True);
 
-
     listview->m_fontPreviewProxyModel->insertRows(0, 1);
-
 
     FontData data;
     data.strFontName = "first";
@@ -699,6 +698,18 @@ TEST_F(TestDFontPreviewListView, checkHoverState)
     listview->setParent(mw);
     listview->selectAll();
     listview->onRightMenuShortCutActivated();
+}
+
+TEST_F(TestDFontPreviewListView, checkHoverState)
+{
+    Stub s;
+    s.set(ADDR(QWidget, mapFromGlobal), stub_pos);
+
+    listview->m_fontPreviewProxyModel->insertRows(0, 1);
+
+    listview->checkHoverState();
+
+    EXPECT_TRUE(listview->m_hoverModelIndex.row() == 0);
 }
 
 TEST_F(TestDFontPreviewListView, checkUpdateShiftSelect)
@@ -1196,8 +1207,6 @@ TEST_F(TestDFontPreviewListView, checkSelectedFontsNotElse)
     EXPECT_TRUE(disableCnt == 5);
     EXPECT_TRUE(list.count() == 1);
 }
-
-
 
 //FontManager类,依附于previewlistview,再此进行测试
 TEST_F(TestDFontPreviewListView, checkgetStartFontList)

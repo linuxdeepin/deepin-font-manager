@@ -888,9 +888,6 @@ void DFontPreviewListView::mouseMoveEvent(QMouseEvent *event)
     }
 
     QPoint clickPoint = event->pos();
-
-    qDebug() << clickPoint << endl;
-
     QModelIndex modelIndex = indexAt(clickPoint);
 
 
