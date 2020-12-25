@@ -169,191 +169,104 @@ void DFontMgrMainWindow::initConnections()
 {
     D_D(DFontMgrMainWindow);
 
-    // Loading Font List Signal
-    QObject::connect(m_fontPreviewListView, SIGNAL(onLoadFontsStatus(int)),
-                     this, SLOT(onLoadStatus(int)));
-
-    connect(m_fontPreviewListView, &DFontPreviewListView::rowCountChanged, this,
-            &DFontMgrMainWindow::onFontListViewRowCountChanged, Qt::UniqueConnection);
-
-    connect(m_fontPreviewListView, &DFontPreviewListView::requestShowSpinner, this,
-            &DFontMgrMainWindow::onShowSpinner);
-
-    connect(m_fontPreviewListView, &DFontPreviewListView::deleteFinished, this, [ = ]() {
-        setDeleteFinish();
-    });
-    connect(d->searchFontEdit, &DSearchEdit::searchAborted, [ = ] {
-        d->searchFontEdit->lineEdit()->setFocus(Qt::TabFocusReason);
-    });
-    // Add Font button event
-    QObject::connect(d->addFontButton, &DIconButton::clicked, this,
-                     &DFontMgrMainWindow::handleAddFontEvent);
-
-    QObject::connect(this, &DFontMgrMainWindow::fileSelected, this,
-    [this](const QStringList & files, bool isAddBtnHasTabs) {
-        this->installFont(files, isAddBtnHasTabs);
-    });
-
-    QObject::connect(this, &DFontMgrMainWindow::fileSelectedInSys, this,
-    [this](const QStringList & files) {
-        this->installFontFromSys(files);
-        //在此停止listview中的计时器，否则在系统中选择字体安装时会卡死
-
-        m_fontPreviewListView->getFontLoadTimer()->stop();
-    });
-
-    // Menu event
-    QObject::connect(d->toolBarMenu, &QMenu::triggered, this, &DFontMgrMainWindow::handleMenuEvent);
-
     //Theme change event
-    QObject::connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::paletteTypeChanged,
+    connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::paletteTypeChanged,
     [this](DGuiApplicationHelper::ColorType type) {
         qDebug() << "Update Theme type:" << type;
         //Save theme value
         d_func()->settingsQsPtr->setValue(FTM_THEME_KEY, type);
     });
 
-    // Right Key menu
-    QObject::connect(d->rightKeyMenu, &QMenu::triggered, this,
-                     &DFontMgrMainWindow::handleMenuEvent);
-
-    // Initialize rigth menu it state
-    QObject::connect(d->rightKeyMenu, &QMenu::aboutToShow, this, [ = ]() {
-        qDebug() << __FUNCTION__ << "about toshow";
-        //记录操作之前有无tab聚焦
-        m_hasMenuTriggered = false;
-//        m_fontPreviewListView->setFocus(Qt::MouseFocusReason);
-        m_fontPreviewListView->syncRecoveryTabStatus();
-        m_menuCurData = m_fontPreviewListView->currModelData();
-        m_fontPreviewListView->selectedFonts(m_menuCurData, &m_menuDelCnt, &m_menuDisableSysCnt,
-                                             &m_menuSysCnt, &m_menuCurCnt, &m_menuDisableCnt,
-                                             &m_menuDelFontList, &m_menuAllIndexList,
-                                             &m_menuDisableIndexList, &m_menuAllMinusSysFontList);
-
-        DFontMenuManager::getInstance()->onRightKeyMenuPopup(m_menuCurData, (m_menuDelCnt > 0), (m_menuDisableCnt > 0), (m_menuCurCnt > 0));
-        qDebug() << __FUNCTION__ << "about toshow end \n";
-    });
-
-    connect(d->rightKeyMenu, &QMenu::aboutToHide, this, [ = ] {
-        qDebug() << __FUNCTION__ << "about to hide\n\n";
-        m_fontPreviewListView->clearPressState(DFontPreviewListView::ClearType::MoveClear);
-        //检查鼠标是否处于hover状态
-        m_fontPreviewListView->checkHoverState();
-    });
-
-    // State bar event
-    QObject::connect(d->fontScaleSlider, &DSlider::valueChanged,
-                     this, &DFontMgrMainWindow::respondToValueChanged);
-
-    // Search text changed
-    QObject::connect(d->searchFontEdit, SIGNAL(textChanged(const QString &)), this,
-                     SLOT(onSearchTextChanged(const QString &)));
-
-    QObject::connect(d->textInputEdit, SIGNAL(textChanged(const QString &)), this,
-                     SLOT(onPreviewTextChanged(const QString &)));
-    QObject::connect(d->leftSiderBar, SIGNAL(onListWidgetItemClicked(int, bool)), this,
-                     SLOT(onLeftSiderBarItemClicked(int, bool)));
-
-    QObject::connect(m_fontManager, &DFontManager::uninstallFontFinished, this, [ = ](QStringList & files) {
-        m_fontPreviewListView->updateSpinner(DFontSpinnerWidget::Delete);
-        Q_EMIT DFontPreviewListDataThread::instance()->requestDeleted(files);
-    });
-
-    QObject::connect(m_fontManager, &DFontManager::uninstallFcCacheFinish, this, &DFontMgrMainWindow::onUninstallFcCacheFinish);
-
-    //安装结束后刷新字体列表
-    connect(m_signalManager, &SignalManager::finishFontInstall, this,
-            &DFontMgrMainWindow::onFontInstallFinished);
-
-    connect(m_fontManager, &DFontManager::cacheFinish, this, [ = ] {
-        qDebug() << "set m_cacheFinish = true";
-        m_cacheFinish = true;
-        hideSpinner();
-    }, Qt::QueuedConnection);
-
-    connect(m_fontPreviewListView, &DFontPreviewListView::requestInstFontsUiAdded, this, [ = ] {
-        qDebug() << "set m_installFinish = true";
-        m_installFinish = true;
-        hideSpinner();
-    }, Qt::QueuedConnection);
-
     /*调节右下角字体大小显示label显示内容 UT000539*/
-    connect(qApp, &DApplication::fontChanged, this, [ = ]() {
-        int size = d->fontScaleSlider->value();
-        QString fontSize = QString::number(size) + "px";
-        autoLabelWidth(fontSize, d->fontSizeLabel, d->fontSizeLabel->fontMetrics());
-        m_fontPreviewListView->onFontChanged(qApp->font());
+    connect(qApp, &DApplication::fontChanged, this, &DFontMgrMainWindow::onFontChanged);
+
+    //文件选择开始安装
+    connect(this, &DFontMgrMainWindow::fileSelected, this, &DFontMgrMainWindow::installFont);
+    //文官中选择字体进行安装
+    connect(this, &DFontMgrMainWindow::fileSelectedInSys, this, &DFontMgrMainWindow::installFontFromSys);
+
+    connect(d->searchFontEdit, &DSearchEdit::searchAborted, [ = ] {
+        d->searchFontEdit->lineEdit()->setFocus(Qt::TabFocusReason);
+    });
+    // Add Font button event
+    connect(d->addFontButton, &DIconButton::clicked, this, &DFontMgrMainWindow::handleAddFontEvent);
+    // Menu event
+    connect(d->toolBarMenu, &QMenu::triggered, this, &DFontMgrMainWindow::handleMenuEvent);
+    // Right Key menu
+    connect(d->rightKeyMenu, &QMenu::triggered, this, &DFontMgrMainWindow::handleMenuEvent);
+    // Initialize rigth menu it state
+    connect(d->rightKeyMenu, &QMenu::aboutToShow, this, &DFontMgrMainWindow::onRightMenuAboutToShow);
+    connect(d->rightKeyMenu, &QMenu::aboutToHide, this, &DFontMgrMainWindow::onRightMenuAboutToHide);
+    // State bar event
+    connect(d->fontScaleSlider, &DSlider::valueChanged, this, &DFontMgrMainWindow::respondToValueChanged);
+    // Search text changed
+    connect(d->searchFontEdit, SIGNAL(textChanged(const QString &)), this, SLOT(onSearchTextChanged(const QString &)));
+    connect(d->textInputEdit, SIGNAL(textChanged(const QString &)), this, SLOT(onPreviewTextChanged(const QString &)));
+    connect(d->leftSiderBar, SIGNAL(onListWidgetItemClicked(int, bool)), this, SLOT(onLeftSiderBarItemClicked(int, bool)));
+    //UT000539 增加slider press聚焦的判断
+    connect(d->fontScaleSlider, &DSlider::sliderPressed, [ = ] {
+        d->fontScaleSlider->setFocus(Qt::MouseFocusReason);
     });
 
-    connect(m_signalManager, &SignalManager::popInstallErrorDialog, this, [ = ] {
-        m_isPopInstallErrorDialog = true;
-    });
+    //卸载字体结束
+    connect(m_fontManager, &DFontManager::uninstallFontFinished, this, &DFontMgrMainWindow::onUninstallFontFinished);
 
-    connect(m_signalManager, &SignalManager::hideInstallErrorDialog, this, [ = ] {
-        m_isPopInstallErrorDialog = false;
-    });
-
+    //卸载后执行fc-cache结束
+    connect(m_fontManager, &DFontManager::uninstallFcCacheFinish, this, &DFontMgrMainWindow::onUninstallFcCacheFinish);
+    //执行fc-cache结束
+    connect(m_fontManager, &DFontManager::cacheFinish, this, &DFontMgrMainWindow::onCacheFinish, Qt::QueuedConnection);
+    //取消安装
     connect(m_fontManager, &DFontManager::requestCancelInstall, this, [ = ]() {
         m_isInstallOver = true;
         m_fIsInstalling = false;
     });
-
-    //UT000539 增加slider press聚焦的判断
-    QObject::connect(d->fontScaleSlider, &DSlider::sliderPressed, [ = ] {
-        d->fontScaleSlider->setFocus(Qt::MouseFocusReason);
-    });
-
-    connect(m_signalManager, &SignalManager::fontSizeRequestToSlider, this, [ = ] {
-        if (!d->searchFontEdit->text().isEmpty())
-        {
-            onSearchTextChanged(d->searchFontEdit->text());
-        }
-        //删除过程中安装字体，删除过后要继续安装
-        qDebug() << "m_waitForInstall" << m_waitForInstall;
-        waitForInsert();
-    });
-
+    //fontmanager线程结束
+    connect(m_fontManager, &QThread::finished, this, &DFontMgrMainWindow::onFontManagerFinished);
+    //导出字体结束
     connect(DFontPreviewListDataThread::instance(), &DFontPreviewListDataThread::exportFontFinished,
-    this, [ = ](int count) {
-        showExportFontMessage(count, m_menuAllMinusSysFontList.count() - count);
-        PerformanceMonitor::exportFontFinish(count);
+            this, &DFontMgrMainWindow::onExportFontFinished);
+
+    //安装结束后刷新字体列表
+    connect(m_signalManager, &SignalManager::finishFontInstall, this, &DFontMgrMainWindow::onFontInstallFinished);
+    //字体验证框弹出
+    connect(m_signalManager, &SignalManager::popInstallErrorDialog, this, [ = ] {
+        m_isPopInstallErrorDialog = true;
+    });
+    //字体验证框消失
+    connect(m_signalManager, &SignalManager::hideInstallErrorDialog, this, [ = ] {
+        m_isPopInstallErrorDialog = false;
     });
 
+    //设置预览大小
+    connect(m_signalManager, &SignalManager::fontSizeRequestToSlider, this, &DFontMgrMainWindow::onFontSizeRequestToSlider);
     //安装字体刷新后，按下左键保持焦点正常切换至菜单
     connect(m_signalManager, &SignalManager::requestSetLeftSiderBarFocus, this, [ = ] {
         emit m_signalManager->setLostFocusState(false);
         d->leftSiderBar->setFocus(Qt::MouseFocusReason);
     });
-
+    //设置添加字体按钮的焦点
     connect(m_signalManager, &SignalManager::requestSetTabFocusToAddBtn, [ = ] {
         QTimer::singleShot(25, [ = ]{
             d->addFontButton->setFocus(Qt::TabFocusReason);
         });
     });
 
-    connect(m_signalManager, &SignalManager::onMenuHidden, [ = ] {
-        if (m_fontPreviewListView->getFontViewHasFocus())
-        {
-            m_fontPreviewListView->setFocus(Qt::TabFocusReason);
-            if (!m_hasMenuTriggered)
-                m_fontPreviewListView->syncTabStatus();
-
-            //  菜单消失后就对这个标志位进行复位，此时删除过程还未结束，删除结束后检测此标志位时为false，
-            //  导致后面判断逻辑出错，没法正常设置焦点，所以删除之后无法全选 有因为在后面的代码中有复位
-            //  的逻辑所以取消这里代码。
-            //  m_fontPreviewListView->setFontViewHasFocus(false);
-        }
-        m_hasMenuTriggered = false;
-    });
-
-    connect(m_fontManager, &QThread::finished, this, [ = ] {
-        if (m_needWaitThreadStop)
-        {
-            m_fontManager->setType(DFontManager::DoCache);
-            m_fontManager->start();
-            m_needWaitThreadStop = false;
-        }
-    });
+    //右键菜单消失
+    connect(m_signalManager, &SignalManager::menuHidden, this, &DFontMgrMainWindow::onMenuHidden);
+    //listviweui操作结束
+    connect(m_fontPreviewListView, &DFontPreviewListView::requestInstFontsUiAdded, this,
+            &DFontMgrMainWindow::onRequestInstFontsUiAdded, Qt::QueuedConnection);
+    // Loading Font List Signal
+    connect(m_fontPreviewListView, SIGNAL(onLoadFontsStatus(int)),
+            this, SLOT(onLoadStatus(int)));
+    //listviwe行数发生变化
+    connect(m_fontPreviewListView, &DFontPreviewListView::rowCountChanged, this,
+            &DFontMgrMainWindow::onFontListViewRowCountChanged, Qt::UniqueConnection);
+    //开启或者关闭加载动画
+    connect(m_fontPreviewListView, &DFontPreviewListView::requestShowSpinner, this,
+            &DFontMgrMainWindow::onShowSpinner);
+    //字体删除过程结束
+    connect(m_fontPreviewListView, &DFontPreviewListView::deleteFinished, this, &DFontMgrMainWindow::setDeleteFinish);
 }
 
 /*************************************************************************
@@ -552,7 +465,7 @@ void DFontMgrMainWindow::initShortcuts()
                     return;
 
                 m_fontPreviewListView->onRightMenuShortCutActivated();
-                emit m_signalManager->onMenuHidden();
+                emit m_signalManager->menuHidden();
             }
         }, Qt::UniqueConnection);
     }
@@ -1208,6 +1121,10 @@ bool DFontMgrMainWindow::installFont(const QStringList &files, bool isAddBtnHasT
 *************************************************************************/
 void DFontMgrMainWindow::installFontFromSys(const QStringList &files)
 {
+    if (m_fontPreviewListView->getFontLoadTimer()->isActive()) {
+        m_fontPreviewListView->getFontLoadTimer()->stop();
+    }
+
     this->m_isFromSys = true;
 
     QStringList reduceSameFiles;
@@ -1715,6 +1632,14 @@ void DFontMgrMainWindow::onShowSpinner(bool bShow, bool force, DFontSpinnerWidge
     qDebug() << __FUNCTION__ << bShow << "end";
 }
 
+/*************************************************************************
+ <Function>      onconfirmDelDlgAccept
+ <Description>   删除窗口确认删除槽函数
+ <Author>        ut000442
+ <Input>         null
+ <Return>        null           Description:null
+ <Note>          null
+*************************************************************************/
 void DFontMgrMainWindow::onconfirmDelDlgAccept()
 {
     PerformanceMonitor::deleteFontStart();
@@ -1733,6 +1658,14 @@ void DFontMgrMainWindow::onconfirmDelDlgAccept()
     DFontManager::instance()->start();
 }
 
+/*************************************************************************
+ <Function>      onInstallWindowDestroyed
+ <Description>   安装窗口销毁槽函数
+ <Author>        ut000442
+ <Input>         null
+ <Return>        null           Description:null
+ <Note>          null
+*************************************************************************/
 void DFontMgrMainWindow::onInstallWindowDestroyed(QObject *)
 {
     qDebug() << __FUNCTION__ << m_installOutFileList.size();
@@ -1767,6 +1700,183 @@ void DFontMgrMainWindow::onInstallWindowDestroyed(QObject *)
     emit  DFontPreviewListDataThread::instance()->requestAutoDirWatchers();
     m_fIsInstalling = false;
     qDebug() << __FUNCTION__ << "end";
+}
+
+/*************************************************************************
+ <Function>      onRightMenuAboutToShow
+ <Description>   右键菜单即将显示槽函数
+ <Author>        ut000442
+ <Input>         null
+ <Return>        null           Description:null
+ <Note>          null
+*************************************************************************/
+void DFontMgrMainWindow::onRightMenuAboutToShow()
+{
+    qDebug() << __FUNCTION__ << "about toshow";
+    //记录操作之前有无tab聚焦
+    m_hasMenuTriggered = false;
+//        m_fontPreviewListView->setFocus(Qt::MouseFocusReason);
+    m_fontPreviewListView->syncRecoveryTabStatus();
+    m_menuCurData = m_fontPreviewListView->currModelData();
+    m_fontPreviewListView->selectedFonts(m_menuCurData, &m_menuDelCnt, &m_menuDisableSysCnt,
+                                         &m_menuSysCnt, &m_menuCurCnt, &m_menuDisableCnt,
+                                         &m_menuDelFontList, &m_menuAllIndexList,
+                                         &m_menuDisableIndexList, &m_menuAllMinusSysFontList);
+
+    DFontMenuManager::getInstance()->onRightKeyMenuPopup(m_menuCurData, (m_menuDelCnt > 0), (m_menuDisableCnt > 0), (m_menuCurCnt > 0));
+    qDebug() << __FUNCTION__ << "about toshow end \n";
+}
+
+/*************************************************************************
+ <Function>      onRightMenuAboutToHide
+ <Description>   右键菜单即将消失槽函数
+ <Author>        ut000442
+ <Input>         null
+ <Return>        null           Description:null
+ <Note>          null
+*************************************************************************/
+void DFontMgrMainWindow::onRightMenuAboutToHide()
+{
+    qDebug() << __FUNCTION__ << "about to hide\n\n";
+    m_fontPreviewListView->clearPressState(DFontPreviewListView::ClearType::MoveClear);
+    //检查鼠标是否处于hover状态
+    m_fontPreviewListView->checkHoverState();
+}
+
+/*************************************************************************
+ <Function>      onUninstallFontFinished
+ <Description>   卸载字体结束槽函数
+ <Author>        ut000442
+ <Input>         QStringList files Description:删除字体列表
+ <Return>        null           Description:null
+ <Note>          null
+*************************************************************************/
+void DFontMgrMainWindow::onUninstallFontFinished(QStringList &files)
+{
+    m_fontPreviewListView->updateSpinner(DFontSpinnerWidget::Delete);
+    Q_EMIT DFontPreviewListDataThread::instance()->requestDeleted(files);
+}
+
+/*************************************************************************
+ <Function>      onCacheFinish
+ <Description>   fc-cache执行结束槽函数
+ <Author>        ut000442
+ <Input>         null
+ <Return>        null           Description:null
+ <Note>          null
+*************************************************************************/
+void DFontMgrMainWindow::onCacheFinish()
+{
+    qDebug() << "set m_cacheFinish = true";
+    m_cacheFinish = true;
+    hideSpinner();
+}
+
+/*************************************************************************
+ <Function>      onRequestInstFontsUiAdded
+ <Description>   ui界面操作结束槽函数
+ <Author>        ut000442
+ <Input>         null
+ <Return>        null           Description:null
+ <Note>          null
+*************************************************************************/
+void DFontMgrMainWindow::onRequestInstFontsUiAdded()
+{
+    qDebug() << "set m_installFinish = true";
+    m_installFinish = true;
+    hideSpinner();
+}
+
+/*************************************************************************
+ <Function>      onFontChanged
+ <Description>   系统字体变化槽函数
+ <Author>        ut000442
+ <Input>         null
+ <Return>        null           Description:null
+ <Note>          null
+*************************************************************************/
+void DFontMgrMainWindow::onFontChanged()
+{
+    D_D(DFontMgrMainWindow);
+
+    int size = d->fontScaleSlider->value();
+    QString fontSize = QString::number(size) + "px";
+    autoLabelWidth(fontSize, d->fontSizeLabel, d->fontSizeLabel->fontMetrics());
+    m_fontPreviewListView->onFontChanged(qApp->font());
+}
+
+/*************************************************************************
+ <Function>      onFontSizeRequestToSlider
+ <Description>   设置显示的字体大小槽函数
+ <Author>        ut000442
+ <Input>         null
+ <Return>        null           Description:null
+ <Note>          null
+*************************************************************************/
+void DFontMgrMainWindow::onFontSizeRequestToSlider()
+{
+    D_D(DFontMgrMainWindow);
+
+    if (!d->searchFontEdit->text().isEmpty()) {
+        onSearchTextChanged(d->searchFontEdit->text());
+    }
+    //删除过程中安装字体，删除过后要继续安装
+    qDebug() << "m_waitForInstall" << m_waitForInstall;
+    waitForInsert();
+}
+
+/*************************************************************************
+ <Function>      onExportFontFinished
+ <Description>   导出结束槽函数
+ <Author>        ut000442
+ <Input>         count          Description:导出成功的数目
+ <Return>        null           Description:null
+ <Note>          null
+*************************************************************************/
+void DFontMgrMainWindow::onExportFontFinished(int count)
+{
+    showExportFontMessage(count, m_menuAllMinusSysFontList.count() - count);
+    PerformanceMonitor::exportFontFinish(count);
+}
+
+/*************************************************************************
+ <Function>      onMenuHidden
+ <Description>   右键菜单消失槽函数
+ <Author>        ut000442
+ <Input>         null
+ <Return>        null           Description:null
+ <Note>          null
+*************************************************************************/
+void DFontMgrMainWindow::onMenuHidden()
+{
+    if (m_fontPreviewListView->getFontViewHasFocus()) {
+        m_fontPreviewListView->setFocus(Qt::TabFocusReason);
+        if (!m_hasMenuTriggered)
+            m_fontPreviewListView->syncTabStatus();
+
+        //  菜单消失后就对这个标志位进行复位，此时删除过程还未结束，删除结束后检测此标志位时为false，
+        //  导致后面判断逻辑出错，没法正常设置焦点，所以删除之后无法全选 有因为在后面的代码中有复位
+        //  的逻辑所以取消这里代码。
+        //  m_fontPreviewListView->setFontViewHasFocus(false);
+    }
+    m_hasMenuTriggered = false;
+}
+
+/*************************************************************************
+ <Function>      onFontManagerFinished
+ <Description>   fontmananger线程结束槽函数
+ <Author>        ut000442
+ <Input>         null
+ <Return>        null           Description:null
+ <Note>          null
+*************************************************************************/
+void DFontMgrMainWindow::onFontManagerFinished()
+{
+    if (m_needWaitThreadStop) {
+        m_fontManager->setType(DFontManager::DoCache);
+        m_fontManager->start();
+        m_needWaitThreadStop = false;
+    }
 }
 
 /*************************************************************************

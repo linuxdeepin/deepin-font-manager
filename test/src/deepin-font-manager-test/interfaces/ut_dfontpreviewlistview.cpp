@@ -1069,7 +1069,7 @@ TEST_F(TestDFontPreviewListView, checkOnMouseRightBtnPressedNotShift)
     Stub s2;
     s2.set(ADDR(FontData, getHoverState), stub_getHoverState);
 
-    QSignalSpy spy(listview->m_signalManager, SIGNAL(onMenuHidden()));
+    QSignalSpy spy(listview->m_signalManager, SIGNAL(menuHidden()));
 
     listview->m_fontPreviewProxyModel->insertRows(0, 5);
     listview->selectAll();

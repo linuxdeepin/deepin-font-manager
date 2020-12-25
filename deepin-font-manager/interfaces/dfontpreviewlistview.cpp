@@ -1061,7 +1061,7 @@ void DFontPreviewListView::onMouseRightBtnPressed(const QModelIndex &modelIndex,
     //弹出右键菜单
     onListViewShowContextMenu();
     //菜单关闭之后
-    emit m_signalManager->onMenuHidden();
+    emit m_signalManager->menuHidden();
     refreshFocuses();
 }
 

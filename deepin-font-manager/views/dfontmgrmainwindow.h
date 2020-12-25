@@ -164,8 +164,6 @@ public:
         return m_IsWindowMax;
     }
 
-    //处理键盘press事件
-    void keyPressEvent(QKeyEvent *event)override;
 
     //安装完成后切换至用户字体页面
     void showInstalledFiles();
@@ -212,7 +210,6 @@ protected:
     void showExportFontMessage(int successCount, int abandonFilesCount);
     //调用显示快捷键的说明页面
     void showAllShortcut();
-
     //判断是否需要隐藏旋转进度图标
     void hideSpinner();
     //更新待安装列表
@@ -227,24 +224,28 @@ protected:
     void mainwindowFocusOutCheck(QObject *obj, QEvent *event);
     //对主窗口中的focusin事件进行检查后对相关控件标志位等进行处理
     void mainwindowFocusInCheck(QObject *obj, QEvent *event);
-    //处理拖入事件
-    void dragEnterEvent(QDragEnterEvent *event) override;
-    //处理拖放事件
-    void dropEvent(QDropEvent *event) override;
+    //调节右下角字体大小显示label显示内容
+    void autoLabelWidth(QString text, DLabel *lab, QFontMetrics fm);
+    //设置tab聚焦顺序
+    void setNextTabFocus(QObject *obj);//SP3--设置tab顺序(539)
     //响应字体大小滑块大小改变
     void respondToValueChanged(int value);
     //响应安装结束
     void respondToInstallOver(int successInstallCount);
 
+    //处理拖放事件
+    void dropEvent(QDropEvent *event) override;
+    //处理键盘press事件
+    void keyPressEvent(QKeyEvent *event)override;
+    //处理拖入事件
+    void dragEnterEvent(QDragEnterEvent *event) override;
     //处理窗口大小变化事件
     void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
     void changeEvent(QEvent *event)Q_DECL_OVERRIDE;
-    //调节右下角字体大小显示label显示内容
-    void autoLabelWidth(QString text, DLabel *lab, QFontMetrics fm);
-    //设置tab聚焦顺序
-    void setNextTabFocus(QObject *obj);//SP3--设置tab顺序(539)
     //事件过滤器：用于过滤事件
     bool eventFilter(QObject *obj, QEvent *event)Q_DECL_OVERRIDE;//SP3--设置tab顺序(539)
+
+
 signals:
     //信号-文管中选中字体打开
     void fileSelected(const QStringList &files, bool isAddBtnHasTabs) const;
@@ -276,9 +277,30 @@ public slots:
     void onShowMessage(int totalCount);
     //显示或停止旋转进度图标
     void onShowSpinner(bool bShow, bool force, DFontSpinnerWidget::SpinnerStyles style);
+    //删除窗口确认删除槽函数
     void onconfirmDelDlgAccept();
-    //安装窗口销毁
+    //安装窗口销毁槽函数
     void onInstallWindowDestroyed(QObject * = nullptr);
+    //右键菜单即将显示槽函数
+    void onRightMenuAboutToShow();
+    //右键菜单即将消失槽函数
+    void onRightMenuAboutToHide();
+    //卸载字体结束槽函数
+    void onUninstallFontFinished(QStringList &files);
+    //fc-cache执行结束槽函数
+    void onCacheFinish();
+    //ui界面操作结束槽函数
+    void onRequestInstFontsUiAdded();
+    //系统字体变化槽函数
+    void onFontChanged();
+    //设置显示的字体大小槽函数
+    void onFontSizeRequestToSlider();
+    //导出结束槽函数
+    void onExportFontFinished(int count);
+    //右键菜单消失槽函数
+    void onMenuHidden();
+    //fontmananger线程结束槽函数
+    void onFontManagerFinished();
 
 protected:
     DFontPreviewListView *m_fontPreviewListView;
