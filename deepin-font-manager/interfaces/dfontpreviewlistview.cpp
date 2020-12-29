@@ -1080,7 +1080,6 @@ void DFontPreviewListView::onMouseRightBtnPressed(const QModelIndex &modelIndex,
 *************************************************************************/
 void DFontPreviewListView::mouseReleaseEvent(QMouseEvent *event)
 {
-    qDebug() << __FUNCTION__ << " begin";
     if (Qt::MidButton == event->button()) {
         return;
     }
@@ -1093,7 +1092,6 @@ void DFontPreviewListView::mouseReleaseEvent(QMouseEvent *event)
     if (event->button() == Qt::LeftButton) {
         onMouseLeftBtnReleased(modelIndex, clickPoint);
     }
-    qDebug() << __FUNCTION__ << " end\n\n";
 }
 
 /*************************************************************************

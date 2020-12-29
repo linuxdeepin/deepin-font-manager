@@ -605,6 +605,7 @@ void DFontPreviewListDataThread:: refreshFontListData(bool isStartup, const QStr
                 index = insertFontItemData(info, index, m_chineseFontPathList, m_monoSpaceFontPathList, isStartup, isEnabled);
             }
         }
+
         m_dbManager->commitAddFontInfo();
     }
     qInfo() << __FUNCTION__ << " end " << QThread::currentThreadId() << m_diffFontModelList.size() << m_fontModelList.size();
