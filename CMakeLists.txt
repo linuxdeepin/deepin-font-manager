@@ -62,5 +62,9 @@ ENDIF()
 ADD_SUBDIRECTORY(deepin-font-manager)
 ADD_SUBDIRECTORY(deepin-font-preview-plugin)
 
+#安装帮助手册需要文件
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/deepin-font-manager-assets/deepin-font-manager
+   DESTINATION /usr/share/deepin-manual/manual-assets/application/)
+
 ADD_SUBDIRECTORY(test)
 
