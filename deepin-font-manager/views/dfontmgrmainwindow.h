@@ -8,6 +8,7 @@
 #include "dsplitlistwidget.h"
 #include "views/dfdeletedialog.h"
 #include "utils.h"
+#include "getuseraddfontthread.h"
 
 #include <DSearchEdit>
 #include <DSlider>
@@ -212,6 +213,9 @@ protected:
     void showAllShortcut();
     //判断是否需要隐藏旋转进度图标
     void hideSpinner();
+
+    void afterAllStartup();
+
     //更新待安装列表
     void waitForInsert();
     //根据输入内容调整预览字体
@@ -381,7 +385,6 @@ protected:
     QStringList m_waitForInstall;
 
     DFInstallNormalWindow  *m_dfNormalInstalldlg {nullptr};
-
     QScopedPointer<DFQuickInstallWindow> m_quickInstallWnd;
 
     QScopedPointer<DFontMgrMainWindowPrivate> m_ptr;

@@ -181,8 +181,10 @@ void DFontPreviewListView::onMultiItemsAdded(QList<DFontPreviewItemData> &data, 
 
     DFontInfoManager::instance()->updateSP3FamilyName(fontList, true);
 
-    if (styles == DFontSpinnerWidget::StartupLoad)
+    if (styles == DFontSpinnerWidget::StartupLoad){
         Q_EMIT onLoadFontsStatus(1);
+    }
+
 }
 
 
@@ -197,30 +199,10 @@ void DFontPreviewListView::onMultiItemsAdded(QList<DFontPreviewItemData> &data, 
 *************************************************************************/
 void DFontPreviewListView::onStartupMultiItemAdded(QList<DFontPreviewItemData> &data)
 {
-    QMutexLocker locker(&m_mutex);
-    int rows = m_fontPreviewItemModel->rowCount();
-    qInfo() << __FUNCTION__ << data.size() << rows;
+    onRefreshListview(data);
 
-    bool res = m_fontPreviewItemModel->insertRows(rows, data.size());
-    if (!res) {
-        qDebug() << __FUNCTION__ << "insertRows fail";
-        return;
-    }
-    int i = 0;
-
-    for (DFontPreviewItemData &itemData : data) {
-        FontData fdata = itemData.fontData;
-        QModelIndex index = m_fontPreviewItemModel->index(rows + i,   0);
-        res = m_fontPreviewItemModel->setData(index, QVariant::fromValue(fdata), Qt::DisplayRole);
-
-        if (!res)
-            qDebug() << __FUNCTION__ << "setData fail";
-        setFontData(index, itemData);
-        i++;
-    }
-
-//    Q_EMIT onLoadFontsStatus(1);
-
+    //启动完成，加载用户自己添加的字体
+    emit loadUserAddFont();
 }
 
 /*************************************************************************
@@ -277,6 +259,7 @@ void DFontPreviewListView::initConnections()
 {
     connect(this, &DFontPreviewListView::itemsSelected, this, &DFontPreviewListView::selectFonts);
     connect(this, &DFontPreviewListView::multiItemsAdded, this, &DFontPreviewListView::onMultiItemsAdded);
+    connect(this, &DFontPreviewListView::refreshListview, this, &DFontPreviewListView::onRefreshListview);
     connect(this, &DFontPreviewListView::startupMultiItemsAdded, this, &DFontPreviewListView::onStartupMultiItemAdded);
     connect(this, &DFontPreviewListView::itemRemoved, this, &DFontPreviewListView::onItemRemoved);
     connect(this, &DFontPreviewListView::requestUpdateModel, this, &DFontPreviewListView::updateModel);
@@ -352,12 +335,36 @@ void DFontPreviewListView::loadLeftFonts()
         m_dataLoadThread->start();
 
         connect(m_dataLoadThread, &LoadFontDataThread::dataLoadFinish, this, [ = ](QList<DFontPreviewItemData> &dataList) {
-            m_dataLoadThread->quit();
-            m_dataLoadThread->wait();
             emit startupMultiItemsAdded(dataList);
         });
 
     }
+}
+
+void DFontPreviewListView::onRefreshListview(QList<DFontPreviewItemData> &data)
+{
+    QMutexLocker locker(&m_mutex);
+    int rows = m_fontPreviewItemModel->rowCount();
+    qInfo() << __FUNCTION__ << data.size() << rows;
+
+    bool res = m_fontPreviewItemModel->insertRows(rows, data.size());
+    if (!res) {
+        qDebug() << __FUNCTION__ << "insertRows fail";
+        return;
+    }
+    int i = 0;
+
+    for (DFontPreviewItemData &itemData : data) {
+        FontData fdata = itemData.fontData;
+        QModelIndex index = m_fontPreviewItemModel->index(rows + i,   0);
+        res = m_fontPreviewItemModel->setData(index, QVariant::fromValue(fdata), Qt::DisplayRole);
+
+        if (!res)
+            qDebug() << __FUNCTION__ << "setData fail";
+        setFontData(index, itemData);
+        i++;
+    }
+
 }
 
 /*************************************************************************
@@ -889,9 +896,6 @@ void DFontPreviewListView::mouseMoveEvent(QMouseEvent *event)
 
     QPoint clickPoint = event->pos();
     QModelIndex modelIndex = indexAt(clickPoint);
-
-
-
     if (modelIndex.isValid()) {
         QRect rect = visualRect(modelIndex);
         QRect collectIconRect = getCollectionIconRect(rect);

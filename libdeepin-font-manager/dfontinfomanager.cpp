@@ -195,20 +195,8 @@ QStringList DFontInfoManager::getAllFontPath(bool isStartup) const
     QStringList pathList = getFonts(DFontInfoManager::All);
 #endif
     QStringList pathList;
-    QProcess process;
 
-    process.start("fc-list", QStringList() << ":" << "file");
-    process.waitForFinished(-1);
-
-    QString output = process.readAllStandardOutput();
-    QStringList lines = output.split(QChar('\n'));
-
-    for (QString &line : lines) {
-        QString filePath = line.remove(QChar(':')).simplified();
-        if (filePath.length() > 0 && !pathList.contains(filePath)) {
-            pathList << filePath;
-        }
-    }
+    pathList = getAllFclistPathList();
 
     if (isStartup) {
         //系统字体文件
@@ -230,6 +218,29 @@ QStringList DFontInfoManager::getAllFontPath(bool isStartup) const
 
     return pathList;
 }
+
+QStringList DFontInfoManager::getAllFclistPathList() const
+{
+    QProcess process;
+    QStringList pathList;
+
+
+    process.start("fc-list", QStringList() << ":" << "file");
+    process.waitForFinished(-1);
+
+    QString output = process.readAllStandardOutput();
+    QStringList lines = output.split(QChar('\n'));
+
+    for (QString &line : lines) {
+        QString filePath = line.remove(QChar(':')).simplified();
+        if (filePath.length() > 0 && !pathList.contains(filePath)) {
+            pathList << filePath;
+        }
+    }
+    return pathList;
+}
+
+
 
 /*************************************************************************
  <Function>      getFileNames

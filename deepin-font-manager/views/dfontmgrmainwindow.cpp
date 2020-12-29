@@ -8,6 +8,7 @@
 #include "views/dfquickinstallwindow.h"
 #include "performancemonitor.h"
 
+
 #include <DWidgetUtil>
 #include <DApplication>
 #include <DApplicationHelper>
@@ -257,8 +258,7 @@ void DFontMgrMainWindow::initConnections()
     connect(m_fontPreviewListView, &DFontPreviewListView::requestInstFontsUiAdded, this,
             &DFontMgrMainWindow::onRequestInstFontsUiAdded, Qt::QueuedConnection);
     // Loading Font List Signal
-    connect(m_fontPreviewListView, SIGNAL(onLoadFontsStatus(int)),
-            this, SLOT(onLoadStatus(int)));
+    connect(m_fontPreviewListView, &DFontPreviewListView::onLoadFontsStatus,this,&DFontMgrMainWindow::onLoadStatus);
     //listviwe行数发生变化
     connect(m_fontPreviewListView, &DFontPreviewListView::rowCountChanged, this,
             &DFontMgrMainWindow::onFontListViewRowCountChanged, Qt::UniqueConnection);
@@ -267,6 +267,7 @@ void DFontMgrMainWindow::initConnections()
             &DFontMgrMainWindow::onShowSpinner);
     //字体删除过程结束
     connect(m_fontPreviewListView, &DFontPreviewListView::deleteFinished, this, &DFontMgrMainWindow::setDeleteFinish);
+    connect(m_fontPreviewListView,&DFontPreviewListView::loadUserAddFont,this, &DFontMgrMainWindow::afterAllStartup);
 }
 
 /*************************************************************************
@@ -1653,6 +1654,7 @@ void DFontMgrMainWindow::onconfirmDelDlgAccept()
     //disable file system watcher
     onShowSpinner(true, false, DFontSpinnerWidget::Delete);
     Q_EMIT DFontPreviewListDataThread::instance(m_fontPreviewListView)->requestRemoveFileWatchers(m_menuDelFontList);
+    qDebug()<<m_menuDelFontList.count()<<"!!!!!!!!!!!!!!!!11"<<endl;
     DFontManager::instance()->setType(DFontManager::UnInstall);
     DFontManager::instance()->setUnInstallFile(m_menuDelFontList);
     DFontManager::instance()->start();
@@ -2257,6 +2259,13 @@ void DFontMgrMainWindow::hideSpinner()
     //更新选中位置和设置滚动
     m_fontPreviewListView->scrollWithTheSelected();
     m_fontPreviewListView->refreshFocuses();
+}
+
+void DFontMgrMainWindow::afterAllStartup()
+{
+    //获取用户不通过本应用安装的字体
+    GetUserAddFontThread *getUsrAddFontThread = new GetUserAddFontThread;
+    getUsrAddFontThread->start();
 }
 
 /*************************************************************************

@@ -68,7 +68,7 @@ void GetFontListWorker::run()
         thread->m_allFontPathList.clear();
         thread->m_allFontPathList = inst->getAllFontPath(true);
 
-        removeUserAddFonts();
+//        removeUserAddFonts();
 
         DFMDBManager::instance()->getAllRecords();
         QList<DFontPreviewItemData> list = DFMDBManager::instance()->getFontInfo(50, &thread->m_delFontInfoList);
@@ -154,6 +154,25 @@ void FontManager::getStartFontList()
 
     GetFontListWorker *getAll = new GetFontListWorker(GetFontListWorker::Startup);
     threadPool->start(getAll);
+    GetFontListWorker *getChinese = new GetFontListWorker(GetFontListWorker::CHINESE);
+    threadPool->start(getChinese);
+    GetFontListWorker *getMonospace = new GetFontListWorker(GetFontListWorker::MONOSPACE);
+    threadPool->start(getMonospace);
+    threadPool->waitForDone();
+}
+
+/*************************************************************************
+ <Function>      getChineseAndMonoFont
+ <Description>   获取当前系统中的中文字体和等宽字体
+ <Author>        null
+ <Input>         null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
+void FontManager::getChineseAndMonoFont()
+{
+    QThreadPool *threadPool = DCopyFilesManager::instance()->getPool();
+
     GetFontListWorker *getChinese = new GetFontListWorker(GetFontListWorker::CHINESE);
     threadPool->start(getChinese);
     GetFontListWorker *getMonospace = new GetFontListWorker(GetFontListWorker::MONOSPACE);

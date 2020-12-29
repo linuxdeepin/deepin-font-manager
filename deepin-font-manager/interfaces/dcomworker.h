@@ -61,6 +61,7 @@ public:
     void getFontList();
     void getFontListInSequence();
     void getStartFontList();
+    void getChineseAndMonoFont();
 
 private:
     static FontManager *m_fontManager;

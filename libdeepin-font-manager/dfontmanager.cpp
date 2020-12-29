@@ -260,12 +260,12 @@ void DFontManager::doUninstall(const QStringList &fileList)
         QDir userFontDir("/usr/share/fonts/");
         QDir systemFontDir(QDir::homePath() + "/.local/share/fonts");
         // For security, check the font dir is valid
-        if (userFontDir == fileDir || systemFontDir == fileDir) {
-#ifdef QT_DEBUG
-            qDebug() << "Invalid dir:" << fileDir.path();
-#endif
-            continue;
-        }
+//        if (userFontDir == fileDir || systemFontDir == fileDir) {
+//#ifdef QT_DEBUG
+//            qDebug() << "Invalid dir:" << fileDir.path();
+//#endif
+//            continue;
+//        }
 
         QFile::remove(file);
 

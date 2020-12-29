@@ -326,6 +326,9 @@ signals:
     void requestUpdateModel(int deleteCount, bool showSpinner);
     //请求刷新加载图标
     void requestShowSpinner(bool bShow, bool force, DFontSpinnerWidget::SpinnerStyles style);
+    //加载用户自己添加的字体
+    void loadUserAddFont();
+    void refreshListview(QList<DFontPreviewItemData> &data);
 
 public slots:
     //listview中启用禁用响应函数
@@ -358,6 +361,8 @@ public slots:
     void cancelDel();
     //加载启动过程中未加载的字体
     void loadLeftFonts();
+    //
+    void onRefreshListview(QList<DFontPreviewItemData> &data);
 };
 
 #endif  // DFONTPREVIEWLISTVIEW_H

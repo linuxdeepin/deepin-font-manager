@@ -37,7 +37,7 @@ public:
     //从字体信息链表中删除需要删除的项
     void removeFontData(const DFontPreviewItemData &removeItemData);
     //将需要添加项的字体数据收集放人list中
-    int insertFontItemData(const QString &filePath,
+    int insertFontItemData(const DFontInfo info,
                            int index,
                            const QStringList &chineseFontPathList,
                            const QStringList &monoSpaceFontPathList,
@@ -71,6 +71,12 @@ public:
         return itemdata;
     }
 
+    //
+    void onRefreshUserAddFont(QList<DFontInfo> &fontInfoList);
+
+private:
+    void withoutDbRefreshDb(QStringList &m_allFontPathList);
+
 signals:
     //发出删除字体文件请求
     void requestDeleted(QStringList &files);
@@ -88,6 +94,7 @@ signals:
     void requestExportFont(QStringList &files);
     //导出字体后，请求提示信息
     void exportFontFinished(int count);
+
 
 protected slots:
     //线程函数
