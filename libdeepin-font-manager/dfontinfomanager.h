@@ -127,7 +127,7 @@ struct DFontInfo {
 
     bool operator==(const DFontInfo &info)
     {
-        return info.familyName == familyName && info.styleName == styleName && info.fullname == fullname;
+        return info.familyName == familyName && info.styleName == styleName && info.fullname == fullname && info.filePath == filePath;
     }
 
     QString toString() const
