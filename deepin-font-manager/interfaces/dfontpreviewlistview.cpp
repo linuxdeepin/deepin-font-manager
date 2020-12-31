@@ -50,8 +50,6 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
     initConnections();
     installEventFilter(this);
 
-
-
     m_curAppFont.setFamily(QString());
     m_curAppFont.setStyleName(QString());
 }
@@ -832,7 +830,6 @@ void DFontPreviewListView::selectFonts(const QStringList &fileList)
     QItemSelection selection;
     DFontPreviewProxyModel *filterModel = getFontPreviewProxyModel();
     filterModel->setFilterGroup(DSplitListWidget::UserFont);
-
     qDebug() << __FUNCTION__ << " fileList size " << fileList.size() << ", row count " << filterModel->rowCount();
     for (int i = 0; i < filterModel->rowCount(); ++i) {
         QModelIndex index = filterModel->index(i, 0);
@@ -1056,8 +1053,6 @@ void DFontPreviewListView::onMouseRightBtnPressed(const QModelIndex &modelIndex,
         fdata.setHoverState(IconNormal);
         m_fontPreviewProxyModel->setData(modelIndex, QVariant::fromValue(fdata), Qt::DisplayRole);
     }
-
-
     //记录焦点状态
     syncRecoveryTabStatus();
     qDebug() << hasFocus() << endl;

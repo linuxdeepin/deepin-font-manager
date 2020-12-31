@@ -21,6 +21,8 @@
 
 #include "dcopyfilesmanager.h"
 #include "dfontmanager.h"
+#include "dfontinfomanager.h"
+#include "dfmdbmanager.h"
 
 #include <QDateTime>
 #include <QThread>
@@ -206,6 +208,15 @@ QString DCopyFilesManager::getTargetPath(const QString &inPath, QString &srcPath
     if (familyName.contains("/")) {
         familyName.replace("/", "-");
     }
+
+    DFontInfo fontInfo = DFontInfoManager::instance()->getFontInfo(srcPath);
+    QString src = DFMDBManager::instance()->isFontInfoExist(fontInfo);
+
+    if(!src.isEmpty()){
+        targetPath = src;
+        return familyName;
+    }
+
     const QFileInfo info(srcPath);
     QString dirName = familyName;
 
