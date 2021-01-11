@@ -150,6 +150,7 @@ void DFontPreviewListDataThread::initFileSystemWatcher()
         m_view->updateChangedFile(m_waitForDeleteFiles);
         //删除后加载动画消失
         Q_EMIT m_view->requestShowSpinner(false, true, DFontSpinnerWidget::Delete);
+        m_deleteFileRecivetimer->stop();
         m_waitForDeleteFiles.clear();
     });
 
