@@ -47,8 +47,8 @@ FILE(GLOB SRC_FILES ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp ${CMAKE_CURRENT_SOURCE_DIR
                     ${CMAKE_CURRENT_SOURCE_DIR}/interfaces/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/interfaces/*.h)
 
 SET(QRC_FILES ${CMAKE_CURRENT_SOURCE_DIR}/../deepin-font-manager-assets/deepin-font-manager.qrc)
-
-CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/environments.h.in ${CMAKE_CURRENT_SOURCE_DIR}/environments.h @ONLY)
+include_directories(${CMAKE_BINARY_DIR}/deepin-font-manager)
+CONFIGURE_FILE(environments.h.in environments.h @ONLY)
 
 TARGET_SOURCES(${APP_BIN} PRIVATE ${SRC_FILES} ${QRC_FILES} ${LIB_SRC_FILES})
 TARGET_INCLUDE_DIRECTORIES(${APP_BIN} PRIVATE ${LIB_DIR})

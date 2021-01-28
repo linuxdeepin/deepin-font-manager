@@ -5,3 +5,5 @@ moc_*.cpp
 *.qm
 build/
 *.pro.user
+*.user
+obj-x86_64-linux-gnu
