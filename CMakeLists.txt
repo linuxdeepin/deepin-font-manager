@@ -66,5 +66,5 @@ ADD_SUBDIRECTORY(deepin-font-preview-plugin)
 install(DIRECTORY ${CMAKE_SOURCE_DIR}/deepin-font-manager-assets/deepin-font-manager
    DESTINATION /usr/share/deepin-manual/manual-assets/application/)
 
-ADD_SUBDIRECTORY(test)
+ADD_SUBDIRECTORY(tests)
 

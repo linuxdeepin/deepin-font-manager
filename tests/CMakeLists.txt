@@ -96,7 +96,7 @@ ADD_CUSTOM_TARGET( test
 
 ADD_CUSTOM_COMMAND(TARGET test
         COMMAND echo " =================== TEST BEGIN ===================="
-        COMMAND ${CMAKE_BINARY_DIR}/test/${PROJECT_NAME_TEST}
+        COMMAND ${CMAKE_BINARY_DIR}/tests/${PROJECT_NAME_TEST}
         COMMAND echo " =================== TEST END ===================="
 )
 
