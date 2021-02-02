@@ -193,11 +193,11 @@ void DFDeleteDialog::setTheme()
 {
     if (DApplicationHelper::DarkType == DApplicationHelper::instance()->themeType()) {
         DPalette pa = DApplicationHelper::instance()->palette(this);
-        pa.setColor(DPalette::Background, QColor(25, 25, 25, 80));
+        pa.setColor(DPalette::Background, QColor(25, 25, 25));
         DApplicationHelper::instance()->setPalette(this, pa);
     } else {
         DPalette pa = DApplicationHelper::instance()->palette(this);
-        pa.setColor(DPalette::Background, QColor(247, 247, 247, 80));
+        pa.setColor(DPalette::Background, QColor(247, 247, 247));
         DApplicationHelper::instance()->setPalette(this, pa);
     }
 }
