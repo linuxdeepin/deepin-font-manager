@@ -37,13 +37,10 @@ static DFontManager *INSTANCE = nullptr;
 *************************************************************************/
 DFontManager *DFontManager::instance()
 {
-
     QMutex mutex;
     if (INSTANCE == nullptr) {
         QMutexLocker locker(&mutex);
-        if (INSTANCE == nullptr) {
-            INSTANCE = new DFontManager;
-        }
+        INSTANCE = new DFontManager;
     }
 
     return INSTANCE;

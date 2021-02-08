@@ -1037,7 +1037,7 @@ void DFontPreviewListView::onMouseRightBtnPressed(const QModelIndex &modelIndex,
             for (auto it = m_currentSelectedRow; it <= modelIndex.row(); it++) {
                 selectionModel()->select(m_fontPreviewProxyModel->index(it, 0), QItemSelectionModel::Select);
             }
-        } else if (m_currentSelectedRow > modelIndex.row()) {
+        } else {
             for (auto it = modelIndex.row(); it <= m_currentSelectedRow; it++) {
                 selectionModel()->select(m_fontPreviewProxyModel->index(it, 0), QItemSelectionModel::Select);
             }

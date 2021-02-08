@@ -544,11 +544,11 @@ void DFontPreviewListDataThread:: refreshFontListData(bool isStartup, const QStr
         FontManager::instance()->getFontListInSequence();
     }
 
-    QList<DFontPreviewItemData> list;
+    QList<DFontPreviewItemData> datalist;
     if (SignalManager::m_isDataLoadFinish == false) {
-        list = DFMDBManager::instance()->getFontInfo(DFMDBManager::recordList, &m_delFontInfoList);
+        datalist = DFMDBManager::instance()->getFontInfo(DFMDBManager::recordList, &m_delFontInfoList);
 
-        m_fontModelList.append(list);
+        m_fontModelList.append(datalist);
         for (DFontPreviewItemData &itemData : m_delFontInfoList) {
             //如果字体文件已经不存在，则从t_manager表中删除
             //删除字体之前启用字体，防止下次重新安装后就被禁用
@@ -614,12 +614,12 @@ void DFontPreviewListDataThread:: refreshFontListData(bool isStartup, const QStr
     qInfo() << __FUNCTION__ << " end " << QThread::currentThreadId() << m_diffFontModelList.size() << m_fontModelList.size();
 
     if (!isStartup && !installFont.isEmpty()) {
-        Q_EMIT m_view->multiItemsAdded(list, DFontSpinnerWidget::NoLabel);
+        Q_EMIT m_view->multiItemsAdded(datalist, DFontSpinnerWidget::NoLabel);
         Q_EMIT m_view->multiItemsAdded(m_diffFontModelList, DFontSpinnerWidget::NoLabel);
         Q_EMIT m_view->itemsSelected(installFont);
     } else if (isStartup) {
-        QList<DFontPreviewItemData> list = m_fontModelList.mid(0, 50);
-        Q_EMIT m_view->multiItemsAdded(list, DFontSpinnerWidget::Load);
+        QList<DFontPreviewItemData> startuplist = m_fontModelList.mid(0, 50);
+        Q_EMIT m_view->multiItemsAdded(startuplist, DFontSpinnerWidget::Load);
     } else {
         Q_EMIT m_view->multiItemsAdded(m_fontModelList, DFontSpinnerWidget::Load);
     }

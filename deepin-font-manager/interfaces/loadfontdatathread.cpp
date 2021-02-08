@@ -2,9 +2,9 @@
 #include "dfontpreviewlistview.h"
 #include <QTimer>
 
-LoadFontDataThread::LoadFontDataThread(QList<QMap<QString, QString> > &list)
+LoadFontDataThread::LoadFontDataThread(QList<QMap<QString, QString>> &list)
+    : m_list(list)
 {
-    m_list = list;
 }
 
 void LoadFontDataThread::run()

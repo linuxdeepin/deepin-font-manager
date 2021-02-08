@@ -133,7 +133,7 @@ private:
 
     volatile bool m_installCanceled = false;
     Type m_type{Type::DefaultNullType};
-    CacheStatus m_CacheStatus;
+    CacheStatus m_CacheStatus {CacheStatus::CacheNow};
     int m_installedCount = 0;
 };
 

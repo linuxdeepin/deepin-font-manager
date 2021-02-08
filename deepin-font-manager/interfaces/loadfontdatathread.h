@@ -11,7 +11,7 @@ class LoadFontDataThread : public QThread
 {
     Q_OBJECT
 public:
-    LoadFontDataThread(QList<QMap<QString, QString>> &list);
+    explicit LoadFontDataThread(QList<QMap<QString, QString>> &list);
 
 protected:
     void run();
