@@ -268,7 +268,7 @@ public slots:
     //更新预览页面字号大小
     void onFontSizeChanged(int fontSize);
     //左侧菜单项切换选项
-    void onLeftSiderBarItemClicked(int index, bool needClearSelect = true);
+    void onLeftSiderBarItemClicked(int index = 0, bool needClearSelect = true);
     //安装后添加至listview
     void onFontInstallFinished(const QStringList &fileList);
     //字体删除fc-cache操作后恢复标志位

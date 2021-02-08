@@ -44,7 +44,7 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
     setMouseTracking(true);
     setUpdatesEnabled(true);
     setSelectionMode(QAbstractItemView::ExtendedSelection);
-
+    //准备加载数据，发送信号设置界面各控件状态
     initFontListData();
     initDelegate();
     initConnections();
@@ -179,10 +179,9 @@ void DFontPreviewListView::onMultiItemsAdded(QList<DFontPreviewItemData> &data, 
 
     DFontInfoManager::instance()->updateSP3FamilyName(fontList, true);
 
-    if (styles == DFontSpinnerWidget::StartupLoad){
+    if (styles == DFontSpinnerWidget::StartupLoad) {
         Q_EMIT onLoadFontsStatus(1);
     }
-
 }
 
 
@@ -356,13 +355,16 @@ void DFontPreviewListView::onRefreshListview(QList<DFontPreviewItemData> &data)
         FontData fdata = itemData.fontData;
         QModelIndex index = m_fontPreviewItemModel->index(rows + i,   0);
         res = m_fontPreviewItemModel->setData(index, QVariant::fromValue(fdata), Qt::DisplayRole);
-
+        if (itemData.fontInfo.fullname.compare("04b_09") == 0) {
+            qDebug() << __FUNCTION__ << itemData.fontInfo.fullname;
+        }
+        qDebug() << __FUNCTION__ << itemData.fontInfo.fullname;
         if (!res)
             qDebug() << __FUNCTION__ << "setData fail";
         setFontData(index, itemData);
         i++;
     }
-
+    Q_EMIT onLoadFontsStatus(3);
 }
 
 /*************************************************************************

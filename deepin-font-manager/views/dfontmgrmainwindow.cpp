@@ -258,7 +258,7 @@ void DFontMgrMainWindow::initConnections()
     connect(m_fontPreviewListView, &DFontPreviewListView::requestInstFontsUiAdded, this,
             &DFontMgrMainWindow::onRequestInstFontsUiAdded, Qt::QueuedConnection);
     // Loading Font List Signal
-    connect(m_fontPreviewListView, &DFontPreviewListView::onLoadFontsStatus,this,&DFontMgrMainWindow::onLoadStatus);
+    connect(m_fontPreviewListView, &DFontPreviewListView::onLoadFontsStatus, this, &DFontMgrMainWindow::onLoadStatus);
     //listviwe行数发生变化
     connect(m_fontPreviewListView, &DFontPreviewListView::rowCountChanged, this,
             &DFontMgrMainWindow::onFontListViewRowCountChanged, Qt::UniqueConnection);
@@ -267,7 +267,7 @@ void DFontMgrMainWindow::initConnections()
             &DFontMgrMainWindow::onShowSpinner);
     //字体删除过程结束
     connect(m_fontPreviewListView, &DFontPreviewListView::deleteFinished, this, &DFontMgrMainWindow::setDeleteFinish);
-    connect(m_fontPreviewListView,&DFontPreviewListView::loadUserAddFont,this, &DFontMgrMainWindow::afterAllStartup);
+    connect(m_fontPreviewListView, &DFontPreviewListView::loadUserAddFont, this, &DFontMgrMainWindow::afterAllStartup);
 }
 
 /*************************************************************************
@@ -1390,19 +1390,16 @@ void DFontMgrMainWindow::onLeftSiderBarItemClicked(int index, bool needClearSele
         return;
     }
 
-    m_leftIndex = 0;
-
-    qDebug() << __FUNCTION__ << index << endl;
+    m_leftIndex = static_cast<qint8>(index);
+    //获取当前左侧列表选中的分组
     filterGroup = qvariant_cast<DSplitListWidget::FontGroup>(index);
-
     qDebug() << "filterGroup" << filterGroup << endl;
-
+    //获取右侧预览列表proxymodel
     DFontPreviewProxyModel *filterModel = m_fontPreviewListView->getFontPreviewProxyModel();
     filterModel->setFilterKeyColumn(0);
-    filterModel->setFilterGroup(filterGroup);
+    filterModel->setFilterGroup(filterGroup); //设置当前分组对应所有、系统、个人...，默认加载所有数据通过分组来过滤显示
     //filterModel->setEditStatus(m_searchTextStatusIsEmpty);
 
-    qDebug() << __FUNCTION__ << "";
     onFontListViewRowCountChanged();
     onPreviewTextChanged();
     if (needClearSelect)
@@ -1469,7 +1466,7 @@ void DFontMgrMainWindow::onFontListViewRowCountChanged()
             bShow = 1; //未找到字体
         }
     }
-    qDebug() << filterModel->rowCount() << "-------" << bShow << endl;
+    qDebug() << __FUNCTION__ << filterModel->rowCount() << "-------" << bShow << endl;
     bool isSpinnerHidden = m_fontLoadingSpinner->isHidden();
     switch (bShow) {
     case 0:
@@ -1536,48 +1533,54 @@ void DFontMgrMainWindow::onFontListViewRowCountChanged()
 void DFontMgrMainWindow::onLoadStatus(int type)
 {
     D_D(DFontMgrMainWindow);
-    if (0 == type || 1 == type) {
-        switch (type) {
-        case 0:
-            m_fontPreviewListView->hide();
-            if (m_noResultListView->isVisible()) {
-                m_noResultListView->hide();
-            }
-            m_fontLoadingSpinner->spinnerStop();
-            m_fontLoadingSpinner->spinnerStart();
-            m_fontLoadingSpinner->show();
-            break;
-        case 1:
-            if (m_fontPreviewListView->isListDataLoadFinished()) {
-                m_fontLoadingSpinner->hide();
-                m_fontLoadingSpinner->spinnerStop();
-            }
-            if (m_leftIndex >= 0) {
-                onLeftSiderBarItemClicked(m_leftIndex);
-            }
-            //弹出之前判断是否已有无结果view 539 31107
-            if (!m_noInstallListView->isVisible()) {
-                 m_fontPreviewListView->show();
-            }
-            //检查启动过程结束后是否需要进行安装
-            waitForInsert();
-            //检查是否有用户没通过应用自己添加的字体
-            afterAllStartup();
-            //第一次打开软件，正在加载数据时，搜索框的内容不为空，为做此操作 ut000794
-            if (m_openfirst) {
-                if (!d->searchFontEdit->text().isEmpty()) {
-                    emit d->searchFontEdit->textChanged(d->searchFontEdit->text());
-                }
-                m_openfirst = false;
-
-                PerformanceMonitor::loadFontFinish();
-            }
-            m_fontPreviewListView->onFontChanged(qApp->font());
-            break;
-        default:
-            break;
+    switch (type) {
+    case 0:
+        m_fontPreviewListView->hide();
+        if (m_noResultListView->isVisible()) {
+            m_noResultListView->hide();
         }
+        m_fontLoadingSpinner->spinnerStop();
+        m_fontLoadingSpinner->spinnerStart();
+        m_fontLoadingSpinner->show();
+        break;
+    case 1:
+        if (m_fontPreviewListView->isListDataLoadFinished()) {
+            m_fontLoadingSpinner->hide();
+            m_fontLoadingSpinner->spinnerStop();
+        }
+        if (m_leftIndex >= 0) {
+            onLeftSiderBarItemClicked(m_leftIndex);
+        }
+        //弹出之前判断是否已有无结果view 539 31107
+        if (!m_noInstallListView->isVisible()) {
+            m_fontPreviewListView->show();
+        }
+        //检查启动过程结束后是否需要进行安装
+        waitForInsert();
+        //检查是否有用户没通过应用自己添加的字体
+        afterAllStartup();
+        //第一次打开软件，正在加载数据时，搜索框的内容不为空，为做此操作 ut000794
+        if (m_openfirst) {
+            if (!d->searchFontEdit->text().isEmpty()) {
+                emit d->searchFontEdit->textChanged(d->searchFontEdit->text());
+            }
+            m_openfirst = false;
+
+            PerformanceMonitor::loadFontFinish();
+        }
+        m_fontPreviewListView->onFontChanged(qApp->font());
+        break;
+    case 3:
+        //加载用户字体结束后做个判断，如果当前切换到非所有选项并且当前显示为字体未安装则再刷新一下，
+        //防止启动后就切换页面，此时数据还未加载完成会提示字体未安装但实际是切换时还没有数据(目前为了启动效果只加载50条数据就认为已加载完成其它数据后台加载）
+        if (m_leftIndex > 0 && m_noInstallListView->isVisible()) {
+            onLeftSiderBarItemClicked(m_leftIndex);
+        }
+        break;
+    default:
+        break;
     }
+
     //if (type == 1 && !m_fileList.isEmpty()) {
     //    showInstalledFiles(m_fileList);
     //}
@@ -1657,7 +1660,7 @@ void DFontMgrMainWindow::onconfirmDelDlgAccept()
     //disable file system watcher
     onShowSpinner(true, false, DFontSpinnerWidget::Delete);
     Q_EMIT DFontPreviewListDataThread::instance(m_fontPreviewListView)->requestRemoveFileWatchers(m_menuDelFontList);
-    qDebug()<<m_menuDelFontList.count()<<"!!!!!!!!!!!!!!!!11"<<endl;
+    qDebug() << m_menuDelFontList.count() << "!!!!!!!!!!!!!!!!11" << endl;
     DFontManager::instance()->setType(DFontManager::UnInstall);
     DFontManager::instance()->setUnInstallFile(m_menuDelFontList);
     DFontManager::instance()->start();

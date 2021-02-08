@@ -87,14 +87,14 @@ void DFontPreviewListDataThread::doWork()
     if (disableFontList.count()  > 0) {
         syncFontEnableDisableStatusData(disableFontList);
     }
-
+    //获取启动时的需要用到的字体列表
     FontManager::instance()->getStartFontList();
 
     if (!m_startModelList.isEmpty()) {
         //从fontconfig配置文件同步字体启用/禁用状态数据
 //        syncFontEnableDisableStatusData(disableFontList);
         refreshStartupFontListData();
-        m_view->onFinishedDataLoad();
+        m_view->onFinishedDataLoad(); //当前只加载了50条数据所以切换到用户数据显示未安装
         return;
     }
 
@@ -368,6 +368,9 @@ DFontPreviewListView *DFontPreviewListDataThread::getView() const
 
 void DFontPreviewListDataThread::onRefreshUserAddFont(QList<DFontInfo> &fontInfoList)
 {
+    if (fontInfoList.size() < 1) {
+        return;
+    }
     int index =  m_dbManager->getCurrMaxFontId() + 1;
     DFMDBManager *fDbManager = DFMDBManager::instance();
     m_diffFontModelList.clear();
@@ -376,7 +379,7 @@ void DFontPreviewListDataThread::onRefreshUserAddFont(QList<DFontInfo> &fontInfo
         index = insertFontItemData(fileInfo, index, m_chineseFontPathList, m_monoSpaceFontPathList, false, true);
     }
     fDbManager->commitAddFontInfo();
-
+    m_isAllLoaded = true; //用户字体加载完成才是全部完成
     emit m_view->refreshListview(m_diffFontModelList);
 }
 
@@ -401,8 +404,8 @@ void DFontPreviewListDataThread::withoutDbRefreshDb(QStringList &m_allFontPathLi
     //没有数据库时通过fclist获取到的所有已安装的字体文件，经过去重添加到数据库中
     for (QString &filePath : m_allFontPathList) {
         if (filePath.length() > 0) {
-            info = fontInfoMgr->getFontInfo(filePath,true);
-            if(!fontInfolist.contains(info)){
+            info = fontInfoMgr->getFontInfo(filePath, true);
+            if (!fontInfolist.contains(info)) {
                 fontInfolist << info;
                 index = insertFontItemData(info, index, m_chineseFontPathList, m_monoSpaceFontPathList, true);
             }
@@ -433,7 +436,7 @@ int DFontPreviewListDataThread::insertFontItemData(const DFontInfo info,
                                                    const QStringList &chineseFontPathList,
                                                    const QStringList &monoSpaceFontPathList,
                                                    bool isStartup, bool isEnabled)
-{   
+{
     DFontPreviewItemData itemData;
     itemData.fontInfo = info;
 
@@ -600,8 +603,8 @@ void DFontPreviewListDataThread:: refreshFontListData(bool isStartup, const QStr
         DFontInfo info;
         for (QString &filePath : diffFilePathList) {
             if (m_dbManager->isSystemFont(filePath) || installFont.contains(filePath)) {
-                bool isEnabled = (isStartup && installFont.contains(filePath)) ? false : true;    
-                info = fontInfoMgr->getFontInfo(filePath,true);
+                bool isEnabled = (isStartup && installFont.contains(filePath)) ? false : true;
+                info = fontInfoMgr->getFontInfo(filePath, true);
                 index = insertFontItemData(info, index, m_chineseFontPathList, m_monoSpaceFontPathList, isStartup, isEnabled);
             }
         }
