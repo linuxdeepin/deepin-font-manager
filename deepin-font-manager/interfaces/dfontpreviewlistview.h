@@ -312,7 +312,7 @@ signals:
     //批量添加item请求
     void multiItemsAdded(QList<DFontPreviewItemData> &data, DFontSpinnerWidget::SpinnerStyles styles);
     //启动时批量添加item请求
-    void startupMultiItemsAdded(QList<DFontPreviewItemData> &data);
+    // void startupMultiItemsAdded(QList<DFontPreviewItemData> &data);
     //请求移除某一项的响应函数
     void itemRemoved(DFontPreviewItemData &data);
     //请求安装后的选中响应函数

@@ -282,10 +282,6 @@ void DFontManager::doUninstall(const QStringList &fileList)
     Q_EMIT uninstallFontFinished(m_uninstFile);
     qDebug() << __FUNCTION__ << m_uninstFile.size();
 
-//    QProcess process;
-//    process.start("fc-cache");
-//    process.waitForFinished();
-
 //发现开机后先删除字体再安装字体时，偶现安装进程无法启动，修改这里后现象消失
     bool ret = QProcess::startDetached("fc-cache");
     Q_EMIT uninstallFcCacheFinish();

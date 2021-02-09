@@ -1548,17 +1548,15 @@ void DFontMgrMainWindow::onLoadStatus(int type)
             m_fontLoadingSpinner->hide();
             m_fontLoadingSpinner->spinnerStop();
         }
-        if (m_leftIndex >= 0) {
-            onLeftSiderBarItemClicked(m_leftIndex);
-        }
+        //        if (m_leftIndex >= 0) {
+        //            onLeftSiderBarItemClicked(m_leftIndex);
+        //        }
         //弹出之前判断是否已有无结果view 539 31107
         if (!m_noInstallListView->isVisible()) {
             m_fontPreviewListView->show();
         }
         //检查启动过程结束后是否需要进行安装
         waitForInsert();
-        //检查是否有用户没通过应用自己添加的字体
-        afterAllStartup();
         //第一次打开软件，正在加载数据时，搜索框的内容不为空，为做此操作 ut000794
         if (m_openfirst) {
             if (!d->searchFontEdit->text().isEmpty()) {
@@ -2270,8 +2268,9 @@ void DFontMgrMainWindow::hideSpinner()
 void DFontMgrMainWindow::afterAllStartup()
 {
     //获取用户不通过本应用安装的字体
-    GetUserAddFontThread *getUsrAddFontThread = new GetUserAddFontThread;
+    GetUserAddFontThread *getUsrAddFontThread = new GetUserAddFontThread(this);
     getUsrAddFontThread->start();
+    connect(getUsrAddFontThread, &GetUserAddFontThread::finished, [this] { this->onLoadStatus(3); });
 }
 
 /*************************************************************************

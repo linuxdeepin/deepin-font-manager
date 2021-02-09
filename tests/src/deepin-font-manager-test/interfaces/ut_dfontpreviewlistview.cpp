@@ -992,7 +992,7 @@ TEST_F(TestDFontPreviewListView, checkLoadLeftFonts)
     Stub s;
     s.set(ADDR(DFontPreviewListView, isListDataLoadFinished), stub_True);
 
-    QSignalSpy spy(listview, SIGNAL(startupMultiItemsAdded(QList<DFontPreviewItemData> &)));
+    QSignalSpy spy(listview, SIGNAL(loadUserAddFont()));
 
     listview->loadLeftFonts();
     QList<DFontPreviewItemData> str;

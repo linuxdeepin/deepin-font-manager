@@ -53,7 +53,8 @@ public:
 
     bool isSystemFont(const QString &filePath)
     {
-        return filePath.contains("/usr/share/fonts/");
+        return filePath.contains("/usr/share/");
+        //return filePath.contains("/usr/share/fonts/");
     }
 
 private:

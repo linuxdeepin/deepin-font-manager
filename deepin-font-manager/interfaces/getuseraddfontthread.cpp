@@ -3,7 +3,8 @@
 #include "dcomworker.h"
 #include "dfontpreviewlistdatathread.h"
 
-GetUserAddFontThread::GetUserAddFontThread()
+GetUserAddFontThread::GetUserAddFontThread(QObject *parent)
+    : QThread(parent)
 {
 
 }
@@ -21,12 +22,12 @@ void GetUserAddFontThread::run()
     QStringList reduceSameFontList;
 
     DFontInfo fontInfo;
-
+    //通过fc-list获取安装字体并与数据库对比，如果存在选项不在数据库这该字体不是通过字体管理器安装，把它加入列表
     foreach (auto it, fclistPathList) {
         if (!dbPathlist.contains(it)) {
-            fontInfo = fontInfoManager->getFontInfo(it,true);
+            fontInfo = fontInfoManager->getFontInfo(it, true);
             //去重
-            if(!fontInfolist.contains(fontInfo)&&fDbManager->isFontInfoExist(fontInfo) == QString()){
+            if (!fontInfolist.contains(fontInfo) && fDbManager->isFontInfoExist(fontInfo) == QString()) {
                 fontInfolist << fontInfo;
             }
         }
@@ -35,5 +36,4 @@ void GetUserAddFontThread::run()
     FontManager::instance()->getChineseAndMonoFont();
 
     DFontPreviewListDataThread::instance()->onRefreshUserAddFont(fontInfolist);
-
 }

@@ -180,6 +180,10 @@ void DFontPreviewListView::onMultiItemsAdded(QList<DFontPreviewItemData> &data, 
     DFontInfoManager::instance()->updateSP3FamilyName(fontList, true);
 
     if (styles == DFontSpinnerWidget::StartupLoad) {
+        if (m_fontLoadTimer->isActive()) {
+            m_fontLoadTimer->stop();
+            loadLeftFonts();
+        }
         Q_EMIT onLoadFontsStatus(1);
     }
 }
@@ -198,7 +202,7 @@ void DFontPreviewListView::onStartupMultiItemAdded(QList<DFontPreviewItemData> &
 {
     onRefreshListview(data);
 
-    //启动完成，加载用户自己添加的字体
+    //检查是否有用户没通过应用自己添加的字体
     emit loadUserAddFont();
 }
 
@@ -257,7 +261,7 @@ void DFontPreviewListView::initConnections()
     connect(this, &DFontPreviewListView::itemsSelected, this, &DFontPreviewListView::selectFonts);
     connect(this, &DFontPreviewListView::multiItemsAdded, this, &DFontPreviewListView::onMultiItemsAdded);
     connect(this, &DFontPreviewListView::refreshListview, this, &DFontPreviewListView::onRefreshListview);
-    connect(this, &DFontPreviewListView::startupMultiItemsAdded, this, &DFontPreviewListView::onStartupMultiItemAdded);
+    //  connect(this, &DFontPreviewListView::startupMultiItemsAdded, this, &DFontPreviewListView::onStartupMultiItemAdded);
     connect(this, &DFontPreviewListView::itemRemoved, this, &DFontPreviewListView::onItemRemoved);
     connect(this, &DFontPreviewListView::requestUpdateModel, this, &DFontPreviewListView::updateModel);
 
@@ -331,10 +335,7 @@ void DFontPreviewListView::loadLeftFonts()
         m_dataLoadThread = new LoadFontDataThread(DFMDBManager::recordList);
         m_dataLoadThread->start();
 
-        connect(m_dataLoadThread, &LoadFontDataThread::dataLoadFinish, this, [ = ](QList<DFontPreviewItemData> &dataList) {
-            emit startupMultiItemsAdded(dataList);
-        });
-
+        connect(m_dataLoadThread, &LoadFontDataThread::dataLoadFinish, this, &DFontPreviewListView::onStartupMultiItemAdded);
     }
 }
 
@@ -364,7 +365,6 @@ void DFontPreviewListView::onRefreshListview(QList<DFontPreviewItemData> &data)
         setFontData(index, itemData);
         i++;
     }
-    Q_EMIT onLoadFontsStatus(3);
 }
 
 /*************************************************************************

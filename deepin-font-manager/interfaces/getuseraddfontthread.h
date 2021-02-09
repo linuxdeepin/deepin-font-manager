@@ -10,14 +10,10 @@ class GetUserAddFontThread : public QThread
     Q_OBJECT
 
 public:
-    GetUserAddFontThread();
+    explicit GetUserAddFontThread(QObject *parent = nullptr);
 
 protected:
     void run();
-
-signals:
-    void onThreadFinished(QList<DFontInfo> &list);
-
 };
 
 #endif // GETUSERADDFONTTHREAD_H
