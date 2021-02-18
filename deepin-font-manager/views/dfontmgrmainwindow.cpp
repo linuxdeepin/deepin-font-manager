@@ -1548,9 +1548,9 @@ void DFontMgrMainWindow::onLoadStatus(int type)
             m_fontLoadingSpinner->hide();
             m_fontLoadingSpinner->spinnerStop();
         }
-        //        if (m_leftIndex >= 0) {
-        //            onLeftSiderBarItemClicked(m_leftIndex);
-        //        }
+        if (m_leftIndex >= 0) {
+            onLeftSiderBarItemClicked(m_leftIndex);
+        }
         //弹出之前判断是否已有无结果view 539 31107
         if (!m_noInstallListView->isVisible()) {
             m_fontPreviewListView->show();

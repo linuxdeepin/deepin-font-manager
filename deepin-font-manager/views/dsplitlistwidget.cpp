@@ -651,6 +651,8 @@ void DSplitListWidget::keyPressEvent(QKeyEvent *event)
             DListView::keyPressEvent(event);
         }
         setCurrentPage();
+    } else if (event->key() == Qt::Key_End || event->key() == Qt::Key_Home) {
+        event->accept();
     } else {
         DListView::keyPressEvent(event);
     }
