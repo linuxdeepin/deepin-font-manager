@@ -27,7 +27,7 @@
     </message>
     <message>
         <source>Monospaced</source>
-        <translation>Interligne simple</translation>
+        <translation>Monospace</translation>
     </message>
 </context>
 <context>
@@ -203,7 +203,7 @@
     </message>
     <message>
         <source>Version</source>
-        <translation>Vérsion</translation>
+        <translation>Version</translation>
     </message>
     <message>
         <source>Description</source>
@@ -230,7 +230,7 @@
     <name>Main</name>
     <message>
         <source>Font Manager</source>
-        <translation>Gestionnaire des polices</translation>
+        <translation>Gestionnaire de polices</translation>
     </message>
     <message>
         <source>Font Manager helps users install and manage fonts.</source>
