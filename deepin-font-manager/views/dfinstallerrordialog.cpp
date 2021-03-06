@@ -307,24 +307,20 @@ void DFInstallErrorDialog::initInstallErrorFontViews()
 *************************************************************************/
 void DFInstallErrorDialog::resetContinueInstallBtnStatus()
 {
-
-//    qDebug() << m_SystemFontCount << endl;
     //所有字体都未勾选时，禁止点击"继续安装"
     if (0 == getErrorFontCheckedCount()) {
-//        m_continueInstallBtn->setEnabled(false);
         if (m_errorInstallFiles.count() > 0) {
             m_continueInstallBtn->setToolTip(DApplication::translate("ExceptionWindow", "No fonts to be installed"));
         }
 
         m_continueInstallBtn->setDisabled(true);
-//        m_continueInstallBtn->setDisabled(true);
-//        m_continueInstallBtn->setAttribute(Qt::WA_TransparentForMouseEvents, false);
+        m_continueInstallBtn->setFocusPolicy(Qt::NoFocus);
+        m_installErrorListView->setFocusPolicy(Qt::NoFocus);
     } else {
         m_continueInstallBtn->setEnabled(true);
-//        m_continueInstallBtn->setAttribute(Qt::WA_TransparentForMouseEvents, false);
+        m_continueInstallBtn->setFocusPolicy(Qt::TabFocus);
+        m_installErrorListView->setFocusPolicy(Qt::TabFocus);
     }
-
-
 }
 
 /*************************************************************************
