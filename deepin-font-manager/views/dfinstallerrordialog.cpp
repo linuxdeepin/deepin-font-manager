@@ -211,6 +211,29 @@ int DFInstallErrorDialog::getErrorFontCheckedCount()
 }
 
 /*************************************************************************
+ <Function>      getErrorFontSelectableCount
+ <Description>   获取可选项个数
+ <Author>
+ <Input>         null
+ <Return>        int             Description:选中项个数
+ <Note>          null
+*************************************************************************/
+int DFInstallErrorDialog::getErrorFontSelectableCount()
+{
+    int checkedCount = 0;
+    QStandardItemModel *sourceModel = m_installErrorListView->getErrorListSourceModel();
+    for (int i = 0; i < sourceModel->rowCount(); i++) {
+        QModelIndex index = sourceModel->index(i, 0);
+        DFInstallErrorItemModel itemModel = qvariant_cast<DFInstallErrorItemModel>(
+            sourceModel->data(index));
+        if (itemModel.bSelectable) {
+            ++checkedCount;
+        }
+    }
+    return checkedCount;
+}
+
+/*************************************************************************
  <Function>      initInstallErrorFontViews
  <Description>   初始化字体验证列表视图布局
  <Author>
@@ -315,11 +338,15 @@ void DFInstallErrorDialog::resetContinueInstallBtnStatus()
 
         m_continueInstallBtn->setDisabled(true);
         m_continueInstallBtn->setFocusPolicy(Qt::NoFocus);
-        m_installErrorListView->setFocusPolicy(Qt::NoFocus);
     } else {
         m_continueInstallBtn->setEnabled(true);
         m_continueInstallBtn->setFocusPolicy(Qt::TabFocus);
+    }
+
+    if (getErrorFontSelectableCount() > 0) {
         m_installErrorListView->setFocusPolicy(Qt::TabFocus);
+    } else {
+        m_installErrorListView->setFocusPolicy(Qt::NoFocus);
     }
 }
 

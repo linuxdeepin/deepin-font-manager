@@ -43,6 +43,8 @@ public:
     void initInstallErrorFontViews();
     //获取已勾选继续安装项个数
     int getErrorFontCheckedCount();
+    //获取可勾选项个数
+    int getErrorFontSelectableCount();
 
 private:
     //刷新继续按钮的状态-选中数量大于1时，继续按钮可用
