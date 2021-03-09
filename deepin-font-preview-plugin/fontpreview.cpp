@@ -85,10 +85,10 @@ bool FontPreview::setFileUrl(const DUrl &url)
 // <Return>        QWidget *            Description:预览控件的指针
 // <Note>          null
 //*************************************************************************/
-//QWidget *FontPreview::contentWidget() const
-//{
-//    return m_previewWidget;
-//}
+QWidget *FontPreview::contentWidget() const
+{
+    return m_previewWidget;
+}
 
 /*************************************************************************
  <Function>      title
