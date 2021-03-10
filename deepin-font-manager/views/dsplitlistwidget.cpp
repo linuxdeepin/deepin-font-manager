@@ -780,12 +780,12 @@ void DSplitListWidget::mousePressEvent(QMouseEvent *event)
     lastTouchBeginPos = event->pos();
 
     //应该设置焦点，否则鼠标在其他区域release会导致缺失焦点。
-    setFocus(Qt::MouseFocusReason);
-//    if (!hasFocus() && m_IsTabFocus) {
-//        m_IsTabFocus = false;
-//    }
-
+    //    setFocus(Qt::MouseFocusReason);
     if (modelIndex.row() == currentIndex().row())
         return;
+    //ut000465根据产品要求左侧列表点击不做focus效果处理，因此即使左侧列表通过tab获取焦点，点击后去除tabfocus状态，不绘制focus选中边框
+    if (hasFocus() && m_IsTabFocus) {
+        m_IsTabFocus = false;
+    }
     DListView::mousePressEvent(event);
 }
