@@ -47,7 +47,7 @@ public:
     //激活应用窗口
     void activateWindow();
     //初始化命令行
-    bool parseCmdLine();
+    bool parseCmdLine(bool bAppExist = false);
 
 public slots:
     //批量安装字体响应

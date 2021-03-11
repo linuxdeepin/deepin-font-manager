@@ -29,7 +29,6 @@
 #include <DWidgetUtil>
 #include <DApplicationSettings>
 
-#include <QCommandLineParser>
 #include <QDebug>
 #include <QDBusConnection>
 #include <QDBusInterface>
@@ -81,12 +80,7 @@ int main(int argc, char *argv[])
         app.activateWindow();
         return app.exec();
     } else {
-        QCommandLineParser parser;
-        parser.process(app);
-        QList<QVariant> fontInstallPathList;
-        fontInstallPathList << parser.positionalArguments();
-        QDBusInterface notification("com.deepin.FontManager", "/com/deepin/FontManager", "com.deepin.FontManager", QDBusConnection::sessionBus());
-        QDBusMessage msg = notification.callWithArgumentList(QDBus::AutoDetect, "installFonts", fontInstallPathList);
+        app.parseCmdLine(true);
         return 0;
     }
 }

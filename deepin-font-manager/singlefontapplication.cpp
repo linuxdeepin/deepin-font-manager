@@ -31,6 +31,8 @@
 #include <DGuiApplicationHelper>
 
 #include <QCommandLineParser>
+#include <QDBusConnection>
+#include <QDBusInterface>
 
 #include <sys/types.h>
 #include <unistd.h>
@@ -76,7 +78,7 @@ SingleFontApplication::~SingleFontApplication()
  <Return>        null            Description:null
  <Note>          null
 *************************************************************************/
-bool SingleFontApplication::parseCmdLine()
+bool SingleFontApplication::parseCmdLine(bool bAppExist)
 {
     QCommandLineParser parser;
     parser.setApplicationDescription("Deepin Font Manager.");
@@ -85,24 +87,32 @@ bool SingleFontApplication::parseCmdLine()
 
     parser.process(*this);
 
-    //Clear old parameter
-    if (!m_selectedFiles.isEmpty()) {
-        m_selectedFiles.clear();
-    }
-
-    QStringList paraList = parser.positionalArguments();
-    for (auto &it : paraList) {
-        if (Utils::isFontMimeType(it)) {
-            m_selectedFiles.append(it);
+    if (bAppExist) {
+        QList<QVariant> fontInstallPathList;
+        fontInstallPathList << parser.positionalArguments();
+        QDBusInterface notification("com.deepin.FontManager", "/com/deepin/FontManager", "com.deepin.FontManager", QDBusConnection::sessionBus());
+        QDBusMessage msg = notification.callWithArgumentList(QDBus::AutoDetect, "installFonts", fontInstallPathList);
+    } else {
+        //Clear old parameter
+        if (!m_selectedFiles.isEmpty()) {
+            m_selectedFiles.clear();
         }
+
+        QStringList paraList = parser.positionalArguments();
+        for (auto &it : paraList) {
+            if (Utils::isFontMimeType(it)) {
+                m_selectedFiles.append(it);
+            }
+        }
+
+        if (paraList.size() > 0 && m_selectedFiles.size() == 0) {
+            qDebug() << __FUNCTION__ << "invalid :" << paraList;
+            return false;
+        }
+
+        qDebug() << __FUNCTION__ << m_selectedFiles;
     }
 
-    if (paraList.size() > 0 && m_selectedFiles.size() == 0) {
-        qDebug() << __FUNCTION__ << "invalid :" << paraList;
-        return false;
-    }
-
-    qDebug() << __FUNCTION__ << m_selectedFiles;
     return true;
 }
 
