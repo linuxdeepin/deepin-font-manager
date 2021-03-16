@@ -101,10 +101,10 @@ void DFontPreviewItemDelegate::paintForegroundFontName(QPainter *painter, const 
     nameFont.setPixelSize(DFontSizeManager::instance()->fontPixelSize(DFontSizeManager::T6));
     painter->setFont(nameFont);
 
-    DStyleHelper styleHelper;
-    DPalette pa = DApplicationHelper::instance()->palette(m_parentView);
-    QColor fillColor = styleHelper.getColor(static_cast<const QStyleOption *>(&option), pa, DPalette::TextTips);
-    //SP3--禁用置灰(539)
+    DApplicationHelper *dAppHelper = DApplicationHelper::instance();
+    DPalette palette = dAppHelper->applicationPalette();
+    QColor fillColor = palette.color(DPalette::TextTips);
+    // SP3--禁用置灰(539)
     if (!itemData.isEnabled()) {
         fillColor.setAlphaF(0.6);
     }
