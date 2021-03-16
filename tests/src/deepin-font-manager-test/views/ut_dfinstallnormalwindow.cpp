@@ -26,7 +26,7 @@
 
 #include "../third-party/stub/stub.h"
 
-#include "dfontmanager.h"
+#include "fontmanagercore.h"
 #include "globaldef.h"
 #include "utils.h"
 #include "dfmdbmanager.h"

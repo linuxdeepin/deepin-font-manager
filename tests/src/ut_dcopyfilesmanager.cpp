@@ -21,7 +21,7 @@
 
 #include "dcopyfilesmanager.h"
 
-#include "dfontmanager.h"
+#include "fontmanagercore.h"
 #include <gtest/gtest.h>
 #include "../third-party/stub/stub.h"
 

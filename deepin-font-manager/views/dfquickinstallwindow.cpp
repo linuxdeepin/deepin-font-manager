@@ -23,7 +23,7 @@
 #include "dfquickinstallwindow.h"
 #include "dfinstallnormalwindow.h"
 #include "dfontinfomanager.h"
-#include "dfontmanager.h"
+#include "fontmanagercore.h"
 #include "dfmdbmanager.h"
 #include "utils.h"
 #include "globaldef.h"

@@ -21,7 +21,7 @@
 */
 
 #include "dfinstallnormalwindow.h"
-#include "dfontmanager.h"
+#include "fontmanagercore.h"
 #include "dfontpreviewlistdatathread.h"
 #include "dfinstallerrordialog.h"
 

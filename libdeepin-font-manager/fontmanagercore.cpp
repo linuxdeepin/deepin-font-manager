@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "dfontmanager.h"
+#include "fontmanagercore.h"
 #include "dcopyfilesmanager.h"
 
 #include <QDebug>

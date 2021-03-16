@@ -20,7 +20,7 @@
 */
 
 #include "dcopyfilesmanager.h"
-#include "dfontmanager.h"
+#include "fontmanagercore.h"
 #include "dfontinfomanager.h"
 #include "dfmdbmanager.h"
 

@@ -24,7 +24,7 @@
 #define DFONTMGRMAINWINDOW_H
 
 #include "dfontpreviewlistview.h"
-#include "dfontmanager.h"
+#include "fontmanagercore.h"
 #include "views/dfontspinnerwidget.h"
 #include "signalmanager.h"
 #include "dsplitlistwidget.h"
