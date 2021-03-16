@@ -48,7 +48,7 @@ DFInstallNormalWindow::DFInstallNormalWindow(const QStringList &files, QWidget *
     : DFontBaseDialog(parent)
     , m_installFiles(files)
     , m_fontInfoManager(DFontInfoManager::instance())
-    , m_fontManager(DFontManager::instance())
+    , m_fontManager(FontManagerCore::instance())
     , m_verifyTimer(new QTimer(this))
 
 {
@@ -187,11 +187,11 @@ void DFInstallNormalWindow::initConnections()
 
     connect(m_signalManager, &SignalManager::installDuringPopErrorDialog, this, &DFInstallNormalWindow::batchHalfwayInstall);
 
-    connect(m_fontManager, &DFontManager::batchInstall, this, &DFInstallNormalWindow::onProgressChanged);
+    connect(m_fontManager, &FontManagerCore::batchInstall, this, &DFInstallNormalWindow::onProgressChanged);
 
-    connect(m_fontManager, &DFontManager::installFinished, this, &DFInstallNormalWindow::onInstallFinished);
+    connect(m_fontManager, &FontManagerCore::installFinished, this, &DFInstallNormalWindow::onInstallFinished);
 
-    connect(m_fontManager, &DFontManager::reInstallFinished, this, &DFInstallNormalWindow::onReInstallFinished);
+    connect(m_fontManager, &FontManagerCore::reInstallFinished, this, &DFInstallNormalWindow::onReInstallFinished);
 
     connect(DFontPreviewListDataThread::instance(), &DFontPreviewListDataThread::requestBatchReInstallContinue,
             this, &DFInstallNormalWindow::batchReInstallContinue);
@@ -492,7 +492,7 @@ void DFInstallNormalWindow::batchInstall()
     if (m_newInstallFiles.size() > 0) {
         installList << m_newInstallFiles;
     } else {
-        m_fontManager->setCacheStatus(DFontManager::NoNewFonts);
+        m_fontManager->setCacheStatus(FontManagerCore::NoNewFonts);
         installFinished();
         return;
     }
@@ -514,13 +514,12 @@ void DFInstallNormalWindow::batchInstall()
 //    qDebug() << installListWithFamliyName << endl;
 
     if (ifNeedShowExceptionWindow()) {
-        m_fontManager->setCacheStatus(DFontManager::CacheLater);
+        m_fontManager->setCacheStatus(FontManagerCore::CacheLater);
     } else {
-        m_fontManager->setCacheStatus(DFontManager::CacheNow);
+        m_fontManager->setCacheStatus(FontManagerCore::CacheNow);
     }
 
-    m_fontManager->setType(DFontManager::Install);
-
+    m_fontManager->setType(FontManagerCore::Install);
 
     m_fontManager->setInstallFileList(installListWithFamliyName);
     m_fontManager->start();
@@ -548,7 +547,7 @@ void DFInstallNormalWindow::batchReInstall(const QStringList &reinstallFiles)
 //        qDebug() << " Prepare install file: " << it + m_loadingSpinner"|" + familyName;
     }
 
-    m_fontManager->setType(DFontManager::ReInstall);
+    m_fontManager->setType(FontManagerCore::ReInstall);
     m_fontManager->setInstallFileList(installListWithFamliyName);
     m_fontManager->start();
 }
@@ -583,8 +582,8 @@ void DFInstallNormalWindow::batchHalfwayInstall(const QStringList &filelist)
 //        qDebug() << " Prepare install file: " << it + "|" + familyName;
     }
 
-    m_fontManager->setType(DFontManager::HalfwayInstall);
-    m_fontManager->setCacheStatus(DFontManager::CacheLater);
+    m_fontManager->setType(FontManagerCore::HalfwayInstall);
+    m_fontManager->setCacheStatus(FontManagerCore::CacheLater);
     m_fontManager->setInstallFileList(installListWithFamliyName);
     m_fontManager->start();
 }
@@ -612,7 +611,7 @@ void DFInstallNormalWindow::batchReInstallContinue()
 //        qDebug() << " Prepare install file: " << it + "|" + familyName;
     }
 
-    m_fontManager->setType(DFontManager::ReInstall);
+    m_fontManager->setType(FontManagerCore::ReInstall);
     m_fontManager->setInstallFileList(installListWithFamliyName);
     m_fontManager->start();
 }
@@ -770,7 +769,7 @@ void DFInstallNormalWindow::showInstallErrDlg()
         if (!m_errCancelInstall)
             return;
         qDebug() << " DFInstallErrorDialog cancel called";
-        Q_EMIT DFontManager::instance()->cacheFinish();
+        Q_EMIT FontManagerCore::instance()->cacheFinish();
         finishInstall();
     });
 

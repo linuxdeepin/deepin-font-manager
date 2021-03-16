@@ -45,13 +45,13 @@ class TestDfontmanager : public testing::Test
 protected:
     void SetUp()
     {
-        fm = DFontManager::instance();
+        fm = FontManagerCore::instance();
     }
     void TearDown()
     {
     }
     // Some expensive resource shared by all tests.
-    DFontManager *fm;
+    FontManagerCore *fm;
 };
 
 void stub_Handle()
@@ -62,9 +62,9 @@ void stub_Handle()
 
 TEST_F(TestDfontmanager, checkSetType)
 {
-    fm->setType(DFontManager::Install);
-    EXPECT_EQ(fm->m_type, DFontManager::Install);
-//    delete fm;
+    fm->setType(FontManagerCore::Install);
+    EXPECT_EQ(fm->m_type, FontManagerCore::Install);
+    //    delete fm;
 }
 
 TEST_F(TestDfontmanager, checkSetInstallFileList)
@@ -96,56 +96,56 @@ TEST_F(TestDfontmanager, checkSetUnInstallFile)
 TEST_F(TestDfontmanager, checkRunInstall)
 {
     Stub s;
-    s.set(ADDR(DFontManager, handleInstall), stub_Handle);
+    s.set(ADDR(FontManagerCore, handleInstall), stub_Handle);
 
-    fm->setType(DFontManager::Install);
+    fm->setType(FontManagerCore::Install);
     fm->run();
 
-    fm->setType(DFontManager::HalfwayInstall);
+    fm->setType(FontManagerCore::HalfwayInstall);
     fm->run();
 
-    fm->setType(DFontManager::ReInstall);
+    fm->setType(FontManagerCore::ReInstall);
     fm->run();
 }
 
 TEST_F(TestDfontmanager, checkRunUnInstall)
 {
     Stub s;
-    s.set(ADDR(DFontManager, handleUnInstall), stub_Handle);
+    s.set(ADDR(FontManagerCore, handleUnInstall), stub_Handle);
 
-    fm->setType(DFontManager::UnInstall);
+    fm->setType(FontManagerCore::UnInstall);
     fm->run();
 
-    fm->setType(DFontManager::DefaultNullType);
+    fm->setType(FontManagerCore::DefaultNullType);
     fm->run();
 }
 
 TEST_F(TestDfontmanager, checkDoCmdInstall)
 {
     Stub s;
-    s.set(ADDR(DFontManager, doInstall), stub_Handle);
+    s.set(ADDR(FontManagerCore, doInstall), stub_Handle);
     QStringList list;
 
-    fm->setType(DFontManager::Install);
+    fm->setType(FontManagerCore::Install);
     fm->doCmd(list);
 
-    fm->setType(DFontManager::HalfwayInstall);
+    fm->setType(FontManagerCore::HalfwayInstall);
     fm->doCmd(list);
 
-    fm->setType(DFontManager::ReInstall);
+    fm->setType(FontManagerCore::ReInstall);
     fm->doCmd(list);
 }
 
 TEST_F(TestDfontmanager, checkDoCmdUnInstall)
 {
     Stub s;
-    s.set(ADDR(DFontManager, handleUnInstall), stub_Handle);
+    s.set(ADDR(FontManagerCore, handleUnInstall), stub_Handle);
 
     QStringList list;
-    fm->setType(DFontManager::UnInstall);
+    fm->setType(FontManagerCore::UnInstall);
     fm->doCmd(list);
 
-    fm->setType(DFontManager::DefaultNullType);
+    fm->setType(FontManagerCore::DefaultNullType);
     fm->doCmd(list);
 }
 
@@ -156,7 +156,7 @@ TEST_F(TestDfontmanager, checkHandleInstallAndDoInstall)
 
     QSignalSpy spy(fm, SIGNAL(requestCancelInstall));
 
-    fm->setType(DFontManager::Install);
+    fm->setType(FontManagerCore::Install);
     fm->m_instFileList << "first";
     fm->handleInstall();
 
@@ -171,7 +171,7 @@ TEST_F(TestDfontmanager, checkHandleInstallAndDoInstall)
 TEST_F(TestDfontmanager, checkHandleUnInstall)
 {
     Stub s;
-    s.set(ADDR(DFontManager, doCmd), stub_Handle);
+    s.set(ADDR(FontManagerCore, doCmd), stub_Handle);
     QStringList list;
     list << "first" << "endl";
 
@@ -211,8 +211,8 @@ TEST_F(TestDfontmanager, checkOnInstallResultInstall)
 
     fm->m_instFileList.clear();
     fm->m_instFileList << "first";
-    fm->setType(DFontManager::Install);
-    fm->setCacheStatus(DFontManager::CacheNow);
+    fm->setType(FontManagerCore::Install);
+    fm->setCacheStatus(FontManagerCore::CacheNow);
     fm->onInstallResult("first", "");
 
     EXPECT_TRUE(spy.count() == 1);
@@ -224,8 +224,8 @@ TEST_F(TestDfontmanager, checkOnInstallResultReInstall)
 
     fm->m_instFileList.clear();
     fm->m_instFileList << "first";
-    fm->setType(DFontManager::ReInstall);
-    fm->setCacheStatus(DFontManager::CacheNow);
+    fm->setType(FontManagerCore::ReInstall);
+    fm->setCacheStatus(FontManagerCore::CacheNow);
     fm->onInstallResult("first", "");
 
     EXPECT_TRUE(spy.count() == 1);
@@ -242,8 +242,8 @@ TEST_F(TestDfontmanager, checkOnInstallResultReInstall)
 
 TEST_F(TestDfontmanager, checkSetCacheStatus)
 {
-    fm->setCacheStatus(DFontManager::CacheNow);
-    EXPECT_EQ(fm->m_CacheStatus, DFontManager::Install);
+    fm->setCacheStatus(FontManagerCore::CacheNow);
+    EXPECT_EQ(fm->m_CacheStatus, FontManagerCore::Install);
 }
 
 TEST_F(TestDfontmanager, checkCancelInstall)

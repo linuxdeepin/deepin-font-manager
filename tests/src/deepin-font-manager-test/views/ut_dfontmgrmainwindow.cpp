@@ -322,7 +322,7 @@ TEST_F(TestDFontMgrMainWindow, checkOnInstallWindowDestroyed)
     fm->onInstallWindowDestroyed();
 
     Stub s;
-    s.set(ADDR(DFontManager, needCache), stub_true);
+    s.set(ADDR(FontManagerCore, needCache), stub_true);
 
     fm->m_installOutFileList.clear();
     fm->m_installOutFileList << "first";

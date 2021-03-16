@@ -31,7 +31,7 @@
 DWIDGET_USE_NAMESPACE
 
 class DFontInfoManager;
-class DFontManager;
+class FontManagerCore;
 struct DFontInfo;
 class DFontPreviewer;
 class DFMDBManager;
@@ -75,7 +75,7 @@ private:
     DPushButton *m_actionBtn {nullptr};
 
     DFontInfoManager *m_fontInfoManager;
-    DFontManager *m_fontManager;
+    FontManagerCore *m_fontManager;
     DFMDBManager *m_dbManager;
 
 

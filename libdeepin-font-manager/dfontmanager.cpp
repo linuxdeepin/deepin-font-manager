@@ -25,7 +25,7 @@
 #include <QFileInfo>
 #include <QDir>
 
-static DFontManager *INSTANCE = nullptr;
+static FontManagerCore *INSTANCE = nullptr;
 
 /*************************************************************************
  <Function>      instance
@@ -35,34 +35,34 @@ static DFontManager *INSTANCE = nullptr;
  <Return>        null            Description:null
  <Note>          null
 *************************************************************************/
-DFontManager *DFontManager::instance()
+FontManagerCore *FontManagerCore::instance()
 {
     QMutex mutex;
     if (INSTANCE == nullptr) {
         QMutexLocker locker(&mutex);
-        INSTANCE = new DFontManager;
+        INSTANCE = new FontManagerCore;
     }
 
     return INSTANCE;
 }
 
 /*************************************************************************
- <Function>      DFontManager
+ <Function>      FontManagerCore
  <Description>   构造函数-字体管理线程类
  <Author>
  <Input>
     <param1>     parent          Description:父类对象
- <Return>        DFontManager    Description:返回字体管理器线程类对象
+ <Return>        FontManagerCore    Description:返回字体管理器线程类对象
  <Note>          null
 *************************************************************************/
-DFontManager::DFontManager(QObject *parent)
+FontManagerCore::FontManagerCore(QObject *parent)
     : QThread(parent)
 {
 
 }
 
 /*************************************************************************
- <Function>      ~DFontManager
+ <Function>      ~FontManagerCore
  <Description>   析构函数-析构字体管理线程类对象
  <Author>
  <Input>
@@ -70,7 +70,9 @@ DFontManager::DFontManager(QObject *parent)
  <Return>        null            Description:null
  <Note>          null
 *************************************************************************/
-DFontManager::~DFontManager() {}
+FontManagerCore::~FontManagerCore()
+{
+}
 
 /*************************************************************************
  <Function>      setType
@@ -81,7 +83,7 @@ DFontManager::~DFontManager() {}
  <Return>        null            Description:null
  <Note>          null
 *************************************************************************/
-void DFontManager::setType(Type type)
+void FontManagerCore::setType(Type type)
 {
     qDebug() << type << endl;
     m_type = type;
@@ -96,7 +98,7 @@ void DFontManager::setType(Type type)
  <Return>        null            Description:null
  <Note>          null
 *************************************************************************/
-void DFontManager::setInstallFileList(const QStringList &list)
+void FontManagerCore::setInstallFileList(const QStringList &list)
 {
     qDebug() << __FUNCTION__ << "start" << endl;
     if (!m_instFileList.isEmpty()) {
@@ -115,7 +117,7 @@ void DFontManager::setInstallFileList(const QStringList &list)
  <Return>        null            Description:null
  <Note>          null
 *************************************************************************/
-void DFontManager::setUnInstallFile(const QStringList &filePath)
+void FontManagerCore::setUnInstallFile(const QStringList &filePath)
 {
     if (!m_uninstFile.isEmpty())
         m_uninstFile.clear();
@@ -130,7 +132,7 @@ void DFontManager::setUnInstallFile(const QStringList &filePath)
  <Return>        null            Description:null
  <Note>          null
 *************************************************************************/
-void DFontManager::run()
+void FontManagerCore::run()
 {
     qInfo() << __FUNCTION__ << "start" << m_type << endl;
     switch (m_type) {
@@ -160,7 +162,7 @@ void DFontManager::run()
  <Return>        null            Description:null
  <Note>          null
 *************************************************************************/
-void DFontManager::doCmd(QStringList &arguments)
+void FontManagerCore::doCmd(QStringList &arguments)
 {
     qDebug() << "QProcess start";
     qDebug() << m_type << endl;
@@ -187,7 +189,7 @@ void DFontManager::doCmd(QStringList &arguments)
  <Return>        null             Description:null
  <Note>          null
 *************************************************************************/
-void DFontManager::handleInstall()
+void FontManagerCore::handleInstall()
 {
     doCmd(m_instFileList);
 }
@@ -200,7 +202,7 @@ void DFontManager::handleInstall()
  <Return>        null            Description:null
  <Note>          null
 *************************************************************************/
-void DFontManager::handleUnInstall()
+void FontManagerCore::handleUnInstall()
 {
     qDebug() << "waitForFinished";
     doCmd(m_uninstFile);
@@ -219,7 +221,7 @@ void DFontManager::handleUnInstall()
  <Return>        null            Description:null
  <Note>          null
 *************************************************************************/
-void DFontManager::doInstall(QStringList &fileList)
+void FontManagerCore::doInstall(QStringList &fileList)
 {
     qDebug() << __func__ << "s" << endl;
 
@@ -247,7 +249,7 @@ void DFontManager::doInstall(QStringList &fileList)
  <Return>        null            Description:null
  <Note>          null
 *************************************************************************/
-void DFontManager::doUninstall(const QStringList &fileList)
+void FontManagerCore::doUninstall(const QStringList &fileList)
 {
     for (const QString &file : fileList) {
         QFileInfo openFile(file);
@@ -289,12 +291,12 @@ void DFontManager::doUninstall(const QStringList &fileList)
 }
 
 /**
-* @brief DFontManager::onInstallResult 安装拷贝字体文件槽函数
+* @brief FontManagerCore::onInstallResult 安装拷贝字体文件槽函数
 * @param familyName 字体文件的familyName
 * @param target 拷贝的目的文件路径
 * @return void
 */
-void DFontManager::onInstallResult(const QString &familyName, const QString &target)
+void FontManagerCore::onInstallResult(const QString &familyName, const QString &target)
 {
 
     m_installedCount += 1;
@@ -338,7 +340,7 @@ void DFontManager::onInstallResult(const QString &familyName, const QString &tar
  <Return>        null            Description:null
  <Note>          null
 *************************************************************************/
-void DFontManager::setCacheStatus(const CacheStatus &CacheStatus)
+void FontManagerCore::setCacheStatus(const CacheStatus &CacheStatus)
 {
     m_CacheStatus = CacheStatus;
 }
@@ -351,7 +353,7 @@ void DFontManager::setCacheStatus(const CacheStatus &CacheStatus)
  <Return>        null            Description:null
  <Note>          null
 *************************************************************************/
-void DFontManager::cancelInstall()
+void FontManagerCore::cancelInstall()
 {
     if (m_installCanceled)
         return;
@@ -369,7 +371,7 @@ void DFontManager::cancelInstall()
  <Return>        null            Description:null
  <Note>          null
 *************************************************************************/
-void DFontManager::doCache()
+void FontManagerCore::doCache()
 {
     qDebug() << __FUNCTION__;
     QProcess process;

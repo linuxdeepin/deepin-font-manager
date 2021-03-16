@@ -36,7 +36,7 @@
 DWIDGET_USE_NAMESPACE
 
 //类声明
-class DFontManager;
+class FontManagerCore;
 class DFontInfoManager;
 class DFInstallErrorDialog;
 
@@ -167,7 +167,7 @@ private:
     InstallState m_installState {Install};
 
     DFontInfoManager *m_fontInfoManager;
-    DFontManager *m_fontManager;
+    FontManagerCore *m_fontManager;
     SignalManager *m_signalManager = SignalManager::instance();
 
     QWidget *m_mainFrame {nullptr};

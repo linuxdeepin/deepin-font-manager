@@ -325,7 +325,7 @@ TEST_F(TestDFInstallNormalWindow, checkCloseEvent)
 TEST_F(TestDFInstallNormalWindow, checkBatchInstall)
 {
     Stub s;
-    s.set(ADDR(DFontManager, doCmd), stub_docmd);
+    s.set(ADDR(FontManagerCore, doCmd), stub_docmd);
 
     QSignalSpy spy(iw->m_signalManager, SIGNAL(finishFontInstall(const QStringList)));
     iw->m_newInstallFiles.clear();
@@ -343,7 +343,7 @@ TEST_F(TestDFInstallNormalWindow, checkBatchInstall)
 TEST_F(TestDFInstallNormalWindow, checkBatchReInstall)
 {
     Stub s;
-    s.set(ADDR(DFontManager, doCmd), stub_docmd);
+    s.set(ADDR(FontManagerCore, doCmd), stub_docmd);
 
     Stub s1;
     s1.set(ADDR(DFMDBManager, isFontInfoExist), stub_isFontInfoExist);
@@ -361,7 +361,7 @@ TEST_F(TestDFInstallNormalWindow, checkBatchReInstall)
 TEST_F(TestDFInstallNormalWindow, checkBatchHalfwayInstall)
 {
     Stub s;
-    s.set(ADDR(DFontManager, doCmd), stub_docmd);
+    s.set(ADDR(FontManagerCore, doCmd), stub_docmd);
 
     QSignalSpy spy(iw->m_signalManager, SIGNAL(updateInstallErrorListview(QStringList &, QStringList &, QStringList &, QStringList &)));
 
@@ -377,7 +377,7 @@ TEST_F(TestDFInstallNormalWindow, checkBatchHalfwayInstall)
 TEST_F(TestDFInstallNormalWindow, checkBatchReInstallContinue)
 {
     Stub s;
-    s.set(ADDR(DFontManager, doCmd), stub_docmd);
+    s.set(ADDR(FontManagerCore, doCmd), stub_docmd);
 
     iw->m_installState = DFInstallNormalWindow::InstallState::reinstall;
 

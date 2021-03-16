@@ -63,7 +63,7 @@
 *************************************************************************/
 DFontMgrMainWindow::DFontMgrMainWindow(bool isQuickMode, QWidget *parent)
     : DMainWindow(parent)
-    , m_fontManager(DFontManager::instance())
+    , m_fontManager(FontManagerCore::instance())
     , m_scFullScreen(nullptr)
     , m_scZoomIn(nullptr)
     , m_scZoomOut(nullptr)
@@ -232,14 +232,14 @@ void DFontMgrMainWindow::initConnections()
     });
 
     //卸载字体结束
-    connect(m_fontManager, &DFontManager::uninstallFontFinished, this, &DFontMgrMainWindow::onUninstallFontFinished);
+    connect(m_fontManager, &FontManagerCore::uninstallFontFinished, this, &DFontMgrMainWindow::onUninstallFontFinished);
 
     //卸载后执行fc-cache结束
-    connect(m_fontManager, &DFontManager::uninstallFcCacheFinish, this, &DFontMgrMainWindow::onUninstallFcCacheFinish);
+    connect(m_fontManager, &FontManagerCore::uninstallFcCacheFinish, this, &DFontMgrMainWindow::onUninstallFcCacheFinish);
     //执行fc-cache结束
-    connect(m_fontManager, &DFontManager::cacheFinish, this, &DFontMgrMainWindow::onCacheFinish, Qt::QueuedConnection);
+    connect(m_fontManager, &FontManagerCore::cacheFinish, this, &DFontMgrMainWindow::onCacheFinish, Qt::QueuedConnection);
     //取消安装
-    connect(m_fontManager, &DFontManager::requestCancelInstall, this, [ = ]() {
+    connect(m_fontManager, &FontManagerCore::requestCancelInstall, this, [=]() {
         m_isInstallOver = true;
         m_fIsInstalling = false;
     });
@@ -1681,9 +1681,9 @@ void DFontMgrMainWindow::onconfirmDelDlgAccept()
     onShowSpinner(true, false, DFontSpinnerWidget::Delete);
     Q_EMIT DFontPreviewListDataThread::instance(m_fontPreviewListView)->requestRemoveFileWatchers(m_menuDelFontList);
     qDebug() << m_menuDelFontList.count() << "!!!!!!!!!!!!!!!!11" << endl;
-    DFontManager::instance()->setType(DFontManager::UnInstall);
-    DFontManager::instance()->setUnInstallFile(m_menuDelFontList);
-    DFontManager::instance()->start();
+    FontManagerCore::instance()->setType(FontManagerCore::UnInstall);
+    FontManagerCore::instance()->setUnInstallFile(m_menuDelFontList);
+    FontManagerCore::instance()->start();
 }
 
 /*************************************************************************
@@ -1704,7 +1704,7 @@ void DFontMgrMainWindow::onInstallWindowDestroyed(QObject *)
         if (m_fontManager->needCache()) {
             qDebug() << __FUNCTION__ << "need doCache";
             if (m_fontManager->isFinished()) {
-                m_fontManager->setType(DFontManager::DoCache);
+                m_fontManager->setType(FontManagerCore::DoCache);
                 m_fontManager->start();
             } else {
                 m_needWaitThreadStop = true;
@@ -1901,7 +1901,7 @@ void DFontMgrMainWindow::onMenuHidden()
 void DFontMgrMainWindow::onFontManagerFinished()
 {
     if (m_needWaitThreadStop) {
-        m_fontManager->setType(DFontManager::DoCache);
+        m_fontManager->setType(FontManagerCore::DoCache);
         m_fontManager->start();
         m_needWaitThreadStop = false;
     }
