@@ -31,7 +31,6 @@
 #include <QPainter>
 #include <QCheckBox>
 
-
 DWIDGET_USE_NAMESPACE
 
 const int CHECKBOX_SIZE = 20;
@@ -161,7 +160,30 @@ void DFontPreviewItemDelegate::paintForegroundCollectIcon(QPainter *painter, con
     QRect collectIconRealRect = QRect(option.rect.right() - COLLECT_ICON_SIZE - COLLECT_ICON_RIGHT_MARGIN,
                                       option.rect.top() + COLLECT_ICON_TOP_MARGIN,
                                       COLLECT_ICON_SIZE, COLLECT_ICON_SIZE);
-    painter->drawPixmap(collectIconRealRect, pixmap);
+
+    // 获取系统活动色
+    QColor bgColor = Dtk::Gui::DGuiApplicationHelper::instance()->applicationPalette().highlight().color();
+
+    // 针对鼠标按下时进行处理
+    if (IconPress == status) {
+        QImage originImage = pixmap.toImage();  // 将原始图片转为image
+        int iWidth = originImage.width();
+        int iHeight = originImage.height();
+
+        QImage tempImage(iWidth, iHeight, QImage::Format_ARGB32); // 创建临时image
+
+        // 对每一个像素点进行设置RGBA
+        for (int w = 0; w < iWidth; ++w) {
+            for (int h = 0; h < iHeight; ++h) {
+                bgColor.setAlpha(qAlpha(originImage.pixel(w, h)));    // 替换RGB
+                tempImage.setPixel(w, h, bgColor.rgba());             // 设置色值
+            }
+        }
+
+        painter->drawPixmap(collectIconRealRect, QPixmap::fromImage(tempImage));    // 使用新图片绘制
+    } else {
+        painter->drawPixmap(collectIconRealRect, pixmap);   // 使用原始图片绘制
+    }
 
 }
 
