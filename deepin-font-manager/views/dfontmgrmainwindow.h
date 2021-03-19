@@ -279,6 +279,8 @@ signals:
     void fileSelectedInSys(const QStringList &files) const;
     //信号-设置正常安装模式
     void quickModeInstall(const QStringList files) const;
+    //信号-加载启动过程中未加载的字体完成
+    void singalLoadLeftFontsFinsih();
 
 public slots:
     //右键菜单弹出处理函数
@@ -383,7 +385,8 @@ protected:
     bool m_hasMenuTriggered{false};
     //is in installing font flow
     //Avoid start multi-NormalInstalltion window
-    bool                    m_fIsInstalling {false};
+    bool m_fIsInstalling {false};
+    bool m_bLoadLeftFontsFinsihFlag = false; //是否已加载启动过程中未加载的字体
     //is it in uninstalling font flow
     //Avoid start multi delete confirm dialog
     volatile qint8 m_fIsDeleting {UnDeleting};

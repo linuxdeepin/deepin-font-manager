@@ -1144,31 +1144,38 @@ bool DFontMgrMainWindow::installFont(const QStringList &files, bool isAddBtnHasT
 *************************************************************************/
 void DFontMgrMainWindow::installFontFromSys(const QStringList &files)
 {
-    if (m_fontPreviewListView->getFontLoadTimer()->isActive()) {
-        m_fontPreviewListView->getFontLoadTimer()->stop();
-    }
-
-    this->m_isFromSys = true;
-
-    QStringList reduceSameFiles;
-    foreach (auto it, files) {
-        if (!reduceSameFiles.contains(it)) {
-            reduceSameFiles.append(it);
+    if (m_bLoadLeftFontsFinsihFlag) { // 保证先加载完启动过程中未加载的字体
+        if (m_fontPreviewListView->getFontLoadTimer()->isActive()) {
+            m_fontPreviewListView->getFontLoadTimer()->stop();
         }
-    }
 
-    if (!m_fontPreviewListView->isListDataLoadFinished()) {
-        qDebug() << "Is loading ,quit";
-        m_waitForInstall = reduceSameFiles;
-        return;
-    } else if (m_fIsDeleting) {
-        qDebug() << "Is deleting ,quit";
-        m_waitForInstall = reduceSameFiles;
-        return;
-    } else if (m_isPopInstallErrorDialog) {
-        emit m_signalManager->installDuringPopErrorDialog(reduceSameFiles);
+        this->m_isFromSys = true;
+
+        QStringList reduceSameFiles;
+        foreach (auto it, files) {
+            if (!reduceSameFiles.contains(it)) {
+                reduceSameFiles.append(it);
+            }
+        }
+
+        if (!m_fontPreviewListView->isListDataLoadFinished()) {
+            qDebug() << "Is loading ,quit";
+            m_waitForInstall = reduceSameFiles;
+            return;
+        } else if (m_fIsDeleting) {
+            qDebug() << "Is deleting ,quit";
+            m_waitForInstall = reduceSameFiles;
+            return;
+        } else if (m_isPopInstallErrorDialog) {
+            emit m_signalManager->installDuringPopErrorDialog(reduceSameFiles);
+        } else {
+            installFont(reduceSameFiles, false);
+        }
     } else {
-        installFont(reduceSameFiles, false);
+        connect(this, &DFontMgrMainWindow::singalLoadLeftFontsFinsih, this, [ &, files]() {
+            installFontFromSys(files);
+            disconnect(this, &DFontMgrMainWindow::singalLoadLeftFontsFinsih, nullptr, nullptr);
+        });
     }
 }
 
@@ -2293,6 +2300,13 @@ void DFontMgrMainWindow::afterAllStartup()
     GetUserAddFontThread *getUsrAddFontThread = new GetUserAddFontThread(this);
     getUsrAddFontThread->start();
     connect(getUsrAddFontThread, &GetUserAddFontThread::finished, [this] { this->onLoadStatus(3); });
+    connect(getUsrAddFontThread, &GetUserAddFontThread::finished, this, [&] {
+        if (!m_bLoadLeftFontsFinsihFlag) // 保证未加载启动过程中未加载的字体时进入
+        {
+            m_bLoadLeftFontsFinsihFlag = true;
+            emit singalLoadLeftFontsFinsih();
+        }
+    });
 }
 
 /*************************************************************************

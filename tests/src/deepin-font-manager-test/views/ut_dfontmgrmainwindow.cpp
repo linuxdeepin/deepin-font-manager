@@ -889,23 +889,27 @@ TEST_F(TestDFontMgrMainWindow, checkInstallFontFromSys)
     list << "first";
 
     fm->m_fontPreviewListView->m_bLoadDataFinish = false;
+    fm->m_bLoadLeftFontsFinsihFlag = true;
     fm->installFontFromSys(list);
     EXPECT_TRUE(fm->m_waitForInstall.contains("first"));
 
     fm->m_fontPreviewListView->m_bLoadDataFinish = true;
     fm->m_fIsDeleting = true;
+    fm->m_bLoadLeftFontsFinsihFlag = true;
     fm->installFontFromSys(list);
     EXPECT_TRUE(fm->m_waitForInstall.contains("first"));
 
     fm->m_fontPreviewListView->m_bLoadDataFinish = true;
     fm->m_fIsDeleting = false;
     fm->m_isPopInstallErrorDialog = true;
+    fm->m_bLoadLeftFontsFinsihFlag = true;
     fm->installFontFromSys(list);
     EXPECT_TRUE(spy.count() == 1);
 
     fm->m_fontPreviewListView->m_bLoadDataFinish = true;
     fm->m_fIsDeleting = false;
     fm->m_isPopInstallErrorDialog = false;
+    fm->m_bLoadLeftFontsFinsihFlag = true;
     fm->installFontFromSys(list);
     delete fm;
 }
