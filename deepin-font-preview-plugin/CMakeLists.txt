@@ -40,5 +40,5 @@ TARGET_LINK_LIBRARIES(${APP_PLUGIN} PRIVATE ${FREETYPE_LIBRARIES} PkgConfig::Fon
                                             ${DtkWidget_LIBRARIES}  PkgConfig::DeepinFileManager
                                             Qt5::Core Qt5::Widgets Qt5::Gui Qt5::Sql)
 
-SET(PLUGIN_INSTALL_DIR lib/x86_64-linux-gnu/dde-file-manager/plugins/previews)
+SET(PLUGIN_INSTALL_DIR lib/${CMAKE_LIBRARY_ARCHITECTURE}/dde-file-manager/plugins/previews)
 INSTALL(TARGETS ${APP_PLUGIN} LIBRARY DESTINATION ${PLUGIN_INSTALL_DIR})
