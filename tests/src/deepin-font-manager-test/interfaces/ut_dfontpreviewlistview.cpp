@@ -26,6 +26,7 @@
 #include "dfmxmlwrapper.h"
 #include "dcomworker.h"
 #include "views/dfontmgrmainwindow.h"
+#include "commonheaderfile.h"
 
 #include <DLog>
 #include <DMenu>
@@ -793,6 +794,8 @@ TEST_F(TestDFontPreviewListView, checkEventFilterFocusOut)
     listview->m_isLostFocusOfLeftKey = true;
     listview->eventFilter(listview, e);
     EXPECT_FALSE(listview->m_IsTabFocus);
+
+    SAFE_DELETE_ELE(e)
 }
 
 TEST_F(TestDFontPreviewListView, checkEventFilterFocusIn)
@@ -805,6 +808,7 @@ TEST_F(TestDFontPreviewListView, checkEventFilterFocusIn)
 
     listview->eventFilter(listview, e);
     EXPECT_TRUE(spy.count() == 1);
+    SAFE_DELETE_ELE(e)
 }
 
 TEST_F(TestDFontPreviewListView, checkKeyPressEventFilterEmpty)
@@ -983,22 +987,22 @@ TEST_F(TestDFontPreviewListView, checkMousePressEventMid)
     QMouseEvent *e = new QMouseEvent(QEvent::MouseButtonPress, QPoint(), Qt::MidButton, Qt::NoButton, Qt::NoModifier);
     listview->mousePressEvent(e);
     EXPECT_TRUE(listview->selectionModel()->selectedRows().count() == 1);
-    delete  e;
+    SAFE_DELETE_ELE(e)
 
     listview->clearSelection();
     QMouseEvent *e2 = new QMouseEvent(QEvent::MouseButtonPress, QPoint(), Qt::MidButton, Qt::NoButton, Qt::ShiftModifier);
     listview->mousePressEvent(e2);
     EXPECT_FALSE(listview->m_IsTabFocus);
-    delete  e2;
+    SAFE_DELETE_ELE(e2)
 
     listview->selectAll();
     QMouseEvent *e3 = new QMouseEvent(QEvent::MouseButtonPress, QPoint(), Qt::MidButton, Qt::NoButton, Qt::ShiftModifier);
     listview->mousePressEvent(e3);
-    delete  e3;
+    SAFE_DELETE_ELE(e3)
 
     QMouseEvent *e4 = new QMouseEvent(QEvent::MouseButtonPress, QPoint(), Qt::MidButton, Qt::NoButton, Qt::ControlModifier);
     listview->mousePressEvent(e4);
-    delete  e4;
+    SAFE_DELETE_ELE(e4)
 
     Stub s;
     s.set(ADDR(QModelIndex, isValid), stub_False);
@@ -1006,6 +1010,8 @@ TEST_F(TestDFontPreviewListView, checkMousePressEventMid)
     QMouseEvent *e5 = new QMouseEvent(QEvent::MouseButtonPress, QPoint(), Qt::MidButton, Qt::NoButton, Qt::NoModifier);
     listview->mousePressEvent(e5);
     EXPECT_TRUE(listview->selectionModel()->selectedRows().count() == 0);
+
+    SAFE_DELETE_ELE(e5)
 }
 
 TEST_F(TestDFontPreviewListView, checkLoadLeftFonts)
@@ -1060,6 +1066,10 @@ TEST_F(TestDFontPreviewListView, checkmouseMoveEvent)
 
     QMouseEvent *e3 = new QMouseEvent(QEvent::MouseMove, QPoint(423, 23), Qt::LeftButton, Qt::NoButton, Qt::NoModifier);
     listview->mouseMoveEvent(e3);
+
+    SAFE_DELETE_ELE(e)
+    SAFE_DELETE_ELE(e2)
+    SAFE_DELETE_ELE(e3)
 }
 
 TEST_F(TestDFontPreviewListView, checkonMouseLeftBtnPressed)
@@ -1135,6 +1145,9 @@ TEST_F(TestDFontPreviewListView, checkMouseReleaseEvent)
 
     QMouseEvent *e2 = new QMouseEvent(QEvent::MouseButtonRelease, QPoint(623, 23), Qt::LeftButton, Qt::NoButton, Qt::NoModifier);
     listview->mouseReleaseEvent(e2);
+
+    SAFE_DELETE_ELE(e1)
+    SAFE_DELETE_ELE(e2)
 }
 
 TEST_F(TestDFontPreviewListView, checkSelectedFontsSystemFont)

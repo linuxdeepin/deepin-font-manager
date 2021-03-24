@@ -24,6 +24,7 @@
 #include <gtest/gtest.h>
 #include "../third-party/stub/stub.h"
 #include "utils.h"
+#include "commonheaderfile.h"
 
 #include "globaldef.h"
 #include <QSignalSpy>
@@ -96,6 +97,9 @@ TEST_F(TestDSplitListWidget, checkHelpEvent)
 
 //    EXPECT_TRUE(dsp->itemDelegate()->helpEvent(e, dsp, option, modelIndex));
 
+
+    SAFE_DELETE_ELE(e)
+    SAFE_DELETE_ELE(e1)
 }
 
 TEST_F(TestDSplitListWidget, checkEventFilter)
@@ -114,6 +118,9 @@ TEST_F(TestDSplitListWidget, checkEventFilter)
 
     dsp->eventFilter(dsp, e1);
     EXPECT_TRUE(dsp->m_IsTabFocus);
+
+    SAFE_DELETE_ELE(e)
+    SAFE_DELETE_ELE(e1)
 }
 
 TEST_F(TestDSplitListWidget, checkKyPressEvent)
@@ -166,6 +173,8 @@ TEST_F(TestDSplitListWidget, checkWheelEventDeltaP)
     dsp->setCurrentIndex(modelIndex);
     dsp->wheelEvent(e);
     EXPECT_TRUE(dsp->currentIndex().row() == 2);
+
+    SAFE_DELETE_ELE(e)
 }
 
 TEST_F(TestDSplitListWidget, checkWheelEventDeltaN)
@@ -186,6 +195,8 @@ TEST_F(TestDSplitListWidget, checkWheelEventDeltaN)
     dsp->setCurrentIndex(modelIndex);
     dsp->wheelEvent(e);
     EXPECT_TRUE(dsp->currentIndex().row() == dsp->count() - 1);
+
+    SAFE_DELETE_ELE(e)
 }
 
 
@@ -201,6 +212,10 @@ TEST_F(TestDSplitListWidget, checkMouseMoveEvent)
 
     EXPECT_FALSE(dsp->itemDelegate()->helpEvent(e2, dsp, option, modelIndex));
     dsp->mouseMoveEvent(e);
+
+    SAFE_DELETE_ELE(e)
+    SAFE_DELETE_ELE(e2)
+
 }
 
 TEST_F(TestDSplitListWidget, checkGetSetStatus)
@@ -265,6 +280,8 @@ TEST_F(TestDSplitListWidget, checkPaint)
 
     modelIndex1 = dsp->m_categoryItemModell->index(5, 0);
     dsp->itemDelegate()->paint(p, option, modelIndex1);
+
+    SAFE_DELETE_ELE(p)
 }
 
 TEST_F(TestDSplitListWidget, checkMouseReleaseEvent)
@@ -275,6 +292,8 @@ TEST_F(TestDSplitListWidget, checkMouseReleaseEvent)
 
     Stub s;
     s.set(ADDR(QModelIndex, row), stub_returnRow);
+
+    SAFE_DELETE_ELE(e)
 }
 
 

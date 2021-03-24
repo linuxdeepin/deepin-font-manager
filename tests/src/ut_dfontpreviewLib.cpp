@@ -38,6 +38,7 @@
 #include <fontconfig/fcfreetype.h>
 #include <gtest/gtest.h>
 #include "../third-party/stub/stub.h"
+#include "commonheaderfile.h"
 
 #define FTM_DEFAULT_PREVIEW_CN_TEXT QString("因理想而出生，为责任而成长")
 #define FTM_DEFAULT_PREVIEW_EN_TEXT QString("Don't let your dreams be dreams")
@@ -96,6 +97,7 @@ TEST_F(TestDFontPreview, checkPaintEvent)
     fp->paintEvent(p);
 
     delete  fp;
+    SAFE_DELETE_ELE(p)
 }
 
 TEST_F(TestDFontPreview, checkGetLanguageSampleString)

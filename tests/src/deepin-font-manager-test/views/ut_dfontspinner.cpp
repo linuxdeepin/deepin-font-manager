@@ -24,6 +24,7 @@
 
 #include <gtest/gtest.h>
 #include "../third-party/stub/stub.h"
+#include "commonheaderfile.h"
 #include "utils.h"
 
 #include <QPaintEvent>
@@ -45,6 +46,7 @@ protected:
     void TearDown()
     {
         delete fs;
+        delete w;
     }
     // Some expensive resource shared by all tests.
     QWidget *w = new QWidget;
@@ -67,6 +69,7 @@ TEST_F(TestDFontSpinner, checkPaintEvent)
     QPaintEvent *paint = new QPaintEvent(f);
 
     fs->paintEvent(paint);
+    SAFE_DELETE_ELE(paint)
 }
 
 //TEST_F(TestDFontSpinner, checkSetBackgroundColor)
@@ -83,6 +86,7 @@ TEST_F(TestDFontSpinner, checkChangeEvent)
 {
     QEvent *e = new QEvent(QEvent::PaletteChange);
     fs->changeEvent(e);
+    SAFE_DELETE_ELE(e)
 }
 
 

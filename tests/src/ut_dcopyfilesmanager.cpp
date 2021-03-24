@@ -47,7 +47,7 @@ protected:
     }
     void TearDown()
     {
-//        delete  fmd;
+        delete fmd;
     }
 
     // Some expensive resource shared by all tests.

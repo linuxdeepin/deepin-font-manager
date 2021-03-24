@@ -26,6 +26,7 @@
 #include <gtest/gtest.h>
 #include "../third-party/stub/stub.h"
 #include "utils.h"
+#include "commonheaderfile.h"
 
 #include <QTest>
 #include <QSignalSpy>
@@ -52,7 +53,9 @@ protected:
     }
     void TearDown()
     {
-        delete iEListview;
+        SAFE_DELETE_ELE(iEListview);
+        SAFE_DELETE_ELE(w);
+        SAFE_DELETE_ELE(p);
     }
     // Some expensive resource shared by all tests.
     DFInstallErrorListView *iEListview;
@@ -171,6 +174,8 @@ TEST_F(TestDFInstallErrorListView, checkLengthAutoFeed)
 
     str = iEListview->m_errorListItemDelegate->lengthAutoFeed(p, str, 50);
     qDebug() << str << endl;
+
+    SAFE_DELETE_ELE(p)
 }
 
 
@@ -186,6 +191,9 @@ TEST_F(TestDFInstallErrorListView, checkEventFilter)
 
     iEListview->eventFilter(iEListview, focusInEvent);
     EXPECT_TRUE(iEListview->m_IsTabFocus);
+
+    SAFE_DELETE_ELE(focusOutEvent)
+    SAFE_DELETE_ELE(focusInEvent)
 }
 
 

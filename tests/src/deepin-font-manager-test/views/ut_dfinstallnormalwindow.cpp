@@ -25,6 +25,7 @@
 #include <gtest/gtest.h>
 
 #include "../third-party/stub/stub.h"
+#include "commonheaderfile.h"
 
 #include "fontmanagercore.h"
 #include "globaldef.h"
@@ -306,6 +307,7 @@ TEST_F(TestDFInstallNormalWindow, checkResizeEvent)
     QResizeEvent *e = new QResizeEvent(QSize(), QSize());
 
     iw->resizeEvent(e);
+    SAFE_DELETE_ELE(e)
 }
 
 TEST_F(TestDFInstallNormalWindow, checkPaintEvent)
@@ -313,6 +315,7 @@ TEST_F(TestDFInstallNormalWindow, checkPaintEvent)
     QPaintEvent *e = new QPaintEvent(QRect());
 
     iw->paintEvent(e);
+    SAFE_DELETE_ELE(e)
 }
 
 TEST_F(TestDFInstallNormalWindow, checkCloseEvent)
@@ -320,6 +323,7 @@ TEST_F(TestDFInstallNormalWindow, checkCloseEvent)
     QCloseEvent *e = new QCloseEvent();
 
     iw->closeEvent(e);
+    SAFE_DELETE_ELE(e)
 }
 
 TEST_F(TestDFInstallNormalWindow, checkBatchInstall)

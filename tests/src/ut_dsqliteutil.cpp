@@ -24,6 +24,7 @@
 
 #include <gtest/gtest.h>
 #include "../third-party/stub/stub.h"
+#include "commonheaderfile.h"
 
 #include <QDir>
 
@@ -191,6 +192,7 @@ TEST_F(TestDSqliteUtil, checkDelAllRecordsErr)
 
 TEST_F(TestDSqliteUtil, checkFinish)
 {
+    SAFE_DELETE_ELE(fs->m_query)
     fs->m_query = nullptr;
     fs->finish();
 }

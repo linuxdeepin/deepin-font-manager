@@ -32,6 +32,7 @@
 
 #include <gtest/gtest.h>
 #include "../third-party/stub/stub.h"
+#include "commonheaderfile.h"
 
 namespace {
 class TestDFontPreviewer : public testing::Test
@@ -76,6 +77,8 @@ TEST_F(TestDFontPreviewer, checkPaintevent)
     QRect r;
     QPaintEvent *p = new QPaintEvent(r);
     fm->paintEvent(p);
+
+    SAFE_DELETE_ELE(p)
 }
 
 

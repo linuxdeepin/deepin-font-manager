@@ -25,6 +25,7 @@
 #include <gtest/gtest.h>
 #include "../third-party/stub/stub.h"
 #include "utils.h"
+#include "commonheaderfile.h"
 
 #include "views/dfinstallnormalwindow.h"
 #include "dfontinfomanager.h"
@@ -146,6 +147,7 @@ TEST_F(TestDFQuickInstallWindow, checkresizeEvent)
     QResizeEvent *e = new QResizeEvent(s, s);
 
     fqi->resizeEvent(e);
+    SAFE_DELETE_ELE(e)
 }
 
 

@@ -33,7 +33,7 @@ class LoadFontDataThread : public QThread
 {
     Q_OBJECT
 public:
-    explicit LoadFontDataThread(QList<QMap<QString, QString>> &list);
+    explicit LoadFontDataThread(QList<QMap<QString, QString>> &list, QObject *parent = nullptr);
 
 protected:
     void run();

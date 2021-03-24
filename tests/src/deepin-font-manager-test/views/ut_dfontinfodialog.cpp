@@ -20,7 +20,7 @@
 */
 
 #include "views/dfontinfodialog.h"
-
+#include "commonheaderfile.h"
 
 #include "dfontpreviewitemdef.h"
 #include "utils.h"
@@ -95,6 +95,7 @@ TEST_F(TestDFontInfoDialog, checkResizeEvent)
     QSize s;
     QResizeEvent *re = new QResizeEvent(s, s);
     dFontInforDialog->resizeEvent(re);
+    SAFE_DELETE_ELE(re)
 }
 
 TEST_F(TestDFontInfoDialog, checkInitConnection)
@@ -133,6 +134,7 @@ TEST_F(TestDFontInfoDialog, checkfontinfoAreaEventFilter)
     QEvent *e = new QEvent(QEvent::FontChange);
 
     dFontInforDialog->m_fontinfoArea->eventFilter(dFontInforDialog->m_fontinfoArea, e);
+    SAFE_DELETE_ELE(e)
 }
 
 TEST_F(TestDFontInfoDialog, checkInfoScroolArea)

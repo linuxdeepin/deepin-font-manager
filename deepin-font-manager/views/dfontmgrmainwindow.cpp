@@ -239,7 +239,7 @@ void DFontMgrMainWindow::initConnections()
     //执行fc-cache结束
     connect(m_fontManager, &FontManagerCore::cacheFinish, this, &DFontMgrMainWindow::onCacheFinish, Qt::QueuedConnection);
     //取消安装
-    connect(m_fontManager, &FontManagerCore::requestCancelInstall, this, [=]() {
+    connect(m_fontManager, &FontManagerCore::requestCancelInstall, this, [ = ]() {
         m_isInstallOver = true;
         m_fIsInstalling = false;
     });
@@ -465,8 +465,8 @@ void DFontMgrMainWindow::initShortcuts()
                     QPoint GlobalPoint(d->searchFontEdit->mapToGlobal(QPoint(0, 0)));
                     QPoint position = d->searchFontEdit->lineEdit()->rect().center();
                     QPoint popPosition(GlobalPoint.x() + position.x(), GlobalPoint.y() + position.y() + 10);
-                    QContextMenuEvent *eve = new QContextMenuEvent(QContextMenuEvent::Reason::Keyboard, popPosition, popPosition);
-                    m_isSearchLineEditMenuPoped = QApplication::sendEvent(d->searchFontEdit->lineEdit(), eve);
+                    QContextMenuEvent eve(QContextMenuEvent::Reason::Keyboard, popPosition, popPosition);
+                    m_isSearchLineEditMenuPoped = QApplication::sendEvent(d->searchFontEdit->lineEdit(), &eve);
                     qDebug() << m_isSearchLineEditMenuPoped;
                 }
 
@@ -476,8 +476,8 @@ void DFontMgrMainWindow::initShortcuts()
                     QPoint GlobalPoint(d->textInputEdit->mapToGlobal(QPoint(0, 0)));
                     QPoint position = d->textInputEdit->lineEdit()->rect().center();
                     QPoint popPosition(GlobalPoint.x() + position.x(), GlobalPoint.y() + position.y() + 10);
-                    QContextMenuEvent *eve = new QContextMenuEvent(QContextMenuEvent::Reason::Keyboard, popPosition, popPosition);
-                    m_isInputLineEditMunuPoped = QApplication::sendEvent(d->textInputEdit->lineEdit(), eve);
+                    QContextMenuEvent eve(QContextMenuEvent::Reason::Keyboard, popPosition, popPosition);
+                    m_isInputLineEditMunuPoped = QApplication::sendEvent(d->textInputEdit->lineEdit(), &eve);
                 }
             } else
             {

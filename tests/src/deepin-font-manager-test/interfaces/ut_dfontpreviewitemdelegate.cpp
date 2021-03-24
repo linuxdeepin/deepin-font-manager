@@ -24,6 +24,7 @@
 
 #include "globaldef.h"
 #include "utils.h"
+#include "commonheaderfile.h"
 
 #include <DApplication>
 #include <DApplicationHelper>
@@ -56,6 +57,8 @@ protected:
 //        p->restore();
 //        delete listview;
         delete DfpDelegate;
+        delete w;
+        delete p;
     }
     // Some expensive resource shared by all tests.
     QWidget *w = new QWidget;
@@ -149,5 +152,6 @@ TEST_F(TestDFontPreviewItemDelegate, checkEventFilter)
     QPointF p2;
     QHoverEvent *e = new QHoverEvent(QEvent::HoverLeave, p1, p2);
     DfpDelegate->eventFilter(listview, e);
+    SAFE_DELETE_ELE(e)
 }
 

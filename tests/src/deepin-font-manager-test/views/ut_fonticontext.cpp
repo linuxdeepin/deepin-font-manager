@@ -20,8 +20,7 @@
 */
 
 #include "views/fonticontext.h"
-
-
+#include "commonheaderfile.h"
 #include <DStyle>
 #include <DFontSizeManager>
 
@@ -74,6 +73,8 @@ TEST_F(TestFontIconText, checkPaintEvent)
 
     fit->setContent(false);
     fit->paintEvent(e);
+
+    SAFE_DELETE_ELE(e)
 }
 
 

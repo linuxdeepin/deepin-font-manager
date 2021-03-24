@@ -42,7 +42,7 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
     : QListView(parent)
     , m_bLoadDataFinish(false)
     , m_parentWidget(qobject_cast<DFontMgrMainWindow *>(parent))
-    , m_fontPreviewItemModel(new QStandardItemModel())
+    , m_fontPreviewItemModel(new QStandardItemModel(this))
     , m_dataThread(nullptr)
     , m_fontChangeTimer(new QTimer(this))
 {
@@ -262,7 +262,7 @@ void DFontPreviewListView::initDelegate()
     m_fontPreviewItemDelegate = new DFontPreviewItemDelegate(this);
     this->setItemDelegate(m_fontPreviewItemDelegate);
 
-    m_fontPreviewProxyModel = new DFontPreviewProxyModel();
+    m_fontPreviewProxyModel = new DFontPreviewProxyModel(this);
     m_fontPreviewProxyModel->setSourceModel(m_fontPreviewItemModel);
     m_fontPreviewProxyModel->setDynamicSortFilter(true);
 
@@ -354,7 +354,7 @@ void DFontPreviewListView::loadLeftFonts()
         qDebug() << DFMDBManager::recordList.count() << endl;
         qDebug() << QThread::currentThreadId() << __func__ << "------------";
 
-        m_dataLoadThread = new LoadFontDataThread(DFMDBManager::recordList);
+        m_dataLoadThread = new LoadFontDataThread(DFMDBManager::recordList, this);
         m_dataLoadThread->start();
 
         connect(m_dataLoadThread, &LoadFontDataThread::dataLoadFinish, this, &DFontPreviewListView::onStartupMultiItemAdded);
@@ -516,7 +516,7 @@ void DFontPreviewListView::updateModel(int deleteCount, bool showSpinner)
 
     m_fontPreviewItemModel = new QStandardItemModel;
     m_fontPreviewItemModel->setColumnCount(1);
-    m_fontPreviewProxyModel = new DFontPreviewProxyModel;
+    m_fontPreviewProxyModel = new DFontPreviewProxyModel(this);
     m_fontPreviewProxyModel->setSourceModel(m_fontPreviewItemModel);
     setModel(m_fontPreviewProxyModel);
 

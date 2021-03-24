@@ -28,6 +28,7 @@
 #include "dfontpreviewlistdatathread.h"
 #include <gtest/gtest.h>
 #include "../third-party/stub/stub.h"
+#include "commonheaderfile.h"
 
 #include <DLog>
 
@@ -42,6 +43,7 @@ protected:
     }
     void TearDown()
     {
+        delete w;
         delete fpm;
     }
     // Some expensive resource shared by all tests.
@@ -87,6 +89,9 @@ TEST_F(TestDFontPreviewProxyModel, checkFilterAcceptsRow)
 
     fpm->setFilterGroup(1);
     EXPECT_FALSE(fpm->filterAcceptsRow(0,  QModelIndex()));
+
+    SAFE_DELETE_ELE(m_fontPreviewItemModel)
+    SAFE_DELETE_ELE(listview)
 }
 
 TEST_F(TestDFontPreviewProxyModel, checkFilterAcceptsRowAllFonts)
@@ -105,6 +110,9 @@ TEST_F(TestDFontPreviewProxyModel, checkFilterAcceptsRowAllFonts)
     fpm->setFilterGroup(0);
     fpm->setFilterFontNamePattern("aaa");
     EXPECT_TRUE(fpm->filterAcceptsRow(0,  QModelIndex()));
+
+    SAFE_DELETE_ELE(m_fontPreviewItemModel)
+    SAFE_DELETE_ELE(listview)
 }
 
 TEST_F(TestDFontPreviewProxyModel, checkFilterAcceptsRowAllSysFonts)
@@ -132,6 +140,9 @@ TEST_F(TestDFontPreviewProxyModel, checkFilterAcceptsRowAllSysFonts)
     fpm->setFilterFontNamePattern("aaa");
     EXPECT_TRUE(fpm->filterAcceptsRow(0,  QModelIndex()));
     DFontPreviewListDataThread::instance()->m_fontModelList.removeLast();
+
+    SAFE_DELETE_ELE(m_fontPreviewItemModel)
+    SAFE_DELETE_ELE(listview)
 }
 
 TEST_F(TestDFontPreviewProxyModel, checkFilterAcceptsRowAllUserFonts)
@@ -161,6 +172,9 @@ TEST_F(TestDFontPreviewProxyModel, checkFilterAcceptsRowAllUserFonts)
     qDebug() << fpm->filterAcceptsRow(0,  QModelIndex());
     EXPECT_TRUE(fpm->filterAcceptsRow(0,  QModelIndex()));
     DFontPreviewListDataThread::instance()->m_fontModelList.removeLast();
+
+    SAFE_DELETE_ELE(m_fontPreviewItemModel);
+    SAFE_DELETE_ELE(listview);
 }
 
 
@@ -190,6 +204,9 @@ TEST_F(TestDFontPreviewProxyModel, checkFilterAcceptsRowAllCollectFonts)
     fpm->setFilterGroup(4);
     EXPECT_FALSE(fpm->filterAcceptsRow(0,  QModelIndex()));
     DFontPreviewListDataThread::instance()->m_fontModelList.removeLast();
+
+    SAFE_DELETE_ELE(m_fontPreviewItemModel);
+    SAFE_DELETE_ELE(listview);
 }
 
 TEST_F(TestDFontPreviewProxyModel, checkFilterAcceptsRowAllActiviteFonts)
@@ -216,6 +233,9 @@ TEST_F(TestDFontPreviewProxyModel, checkFilterAcceptsRowAllActiviteFonts)
     fpm->setFilterFontNamePattern("aaa");
     EXPECT_TRUE(fpm->filterAcceptsRow(0,  QModelIndex()));
     DFontPreviewListDataThread::instance()->m_fontModelList.removeLast();
+
+    SAFE_DELETE_ELE(m_fontPreviewItemModel);
+    SAFE_DELETE_ELE(listview);
 }
 
 TEST_F(TestDFontPreviewProxyModel, checkFilterAcceptsRowAllChineseFonts)
@@ -242,6 +262,9 @@ TEST_F(TestDFontPreviewProxyModel, checkFilterAcceptsRowAllChineseFonts)
     fpm->setFilterFontNamePattern("aaa");
     EXPECT_TRUE(fpm->filterAcceptsRow(0,  QModelIndex()));
     DFontPreviewListDataThread::instance()->m_fontModelList.removeLast();
+
+    SAFE_DELETE_ELE(m_fontPreviewItemModel);
+    SAFE_DELETE_ELE(listview);
 }
 
 TEST_F(TestDFontPreviewProxyModel, checkFilterAcceptsRowAllMonoFonts)
@@ -268,4 +291,7 @@ TEST_F(TestDFontPreviewProxyModel, checkFilterAcceptsRowAllMonoFonts)
     fpm->setFilterFontNamePattern("aaa");
     EXPECT_TRUE(fpm->filterAcceptsRow(0,  QModelIndex()));
     DFontPreviewListDataThread::instance()->m_fontModelList.removeLast();
+
+    SAFE_DELETE_ELE(m_fontPreviewItemModel);
+    SAFE_DELETE_ELE(listview);
 }
