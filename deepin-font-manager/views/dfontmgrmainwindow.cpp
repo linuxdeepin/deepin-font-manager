@@ -2646,7 +2646,11 @@ void DFontMgrMainWindow::setNextTabFocus(QObject *obj)
     if (obj == d->addFontButton) {
         d->searchFontEdit->lineEdit()->setFocus(Qt::TabFocusReason);
     } else if (obj == d->searchFontEdit->lineEdit()) {
-        titlebar()->setFocus(Qt::TabFocusReason);
+        // 焦点切换，搜索框到右上角按钮区域 buttonArea
+        DWindowCloseButton *pWindowCloseButton = titlebar()->findChild<DWindowCloseButton *>("DTitlebarDWindowCloseButton");
+        if (nullptr != pWindowCloseButton) {
+            qobject_cast<QWidget *>(pWindowCloseButton->parent())->setFocus(Qt::TabFocusReason);
+        }
         d->addFontButton->setFocusPolicy(Qt::NoFocus);
         d->searchFontEdit->lineEdit()->setFocusPolicy(Qt::ClickFocus);
     } else if (obj == m_fontPreviewListView) {
