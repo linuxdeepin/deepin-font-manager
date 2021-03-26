@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="ug" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="ug">
 <context>
     <name>Category</name>
     <message>
@@ -35,10 +37,6 @@
     <message>
         <source>Cancel</source>
         <translation>بىكار قىلىش</translation>
-    </message>
-    <message>
-        <source>Confirm</source>
-        <translation>جەزملەش</translation>
     </message>
 </context>
 <context>
@@ -83,18 +81,6 @@
         <translation>Ctrl+O</translation>
     </message>
     <message>
-        <source>Ctrl+K</source>
-        <translation>Ctrl+K</translation>
-    </message>
-    <message>
-        <source>Ctrl+Shift+K</source>
-        <translation>Ctrl+Shift+K</translation>
-    </message>
-    <message>
-        <source>Alt+Return</source>
-        <translation>Alt+Return</translation>
-    </message>
-    <message>
         <source>Fonts</source>
         <translation>خەت شەكلى</translation>
     </message>
@@ -118,13 +104,24 @@
         <source>%1 fonts installed</source>
         <translation>%1 دانە خەت شەكلى قاچىلانغان</translation>
     </message>
+    <message>
+        <source>Alt+M</source>
+        <translation>Alt+M</translation>
+    </message>
+    <message>
+        <source>CTRL+I</source>
+        <translation>CTRL+I</translation>
+    </message>
+</context>
+<context>
+    <name>DFontWidget</name>
+    <message>
+        <source>Broken file</source>
+        <translation>ھۆججەت بۇزۇلغان</translation>
+    </message>
 </context>
 <context>
     <name>DeleteConfirmDailog</name>
-    <message>
-        <source>Are you sure you want to delete this font?</source>
-        <translation>بۇ خەت شەكلىنى ئۆچۈرمەكچىمۇ؟</translation>
-    </message>
     <message>
         <source>This font will not be available to applications</source>
         <translation>بۇ خەت شەكلىنى چۈرۈلگەندىن كېيىن، باشقا پىروگراممىلاردا  ئىشلەتكىلى بولمايدۇ</translation>
@@ -318,10 +315,6 @@
         <source>You cannot disable system fonts</source>
         <translation>سىستېما خەت شەكلىنى چەكلىگىلى بولمايدۇ</translation>
     </message>
-    <message>
-        <source>Some fonts are not allowed to be disabled</source>
-        <translation>قىسمەن سىستېما خەت شەكلىنى چەكلىگىلى بولمايدۇ</translation>
-    </message>
 </context>
 <context>
     <name>NormalInstallWindow</name>
@@ -416,13 +409,6 @@
     <message>
         <source>Input preview text</source>
         <translation>تېكىست كىرگۈزۈپ كۆرۈپ بېقىڭ</translation>
-    </message>
-</context>
-<context>
-    <name>DFontWidget</name>
-    <message>
-        <source>Broken file</source>
-        <translation>ھۆججەت بۇزۇلغان</translation>
     </message>
 </context>
 </TS>

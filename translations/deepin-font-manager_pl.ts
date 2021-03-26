@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="pl">
 <context>
     <name>Category</name>
     <message>
@@ -35,10 +37,6 @@
     <message>
         <source>Cancel</source>
         <translation>Anuluj</translation>
-    </message>
-    <message>
-        <source>Confirm</source>
-        <translation>Potwierdź</translation>
     </message>
 </context>
 <context>
@@ -83,18 +81,6 @@
         <translation>Ctrl+O</translation>
     </message>
     <message>
-        <source>Ctrl+K</source>
-        <translation>Ctrl+K</translation>
-    </message>
-    <message>
-        <source>Ctrl+Shift+K</source>
-        <translation>Ctrl+Shift+K</translation>
-    </message>
-    <message>
-        <source>Alt+Return</source>
-        <translation>Alt+Return</translation>
-    </message>
-    <message>
         <source>Fonts</source>
         <translation>Czcionki</translation>
     </message>
@@ -118,13 +104,24 @@
         <source>%1 fonts installed</source>
         <translation>Zainstalowano %1 czcionek</translation>
     </message>
+    <message>
+        <source>Alt+M</source>
+        <translation>Alt+M</translation>
+    </message>
+    <message>
+        <source>CTRL+I</source>
+        <translation>CTRL+I</translation>
+    </message>
+</context>
+<context>
+    <name>DFontWidget</name>
+    <message>
+        <source>Broken file</source>
+        <translation>Uszkodzony plik</translation>
+    </message>
 </context>
 <context>
     <name>DeleteConfirmDailog</name>
-    <message>
-        <source>Are you sure you want to delete this font?</source>
-        <translation>Czy na pewno chcesz usunąć tę czcionkę?</translation>
-    </message>
     <message>
         <source>This font will not be available to applications</source>
         <translation>Ta czcionka nie będzie dostępna dla aplikacji</translation>
@@ -318,10 +315,6 @@
         <source>You cannot disable system fonts</source>
         <translation>Nie można wyłączyć czcionek systemowych</translation>
     </message>
-    <message>
-        <source>Some fonts are not allowed to be disabled</source>
-        <translation>Niektórych czcionek nie można wyłączyć</translation>
-    </message>
 </context>
 <context>
     <name>NormalInstallWindow</name>
@@ -416,13 +409,6 @@
     <message>
         <source>Input preview text</source>
         <translation>Wprowadź tekst podglądu</translation>
-    </message>
-</context>
-<context>
-    <name>DFontWidget</name>
-    <message>
-        <source>Broken file</source>
-        <translation>Uszkodzony plik</translation>
     </message>
 </context>
 </TS>

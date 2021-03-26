@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="hu" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="hu">
 <context>
     <name>Category</name>
     <message>
@@ -35,10 +37,6 @@
     <message>
         <source>Cancel</source>
         <translation>Mégsem</translation>
-    </message>
-    <message>
-        <source>Confirm</source>
-        <translation>Megerősítés</translation>
     </message>
 </context>
 <context>
@@ -83,18 +81,6 @@
         <translation>Ctrl+O</translation>
     </message>
     <message>
-        <source>Ctrl+K</source>
-        <translation>Ctrl+K</translation>
-    </message>
-    <message>
-        <source>Ctrl+Shift+K</source>
-        <translation>Ctrl+Shift+K</translation>
-    </message>
-    <message>
-        <source>Alt+Return</source>
-        <translation>Alt+Return</translation>
-    </message>
-    <message>
         <source>Fonts</source>
         <translation>Betűtípusok</translation>
     </message>
@@ -112,19 +98,30 @@
     </message>
     <message>
         <source>%1 font installed</source>
-        <translation>%1 betűtípus telepítve</translation>
+        <translation>A %1 betűtípus telepítve</translation>
     </message>
     <message>
         <source>%1 fonts installed</source>
-        <translation>%1 betűtípusok telepítve</translation>
+        <translation>A %1 betűtípusok telepítve</translation>
+    </message>
+    <message>
+        <source>Alt+M</source>
+        <translation>Alt+M</translation>
+    </message>
+    <message>
+        <source>CTRL+I</source>
+        <translation>CTRL+I</translation>
+    </message>
+</context>
+<context>
+    <name>DFontWidget</name>
+    <message>
+        <source>Broken file</source>
+        <translation>Sérült fájl</translation>
     </message>
 </context>
 <context>
     <name>DeleteConfirmDailog</name>
-    <message>
-        <source>Are you sure you want to delete this font?</source>
-        <translation>Valóban törölni szeretné ezt a betűtípust?</translation>
-    </message>
     <message>
         <source>This font will not be available to applications</source>
         <translation>Ez a betűtípus nem lesz elérhető az alkalmazások számára</translation>
@@ -234,7 +231,7 @@
     </message>
     <message>
         <source>Font Manager helps users install and manage fonts.</source>
-        <translation>A Betűkészlet kezelő segít a felhasználóknak a betűtípusok telepítésében és kezelésében.</translation>
+        <translation>A Betűkészlet Kezelő segít a felhasználóknak a betűtípusok telepítésében és kezelésében.</translation>
     </message>
     <message>
         <source>Loading fonts, please wait...</source>
@@ -300,7 +297,7 @@
     <name>MessageManager</name>
     <message>
         <source>deactivated</source>
-        <translation>felfüggesztve</translation>
+        <translation>Felfüggesztve</translation>
     </message>
     <message>
         <source>The fonts have been deactivated</source>
@@ -317,10 +314,6 @@
     <message>
         <source>You cannot disable system fonts</source>
         <translation>Nem tilthatja le a rendszer betűtípusait</translation>
-    </message>
-    <message>
-        <source>Some fonts are not allowed to be disabled</source>
-        <translation>Egyes betűtípusok nem tilthatók le</translation>
     </message>
 </context>
 <context>
@@ -416,13 +409,6 @@
     <message>
         <source>Input preview text</source>
         <translation>Szövegbevitel előnézete</translation>
-    </message>
-</context>
-<context>
-    <name>DFontWidget</name>
-    <message>
-        <source>Broken file</source>
-        <translation>Sérült fájl</translation>
     </message>
 </context>
 </TS>

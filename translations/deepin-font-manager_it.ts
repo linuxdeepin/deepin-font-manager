@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="it" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="it">
 <context>
     <name>Category</name>
     <message>
@@ -35,10 +37,6 @@
     <message>
         <source>Cancel</source>
         <translation>Annulla</translation>
-    </message>
-    <message>
-        <source>Confirm</source>
-        <translation>Conferma</translation>
     </message>
 </context>
 <context>
@@ -83,18 +81,6 @@
         <translation>Ctrl+O</translation>
     </message>
     <message>
-        <source>Ctrl+K</source>
-        <translation>Ctrl+K</translation>
-    </message>
-    <message>
-        <source>Ctrl+Shift+K</source>
-        <translation>Ctrl+Shift+K</translation>
-    </message>
-    <message>
-        <source>Alt+Return</source>
-        <translation>Alt+Indietro</translation>
-    </message>
-    <message>
         <source>Fonts</source>
         <translation>Font</translation>
     </message>
@@ -118,13 +104,24 @@
         <source>%1 fonts installed</source>
         <translation>Font %1 installato</translation>
     </message>
+    <message>
+        <source>Alt+M</source>
+        <translation>Alt+M</translation>
+    </message>
+    <message>
+        <source>CTRL+I</source>
+        <translation>CTRL+I</translation>
+    </message>
+</context>
+<context>
+    <name>DFontWidget</name>
+    <message>
+        <source>Broken file</source>
+        <translation>File corrotto</translation>
+    </message>
 </context>
 <context>
     <name>DeleteConfirmDailog</name>
-    <message>
-        <source>Are you sure you want to delete this font?</source>
-        <translation>Sicuro di voler eliminare questo font?</translation>
-    </message>
     <message>
         <source>This font will not be available to applications</source>
         <translation>Questo font non sarà disponibile nelle App</translation>
@@ -319,10 +316,6 @@ Localizzazione italiana a cura di Massimo A. Carofano.</translation>
         <source>You cannot disable system fonts</source>
         <translation>Non puoi disabilitare i font di sistema</translation>
     </message>
-    <message>
-        <source>Some fonts are not allowed to be disabled</source>
-        <translation>Alcuni font non possono essere disattivati</translation>
-    </message>
 </context>
 <context>
     <name>NormalInstallWindow</name>
@@ -417,13 +410,6 @@ Localizzazione italiana a cura di Massimo A. Carofano.</translation>
     <message>
         <source>Input preview text</source>
         <translation>Inserisci testo di prova</translation>
-    </message>
-</context>
-<context>
-    <name>DFontWidget</name>
-    <message>
-        <source>Broken file</source>
-        <translation>File corrotto</translation>
     </message>
 </context>
 </TS>

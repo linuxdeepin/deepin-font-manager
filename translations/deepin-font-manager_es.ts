@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="es" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="es">
 <context>
     <name>Category</name>
     <message>
@@ -19,7 +21,7 @@
     </message>
     <message>
         <source>Active</source>
-        <translation>Activadas</translation>
+        <translation>Activas</translation>
     </message>
     <message>
         <source>Chinese</source>
@@ -35,10 +37,6 @@
     <message>
         <source>Cancel</source>
         <translation>Cancelar</translation>
-    </message>
-    <message>
-        <source>Confirm</source>
-        <translation>Confirmar</translation>
     </message>
 </context>
 <context>
@@ -83,18 +81,6 @@
         <translation>Ctrl + O</translation>
     </message>
     <message>
-        <source>Ctrl+K</source>
-        <translation>Ctrl + K</translation>
-    </message>
-    <message>
-        <source>Ctrl+Shift+K</source>
-        <translation>Ctrl + Mayús + K</translation>
-    </message>
-    <message>
-        <source>Alt+Return</source>
-        <translation>Alt + Enter</translation>
-    </message>
-    <message>
         <source>Fonts</source>
         <translation>Fuentes</translation>
     </message>
@@ -118,13 +104,24 @@
         <source>%1 fonts installed</source>
         <translation>%1 fuentes instaladas</translation>
     </message>
+    <message>
+        <source>Alt+M</source>
+        <translation>Alt+M</translation>
+    </message>
+    <message>
+        <source>CTRL+I</source>
+        <translation>CTRL+I</translation>
+    </message>
+</context>
+<context>
+    <name>DFontWidget</name>
+    <message>
+        <source>Broken file</source>
+        <translation>Archivo roto</translation>
+    </message>
 </context>
 <context>
     <name>DeleteConfirmDailog</name>
-    <message>
-        <source>Are you sure you want to delete this font?</source>
-        <translation>¿Está seguro de que quiere borrar esta fuente?</translation>
-    </message>
     <message>
         <source>This font will not be available to applications</source>
         <translation>Esta fuente no estará disponible para las aplicaciones</translation>
@@ -277,11 +274,11 @@
     </message>
     <message>
         <source>Favorite</source>
-        <translation>Favorita</translation>
+        <translation>Añadir a favoritas</translation>
     </message>
     <message>
         <source>Unfavorite</source>
-        <translation>Quitar favoritas</translation>
+        <translation>Quitar de favoritas</translation>
     </message>
     <message>
         <source>Details</source>
@@ -317,10 +314,6 @@
     <message>
         <source>You cannot disable system fonts</source>
         <translation>No se pueden desactivar las fuentes del sistema</translation>
-    </message>
-    <message>
-        <source>Some fonts are not allowed to be disabled</source>
-        <translation>Algunas fuentes no se pueden deshabilitar</translation>
     </message>
 </context>
 <context>
@@ -400,11 +393,11 @@
     </message>
     <message>
         <source>Favorite</source>
-        <translation>Favorita</translation>
+        <translation>Añadir a favoritas</translation>
     </message>
     <message>
         <source>Unfavorite</source>
-        <translation>Quitar favoritas</translation>
+        <translation>Quitar de favoritas</translation>
     </message>
     <message>
         <source>Font info</source>
@@ -416,13 +409,6 @@
     <message>
         <source>Input preview text</source>
         <translation>Introducir texto de vista previa</translation>
-    </message>
-</context>
-<context>
-    <name>DFontWidget</name>
-    <message>
-        <source>Broken file</source>
-        <translation>Archivo roto</translation>
     </message>
 </context>
 </TS>

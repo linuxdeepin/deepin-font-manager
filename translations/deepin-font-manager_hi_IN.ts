@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="hi_IN" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="hi_IN">
 <context>
     <name>Category</name>
     <message>
@@ -35,10 +37,6 @@
     <message>
         <source>Cancel</source>
         <translation>रद्द करें</translation>
-    </message>
-    <message>
-        <source>Confirm</source>
-        <translation>पुष्टि करें</translation>
     </message>
 </context>
 <context>
@@ -83,18 +81,6 @@
         <translation>Ctrl+O</translation>
     </message>
     <message>
-        <source>Ctrl+K</source>
-        <translation>Ctrl+K</translation>
-    </message>
-    <message>
-        <source>Ctrl+Shift+K</source>
-        <translation>Ctrl+Shift+K</translation>
-    </message>
-    <message>
-        <source>Alt+Return</source>
-        <translation>Alt+Return</translation>
-    </message>
-    <message>
         <source>Fonts</source>
         <translation>मुद्रलिपियाँ</translation>
     </message>
@@ -118,13 +104,24 @@
         <source>%1 fonts installed</source>
         <translation>%1 मुद्रलिपियाँ इंस्टॉल है</translation>
     </message>
+    <message>
+        <source>Alt+M</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>CTRL+I</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DFontWidget</name>
+    <message>
+        <source>Broken file</source>
+        <translation>विकृत फाइल</translation>
+    </message>
 </context>
 <context>
     <name>DeleteConfirmDailog</name>
-    <message>
-        <source>Are you sure you want to delete this font?</source>
-        <translation>क्या आप निश्चित ही यह मुद्रलिपि हटाना चाहते हैं?</translation>
-    </message>
     <message>
         <source>This font will not be available to applications</source>
         <translation>यह मुद्रलिपि अनुप्रयोगों हेतु उपलब्ध नहीं होगी</translation>
@@ -318,10 +315,6 @@
         <source>You cannot disable system fonts</source>
         <translation>सिस्टम मुद्रलिपियाँ निष्क्रिय करना संभव नहीं है</translation>
     </message>
-    <message>
-        <source>Some fonts are not allowed to be disabled</source>
-        <translation>कुछ मुद्रलिपियाँ निष्क्रिय करना संभव नहीं है</translation>
-    </message>
 </context>
 <context>
     <name>NormalInstallWindow</name>
@@ -416,13 +409,6 @@
     <message>
         <source>Input preview text</source>
         <translation>पूर्वावलोकन हेतु लेख दर्ज करें</translation>
-    </message>
-</context>
-<context>
-    <name>DFontWidget</name>
-    <message>
-        <source>Broken file</source>
-        <translation>विकृत फाइल</translation>
     </message>
 </context>
 </TS>

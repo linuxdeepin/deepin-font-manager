@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="fr" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="fr">
 <context>
     <name>Category</name>
     <message>
@@ -35,10 +37,6 @@
     <message>
         <source>Cancel</source>
         <translation>Annuler</translation>
-    </message>
-    <message>
-        <source>Confirm</source>
-        <translation>Confirmer</translation>
     </message>
 </context>
 <context>
@@ -83,18 +81,6 @@
         <translation>Ctrl+O</translation>
     </message>
     <message>
-        <source>Ctrl+K</source>
-        <translation>Ctrl+K</translation>
-    </message>
-    <message>
-        <source>Ctrl+Shift+K</source>
-        <translation>Ctrl+Maj+K</translation>
-    </message>
-    <message>
-        <source>Alt+Return</source>
-        <translation>Alt+Retour</translation>
-    </message>
-    <message>
         <source>Fonts</source>
         <translation>Polices</translation>
     </message>
@@ -118,13 +104,24 @@
         <source>%1 fonts installed</source>
         <translation>%1 polices installées</translation>
     </message>
+    <message>
+        <source>Alt+M</source>
+        <translation>Alt+M</translation>
+    </message>
+    <message>
+        <source>CTRL+I</source>
+        <translation>CTRL+I</translation>
+    </message>
+</context>
+<context>
+    <name>DFontWidget</name>
+    <message>
+        <source>Broken file</source>
+        <translation>Fichier corrompu</translation>
+    </message>
 </context>
 <context>
     <name>DeleteConfirmDailog</name>
-    <message>
-        <source>Are you sure you want to delete this font?</source>
-        <translation>Voulez-vous vraiment supprimer cette police?</translation>
-    </message>
     <message>
         <source>This font will not be available to applications</source>
         <translation>Cette police ne sera plus disponible pour les applications</translation>
@@ -318,10 +315,6 @@
         <source>You cannot disable system fonts</source>
         <translation>Vous ne pouvez pas désactiver les polices système</translation>
     </message>
-    <message>
-        <source>Some fonts are not allowed to be disabled</source>
-        <translation>Certaines polices ne peuvent pas être désactivées</translation>
-    </message>
 </context>
 <context>
     <name>NormalInstallWindow</name>
@@ -416,13 +409,6 @@
     <message>
         <source>Input preview text</source>
         <translation>Saisir un texte d&apos;aperçu</translation>
-    </message>
-</context>
-<context>
-    <name>DFontWidget</name>
-    <message>
-        <source>Broken file</source>
-        <translation>Fichier corrompu</translation>
     </message>
 </context>
 </TS>

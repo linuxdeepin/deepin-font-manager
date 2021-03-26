@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="br" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="br">
 <context>
     <name>Category</name>
     <message>
@@ -35,10 +37,6 @@
     <message>
         <source>Cancel</source>
         <translation>Nullañ</translation>
-    </message>
-    <message>
-        <source>Confirm</source>
-        <translation>Kadarnat</translation>
     </message>
 </context>
 <context>
@@ -83,18 +81,6 @@
         <translation>Ktrlo+O</translation>
     </message>
     <message>
-        <source>Ctrl+K</source>
-        <translation>Ktrl+K</translation>
-    </message>
-    <message>
-        <source>Ctrl+Shift+K</source>
-        <translation>Ktrl+Pennlizh+K</translation>
-    </message>
-    <message>
-        <source>Alt+Return</source>
-        <translation>Alt+Distreiñ</translation>
-    </message>
-    <message>
         <source>Fonts</source>
         <translation>Skriturioù</translation>
     </message>
@@ -118,13 +104,24 @@
         <source>%1 fonts installed</source>
         <translation>%1 skritur staliet</translation>
     </message>
+    <message>
+        <source>Alt+M</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>CTRL+I</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DFontWidget</name>
+    <message>
+        <source>Broken file</source>
+        <translation>Restr torret</translation>
+    </message>
 </context>
 <context>
     <name>DeleteConfirmDailog</name>
-    <message>
-        <source>Are you sure you want to delete this font?</source>
-        <translation>Ha fellout a ra deoc&apos;h dilemel ar skritur-mañ?</translation>
-    </message>
     <message>
         <source>This font will not be available to applications</source>
         <translation>Ne vo ket hegerz ken ar skritur-mañ evit an aplikasionoù</translation>
@@ -135,19 +132,19 @@
     </message>
     <message>
         <source>The other %1 system fonts cannot be deleted</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>The font &quot;%1&quot; in use cannot be deleted</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>The other %1 system fonts and the font &quot;%2&quot; in use cannot be deleted</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Are you sure you want to delete %1 font(s)?</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Delete</source>
@@ -318,10 +315,6 @@
         <source>You cannot disable system fonts</source>
         <translation>N&apos;heller ket lazhañ skriturioù ar sistem</translation>
     </message>
-    <message>
-        <source>Some fonts are not allowed to be disabled</source>
-        <translation>N&apos;heller ket lazhañ skriturioù &apos;zo</translation>
-    </message>
 </context>
 <context>
     <name>NormalInstallWindow</name>
@@ -416,13 +409,6 @@
     <message>
         <source>Input preview text</source>
         <translation>Ebarzhit un destenn rakwelet</translation>
-    </message>
-</context>
-<context>
-    <name>DFontWidget</name>
-    <message>
-        <source>Broken file</source>
-        <translation>Restr torret</translation>
     </message>
 </context>
 </TS>

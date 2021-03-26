@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="fi" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="fi">
 <context>
     <name>Category</name>
     <message>
@@ -35,10 +37,6 @@
     <message>
         <source>Cancel</source>
         <translation>Peruuta</translation>
-    </message>
-    <message>
-        <source>Confirm</source>
-        <translation>Vahvista</translation>
     </message>
 </context>
 <context>
@@ -83,18 +81,6 @@
         <translation>Ctrl+O</translation>
     </message>
     <message>
-        <source>Ctrl+K</source>
-        <translation>Ctrl+K</translation>
-    </message>
-    <message>
-        <source>Ctrl+Shift+K</source>
-        <translation>Ctrl+Shift+K</translation>
-    </message>
-    <message>
-        <source>Alt+Return</source>
-        <translation>Alt+Return</translation>
-    </message>
-    <message>
         <source>Fonts</source>
         <translation>Kirjasimet</translation>
     </message>
@@ -118,13 +104,24 @@
         <source>%1 fonts installed</source>
         <translation>%1 kirjasinta asennettu</translation>
     </message>
+    <message>
+        <source>Alt+M</source>
+        <translation>Alt+M</translation>
+    </message>
+    <message>
+        <source>CTRL+I</source>
+        <translation>CTRL+I</translation>
+    </message>
+</context>
+<context>
+    <name>DFontWidget</name>
+    <message>
+        <source>Broken file</source>
+        <translation>Virheellinen tiedosto</translation>
+    </message>
 </context>
 <context>
     <name>DeleteConfirmDailog</name>
-    <message>
-        <source>Are you sure you want to delete this font?</source>
-        <translation>Haluatko varmasti poistaa tämän kirjasimen?</translation>
-    </message>
     <message>
         <source>This font will not be available to applications</source>
         <translation>Tätä kirjasinta ei voi käyttää sovelluksissa</translation>
@@ -230,11 +227,11 @@
     <name>Main</name>
     <message>
         <source>Font Manager</source>
-        <translation>Kirjasinhallinta</translation>
+        <translation>Kirjasimet</translation>
     </message>
     <message>
         <source>Font Manager helps users install and manage fonts.</source>
-        <translation>Kirjasinhallinta auttaa käyttäjää asentamaan ja hallitsemaan kirjasimia.</translation>
+        <translation>Kirjasimet auttaa asentamaan ja hallitsemaan kirjasimia.</translation>
     </message>
     <message>
         <source>Loading fonts, please wait...</source>
@@ -317,10 +314,6 @@
     <message>
         <source>You cannot disable system fonts</source>
         <translation>Järjestelmän kirjasimia ei voi poistaa käytöstä</translation>
-    </message>
-    <message>
-        <source>Some fonts are not allowed to be disabled</source>
-        <translation>Jotakin kirjasimia ei voi poistaa käytöstä</translation>
     </message>
 </context>
 <context>
@@ -416,13 +409,6 @@
     <message>
         <source>Input preview text</source>
         <translation>Esikatselun teksti</translation>
-    </message>
-</context>
-<context>
-    <name>DFontWidget</name>
-    <message>
-        <source>Broken file</source>
-        <translation>Virheellinen tiedosto</translation>
     </message>
 </context>
 </TS>

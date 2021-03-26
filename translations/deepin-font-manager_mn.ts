@@ -1,140 +1,414 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="mn" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="mn">
 <context>
-    <name>HomePage</name>
+    <name>Category</name>
     <message>
-        <source>Drag font file here</source>
-        <translation>Фонт файл энд чирнэ үү</translation>
+        <source>All Fonts</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Select file</source>
-        <translation>Файл сонгох</translation>
+        <source>System</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Favorites</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Active</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chinese</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Monospaced</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>ListItem</name>
+    <name>DFDeleteDialog</name>
     <message>
-        <source>Installed</source>
-        <translation>Суулаа</translation>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>DFInstallErrorDialog</name>
     <message>
-        <source>Other version installed: %1</source>
-        <translation>%1: хувилбар суусан байна</translation>
-    </message>
-    <message>
-        <source>Installing</source>
-        <translation>Суулгаж байна</translation>
+        <source>Broken file</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Same version installed</source>
-        <translation>Адил хувилбар суусан байна</translation>
+        <translation type="unfinished">Адил хувилбар суусан байна</translation>
+    </message>
+    <message>
+        <source>System Font</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DFontMgrMainWindow</name>
+    <message>
+        <source>Ctrl+=</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+-</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+Shift+/</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PgUp</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PgDown</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+Alt+F</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+F</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alt+M</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+O</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>CTRL+I</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 font installed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 fonts installed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fonts</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DFontWidget</name>
+    <message>
+        <source>Broken file</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DeleteConfirmDailog</name>
+    <message>
+        <source>Are you sure you want to delete %1 font(s)?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This font will not be available to applications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>These fonts will not be available to applications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The other %1 system fonts cannot be deleted</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The font &quot;%1&quot; in use cannot be deleted</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The other %1 system fonts and the font &quot;%2&quot; in use cannot be deleted</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Dfuninstalldialog</name>
+    <message>
+        <source>Deleting fonts, please wait...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ExceptionWindow</name>
+    <message>
+        <source>Font Verification</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Exit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Continue</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No fonts to be installed</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Font</name>
+    <message>
+        <source>Don&apos;t let your dreams be dreams</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>FontDetailDailog</name>
+    <message>
+        <source>Style</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Version</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown</source>
+        <translation type="unfinished">Үл мэдэгдэх</translation>
+    </message>
+    <message>
+        <source>Full name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ps name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Trademark</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Basic info</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>Main</name>
     <message>
-        <source>Deepin Font Installer</source>
-        <translation>Дээпин фонт суулгагч</translation>
+        <source>Font Manager</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Deepin Font Installer is used to install and uninstall font file for users with bulk install function.</source>
-        <translation>Дээпин фонт суулгагчыг олноор фонт суулгах болон устгахад ашигладаг.</translation>
+        <source>Font Manager helps users install and manage fonts.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The font exported to your desktop</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 fonts exported to your desktop</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Failed to export 1 font. There is not enough disk space.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Failed to export %1 fonts. There is not enough disk space.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Loading fonts, please wait...</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>MainWindow</name>
+    <name>Menu</name>
     <message>
-        <source>Deepin Font Installer</source>
-        <translation>Дээпин фонт суулгагч</translation>
+        <source>Add font</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Bulk Install</source>
-        <translation>Олноор суулгах</translation>
+        <source>Enable</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Dark theme</source>
-        <translation>Хар ѳнгѳ</translation>
+        <source>Delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Favorite</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Details</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Display in file manager</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unfavorite</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Disable</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>MultiFilePage</name>
+    <name>MessageManager</name>
     <message>
-        <source>Install</source>
-        <translation>Суулгах</translation>
+        <source>%1 is in use, so you cannot disable it</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Installed successfully</source>
-        <translation>Амжилттай суулаа</translation>
+        <source>You cannot disable system fonts and the fonts in use</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>View font directory</source>
-        <translation>Фонтны хавтас харах</translation>
+        <source>You cannot disable system fonts</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Refreshing font cache, please wait...</source>
-        <translation>Фонт нѳѳцийг дахин уншиж байна, түр хүлээнэ үү...</translation>
+        <source>deactivated</source>
+        <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>The fonts have been deactivated</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>NormalInstallWindow</name>
+    <message>
+        <source>Install Font</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Verifying...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>QuickInstallWindow</name>
     <message>
         <source>Unknown</source>
-        <translation>Үл мэдэгдэх</translation>
+        <translation type="unfinished">Үл мэдэгдэх</translation>
+    </message>
+    <message>
+        <source>Install Font</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Broken file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Installed</source>
+        <translation type="unfinished">Суулаа</translation>
+    </message>
+    <message>
+        <source>Not Installed</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>SingleFilePage</name>
+    <name>SearchBar</name>
     <message>
-        <source>Install</source>
-        <translation>Суулгах</translation>
+        <source>Search</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Remove</source>
-        <translation>Устгах</translation>
+        <source>No search results</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Reinstall</source>
-        <translation>Дахин суулга</translation>
+        <source>No fonts</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Shortcut</name>
+    <message>
+        <source>Help</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>View font directory</source>
-        <translation>Фонтны хавтас харах</translation>
+        <source>Display shortcuts</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Style: </source>
-        <translation>Загвар:</translation>
+        <source>Page up</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Type: </source>
-        <translation>Тѳрѳл:</translation>
+        <source>Page down</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Version: </source>
-        <translation>Хувилбар:</translation>
+        <source>Delete</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Copyright: </source>
-        <translation>Эрх:</translation>
+        <source>Add font</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Description: </source>
-        <translation>Тайлбар:</translation>
+        <source>Favorite</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Same version installed</source>
-        <translation>Адил хувилбар суусан байна</translation>
+        <source>Unfavorite</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Installed successfully</source>
-        <translation>Амжилттай суулаа</translation>
+        <source>Font info</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>StateBar</name>
     <message>
-        <source>Removed successfully</source>
-        <translation>Устгагдлаа</translation>
-    </message>
-    <message>
-        <source>Other version installed: %1</source>
-        <translation>%1: хувилбар суусан байна</translation>
-    </message>
-    <message>
-        <source>Done</source>
-        <translation>Болсон</translation>
+        <source>Input preview text</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

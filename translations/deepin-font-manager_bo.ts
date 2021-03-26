@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="bo" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="bo">
 <context>
     <name>Category</name>
     <message>
@@ -35,10 +37,6 @@
     <message>
         <source>Cancel</source>
         <translation>འདོར་བ།</translation>
-    </message>
-    <message>
-        <source>Confirm</source>
-        <translation>གཏན་འཁེལ།</translation>
     </message>
 </context>
 <context>
@@ -83,18 +81,6 @@
         <translation>Ctrl+O</translation>
     </message>
     <message>
-        <source>Ctrl+K</source>
-        <translation>Ctrl+K</translation>
-    </message>
-    <message>
-        <source>Ctrl+Shift+K</source>
-        <translation>Ctrl+Shift+K</translation>
-    </message>
-    <message>
-        <source>Alt+Return</source>
-        <translation>Alt+Return</translation>
-    </message>
-    <message>
         <source>Fonts</source>
         <translation>ཡིག་གཟུགས།</translation>
     </message>
@@ -118,13 +104,24 @@
         <source>%1 fonts installed</source>
         <translation>ཡིག་གཟུགས་%1སྒྲིག་སྦྱོར་བྱས་ཟིན།</translation>
     </message>
+    <message>
+        <source>Alt+M</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>CTRL+I</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DFontWidget</name>
+    <message>
+        <source>Broken file</source>
+        <translation>ཡིག་ཆ་སྐྱོན་ཤོར་ཟིན།</translation>
+    </message>
 </context>
 <context>
     <name>DeleteConfirmDailog</name>
-    <message>
-        <source>Are you sure you want to delete this font?</source>
-        <translation>ཁྱེད་ཀྱིས་ཡིག་གཟུགས་འདི་སུབ་རྒྱུ་གཏན་འཁེལ་ལམ།</translation>
-    </message>
     <message>
         <source>This font will not be available to applications</source>
         <translation>སུབ་རྗེས་ཡིག་གཟུགས་འདི་ཉེར་སྤྱོད་བྱ་རིམ་གཞན་ལ་སྤྱོད་མི་ཆོག</translation>
@@ -318,10 +315,6 @@
         <source>You cannot disable system fonts</source>
         <translation>མ་ལག་ཡིག་གཟུགས་སྤྱོད་མི་ཆོག་པ་བཟོ་ཐབས་མེད།</translation>
     </message>
-    <message>
-        <source>Some fonts are not allowed to be disabled</source>
-        <translation>མ་ལག་ཡིག་གཟུགས་ཆ་ཤས་སྤྱོད་མི་ཆོག་བཟོ་ཐབས་མེད།</translation>
-    </message>
 </context>
 <context>
     <name>NormalInstallWindow</name>
@@ -416,13 +409,6 @@
     <message>
         <source>Input preview text</source>
         <translation>ཡིག་ཆའི་ནང་དོན་འཇུག་ནས་སྔོན་འཆར་བྱེད་པ།</translation>
-    </message>
-</context>
-<context>
-    <name>DFontWidget</name>
-    <message>
-        <source>Broken file</source>
-        <translation>ཡིག་ཆ་སྐྱོན་ཤོར་ཟིན།</translation>
     </message>
 </context>
 </TS>

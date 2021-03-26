@@ -1,140 +1,414 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="ro" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="ro">
 <context>
-    <name>HomePage</name>
+    <name>Category</name>
     <message>
-        <source>Drag font file here</source>
-        <translation>Trageți fișierul de fonturi aici</translation>
+        <source>All Fonts</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Select file</source>
-        <translation>Selectați fișierul</translation>
+        <source>System</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Favorites</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Active</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chinese</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Monospaced</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>ListItem</name>
+    <name>DFDeleteDialog</name>
     <message>
-        <source>Installed</source>
-        <translation>Instalat</translation>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>DFInstallErrorDialog</name>
     <message>
-        <source>Other version installed: %1</source>
-        <translation>Alte versiuni instalate:% 1</translation>
-    </message>
-    <message>
-        <source>Installing</source>
-        <translation>Instalare în curs</translation>
+        <source>Broken file</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Same version installed</source>
-        <translation>Aceeași versiune este instalată</translation>
+        <translation type="unfinished">Aceeași versiune este instalată</translation>
+    </message>
+    <message>
+        <source>System Font</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DFontMgrMainWindow</name>
+    <message>
+        <source>Ctrl+=</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+-</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+Shift+/</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PgUp</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PgDown</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+Alt+F</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+F</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alt+M</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+O</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>CTRL+I</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 font installed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 fonts installed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fonts</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DFontWidget</name>
+    <message>
+        <source>Broken file</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DeleteConfirmDailog</name>
+    <message>
+        <source>Are you sure you want to delete %1 font(s)?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This font will not be available to applications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>These fonts will not be available to applications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The other %1 system fonts cannot be deleted</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The font &quot;%1&quot; in use cannot be deleted</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The other %1 system fonts and the font &quot;%2&quot; in use cannot be deleted</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Dfuninstalldialog</name>
+    <message>
+        <source>Deleting fonts, please wait...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ExceptionWindow</name>
+    <message>
+        <source>Font Verification</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Exit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Continue</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No fonts to be installed</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Font</name>
+    <message>
+        <source>Don&apos;t let your dreams be dreams</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>FontDetailDailog</name>
+    <message>
+        <source>Style</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Version</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown</source>
+        <translation type="unfinished">Necunoscut</translation>
+    </message>
+    <message>
+        <source>Full name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ps name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Trademark</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Basic info</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>Main</name>
     <message>
-        <source>Deepin Font Installer</source>
-        <translation>Aplicaţie instalare fonturi Deepin Font</translation>
+        <source>Font Manager</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Deepin Font Installer is used to install and uninstall font file for users with bulk install function.</source>
-        <translation>Aplicaţia de instalare fonturi Deepin Font Installer este folosită pentru a instala și dezinstala fișierele de fonturi pentru utilizatorii cu funcții de instalare în bloc.</translation>
+        <source>Font Manager helps users install and manage fonts.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The font exported to your desktop</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 fonts exported to your desktop</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Failed to export 1 font. There is not enough disk space.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Failed to export %1 fonts. There is not enough disk space.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Loading fonts, please wait...</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>MainWindow</name>
+    <name>Menu</name>
     <message>
-        <source>Deepin Font Installer</source>
-        <translation>Aplicaţie instalare fonturi Deepin Font</translation>
+        <source>Add font</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Bulk Install</source>
-        <translation>Inslatare în bloc</translation>
+        <source>Enable</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Dark theme</source>
-        <translation>Temă întunecată</translation>
+        <source>Delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Favorite</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Details</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Display in file manager</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unfavorite</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Disable</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>MultiFilePage</name>
+    <name>MessageManager</name>
     <message>
-        <source>Install</source>
-        <translation>Instalare</translation>
+        <source>%1 is in use, so you cannot disable it</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Installed successfully</source>
-        <translation>Instalarea a fost efectuată cu succes</translation>
+        <source>You cannot disable system fonts and the fonts in use</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>View font directory</source>
-        <translation>Afişează folderul de fonturi</translation>
+        <source>You cannot disable system fonts</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Refreshing font cache, please wait...</source>
-        <translation>Reîmprospătare cache font, vă rugăm aşteptaţi...</translation>
+        <source>deactivated</source>
+        <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>The fonts have been deactivated</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>NormalInstallWindow</name>
+    <message>
+        <source>Install Font</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Verifying...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>QuickInstallWindow</name>
     <message>
         <source>Unknown</source>
-        <translation>Necunoscut</translation>
+        <translation type="unfinished">Necunoscut</translation>
+    </message>
+    <message>
+        <source>Install Font</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Broken file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Installed</source>
+        <translation type="unfinished">Instalat</translation>
+    </message>
+    <message>
+        <source>Not Installed</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>SingleFilePage</name>
+    <name>SearchBar</name>
     <message>
-        <source>Install</source>
-        <translation>Instalare</translation>
+        <source>Search</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Remove</source>
-        <translation>Eliminare</translation>
+        <source>No search results</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Reinstall</source>
-        <translation>Reinstalare</translation>
+        <source>No fonts</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Shortcut</name>
+    <message>
+        <source>Help</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>View font directory</source>
-        <translation>Afişare folder fonturi</translation>
+        <source>Display shortcuts</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Style: </source>
-        <translation>Stil:</translation>
+        <source>Page up</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Type: </source>
-        <translation>Tip:</translation>
+        <source>Page down</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Version: </source>
-        <translation>Versiune:</translation>
+        <source>Delete</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Copyright: </source>
-        <translation>Copyright:</translation>
+        <source>Add font</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Description: </source>
-        <translation>Descriere:</translation>
+        <source>Favorite</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Same version installed</source>
-        <translation>Aceeași versiune este instalată</translation>
+        <source>Unfavorite</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Installed successfully</source>
-        <translation>Instalarea s-a efectuat cu succes</translation>
+        <source>Font info</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>StateBar</name>
     <message>
-        <source>Removed successfully</source>
-        <translation>Eliminarea s-a efectuat cu succes</translation>
-    </message>
-    <message>
-        <source>Other version installed: %1</source>
-        <translation>Altă versiune instalată: % 1</translation>
-    </message>
-    <message>
-        <source>Done</source>
-        <translation>Gata</translation>
+        <source>Input preview text</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

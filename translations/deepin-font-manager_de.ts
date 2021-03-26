@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="de" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="de">
 <context>
     <name>Category</name>
     <message>
@@ -35,10 +37,6 @@
     <message>
         <source>Cancel</source>
         <translation>Abbrechen</translation>
-    </message>
-    <message>
-        <source>Confirm</source>
-        <translation>Bestätigen</translation>
     </message>
 </context>
 <context>
@@ -83,18 +81,6 @@
         <translation>Strg+O</translation>
     </message>
     <message>
-        <source>Ctrl+K</source>
-        <translation>Strg+K</translation>
-    </message>
-    <message>
-        <source>Ctrl+Shift+K</source>
-        <translation>Strg+Umschalt+K</translation>
-    </message>
-    <message>
-        <source>Alt+Return</source>
-        <translation>Alt+Eingabe</translation>
-    </message>
-    <message>
         <source>Fonts</source>
         <translation>Schriftarten</translation>
     </message>
@@ -118,13 +104,24 @@
         <source>%1 fonts installed</source>
         <translation>%1 Schriftarten installiert</translation>
     </message>
+    <message>
+        <source>Alt+M</source>
+        <translation>Alt+M</translation>
+    </message>
+    <message>
+        <source>CTRL+I</source>
+        <translation>Strg+I</translation>
+    </message>
+</context>
+<context>
+    <name>DFontWidget</name>
+    <message>
+        <source>Broken file</source>
+        <translation>Beschädigte Datei</translation>
+    </message>
 </context>
 <context>
     <name>DeleteConfirmDailog</name>
-    <message>
-        <source>Are you sure you want to delete this font?</source>
-        <translation>Sind Sie sicher, dass Sie diese Schriftart löschen möchten?</translation>
-    </message>
     <message>
         <source>This font will not be available to applications</source>
         <translation>Diese Schriftart wird nicht für Anwendungen verfügbar sein</translation>
@@ -135,19 +132,19 @@
     </message>
     <message>
         <source>The other %1 system fonts cannot be deleted</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>The font &quot;%1&quot; in use cannot be deleted</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>The other %1 system fonts and the font &quot;%2&quot; in use cannot be deleted</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Are you sure you want to delete %1 font(s)?</source>
-        <translation type="unfinished"/>
+        <translation>Sind Sie sicher, %1 Schriftarten zu entfernen?</translation>
     </message>
     <message>
         <source>Delete</source>
@@ -250,11 +247,11 @@
     </message>
     <message>
         <source>Failed to export 1 font. There is not enough disk space.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Failed to export %1 fonts. There is not enough disk space.</source>
-        <translation type="unfinished"/>
+        <translation>Fehlgeschlagen bei Exportierung von Schriftart %1. Es gibt keinen ausreichenden Speicherplatz.</translation>
     </message>
 </context>
 <context>
@@ -308,19 +305,15 @@
     </message>
     <message>
         <source>%1 is in use, so you cannot disable it</source>
-        <translation type="unfinished"/>
+        <translation>%1 wird benutzt. Sie können es daher leider nicht deaktivieren.</translation>
     </message>
     <message>
         <source>You cannot disable system fonts and the fonts in use</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>You cannot disable system fonts</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Some fonts are not allowed to be disabled</source>
-        <translation type="unfinished"/>
+        <translation>Sie können die Schriftarten vom System nicht deaktivieren.</translation>
     </message>
 </context>
 <context>
@@ -416,13 +409,6 @@
     <message>
         <source>Input preview text</source>
         <translation>Vorschautext eingeben</translation>
-    </message>
-</context>
-<context>
-    <name>DFontWidget</name>
-    <message>
-        <source>Broken file</source>
-        <translation>Beschädigte Datei</translation>
     </message>
 </context>
 </TS>
