@@ -124,7 +124,7 @@ void DFontMgrMainWindow::initData()
 
     m_winHight = d->settingsQsPtr->value(FTM_MWSIZE_H_KEY).toInt();
     m_winWidth = d->settingsQsPtr->value(FTM_MWSIZE_W_KEY).toInt();
-    m_IsWindowMax = d->settingsQsPtr->value(FTM_MWSTATUS_KEY).toInt();
+    m_IsWindowMax = d->settingsQsPtr->value(FTM_MWSTATUS_KEY).toBool();
     qDebug() << __FUNCTION__ << "init theme = " << colorType;
 
     DGuiApplicationHelper::instance()->setPaletteType(colorType);

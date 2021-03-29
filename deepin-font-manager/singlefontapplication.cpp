@@ -146,9 +146,15 @@ void SingleFontApplication::activateWindow()
             int windowHeight = reinterpret_cast<DFontMgrMainWindow *>(
                                    m_qspMainWnd.get())->m_winHight;
             //.toInt(&hWinDataStatus);
+            bool IsWindowMax = reinterpret_cast<DFontMgrMainWindow *>(
+                                   m_qspMainWnd.get())->m_IsWindowMax;
             m_qspMainWnd->setMinimumSize(DEFAULT_WINDOWS_WIDTH, DEFAULT_WINDOWS_HEIGHT);
-            if (DEFAULT_WINDOWS_WIDTH <= windowWidth && DEFAULT_WINDOWS_HEIGHT <= windowHeight) {
-                m_qspMainWnd->resize(windowWidth, windowHeight);
+            if (IsWindowMax) {
+                m_qspMainWnd->showMaximized();
+            } else {
+                if (DEFAULT_WINDOWS_WIDTH <= windowWidth && DEFAULT_WINDOWS_HEIGHT <= windowHeight) {
+                    m_qspMainWnd->resize(windowWidth, windowHeight);
+                }
             }
 
             Dtk::Widget::moveToCenter(m_qspMainWnd.get());
