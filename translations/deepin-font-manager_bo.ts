@@ -106,11 +106,11 @@
     </message>
     <message>
         <source>Alt+M</source>
-        <translation type="unfinished"></translation>
+        <translation>Alt+M</translation>
     </message>
     <message>
         <source>CTRL+I</source>
-        <translation type="unfinished"></translation>
+        <translation>CTRL+I</translation>
     </message>
 </context>
 <context>
@@ -144,7 +144,7 @@
     </message>
     <message>
         <source>Are you sure you want to delete %1 font(s)?</source>
-        <translation>ཁྱེད་ཀྱིས་ཡིག་གཟུགས་%1འདི་དག་སུབ་རྒྱུ་གཏན་འཁེལ་ལམ། </translation>
+        <translation>ཁྱེད་ཀྱིས་ཡིག་གཟུགས%1འདི་དག་སུབ་རྒྱུ་གཏན་འཁེལ་(ལམ)། </translation>
     </message>
     <message>
         <source>Delete</source>
