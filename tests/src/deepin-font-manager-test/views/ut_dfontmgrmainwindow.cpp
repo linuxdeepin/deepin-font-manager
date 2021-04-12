@@ -1056,4 +1056,16 @@ TEST_F(TestDFontMgrMainWindow, checkonRightMenuShortCutActivated)
 //    fm->m_quickInstallWnd->onFileSelected(list);
 //}
 
+void hideSpinner_stub()
+{
+
+}
+TEST_F(TestDFontMgrMainWindow, checkononCacheFinish)
+{
+    Stub s;
+    s.set(ADDR(DFontMgrMainWindow, hideSpinner), hideSpinner_stub);
+
+    fm->onCacheFinish();
+    ASSERT_EQ(fm->m_cacheFinish, true);
+}
 

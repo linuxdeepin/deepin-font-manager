@@ -433,6 +433,28 @@ TEST_F(TestDFInstallNormalWindow, checkOnReInstallFinished)
     EXPECT_TRUE(spy.count() == 1) << spy.count();
 }
 
+int exec_stub()
+{
+    return 1;
+}
+TEST_F(TestDFInstallNormalWindow, checkshowInstallErrDlg)
+{
+    typedef int (*fptr)(QDialog *);
+    fptr A_foo = (fptr)(&QDialog::exec);   //获取虚函数地址
+    Stub stub;
+    stub.set(A_foo, exec_stub);
+
+    iw->showInstallErrDlg();
+    iw->disconnect();
+}
+
+TEST_F(TestDFInstallNormalWindow, checksetAddBtnHasTabs)
+{
+    iw->setAddBtnHasTabs(true);
+
+    EXPECT_TRUE(iw->m_AddBtnHasTabs);
+}
+
 TEST_F(TestDFInstallNormalWindow, checkSetSkipException)
 {
     iw->setSkipException(true);

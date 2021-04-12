@@ -47,8 +47,6 @@ protected:
     DFMDBManager *fmd;
 };
 
-
-
 QStringList stub_getInstalledFontsPath()
 {
     QStringList list;
@@ -70,6 +68,10 @@ void  stub_addFontInfo(const QList<DFontPreviewItemData> &fontList)
 
 }
 
+TEST_F(TestDFMDBManager, initTest)
+{
+
+}
 
 //传入系统字体判断是否为系统字体
 TEST_F(TestDFMDBManager, check_SystemFont_IsSystemFont)
@@ -148,6 +150,17 @@ TEST_F(TestDFMDBManager, checkGetAllFontInfo)
     QList<DFontPreviewItemData> list;
 
     QList<DFontPreviewItemData> fontItemDataList = fmd->getAllFontInfo(&list);
+}
+
+void checkIfEmpty_stub()
+{
+    return;
+}
+TEST_F(TestDFMDBManager, checkcheckIfEmpty)
+{
+    Stub s;
+    s.set(ADDR(DSqliteUtil, checkIfEmpty), checkIfEmpty_stub);
+    fmd->checkIfEmpty();
 }
 
 ////updateFontInfoByFontId
@@ -253,6 +266,21 @@ TEST_F(TestDFMDBManager, checkUpdateFontInfoSecond)
     QString key = "psname";
 
     fmd->updateFontInfo(list, key);
+}
+
+//updateFontInfo
+bool updateRecord_stub(QMap<QString, QString> where, QMap<QString, QString> data, const QString &table_name)
+{
+    return true;
+}
+TEST_F(TestDFMDBManager, checkUpdateFontInfoThird)
+{
+    Stub s;
+    s.set(ADDR(DSqliteUtil, updateRecord), updateRecord_stub);
+
+    QMap<QString, QString>  whereMap;
+    QMap<QString, QString> dataMap;
+    ASSERT_EQ(fmd->updateFontInfo(whereMap, dataMap), true);
 }
 
 //commitUpdateFontInfo

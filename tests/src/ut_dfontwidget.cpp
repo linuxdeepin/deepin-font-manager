@@ -47,6 +47,11 @@ protected:
 };
 }
 
+TEST_F(TestDFontWidget, initTest)
+{
+
+}
+
 TEST_F(TestDFontWidget, checkSetFileUrl)
 {
     QString filepath = "/home/zhaogongqiang/Desktop/1048字体/ArkanaScriptRough.otf";
