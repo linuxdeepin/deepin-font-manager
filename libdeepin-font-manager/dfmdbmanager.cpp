@@ -23,8 +23,8 @@
 #include "dfmdbmanager.h"
 #include "dfontinfomanager.h"
 
-
 #include <QDir>
+#include <QFontDatabase>
 
 static DFMDBManager *INSTANCE = nullptr;
 QList<QMap<QString, QString>> DFMDBManager::recordList = QList<QMap<QString, QString>>();
@@ -296,6 +296,20 @@ QString DFMDBManager::isFontInfoExist(const DFontInfo &newFileFontInfo)
     QMap<QString, QString> whereMap;
     whereMap.insert("familyName", newFileFontInfo.familyName);
     whereMap.insert("styleName", newFileFontInfo.styleName);
+
+    if (newFileFontInfo.filePath.endsWith(".ttc", Qt::CaseInsensitive)) {
+        QStringList fontFamilyList = QFontDatabase::applicationFontFamilies(QFontDatabase::addApplicationFont(newFileFontInfo.filePath));
+        if (fontFamilyList.size() > 1) {
+            for (QString &fontFamily : fontFamilyList) {
+                whereMap.insert("familyName", fontFamily);
+                m_sqlUtil->findRecords(keyList, whereMap, &recordList);
+                if (recordList.size() > 0) {
+                    QString result = recordList.first().value("filePath");
+                    return result;
+                }
+            }
+        }
+    }
 
     m_sqlUtil->findRecords(keyList, whereMap, &recordList);
 

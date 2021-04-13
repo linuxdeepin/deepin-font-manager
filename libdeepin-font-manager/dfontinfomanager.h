@@ -171,6 +171,12 @@ public:
 
     //获取文件夹下及子文件夹下所有字体文件
     QStringList getFileNames(const QString &path)const;
+
+private:
+    QString m_strSysLanguage; // 当前系统语言
+    ushort m_langpriority1; // 优先使用的语言（优先级最低）
+    ushort m_langpriority2;
+    ushort m_langpriority3; // 优先使用的语言（优先级最高）
 };
 
 #endif

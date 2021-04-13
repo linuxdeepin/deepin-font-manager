@@ -468,6 +468,7 @@ QSize DFInstallErrorListDelegate::sizeHint(const QStyleOptionViewItem &option,
 DFInstallErrorListView::DFInstallErrorListView(const QList<DFInstallErrorItemModel> &installErrorFontModelList,
                                                QWidget *parent)
     : DListView(parent)
+    , m_fontInfoManager(DFontInfoManager::instance())
     , m_errorListSourceModel(nullptr)
     , m_installErrorFontModelList(installErrorFontModelList)
 {

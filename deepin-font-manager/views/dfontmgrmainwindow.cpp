@@ -465,6 +465,9 @@ void DFontMgrMainWindow::initShortcuts()
                     QPoint GlobalPoint(d->searchFontEdit->mapToGlobal(QPoint(0, 0)));
                     QPoint position = d->searchFontEdit->lineEdit()->rect().center();
                     QPoint popPosition(GlobalPoint.x() + position.x(), GlobalPoint.y() + position.y() + 10);
+                    // QCoreApplication::sendEvent
+                    // The event is not deleted when the event has been sent.
+                    // The normal approach is to create the event on the stack
                     QContextMenuEvent eve(QContextMenuEvent::Reason::Keyboard, popPosition, popPosition);
                     m_isSearchLineEditMenuPoped = QApplication::sendEvent(d->searchFontEdit->lineEdit(), &eve);
                     qDebug() << m_isSearchLineEditMenuPoped;

@@ -149,8 +149,32 @@ isMonoSpace TINYINT)";
     } else {
         finish();
         qDebug() << "create table sucess!";
-        return true;
+        // return true;
     }
+
+    QString createTable2Sql =
+        "create table if not exists t_fontmanagerinfo(\
+            id INTEGER PRIMARY KEY,\
+            version TEXT,\
+            language TEXT)";
+    if (!m_query->exec(createTable2Sql)) {
+        qDebug() << "create table t_fontmanagerinfo failed!";
+        finish();
+        return false;
+    } else {
+        finish();
+        qDebug() << "create table t_fontmanagerinfo sucess!";
+    }
+
+    bool ret = true;
+    if (!findFontManagerInfoRecords()) {
+       ret = delAllRecords();
+        if (!addFontManagerInfoRecord()) {
+            ret = updateFontManagerInfoRecord();
+        }
+    }
+
+    return ret;
 }
 
 /*************************************************************************
@@ -190,6 +214,22 @@ bool DSqliteUtil::addRecord(QMap<QString, QString> data, const QString &table_na
     } else {
         finish();
         qDebug() << "add data success!";
+        return true;
+    }
+}
+
+bool DSqliteUtil::addFontManagerInfoRecord(const QString &table_name)
+{
+    QString sql = QString("insert into " + table_name + " values (1, '1.0', '%1')").arg(QLocale::system().name());
+    m_query->prepare(sql);
+
+    if (!m_query->exec()) {
+        finish();
+        qDebug() << "add FontManagerInfo data failed!";
+        return false;
+    } else {
+        finish();
+        qDebug() << "add FontManagerInfo data success!";
         return true;
     }
 }
@@ -273,6 +313,23 @@ bool DSqliteUtil::updateRecord(QMap<QString, QString> where, QMap<QString, QStri
     } else {
         finish();
         qDebug() << "update data success!";
+        return true;
+    }
+}
+
+bool DSqliteUtil::updateFontManagerInfoRecord(const QString &table_name)
+{
+    // UPDATE COMPANY SET ADDRESS = 'Texas' WHERE ID = 6;
+    QString sql = QString("update " + table_name + " set " + "language = '%1' where id = 1").arg(QLocale::system().name());
+    m_query->prepare(sql);
+
+    if (!m_query->exec()) {
+        finish();
+        qDebug() << "update FontManagerInfo data failed!";
+        return false;
+    } else {
+        finish();
+        qDebug() << "update FontManagerInfo data success!";
         return true;
     }
 }
@@ -422,6 +479,27 @@ bool DSqliteUtil::findRecords(const QList<QString> &key, const QMap<QString, QSt
     } else {
         finish();
 //        qDebug() << "find data by condition failed!";
+        return false;
+    }
+}
+
+bool DSqliteUtil::findFontManagerInfoRecords(const QString &table_name)
+{
+    // SELECT ID, NAME, SALARY FROM COMPANY;
+    QString sql = "select language from " + table_name + " where id = 1";
+    m_query->prepare(sql);
+
+    if (m_query->exec()) {
+        bool ret = false;
+        if (m_query->first()) {
+            ret = (m_query->value(0).toString() == (QLocale::system().name()));
+        }
+        finish();
+        qDebug() << "find data by condition success!";
+        return ret;
+    } else {
+        finish();
+        qDebug() << "find data by condition failed!";
         return false;
     }
 }

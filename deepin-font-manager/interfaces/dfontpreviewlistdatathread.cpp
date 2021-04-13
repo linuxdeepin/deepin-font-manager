@@ -462,6 +462,23 @@ int DFontPreviewListDataThread::insertFontItemData(const DFontInfo info,
     DFontPreviewItemData itemData;
     itemData.fontInfo = info;
 
+    /*****************************************
+    字体显示名称规则
+    规则说明：
+    规则一：
+    条件：familyname不为空，不包含“？”；
+    规则：字体名称使用 familyname+“-”+style；
+    规则二：
+    条件：familyname为空或者包含“？”，fullname不为空；
+    规则：字体名称使用 fullname+“-”+style；
+    规则三
+    条件：familyname为空或者包含“？”，fullname为空；
+    规则：字体名称使用 PSname；
+    规则四
+    条件：familyname为空或者包含“？”，fullname为空，PSname为空；
+    规则：字体名称显示“UntitledFont”；
+    规则对所有字体（包括系统字体、用户字体）有效；
+    ****************************************/
     QString familyName;
     if (itemData.fontInfo.sp3FamilyName.isEmpty() || itemData.fontInfo.sp3FamilyName.contains(QChar('?'))) {
         int appFontId = QFontDatabase::addApplicationFont(itemData.fontInfo.filePath);
@@ -474,19 +491,21 @@ int DFontPreviewListDataThread::insertFontItemData(const DFontInfo info,
             familyName = family;
         }
         if (familyName.isEmpty()) {
-            familyName = itemData.fontInfo.fullname;
-        } else {
-            itemData.fontInfo.sp3FamilyName = familyName;
+            if (!itemData.fontInfo.fullname.isEmpty() && !itemData.fontInfo.fullname.contains(QChar('?'))) {
+                familyName = itemData.fontInfo.fullname;
+            } else if (!itemData.fontInfo.psname.isEmpty() && !itemData.fontInfo.psname.contains(QChar('?'))) {
+                familyName = itemData.fontInfo.fullname;
+            } else {
+                familyName = QLatin1String("UntitledFont");
+            }
         }
-    } else if (itemData.fontInfo.isSystemFont) {
-        familyName = itemData.fontInfo.sp3FamilyName;
+        itemData.fontInfo.sp3FamilyName = familyName;
     } else {
-        familyName = itemData.fontInfo.fullname;
+        familyName = itemData.fontInfo.sp3FamilyName;
     }
 
-    if (itemData.fontInfo.styleName.length() > 0 && !familyName.endsWith(itemData.fontInfo.styleName)) {
-        itemData.fontData.strFontName =
-            QString("%1-%2").arg(familyName).arg(itemData.fontInfo.styleName);
+    if (!itemData.fontInfo.styleName.isEmpty() && !familyName.endsWith(itemData.fontInfo.styleName) && familyName != QLatin1String("UntitledFont")) {
+        itemData.fontData.strFontName = QString("%1-%2").arg(familyName).arg(itemData.fontInfo.styleName);
     } else {
         itemData.fontData.strFontName = familyName;
     }
@@ -501,8 +520,7 @@ int DFontPreviewListDataThread::insertFontItemData(const DFontInfo info,
 
     itemData.fontInfo.isInstalled = true;
 
-    //中文字体
-    if (itemData.fontInfo.isSystemFont && itemData.fontData.isChinese()) {
+    if (itemData.fontInfo.filePath.endsWith(".ttc", Qt::CaseInsensitive)) {
         /* Bug#16821 UT000591  添加字体后需要加入到Qt的字体数据库中，否则无法使用*/
 //        qDebug() << "addApplicationFont s"  << endl;
         int appFontId = QFontDatabase::addApplicationFont(itemData.fontInfo.filePath);
