@@ -70,7 +70,6 @@ int main(int argc, char *argv[])
     DLogManager::registerConsoleAppender();
     DLogManager::registerFileAppender();
 
-
 //    qDebug() << DTK_VERSION << endl;
     /* 使用DBus实现单例模式 UT000591 */
     QDBusConnection dbus = QDBusConnection::sessionBus();
