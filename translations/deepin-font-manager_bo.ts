@@ -40,6 +40,25 @@
     </message>
 </context>
 <context>
+    <name>DFDeleteTTCDialog</name>
+    <message>
+        <source>Apply to all selected font families</source>
+        <translation>བདམས་ཡོད་པའི་ཡིག་གཟུགས་ཚང་མར་སྤྱོད་པ།</translation>
+    </message>
+    <message>
+        <source>%1 is a font family, if you proceed, all fonts in it will be deleted</source>
+        <translation>%1ནི་ཡིག་གཟུགས་ཚོགས་པ་ཞིག་ཡིན་པས་དེ་བསུབ་ཚེ་དེའི་ཁོངས་གཏོགས་ཀྱི་ཡིག་གཟུགས་ཚང་མ་བསུབ་སྲིད།</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>འདོར་བ།</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>ཡིག་གཟུགས་སུབ་པ།</translation>
+    </message>
+</context>
+<context>
     <name>DFInstallErrorDialog</name>
     <message>
         <source>Broken file</source>

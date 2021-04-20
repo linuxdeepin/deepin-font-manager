@@ -28,6 +28,7 @@
 #include <DApplication>
 #include <DApplicationHelper>
 #include <DFontSizeManager>
+#include <DCheckBox>
 
 #include <QHBoxLayout>
 #include <QKeyEvent>
@@ -308,4 +309,152 @@ void DFDeleteDialog::setTheme()
         pa.setColor(DPalette::Background, QColor(247, 247, 247, 80));
         DApplicationHelper::instance()->setPalette(this, pa);
     }
+}
+
+DFDeleteTTCDialog::DFDeleteTTCDialog(DFontMgrMainWindow *win, QString file, QWidget *parent)
+    : DFontBaseDialog(parent)
+    , m_mainWindow(win)
+    , fontset(file)
+{
+    initUI();
+    initConnections();
+}
+
+bool DFDeleteTTCDialog::getDeleting()
+{
+    return m_deleting;
+}
+
+bool DFDeleteTTCDialog::getAapplyToAll()
+{
+    return m_bAapplyToAll;
+}
+
+void DFDeleteTTCDialog::onFontChanged(const QFont &font)
+{
+    Q_UNUSED(font);
+//    messageDetail->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    resize(sizeHint());
+}
+
+void DFDeleteTTCDialog::keyPressEvent(QKeyEvent *event)
+{
+    bool received = false;
+    if (event->key() == Qt::Key_Escape) {
+        reject();
+        close();
+        received = true;
+    }
+//    if (event->key() == Qt::Key_Return) {
+//        if (!getCloseButton()->hasFocus() && !m_cancelBtn->hasFocus() && !applyAllCkb->hasFocus()) {
+//            m_confirmBtn->click();
+//            received = true;
+//        }
+//    }
+    if (!received)
+        DFontBaseDialog::keyPressEvent(event);
+}
+
+void DFDeleteTTCDialog::initUI()
+{
+    setFixedWidth(DEFAULT_WINDOW_W);
+
+    initMessageTitle();
+    initMessageDetail();
+    setIconPixmap(Utils::renderSVG("://exception-logo.svg", QSize(32, 32)));
+    QLayout *buttonsLayout = initBottomButtons();
+
+    QVBoxLayout *mainLayout = new QVBoxLayout();
+    mainLayout->setSpacing(0);
+    mainLayout->setContentsMargins(10, 0, 10, 10);
+    mainLayout->addWidget(messageTitle, 0, Qt::AlignCenter);
+    mainLayout->addSpacing(6);
+    mainLayout->addWidget(applyAllCkb, 0, Qt::AlignCenter);
+    mainLayout->addSpacing(16);
+    mainLayout->addLayout(buttonsLayout);
+
+    QWidget *mainFrame = new QWidget(this);
+    mainFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    mainFrame->setLayout(mainLayout);
+
+    //#000794 解决显示不全的问题
+    messageTitle->setMinimumWidth(DEFAULT_WINDOW_W - 20);
+
+    addContent(mainFrame);
+}
+
+void DFDeleteTTCDialog::initConnections()
+{
+    connect(m_cancelBtn, &DPushButton::clicked, this, [ = ]() {
+        reject();
+        close();
+//        emit m_signalManager->cancelDel();
+    });
+    connect(m_confirmBtn, &DPushButton::clicked, this, [ = ]() {
+//        if (m_deleting)
+//            return;
+        m_deleting = true;
+        accept();
+        close();
+    });
+
+    connect(applyAllCkb, &DCheckBox::clicked, this, [ = ]() {
+        m_bAapplyToAll = applyAllCkb->isChecked();
+    });
+
+//    connect(qApp, &DApplication::fontChanged, this, &DFDeleteDialog::onFontChanged);
+}
+
+void DFDeleteTTCDialog::initMessageTitle()
+{
+    messageTitle = new DLabel(this);
+    messageTitle->setText(tr("%1 is a font family, if you proceed, all fonts in it will be deleted").arg(fontset));
+
+    /* Bug#21515 UT000591*/
+    messageTitle->setFixedWidth(DEFAULT_WINDOW_W - 22);
+    messageTitle->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
+    messageTitle->setWordWrap(true);
+    messageTitle->setAlignment(Qt::AlignCenter);
+
+    DFontSizeManager::instance()->bind(messageTitle, DFontSizeManager::T6, QFont::Medium);
+    messageTitle->setForegroundRole(DPalette::WindowText);
+}
+
+void DFDeleteTTCDialog::initMessageDetail()
+{
+    applyAllCkb = new DCheckBox(tr("Apply to all selected font families"), this);
+    applyAllCkb->setAccessibleName("Applyall_btn");
+    DFontSizeManager::instance()->bind(applyAllCkb, DFontSizeManager::T6, QFont::Medium);
+}
+
+QLayout *DFDeleteTTCDialog::initBottomButtons()
+{
+    QHBoxLayout *layout = new QHBoxLayout();
+    layout->setSpacing(0);
+    layout->setContentsMargins(0, 0, 0, 0);
+
+    m_cancelBtn = new DPushButton(this);
+    m_cancelBtn->setFixedSize(170, 36);
+    m_cancelBtn->setText(tr("Cancel"));
+
+    m_confirmBtn = new DWarningButton(this);
+    m_confirmBtn->setFixedSize(170, 36);
+    m_confirmBtn->setText(tr("Delete"));
+
+    DVerticalLine *verticalSplite = new DVerticalLine(this);
+    DPalette pa = DApplicationHelper::instance()->palette(verticalSplite);
+    QColor splitColor = pa.color(DPalette::ItemBackground);
+    pa.setBrush(DPalette::Background, splitColor);
+    verticalSplite->setPalette(pa);
+    verticalSplite->setBackgroundRole(QPalette::Background);
+    verticalSplite->setAutoFillBackground(true);
+    verticalSplite->setFixedSize(3, 28);
+
+    layout->addWidget(m_cancelBtn);
+    layout->addSpacing(9);
+    layout->addWidget(verticalSplite);
+    layout->addSpacing(9);
+    layout->addWidget(m_confirmBtn);
+
+    return layout;
 }

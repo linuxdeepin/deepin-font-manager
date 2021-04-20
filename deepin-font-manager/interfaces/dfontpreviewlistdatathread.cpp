@@ -520,6 +520,7 @@ int DFontPreviewListDataThread::insertFontItemData(const DFontInfo info,
 
     itemData.fontInfo.isInstalled = true;
 
+    // ttc文件包含多个ttf字体，需要找出每一个ttf字体
     if (itemData.fontInfo.filePath.endsWith(".ttc", Qt::CaseInsensitive)) {
         /* Bug#16821 UT000591  添加字体后需要加入到Qt的字体数据库中，否则无法使用*/
 //        qDebug() << "addApplicationFont s"  << endl;
@@ -529,9 +530,8 @@ int DFontPreviewListDataThread::insertFontItemData(const DFontInfo info,
 
         QStringList fontFamilyList = QFontDatabase::applicationFontFamilies(appFontId);
         if (fontFamilyList.size() > 1) {
-            ++index;
             for (QString &fontFamily : fontFamilyList) {
-                itemData.strFontId = QString::number(index);
+                itemData.strFontId = QString::number(index++);
                 itemData.fontInfo.familyName = fontFamily;
                 itemData.fontInfo.sp3FamilyName = fontFamily;
                 if (itemData.fontInfo.styleName.length() > 0) {
@@ -542,22 +542,29 @@ int DFontPreviewListDataThread::insertFontItemData(const DFontInfo info,
                 }
                 m_dbManager->addFontInfo(itemData);
                 m_fontModelList.append(itemData);
+                if (!isStartup) {
+                    m_diffFontModelList.append(itemData);
+                }
             }
+            index--;
         } else {
             m_dbManager->addFontInfo(itemData);
             m_fontModelList.append(itemData);
+            if (!isStartup) {
+                m_diffFontModelList.append(itemData);
+            }
         }
     } else {
         m_dbManager->addFontInfo(itemData);
         m_fontModelList.append(itemData);
+        if (!isStartup) {
+            m_diffFontModelList.append(itemData);
+        }
     }
 
 //    Q_EMIT m_view->itemAdded(itemData);
     addPathWatcher(info.filePath);
 
-    if (!isStartup) {
-        m_diffFontModelList.append(itemData);
-    }
     return (index + 1);
 }
 

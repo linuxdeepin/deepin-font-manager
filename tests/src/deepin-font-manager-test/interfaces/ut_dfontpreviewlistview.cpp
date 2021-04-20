@@ -149,10 +149,14 @@ DFontPreviewItemData stub_returnSysItemdata()
     return data;
 }
 
-DFontPreviewItemData stub_returnNotSysItemdata()
+DFontPreviewItemData stub_returnNotSysItemdata(const FontData &fontData)
 {
     DFontPreviewItemData data;
-    data.fontInfo.filePath = "first";
+    if (fontData.strFontName == QLatin1String("curfont")) {
+        data.fontInfo.filePath = "curfontpath";
+    } else {
+        data.fontInfo.filePath = "first";
+    }
     data.fontInfo.isSystemFont = false;
     data.fontData.strFontName = "second";
     return data;
@@ -1228,7 +1232,7 @@ TEST_F(TestDFontPreviewListView, checkSelectedFontsNotElse)
     QStringList list;
     QModelIndexList disableIndexList;
     QStringList allMinusSysFontList;
-
+    listview->m_curFontData.strFontName = "curfont";
     Stub s;
     s.set(ADDR(DFontPreviewListDataThread, getFontData), stub_returnNotSysItemdata);
 

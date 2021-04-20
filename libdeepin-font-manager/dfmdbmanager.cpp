@@ -321,6 +321,36 @@ QString DFMDBManager::isFontInfoExist(const DFontInfo &newFileFontInfo)
     return QString();
 }
 
+/*************************************************************************
+ <Function>      getSpecifiedFontName
+ <Description>   获取指定字体文件的fontname
+ <Author>        null
+ <Input>
+    <param1>     filePath               字体文件全路径名
+ <Return>        QStringList
+ <Note>          null
+*************************************************************************/
+QStringList DFMDBManager::getSpecifiedFontName(QString filePath)
+{
+    QList<QString> keyList;
+    keyList.append("fontName");
+
+    QMap<QString, QString> whereMap;
+    whereMap.insert("filePath", filePath);
+
+    QStringList result;
+    QList<QMap<QString, QString>> recordList;
+
+    m_sqlUtil->findRecords(keyList, whereMap, &recordList);
+    if (!recordList.empty()) {
+        QListIterator<QMap<QString, QString>> iter(recordList);
+        while (iter.hasNext()) {
+            result.append(iter.next().value("fontName"));
+        }
+    }
+    return result;
+}
+
 ///*************************************************************************
 // <Function>      mapItemData
 // <Description>   通过itemdata来构建字体信息的map
@@ -370,9 +400,9 @@ QString DFMDBManager::isFontInfoExist(const DFontInfo &newFileFontInfo)
 bool DFMDBManager::addFontInfo(const DFontPreviewItemData &itemData)
 {
 //    qDebug() << __FUNCTION__ << itemData.fontInfo.toString();
-    if (!m_addFontList.contains(itemData) || itemData.fontInfo.isSystemFont)
-//        m_addFontList << itemData;
+    if (!m_addFontList.contains(itemData) || itemData.fontInfo.isSystemFont) {
         m_addFontList.append(itemData);
+    }
     return true;
 //    return m_sqlUtil->addRecord(mapItemData(itemData));
 }

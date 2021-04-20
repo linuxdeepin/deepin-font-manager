@@ -317,6 +317,8 @@ public slots:
     void onUninstallFontFinished(QStringList &files);
     //fc-cache执行结束槽函数
     void onCacheFinish();
+    //删除ttc文件确认函数
+    void onHandleDeleteTTC(QString filePath, bool &isDelete, bool &isAapplyToAll);
     //ui界面操作结束槽函数
     void onRequestInstFontsUiAdded();
     //系统字体变化槽函数

@@ -40,6 +40,25 @@
     </message>
 </context>
 <context>
+    <name>DFDeleteTTCDialog</name>
+    <message>
+        <source>Apply to all selected font families</source>
+        <translation>تاللانغان فونت گۇرۇپپىسىغا قوللىنىش</translation>
+    </message>
+    <message>
+        <source>%1 is a font family, if you proceed, all fonts in it will be deleted</source>
+        <translation>%1 بولسا بىر فونت گۇرۇپپىسى، ئۇنى ئۆچۈرسىڭىز ئۇنىڭغا تەۋە بارلىق فونتلار ئۆچۈرۈلۈپ كېتىشى مۇمكىن</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>بىكار قىلىش</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>ئۆچۈرۈش</translation>
+    </message>
+</context>
+<context>
     <name>DFInstallErrorDialog</name>
     <message>
         <source>Broken file</source>

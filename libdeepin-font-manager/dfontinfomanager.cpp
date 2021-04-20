@@ -690,7 +690,7 @@ QStringList DFontInfoManager::getCurrentFontFamily()
 
 /*************************************************************************
  <Function>      getFontPath
- <Description>   获取字体的路径信息
+ <Description>   获取当前使用字体的路径信息
  <Author>        null
  <Input>
     <param1>     null

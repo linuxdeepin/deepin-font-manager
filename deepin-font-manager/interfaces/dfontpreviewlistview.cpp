@@ -1137,7 +1137,11 @@ void DFontPreviewListView::onMouseLeftBtnReleased(const QModelIndex &modelIndex,
     if (checkboxRealRect.contains(clickPoint)) {
         //触发启用/禁用字体
         int sysFontCnt = (fdata.isEnabled() && fdata.isSystemFont) ? 1 : 0;
-        int curFontCnt = (fdata == m_curFontData) ? 1 : 0;
+        // 选中字体与当前使用的字体为同一字体文件
+        // 对于ttc字体集，即使不是同一个字体名称，它们也是同一个字体文件，
+        int curFontCnt = ((fdata == m_curFontData) ||
+                          (m_dataThread->getFontData(fdata).fontInfo.filePath
+                           == m_dataThread->getFontData(m_curFontData).fontInfo.filePath)) ? 1 : 0;
         if (sysFontCnt == 0 && curFontCnt == 0)
             indexList << modelIndex;
         onEnableBtnClicked(indexList, sysFontCnt, curFontCnt, !fdata.isEnabled(),
@@ -1769,7 +1773,7 @@ void DFontPreviewListView::onEnableBtnClicked(QModelIndexList &itemIndexes, int 
     QString message;
     if (needShowTips) {
         //不可禁用字体
-        if (curCnt == 1 && systemCnt == 0) {
+        if (curCnt > 0 && systemCnt == 0) {
             message = QApplication::translate("MessageManager", "%1 is in use, so you cannot disable it").arg(m_curFontData.strFontName);
         } else if (curCnt > 0 && systemCnt > 0) {
             message = QApplication::translate("MessageManager", "You cannot disable system fonts and the fonts in use");
@@ -2108,7 +2112,6 @@ void DFontPreviewListView::deleteCurFonts(QStringList &files, bool force)
             QFontDatabase::removeApplicationFont(itemData.appFontId);
             m_dataThread->removePathWatcher(filePath);
             iter = m_dataThread->m_fontModelList.erase(iter);
-            files.removeOne(filePath);
         } else {
             ++iter;
         }
@@ -2261,7 +2264,10 @@ void DFontPreviewListView::selectedFonts(const DFontPreviewItemData &curData,
                 *systemCnt += 1;
             if (calCollect && (curCollected == itemData.fontData.isCollected()))
                 *allIndexList << index;
-        } else if (itemData.fontData == m_curFontData) {
+        } else if ((itemData.fontData == m_curFontData) ||
+                   (itemData.fontInfo.filePath == m_dataThread->getFontData(m_curFontData).fontInfo.filePath)) {
+            // 选中字体与当前使用的字体为同一字体文件
+            // ttc字体集，即使不是同一个字体，也是同一个字体文件
             qDebug() << __FUNCTION__ << " current font " << itemData.fontData.strFontName;
             if (curFontCnt)
                 *curFontCnt += 1;

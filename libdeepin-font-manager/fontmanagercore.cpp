@@ -251,13 +251,26 @@ void FontManagerCore::doInstall(QStringList &fileList)
 *************************************************************************/
 void FontManagerCore::doUninstall(const QStringList &fileList)
 {
+    bool isDelete = false; // 是否删除ttc
+    bool isAapplyToAll = false; // 选择应用于全部ttc
     for (const QString &file : fileList) {
+        if (file.endsWith(".ttc", Qt::CaseInsensitive)) {
+            if (!isAapplyToAll) {
+                Q_EMIT handleDeleteTTC(file, isDelete, isAapplyToAll); // 使用Qt::BlockingQueuedConnection连接的信号槽
+            }
+
+            if (!isDelete) { // 保留ttc字体集
+                m_uninstFile.removeOne(file);
+                continue;
+            }
+        }
+
         QFileInfo openFile(file);
 
         QDir fileDir(openFile.path());
 
-        QDir userFontDir("/usr/share/fonts/");
-        QDir systemFontDir(QDir::homePath() + "/.local/share/fonts");
+//      QDir userFontDir("/usr/share/fonts/");
+//      QDir systemFontDir(QDir::homePath() + "/.local/share/fonts");
         // For security, check the font dir is valid
 //        if (userFontDir == fileDir || systemFontDir == fileDir) {
 //#ifdef QT_DEBUG

@@ -105,6 +105,8 @@ signals:
     void cacheFinish();
     //取消安装
     void requestCancelInstall();
+    //处理删除tcc
+    void handleDeleteTTC(QString file, bool &isDelete, bool &isAapplyToAll);
 
 public slots:
     //安装拷贝字体文件槽函数
