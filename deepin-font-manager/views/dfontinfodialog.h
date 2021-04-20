@@ -52,7 +52,7 @@ protected:
     //初始化信号与槽连接处理函数-主题变化信号和槽
     void initConnections();
     //用于nametitle的第三行判断，由AutoFeed调用
-    QString adaptiveLengthForNameTitle(QFontMetrics fm, QString thirdText, int lineWidth);
+    QString adaptiveLengthForNameTitle(QFontMetrics fm, QString thirdLineText, int lineWidth);
     //大小变化处理函数
     void resizeEvent(QResizeEvent *event) override;
     //重新实现键盘press事件-信息页面打开快捷键关闭本窗口

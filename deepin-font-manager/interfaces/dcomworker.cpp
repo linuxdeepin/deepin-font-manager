@@ -119,20 +119,6 @@ void GetFontListWorker::removeUserAddFonts()
     }
 }
 
-//unused code
-//void FontManager::getFontList()
-//{
-//    QThreadPool *threadPool = DCopyFilesManager::instance()->getPool();
-
-//    GetFontListWorker *getAll = new GetFontListWorker(GetFontListWorker::ALL);
-//    threadPool->start(getAll);
-//    GetFontListWorker *getChinese = new GetFontListWorker(GetFontListWorker::CHINESE);
-//    threadPool->start(getChinese);
-//    GetFontListWorker *getMonospace = new GetFontListWorker(GetFontListWorker::MONOSPACE);
-//    threadPool->start(getMonospace);
-//    threadPool->waitForDone();
-//}
-
 void FontManager::getFontListInSequence()
 {
     GetFontListWorker getFontList(GetFontListWorker::AllInSquence);

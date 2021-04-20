@@ -157,21 +157,21 @@ void DFInstallErrorListDelegate::drawFontName(QPainter *painter, const QStyleOpt
         elidedFontFileNameText = lengthAutoFeed(painter, strFontFileName, m_StatusWidth);
     }
 
-    if (option.state & QStyle::State_Selected) {
-        QColor penColor = option.palette.color(DPalette::Text);
-        if (bSelectable == false) {
-            penColor.setAlphaF(0.4);
-        }
-        painter->setPen(QPen(penColor));
-        painter->drawText(fontFileNameRect, Qt::AlignLeft | Qt::AlignVCenter, elidedFontFileNameText);
-    } else {
-        QColor penColor = option.palette.color(DPalette::Text);
-        if (bSelectable == false) {
-            penColor.setAlphaF(0.4);
-        }
-        painter->setPen(QPen(penColor));
-        painter->drawText(fontFileNameRect, Qt::AlignLeft | Qt::AlignVCenter, elidedFontFileNameText);
+//    if (option.state & QStyle::State_Selected) {
+//        QColor penColor = option.palette.color(DPalette::Text);
+//        if (bSelectable == false) {
+//            penColor.setAlphaF(0.4);
+//        }
+//        painter->setPen(QPen(penColor));
+//        painter->drawText(fontFileNameRect, Qt::AlignLeft | Qt::AlignVCenter, elidedFontFileNameText);
+//    } else {
+    QColor penColor = option.palette.color(DPalette::Text);
+    if (bSelectable == false) {
+        penColor.setAlphaF(0.4);
     }
+    painter->setPen(QPen(penColor));
+    painter->drawText(fontFileNameRect, Qt::AlignLeft | Qt::AlignVCenter, elidedFontFileNameText);
+//    }
 }
 
 /*************************************************************************

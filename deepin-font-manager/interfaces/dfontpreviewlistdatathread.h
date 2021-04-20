@@ -52,7 +52,7 @@ public:
     //从fontconfig配置文件同步字体启用/禁用状态数据
     void syncFontEnableDisableStatusData(const QStringList &disableFontPathList);
     //刷新字体列表的数据
-    void refreshFontListData(bool isStartup = false, const QStringList &list = QStringList());
+    void refreshFontListData(bool isStartup = false, const QStringList &installFont = QStringList());
 
     void refreshStartupFontListData();
 

@@ -2667,9 +2667,9 @@ void DFontMgrMainWindow::setNextTabFocus(QObject *obj)
         } else {
             d->addFontButton->setFocus(Qt::TabFocusReason);
         }
-    } else if (obj == d->fontScaleSlider) {
+    } /*else if (obj == d->fontScaleSlider) {
         d->addFontButton->setFocus(Qt::TabFocusReason);
-    }
+    }*/
     //如果点击设置了无字体页面焦点，则Tab切换至添加字体按钮
     else {
         d->addFontButton->setFocus(Qt::TabFocusReason);

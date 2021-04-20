@@ -45,7 +45,7 @@ public:
     ~DSqliteUtil();
 
     //创建数据库连接
-    bool createConnection(const QString &strConn);
+    bool createConnection(const QString &database);
 
     //创建数据库表
     bool createTable();

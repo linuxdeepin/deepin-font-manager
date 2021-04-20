@@ -58,7 +58,6 @@ public:
     static FontManager *instance();
 
 public:
-    void getFontList();
     void getFontListInSequence();
     void getStartFontList();
     void getChineseAndMonoFont();

@@ -102,7 +102,7 @@ public:
         return m_fontPreviewProxyModel;
     }
     //清空收藏图标的press状态
-    void clearPressState(ClearType clearType, int nowPressedPos = -2);
+    void clearPressState(ClearType type, int currentRow = -2);
     //清空hover状态
     void clearHoverState();
     //文件改动时触发的函数
@@ -273,7 +273,7 @@ private:
     //检查当前是否无选中
     void checkIfHasSelection();
     //鼠标左键press事件处理函数
-    void onMouseLeftBtnPressed(const QModelIndex &modelIndex, const QPoint &point, bool isShiftMdf, bool isCtrlMdf);
+    void onMouseLeftBtnPressed(const QModelIndex &modelIndex, const QPoint &clickPoint, bool isShiftMdf, bool isCtrlMdf);
     //鼠标右键press事件处理函数
     void onMouseRightBtnPressed(const QModelIndex &modelIndex, bool isShiftMdf);
     void onMouseLeftBtnReleased(const QModelIndex &modelIndex, const QPoint &clickPoint);
@@ -356,7 +356,7 @@ public slots:
     //listview中启用禁用响应函数
     void onEnableBtnClicked(QModelIndexList &itemIndexes, int systemCnt, int curCnt, bool setValue, bool isFromActiveFont = false);
     //listview收藏界面点击后触发函数
-    void onCollectBtnClicked(QModelIndexList &index, bool setValue, bool isFromCollectFont = false);
+    void onCollectBtnClicked(QModelIndexList &indexList, bool setValue, bool isFromCollectFont = false);
     //显示右键菜单
     void onListViewShowContextMenu();
     //数据加载完成响应函数

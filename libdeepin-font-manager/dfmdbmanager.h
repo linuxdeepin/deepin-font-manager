@@ -56,7 +56,7 @@ public:
     void deleteFontInfo(const DFontPreviewItemData &itemData);
     void deleteFontInfo(const QList<DFontPreviewItemData> &fontList);
     void commitDeleteFontInfo();
-    void updateFontInfo(const DFontPreviewItemData &fontList, const QString &strKey);
+    void updateFontInfo(const DFontPreviewItemData &itemData, const QString &strKey);
     void updateFontInfo(const QList<DFontPreviewItemData> &fontList, const QString &strKey);
     void commitUpdateFontInfo();
     void getAllRecords();
