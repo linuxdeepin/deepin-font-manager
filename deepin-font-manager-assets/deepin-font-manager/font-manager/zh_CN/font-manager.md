@@ -14,8 +14,8 @@
 
 ### 运行字体管理器
 
-1. 单击桌面底部的 ![launcher](../common/deepin_launcher.svg)，进入启动器界面。
-2. 上下滚动鼠标滚轮浏览或通过搜索，找到字体管理器 ![deepin_font_manager](../common/deepin_font_manager.svg) 单击运行。
+1. 单击任务栏上的启动器图标 ![launcher](../common/deepin_launcher.svg)，进入启动器界面。
+2. 上下滚动鼠标滚轮浏览或通过搜索，找到字体管理器图标 ![deepin_font_manager](../common/deepin_font_manager.svg)，单击运行。
 3. 右键单击 ![deepin_font_manager](../common/deepin_font_manager.svg)，您可以：
 
    - 单击 **发送到桌面**，在桌面创建快捷方式。
@@ -31,7 +31,7 @@
 
 ### 查看快捷键
 
-在字体管理器界面上，按下键盘上的 **Ctrl + Shift + ?** 组合键来查看快捷键。
+在字体管理器界面，使用快捷键 **Ctrl + Shift + ?** 打开快捷键预览界面。熟练地使用快捷键，将大大提升您的操作效率。
 
 ![hotkey](fig/hotkey.png)
 
@@ -85,8 +85,7 @@
 ### 导出字体
 
 1. 在用户字体列表，右键单击字体。
-2. 选择 **导出字体** ，成功导出字体文件后，界面下方会弹出提示信息。
-
+2. 选择 **导出字体**，成功导出字体文件后，界面下方会弹出提示信息。
 
 导出字体的默认存储路径：桌面文件夹，文件夹默认名称：字体
 

@@ -59,7 +59,7 @@ With Font Manager, you can not only install a single font but also install multi
 
 - Double-click the font file.
 -  Right-click the font file and select **Open with** > ![deepin_font_manager](../common/deepin_font_manager.svg) **Font Manager** to enter the Font Manager interface, and install the font.
-- Drag the font file directly to the Font Manager icon  or its interface.
+- Drag the font file directly to the Font Manager icon or its interface.
 
 > ![notes](../common/notes.svg) Notes: 
 >
@@ -90,7 +90,6 @@ The default preview copy is **Don't let your dreams be dreams**, and is displaye
 ### Export Fonts
 
 1. Right-click a font in the User list.
-
 2.  Select **Export**.
 
 The exported font is saved in the desk folder by default, with Font as its default folder name.
@@ -124,7 +123,6 @@ You can enable or disable a user font (enabled by default) in the Font Manager i
 You can view the basic font information via Font Manager.
 
 1. Right-click the font and select **Details** in the font sets list on the Font Manager interface.
-
 2. You can view the font icon, name, style, type, version, and description information.
 
 ![0|info](fig/info.png)

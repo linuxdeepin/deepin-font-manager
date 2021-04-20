@@ -14,8 +14,8 @@
 
 ### 運行字體管理器
 
-1. 單擊桌面底部的 ![launcher](../common/deepin_launcher.svg)，進入啟動器界面。
-2. 上下滾動鼠標滾輪瀏覽或通過搜索，找到字體管理器 ![deepin_font_manager](../common/deepin_font_manager.svg)單擊運行。
+1. 單擊任務欄上的啟動器圖標 ![launcher](../common/deepin_launcher.svg)，進入啟動器界面。
+2. 上下滾動鼠標滾輪瀏覽或通過搜索，找到字體管理器圖標 ![deepin_font_manager](../common/deepin_font_manager.svg)，單擊運行。
 3. 右鍵單擊 ![deepin_font_manager](../common/deepin_font_manager.svg)，您可以：
 
    - 單擊 **傳送到桌面**，在桌面創建快捷方式。
@@ -26,12 +26,12 @@
 ### 關閉字體管理器
 
 - 在字體管理器界面單擊 ![close_icon](../common/close_icon.svg)，關閉字體管理器。
-- 在任務欄右鍵單擊 ![deepin_font_manager](../common/deepin_font_manager.svg)，選擇 **關閉所有** 來關閉字體管理器。
-- 在字體管理器界面單擊 ![icon_menu](../common/icon_menu.svg)，選擇 **退出** 來關閉字體管理器。
+- 在任務欄右鍵單擊 ![deepin_font_manager](../common/deepin_font_manager.svg)，選擇 **關閉所有**，關閉字體管理器。
+- 在字體管理器界面單擊 ![icon_menu](../common/icon_menu.svg)，選擇 **退出**，關閉字體管理器。
 
 ### 查看快捷鍵
 
-在字體管理器界面上，按下鍵盤上的 **Ctrl + Shift + ?** 組合鍵來查看快捷鍵。
+在字體管理器界面，使用快捷鍵 **Ctrl + Shift + ?** 打開快捷鍵預覽界面。熟練地使用快捷鍵，將大大提升您的操作效率。
 
 ![hotkey](fig/hotkey.png)
 
@@ -73,7 +73,7 @@
 1. 在字體管理器底部字體預覽輸入框中輸入文本內容。
 2. 通過左右拖動滑塊設置字體大小，在字體集列表中查看字體顯示效果。
 
-   > ![notes](../common/notes.svg)說明：向左滑動滑塊為縮小字體，向右滑動滑塊為放大字體，字體大小範圍為6px - 60px。
+   > ![notes](../common/notes.svg)說明：向左滑動滑塊為縮小字體，向右滑動滑塊為放大字體，字體大小範圍為6px-60px。
 
 ### 搜索字體
 
