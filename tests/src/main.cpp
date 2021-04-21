@@ -23,8 +23,18 @@
 #include <QDebug>
 #include <QApplication>
 
+// 首先要添加安全性测试的接口头文件
+#if defined(CMAKE_SAFETYTEST_ARG_ON)
+#include <sanitizer/asan_interface.h>
+#endif
+
 int main(int argc, char *argv[])
 {
+    // 之后在程序函数主入口添加log输出的代码
+#if defined(CMAKE_SAFETYTEST_ARG_ON)
+    __sanitizer_set_report_path("asan.log");
+#endif
+
     qDebug() << "start libdeepin-font-manager test cases ..............";
 
     qputenv("QT_QPA_PLATFORM", "offscreen");
