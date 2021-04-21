@@ -6,6 +6,7 @@
 
 #include <QThread>
 #include <QMutex>
+#include <QTimer>
 
 /*************************************************************************
  <Class>         DFontPreviewListDataThread

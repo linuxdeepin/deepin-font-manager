@@ -5,6 +5,7 @@
 
 #include <QPainter>
 #include <QPaintEvent>
+#include <QPainterPath>
 
 DFontPreviewer::DFontPreviewer(QWidget *parent)
     : QWidget(parent)

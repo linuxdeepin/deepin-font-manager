@@ -10,6 +10,7 @@
 #include <QToolTip>
 #include <QPainter>
 #include <QMouseEvent>
+#include <QPainterPath>
 
 #define FTM_SPLIT_TOP_SPACE_TAG "_space_"
 #define FTM_SPLIT_TOP_SPLIT_TAG "_split_"

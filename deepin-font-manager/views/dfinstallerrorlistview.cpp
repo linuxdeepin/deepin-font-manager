@@ -10,6 +10,7 @@
 
 #include <QPainter>
 #include <QStandardItemModel>
+#include <QPainterPath>
 
 DWIDGET_USE_NAMESPACE
 
