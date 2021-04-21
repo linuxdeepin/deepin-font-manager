@@ -30,6 +30,7 @@
 
 #include <QPainter>
 #include <QCheckBox>
+#include <QPainterPath>
 
 DWIDGET_USE_NAMESPACE
 

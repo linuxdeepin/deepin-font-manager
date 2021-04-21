@@ -30,7 +30,6 @@
 #include "views/dfquickinstallwindow.h"
 #include "performancemonitor.h"
 
-
 #include <DWidgetUtil>
 #include <DApplication>
 #include <DApplicationHelper>
@@ -53,6 +52,10 @@
 #include <QContextMenuEvent>
 #include <QDragEnterEvent>
 #include <QDropEvent>
+#include <QFocusEvent>
+#include <QKeyEvent>
+#include <QMouseEvent>
+
 /*************************************************************************
  <Function>      DFontMgrMainWindow
  <Description>   构造函数
