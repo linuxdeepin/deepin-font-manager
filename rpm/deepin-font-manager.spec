@@ -16,6 +16,7 @@ URL:            https://github.com/linuxdeepin/%{name}
 Source0:        %{url}/archive/%{version}/%{name}-%{version}.tar.gz
 
 BuildRequires: gcc-c++
+BuildRequires: cmake
 BuildRequires: qt5-devel
 
 BuildRequires: pkgconfig(dtkwidget)
