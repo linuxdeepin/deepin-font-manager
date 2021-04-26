@@ -48,6 +48,7 @@ Summary:        %{summary}
 %build
 export PATH=%{_qt5_bindir}:$PATH
 sed -i "s|^cmake_minimum_required.*|cmake_minimum_required(VERSION 3.0)|" $(find . -name "CMakeLists.txt")
+sed -i "s|lib/${CMAKE_LIBRARY_ARCHITECTURE}|lib64|" ./deepin-font-preview-plugin/CMakeLists.txt
 mkdir build && pushd build 
 %cmake -DCMAKE_BUILD_TYPE=Release ../  -DAPP_VERSION=%{version} -DVERSION=%{version} 
 %make_build  
