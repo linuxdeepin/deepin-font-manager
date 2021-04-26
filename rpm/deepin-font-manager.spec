@@ -65,17 +65,12 @@ popd
 %{_datadir}/icons/hicolor/scalable/apps/%{name}.svg
 %{_datadir}/%{name}/translations/*.qm
 %{_datadir}/applications/%{name}.desktop
-# %{_datadir}/glib-2.0/schemas/com.deepin.font-manager.gschema.xml
 %{_datadir}/deepin-manual/manual-assets/application/deepin-font-manager/font-manager/*
 
 %files -n %{libname}
-# %{_libdir}/%{libname}.so.*
 %{_datadir}/deepin-font-manager/contents.txt
 
-%files -n %{libname}-devel
-%{_includedir}/%{name}/
-%{_libdir}/%{libname}.so
-%{_libdir}/pkgconfig/%{name}.pc
+# %files -n %{libname}-devel
 
 %changelog
 * Tue Apr 20 2021 zhangdingwen <zhangdingwen@uniontech.com> - 5.8.0.25-1
