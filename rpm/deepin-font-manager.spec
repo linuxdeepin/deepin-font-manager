@@ -1,4 +1,4 @@
-%define libname libdeepin-font-manager
+# %define libname libdeepin-font-manager
 %define pkgrelease  1
 %if 0%{?openeuler}
 %define specrelease %{pkgrelease}
@@ -31,15 +31,15 @@ BuildRequires: gtest-devel
 %description
 %{summary}.
 
-%package -n %{libname}
-Summary:        %{summary}
-%description -n %{libname}
-%{summary}.
-
-%package -n %{libname}-devel
-Summary:        %{summary}
-%description -n %{libname}-devel
-%{summary}.
+# %package -n %{libname}
+# Summary:        %{summary}
+# %description -n %{libname}
+# %{summary}.
+# 
+# %package -n %{libname}-devel
+# Summary:        %{summary}
+# %description -n %{libname}-devel
+# %{summary}.
 
 
 %prep
@@ -66,11 +66,8 @@ popd
 %{_datadir}/%{name}/translations/*.qm
 %{_datadir}/applications/%{name}.desktop
 %{_datadir}/deepin-manual/manual-assets/application/deepin-font-manager/font-manager/*
-
-%files -n %{libname}
 %{_datadir}/deepin-font-manager/contents.txt
 
-# %files -n %{libname}-devel
 
 %changelog
 * Tue Apr 20 2021 zhangdingwen <zhangdingwen@uniontech.com> - 5.8.0.25-1
