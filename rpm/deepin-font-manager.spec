@@ -65,8 +65,8 @@ popd
 %{_datadir}/icons/hicolor/scalable/apps/%{name}.svg
 %{_datadir}/%{name}/translations/*.qm
 %{_datadir}/applications/%{name}.desktop
-%{_datadir}/glib-2.0/schemas/com.deepin.font-manager.gschema.xml
-
+# %{_datadir}/glib-2.0/schemas/com.deepin.font-manager.gschema.xml
+%{_datadir}/deepin-manual/manual-assets/application/deepin-font-manager-assets/deepin-font-manager/*
 
 %files -n %{libname}
 %{_libdir}/%{libname}.so.*
