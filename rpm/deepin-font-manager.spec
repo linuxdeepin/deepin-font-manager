@@ -69,8 +69,8 @@ popd
 %{_datadir}/deepin-manual/manual-assets/application/deepin-font-manager/font-manager/*
 
 %files -n %{libname}
-%{_libdir}/%{libname}.so.*
-%{_datadir}/deepin-font-manager/CONTENTS.txt
+# %{_libdir}/%{libname}.so.*
+%{_datadir}/deepin-font-manager/contents.txt
 
 %files -n %{libname}-devel
 %{_includedir}/%{name}/
