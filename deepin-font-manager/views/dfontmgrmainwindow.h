@@ -331,6 +331,8 @@ public slots:
     void onMenuHidden();
     //fontmananger线程结束槽函数
     void onFontManagerFinished();
+    //禁用/启用ttc里的某个字体
+    void onHandleDisableTTC(const QString &filePath, bool &isEnable, bool &isConfirm, bool &isAapplyToAll);
 
 protected:
     DFontPreviewListView *m_fontPreviewListView;

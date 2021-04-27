@@ -43,11 +43,11 @@
     <name>DFDeleteTTCDialog</name>
     <message>
         <source>Apply to all selected font families</source>
-        <translation type="unfinished"></translation>
+        <translation>Az összes kiválasztott betűtípus család alkalmazása</translation>
     </message>
     <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be deleted</source>
-        <translation type="unfinished"></translation>
+        <translation>A %1 egy betűtípus család, ha folytatja, akkor a benne lévő összes betűtípus törlésre kerül</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -56,6 +56,33 @@
     <message>
         <source>Delete</source>
         <translation>Törlés</translation>
+    </message>
+</context>
+<context>
+    <name>DFDisableTTCDialog</name>
+    <message>
+        <source>%1 is a font family, if you proceed, all fonts in it will be enabled</source>
+        <translation>A %1 egy betűtípus család, ha folytatja, akkor az összes betűtípus engedélyezve lesz</translation>
+    </message>
+    <message>
+        <source>%1 is a font family, if you proceed, all fonts in it will be disabled</source>
+        <translation>A %1 egy betűtípus család, ha folytatja, akkor az összes betűtípus le lesz tiltva</translation>
+    </message>
+    <message>
+        <source>Apply to all selected font families</source>
+        <translation>Az összes kiválasztott betűtípus család alkalmazása</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Mégsem</translation>
+    </message>
+    <message>
+        <source>Enable</source>
+        <translation>Engedélyezés</translation>
+    </message>
+    <message>
+        <source>Disable</source>
+        <translation>Tiltás</translation>
     </message>
 </context>
 <context>

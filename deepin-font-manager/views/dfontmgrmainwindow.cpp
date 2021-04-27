@@ -292,6 +292,7 @@ void DFontMgrMainWindow::initConnections()
     //字体删除过程结束
     connect(m_fontPreviewListView, &DFontPreviewListView::deleteFinished, this, &DFontMgrMainWindow::setDeleteFinish);
     connect(m_fontPreviewListView, &DFontPreviewListView::loadUserAddFont, this, &DFontMgrMainWindow::afterAllStartup);
+    connect(m_fontPreviewListView, &DFontPreviewListView::signalHandleDisableTTC, this, &DFontMgrMainWindow::onHandleDisableTTC);
 }
 
 /*************************************************************************
@@ -1048,7 +1049,6 @@ void DFontMgrMainWindow::handleMenuEvent(QAction *action)
             }
             break;
             case DFontMenuManager::MenuAction::M_EnableOrDisable: {
-
                 m_fontPreviewListView->onEnableBtnClicked(m_menuDisableIndexList, m_menuSysCnt, m_menuCurCnt, !m_menuCurData.fontData.isEnabled(),
                                                           filterGroup == DSplitListWidget::FontGroup::ActiveFont);
                 m_fontPreviewListView->syncTabStatus();
@@ -1948,6 +1948,26 @@ void DFontMgrMainWindow::onFontManagerFinished()
         m_fontManager->start();
         m_needWaitThreadStop = false;
     }
+}
+
+void DFontMgrMainWindow::onHandleDisableTTC(const QString &filePath, bool &isEnable, bool &isConfirm, bool &isAapplyToAll)
+{
+    // 获取ttc对应的fontname，转为"font1 & font2 & font3"格式显示
+    QString fontNames;
+    QStringList fontNameList = DFMDBManager::instance()->getSpecifiedFontName(filePath);
+    QListIterator<QString> iter(fontNameList);
+    while (iter.hasNext()) {
+        fontNames = fontNames + " & " + iter.next();
+    }
+    if (!fontNames.isEmpty()) {
+        fontNames = fontNames.mid(3);
+    }
+
+    DFDisableTTCDialog *confirmDelDlg = new DFDisableTTCDialog(this, fontNames, isEnable, this);
+    confirmDelDlg->exec();
+
+    isConfirm = confirmDelDlg->getDeleting();
+    isAapplyToAll = confirmDelDlg->getAapplyToAll();
 }
 
 /*************************************************************************

@@ -351,6 +351,8 @@ signals:
     //加载用户自己添加的字体
     void loadUserAddFont();
     void refreshListview(QList<DFontPreviewItemData> &data);
+    //禁用/启用ttc里的某个字体
+    void signalHandleDisableTTC(const QString &filePath, bool &isEnable, bool &isConfirm, bool &isAapplyToAll);
 
 public slots:
     //listview中启用禁用响应函数

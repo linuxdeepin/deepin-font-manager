@@ -1726,33 +1726,64 @@ void DFontPreviewListView::onEnableBtnClicked(QModelIndexList &itemIndexes, int 
     getAtListViewPosition();
     m_selectAfterDel = itemIndexes.last().row();
 
+    bool isConfirm = false; // 是否确认选择
+    bool isAapplyToAll = false; // 选择应用于全部ttc字体集
+    QSet<QString> ttcSet; //记录ttc字体文件
+    QSet<QString> confirmSet; //记录确认选择的字体
     for (QModelIndex &index : itemIndexes) {
         FontData fdata = qvariant_cast<FontData>(m_fontPreviewProxyModel->data(index));
         DFontPreviewItemData itemData = m_dataThread->getFontData(fdata);
-        QFileInfo fi(itemData.fontInfo.filePath);
-        if (!fi.exists())
-            continue;
-        int idx = m_dataThread->m_fontModelList.indexOf(itemData);
-        if (setValue) {
-            enableFont(itemData.fontInfo.filePath);
-        } else {
-            if (systemCnt > 0 || curCnt > 0) {
-                needShowTips = true;
-            }
 
-            if (itemIndexes.size() == 1) {
-                fontName = itemData.fontData.strFontName;
+        // ttc字体集询问是否应用全部
+        if (itemData.fontInfo.filePath.endsWith(".ttc", Qt::CaseInsensitive)) {
+            if (!ttcSet.contains(itemData.fontInfo.filePath)) { //不包含
+                if (!isAapplyToAll) {
+                    Q_EMIT signalHandleDisableTTC(itemData.fontInfo.filePath, setValue, isConfirm, isAapplyToAll);
+                }
+                ttcSet.insert(itemData.fontInfo.filePath);
+                if (!isConfirm) { // 取消对该ttc字体禁用/启用操作
+                    continue;
+                } else {
+                    confirmSet.insert(itemData.fontInfo.filePath);
+                }
             }
-            disableFont(itemData.fontInfo.filePath);
-            count++;
+        } else {
+            confirmSet.insert(itemData.fontInfo.filePath);
         }
-        itemData.fontData.setEnabled(setValue);
-        fdata.setEnabled(setValue);
-        //更新状态
-        m_dataThread->updateItemStatus(idx, itemData);
-        DFMDBManager::instance()->updateFontInfo(itemData, "isEnabled");
-        m_fontPreviewProxyModel->setData(index, QVariant::fromValue(fdata), Qt::DisplayRole);
     }
+
+    DFontPreviewProxyModel *filterModel = getFontPreviewProxyModel();
+    int oldFilterGroup = filterModel->getFilterGroup(); // 保存当前字体组
+    filterModel->setFilterGroup(DSplitListWidget::UserFont); // 只用用户字体才能被禁用
+    for (int i = 0; i < filterModel->rowCount(); ++i) {
+        QModelIndex index = filterModel->index(i, 0);
+        FontData fdata = qvariant_cast<FontData>(m_fontPreviewProxyModel->data(index));
+        DFontPreviewItemData itemData = m_dataThread->getFontData(fdata);
+        if (confirmSet.contains(itemData.fontInfo.filePath)) {
+            int idx = m_dataThread->m_fontModelList.indexOf(itemData);
+            if (setValue) {
+                enableFont(itemData.fontInfo.filePath);
+            } else {
+                if (systemCnt > 0 || curCnt > 0) {
+                    needShowTips = true;
+                }
+
+                if (itemIndexes.size() == 1) {
+                    fontName = itemData.fontData.strFontName;
+                }
+                disableFont(itemData.fontInfo.filePath);
+                count++;
+            }
+            itemData.fontData.setEnabled(setValue);
+            fdata.setEnabled(setValue);
+            // 更新状态
+            m_dataThread->updateItemStatus(idx, itemData);
+            DFMDBManager::instance()->updateFontInfo(itemData, "isEnabled");
+            m_fontPreviewProxyModel->setData(index, QVariant::fromValue(fdata), Qt::DisplayRole);
+        }
+    }
+    filterModel->setFilterGroup(oldFilterGroup); // 恢复原字体组
+
 
     DFMDBManager::instance()->commitUpdateFontInfo();
 

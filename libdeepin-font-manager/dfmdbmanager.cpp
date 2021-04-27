@@ -330,7 +330,7 @@ QString DFMDBManager::isFontInfoExist(const DFontInfo &newFileFontInfo)
  <Return>        QStringList
  <Note>          null
 *************************************************************************/
-QStringList DFMDBManager::getSpecifiedFontName(QString filePath)
+QStringList DFMDBManager::getSpecifiedFontName(const QString &filePath)
 {
     QList<QString> keyList;
     keyList.append("fontName");

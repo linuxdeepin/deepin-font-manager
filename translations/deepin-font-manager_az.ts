@@ -43,11 +43,11 @@
     <name>DFDeleteTTCDialog</name>
     <message>
         <source>Apply to all selected font families</source>
-        <translation type="unfinished"></translation>
+        <translation>Bütün seçilmiş şrift ailəsini tətbiq edin</translation>
     </message>
     <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be deleted</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 bir şrift ailəsidir, əgər davam etsəniz ondakı bütün şriftlər silinəcəkdir</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -56,6 +56,33 @@
     <message>
         <source>Delete</source>
         <translation>Silmək</translation>
+    </message>
+</context>
+<context>
+    <name>DFDisableTTCDialog</name>
+    <message>
+        <source>%1 is a font family, if you proceed, all fonts in it will be enabled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 is a font family, if you proceed, all fonts in it will be disabled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Apply to all selected font families</source>
+        <translation>Bütün seçilmiş şrift ailəsini tətbiq edin</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>İmtina</translation>
+    </message>
+    <message>
+        <source>Enable</source>
+        <translation>Aktiv etmək</translation>
+    </message>
+    <message>
+        <source>Disable</source>
+        <translation>Söndürmək</translation>
     </message>
 </context>
 <context>

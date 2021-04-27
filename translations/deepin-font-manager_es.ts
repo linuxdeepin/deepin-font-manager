@@ -43,11 +43,11 @@
     <name>DFDeleteTTCDialog</name>
     <message>
         <source>Apply to all selected font families</source>
-        <translation type="unfinished"></translation>
+        <translation>Aplicar a todas las familias de fuentes seleccionadas</translation>
     </message>
     <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be deleted</source>
-        <translation type="unfinished"></translation>
+        <translation>% 1 es una familia de fuentes, si continúa, se eliminarán todas las fuentes.</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -56,6 +56,33 @@
     <message>
         <source>Delete</source>
         <translation>Borrar</translation>
+    </message>
+</context>
+<context>
+    <name>DFDisableTTCDialog</name>
+    <message>
+        <source>%1 is a font family, if you proceed, all fonts in it will be enabled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 is a font family, if you proceed, all fonts in it will be disabled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Apply to all selected font families</source>
+        <translation>Aplicar a todas las familias de fuentes seleccionadas</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Cancelar</translation>
+    </message>
+    <message>
+        <source>Enable</source>
+        <translation>Habilitar</translation>
+    </message>
+    <message>
+        <source>Disable</source>
+        <translation>Deshabilitar</translation>
     </message>
 </context>
 <context>

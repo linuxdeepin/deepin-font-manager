@@ -39,6 +39,8 @@ public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     //设置当前字体组
     void setFilterGroup(int filterGroup);
+    //获取当前字体组
+    int getFilterGroup();
     //根据字体的信息进行分组,决定各个界面显示的字体
     bool isCustomFilterAcceptsRow(const QModelIndex &modelIndex) const;
     //判断用户字体名是否含有用户输入的内容

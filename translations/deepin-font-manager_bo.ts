@@ -59,6 +59,33 @@
     </message>
 </context>
 <context>
+    <name>DFDisableTTCDialog</name>
+    <message>
+        <source>%1 is a font family, if you proceed, all fonts in it will be enabled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 is a font family, if you proceed, all fonts in it will be disabled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Apply to all selected font families</source>
+        <translation>བདམས་ཡོད་པའི་ཡིག་གཟུགས་ཚང་མར་སྤྱོད་པ།</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>འདོར་བ།</translation>
+    </message>
+    <message>
+        <source>Enable</source>
+        <translation>ཡིག་གཟུགས་སྤྱོད་འགོ་ཚུགས་པ།</translation>
+    </message>
+    <message>
+        <source>Disable</source>
+        <translation>ཡིག་གཟུགས་སྤྱོད་མི་ཆོག</translation>
+    </message>
+</context>
+<context>
     <name>DFInstallErrorDialog</name>
     <message>
         <source>Broken file</source>

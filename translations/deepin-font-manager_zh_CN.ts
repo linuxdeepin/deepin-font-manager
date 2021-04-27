@@ -59,6 +59,33 @@
     </message>
 </context>
 <context>
+    <name>DFDisableTTCDialog</name>
+    <message>
+        <source>%1 is a font family, if you proceed, all fonts in it will be enabled</source>
+        <translation>%1是一个字体集，将它启用可能会启用属于它的所有字体</translation>
+    </message>
+    <message>
+        <source>%1 is a font family, if you proceed, all fonts in it will be disabled</source>
+        <translation>%1是一个字体集，将它禁用可能会禁用属于它的所有字体</translation>
+    </message>
+    <message>
+        <source>Apply to all selected font families</source>
+        <translation>应用到所有选定的字体集</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>取消</translation>
+    </message>
+    <message>
+        <source>Enable</source>
+        <translation>启用</translation>
+    </message>
+    <message>
+        <source>Disable</source>
+        <translation>禁用</translation>
+    </message>
+</context>
+<context>
     <name>DFInstallErrorDialog</name>
     <message>
         <source>Broken file</source>
