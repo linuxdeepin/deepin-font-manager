@@ -168,7 +168,7 @@ isMonoSpace TINYINT)";
 
     bool ret = true;
     if (!findFontManagerInfoRecords()) {
-       ret = delAllRecords();
+        ret = delAllRecords();
         if (!addFontManagerInfoRecord()) {
             ret = updateFontManagerInfoRecord();
         }
@@ -763,12 +763,12 @@ void DSqliteUtil::updateFontInfo(const QList<DFontPreviewItemData> &fontList, co
         return;
     QMutexLocker m_locker(&mutex);
 
-    QString sql = "update " + table_name + " set " + key + " = ? where filePath = ?";
+    QString sql = "update " + table_name + " set " + key + " = ? where fontId = ?";
     qDebug() << sql;
     m_query->prepare(sql);
 
     QVariantList keyList;
-    QVariantList filePathList;
+    QVariantList fontIdList;
     for (const DFontPreviewItemData &item : fontList) {
         if (key == "isEnabled") {
             keyList << QString::number(item.fontData.isEnabled());
@@ -776,18 +776,18 @@ void DSqliteUtil::updateFontInfo(const QList<DFontPreviewItemData> &fontList, co
             keyList << QString::number(item.fontData.isCollected());
         }
 
-        filePathList << escapeString(item.fontInfo.filePath);
+        fontIdList << escapeString(item.strFontId);
     }
     m_query->addBindValue(keyList);
-    m_query->addBindValue(filePathList);
+    m_query->addBindValue(fontIdList);
 
     if (!m_query->execBatch()) {
-        qDebug() << "update data failed!" << filePathList;
+        qDebug() << "update data failed!" << fontIdList;
     } else {
         qDebug() << __FUNCTION__ << "true";
     }
     keyList.clear();
-    filePathList.clear();
+    fontIdList.clear();
     finish();
 }
 
