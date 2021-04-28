@@ -439,6 +439,32 @@ void DFontPreviewListDataThread::withoutDbRefreshDb(QStringList &m_allFontPathLi
 }
 
 /*************************************************************************
+ <Function>      appendItemData
+ <Description>   添加符合条件的itemData
+ <Author>        null
+ <Input>
+    <param1>     itemData            Description:ItemModel信息结构体
+    <param1>     isStartup           Description:是否为第一次启动
+ <Return>        void                Description:null
+ <Note>          null
+*************************************************************************/
+void DFontPreviewListDataThread::appendItemData(const DFontPreviewItemData &itemData, const bool &isStartup)
+{
+    m_dbManager->addFontInfo(itemData);
+
+    if (!m_fontModelList.contains(itemData) || itemData.fontInfo.isSystemFont) {
+        m_fontModelList.append(itemData);
+    }
+
+    if (!isStartup) {
+        if (!m_diffFontModelList.contains(itemData) || itemData.fontInfo.isSystemFont) {
+            m_diffFontModelList.append(itemData);
+        }
+    }
+
+}
+
+/*************************************************************************
  <Function>      insertFontItemData
  <Description>   将需要添加项的字体数据收集放人list中.
  <Author>        null
@@ -522,24 +548,18 @@ int DFontPreviewListDataThread::insertFontItemData(const DFontInfo info,
                 } else {
                     itemData.fontData.strFontName = itemData.fontInfo.familyName;
                 }
-                m_dbManager->addFontInfo(itemData);
-                m_fontModelList.append(itemData);
+                appendItemData(itemData, isStartup);
             }
         } else {
-            m_dbManager->addFontInfo(itemData);
-            m_fontModelList.append(itemData);
+            appendItemData(itemData, isStartup);
         }
     } else {
-        m_dbManager->addFontInfo(itemData);
-        m_fontModelList.append(itemData);
+        appendItemData(itemData, isStartup);
     }
 
 //    Q_EMIT m_view->itemAdded(itemData);
     addPathWatcher(info.filePath);
 
-    if (!isStartup) {
-        m_diffFontModelList.append(itemData);
-    }
     return (index + 1);
 }
 

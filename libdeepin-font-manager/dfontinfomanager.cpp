@@ -444,7 +444,7 @@ DFontInfo DFontInfoManager:: getFontInfo(const QString &filePath, bool withPrevi
     }
     //compitable with SP2 update1 and previous versions
     if (!fontInfo.fullname.isEmpty())
-        fontInfo.familyName = fontInfo.fullname.replace(QRegExp(QString(" " + fontInfo.styleName + "$")), "");
+        fontInfo.familyName = fontInfo.fullname.replace(QRegExp(QString("[ -]" + fontInfo.styleName + "$")), "");
 
     if (fontInfo.familyName.trimmed().length() < 1) {
         fontInfo.familyName = QString::fromLatin1(face->family_name);
