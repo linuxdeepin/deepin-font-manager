@@ -530,8 +530,10 @@ DFontInfo DFontInfoManager:: getFontInfo(const QString &filePath, bool withPrevi
         }
     }
     //compitable with SP2 update1 and previous versions
-    if (!fontInfo.fullname.isEmpty())
-        fontInfo.familyName = fontInfo.fullname.replace(QRegExp(QString(" " + fontInfo.styleName + "$")), "");
+    if (!fontInfo.fullname.isEmpty()) {
+        // 例如Consolas-Regular(或Consolas Regular)获取到Consolas
+        fontInfo.familyName = fontInfo.fullname.replace(QRegExp(QString("[ -]" + fontInfo.styleName + "$")), "");
+    }
 
     if (fontInfo.familyName.trimmed().length() < 1) {
         fontInfo.familyName = QString::fromLatin1(face->family_name).trimmed();
