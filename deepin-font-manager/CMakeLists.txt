@@ -39,7 +39,7 @@ FILE(GLOB LIB_SRC_FILES ${LIB_DIR}/*.cpp ${LIB_DIR}/*.h)
 #        DESTINATION /usr/share/glib-2.0/schemas)
 #用deepin-turbo对Dapplication进行加速
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wl,--as-need -fPIE")
-SET(CMAKE_EXE_LINKER_FLAGS "-pie")
+SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pie")
 
 #可执行文件
 FILE(GLOB SRC_FILES ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/*.h
