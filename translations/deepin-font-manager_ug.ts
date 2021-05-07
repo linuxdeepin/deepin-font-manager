@@ -40,6 +40,52 @@
     </message>
 </context>
 <context>
+    <name>DFDeleteTTCDialog</name>
+    <message>
+        <source>Apply to all selected font families</source>
+        <translation>تاللانغان فونت گۇرۇپپىسىغا قوللىنىش</translation>
+    </message>
+    <message>
+        <source>%1 is a font family, if you proceed, all fonts in it will be deleted</source>
+        <translation>%1 بولسا بىر فونت گۇرۇپپىسى، ئۇنى ئۆچۈرسىڭىز ئۇنىڭغا تەۋە بارلىق فونتلار ئۆچۈرۈلۈپ كېتىشى مۇمكىن</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>بىكار قىلىش</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>ئۆچۈرۈش</translation>
+    </message>
+</context>
+<context>
+    <name>DFDisableTTCDialog</name>
+    <message>
+        <source>%1 is a font family, if you proceed, all fonts in it will be enabled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 is a font family, if you proceed, all fonts in it will be disabled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Apply to all selected font families</source>
+        <translation>تاللانغان فونت گۇرۇپپىسىغا قوللىنىش</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>بىكار قىلىش</translation>
+    </message>
+    <message>
+        <source>Enable</source>
+        <translation>خەت شەكلىنى قوزغىتىش</translation>
+    </message>
+    <message>
+        <source>Disable</source>
+        <translation>خەت شەكلىنى چەكلەش</translation>
+    </message>
+</context>
+<context>
     <name>DFInstallErrorDialog</name>
     <message>
         <source>Broken file</source>

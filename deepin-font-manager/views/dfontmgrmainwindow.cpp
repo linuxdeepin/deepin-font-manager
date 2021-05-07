@@ -238,6 +238,8 @@ void DFontMgrMainWindow::initConnections()
     connect(m_fontManager, &FontManagerCore::uninstallFcCacheFinish, this, &DFontMgrMainWindow::onUninstallFcCacheFinish);
     //执行fc-cache结束
     connect(m_fontManager, &FontManagerCore::cacheFinish, this, &DFontMgrMainWindow::onCacheFinish, Qt::QueuedConnection);
+    //删除ttc确认
+    connect(m_fontManager, &FontManagerCore::handleDeleteTTC, this, &DFontMgrMainWindow::onHandleDeleteTTC, Qt::BlockingQueuedConnection);
     //取消安装
     connect(m_fontManager, &FontManagerCore::requestCancelInstall, this, [ = ]() {
         m_isInstallOver = true;
@@ -290,6 +292,7 @@ void DFontMgrMainWindow::initConnections()
     //字体删除过程结束
     connect(m_fontPreviewListView, &DFontPreviewListView::deleteFinished, this, &DFontMgrMainWindow::setDeleteFinish);
     connect(m_fontPreviewListView, &DFontPreviewListView::loadUserAddFont, this, &DFontMgrMainWindow::afterAllStartup);
+    connect(m_fontPreviewListView, &DFontPreviewListView::signalHandleDisableTTC, this, &DFontMgrMainWindow::onHandleDisableTTC);
 }
 
 /*************************************************************************
@@ -465,6 +468,9 @@ void DFontMgrMainWindow::initShortcuts()
                     QPoint GlobalPoint(d->searchFontEdit->mapToGlobal(QPoint(0, 0)));
                     QPoint position = d->searchFontEdit->lineEdit()->rect().center();
                     QPoint popPosition(GlobalPoint.x() + position.x(), GlobalPoint.y() + position.y() + 10);
+                    // QCoreApplication::sendEvent
+                    // The event is not deleted when the event has been sent.
+                    // The normal approach is to create the event on the stack
                     QContextMenuEvent eve(QContextMenuEvent::Reason::Keyboard, popPosition, popPosition);
                     m_isSearchLineEditMenuPoped = QApplication::sendEvent(d->searchFontEdit->lineEdit(), &eve);
                     qDebug() << m_isSearchLineEditMenuPoped;
@@ -1043,7 +1049,6 @@ void DFontMgrMainWindow::handleMenuEvent(QAction *action)
             }
             break;
             case DFontMenuManager::MenuAction::M_EnableOrDisable: {
-
                 m_fontPreviewListView->onEnableBtnClicked(m_menuDisableIndexList, m_menuSysCnt, m_menuCurCnt, !m_menuCurData.fontData.isEnabled(),
                                                           filterGroup == DSplitListWidget::FontGroup::ActiveFont);
                 m_fontPreviewListView->syncTabStatus();
@@ -1808,6 +1813,37 @@ void DFontMgrMainWindow::onCacheFinish()
 }
 
 /*************************************************************************
+ <Function>      onHandleDeleteTTC
+ <Description>   删除ttc文件的确认函数
+ <Author>
+ <Input>
+    <param1>     file           Description:字体文件
+    <param1>     isDelete       Description:是否删除
+    <param1>     isAapplyToAll  Description:是否应用所有
+ <Return>        null           Description:null
+ <Note>          null
+*************************************************************************/
+void DFontMgrMainWindow::onHandleDeleteTTC(QString filePath, bool &isDelete, bool &isAapplyToAll)
+{
+    // 获取ttc对应的fontname，转为"font1 & font2 & font3"格式显示
+    QString fontNames;
+    QStringList fontNameList = DFMDBManager::instance()->getSpecifiedFontName(filePath);
+    QListIterator<QString> iter(fontNameList);
+    while (iter.hasNext()) {
+        fontNames = fontNames + " & " + iter.next();
+    }
+    if (!fontNames.isEmpty()) {
+        fontNames = fontNames.mid(3);
+    }
+
+    DFDeleteTTCDialog *confirmDelDlg = new DFDeleteTTCDialog(this, fontNames, this);
+    confirmDelDlg->exec();
+
+    isDelete = confirmDelDlg->getDeleting();
+    isAapplyToAll = confirmDelDlg->getAapplyToAll();
+}
+
+/*************************************************************************
  <Function>      onRequestInstFontsUiAdded
  <Description>   ui界面操作结束槽函数
  <Author>        ut000442
@@ -1912,6 +1948,26 @@ void DFontMgrMainWindow::onFontManagerFinished()
         m_fontManager->start();
         m_needWaitThreadStop = false;
     }
+}
+
+void DFontMgrMainWindow::onHandleDisableTTC(const QString &filePath, bool &isEnable, bool &isConfirm, bool &isAapplyToAll)
+{
+    // 获取ttc对应的fontname，转为"font1 & font2 & font3"格式显示
+    QString fontNames;
+    QStringList fontNameList = DFMDBManager::instance()->getSpecifiedFontName(filePath);
+    QListIterator<QString> iter(fontNameList);
+    while (iter.hasNext()) {
+        fontNames = fontNames + " & " + iter.next();
+    }
+    if (!fontNames.isEmpty()) {
+        fontNames = fontNames.mid(3);
+    }
+
+    DFDisableTTCDialog *confirmDelDlg = new DFDisableTTCDialog(this, fontNames, isEnable, this);
+    confirmDelDlg->exec();
+
+    isConfirm = confirmDelDlg->getDeleting();
+    isAapplyToAll = confirmDelDlg->getAapplyToAll();
 }
 
 /*************************************************************************

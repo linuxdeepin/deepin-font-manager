@@ -439,6 +439,32 @@ void DFontPreviewListDataThread::withoutDbRefreshDb(QStringList &m_allFontPathLi
 }
 
 /*************************************************************************
+ <Function>      appendItemData
+ <Description>   添加符合条件的itemData
+ <Author>        null
+ <Input>
+    <param1>     itemData            Description:ItemModel信息结构体
+    <param1>     isStartup           Description:是否为第一次启动
+ <Return>        void                Description:null
+ <Note>          null
+*************************************************************************/
+void DFontPreviewListDataThread::appendItemData(const DFontPreviewItemData &itemData, const bool &isStartup)
+{
+    m_dbManager->addFontInfo(itemData);
+
+    if (!m_fontModelList.contains(itemData) || itemData.fontInfo.isSystemFont) {
+        m_fontModelList.append(itemData);
+    }
+
+    if (!isStartup) {
+        if (!m_diffFontModelList.contains(itemData) || itemData.fontInfo.isSystemFont) {
+            m_diffFontModelList.append(itemData);
+        }
+    }
+
+}
+
+/*************************************************************************
  <Function>      insertFontItemData
  <Description>   将需要添加项的字体数据收集放人list中.
  <Author>        null
@@ -462,6 +488,23 @@ int DFontPreviewListDataThread::insertFontItemData(const DFontInfo info,
     DFontPreviewItemData itemData;
     itemData.fontInfo = info;
 
+    /*****************************************
+    字体显示名称规则
+    规则说明：
+    规则一：
+    条件：familyname不为空，不包含“？”；
+    规则：字体名称使用 familyname+“-”+style；
+    规则二：
+    条件：familyname为空或者包含“？”，fullname不为空；
+    规则：字体名称使用 fullname+“-”+style；
+    规则三
+    条件：familyname为空或者包含“？”，fullname为空；
+    规则：字体名称使用 PSname；
+    规则四
+    条件：familyname为空或者包含“？”，fullname为空，PSname为空；
+    规则：字体名称显示“UntitledFont”；
+    规则对所有字体（包括系统字体、用户字体）有效；
+    ****************************************/
     QString familyName;
     if (itemData.fontInfo.sp3FamilyName.isEmpty() || itemData.fontInfo.sp3FamilyName.contains(QChar('?'))) {
         int appFontId = QFontDatabase::addApplicationFont(itemData.fontInfo.filePath);
@@ -474,19 +517,21 @@ int DFontPreviewListDataThread::insertFontItemData(const DFontInfo info,
             familyName = family;
         }
         if (familyName.isEmpty()) {
-            familyName = itemData.fontInfo.fullname;
-        } else {
-            itemData.fontInfo.sp3FamilyName = familyName;
+            if (!itemData.fontInfo.fullname.isEmpty() && !itemData.fontInfo.fullname.contains(QChar('?'))) {
+                familyName = itemData.fontInfo.fullname;
+            } else if (!itemData.fontInfo.psname.isEmpty() && !itemData.fontInfo.psname.contains(QChar('?'))) {
+                familyName = itemData.fontInfo.fullname;
+            } else {
+                familyName = QLatin1String("UntitledFont");
+            }
         }
-    } else if (itemData.fontInfo.isSystemFont) {
-        familyName = itemData.fontInfo.sp3FamilyName;
+        itemData.fontInfo.sp3FamilyName = familyName;
     } else {
-        familyName = itemData.fontInfo.fullname;
+        familyName = itemData.fontInfo.sp3FamilyName;
     }
 
-    if (itemData.fontInfo.styleName.length() > 0 && !familyName.endsWith(itemData.fontInfo.styleName)) {
-        itemData.fontData.strFontName =
-            QString("%1-%2").arg(familyName).arg(itemData.fontInfo.styleName);
+    if (!itemData.fontInfo.styleName.isEmpty() && !familyName.endsWith(itemData.fontInfo.styleName) && familyName != QLatin1String("UntitledFont")) {
+        itemData.fontData.strFontName = QString("%1-%2").arg(familyName).arg(itemData.fontInfo.styleName);
     } else {
         itemData.fontData.strFontName = familyName;
     }
@@ -501,8 +546,8 @@ int DFontPreviewListDataThread::insertFontItemData(const DFontInfo info,
 
     itemData.fontInfo.isInstalled = true;
 
-    //中文字体
-    if (itemData.fontInfo.isSystemFont && itemData.fontData.isChinese()) {
+    // ttc文件包含多个ttf字体，需要找出每一个ttf字体
+    if (itemData.fontInfo.filePath.endsWith(".ttc", Qt::CaseInsensitive)) {
         /* Bug#16821 UT000591  添加字体后需要加入到Qt的字体数据库中，否则无法使用*/
 //        qDebug() << "addApplicationFont s"  << endl;
         int appFontId = QFontDatabase::addApplicationFont(itemData.fontInfo.filePath);
@@ -511,9 +556,8 @@ int DFontPreviewListDataThread::insertFontItemData(const DFontInfo info,
 
         QStringList fontFamilyList = QFontDatabase::applicationFontFamilies(appFontId);
         if (fontFamilyList.size() > 1) {
-            ++index;
             for (QString &fontFamily : fontFamilyList) {
-                itemData.strFontId = QString::number(index);
+                itemData.strFontId = QString::number(index++);
                 itemData.fontInfo.familyName = fontFamily;
                 itemData.fontInfo.sp3FamilyName = fontFamily;
                 if (itemData.fontInfo.styleName.length() > 0) {
@@ -522,24 +566,19 @@ int DFontPreviewListDataThread::insertFontItemData(const DFontInfo info,
                 } else {
                     itemData.fontData.strFontName = itemData.fontInfo.familyName;
                 }
-                m_dbManager->addFontInfo(itemData);
-                m_fontModelList.append(itemData);
+                appendItemData(itemData, isStartup);
             }
+            index--;
         } else {
-            m_dbManager->addFontInfo(itemData);
-            m_fontModelList.append(itemData);
+            appendItemData(itemData, isStartup);
         }
     } else {
-        m_dbManager->addFontInfo(itemData);
-        m_fontModelList.append(itemData);
+        appendItemData(itemData, isStartup);
     }
 
 //    Q_EMIT m_view->itemAdded(itemData);
     addPathWatcher(info.filePath);
 
-    if (!isStartup) {
-        m_diffFontModelList.append(itemData);
-    }
     return (index + 1);
 }
 

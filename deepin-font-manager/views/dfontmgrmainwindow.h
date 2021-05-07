@@ -317,6 +317,8 @@ public slots:
     void onUninstallFontFinished(QStringList &files);
     //fc-cache执行结束槽函数
     void onCacheFinish();
+    //删除ttc文件确认函数
+    void onHandleDeleteTTC(QString filePath, bool &isDelete, bool &isAapplyToAll);
     //ui界面操作结束槽函数
     void onRequestInstFontsUiAdded();
     //系统字体变化槽函数
@@ -329,6 +331,8 @@ public slots:
     void onMenuHidden();
     //fontmananger线程结束槽函数
     void onFontManagerFinished();
+    //禁用/启用ttc里的某个字体
+    void onHandleDisableTTC(const QString &filePath, bool &isEnable, bool &isConfirm, bool &isAapplyToAll);
 
 protected:
     DFontPreviewListView *m_fontPreviewListView;

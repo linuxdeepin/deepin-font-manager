@@ -420,8 +420,12 @@ QString DFontPreview::buildCharlistForFace(FT_Face face, int length)
     FcCharSet *fcs = nullptr;
     FcChar32 count = 0;
 
+    // FcCharSet * FcFreeTypeCharSet(FT_Face face, FcBlanks *blanks);
+    // Scans a FreeType face and returns the set of encoded Unicode chars. FcBlanks is deprecated, blanks is ignored and accepted only for compatibility with older code.
     fcs = FcFreeTypeCharSet(face, nullptr);
 
+    // FcChar32 FcCharSetCount(const FcCharSet *a);
+    // Returns the total number of Unicode chars in a.
     count = FcCharSetCount(fcs);
 //    qDebug() << __FUNCTION__ << " total count = " << count;
 
@@ -484,6 +488,7 @@ QString DFontPreview::buildCharlistForFace(FT_Face face, int length)
         }
     }
 
+    // Destroy a character set
     FcCharSetDestroy(fcs);
 
     return retval;

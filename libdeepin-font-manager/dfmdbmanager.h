@@ -44,7 +44,8 @@ public:
     int getCurrMaxFontId();
     QStringList getInstalledFontsPath();
     QString isFontInfoExist(const DFontInfo &newFileFontInfo);
-
+    // 获取指定字体文件的fontname列表
+    QStringList getSpecifiedFontName(const QString &filePath);
     bool addFontInfo(const DFontPreviewItemData &itemData);
     bool updateFontInfo(const QMap<QString, QString> &whereMap, const QMap<QString, QString> &dataMap);
 

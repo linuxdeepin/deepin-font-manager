@@ -40,6 +40,52 @@
     </message>
 </context>
 <context>
+    <name>DFDeleteTTCDialog</name>
+    <message>
+        <source>Apply to all selected font families</source>
+        <translation>Appliquer à toutes les familles de polices sélectionnées</translation>
+    </message>
+    <message>
+        <source>%1 is a font family, if you proceed, all fonts in it will be deleted</source>
+        <translation>%1 est une famille de polices, si vous continuez, toutes les polices qu&apos;elle contient seront supprimées </translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Annuler</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>Supprimer</translation>
+    </message>
+</context>
+<context>
+    <name>DFDisableTTCDialog</name>
+    <message>
+        <source>%1 is a font family, if you proceed, all fonts in it will be enabled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 is a font family, if you proceed, all fonts in it will be disabled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Apply to all selected font families</source>
+        <translation>Appliquer à toutes les familles de polices sélectionnées</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Annuler</translation>
+    </message>
+    <message>
+        <source>Enable</source>
+        <translation>Activer</translation>
+    </message>
+    <message>
+        <source>Disable</source>
+        <translation>Désactiver</translation>
+    </message>
+</context>
+<context>
     <name>DFInstallErrorDialog</name>
     <message>
         <source>Broken file</source>

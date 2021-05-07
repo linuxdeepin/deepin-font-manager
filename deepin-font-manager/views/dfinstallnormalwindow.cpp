@@ -31,6 +31,7 @@
 
 #include <QFileInfo>
 #include <QVBoxLayout>
+#include <QFontDatabase>
 
 DWIDGET_USE_NAMESPACE
 
@@ -353,9 +354,24 @@ bool DFInstallNormalWindow::ifNeedShowExceptionWindow() const
 bool DFInstallNormalWindow::isSystemFont(DFontInfo &f)
 {
     QString fontFullname = f.familyName + f.styleName;
+    bool ret = m_AllSysFilesfamilyName.contains(fontFullname);
+
+    // ttc文件包含多种ttf字体，需特殊处理
+    if (!ret && f.filePath.endsWith(QLatin1String(".ttc"), Qt::CaseInsensitive)) {
+        QStringList fontFamilyList = QFontDatabase::applicationFontFamilies(QFontDatabase::addApplicationFont(f.filePath));
+        if (fontFamilyList.size() > 1) {
+            for (QString &fontFamily : fontFamilyList) {
+                fontFullname = fontFamily + f.styleName;
+                ret = (ret || m_AllSysFilesfamilyName.contains(fontFullname));
+                if (ret) {
+                    break;
+                }
+            }
+        }
+    }
 
 
-    return (m_AllSysFilesfamilyName.contains(fontFullname));
+    return ret;
 }
 
 /*************************************************************************

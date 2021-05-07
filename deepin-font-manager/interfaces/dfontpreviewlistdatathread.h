@@ -98,6 +98,8 @@ public:
 
 private:
     void withoutDbRefreshDb(QStringList &m_allFontPathList);
+    // 添加符合条件的itemData
+    void appendItemData(const DFontPreviewItemData &itemData, const bool &isStartup);
 
 signals:
     //发出删除字体文件请求

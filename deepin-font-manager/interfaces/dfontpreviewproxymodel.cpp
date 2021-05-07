@@ -54,6 +54,11 @@ void DFontPreviewProxyModel::setFilterGroup(int filterGroup)
     invalidateFilter();
 }
 
+int DFontPreviewProxyModel::getFilterGroup()
+{
+    return m_filterGroup;
+}
+
 /*************************************************************************
  <Function>      setFilterFontNamePattern
  <Description>   根据输入内容设置比对的模板
