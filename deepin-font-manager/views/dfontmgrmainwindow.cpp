@@ -53,6 +53,10 @@
 #include <QContextMenuEvent>
 #include <QDragEnterEvent>
 #include <QDropEvent>
+#include <QFocusEvent>
+#include <QKeyEvent>
+#include <QMouseEvent>
+
 /*************************************************************************
  <Function>      DFontMgrMainWindow
  <Description>   构造函数

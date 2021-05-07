@@ -35,6 +35,8 @@
 #include <QApplication>
 #include <QMenu>
 #include <QMouseEvent>
+#include <QKeyEvent>
+#include <QFocusEvent>
 
 DWIDGET_USE_NAMESPACE
 

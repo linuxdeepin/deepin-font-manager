@@ -97,6 +97,8 @@ DCopyFilesManager::DCopyFilesManager(QObject *parent)
     : QObject(parent)
     , m_localPool(nullptr)
     , m_maxThreadCnt(static_cast<qint8>(QThread::idealThreadCount()))
+    , m_exportMaxThreadCnt(static_cast<qint8>(QThread::idealThreadCount()))
+    , m_installMaxThreadCnt(static_cast<qint8>(QThread::idealThreadCount()))
     , m_sortOrder(1)
 {
     // libdeepin-font-manger.so在安装时需要安装com.deepin.font-manager.gschema.xml
@@ -106,8 +108,6 @@ DCopyFilesManager::DCopyFilesManager(QObject *parent)
     m_useGlobalPool = false;
     m_expiryTimeout = -1;
 
-    m_exportMaxThreadCnt = static_cast<qint8>(QThread::idealThreadCount());
-    m_installMaxThreadCnt = static_cast<qint8>(QThread::idealThreadCount());
     if (!m_useGlobalPool) {
         m_localPool = new QThreadPool(this);
         m_localPool->setMaxThreadCount(QThread::idealThreadCount());

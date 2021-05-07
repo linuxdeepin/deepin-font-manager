@@ -125,7 +125,7 @@ struct DFontInfo {
 
     }
 
-    bool operator==(const DFontInfo &info)
+    bool operator==(const DFontInfo &info) const
     {
         return info.familyName == familyName && info.styleName == styleName && info.fullname == fullname && info.filePath == filePath;
     }

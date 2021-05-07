@@ -218,7 +218,7 @@ struct FontData {
         return static_cast<FontType>((fontState & FONTTYPE) >> 8);
     }
 
-    bool operator==(const FontData &info)
+    bool operator==(const FontData &info) const
     {
         return ((strFontName == info.strFontName) && (getFontType() == info.getFontType()));
     }
@@ -327,7 +327,7 @@ struct DFontPreviewItemData {
     {
     }
 
-    bool operator==(const DFontPreviewItemData &info)
+    bool operator==(const DFontPreviewItemData &info) const
     {
         if (info.fontData.strFontName.isEmpty())
             return (fontInfo == info.fontInfo);
