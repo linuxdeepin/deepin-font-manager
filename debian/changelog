@@ -1,3 +1,10 @@
+deepin-font-manager (5.8.0.28) stable; urgency=medium
+
+  * 双击字体文件，界面卡死.
+  * 适配Qt5.15部分头文件未包含.
+
+ -- chendu <chendu@uniontech.com>  Sat, 08 May 2021 16:22:35 +0800
+
 deepin-font-manager (0.1-1) unstable; urgency=medium
 
   * Initial Release.
