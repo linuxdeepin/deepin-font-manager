@@ -767,7 +767,8 @@ TEST_F(TestDFontPreviewListView, checkDisableFonts)
     listview->disableFonts();
     EXPECT_TRUE(listview->m_disableFontList.count() == 0);
 
-    s1.set(ADDR(DFMXmlWrapper, createFontConfigFile), stub_False);
+    Stub s2;
+    s2.set(ADDR(DFMXmlWrapper, createFontConfigFile), stub_False);
 
     listview->disableFont("first");
     listview->disableFonts();
@@ -782,7 +783,8 @@ TEST_F(TestDFontPreviewListView, checkEnableFonts)
     listview->enableFonts();
     EXPECT_TRUE(listview->m_enableFontList.count() == 0);
 
-    s1.set(ADDR(DFMXmlWrapper, createFontConfigFile), stub_False);
+    Stub s2;
+    s2.set(ADDR(DFMXmlWrapper, createFontConfigFile), stub_False);
 
     listview->enableFont("first");
     listview->enableFonts();

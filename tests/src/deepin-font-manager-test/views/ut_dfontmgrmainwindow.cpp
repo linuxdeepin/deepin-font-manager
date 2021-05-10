@@ -407,7 +407,8 @@ TEST_F(TestDFontMgrMainWindow, checkCheckFilesSpace)
 
     EXPECT_TRUE(fm->checkFilesSpace(list).isEmpty());
 
-    s1.set(ADDR(QFileInfo, size), stub_getSizeS);
+    Stub s2;
+    s2.set(ADDR(QFileInfo, size), stub_getSizeS);
     EXPECT_TRUE(fm->checkFilesSpace(list).contains("first"));
 }
 
@@ -549,7 +550,7 @@ TEST_F(TestDFontMgrMainWindow, checkDragEnterEvent)
     fm->dragEnterEvent(e);
 
     Stub s4;
-    s1.set(ADDR(QMimeData, urls), stub_urlssin);
+    s4.set(ADDR(QMimeData, urls), stub_urlssin);
     fm->dragEnterEvent(e);
 
     SAFE_DELETE_ELE(e)
@@ -900,11 +901,9 @@ TEST_F(TestDFontMgrMainWindow, checkHandleMenuEvent)
     fm->handleMenuEvent(actionList.at(3));
 
     s.set(ADDR(DFontMgrMainWindow, exportFont), stub_return);
-    s2.set(ADDR(DFontPreviewListView, syncTabStatus), stub_return);
     fm->handleMenuEvent(actionList.at(4));
 
     s.set(ADDR(DFontPreviewListView, onCollectBtnClicked), stub_return);
-    s2.set(ADDR(DFontPreviewListView, syncTabStatus), stub_return);
     fm->handleMenuEvent(actionList.at(5));
 
     s.set(ADDR(DFontMgrMainWindow, showFontFilePostion), stub_return);
@@ -945,14 +944,12 @@ TEST_F(TestDFontMgrMainWindow, checkInlineFunction)
 TEST_F(TestDFontMgrMainWindow, checkinitShortcutsReSize)
 {
     Stub s;
-    Stub s1;
-
     s.set(ADDR(QWidget, windowState), stub_windowStateMax);
-    s1.set(ADDR(QWidget, showNormal), stub_return);
-
+    s.set(ADDR(QWidget, showNormal), stub_return);
     emit fm->m_scWndReize->activated();
 
-    s.set(ADDR(QWidget, windowState), stub_windowStateNo);
+    Stub s1;
+    s1.set(ADDR(QWidget, windowState), stub_windowStateNo);
     s1.set(ADDR(QWidget, showMaximized), stub_return);
     emit fm->m_scWndReize->activated();
 }
