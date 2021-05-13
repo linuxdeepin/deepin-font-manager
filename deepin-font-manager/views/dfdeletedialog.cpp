@@ -337,6 +337,26 @@ void DFDeleteTTCDialog::onFontChanged(const QFont &font)
     resize(sizeHint());
 }
 
+bool DFDeleteTTCDialog::eventFilter(QObject *watched, QEvent *event)
+{
+    if (watched == applyAllCkb) {
+        if (event->type() == QEvent::KeyPress) {
+            QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+            if (keyEvent->key() == Qt::Key_Return || keyEvent->key() == Qt::Key_Enter) {
+                applyAllCkb->setChecked(!applyAllCkb->isChecked()); // 应用全部
+                m_bAapplyToAll = applyAllCkb->isChecked();
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    } else {
+        return DFontBaseDialog::eventFilter(watched, event);
+    }
+}
+
 void DFDeleteTTCDialog::keyPressEvent(QKeyEvent *event)
 {
     bool received = false;
@@ -375,6 +395,7 @@ void DFDeleteTTCDialog::initUI()
     messageTitle->setMinimumWidth(DEFAULT_WINDOW_W - 20);
 
     addContent(mainFrame);
+    applyAllCkb->installEventFilter(this);
 }
 
 void DFDeleteTTCDialog::initConnections()
@@ -473,6 +494,26 @@ bool DFDisableTTCDialog::getAapplyToAll()
     return m_bAapplyToAll;
 }
 
+bool DFDisableTTCDialog::eventFilter(QObject *watched, QEvent *event)
+{
+    if (watched == applyAllCkb) {
+        if (event->type() == QEvent::KeyPress) {
+            QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+            if (keyEvent->key() == Qt::Key_Return || keyEvent->key() == Qt::Key_Enter) {
+                applyAllCkb->setChecked(!applyAllCkb->isChecked()); // 应用全部
+                m_bAapplyToAll = applyAllCkb->isChecked();
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    } else {
+        return DFontBaseDialog::eventFilter(watched, event);
+    }
+}
+
 void DFDisableTTCDialog::onFontChanged(const QFont &font)
 {
     Q_UNUSED(font);
@@ -524,6 +565,7 @@ void DFDisableTTCDialog::initUI()
     messageTitle->setMinimumWidth(DEFAULT_WINDOW_W - 20);
 
     addContent(mainFrame);
+    applyAllCkb->installEventFilter(this);
 }
 
 void DFDisableTTCDialog::initConnections()

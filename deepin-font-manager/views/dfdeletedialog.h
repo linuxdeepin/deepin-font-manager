@@ -107,6 +107,7 @@ public:
     static constexpr int DEFAULT_WINDOW_H = 160;
     bool getDeleting();
     bool getAapplyToAll();
+    bool eventFilter(QObject *watched, QEvent *event) Q_DECL_OVERRIDE;
 
 public slots:
     //适应系统字体变化
@@ -156,6 +157,7 @@ public:
     static constexpr int DEFAULT_WINDOW_H = 160;
     bool getDeleting();
     bool getAapplyToAll();
+    bool eventFilter(QObject *watched, QEvent *event) Q_DECL_OVERRIDE;
 
 public slots:
     //适应系统字体变化
