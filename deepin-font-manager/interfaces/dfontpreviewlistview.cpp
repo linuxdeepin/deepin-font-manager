@@ -1814,9 +1814,9 @@ void DFontPreviewListView::onEnableBtnClicked(QModelIndexList &itemIndexes, int 
             message = QApplication::translate("MessageManager", "You cannot disable system fonts");
         }
     } else {
-        if (itemIndexes.size() == 1) {
+        if (count == 1) {
             message = QString("%1 %2").arg(fontName).arg(QApplication::translate("MessageManager", "deactivated"));
-        } else if (itemIndexes.size() > 1) {
+        } else if (count > 1) {
             message = QApplication::translate("MessageManager", "The fonts have been deactivated");
         }
     }

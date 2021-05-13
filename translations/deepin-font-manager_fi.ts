@@ -62,11 +62,11 @@
     <name>DFDisableTTCDialog</name>
     <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be enabled</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 on fonttiperhe, jos jatkat niin kaikki perheen fontit otetaan käyttöön</translation>
     </message>
     <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be disabled</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 on fonttiperhe, jos jatkat niin kaikki perheen fontit poistetaan käytöstä</translation>
     </message>
     <message>
         <source>Apply to all selected font families</source>

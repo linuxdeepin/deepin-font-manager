@@ -47,7 +47,7 @@
     </message>
     <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be deleted</source>
-        <translation>%1 є гарнітурою — якщо ви підтвердите виконання дії, усі у гарнітурі буде вилучено</translation>
+        <translation>%1 є гарнітурою — якщо ви підтвердите виконання дії, усі шрифти у гарнітурі буде вилучено</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -62,11 +62,11 @@
     <name>DFDisableTTCDialog</name>
     <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be enabled</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 є гарнітурою — якщо ви підтвердите виконання дії, усі шрифти у гарнітурі буде увімкено</translation>
     </message>
     <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be disabled</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 є гарнітурою — якщо ви підтвердите виконання дії, усі шрифти у гарнітурі буде вимкнено</translation>
     </message>
     <message>
         <source>Apply to all selected font families</source>

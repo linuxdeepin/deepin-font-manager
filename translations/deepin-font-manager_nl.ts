@@ -62,11 +62,11 @@
     <name>DFDisableTTCDialog</name>
     <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be enabled</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 is een lettertypefamilie. Als je doorgaat, worden alle bijbehorende lettertypen ingeschakeld.</translation>
     </message>
     <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be disabled</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 is een lettertypefamilie. Als je doorgaat, worden alle bijbehorende lettertypen uitgeschakeld.</translation>
     </message>
     <message>
         <source>Apply to all selected font families</source>

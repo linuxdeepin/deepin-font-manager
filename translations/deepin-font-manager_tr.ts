@@ -43,11 +43,11 @@
     <name>DFDeleteTTCDialog</name>
     <message>
         <source>Apply to all selected font families</source>
-        <translation type="unfinished"></translation>
+        <translation>Tüm seçili yazı tipi ailelerine uygula</translation>
     </message>
     <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be deleted</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 bir yazı tipi ailesi, devam ederseniz, içindeki tüm yazı tipleri silinecek</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -62,15 +62,15 @@
     <name>DFDisableTTCDialog</name>
     <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be enabled</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 bir yazı tipi ailesi, devam ederseniz, içindeki tüm yazı tipleri etkinleştirilecek</translation>
     </message>
     <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be disabled</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 bir yazı tipi ailesi, devam ederseniz, içindeki tüm yazı tipleri devre dışı bırakılacak</translation>
     </message>
     <message>
         <source>Apply to all selected font families</source>
-        <translation type="unfinished"></translation>
+        <translation>Tüm seçili yazı tipi ailelerine uygula</translation>
     </message>
     <message>
         <source>Cancel</source>
