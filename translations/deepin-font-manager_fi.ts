@@ -5,7 +5,7 @@
     <name>Category</name>
     <message>
         <source>All Fonts</source>
-        <translation>Kaikki kirjasimet</translation>
+        <translation>Kaikki fontit</translation>
     </message>
     <message>
         <source>System</source>
@@ -36,6 +36,7 @@
     <name>DFDeleteDialog</name>
     <message>
         <source>Cancel</source>
+        <comment>button</comment>
         <translation>Peruuta</translation>
     </message>
 </context>
@@ -51,7 +52,7 @@
     </message>
     <message>
         <source>System Font</source>
-        <translation>Järjestelmän kirjasin</translation>
+        <translation>Järjestelmän fontti</translation>
     </message>
 </context>
 <context>
@@ -82,7 +83,7 @@
     </message>
     <message>
         <source>Fonts</source>
-        <translation>Kirjasimet</translation>
+        <translation>Fontit</translation>
     </message>
     <message>
         <source>Ctrl+=</source>
@@ -98,11 +99,11 @@
     </message>
     <message>
         <source>%1 font installed</source>
-        <translation>%1 kirjasinta asennettu</translation>
+        <translation>%1 fontti asennettu</translation>
     </message>
     <message>
         <source>%1 fonts installed</source>
-        <translation>%1 kirjasinta asennettu</translation>
+        <translation>%1 fonttia asennettu</translation>
     </message>
     <message>
         <source>Alt+M</source>
@@ -124,30 +125,31 @@
     <name>DeleteConfirmDailog</name>
     <message>
         <source>This font will not be available to applications</source>
-        <translation>Tätä kirjasinta ei voi käyttää sovelluksissa</translation>
+        <translation>Tätä fonttia ei voi käyttää sovelluksissa</translation>
     </message>
     <message>
         <source>These fonts will not be available to applications</source>
-        <translation>Nämä kirjasimet eivät ole sovellusten käytettävissä</translation>
+        <translation>Nämä fontit eivät ole sovellusten käytettävissä</translation>
     </message>
     <message>
         <source>The other %1 system fonts cannot be deleted</source>
-        <translation>Muita %1 järjestelmän kirjasimia ei voi poistaa</translation>
+        <translation>Muut %1 järjestelmän fonttia ei voi poistaa</translation>
     </message>
     <message>
         <source>The font &quot;%1&quot; in use cannot be deleted</source>
-        <translation>Käytössä olevaa kirjasinta &quot;%1&quot; ei voi poistaa</translation>
+        <translation>Käytössä olevaa fonttia &quot;%1&quot; ei voi poistaa</translation>
     </message>
     <message>
         <source>The other %1 system fonts and the font &quot;%2&quot; in use cannot be deleted</source>
-        <translation>Muita %1 järjestelmän tai käytössä olevaa kirjasinta &quot;%2&quot; ei voi poistaa</translation>
+        <translation>Muut %1 järjestelmän tai käytössä olevaa fonttia &quot;%2&quot; ei voi poistaa</translation>
     </message>
     <message>
         <source>Are you sure you want to delete %1 font(s)?</source>
-        <translation>Haluatko varmasti poistaa %1 kirjasinta?</translation>
+        <translation>Haluatko varmasti poistaa %1 fonttia?</translation>
     </message>
     <message>
         <source>Delete</source>
+        <comment>button</comment>
         <translation>Poista</translation>
     </message>
 </context>
@@ -155,26 +157,28 @@
     <name>Dfuninstalldialog</name>
     <message>
         <source>Deleting fonts, please wait...</source>
-        <translation>Poistetaan kirjasimia, odota...</translation>
+        <translation>Poistetaan fontteja, odota...</translation>
     </message>
 </context>
 <context>
     <name>ExceptionWindow</name>
     <message>
         <source>Font Verification</source>
-        <translation>Kirjasimen varmennus</translation>
+        <translation>Fontin varmennus</translation>
+    </message>
+    <message>
+        <source>No fonts to be installed</source>
+        <translation>Ei asennettavia fontteja</translation>
     </message>
     <message>
         <source>Exit</source>
+        <comment>button</comment>
         <translation>Poistu</translation>
     </message>
     <message>
         <source>Continue</source>
+        <comment>button</comment>
         <translation>Jatka</translation>
-    </message>
-    <message>
-        <source>No fonts to be installed</source>
-        <translation>Ei asennettavia kirjasimia</translation>
     </message>
 </context>
 <context>
@@ -227,38 +231,38 @@
     <name>Main</name>
     <message>
         <source>Font Manager</source>
-        <translation>Kirjasimet</translation>
+        <translation>Fontit</translation>
     </message>
     <message>
         <source>Font Manager helps users install and manage fonts.</source>
-        <translation>Kirjasimet auttaa asentamaan ja hallitsemaan kirjasimia.</translation>
+        <translation>Fontit auttaa hallitsemaan ja asentamaan fontteja.</translation>
     </message>
     <message>
         <source>Loading fonts, please wait...</source>
-        <translation>Ladataan kirjasimia, odota...</translation>
+        <translation>Ladataan fontteja, odota...</translation>
     </message>
     <message>
         <source>The font exported to your desktop</source>
-        <translation>Tämä kirjasin on viety työpöydällesi</translation>
+        <translation>Tämä fontti on viety työpöydällesi</translation>
     </message>
     <message>
         <source>%1 fonts exported to your desktop</source>
-        <translation>%1 kirjasinta on viety työpöydällesi</translation>
+        <translation>%1 fontit on viety työpöydällesi</translation>
     </message>
     <message>
         <source>Failed to export 1 font. There is not enough disk space.</source>
-        <translation>1 kirjasimen vieminen epäonnistui. Levytila ei riitä.</translation>
+        <translation>1 fontin vieminen epäonnistui. Levytila ei riitä.</translation>
     </message>
     <message>
         <source>Failed to export %1 fonts. There is not enough disk space.</source>
-        <translation>1% kirjasimen vieminen epäonnistui. Levytila ei riitä.</translation>
+        <translation>1% fontin vieminen epäonnistui. Levytila ei riitä.</translation>
     </message>
 </context>
 <context>
     <name>Menu</name>
     <message>
         <source>Add font</source>
-        <translation>Lisää kirjasin</translation>
+        <translation>Lisää fontti</translation>
     </message>
     <message>
         <source>Enable</source>
@@ -301,7 +305,7 @@
     </message>
     <message>
         <source>The fonts have been deactivated</source>
-        <translation>Nämä kirjasimet on poistettu käytöstä</translation>
+        <translation>Nämä fonttit on poistettu käytöstä</translation>
     </message>
     <message>
         <source>%1 is in use, so you cannot disable it</source>
@@ -309,18 +313,18 @@
     </message>
     <message>
         <source>You cannot disable system fonts and the fonts in use</source>
-        <translation>Järjestelmän tai käytössä olevia kirjasimia ei voi poistaa</translation>
+        <translation>Käytössä olevaa tai järjestelmän fonttia ei voi poistaa</translation>
     </message>
     <message>
         <source>You cannot disable system fonts</source>
-        <translation>Järjestelmän kirjasimia ei voi poistaa käytöstä</translation>
+        <translation>Fontteja ei voi poistaa järjestelmän käytöstä</translation>
     </message>
 </context>
 <context>
     <name>NormalInstallWindow</name>
     <message>
         <source>Install Font</source>
-        <translation>Asenna kirjasin</translation>
+        <translation>Asenna fontti</translation>
     </message>
     <message>
         <source>Verifying...</source>
@@ -347,7 +351,7 @@
     </message>
     <message>
         <source>Install Font</source>
-        <translation>Asenna kirjasin</translation>
+        <translation>Asenna fontti</translation>
     </message>
 </context>
 <context>
@@ -362,7 +366,7 @@
     </message>
     <message>
         <source>No fonts</source>
-        <translation>Ei kirjasimia</translation>
+        <translation>Ei fontteja</translation>
     </message>
 </context>
 <context>
@@ -389,7 +393,7 @@
     </message>
     <message>
         <source>Add font</source>
-        <translation>Lisää kirjasin</translation>
+        <translation>Lisää fontti</translation>
     </message>
     <message>
         <source>Favorite</source>
@@ -401,7 +405,7 @@
     </message>
     <message>
         <source>Font info</source>
-        <translation>Kirjasimen tiedot</translation>
+        <translation>Tiedot fontista</translation>
     </message>
 </context>
 <context>

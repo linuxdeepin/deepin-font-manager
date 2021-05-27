@@ -36,6 +36,7 @@
     <name>DFDeleteDialog</name>
     <message>
         <source>Cancel</source>
+        <comment>button</comment>
         <translation>Batal</translation>
     </message>
 </context>
@@ -148,6 +149,7 @@
     </message>
     <message>
         <source>Delete</source>
+        <comment>button</comment>
         <translation>Padam</translation>
     </message>
 </context>
@@ -165,16 +167,18 @@
         <translation>Pengesahan Fon</translation>
     </message>
     <message>
+        <source>No fonts to be installed</source>
+        <translation>Tiada fon dipasang</translation>
+    </message>
+    <message>
         <source>Exit</source>
+        <comment>button</comment>
         <translation>Keluar</translation>
     </message>
     <message>
         <source>Continue</source>
+        <comment>button</comment>
         <translation>Teruskan</translation>
-    </message>
-    <message>
-        <source>No fonts to be installed</source>
-        <translation>Tiada fon dipasang</translation>
     </message>
 </context>
 <context>

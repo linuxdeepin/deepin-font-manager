@@ -36,6 +36,7 @@
     <name>DFDeleteDialog</name>
     <message>
         <source>Cancel</source>
+        <comment>button</comment>
         <translation>Hủy</translation>
     </message>
 </context>
@@ -148,6 +149,7 @@
     </message>
     <message>
         <source>Delete</source>
+        <comment>button</comment>
         <translation>Xóa</translation>
     </message>
 </context>
@@ -165,16 +167,18 @@
         <translation>Xác minh phông chữ</translation>
     </message>
     <message>
+        <source>No fonts to be installed</source>
+        <translation>Không có phông nào được cài đặt</translation>
+    </message>
+    <message>
         <source>Exit</source>
+        <comment>button</comment>
         <translation>Thoát</translation>
     </message>
     <message>
         <source>Continue</source>
+        <comment>button</comment>
         <translation>Tiếp tục</translation>
-    </message>
-    <message>
-        <source>No fonts to be installed</source>
-        <translation>Không có phông nào được cài đặt</translation>
     </message>
 </context>
 <context>

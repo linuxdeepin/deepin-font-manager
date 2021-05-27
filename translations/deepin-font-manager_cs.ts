@@ -36,6 +36,7 @@
     <name>DFDeleteDialog</name>
     <message>
         <source>Cancel</source>
+        <comment>button</comment>
         <translation>Zrušit</translation>
     </message>
 </context>
@@ -148,6 +149,7 @@
     </message>
     <message>
         <source>Delete</source>
+        <comment>button</comment>
         <translation>Smazat</translation>
     </message>
 </context>
@@ -165,16 +167,18 @@
         <translation>Ověření písma</translation>
     </message>
     <message>
+        <source>No fonts to be installed</source>
+        <translation>Žádná písma k instalaci</translation>
+    </message>
+    <message>
         <source>Exit</source>
+        <comment>button</comment>
         <translation>Ukončit</translation>
     </message>
     <message>
         <source>Continue</source>
+        <comment>button</comment>
         <translation>Pokračovat</translation>
-    </message>
-    <message>
-        <source>No fonts to be installed</source>
-        <translation>Žádná písma k instalaci</translation>
     </message>
 </context>
 <context>

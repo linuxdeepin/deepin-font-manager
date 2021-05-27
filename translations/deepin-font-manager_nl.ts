@@ -36,6 +36,7 @@
     <name>DFDeleteDialog</name>
     <message>
         <source>Cancel</source>
+        <comment>button</comment>
         <translation>Annuleren</translation>
     </message>
 </context>
@@ -148,6 +149,7 @@
     </message>
     <message>
         <source>Delete</source>
+        <comment>button</comment>
         <translation>Verwijderen</translation>
     </message>
 </context>
@@ -165,16 +167,18 @@
         <translation>Lettertypeverificatie</translation>
     </message>
     <message>
+        <source>No fonts to be installed</source>
+        <translation>Er zijn geen te installeren lettertypen</translation>
+    </message>
+    <message>
         <source>Exit</source>
+        <comment>button</comment>
         <translation>Afsluiten</translation>
     </message>
     <message>
         <source>Continue</source>
+        <comment>button</comment>
         <translation>Doorgaan</translation>
-    </message>
-    <message>
-        <source>No fonts to be installed</source>
-        <translation>Er zijn geen te installeren lettertypen</translation>
     </message>
 </context>
 <context>

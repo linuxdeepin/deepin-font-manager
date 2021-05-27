@@ -36,6 +36,7 @@
     <name>DFDeleteDialog</name>
     <message>
         <source>Cancel</source>
+        <comment>button</comment>
         <translation>रद्द करें</translation>
     </message>
 </context>
@@ -148,6 +149,7 @@
     </message>
     <message>
         <source>Delete</source>
+        <comment>button</comment>
         <translation>हटाएँ</translation>
     </message>
 </context>
@@ -165,16 +167,18 @@
         <translation>मुद्रलिपि प्रमाणीकरण</translation>
     </message>
     <message>
+        <source>No fonts to be installed</source>
+        <translation>कोई मुद्रलिपि इंस्टॉल नहीं होगी</translation>
+    </message>
+    <message>
         <source>Exit</source>
+        <comment>button</comment>
         <translation>बंद करें</translation>
     </message>
     <message>
         <source>Continue</source>
+        <comment>button</comment>
         <translation>जारी रखें</translation>
-    </message>
-    <message>
-        <source>No fonts to be installed</source>
-        <translation>कोई मुद्रलिपि इंस्टॉल नहीं होगी</translation>
     </message>
 </context>
 <context>

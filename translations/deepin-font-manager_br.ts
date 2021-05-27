@@ -36,6 +36,7 @@
     <name>DFDeleteDialog</name>
     <message>
         <source>Cancel</source>
+        <comment>button</comment>
         <translation>Nullañ</translation>
     </message>
 </context>
@@ -148,6 +149,7 @@
     </message>
     <message>
         <source>Delete</source>
+        <comment>button</comment>
         <translation>Dilemel</translation>
     </message>
 </context>
@@ -165,16 +167,18 @@
         <translation>Gwiriañ ar skriturioù</translation>
     </message>
     <message>
+        <source>No fonts to be installed</source>
+        <translation>Skritur ebet da staliañ</translation>
+    </message>
+    <message>
         <source>Exit</source>
+        <comment>button</comment>
         <translation>Kuitaat</translation>
     </message>
     <message>
         <source>Continue</source>
+        <comment>button</comment>
         <translation>Kenderc&apos;hel</translation>
-    </message>
-    <message>
-        <source>No fonts to be installed</source>
-        <translation>Skritur ebet da staliañ</translation>
     </message>
 </context>
 <context>

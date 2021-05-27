@@ -36,6 +36,7 @@
     <name>DFDeleteDialog</name>
     <message>
         <source>Cancel</source>
+        <comment>button</comment>
         <translation>İmtina</translation>
     </message>
 </context>
@@ -148,6 +149,7 @@
     </message>
     <message>
         <source>Delete</source>
+        <comment>button</comment>
         <translation>Silmək</translation>
     </message>
 </context>
@@ -165,16 +167,18 @@
         <translation>Şriftin doğrulanması</translation>
     </message>
     <message>
+        <source>No fonts to be installed</source>
+        <translation>Qurulacaq şriftlər yoxdur</translation>
+    </message>
+    <message>
         <source>Exit</source>
+        <comment>button</comment>
         <translation>Çıxış</translation>
     </message>
     <message>
         <source>Continue</source>
+        <comment>button</comment>
         <translation>Davam etmək</translation>
-    </message>
-    <message>
-        <source>No fonts to be installed</source>
-        <translation>Qurulacaq şriftlər yoxdur</translation>
     </message>
 </context>
 <context>

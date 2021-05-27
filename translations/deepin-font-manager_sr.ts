@@ -36,6 +36,7 @@
     <name>DFDeleteDialog</name>
     <message>
         <source>Cancel</source>
+        <comment>button</comment>
         <translation>Откажи</translation>
     </message>
 </context>
@@ -148,6 +149,7 @@
     </message>
     <message>
         <source>Delete</source>
+        <comment>button</comment>
         <translation>Обриши</translation>
     </message>
 </context>
@@ -165,16 +167,18 @@
         <translation>Провера фонта</translation>
     </message>
     <message>
+        <source>No fonts to be installed</source>
+        <translation>Нема фонтова за инсталацију</translation>
+    </message>
+    <message>
         <source>Exit</source>
+        <comment>button</comment>
         <translation>Изађи</translation>
     </message>
     <message>
         <source>Continue</source>
+        <comment>button</comment>
         <translation>Настави</translation>
-    </message>
-    <message>
-        <source>No fonts to be installed</source>
-        <translation>Нема фонтова за инсталацију</translation>
     </message>
 </context>
 <context>

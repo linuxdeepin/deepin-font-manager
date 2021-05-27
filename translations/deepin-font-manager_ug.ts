@@ -36,6 +36,7 @@
     <name>DFDeleteDialog</name>
     <message>
         <source>Cancel</source>
+        <comment>button</comment>
         <translation>بىكار قىلىش</translation>
     </message>
 </context>
@@ -148,6 +149,7 @@
     </message>
     <message>
         <source>Delete</source>
+        <comment>button</comment>
         <translation>ئۆچۈرۈش</translation>
     </message>
 </context>
@@ -165,16 +167,18 @@
         <translation>خەت شەكلىنى دەلىللەش</translation>
     </message>
     <message>
+        <source>No fonts to be installed</source>
+        <translation>قاچىلىغىلى بولىدىغان خەت شەكلى يوق</translation>
+    </message>
+    <message>
         <source>Exit</source>
+        <comment>button</comment>
         <translation>چېكىنىش</translation>
     </message>
     <message>
         <source>Continue</source>
+        <comment>button</comment>
         <translation>داۋاملاشتۇرۇش</translation>
-    </message>
-    <message>
-        <source>No fonts to be installed</source>
-        <translation>قاچىلىغىلى بولىدىغان خەت شەكلى يوق</translation>
     </message>
 </context>
 <context>

@@ -36,7 +36,8 @@
     <name>DFDeleteDialog</name>
     <message>
         <source>Cancel</source>
-        <translation>取消</translation>
+        <comment>button</comment>
+        <translation>取 消</translation>
     </message>
 </context>
 <context>
@@ -148,7 +149,8 @@
     </message>
     <message>
         <source>Delete</source>
-        <translation>删除</translation>
+        <comment>button</comment>
+        <translation>删 除</translation>
     </message>
 </context>
 <context>
@@ -165,16 +167,18 @@
         <translation>字体验证</translation>
     </message>
     <message>
+        <source>No fonts to be installed</source>
+        <translation>无可用安装字体</translation>
+    </message>
+    <message>
         <source>Exit</source>
-        <translation>退出</translation>
+        <comment>button</comment>
+        <translation>退 出</translation>
     </message>
     <message>
         <source>Continue</source>
-        <translation>继续</translation>
-    </message>
-    <message>
-        <source>No fonts to be installed</source>
-        <translation>无可用安装字体</translation>
+        <comment>button</comment>
+        <translation>继 续</translation>
     </message>
 </context>
 <context>

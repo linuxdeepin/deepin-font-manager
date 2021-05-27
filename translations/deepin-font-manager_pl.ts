@@ -36,6 +36,7 @@
     <name>DFDeleteDialog</name>
     <message>
         <source>Cancel</source>
+        <comment>button</comment>
         <translation>Anuluj</translation>
     </message>
 </context>
@@ -148,6 +149,7 @@
     </message>
     <message>
         <source>Delete</source>
+        <comment>button</comment>
         <translation>Usuń</translation>
     </message>
 </context>
@@ -165,16 +167,18 @@
         <translation>Weryfikacja czcionki</translation>
     </message>
     <message>
+        <source>No fonts to be installed</source>
+        <translation>Brak czcionek do zainstalowania</translation>
+    </message>
+    <message>
         <source>Exit</source>
+        <comment>button</comment>
         <translation>Wyjście</translation>
     </message>
     <message>
         <source>Continue</source>
+        <comment>button</comment>
         <translation>Kontynuuj</translation>
-    </message>
-    <message>
-        <source>No fonts to be installed</source>
-        <translation>Brak czcionek do zainstalowania</translation>
     </message>
 </context>
 <context>

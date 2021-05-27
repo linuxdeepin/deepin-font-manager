@@ -36,6 +36,7 @@
     <name>DFDeleteDialog</name>
     <message>
         <source>Cancel</source>
+        <comment>button</comment>
         <translation>Скасувати</translation>
     </message>
 </context>
@@ -148,6 +149,7 @@
     </message>
     <message>
         <source>Delete</source>
+        <comment>button</comment>
         <translation>Вилучення</translation>
     </message>
 </context>
@@ -165,16 +167,18 @@
         <translation>Перевірка шрифту</translation>
     </message>
     <message>
+        <source>No fonts to be installed</source>
+        <translation>Не буде встановлено жодного шрифту</translation>
+    </message>
+    <message>
         <source>Exit</source>
+        <comment>button</comment>
         <translation>Вийти</translation>
     </message>
     <message>
         <source>Continue</source>
+        <comment>button</comment>
         <translation>Продовжити</translation>
-    </message>
-    <message>
-        <source>No fonts to be installed</source>
-        <translation>Не буде встановлено жодного шрифту</translation>
     </message>
 </context>
 <context>

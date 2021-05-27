@@ -36,6 +36,7 @@
     <name>DFDeleteDialog</name>
     <message>
         <source>Cancel</source>
+        <comment>button</comment>
         <translation>Annuller</translation>
     </message>
 </context>
@@ -148,6 +149,7 @@
     </message>
     <message>
         <source>Delete</source>
+        <comment>button</comment>
         <translation>Slet</translation>
     </message>
 </context>
@@ -165,16 +167,18 @@
         <translation>Verificering af skrifttype</translation>
     </message>
     <message>
+        <source>No fonts to be installed</source>
+        <translation>Ingen skrifttyper at installere</translation>
+    </message>
+    <message>
         <source>Exit</source>
+        <comment>button</comment>
         <translation>Afslut</translation>
     </message>
     <message>
         <source>Continue</source>
+        <comment>button</comment>
         <translation>Fortsæt</translation>
-    </message>
-    <message>
-        <source>No fonts to be installed</source>
-        <translation>Ingen skrifttyper at installere</translation>
     </message>
 </context>
 <context>

@@ -36,6 +36,7 @@
     <name>DFDeleteDialog</name>
     <message>
         <source>Cancel</source>
+        <comment>button</comment>
         <translation>Cancelar</translation>
     </message>
 </context>
@@ -148,6 +149,7 @@
     </message>
     <message>
         <source>Delete</source>
+        <comment>button</comment>
         <translation>Borrar</translation>
     </message>
 </context>
@@ -165,16 +167,18 @@
         <translation>Verificación de fuente</translation>
     </message>
     <message>
+        <source>No fonts to be installed</source>
+        <translation>No hay fuentes para instalar</translation>
+    </message>
+    <message>
         <source>Exit</source>
+        <comment>button</comment>
         <translation>Salir</translation>
     </message>
     <message>
         <source>Continue</source>
+        <comment>button</comment>
         <translation>Continuar</translation>
-    </message>
-    <message>
-        <source>No fonts to be installed</source>
-        <translation>No hay fuentes para instalar</translation>
     </message>
 </context>
 <context>

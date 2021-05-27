@@ -36,6 +36,7 @@
     <name>DFDeleteDialog</name>
     <message>
         <source>Cancel</source>
+        <comment>button</comment>
         <translation>Prekini</translation>
     </message>
 </context>
@@ -148,6 +149,7 @@
     </message>
     <message>
         <source>Delete</source>
+        <comment>button</comment>
         <translation>Izbriši</translation>
     </message>
 </context>
@@ -165,16 +167,18 @@
         <translation>Preverjanje pisav</translation>
     </message>
     <message>
+        <source>No fonts to be installed</source>
+        <translation>Nobena pisava ne bo namščena</translation>
+    </message>
+    <message>
         <source>Exit</source>
+        <comment>button</comment>
         <translation>Izhod</translation>
     </message>
     <message>
         <source>Continue</source>
+        <comment>button</comment>
         <translation>Nadaljevanje</translation>
-    </message>
-    <message>
-        <source>No fonts to be installed</source>
-        <translation>Nobena pisava ne bo namščena</translation>
     </message>
 </context>
 <context>

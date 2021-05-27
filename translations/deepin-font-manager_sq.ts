@@ -36,6 +36,7 @@
     <name>DFDeleteDialog</name>
     <message>
         <source>Cancel</source>
+        <comment>button</comment>
         <translation>Anuloje</translation>
     </message>
 </context>
@@ -148,6 +149,7 @@
     </message>
     <message>
         <source>Delete</source>
+        <comment>button</comment>
         <translation>Fshije</translation>
     </message>
 </context>
@@ -165,16 +167,18 @@
         <translation>Verifikim Shkronjash</translation>
     </message>
     <message>
+        <source>No fonts to be installed</source>
+        <translation>S’ka shkronja për instalim</translation>
+    </message>
+    <message>
         <source>Exit</source>
+        <comment>button</comment>
         <translation>Dalje</translation>
     </message>
     <message>
         <source>Continue</source>
+        <comment>button</comment>
         <translation>Vazhdo</translation>
-    </message>
-    <message>
-        <source>No fonts to be installed</source>
-        <translation>S’ka shkronja për instalim</translation>
     </message>
 </context>
 <context>

@@ -247,7 +247,7 @@ int DFInstallErrorDialog::getErrorFontSelectableCount()
     for (int i = 0; i < sourceModel->rowCount(); i++) {
         QModelIndex index = sourceModel->index(i, 0);
         DFInstallErrorItemModel itemModel = qvariant_cast<DFInstallErrorItemModel>(
-            sourceModel->data(index));
+                                                sourceModel->data(index));
         if (itemModel.bSelectable) {
             ++checkedCount;
         }
@@ -296,7 +296,7 @@ void DFInstallErrorDialog::initInstallErrorFontViews()
     //    m_quitInstallBtn->setFixedSize(204, btnHeight);
     m_quitInstallBtn->setMinimumSize(204, btnHeight);
     m_quitInstallBtn->setMaximumSize(204, btnHeight + 5);
-    m_quitInstallBtn->setText(DApplication::translate("ExceptionWindow", "Exit"));
+    m_quitInstallBtn->setText(DApplication::translate("ExceptionWindow", "Exit", "button"));
 
     m_continueInstallBtn = new DSuggestButton;
     m_continueInstallBtn->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -305,7 +305,7 @@ void DFInstallErrorDialog::initInstallErrorFontViews()
     m_continueInstallBtn->setMinimumSize(204, btnHeight);
     m_continueInstallBtn->setMaximumSize(204, btnHeight + 5);
     m_continueInstallBtn->setFont(btnFont);
-    m_continueInstallBtn->setText(DApplication::translate("ExceptionWindow", "Continue"));
+    m_continueInstallBtn->setText(DApplication::translate("ExceptionWindow", "Continue", "button"));
 
     btnGroup->addButton(m_quitInstallBtn, 0);
     btnGroup->addButton(m_continueInstallBtn, 1);

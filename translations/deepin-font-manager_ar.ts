@@ -36,6 +36,7 @@
     <name>DFDeleteDialog</name>
     <message>
         <source>Cancel</source>
+        <comment>button</comment>
         <translation>إلغاء</translation>
     </message>
 </context>
@@ -148,6 +149,7 @@
     </message>
     <message>
         <source>Delete</source>
+        <comment>button</comment>
         <translation>حذف</translation>
     </message>
 </context>
@@ -165,16 +167,18 @@
         <translation>التحقق من الخط</translation>
     </message>
     <message>
+        <source>No fonts to be installed</source>
+        <translation>لا توجد خطوط ليتم تثبيتها</translation>
+    </message>
+    <message>
         <source>Exit</source>
+        <comment>button</comment>
         <translation>خروج</translation>
     </message>
     <message>
         <source>Continue</source>
+        <comment>button</comment>
         <translation>تأكيد</translation>
-    </message>
-    <message>
-        <source>No fonts to be installed</source>
-        <translation>لا توجد خطوط ليتم تثبيتها</translation>
     </message>
 </context>
 <context>
