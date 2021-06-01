@@ -165,14 +165,6 @@ TEST_F(TestDFQuickInstallWindow, checkOnInstallBtnClicked)
     EXPECT_TRUE(spy.count() == 1);
 }
 
-////installFont exec之后会崩溃
-//TEST_F(TestDFQuickInstallWindow, checkInstallFont)
-//{
-
-//    QStringList list;
-//    list << "a";
-//    fqi->installFont(list);
-//}
 
 TEST_F(TestDFQuickInstallWindow, checkOnFontInstallFinishedFirst)
 {

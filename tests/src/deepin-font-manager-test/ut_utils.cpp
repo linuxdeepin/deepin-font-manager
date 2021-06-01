@@ -20,9 +20,11 @@
 */
 
 #include "utils.h"
+#include <singlefontapplication.h>
 
 #include <QSize>
 #include <QPixmap>
+#include <QRawFont>
 
 #include <gtest/gtest.h>
 #include "../third-party/stub/stub.h"
@@ -43,6 +45,7 @@ protected:
     }
 
     Utils *fm;
+
 };
 }
 
@@ -69,23 +72,18 @@ TEST_F(TestUtils, checkgetConfigPath)
 
 TEST_F(TestUtils, checkrenderSVG_001)
 {
+
     ASSERT_EQ(fm->renderSVG("://ok.svg", QSize(32, 32)).isNull(), false);
 }
 
-//TEST_F(TestUtils, checkrenderSVG_002)
-//{
-//    ASSERT_EQ(fm->renderSVG("://ok.svg", QSize(32, 32)).isNull(), false);
-//}
+
+
 
 TEST_F(TestUtils, checkconvertToPreviewString)
 {
     ASSERT_EQ(fm->convertToPreviewString("", "hello").toStdString(), "hello");
-}
 
-//TEST_F(TestUtils, checkconvertToPreviewString_002)
-//{
-//    ASSERT_EQ(fm->convertToPreviewString("", "hello").toStdString(), "hello");
-//}
+}
 
 
 

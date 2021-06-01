@@ -66,12 +66,7 @@ public:
     }
     virtual void TearDown()
     {
-//        if (dfm != nullptr) {
-//        delete dfm;
-//            dfm = nullptr;
-//        }
 
-//        returnList.clear();
     }
 public:
     DFontInfoManager *dfm = nullptr;
@@ -168,18 +163,9 @@ TEST_F(TestDFontInfoManager, checkGetFontPath)
     file = dfm->getFontPath();
 
     EXPECT_FALSE(file.isNull());
-//    EXPECT_TRUE(list.count() != 0);
 
 }
 
-//TEST_F(TestDFontInfoManager, checkGetFonts)
-//{
-//    //返回值不稳定无法判断
-//    EXPECT_TRUE(dfm->getFonts(DFontInfoManager::All).count() != 0);
-//    EXPECT_TRUE(dfm->getFonts(DFontInfoManager::Chinese).count() != 0);
-//    EXPECT_TRUE(dfm->getFonts(DFontInfoManager::MonoSpace).count() != 0);
-
-//}
 
 
 TEST_F(TestDFontInfo, equalsign_is_normal)
@@ -191,8 +177,6 @@ TEST_F(TestDFontInfo, equalsign_is_normal)
     EXPECT_EQ("psname_one", fontinfor3.psname);
     EXPECT_EQ("trademark_one", fontinfor3.trademark);
     EXPECT_EQ("fullname_one", fontinfor3.fullname);
-
-//    EXPECT_EQ(true, fontInfo == fontinfo2);
 }
 
 TEST_F(TestDFontInfo, tostring_is_normal)
@@ -288,33 +272,6 @@ TEST_F(TestDFontInfoManager, checkGetFontFamilyStyle)
     EXPECT_TRUE(list.contains("DejaVu Sans"));
 }
 
-////getFontInfo 函数出错 获取系统字体信息时,安装状态被检测为未安装 20200813
-//TEST_F(TestDFontInfoManager, getSystemFontInfo_Is_normal)
-//{
-//    //系统字体应该为已安装,执行函数得到的结果已安装为false,出现错误.
-//    fontinfo = dfm->getFontInfo("/usr/share/fonts/truetype/noto/NotoSansTamil-Bold.ttf");
-//    EXPECT_EQ(false, fontinfo.isError);
-//    EXPECT_EQ("TrueType", fontinfo.type);
-//    EXPECT_EQ("Bold", fontinfo.styleName);
-////    EXPECT_EQ(true, fontinfo.isInstalled);
-//}
-
-////这个测试不稳定,取决于这个字体有没有被安装过,以后需要进行修改***
-//TEST_F(TestDFontInfoManager, getInstalledFontInfo_is_normal)
-//{
-//    fontinfo = dfm->getFontInfo("/usr/share/fonts/fonts-cesi/CESI_FS_GB2312.TTF");
-//    EXPECT_EQ(false, fontinfo.isError);
-//    EXPECT_EQ("TrueType", fontinfo.type);
-////    EXPECT_EQ(true, fontinfo.isInstalled);
-//}
-
-
-//TEST_F(TestDFontInfoManager, getChineseFontInfo_is_normal)
-//{
-//    fontinfo = dfm->getFontInfo("/usr/share/fonts/fonts-cesi/CESI_KT_GB2312.TTF");
-//    EXPECT_EQ(false, fontinfo.isError);
-//    EXPECT_EQ("TrueType", fontinfo.type);
-//}
 
 //TODO 第三方库代码暂时不知道怎么打桩,返回值无法确定,无法断言
 TEST_F(TestDFontInfoManager, checkgetFonts)
@@ -355,46 +312,6 @@ TEST_F(TestDFontInfoManager, getAllMonoFontCount_is_normal)
     EXPECT_EQ(lines.count() - 1, count);
 }
 
-////getInstFontPath函数正常未安装字体检测
-//TEST_F(TestDFontInfoManager, getInstallFontPath_normalfont_is_normal)
-//{
-//    originPath = QDir::homePath() + "/Desktop/1048字体/Addictype-Regular.otf";
-//    QFileInfo dir(originPath);
-//    target = sysDir + "/asd/" + dir.fileName();
-
-//    EXPECT_EQ(target, dfm->getInstFontPath(originPath, "asd"));
-//}
-//getInstFontPath函数系统字体字体检测
-//TEST_F(TestDFontInfoManager, getInstallFontPath_systemfont_is_normal)
-//{
-//    originPath = "/usr/share/fonts/truetype/noto/NotoSansLinearB-Regular.ttf";
-//    QFileInfo dir(originPath);
-//    target = sysDir + "/asd/" + dir.fileName();
-
-//    EXPECT_EQ(originPath, dfm->getInstFontPath(originPath, "asd"));
-//}
-
-//getInstFontPath函数已安装字体字体字体检测
-//TEST_F(TestDFontInfoManager, getInstallFontPath_normalIntalledfont_is_normal)
-//{
-//    originPath =  QDir::homePath() + "/.local/share/fonts/Yikatu/yikatu.ttf";
-
-//    QFileInfo dir(originPath);
-//    target = sysDir + "/asd/" + dir.fileName();
-
-//    EXPECT_EQ(originPath, dfm->getInstFontPath(originPath, "asd"));
-//}
-
-//getInstFontPath函数字体familyname为空检测
-//TEST_F(TestDFontInfoManager, getInstallFontPath_errorfam_is_normal)
-//{
-//    originPath =  QDir::homePath() + "/Desktop/1048字体/Addictype-Regular.otf";
-
-//    QFileInfo dir(originPath);
-//    target = sysDir + "/" + dir.baseName() + "/" + dir.fileName();
-
-//    EXPECT_EQ(target, dfm->getInstFontPath(originPath, QString()));
-//}
 
 //isFontInstalled检测已安装字体是否已安装
 TEST_F(TestDFontInfoManager, fontIsInstalled_installedFont_isnormal)
@@ -426,53 +343,6 @@ TEST_F(TestDFontInfoManager, fontIsInstalled_errorFont_isnormal)
     DFontInfo fontInfo;
     EXPECT_EQ(false, dfm->isFontInstalled(fontInfo));
 }
-
-////getCurrentFontFamily检测正在使用的系统字体
-//TEST_F(TestDFontInfoManager, getFFamStyle)
-//{
-//    // 查看当前系统中设置的字体名,将之与函数返回值进行比较
-//    QString str = "Noto Sans CJK KR";
-//    EXPECT_EQ(true,  dfm->getCurrentFontFamily().contains(str));
-//}
-
-////getDefaultPreview 检测中文字体的默认预览效果是否正常 在系统字体为英文的环境下出错 20200814 中文字体预览效果标志位不为1
-//TEST_F(TestDFontInfoManager, get_Chinese_DefaultPreview)
-//{
-//    //dfm->refreshList();
-//    DFontInfo fontInfo = dfm->getFontInfo("/usr/share/fonts/fonts-cesi/CESI_XBS_GB13000.TTF");
-//    dfm->getDefaultPreview(fontInfo);
-
-//    //这个标志符表示中文字体,显示默认的中文内容.
-//    EXPECT_EQ(1,  fontInfo.previewLang);
-
-//    fontInfo = dfm->getFontInfo("/usr/share/fonts/fonts-cesi/CESI_KT_GB13000.TTF");
-//    dfm->getDefaultPreview(fontInfo);
-
-//    //这个标志符表示中文字体,显示默认的中文内容.
-//    EXPECT_EQ(1,  fontInfo.previewLang);
-
-//}
-
-////getDefaultPreview 检测英文字体的默认预览效果是否正常 mark
-//TEST_F(TestDFontInfoManager, get_English_DefaultPreview)
-//{
-//    //dfm->refreshList();
-//    DFontInfo fontInfo = dfm->getFontInfo("/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf");
-//    dfm->getDefaultPreview(fontInfo);
-
-//    //这个标志符表示中文字体,显示默认的英文内容.
-//    EXPECT_EQ(2,  fontInfo.previewLang);
-//}
-
-//getFontFamilyStyle 查看系统个性化中的字体设置,现实的是字体familyname,与结果进行对比
-//TEST_F(TestDFontInfoManager, get_Normal_FamilyStyle)
-//{
-//    QStringList str = dfm->getFontFamilyStyle("/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf");
-//    EXPECT_EQ(true, str.contains("Liberation Sans"));
-
-//    str = dfm->getFontFamilyStyle("/usr/share/fonts/truetype/msttcorefonts/Georgia.ttf");
-//    EXPECT_EQ(true, str.contains("Georgia"));
-//}
 
 
 

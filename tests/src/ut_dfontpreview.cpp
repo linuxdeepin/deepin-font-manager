@@ -26,13 +26,18 @@
 #include <QPainter>
 #include <QPaintEvent>
 #include <QRect>
+#include <QRawFont>
 
 #include <DPalette>
 #include <DApplicationHelper>
+#include "dfmdbmanager.h"
 
 #include <gtest/gtest.h>
 #include "../third-party/stub/stub.h"
 #include "commonheaderfile.h"
+#include "interfaces/dcomworker.h"
+
+int cuntch = 0;
 
 namespace {
 class TestDFontPreviewer : public testing::Test
@@ -50,6 +55,11 @@ protected:
     // Some expensive resource shared by all tests.
     QWidget *w = new QWidget;
     DFontPreviewer *fm;
+
+public:
+    bool stub_supportsCharacter(QChar character);
+    bool stub_bool();
+
 };
 
 }
@@ -61,15 +71,32 @@ TEST_F(TestDFontPreviewer, checkInitData)
     EXPECT_TRUE(fm->m_previewTexts.contains("汉体书写信息技术标准相容"));
 }
 
+bool TestDFontPreviewer::stub_supportsCharacter(QChar character)
+{
+    if(cuntch == 0){
+        cuntch++;
+        return false;
+    }else {
+        return true;
+    }
+}
+
+bool TestDFontPreviewer::stub_bool()
+{
+    return false;
+}
+
+
 TEST_F(TestDFontPreviewer, checkOnPreviewFontChanged)
 {
     fm->onPreviewFontChanged();
     EXPECT_FALSE(fm->m_previewTexts.isEmpty());
-
+    Stub st;
+    st.set((bool (QRawFont::*)(QChar character) const)ADDR(QRawFont, supportsCharacter), ADDR(TestDFontPreviewer, stub_supportsCharacter));
+    cuntch = 0;
     fm->setPreviewFontPath("/home/zhaogongqiang/Desktop/1048字体/ArkanaScriptRough.otf");
     fm->onPreviewFontChanged();
     EXPECT_FALSE(fm->m_previewTexts.isEmpty());
-    //    EXPECT_FALSE();
 }
 
 TEST_F(TestDFontPreviewer, checkPaintevent)
@@ -79,6 +106,20 @@ TEST_F(TestDFontPreviewer, checkPaintevent)
     fm->paintEvent(p);
 
     SAFE_DELETE_ELE(p)
+}
+
+
+TEST_F(TestDFontPreviewer, removeUserAddFonts)
+{
+
+   GetFontListWorker getFontList(GetFontListWorker::AllInSquence);
+   getFontList.removeUserAddFonts();
+
+   Stub st;
+   st.set((bool (DFMDBManager::*)(const QString &filePath))ADDR(DFMDBManager, isSystemFont), ADDR(TestDFontPreviewer, stub_bool));
+   st.set((bool (QStringList::*)(const QString &str, Qt::CaseSensitivity cs) const)ADDR(QStringList, contains), ADDR(TestDFontPreviewer, stub_bool));
+   getFontList.removeUserAddFonts();
+
 }
 
 

@@ -139,6 +139,14 @@ TEST_F(TestDCopyFilesManager, checkDeleteFiles)
 }
 
 
+TEST_F(TestDCopyFilesManager, getPool)
+{
+    QStringList strlist;
+    strlist << "123" << "1234";
+    fmd->sortFontList(strlist);
+}
+
+
 
 
 

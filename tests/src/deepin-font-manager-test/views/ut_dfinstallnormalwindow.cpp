@@ -78,7 +78,6 @@ QList<DFontPreviewItemData> stub_getFontModelList()
 
 DFontInfo  stub_getFontInfoError(const QString filePath)
 {
-//    qDebug() << filePath << endl;
     Q_UNUSED(filePath)
 
     DFontInfo f;
@@ -91,7 +90,6 @@ DFontInfo  stub_getFontInfoError(const QString filePath)
 
 DFontInfo  stub_getFontInfoInstalled(const QString filePath)
 {
-//    qDebug() << filePath << endl;
     Q_UNUSED(filePath)
 
     DFontInfo f;
@@ -104,7 +102,6 @@ DFontInfo  stub_getFontInfoInstalled(const QString filePath)
 
 DFontInfo  stub_getFontInfoNotInstalled(const QString filePath)
 {
-//    qDebug() << filePath << endl;
     Q_UNUSED(filePath)
 
     DFontInfo f;
@@ -275,9 +272,6 @@ TEST_F(TestDFInstallNormalWindow, checkIsSystemFont)
 
 TEST_F(TestDFInstallNormalWindow, checkShowMessageFirst)
 {
-//    Stub s;
-//    s.set(ADDR(DFontMgrMainWindow, respondToInstallOver), stub_respondToInstallOver);
-
     QSignalSpy spy0(iw->m_signalManager, SIGNAL(sendReInstallMessage(const QStringList &)));
     QSignalSpy spy1(iw->m_signalManager, SIGNAL(finishFontInstall(const QStringList &)));
     QSignalSpy spy2(iw->m_signalManager, SIGNAL(installOver(int)));

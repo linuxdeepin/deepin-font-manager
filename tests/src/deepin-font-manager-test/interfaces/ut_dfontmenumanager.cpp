@@ -70,7 +70,6 @@ TEST_F(TestDFontMenuManager, checkCreateToolBarSettingsMenu)
 
 TEST_F(TestDFontMenuManager, checkCreateRightKeyMenu)
 {
-//    fm->initMenuData();
     DMenu *menu = fm->createRightKeyMenu();
 
     EXPECT_FALSE(menu->isEmpty());

@@ -71,8 +71,6 @@ TEST_F(TestDFontBaseDialog, checkGetCloseButton)
 TEST_F(TestDFontBaseDialog, checkSetLogoVisable)
 {
     //设置为true，但结果仍不可见，怀疑时没有窗口弹出的问题，与代码无关。
-//    fm->setLogoVisable(true);
-//    EXPECT_TRUE(fm->m_logoIcon->isVisible() == true);
 
     fm->setLogoVisable(false);
     EXPECT_TRUE(fm->m_logoIcon->isVisible() == false);

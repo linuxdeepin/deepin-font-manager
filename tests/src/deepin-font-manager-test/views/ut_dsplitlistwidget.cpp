@@ -79,7 +79,6 @@ TEST_F(TestDSplitListWidget, checkMousePressEvent)
 
 TEST_F(TestDSplitListWidget, checkHelpEvent)
 {
-//    QTest::mouseMove(dsp->viewport(), QPoint(50, 50), 100);
     QHelpEvent *e = new QHelpEvent(QEvent::ToolTip, QPoint(50, 50), QPoint(600, 400));
 
     QModelIndex modelIndex = dsp->m_categoryItemModell->index(1, 0);
@@ -90,12 +89,7 @@ TEST_F(TestDSplitListWidget, checkHelpEvent)
     QHelpEvent *e1 = new QHelpEvent(QEvent::ToolTip, QPoint(45, 200), QPoint(600, 500));
     modelIndex = dsp->m_categoryItemModell->index(5, 0);
     EXPECT_FALSE(dsp->itemDelegate()->helpEvent(e1, dsp, option, modelIndex));
-//    QTest::mouseMove(dsp->viewport());
 
-//    传其他事件的时候崩溃
-//    e = new QHelpEvent(QEvent::None, QPoint(50, 50), QPoint(600, 400));
-
-//    EXPECT_TRUE(dsp->itemDelegate()->helpEvent(e, dsp, option, modelIndex));
 
 
     SAFE_DELETE_ELE(e)
@@ -241,20 +235,6 @@ TEST_F(TestDSplitListWidget, checkGetSetStatus)
 
 }
 
-//TEST_F(TestDSplitListWidget, checkCurrentChanged)
-//{
-//    QSignalSpy spy(dsp, SIGNAL(onListWidgetItemClicked(int)));
-
-//    QModelIndex modelIndex1 = dsp->m_categoryItemModell->index(4, 0);
-//    QModelIndex modelIndex2 = dsp->m_categoryItemModell->index(5, 0);
-
-//    dsp->currentChanged(modelIndex2, modelIndex1);
-
-//    dsp->currentChanged(modelIndex1, modelIndex2);
-
-//    EXPECT_TRUE(spy.count() == 1);
-//}
-
 TEST_F(TestDSplitListWidget, checkPaint)
 {
     QPainter *p = new QPainter;
@@ -277,6 +257,15 @@ TEST_F(TestDSplitListWidget, checkPaint)
 
     option.state.setFlag(QStyle::State_MouseOver);
     dsp->itemDelegate()->paint(p, option, modelIndex1);
+
+    dsp->m_IsTabFocus = true;
+    option.state.setFlag(QStyle::State_MouseOver);
+    dsp->itemDelegate()->paint(p, option, modelIndex1);
+
+    option.state = QStyle::State_MouseOver;
+    dsp->m_IsTabFocus = true;
+    dsp->itemDelegate()->paint(p, option, modelIndex1);
+
 
     modelIndex1 = dsp->m_categoryItemModell->index(5, 0);
     dsp->itemDelegate()->paint(p, option, modelIndex1);

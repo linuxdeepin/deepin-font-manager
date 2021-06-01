@@ -20,10 +20,12 @@
 #include "globaldef.h"
 
 #include "../third-party/stub/stub.h"
+#include "utils.h"
 #include <gtest/gtest.h>
 
 #include <QFile>
 
+int cnt = 0;
 namespace {
 class TestDFMXmlWrapper: public testing::Test
 {
@@ -39,14 +41,14 @@ protected:
     // Some expensive resource shared by all tests.
     DFMXmlWrapper *xmlWrapper;
     QString fontConfigFilePath = "71-DeepInFontManager-Reject.conf";
+public:
+    bool stub_exists();
 };
 }
 
 // 测试 DFMXmlWrapper::createFontConfigFile
 TEST_F(TestDFMXmlWrapper, checkCreateFontConfigFile)
 {
-//    QString fontConfigFileDir = QDir::homePath() + "/.config/fontconfig/conf.d/";
-//    QString fontConfigFilePath = fontConfigFileDir + FTM_REJECT_FONT_CONF_FILENAME;
 
     do {
         /* 测试场景：配置文件不存在，生成配置文件 */
@@ -110,7 +112,34 @@ TEST_F(TestDFMXmlWrapper, checkGetNodeByName)
 // 测试 DFMXmlWrapper::addNodesWithTextList
 TEST_F(TestDFMXmlWrapper, checkAddNodesWithTextList)
 {
+    QFile file("./doctest.xml");
+    if (!file.open(QIODevice::ReadWrite)) {
+        return ;
+    }
 
+    QString strdata = "<parentNode><nodeA><nodeB property=\"value\"><nodeC>nodeText</nodeC></nodeB></nodeA></parentNode>";
+    QStringList nodelist;
+    nodelist << "nodeC" ;
+    file.write(strdata.toStdString().data());
+    file.close();
+    QMap<QString, QString> nodeatt;
+    nodeatt.insert("1", "A");
+    nodeatt.insert("1", "A");
+    nodeatt.insert("1", "A");
+    QList<QSTRING_MAP> nodeAttributeList;
+    nodeAttributeList.append(nodeatt);
+    xmlWrapper->addNodesWithText("./doctest.xml", "parentNode", nodelist, nodeAttributeList, "nodeEnd");
+}
+
+
+bool TestDFMXmlWrapper::stub_exists()
+{
+    return false;
+}
+
+bool stub_gexists(const QString &fileName)
+{
+    return false;
 }
 
 // 测试 DFMXmlWrapper::addPatternNodesWithTextList
@@ -161,6 +190,8 @@ TEST_F(TestDFMXmlWrapper, checkAddPatternNodesWithTextList)
         QString fileName = "tmp.config";
         EXPECT_TRUE(xmlWrapper->createFontConfigFile(fileName));
 
+
+
         QString parentNodeName = "rejectfont";
         QStringList lastNodeTextList;
         lastNodeTextList << "test_font.ttf";
@@ -170,6 +201,22 @@ TEST_F(TestDFMXmlWrapper, checkAddPatternNodesWithTextList)
         EXPECT_TRUE(result);
         QFile::remove(fileName);
     } while (false);
+
+
+
+    QString confilename="tmp.config";
+    QFile file(confilename);
+    file.open(QIODevice::WriteOnly);
+    file.write(confilename.toStdString().data());
+    file.close();
+
+    QFile::setPermissions(confilename, QFileDevice::ReadOwner);
+    Stub st;
+    st.set((bool (QFile::*)() const)ADDR(QFile, exists), ADDR(TestDFMXmlWrapper, stub_exists));
+    xmlWrapper->createFontConfigFile(confilename);
+
+    QFile::setPermissions(confilename, QFileDevice::ReadOwner|QFileDevice::WriteOwner);
+    QFile::remove(confilename);
 }
 
 
@@ -266,9 +313,6 @@ TEST_F(TestDFMXmlWrapper, checkQueryAllChildNodesText)
         bool result = false;
         result = DFMXmlWrapper::queryAllChildNodes_Text(fileName, "rejectfont", strDisableFontPathList);
         EXPECT_TRUE(result);
-        /* 字体路径不存在时，queryAllChildNodes_Text返回空，所以无法判断返回值 */
-//        EXPECT_TRUE(strDisableFontPathList.contains("test1.ttf"));
-//        EXPECT_TRUE(strDisableFontPathList.contains("test2.ttf"));
         QFile::remove(fileName);
     } while (false);
 }

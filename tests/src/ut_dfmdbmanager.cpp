@@ -86,39 +86,6 @@ TEST_F(TestDFMDBManager, check_UserFont_IsSystestub_delRecordmFont)
     EXPECT_EQ(false, fmd->isSystemFont(QDir::homePath() + "/Desktop/1048字体/Addictype-Regular.otf"));
 }
 
-////传入用户字体判断是否为用户字体
-//TEST_F(TestDFMDBManager, check_SystemFont_IsUserFont)
-//{
-//    EXPECT_EQ(false, fmd->isUserFont("/usr/share/fonts/truetype/liberation/LiberationMono-Italic.ttf"));
-//}
-
-////传入未安装用户字体判断是否为用户字体
-//TEST_F(TestDFMDBManager, check_UserFontUnInstalled_IsUserFont)
-//{
-//    EXPECT_EQ(false, fmd->isUserFont(QDir::homePath() + "/Desktop/1048字体/Addictype-Regular.otf"));
-//}
-
-////传入已安装的用户字体
-//TEST_F(TestDFMDBManager, check_UserFontInstalled_IsUserFont)
-//{
-//    EXPECT_EQ(true, fmd->isUserFont(QDir::homePath() + "/.local/share/fonts/UpcEBwrP72xTt/V200020_.TTF"));
-//}
-
-TEST_F(TestDFMDBManager, checkParseRecordToItemData)
-{
-//    QList<QString> keylist;
-//    fmd->appendAllKeys(keylist);
-//    QMap<QString, QString> record;
-
-//    foreach (auto it, keylist) {
-//        record.insert(it, "1");
-//    }
-
-//    DFontPreviewItemData data = fmd->parseRecordToItemData(record);
-
-//    EXPECT_TRUE(data.fontInfo.psname == "1");
-}
-
 TEST_F(TestDFMDBManager, check_getInstalledFontsPath)
 {
     Stub s;
@@ -132,18 +99,9 @@ TEST_F(TestDFMDBManager, check_getRecordCount)
     Stub s;
     s.set(ADDR(DSqliteUtil, getMaxFontId), stub_getMaxFontId);
     EXPECT_EQ(10, fmd->getCurrMaxFontId());
-//    EXPECT_EQ(true, fmd->getInstalledFontsPath().contains("first"));
 }
 
-//TEST_F(TestDFMDBManager, checkMapItemData)
-//{
-//    DFontPreviewItemData data;
-//    data.fontInfo.psname = "first";
 
-//    QMap<QString, QString> dataMap = fmd->mapItemData(data);
-
-//    EXPECT_TRUE(dataMap.value("psname") == "first");
-//}
 
 TEST_F(TestDFMDBManager, checkGetAllFontInfo)
 {
@@ -163,32 +121,11 @@ TEST_F(TestDFMDBManager, checkcheckIfEmpty)
     fmd->checkIfEmpty();
 }
 
-////updateFontInfoByFontId
-//TEST_F(TestDFMDBManager, checkUpdateFontInfoByFontId)
-//{
-//    EXPECT_TRUE(fmd->updateFontInfoByFontId("", "psname", "first"));
-//}
-
-//TEST_F(TestDFMDBManager, checkUpdateFontInfoByFontIdByMap)
-//{
-//    QMap<QString, QString> dataMap;
-//    dataMap.insert("pansme", "first");
-
-
-//    EXPECT_FALSE(fmd->updateFontInfoByFontId("", dataMap));
-//}
-
-
-//TEST_F(TestDFMDBManager, checkUpdateFontInfoByFontFilePath)
-//{
-//    EXPECT_TRUE(fmd->updateFontInfoByFontFilePath("", "psname", "first"));
-//}
 
 //commitAddFontInfo
 TEST_F(TestDFMDBManager, checkCommitAddFontInfo)
 {
     Stub s;
-//    stub.set((int(A::*)(int))ADDR(A,foo), foo_stub_int);
     s.set((void(DFMDBManager::*)(const QList<DFontPreviewItemData> &))ADDR(DFMDBManager, addFontInfo), stub_addFontInfo);
 
     fmd->m_addFontList.clear();
@@ -286,9 +223,6 @@ TEST_F(TestDFMDBManager, checkUpdateFontInfoThird)
 //commitUpdateFontInfo
 TEST_F(TestDFMDBManager, checkCommitUpdateFontInfo)
 {
-//    Stub s;
-//    s.set(ADDR(DFMDBManager, endTransaction), stub_endTransaction);
-
     fmd->m_updateFontList.clear();
     fmd->commitUpdateFontInfo();
 
@@ -302,10 +236,13 @@ TEST_F(TestDFMDBManager, checkCommitUpdateFontInfo)
 
 TEST_F(TestDFMDBManager, checkBeginAndEndTransaction)
 {
-    /*
-       Stub s;
-       s.set(ADDR(DFMDBManager, endTransaction), stub_endTransaction);*/
-
     fmd->beginTransaction();
     fmd->endTransaction();
+}
+
+
+TEST_F(TestDFMDBManager, getSpecifiedFontName)
+{
+    QString filepath = "123";
+    fmd->getSpecifiedFontName(filepath);
 }

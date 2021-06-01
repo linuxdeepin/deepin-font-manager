@@ -64,7 +64,6 @@ TEST_F(TestDfontmanager, checkSetType)
 {
     fm->setType(FontManagerCore::Install);
     EXPECT_EQ(fm->m_type, FontManagerCore::Install);
-    //    delete fm;
 }
 
 TEST_F(TestDfontmanager, checkSetInstallFileList)
@@ -80,7 +79,6 @@ TEST_F(TestDfontmanager, checkSetInstallFileList)
     fm->setInstallFileList(list);
     EXPECT_EQ(fm->m_instFileList.count(), 1);
     EXPECT_EQ(true, fm->m_instFileList.contains("fifth"));
-//    delete fm;
 }
 
 TEST_F(TestDfontmanager, checkSetUnInstallFile)
@@ -190,8 +188,7 @@ TEST_F(TestDfontmanager, checkDoUnstall)
 
     QString str = QDir::homePath() + "/.local/share/fonts/Addictype";
     QString filePathOrig = QDir::homePath() + "/Desktop/1048字体/Addictype-Regular.otf";
-//    QFile::copy(filePathOrig, str);
-//    qDebug() << str << endl;
+
     QDir d;
     //新建文件夹并确认创建成功
     d.mkdir(str);
@@ -233,13 +230,6 @@ TEST_F(TestDfontmanager, checkOnInstallResultReInstall)
 }
 
 
-//TEST_F(TestDfontmanager, checkSetSystemFontCount)
-//{
-//    fm->setSystemFontCount(6);
-//    EXPECT_EQ(6, fm->m_systemFontCount);
-////    delete fm;
-//}
-
 TEST_F(TestDfontmanager, checkSetCacheStatus)
 {
     fm->setCacheStatus(FontManagerCore::CacheNow);
@@ -254,9 +244,8 @@ TEST_F(TestDfontmanager, checkCancelInstall)
 
 TEST_F(TestDfontmanager, checkDoCache)
 {
-//    QSignalSpy spy(fm, SIGNAL(cacheFinish()));
     fm->doCache();
-//    EXPECT_EQ(1, spy.count());
+    fm->needCache();
     delete fm;
 }
 

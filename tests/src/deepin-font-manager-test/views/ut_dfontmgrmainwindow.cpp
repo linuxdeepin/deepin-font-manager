@@ -83,7 +83,7 @@ protected:
     DFontMgrMainWindow *fm;
 };
 
-
+int cnt = 0;
 
 bool stub_false()
 {
@@ -92,6 +92,16 @@ bool stub_false()
 
 bool stub_true()
 {
+    return true;
+}
+
+bool stub_hasfource()
+{
+    if(cnt == 0)
+    {
+        cnt++;
+        return false;
+    }
     return true;
 }
 
@@ -197,11 +207,6 @@ DFontPreviewItemData stub_getFontData()
     return data;
 }
 
-//int stub_exec()
-//{
-//    return 1;
-//}
-
 QStringList stub_getInstalledFontsPath()
 {
 
@@ -236,6 +241,16 @@ int stub_dialogExec()
     return 1;
 }
 
+void hideSpinner_stub()
+{
+}
+
+QStringList checkFilesSpace_stub()
+{
+    QStringList strlist;
+    strlist << "1233";
+    return strlist;
+}
 }
 
 TEST_F(TestDFontMgrMainWindow, checkSetNextTabFocus)
@@ -457,15 +472,7 @@ TEST_F(TestDFontMgrMainWindow, checkHideSpinner)
     //定时器触发lambda函数，无法测试到
 }
 
-//TEST_F(TestDFontMgrMainWindow, checkShowSpinner)
-//{
-//    Stub s;
-//    s.set(ADDR(QWidget, show), stub_show);
 
-//    fm->showSpinner(DFontSpinnerWidget::Load);
-
-//    fm->showSpinner(DFontSpinnerWidget::Load, true);
-//}
 
 TEST_F(TestDFontMgrMainWindow, checkShowInstalledFiles)
 {
@@ -473,13 +480,6 @@ TEST_F(TestDFontMgrMainWindow, checkShowInstalledFiles)
     s.set(ADDR(DFontMgrMainWindow, onLeftSiderBarItemClicked), stub_onLeftSiderBarItemClicked);
 
     fm->showInstalledFiles();
-}
-
-TEST_F(TestDFontMgrMainWindow, checkShowAllShortcut)
-{
-//    //startDetached函数打桩失败，导致会有界面弹出。之后再研究这里如何打桩
-//    fm->showAllShortcut();
-//    delete fm;
 }
 
 TEST_F(TestDFontMgrMainWindow, checkResizeEvent)
@@ -521,8 +521,6 @@ TEST_F(TestDFontMgrMainWindow, checkDropEvent)
 
 
     fm->dropEvent(e);
-//    EXPECT_TRUE(spy.count() == 1);
-//    fm->dropEvent(e);
     SAFE_DELETE_ELE(e)
 }
 
@@ -709,9 +707,6 @@ TEST_F(TestDFontMgrMainWindow, checkOnFontListViewRowCountChanged2)
     s1.set(ADDR(QWidget, isVisible), stub_true);
 
     fm->m_fontPreviewListView->m_bLoadDataFinish = true;
-    //    fm->onPreviewTextChanged();
-
-//    fm->m_fontPreviewListView->getFontPreviewProxyModel()->insertRows(0, 5);
     fm->onFontListViewRowCountChanged();
 
     EXPECT_FALSE(fm->m_isNoResultViewShow);
@@ -758,10 +753,7 @@ TEST_F(TestDFontMgrMainWindow, checkShowFontFilePostion)
     Stub s1;
     typedef bool (*FP)(QString, const QString &);
 
-//    s1.set((bool(DDesktopServices::*)(QString, const QString &))ADDR(DDesktopServices, showFileItem), stub_show);
     s1.set(FP ADDR(DDesktopServices, showFileItem), stub_return);
-//    Stub s1;
-//    s1.set(ADDR(DDesktopServices, showFileItem), stub_true);
     fm->showFontFilePostion();
 }
 
@@ -976,7 +968,7 @@ TEST_F(TestDFontMgrMainWindow, checkinitShortcutsMenu)
 
     QSignalSpy spy(fm->m_signalManager, SIGNAL(onMenuHidden()));
 
-    s.set(ADDR(QWidget, hasFocus), stub_true);
+    s.set(ADDR(QWidget, hasFocus), stub_hasfource);
     s1.set(ADDR(QApplication, sendEvent), stub_return);
 
     fm->m_isSearchLineEditMenuPoped = false;
@@ -1017,6 +1009,8 @@ TEST_F(TestDFontMgrMainWindow, checkinitShortcutsElse)
     emit fm->m_scPageDown->activated();
 
     emit fm->m_scFindFont->activated();
+
+    emit fm->m_scFontInfo->activated();
 }
 
 TEST_F(TestDFontMgrMainWindow, checkonRightMenuShortCutActivated)
@@ -1035,28 +1029,7 @@ TEST_F(TestDFontMgrMainWindow, checkonRightMenuShortCutActivated)
 }
 
 
-//TEST_F(TestDFontMgrMainWindow, checkInstallFont)
-//{
-//    Stub s;
-//    s.set(QDialog_exec, stub_dialogExec);
 
-//    QStringList list;
-//    list << "qqqq";
-//    fm->installFont(list, false);
-//}
-
-//TEST_F(TestDFontMgrMainWindow, aaa)
-//{
-//    fm->InitQuickWindowIfNeeded();
-//    QStringList list;
-//    list << "aaaaaaaaaa";
-//    fm->m_quickInstallWnd->onFileSelected(list);
-//}
-
-void hideSpinner_stub()
-{
-
-}
 TEST_F(TestDFontMgrMainWindow, checkononCacheFinish)
 {
     Stub s;
@@ -1064,5 +1037,23 @@ TEST_F(TestDFontMgrMainWindow, checkononCacheFinish)
 
     fm->onCacheFinish();
     ASSERT_EQ(fm->m_cacheFinish, true);
+}
+
+
+TEST_F(TestDFontMgrMainWindow, handleAddFontEvent)
+{
+    QStringList filelist;
+    fm->m_fIsInstalling = true;
+    fm->installFont(filelist, false);
+
+    Stub s;
+    s.set(ADDR(DFontMgrMainWindow, checkFilesSpace), checkFilesSpace_stub);
+    fm->installFont(filelist, false);
+    fm->onRightMenuAboutToShow();
+    fm->onRightMenuAboutToHide();
+    fm->onRequestInstFontsUiAdded();
+    fm->onFontChanged();
+    fm->showAllShortcut();
+
 }
 

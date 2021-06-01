@@ -80,7 +80,6 @@ DFontInfo  stub_getFontInfoError(const QString filePath)
 
 DFontInfo  stub_getFontInfoInstalled(const QString filePath)
 {
-//    qDebug() << filePath << endl;
     Q_UNUSED(filePath)
 
     DFontInfo f;
@@ -93,7 +92,6 @@ DFontInfo  stub_getFontInfoInstalled(const QString filePath)
 
 DFontInfo  stub_getFontInfo(const QString filePath)
 {
-//    qDebug() << filePath << endl;
     Q_UNUSED(filePath)
 
     DFontInfo f;
@@ -202,8 +200,6 @@ TEST_F(TestDFInstallErrorDialog, checkAddDataSystem)
     QStringList list;
     QStringList list2 = QStringList();
     list << "a";
-//    Stub s;
-//    s.set(ADDR(DFInstallErrorDialog, isSystemFont), stub_isSystemFont);
 
     Stub s;
     s.set(ADDR(DFInstallNormalWindow, isSystemFont), stub_isSystemFont);
@@ -251,7 +247,6 @@ TEST_F(TestDFInstallErrorDialog, checkOnListItemsClicked)
     DFInstallErrorItemModel itemModel =
         qvariant_cast<DFInstallErrorItemModel>(DFErrDialog->m_installErrorListView->getErrorListSourceModel()->data(index));
     EXPECT_TRUE(itemModel.bChecked);
-    //    DFErrDialog->m_installErrorListView;
 
 }
 
@@ -307,18 +302,6 @@ TEST_F(TestDFInstallErrorDialog, checkKeyPressEvent)
     QTest::keyPress(DFErrDialog, Qt::Key_PageDown);
 
 }
-
-//mark
-//TEST_F(TestDFInstallErrorDialog, checkDFMSuggestButton)
-//{
-//    DFMSuggestButton *button = new DFMSuggestButton(DFErrDialog);
-
-//    QRect t;
-//    QPaintEvent *e = new QPaintEvent(t);
-
-//    button->paintEvent(e);
-//    delete button;
-//}
 
 
 

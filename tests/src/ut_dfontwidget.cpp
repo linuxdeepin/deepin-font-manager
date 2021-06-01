@@ -66,7 +66,6 @@ TEST_F(TestDFontWidget, checkSetFileUrl)
 TEST_F(TestDFontWidget, checkHandleFinished_dataEmpty)
 {
     QByteArray data;
-//    fw->setFileUrl(filepath);
     fw->handleFinished(data);
     EXPECT_EQ(true, fw->m_layout->currentIndex() == 0);
     EXPECT_EQ(false, fw->m_preview->isVisible());
@@ -78,8 +77,6 @@ TEST_F(TestDFontWidget, checkHandleFinished_data)
     QFile file(filepath);
     file.open(QIODevice::ReadOnly);
     QByteArray fileContent = file.readAll();
-//    fw->setFileUrl(filepath);
     fw->handleFinished(fileContent);
     EXPECT_EQ(true, fw->m_errMsg->text() == DApplication::translate("DFontWidget", "Broken file"));
-//    EXPECT_EQ(true, fw->m_preview->isVisible());
 }

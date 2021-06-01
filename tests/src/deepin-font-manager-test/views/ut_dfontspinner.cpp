@@ -72,15 +72,6 @@ TEST_F(TestDFontSpinner, checkPaintEvent)
     SAFE_DELETE_ELE(paint)
 }
 
-//TEST_F(TestDFontSpinner, checkSetBackgroundColor)
-//{
-//    QColor c(255, 255, 255);
-//    fs->setBackgroundColor(c);
-
-//    QPalette pal = fs->palette();
-//    QColor c2 = pal.color(QPalette::Background);
-//    EXPECT_TRUE(c == c2);
-//}
 
 TEST_F(TestDFontSpinner, checkChangeEvent)
 {

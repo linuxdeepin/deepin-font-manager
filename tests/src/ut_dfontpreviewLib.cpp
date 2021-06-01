@@ -71,7 +71,6 @@ TEST_F(TestDFontPreview, checkSetFileUrl)
     //传入正常参数
     fp->setFileUrl("/home/zhaogongqiang/Desktop/1048字体/ArkanaScriptRough.otf");
     delete  fp;
-//    qDebug() << sampleString << "++++++++++++++++++" << styleName << endl;
 
 }
 

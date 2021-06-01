@@ -28,7 +28,7 @@
 
 #include <gtest/gtest.h>
 #include "../third-party/stub/stub.h"
-
+#include "commonheaderfile.h"
 #include <QSignalSpy>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
@@ -62,26 +62,21 @@ protected:
     DFDeleteDialog *fm;
 };
 
-//DApplicationHelper::ColorType stub_themeTypeDark()
-//{
-//    return DApplicationHelper::DarkType;
-//}
+}
 
-//DApplicationHelper::ColorType stub_themeTypeLight()
-//{
-//    return DApplicationHelper::LightType;
-//}
-
+DGuiApplicationHelper::ColorType stub_themeType()
+{
+    return DGuiApplicationHelper::DarkType;
 }
 
 TEST_F(TestDFDeleteDialog, checksetTheme)
 {
-//    Stub s;
-//    s.set(ADDR(DApplicationHelper, themeType), stub_themeTypeDark());
     fm->setTheme();
     fm->onFontChanged(QFont());
-////    s.set(ADDR(DApplicationHelper, themeType), stub_themeTypeLight());
-//    fm->setTheme();
+    Stub st;
+    st.set(ADDR(DGuiApplicationHelper, themeType), stub_themeType);
+
+    fm->setTheme();
 }
 
 TEST_F(TestDFDeleteDialog, checkConnect)
@@ -129,5 +124,46 @@ TEST_F(TestDFDeleteDialog, checkInitMessageDetail)
 }
 
 
+TEST_F(TestDFDeleteDialog, getDeleting)
+{
+    DFontMgrMainWindow *w1 = new DFontMgrMainWindow;
+    DFDeleteTTCDialog *fm1 = new DFDeleteTTCDialog(w1, "");
+    QFont font;
+    fm->onFontChanged(font);
+    fm1->getAapplyToAll();
+    fm1->onFontChanged(font);
 
+    QKeyEvent *kev = new QKeyEvent(QEvent::KeyPress, Qt::Key_Return, Qt::NoModifier);
+    fm1->initMessageDetail();
+    fm1->eventFilter((QObject*)fm1->applyAllCkb, kev);
+
+    fm1->eventFilter((QObject*)fm1, kev);
+    fm1->keyPressEvent(kev);
+    SAFE_DELETE_ELE(kev);
+    kev = new QKeyEvent(QEvent::KeyPress, Qt::Key_Escape, Qt::NoModifier);
+    fm1->keyPressEvent(kev);
+    SAFE_DELETE_ELE(kev);
+    SAFE_DELETE_ELE(fm1);
+    bool isEnable = false;
+    DFDisableTTCDialog *fm2 = new DFDisableTTCDialog(w1, "", isEnable);
+    fm2->getAapplyToAll();
+    fm2->getDeleting();
+    kev = new QKeyEvent(QEvent::KeyPress, Qt::Key_Return, Qt::NoModifier);
+    fm2->eventFilter((QObject*)fm2->applyAllCkb, kev);
+    fm2->eventFilter((QObject*)fm2, kev);
+    fm2->onFontChanged(font);
+    fm2->keyPressEvent(kev);
+    SAFE_DELETE_ELE(kev);
+    kev = new QKeyEvent(QEvent::KeyPress, Qt::Key_Escape, Qt::NoModifier);
+    fm2->keyPressEvent(kev);
+
+    fm2->initMessageTitle();
+    SAFE_DELETE_ELE(fm2);
+    isEnable = true;
+    fm2 = new DFDisableTTCDialog(w1, "", isEnable);
+    fm2->initMessageTitle();
+    SAFE_DELETE_ELE(fm2);
+    SAFE_DELETE_ELE(w1);
+
+}
 

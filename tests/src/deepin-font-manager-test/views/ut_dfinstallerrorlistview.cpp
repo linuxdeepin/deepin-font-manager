@@ -67,6 +67,11 @@ protected:
 
 }
 
+DGuiApplicationHelper::ColorType stub_themeType1()
+{
+    return DGuiApplicationHelper::DarkType;
+}
+
 TEST_F(TestDFInstallErrorListView, checkPaint)
 {
     DFInstallErrorItemModel model1;
@@ -93,6 +98,8 @@ TEST_F(TestDFInstallErrorListView, checkPaint)
     iEListview->m_IsTabFocus = true;
     option.state.setFlag(QStyle::State_Selected);
     iEListview->m_errorListItemDelegate->paint(p, option, index);
+    iEListview->m_IsTabFocus = false;
+    iEListview->m_errorListItemDelegate->paint(p, option, index);
 
 //    iEListview->selectAll();
     index = iEListview->getErrorListSourceModel()->index(0, 0);
@@ -101,6 +108,10 @@ TEST_F(TestDFInstallErrorListView, checkPaint)
     iEListview->m_errorListItemDelegate->paint(p, option, index);
 
     iEListview->m_IsTabFocus = false;
+    iEListview->m_errorListItemDelegate->paint(p, option, index);
+
+    Stub st;
+    st.set(ADDR(DGuiApplicationHelper, themeType), stub_themeType1);
     iEListview->m_errorListItemDelegate->paint(p, option, index);
 
 }
@@ -119,11 +130,8 @@ TEST_F(TestDFInstallErrorListView, checkMousePressEvent)
 
     QTest::mousePress(iEListview->viewport(), Qt::LeftButton);
     EXPECT_TRUE(iEListview->m_isMouseClicked);
-//    EXPECT_TRUE(iEListview->m_bLeftMouse);
-
 
     QTest::mousePress(iEListview->viewport(), Qt::RightButton);
-//    EXPECT_FALSE(iEListview->m_bLeftMouse);
 
 }
 
@@ -170,7 +178,6 @@ TEST_F(TestDFInstallErrorListView, checkLengthAutoFeed)
 
     QString str;
     str.fill('a', 200);
-
 
     str = iEListview->m_errorListItemDelegate->lengthAutoFeed(p, str, 50);
     qDebug() << str << endl;
