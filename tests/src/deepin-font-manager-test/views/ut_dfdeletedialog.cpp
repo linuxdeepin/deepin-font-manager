@@ -135,9 +135,9 @@ TEST_F(TestDFDeleteDialog, getDeleting)
 
     QKeyEvent *kev = new QKeyEvent(QEvent::KeyPress, Qt::Key_Return, Qt::NoModifier);
     fm1->initMessageDetail();
-    fm1->eventFilter((QObject*)fm1->applyAllCkb, kev);
+    fm1->eventFilter((QObject *)fm1->applyAllCkb, kev);
 
-    fm1->eventFilter((QObject*)fm1, kev);
+    fm1->eventFilter((QObject *)fm1, kev);
     fm1->keyPressEvent(kev);
     SAFE_DELETE_ELE(kev);
     kev = new QKeyEvent(QEvent::KeyPress, Qt::Key_Escape, Qt::NoModifier);
@@ -149,8 +149,8 @@ TEST_F(TestDFDeleteDialog, getDeleting)
     fm2->getAapplyToAll();
     fm2->getDeleting();
     kev = new QKeyEvent(QEvent::KeyPress, Qt::Key_Return, Qt::NoModifier);
-    fm2->eventFilter((QObject*)fm2->applyAllCkb, kev);
-    fm2->eventFilter((QObject*)fm2, kev);
+    fm2->eventFilter((QObject *)fm2->applyAllCkb, kev);
+    fm2->eventFilter((QObject *)fm2, kev);
     fm2->onFontChanged(font);
     fm2->keyPressEvent(kev);
     SAFE_DELETE_ELE(kev);
@@ -164,6 +164,7 @@ TEST_F(TestDFDeleteDialog, getDeleting)
     fm2->initMessageTitle();
     SAFE_DELETE_ELE(fm2);
     SAFE_DELETE_ELE(w1);
+    SAFE_DELETE_ELE(kev);
 
 }
 

@@ -2251,7 +2251,7 @@ void DFontMgrMainWindow::showAllShortcut()
     QString param2 = "-p=" + QString::number(pos.x()) + "," + QString::number(pos.y());
     shortcutString << param1 << param2;
 
-    QProcess *shortcutViewProcess = new QProcess();
+    QProcess *shortcutViewProcess = new QProcess(this);
     shortcutViewProcess->startDetached("deepin-shortcut-viewer", shortcutString);
 
     connect(shortcutViewProcess, SIGNAL(finished(int)), shortcutViewProcess, SLOT(deleteLater()));
