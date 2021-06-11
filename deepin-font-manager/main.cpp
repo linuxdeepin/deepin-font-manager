@@ -49,6 +49,12 @@ DCORE_USE_NAMESPACE
 int main(int argc, char *argv[])
 {
     PerformanceMonitor::initializeAppStart();
+
+    // 依赖DTK的程序，如果要在root下或者非deepin/uos环境下运行不会发生异常，就需要加上该环境变量
+    if (!QString(qgetenv("XDG_CURRENT_DESKTOP")).toLower().startsWith("deepin")) {
+        setenv("XDG_CURRENT_DESKTOP", "Deepin", 1); //setenv改变或添加一个环境变量
+    }
+
     // load dtk xcb plugin.
     //DEPRECATED API and remove it
     //DApplication::loadDXcbPlugin();
