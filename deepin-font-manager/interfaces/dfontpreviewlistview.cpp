@@ -375,6 +375,10 @@ void DFontPreviewListView::onRefreshListview(QList<DFontPreviewItemData> &data)
     int i = 0;
 
     for (DFontPreviewItemData &itemData : data) {
+        if (!itemData.fontData.isEnabled()) { // 字体被禁用时，让应用临时可用该字体进行预览
+            QFontDatabase::addApplicationFont(itemData.fontInfo.filePath);
+        }
+
         FontData fdata = itemData.fontData;
         QModelIndex index = m_fontPreviewItemModel->index(rows + i,   0);
         res = m_fontPreviewItemModel->setData(index, QVariant::fromValue(fdata), Qt::DisplayRole);
