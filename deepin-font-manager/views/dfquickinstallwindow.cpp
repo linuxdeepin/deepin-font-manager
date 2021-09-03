@@ -19,7 +19,7 @@
 DFQuickInstallWindow::DFQuickInstallWindow(QStringList files, QWidget *parent)
     : DMainWindow(parent)
     , m_fontInfoManager(DFontInfoManager::instance())
-    , m_fontManager(DFontManager::instance())
+    , m_fontManager(FontManagerCore::instance())
     , m_dbManager(DFMDBManager::instance())
     , m_installFiles(files)
 {

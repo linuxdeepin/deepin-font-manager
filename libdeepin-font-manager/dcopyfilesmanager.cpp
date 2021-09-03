@@ -183,7 +183,7 @@ void DCopyFilesManager::copyFiles(CopyFontThread::OPType type, QStringList &font
 
     for (CopyFontThread *thread : threads) {
         if (type == CopyFontThread::INSTALL) {
-            connect(thread, &CopyFontThread::fileInstalled, DFontManager::instance(), &DFontManager::onInstallResult);
+            connect(thread, &CopyFontThread::fileInstalled, FontManagerCore::instance(), &FontManagerCore::onInstallResult);
         }
         getPool()->start(thread);
     }

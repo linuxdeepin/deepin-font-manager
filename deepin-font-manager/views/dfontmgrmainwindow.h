@@ -72,7 +72,7 @@ public:
     //删除字体验证页面取消恢复标志位
     void cancelDelete();
     //获得DFontManager类的实例对象m_fontManager
-    inline DFontManager *getFontManager()
+    inline FontManagerCore *getFontManager()
     {
         return m_fontManager;
     }
@@ -238,7 +238,7 @@ protected:
     DListView *m_noInstallListView;
     DFontSpinnerWidget *m_fontLoadingSpinner {nullptr};
     DFMDBManager *m_dbManager {nullptr};
-    DFontManager *m_fontManager;
+    FontManagerCore *m_fontManager;
     SignalManager *m_signalManager = SignalManager::instance();
     QShortcut *m_scFullScreen;  //全屏快捷键F11
     QShortcut *m_scZoomIn;        //放大字体快捷键Ctrl+=
