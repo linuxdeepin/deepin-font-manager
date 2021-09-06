@@ -42,6 +42,9 @@ FIND_PACKAGE(DtkGui REQUIRED)
 FIND_PACKAGE(Freetype REQUIRED)
 FIND_PACKAGE(PkgConfig REQUIRED)
 
+#社区版上 MOC 时，会缺少 include 路径 /usr/include，
+#暂未找到原因，先手动添加 /usr/include 规避
+INCLUDE_DIRECTORIES(/usr/include/)
 
 PKG_SEARCH_MODULE(FontConfig REQUIRED fontconfig IMPORTED_TARGET)
 #PKG_SEARCH_MODULE(QGsettings REQUIRED gsettings-qt IMPORTED_TARGET)
