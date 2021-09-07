@@ -205,7 +205,10 @@ bool DSqliteUtil::addRecord(QMap<QString, QString> data, const QString &table_na
     values += ")";
     sql += values;
     qDebug() << sql;
-    m_query->prepare(sql);
+    if (!m_query->prepare(sql)) {
+        qDebug() << "prepares query failed!";
+        return false;
+    }
 
     if (!m_query->exec()) {
         finish();
@@ -221,7 +224,10 @@ bool DSqliteUtil::addRecord(QMap<QString, QString> data, const QString &table_na
 bool DSqliteUtil::addFontManagerInfoRecord(const QString &table_name)
 {
     QString sql = QString("insert into " + table_name + " values (1, '1.0', '%1')").arg(QLocale::system().name());
-    m_query->prepare(sql);
+    if (!m_query->prepare(sql)) {
+        qDebug() << "prepares query failed!";
+        return false;
+    }
 
     if (!m_query->exec()) {
         finish();
@@ -262,7 +268,10 @@ bool DSqliteUtil::delRecord(QMap<QString, QString> where, const QString &table_n
     sql.chop(5);
 
     qDebug() << sql;
-    m_query->prepare(sql);
+    if (!m_query->prepare(sql)) {
+        qDebug() << "prepares query failed!";
+        return false;
+    }
 
     if (!m_query->exec()) {
         finish();
@@ -304,7 +313,10 @@ bool DSqliteUtil::updateRecord(QMap<QString, QString> where, QMap<QString, QStri
         sql += "'" + it.value() + "'";
     }
     qDebug() << sql;
-    m_query->prepare(sql);
+    if (!m_query->prepare(sql)) {
+        qDebug() << "prepares query failed!";
+        return false;
+    }
 
     if (!m_query->exec()) {
         finish();
@@ -321,7 +333,10 @@ bool DSqliteUtil::updateFontManagerInfoRecord(const QString &table_name)
 {
     // UPDATE COMPANY SET ADDRESS = 'Texas' WHERE ID = 6;
     QString sql = QString("update " + table_name + " set " + "language = '%1' where id = 1").arg(QLocale::system().name());
-    m_query->prepare(sql);
+    if (!m_query->prepare(sql)) {
+        qDebug() << "prepares query failed!";
+        return false;
+    }
 
     if (!m_query->exec()) {
         finish();
@@ -370,7 +385,10 @@ trademark, \
 fontPreview from " + table_name;
 
     QMutexLocker m_locker(&mutex);
-    m_query->prepare(sql);
+    if (!m_query->prepare(sql)) {
+        qDebug() << "prepares query failed!";
+        return false;
+    }
 
     if (m_query->exec()) {
         while (m_query->next()) {
@@ -412,7 +430,10 @@ bool DSqliteUtil::findRecords(const QList<QString> &key, QList<QMap<QString, QSt
     }
     sql.chop(1);
     sql += " from " + table_name;
-    m_query->prepare(sql);
+    if (!m_query->prepare(sql)) {
+        qDebug() << "prepares query failed!";
+        return false;
+    }
     if (m_query->exec()) {
         while (m_query->next()) {
             QMap<QString, QString> mapRow;
@@ -462,7 +483,10 @@ bool DSqliteUtil::findRecords(const QList<QString> &key, const QMap<QString, QSt
     }
     sql.chop(5);
 //    qDebug() << sql;
-    m_query->prepare(sql);
+    if (!m_query->prepare(sql)) {
+        qDebug() << "prepares query failed!";
+        return false;
+    }
 
     if (m_query->exec()) {
         while (m_query->next()) {
@@ -487,7 +511,10 @@ bool DSqliteUtil::findFontManagerInfoRecords(const QString &table_name)
 {
     // SELECT ID, NAME, SALARY FROM COMPANY;
     QString sql = "select language from " + table_name + " where id = 1";
-    m_query->prepare(sql);
+    if (!m_query->prepare(sql)) {
+        qDebug() << "prepares query failed!";
+        return false;
+    }
 
     if (m_query->exec()) {
         bool ret = false;
@@ -518,9 +545,11 @@ int DSqliteUtil::getRecordCount(const QString &table_name)
     QString sql = "select count(1) from " + table_name;
 //    qDebug() << sql;
     QMutexLocker m_locker(&mutex);
-    m_query->prepare(sql);
-
     int resultCount = 0;
+    if (!m_query->prepare(sql)) {
+        qDebug() << "prepares query failed!";
+        return resultCount;
+    }
     if (m_query->exec()) {
         if (m_query->next()) {
             resultCount = m_query->value(0).toInt();
@@ -544,7 +573,10 @@ QStringList DSqliteUtil::getInstalledFontsPath()
     QString sql = "select filePath from t_fontmanager where isInstalled = 1";
     QStringList installedList;
     QMutexLocker m_locker(&mutex);
-    m_query->prepare(sql);
+    if (!m_query->prepare(sql)) {
+        qDebug() << "prepares query failed!";
+        return installedList;
+    }
     if (m_query->exec()) {
         while (m_query->next()) {
             installedList.append(m_query->value(0).toString());
@@ -568,9 +600,11 @@ int DSqliteUtil::getMaxFontId(const QString &table_name)
     QString sql = "select max(fontId) from " + table_name;
     qDebug() << sql;
     QMutexLocker m_locker(&mutex);
-    m_query->prepare(sql);
-
     int maxFontId = 0;
+    if (!m_query->prepare(sql)) {
+        qDebug() << "prepares query failed!";
+        return maxFontId;
+    }
     if (m_query->exec()) {
         if (m_query->next()) {
             maxFontId = m_query->value(0).toInt();
@@ -638,7 +672,10 @@ fontPreview) values( \
 :fontPreview)";
 
     qDebug() << sql;
-    m_query->prepare(sql);
+    if (!m_query->prepare(sql)) {
+        qDebug() << "prepares query failed!";
+        return;
+    }
 
     QVariantList fontNameList;
     QVariantList isEnabledList;
@@ -728,7 +765,10 @@ void DSqliteUtil::deleteFontInfo(const QList<DFontPreviewItemData> &fontList, co
     sql = "delete from " + table_name +
           " where filePath = :filePath";
     qDebug() << sql;
-    m_query->prepare(sql);
+    if (!m_query->prepare(sql)) {
+        qDebug() << "prepares query failed!";
+        return;
+    }
 
     QVariantList filePathList;
     for (const DFontPreviewItemData &item : fontList) {
@@ -765,7 +805,10 @@ void DSqliteUtil::updateFontInfo(const QList<DFontPreviewItemData> &fontList, co
 
     QString sql = "update " + table_name + " set " + key + " = ? where fontId = ?";
     qDebug() << sql;
-    m_query->prepare(sql);
+    if (!m_query->prepare(sql)) {
+        qDebug() << "prepares query failed!";
+        return;
+    }
 
     QVariantList keyList;
     QVariantList fontIdList;
@@ -826,7 +869,10 @@ void DSqliteUtil::updateSP3FamilyName(const QList<DFontInfo> &fontList, bool inF
     QString sql;
     if (!inFontList) {
         sql = "select filePath from t_fontmanager where fontPreview is NULL and filePath not like \"%/usr/share/fonts/%\"";
-        m_query->prepare(sql);
+        if (!m_query->prepare(sql)) {
+            qDebug() << "prepares query failed!";
+            return;
+        }
 
         if (m_query->exec()) {
             while (m_query->next()) {
@@ -856,7 +902,10 @@ void DSqliteUtil::updateSP3FamilyName(const QList<DFontInfo> &fontList, bool inF
     // update
     sql = "update t_fontmanager set fontPreview = ? where filePath = ?";
     qDebug() << sql;
-    m_query->prepare(sql);
+    if (!m_query->prepare(sql)) {
+        qDebug() << "prepares query failed!";
+        return;
+    }
 
     m_query->addBindValue(keyList);
     m_query->addBindValue(filePathList);
@@ -878,7 +927,10 @@ void DSqliteUtil::checkIfEmpty()
 {
     QString sql = "delete from t_fontmanager where fontName like \"\"";
     QMutexLocker m_locker(&mutex);
-    m_query->prepare(sql);
+    if (!m_query->prepare(sql)) {
+        qDebug() << "prepares query failed!";
+        return;
+    }
     if (!m_query->exec(sql))
         qDebug() << __FUNCTION__ << " not found empty fontName";
     finish();
@@ -898,7 +950,10 @@ bool DSqliteUtil::delAllRecords(const QString &table_name)
     QString sql = "delete from " + table_name;
     qDebug() << sql;
     QMutexLocker m_locker(&mutex);
-    m_query->prepare(sql);
+    if (!m_query->prepare(sql)) {
+        qDebug() << "prepares query failed!";
+        return false;
+    }
 
     if (!m_query->exec()) {
         finish();
