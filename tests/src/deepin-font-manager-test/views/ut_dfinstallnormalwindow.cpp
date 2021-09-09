@@ -21,6 +21,7 @@
 
 #include "views/dfinstallnormalwindow.h"
 #include "views/dfontmgrmainwindow.h"
+#include "fontmanagercore.h"
 
 #include <gtest/gtest.h>
 
@@ -71,7 +72,7 @@ QList<DFontPreviewItemData> stub_getFontModelList()
     data.fontInfo.filePath = "/usr/share/";
     data.fontInfo.familyName = "first";
     data.fontInfo.styleName = "second";
-
+    data.fontData.strFontName = "firstsecond";
     list << data;
     return list;
 }
@@ -153,7 +154,9 @@ QString stub_isFontInfoExist()
 {
     return "f";
 }
-
+void stub_start()
+{
+}
 }
 
 TEST_F(TestDFInstallNormalWindow, checkGetAllSysfiles)
@@ -163,6 +166,7 @@ TEST_F(TestDFInstallNormalWindow, checkGetAllSysfiles)
 
     iw->getAllSysfiles();
     EXPECT_TRUE(iw->m_AllSysFilesfamilyName.contains("firstsecond"));
+    EXPECT_TRUE(iw->m_fontName.contains(QLatin1String("firstsecond")));
 }
 
 TEST_F(TestDFInstallNormalWindow, checkVerifyFontFilesError)
@@ -172,6 +176,7 @@ TEST_F(TestDFInstallNormalWindow, checkVerifyFontFilesError)
     iw->m_installFiles.append("first");
     iw->verifyFontFiles();
     EXPECT_TRUE(iw->m_damagedFiles.contains("first"));
+    EXPECT_TRUE(iw->m_errorList.contains(QLatin1String("first")));
 }
 
 TEST_F(TestDFInstallNormalWindow, checkVerifyFontFilesInstalled)
@@ -185,6 +190,7 @@ TEST_F(TestDFInstallNormalWindow, checkVerifyFontFilesInstalled)
     iw->m_installFiles.append("first");
     iw->verifyFontFiles();
     EXPECT_TRUE(iw->m_installedFiles.contains("first"));
+    EXPECT_TRUE(iw->m_errorList.contains(QLatin1String("first")));
 }
 
 TEST_F(TestDFInstallNormalWindow, checkInlineFunction)
@@ -196,7 +202,6 @@ TEST_F(TestDFInstallNormalWindow, checkInlineFunction)
     EXPECT_TRUE(iw->getFamilyName(info) == "first");
 
     EXPECT_TRUE(iw->getFamilyStyleName(info) == "firstsecond");
-
 }
 
 
@@ -211,6 +216,7 @@ TEST_F(TestDFInstallNormalWindow, checkVerifyFontFilesSystem)
     iw->m_installFiles.append("first");
     iw->verifyFontFiles();
     EXPECT_TRUE(iw->m_systemFiles.contains("first"));
+    EXPECT_TRUE(iw->m_errorList.contains(QLatin1String("first")));
 }
 
 TEST_F(TestDFInstallNormalWindow, checkVerifyFontFilesElse)
@@ -224,8 +230,10 @@ TEST_F(TestDFInstallNormalWindow, checkVerifyFontFilesElse)
     iw->m_installFiles.append("first");
     iw->verifyFontFiles();
     EXPECT_TRUE(iw->m_newInstallFiles.contains("first"));
+    EXPECT_TRUE(iw->m_errorList.isEmpty());
     iw->verifyFontFiles();
     EXPECT_TRUE(iw->m_newInstallFiles.contains("first"));
+    EXPECT_TRUE(iw->m_errorList.isEmpty());
 }
 
 TEST_F(TestDFInstallNormalWindow, checkIfNeedShowExceptionWindow)
@@ -280,6 +288,7 @@ TEST_F(TestDFInstallNormalWindow, checkShowMessageFirst)
     iw->getReInstallMessage = false;
 
     iw->checkShowMessage();
+    EXPECT_TRUE(iw->m_skipStateRecovery);
     EXPECT_TRUE(spy0.count() == 0);
     EXPECT_TRUE(spy1.count() == 1);
     EXPECT_TRUE(spy2.count() == 0);
@@ -294,40 +303,21 @@ TEST_F(TestDFInstallNormalWindow, checkGetNoSameFilesCount)
     s.set(ADDR(DFontInfoManager, getFontInfo), stub_getFontInfoNotInstalled);
 
     iw->getNoSameFilesCount(list);
-}
-
-TEST_F(TestDFInstallNormalWindow, checkResizeEvent)
-{
-    QResizeEvent *e = new QResizeEvent(QSize(), QSize());
-
-    iw->resizeEvent(e);
-    SAFE_DELETE_ELE(e)
-}
-
-TEST_F(TestDFInstallNormalWindow, checkPaintEvent)
-{
-    QPaintEvent *e = new QPaintEvent(QRect());
-
-    iw->paintEvent(e);
-    SAFE_DELETE_ELE(e)
-}
-
-TEST_F(TestDFInstallNormalWindow, checkCloseEvent)
-{
-    QCloseEvent *e = new QCloseEvent();
-
-    iw->closeEvent(e);
-    SAFE_DELETE_ELE(e)
+    EXPECT_TRUE(iw->m_installedFontsFamilyname.contains(QLatin1String("a")));
+    EXPECT_TRUE(iw->m_outfileList.contains(QLatin1String("b")));
 }
 
 TEST_F(TestDFInstallNormalWindow, checkBatchInstall)
 {
     Stub s;
     s.set(ADDR(FontManagerCore, doCmd), stub_docmd);
+    s.set(ADDR(QThread, start), stub_start);
 
     QSignalSpy spy(iw->m_signalManager, SIGNAL(finishFontInstall(const QStringList)));
     iw->m_newInstallFiles.clear();
     iw->batchInstall();
+    EXPECT_TRUE(iw->m_fontManager->m_CacheStatus == FontManagerCore::NoNewFonts);
+    EXPECT_FALSE(iw->getInstallMessage);
     EXPECT_TRUE(spy.count() == 1);
 
     Stub s1;
@@ -335,13 +325,16 @@ TEST_F(TestDFInstallNormalWindow, checkBatchInstall)
 
     iw->m_newInstallFiles.append("first");
     iw->batchInstall();
-
+    EXPECT_TRUE(iw->m_fontManager->m_CacheStatus == FontManagerCore::CacheLater);
+    EXPECT_TRUE(iw->m_fontManager->m_type == FontManagerCore::Install);
+    EXPECT_TRUE(iw->m_skipStateRecovery);
 }
 
 TEST_F(TestDFInstallNormalWindow, checkBatchReInstall)
 {
     Stub s;
     s.set(ADDR(FontManagerCore, doCmd), stub_docmd);
+    s.set(ADDR(QThread, start), stub_start);
 
     Stub s1;
     s1.set(ADDR(DFMDBManager, isFontInfoExist), stub_isFontInfoExist);
@@ -353,21 +346,26 @@ TEST_F(TestDFInstallNormalWindow, checkBatchReInstall)
     list << "first";
 
     iw->batchReInstall(list);
-
+    EXPECT_TRUE(iw->m_fontManager->m_type == FontManagerCore::ReInstall);
+    EXPECT_TRUE(iw->m_fontManager->m_instFileList.contains(QLatin1String("first|")));
 }
 
 TEST_F(TestDFInstallNormalWindow, checkBatchHalfwayInstall)
 {
     Stub s;
     s.set(ADDR(FontManagerCore, doCmd), stub_docmd);
+    s.set(ADDR(QThread, start), stub_start);
 
     QSignalSpy spy(iw->m_signalManager, SIGNAL(updateInstallErrorListview(QStringList &, QStringList &, QStringList &, QStringList &)));
 
     QStringList list;
     list << "first";
 
-    iw->m_newInstallFiles.append("fist");
+    iw->m_newInstallFiles.append("first");
     iw->batchHalfwayInstall(list);
+    EXPECT_TRUE(iw->m_installFiles.contains(QLatin1String("first")));
+    EXPECT_TRUE(iw->m_fontManager->m_type == FontManagerCore::HalfwayInstall);
+    EXPECT_TRUE(iw->m_fontManager->m_CacheStatus == FontManagerCore::CacheLater);
     EXPECT_TRUE(spy.count() == 1);
 
 }
@@ -376,11 +374,14 @@ TEST_F(TestDFInstallNormalWindow, checkBatchReInstallContinue)
 {
     Stub s;
     s.set(ADDR(FontManagerCore, doCmd), stub_docmd);
+    s.set(ADDR(QThread, start), stub_start);
 
     iw->m_installState = DFInstallNormalWindow::InstallState::reinstall;
 
     iw->m_installFiles.append("first");
     iw->batchReInstallContinue();
+    EXPECT_TRUE(iw->m_fontManager->m_type == FontManagerCore::ReInstall);
+    EXPECT_TRUE(iw->m_fontManager->m_instFileList.contains(QLatin1String("first|")));
 }
 
 TEST_F(TestDFInstallNormalWindow, checkOnCancelInstall)
@@ -396,6 +397,7 @@ TEST_F(TestDFInstallNormalWindow, checkOnContinueInstall)
 {
     iw->onContinueInstall(QStringList());
     EXPECT_TRUE(iw->m_skipStateRecovery);
+    EXPECT_TRUE(iw->m_installState == DFInstallNormalWindow::reinstall);
 }
 
 TEST_F(TestDFInstallNormalWindow, checkOnProgressChanged)
@@ -414,6 +416,9 @@ TEST_F(TestDFInstallNormalWindow, checkOnInstallFinished)
 
     iw->onInstallFinished(1, list);
     EXPECT_TRUE(spy.count() == 1) << spy.count();
+    EXPECT_TRUE(iw->m_installState == DFInstallNormalWindow::Install);
+    EXPECT_TRUE(iw->m_outfileList.count() == 1);
+    EXPECT_TRUE(iw->m_installedFontsFamilyname.count() == 1);
 }
 
 TEST_F(TestDFInstallNormalWindow, checkOnReInstallFinished)
@@ -424,6 +429,8 @@ TEST_F(TestDFInstallNormalWindow, checkOnReInstallFinished)
     list << "first";
     iw->getInstallMessage = true;
     iw->onReInstallFinished(0, list);
+    EXPECT_TRUE(iw->m_installState == DFInstallNormalWindow::reinstall);
+    EXPECT_FALSE(iw->getReInstallMessage);
     EXPECT_TRUE(spy.count() == 1) << spy.count();
 }
 
@@ -440,6 +447,8 @@ TEST_F(TestDFInstallNormalWindow, checkshowInstallErrDlg)
 
     iw->showInstallErrDlg();
     iw->disconnect();
+    EXPECT_TRUE(iw->m_popedInstallErrorDialg);
+    EXPECT_TRUE(iw->m_pexceptionDlg != nullptr);
 }
 
 TEST_F(TestDFInstallNormalWindow, checksetAddBtnHasTabs)
@@ -463,6 +472,7 @@ TEST_F(TestDFInstallNormalWindow, checkBreakInstalltion)
 
     iw->m_pexceptionDlg = new DFInstallErrorDialog();
     iw->breakInstalltion();
+    EXPECT_TRUE(iw->m_pexceptionDlg == nullptr);
 }
 
 TEST_F(TestDFInstallNormalWindow, checkKeyPressEvent)

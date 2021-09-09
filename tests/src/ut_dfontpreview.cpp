@@ -20,13 +20,14 @@
 */
 
 #include "dfontpreviewer.h"
-
+#include "dfontpreviewlistdatathread.h"
 #include "utils.h"
 
 #include <QPainter>
 #include <QPaintEvent>
 #include <QRect>
 #include <QRawFont>
+#include <QDir>
 
 #include <DPalette>
 #include <DApplicationHelper>
@@ -62,6 +63,27 @@ public:
 
 };
 
+static QString g_funcname;
+void stub_drawText(const QRect &, int, const QString &, QRect *)
+{
+    g_funcname = __FUNCTION__;
+}
+bool stub_remove()
+{
+    g_funcname = __FUNCTION__;
+    return true;
+}
+bool stub_removeRecursively()
+{
+    return true;
+}
+QStringList stub_getInstalledFontsPath()
+{
+    QStringList installedList;
+    installedList.append("/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf");
+    installedList.append("/usr/share/fonts/truetype/lohit-devanagari/Lohit-Devanagari.ttf");
+    return installedList;
+}
 }
 
 TEST_F(TestDFontPreviewer, checkInitData)
@@ -73,10 +95,10 @@ TEST_F(TestDFontPreviewer, checkInitData)
 
 bool TestDFontPreviewer::stub_supportsCharacter(QChar character)
 {
-    if(cuntch == 0){
+    if (cuntch == 0) {
         cuntch++;
         return false;
-    }else {
+    } else {
         return true;
     }
 }
@@ -101,33 +123,29 @@ TEST_F(TestDFontPreviewer, checkOnPreviewFontChanged)
 
 TEST_F(TestDFontPreviewer, checkPaintevent)
 {
+    Stub st;
+    st.set((void (QPainter::*)(const QRect &, int, const QString &, QRect * br))ADDR(QPainter, drawText), stub_drawText);
     QRect r;
     QPaintEvent *p = new QPaintEvent(r);
     fm->paintEvent(p);
-
     SAFE_DELETE_ELE(p)
+    EXPECT_TRUE(g_funcname == QLatin1String("stub_drawText"));
 }
 
 
 TEST_F(TestDFontPreviewer, removeUserAddFonts)
 {
 
-   GetFontListWorker getFontList(GetFontListWorker::AllInSquence);
-   getFontList.removeUserAddFonts();
+    GetFontListWorker getFontList(GetFontListWorker::AllInSquence);
+    g_funcname.clear();
+    getFontList.removeUserAddFonts();
+    EXPECT_TRUE(g_funcname.isEmpty());
 
-   Stub st;
-   st.set((bool (DFMDBManager::*)(const QString &filePath))ADDR(DFMDBManager, isSystemFont), ADDR(TestDFontPreviewer, stub_bool));
-   st.set((bool (QStringList::*)(const QString &str, Qt::CaseSensitivity cs) const)ADDR(QStringList, contains), ADDR(TestDFontPreviewer, stub_bool));
-   getFontList.removeUserAddFonts();
-
+    Stub st;
+    st.set((bool(QFile::*)())ADDR(QFile, remove), stub_remove);
+    st.set(ADDR(QDir, removeRecursively), stub_removeRecursively);
+    st.set(ADDR(DSqliteUtil, getInstalledFontsPath), stub_getInstalledFontsPath);
+    DFontPreviewListDataThread::instance()->m_allFontPathList = QStringList(QString("/usr/share/myfonts/X11/Type1/c0648bt_.pfb"));
+    getFontList.removeUserAddFonts();
+    EXPECT_TRUE(g_funcname == QLatin1String("stub_remove"));
 }
-
-
-
-
-
-
-
-
-
-

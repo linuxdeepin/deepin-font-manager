@@ -516,7 +516,7 @@ void DFontPreviewListView::updateModel(int deleteCount, bool showSpinner)
     delete m_fontPreviewItemModel;
     delete m_fontPreviewProxyModel;
 
-    m_fontPreviewItemModel = new QStandardItemModel;
+    m_fontPreviewItemModel = new QStandardItemModel(this);
     m_fontPreviewItemModel->setColumnCount(1);
     m_fontPreviewProxyModel = new DFontPreviewProxyModel(this);
     m_fontPreviewProxyModel->setSourceModel(m_fontPreviewItemModel);

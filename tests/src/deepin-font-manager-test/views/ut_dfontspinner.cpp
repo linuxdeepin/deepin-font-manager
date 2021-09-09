@@ -31,6 +31,7 @@
 #include <QVBoxLayout>
 #include <QApplication>
 #include <QDebug>
+#include <QTimer>
 
 #include <DFontSizeManager>
 
@@ -52,32 +53,61 @@ protected:
     QWidget *w = new QWidget;
     DFontSpinner *fs;
 };
+static QString g_funcname;
+void stub_start(void *)
+{
+    g_funcname = __FUNCTION__;
+}
+
+void stub_stop()
+{
+    g_funcname = __FUNCTION__;
+}
+void stub_addEllipse(void *, const QRectF &)
+{
+    g_funcname = __FUNCTION__;
+}
+void stub_clear(void *)
+{
+    g_funcname = __FUNCTION__;
+}
 }
 
 
 TEST_F(TestDFontSpinner, checkStart)
 {
-    fs->start();
+    Stub s;
+    s.set((void(QTimer::*)())ADDR(QTimer, start), stub_start);
+    s.set(ADDR(QTimer, stop), stub_stop);
 
+    fs->start();
+    EXPECT_TRUE(g_funcname == QLatin1String("stub_start"));
     fs->stop();
+    EXPECT_TRUE(g_funcname == QLatin1String("stub_stop"));
 }
 
 TEST_F(TestDFontSpinner, checkPaintEvent)
 {
+    Stub s;
+    s.set((void(QPainterPath::*)(const QRectF &))ADDR(QPainterPath, addEllipse), stub_addEllipse);
+
     QRect f;
-
     QPaintEvent *paint = new QPaintEvent(f);
-
     fs->paintEvent(paint);
     SAFE_DELETE_ELE(paint)
+    EXPECT_TRUE(g_funcname == QLatin1String("stub_addEllipse"));
 }
 
 
 TEST_F(TestDFontSpinner, checkChangeEvent)
 {
+    Stub s;
+    s.set((void(QList<QList<QColor>>::*)())ADDR(QList<QList<QColor>>, clear), stub_clear);
+
     QEvent *e = new QEvent(QEvent::PaletteChange);
     fs->changeEvent(e);
     SAFE_DELETE_ELE(e)
+    EXPECT_TRUE(g_funcname == QLatin1String("stub_clear"));
 }
 
 

@@ -27,6 +27,9 @@
 #include "../third-party/stub/stub.h"
 //#include "commonheaderfile.h"
 
+
+#include <QSignalSpy>
+
 namespace {
 class TestGetUserAddFontThread : public testing::Test
 {

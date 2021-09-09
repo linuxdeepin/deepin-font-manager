@@ -243,7 +243,7 @@ TEST_P(TestcheckStyleNameFirst, checkStyleName_Is_Normal)
 
     dfm->checkStyleName(f);
     qDebug() << f.psname << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << f.styleName;
-    ASSERT_EQ(f.psname, f.styleName);
+    EXPECT_EQ(f.psname, f.styleName);
 }
 
 INSTANTIATE_TEST_CASE_P(HandleTrueReturn, TestcheckStyleNameFirst, testing::Values("Regular", "Bold", "Light", "Thin", "ExtraLight", "ExtraBold",

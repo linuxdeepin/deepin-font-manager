@@ -180,12 +180,10 @@ TEST_F(TestDFInstallErrorListView, checkLengthAutoFeed)
     str.fill('a', 200);
 
     str = iEListview->m_errorListItemDelegate->lengthAutoFeed(p, str, 50);
-    qDebug() << str << endl;
+    EXPECT_TRUE(str.contains(QLatin1String("...")));
 
     SAFE_DELETE_ELE(p)
 }
-
-
 
 TEST_F(TestDFInstallErrorListView, checkEventFilter)
 {

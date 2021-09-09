@@ -52,13 +52,29 @@ protected:
     QWidget *w = new QWidget;
     DFontSpinnerWidget *fsp;
 };
+
+static QString g_funcname;
+void stub_start(void *)
+{
+    g_funcname = __FUNCTION__;
+}
+
+void stub_stop()
+{
+    g_funcname = __FUNCTION__;
+}
 }
 
 TEST_F(TestDFontSpinnerWidget, checkStartAndStop)
 {
-    fsp->spinnerStart();
+    Stub s;
+    s.set(ADDR(DFontSpinner, stop), stub_stop);
+    s.set(ADDR(DFontSpinner, start), stub_start);
 
+    fsp->spinnerStart();
+    EXPECT_TRUE(g_funcname == QLatin1String("stub_start"));
     fsp->spinnerStop();
+    EXPECT_TRUE(g_funcname == QLatin1String("stub_stop"));
 }
 
 TEST_F(TestDFontSpinnerWidget, checkSetStyles)

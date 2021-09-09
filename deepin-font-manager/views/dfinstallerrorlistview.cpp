@@ -762,7 +762,7 @@ void DFInstallErrorListView::initModel(bool newOne)
     }
 
     if (newOne)
-        m_errorListSourceModel = new QStandardItemModel();
+        m_errorListSourceModel = new QStandardItemModel(this);
 }
 
 /*************************************************************************

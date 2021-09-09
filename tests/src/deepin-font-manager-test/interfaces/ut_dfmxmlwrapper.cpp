@@ -25,7 +25,7 @@
 
 #include <QFile>
 
-int cnt = 0;
+static int cnt = 0;
 namespace {
 class TestDFMXmlWrapper: public testing::Test
 {
@@ -106,6 +106,7 @@ TEST_F(TestDFMXmlWrapper, checkGetNodeByName)
         QDomElement rootDomElement = doc.documentElement();
         QDomElement nodeDomElement;
         EXPECT_TRUE(xmlWrapper->getNodeByName(rootDomElement, "patelt", nodeDomElement));
+        EXPECT_TRUE("patelt"==nodeDomElement.tagName());
     } while (false);
 }
 
@@ -113,7 +114,7 @@ TEST_F(TestDFMXmlWrapper, checkGetNodeByName)
 TEST_F(TestDFMXmlWrapper, checkAddNodesWithTextList)
 {
     QFile file("./doctest.xml");
-    if (!file.open(QIODevice::ReadWrite)) {
+    if (!file.open(QIODevice::ReadWrite|QIODevice::Truncate)) {
         return ;
     }
 
@@ -128,7 +129,8 @@ TEST_F(TestDFMXmlWrapper, checkAddNodesWithTextList)
     nodeatt.insert("1", "A");
     QList<QSTRING_MAP> nodeAttributeList;
     nodeAttributeList.append(nodeatt);
-    xmlWrapper->addNodesWithText("./doctest.xml", "parentNode", nodelist, nodeAttributeList, "nodeEnd");
+    EXPECT_TRUE(xmlWrapper->addNodesWithText("./doctest.xml", "parentNode", nodelist, nodeAttributeList, "nodeEnd"));
+    file.remove();
 }
 
 
@@ -139,6 +141,7 @@ bool TestDFMXmlWrapper::stub_exists()
 
 bool stub_gexists(const QString &fileName)
 {
+    Q_UNUSED(fileName)
     return false;
 }
 

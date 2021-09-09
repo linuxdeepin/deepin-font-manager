@@ -58,14 +58,13 @@ TEST_F(TestDFontBaseDialog, checkSetIconPixmap)
 
     fm->setIconPixmap(map);
 
-    EXPECT_TRUE(fm->m_logoIcon->pixmap()->size() == QSize(32, 32));
-//    EXPECT_TRUE(fm->getContent() != nullptr);
+    EXPECT_TRUE(*fm->m_logoIcon->pixmap() == map);
 }
 
 TEST_F(TestDFontBaseDialog, checkGetCloseButton)
 {
     DWindowCloseButton *b = fm->getCloseButton();
-    EXPECT_TRUE(b != nullptr);
+    EXPECT_TRUE(b == fm->m_closeButton);
 }
 
 TEST_F(TestDFontBaseDialog, checkSetLogoVisable)
@@ -84,7 +83,8 @@ TEST_F(TestDFontBaseDialog, checkSetTitle)
 
 TEST_F(TestDFontBaseDialog, checkGetContentLayout)
 {
-    EXPECT_TRUE(fm->getContentLayout() != nullptr);
+    QLayout * vbl = fm->getContentLayout();
+    EXPECT_TRUE(fm->m_contentLayout == vbl);
 }
 
 TEST_F(TestDFontBaseDialog, checkAddContent)

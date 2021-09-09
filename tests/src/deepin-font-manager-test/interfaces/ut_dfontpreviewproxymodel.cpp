@@ -68,10 +68,11 @@ TEST_F(TestDFontPreviewProxyModel, checkSetFilterFontNamePattern)
 
 TEST_F(TestDFontPreviewProxyModel, checkIsFontNameContainsPattern)
 {
+    fpm->m_fontNamePattern = "";
     EXPECT_TRUE(fpm->isFontNameContainsPattern("aaa"));
 
-    fpm->setFilterFontNamePattern("qqq");
-    EXPECT_TRUE(fpm->isFontNameContainsPattern("qqq"));
+    fpm->m_fontNamePattern = "qqq";
+    EXPECT_TRUE(fpm->isFontNameContainsPattern("aqqqa"));
 }
 
 TEST_F(TestDFontPreviewProxyModel, checkFilterAcceptsRow)

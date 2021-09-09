@@ -53,8 +53,6 @@ protected:
     void initConnections();
     //用于nametitle的第三行判断，由AutoFeed调用
     QString adaptiveLengthForNameTitle(QFontMetrics fm, QString thirdLineText, int lineWidth);
-    //大小变化处理函数
-    void resizeEvent(QResizeEvent *event) override;
     //重新实现键盘press事件-信息页面打开快捷键关闭本窗口
     void keyPressEvent(QKeyEvent *ev) override;
     //自适应变化信息详情页面高度

@@ -43,6 +43,7 @@
 #include <DFontSizeManager>
 #include <DTipLabel>
 #include <DScrollArea>
+#include <DCheckBox>
 
 namespace {
 class TestDFDeleteDialog : public testing::Test
@@ -69,14 +70,22 @@ DGuiApplicationHelper::ColorType stub_themeType()
     return DGuiApplicationHelper::DarkType;
 }
 
+DGuiApplicationHelper::ColorType stub_themeType2()
+{
+    return DGuiApplicationHelper::LightType;
+}
+
 TEST_F(TestDFDeleteDialog, checksetTheme)
 {
+    Stub s1;
+    s1.set(ADDR(DGuiApplicationHelper, themeType), stub_themeType);
     fm->setTheme();
-    fm->onFontChanged(QFont());
-    Stub st;
-    st.set(ADDR(DGuiApplicationHelper, themeType), stub_themeType);
+    EXPECT_TRUE(DApplicationHelper::instance()->palette(fm).color(DPalette::Background) == QColor(25, 25, 25, 80));
 
+    Stub s2;
+    s2.set(ADDR(DGuiApplicationHelper, themeType), stub_themeType2);
     fm->setTheme();
+    EXPECT_TRUE(DApplicationHelper::instance()->palette(fm).color(DPalette::Background) == QColor(247, 247, 247, 80));
 }
 
 TEST_F(TestDFDeleteDialog, checkConnect)
@@ -130,13 +139,15 @@ TEST_F(TestDFDeleteDialog, getDeleting)
     DFDeleteTTCDialog *fm1 = new DFDeleteTTCDialog(w1, "");
     QFont font;
     fm->onFontChanged(font);
-    fm1->getAapplyToAll();
+    EXPECT_TRUE(fm->messageDetail->sizePolicy() == QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
+    fm1->m_bAapplyToAll = false;
+    EXPECT_FALSE(fm1->getAapplyToAll());
     fm1->onFontChanged(font);
-
     QKeyEvent *kev = new QKeyEvent(QEvent::KeyPress, Qt::Key_Return, Qt::NoModifier);
     fm1->initMessageDetail();
+    EXPECT_TRUE(fm1->applyAllCkb->text() == "Apply to all selected font families");
     fm1->eventFilter((QObject *)fm1->applyAllCkb, kev);
-
+    EXPECT_TRUE(fm1->m_bAapplyToAll);
     fm1->eventFilter((QObject *)fm1, kev);
     fm1->keyPressEvent(kev);
     SAFE_DELETE_ELE(kev);
@@ -144,10 +155,13 @@ TEST_F(TestDFDeleteDialog, getDeleting)
     fm1->keyPressEvent(kev);
     SAFE_DELETE_ELE(kev);
     SAFE_DELETE_ELE(fm1);
+
     bool isEnable = false;
     DFDisableTTCDialog *fm2 = new DFDisableTTCDialog(w1, "", isEnable);
-    fm2->getAapplyToAll();
-    fm2->getDeleting();
+    fm2->m_bAapplyToAll = true;
+    EXPECT_TRUE(fm2->getAapplyToAll());
+    fm2->m_confirm = false;
+    EXPECT_FALSE(fm2->getDeleting());
     kev = new QKeyEvent(QEvent::KeyPress, Qt::Key_Return, Qt::NoModifier);
     fm2->eventFilter((QObject *)fm2->applyAllCkb, kev);
     fm2->eventFilter((QObject *)fm2, kev);
@@ -156,12 +170,15 @@ TEST_F(TestDFDeleteDialog, getDeleting)
     SAFE_DELETE_ELE(kev);
     kev = new QKeyEvent(QEvent::KeyPress, Qt::Key_Escape, Qt::NoModifier);
     fm2->keyPressEvent(kev);
-
+    EXPECT_TRUE(fm2->messageTitle->text().contains(QLatin1String("disabled")));
     fm2->initMessageTitle();
+
     SAFE_DELETE_ELE(fm2);
     isEnable = true;
     fm2 = new DFDisableTTCDialog(w1, "", isEnable);
+//    fm2->m_isEnable=true;
     fm2->initMessageTitle();
+    EXPECT_TRUE(fm2->messageTitle->text().contains(QLatin1String("enabled")));
     SAFE_DELETE_ELE(fm2);
     SAFE_DELETE_ELE(w1);
     SAFE_DELETE_ELE(kev);

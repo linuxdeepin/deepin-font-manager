@@ -86,7 +86,7 @@ QString stub_string()
 
 }
 
-TEST_F(TestDFontPreviewItemDelegate, checkPaintBackgroundSelectAndTabfocus)
+TEST_F(TestDFontPreviewItemDelegate, checkPaint)
 {
     QStandardItemModel *m_fontPreviewItemModel = new QStandardItemModel;
     m_fontPreviewItemModel->setColumnCount(1);
@@ -110,7 +110,7 @@ TEST_F(TestDFontPreviewItemDelegate, checkPaintBackgroundSelectAndTabfocus)
 
     m_fontPreviewItemModel->setData(index, QVariant::fromValue(fdata), Qt::DisplayRole);
 
-    qDebug() << m_fontPreviewItemModel->setData(index, QVariant(qint8(30)), DFontPreviewItemDelegate::FontPreviewRole);
+    m_fontPreviewItemModel->setData(index, QVariant(qint8(30)), DFontPreviewItemDelegate::FontPreviewRole);
 
     Stub s1;
     s1.set(ADDR(DFontPreviewListDataThread, getFontModelList), stub_getFontModeList);
@@ -129,8 +129,6 @@ TEST_F(TestDFontPreviewItemDelegate, checkPaintBackgroundSelectAndTabfocus)
 
     option.state.setFlag(QStyle::State_None);
     DfpDelegate->paint(p, option, index);
-
-
 }
 
 
@@ -151,20 +149,20 @@ TEST_F(TestDFontPreviewItemDelegate, paintForegroundCollectIcon)
     QStyleOptionViewItem stypelopeitem;
     FontData fontData;
     fontData.setHoverState(IconStatus::IconHover);
-    DfpDelegate->paintForegroundCollectIcon(&painter,stypelopeitem, fontData);
+    DfpDelegate->paintForegroundCollectIcon(&painter, stypelopeitem, fontData);
 
     fontData.setHoverState(IconStatus::IconPress);
-    DfpDelegate->paintForegroundCollectIcon(&painter,stypelopeitem, fontData);
+    DfpDelegate->paintForegroundCollectIcon(&painter, stypelopeitem, fontData);
 
     fontData.setHoverState(IconStatus::IconNormal);
     fontData.setCollected(true);
-    DfpDelegate->paintForegroundCollectIcon(&painter,stypelopeitem, fontData);
+    DfpDelegate->paintForegroundCollectIcon(&painter, stypelopeitem, fontData);
 }
 
 
 TEST_F(TestDFontPreviewItemDelegate, adjustPreviewRect)
 {
-    DfpDelegate->adjustPreviewRect(QRect(0, 0,0,0));
+    DfpDelegate->adjustPreviewRect(QRect(0, 0, 0, 0));
 }
 
 

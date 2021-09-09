@@ -59,36 +59,55 @@ protected:
 public:
     void stub_process();
     QStringList stub_positionalArguments() const;
-    bool stub_isFontMimeType(const QString & filepath);
+    bool stub_isFontMimeType(const QString &filepath);
 };
+
+static QString g_funcname;
+void stub_show()
+{
+    g_funcname = __FUNCTION__;
+}
+void stub_activateWindow()
+{
+    g_funcname = __FUNCTION__;
+}
 }
 TEST_F(TestSingleFontApplication, activateWindow)
 {
+    Stub s;
+    s.set(ADDR(QWidget, show), stub_show);
+    s.set(ADDR(QWidget, activateWindow), stub_activateWindow);
+
     int argc = 0;
     char **argv = nullptr;
     fm = new SingleFontApplication(argc, argv);
-    qWarning()<<fm->m_selectedFiles;
     fm->slotBatchInstallFonts();
+    EXPECT_TRUE(g_funcname == QLatin1String("stub_show"));
+
     fm->activateWindow();
+    EXPECT_TRUE(g_funcname == QLatin1String("stub_activateWindow"));
+
     QStringList fontlist;
     fontlist << "11";
     fm->installFonts(fontlist);
+    EXPECT_TRUE(g_funcname == QLatin1String("stub_activateWindow"));
+
+    fm->m_selectedFiles << "1" << "2";
     fm->onFontInstallFinished(fontlist);
+    EXPECT_TRUE(fm->m_selectedFiles.isEmpty());
 
     Stub st;
     st.set((void (QCommandLineParser::*)(const QCoreApplication &))ADDR(QCommandLineParser, process), ADDR(TestSingleFontApplication, stub_process));
-    fm->parseCmdLine(true);
+    EXPECT_TRUE(fm->parseCmdLine(true));
 
-    fm->parseCmdLine(false);
+    EXPECT_TRUE(fm->parseCmdLine(false));
 
-    st.set((QStringList (QCommandLineParser::*)() const)ADDR(QCommandLineParser, positionalArguments), ADDR(TestSingleFontApplication, stub_positionalArguments));
-    fm->parseCmdLine(false);
+    st.set((QStringList(QCommandLineParser::*)() const)ADDR(QCommandLineParser, positionalArguments), ADDR(TestSingleFontApplication, stub_positionalArguments));
+    EXPECT_FALSE(fm->parseCmdLine(false));
 
     st.set(ADDR(Utils, isFontMimeType), ADDR(TestSingleFontApplication, stub_isFontMimeType));
-    fm->parseCmdLine(false);
-
-
-    qWarning()<< qApp->instance();
+    EXPECT_TRUE(fm->parseCmdLine(false));
+    EXPECT_EQ(fm->m_selectedFiles.count(), 2);
     //fm->quit();
 }
 
@@ -97,7 +116,7 @@ void TestSingleFontApplication::stub_process()
     return ;
 }
 
-bool TestSingleFontApplication::stub_isFontMimeType(const QString & filepath)
+bool TestSingleFontApplication::stub_isFontMimeType(const QString &filepath)
 {
     return true;
 }
@@ -108,17 +127,4 @@ QStringList TestSingleFontApplication::stub_positionalArguments() const
     return liststr << "111" << "222";
 }
 
-TEST_F(TestSingleFontApplication, parseCmdLine)
-{
-
-}
-
-
-TEST_F(TestSingleFontApplication, slotBatchInstallFonts)
-{
-
-SignalManager *signalmanager = new SignalManager();
-
-delete signalmanager;
-}
 

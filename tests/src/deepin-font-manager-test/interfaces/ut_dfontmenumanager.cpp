@@ -57,7 +57,6 @@ TEST_F(TestDFontMenuManager, checkCreateToolBarSettingsMenu)
     EXPECT_FALSE(menu->isEmpty());
     //有一行分割线
     EXPECT_TRUE(fm->m_fontToolsBarMenus.count() == 1);
-//    delete fm;
 
     DFontMenuManager::FMenuItem *item = new DFontMenuManager::FMenuItem(DApplication::translate("Menu", "Add font"),
                                                                         DFontMenuManager::MenuAction::M_AddFont, true, false);
@@ -66,6 +65,7 @@ TEST_F(TestDFontMenuManager, checkCreateToolBarSettingsMenu)
                                                              DFontMenuManager::MenuAction::M_AddFont, false, false));
     fm->m_fontToolBarMenuData.append(item);
     menu = fm->createToolBarSettingsMenu();
+    EXPECT_TRUE(fm->m_fontToolBarMenuData.count() == 5);
 }
 
 TEST_F(TestDFontMenuManager, checkCreateRightKeyMenu)
@@ -83,6 +83,7 @@ TEST_F(TestDFontMenuManager, checkCreateRightKeyMenu)
                                                              DFontMenuManager::MenuAction::M_AddFont, false, false));
     fm->m_fontRightMenuData.append(item);
     menu = fm->createRightKeyMenu();
+    EXPECT_FALSE(fm->m_fontRightKeyMenus.value(DFontMenuManager::MenuAction::M_AddFont)->fGroupSubMenu);
 }
 
 TEST_F(TestDFontMenuManager, checkOnRightKeyMenuPopup)
@@ -102,7 +103,13 @@ TEST_F(TestDFontMenuManager, checkOnRightKeyMenuPopup)
     EXPECT_FALSE(fm->getActionByMenuAction(DFontMenuManager::M_ExportFont,
                                            DFontMenuManager::MenuType::RightKeyMenu)->isEnabled());
 
+    data.fontData.setCollected(false);
+    data.fontData.setEnabled(true);
     fm->onRightKeyMenuPopup(data, false, false, false);
+    EXPECT_FALSE(fm->getActionByMenuAction(DFontMenuManager::M_DeleteFont,
+                                           DFontMenuManager::MenuType::RightKeyMenu)->isEnabled());
+    EXPECT_FALSE(fm->getActionByMenuAction(DFontMenuManager::M_ExportFont,
+                                           DFontMenuManager::MenuType::RightKeyMenu)->isEnabled());
 }
 
 TEST_F(TestDFontMenuManager, checkGetActionByMenuAction)

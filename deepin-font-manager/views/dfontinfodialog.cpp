@@ -265,21 +265,6 @@ void DFontInfoDialog::initConnections()
 }
 
 /*************************************************************************
- <Function>      resizeEvent
- <Description>   大小变化处理函数
- <Author>
- <Input>
-    <param1>     event           Description:事件对象
- <Return>        null            Description:null
- <Note>          null
-*************************************************************************/
-void DFontInfoDialog::resizeEvent(QResizeEvent *event)
-{
-    DFontBaseDialog::resizeEvent(event);
-
-}
-
-/*************************************************************************
  <Function>      keyPressEvent
  <Description>   重新实现键盘press事件-信息页面打开快捷键关闭本窗口
  <Author>
