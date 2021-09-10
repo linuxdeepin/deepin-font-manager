@@ -23,7 +23,7 @@
 
 
 ADD_COMPILE_OPTIONS(-fno-access-control)
-SET(CMAKE_CXX_FLAGS "-g -fprofile-arcs -ftest-coverage -fno-inline")
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -fprofile-arcs -ftest-coverage -fno-inline")
 
 #使用cmake -DCMAKE_SAFETYTEST_ARG="CMAKE_SAFETYTEST_ARG_ON" ..
 set(CMAKE_SAFETYTEST "${CMAKE_SAFETYTEST_ARG}")

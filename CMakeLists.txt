@@ -51,6 +51,8 @@ PKG_SEARCH_MODULE(FontConfig REQUIRED fontconfig IMPORTED_TARGET)
 SET(CMAKE_INSTALL_PREFIX /usr)
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall ")
 
+#安全编译参数
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fstack-protector-strong -D_FORTITY_SOURCE=1 -z noexecstack -pie -fPIC -z lazy")
 
 IF (${CMAKE_SYSTEM_PROCESSOR} MATCHES "sw_64")
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mieee")
