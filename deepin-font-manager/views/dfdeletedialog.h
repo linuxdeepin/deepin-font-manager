@@ -101,7 +101,7 @@ class DFDeleteTTCDialog : public DFontBaseDialog
 {
     Q_OBJECT
 public:
-    explicit DFDeleteTTCDialog(DFontMgrMainWindow *win, QString file, QWidget *parent = nullptr);
+    explicit DFDeleteTTCDialog(DFontMgrMainWindow *win, QString &file, QWidget *parent = nullptr);
 
     static constexpr int DEFAULT_WINDOW_W = 380;
     static constexpr int DEFAULT_WINDOW_H = 160;
@@ -151,7 +151,7 @@ class DFDisableTTCDialog : public DFontBaseDialog
 {
     Q_OBJECT
 public:
-    explicit DFDisableTTCDialog(DFontMgrMainWindow *win, QString file, bool &isEnable, QWidget *parent = nullptr);
+    explicit DFDisableTTCDialog(DFontMgrMainWindow *win, QString &file, bool &isEnable, QWidget *parent = nullptr);
 
     static constexpr int DEFAULT_WINDOW_W = 380;
     static constexpr int DEFAULT_WINDOW_H = 160;

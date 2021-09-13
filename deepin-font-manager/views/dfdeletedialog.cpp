@@ -311,7 +311,7 @@ void DFDeleteDialog::setTheme()
     }
 }
 
-DFDeleteTTCDialog::DFDeleteTTCDialog(DFontMgrMainWindow *win, QString file, QWidget *parent)
+DFDeleteTTCDialog::DFDeleteTTCDialog(DFontMgrMainWindow *win, QString &file, QWidget *parent)
     : DFontBaseDialog(parent)
     , m_mainWindow(win)
     , fontset(file)
@@ -474,11 +474,11 @@ QLayout *DFDeleteTTCDialog::initBottomButtons()
     return layout;
 }
 
-DFDisableTTCDialog::DFDisableTTCDialog(DFontMgrMainWindow *win, QString file, bool &isEnable, QWidget *parent)
+DFDisableTTCDialog::DFDisableTTCDialog(DFontMgrMainWindow *win, QString &file, bool &isEnable, QWidget *parent)
     : DFontBaseDialog(parent)
     , m_mainWindow(win)
-    , fontset(file)
     , m_isEnable(isEnable)
+    , fontset(file)
 {
     initUI();
     initConnections();

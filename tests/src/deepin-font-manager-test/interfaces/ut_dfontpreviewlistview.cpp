@@ -74,13 +74,6 @@ public:
     DFontPreviewListView *listview = new DFontPreviewListView();
 };
 
-QWidget *stub_viewport()
-{
-    QWidget *widget = new QWidget;
-    widget->setFixedHeight(120);
-    return widget;
-}
-
 bool stub_False()
 {
     return false;
@@ -90,11 +83,6 @@ bool stub_True()
 {
     qDebug() << "!!!!!!!!!!!11111" << endl;
     return true;
-}
-
-IconStatus stub_getIconStatus()
-{
-    return IconStatus::IconNormal;
 }
 
 void  stub_Return()
@@ -165,13 +153,6 @@ QPoint stub_pos()
     return QPoint(626, 22);
 }
 
-QRect stub_returnRect()
-{
-
-    QRect r(QPoint(623, 23), QSize(10, 10));
-    return r;
-}
-
 QModelIndex stub_indexAt(const QPoint &)
 {
     return QModelIndex(0, 0, nullptr, nullptr);
@@ -192,13 +173,6 @@ DFontPreviewItemData stub_getFontData()
     DFontPreviewItemData data;
     data.fontInfo.filePath = "first";
 
-    return data;
-}
-
-FontData stub_returnFontdata()
-{
-    FontData data;
-    data.fontState = IconStatus::IconNormal;
     return data;
 }
 
@@ -771,13 +745,6 @@ TEST_F(TestDFontPreviewListView, checkOnRightMenuShortCutActivated)
     listview->selectAll();
     listview->m_rightMenu = new QMenu(listview);
     listview->onRightMenuShortCutActivated();
-}
-
-
-QRect stub_getCollectionIconRect(const QRect &)
-{
-    QRect r(QPoint(623, 23), QSize(10, 10));
-    return r;
 }
 
 bool stub_contains(void *, const QPoint &, bool)

@@ -99,7 +99,7 @@ void DFontPreviewer::onPreviewFontChanged()
  <Return>        null            Description:null
  <Note>          null
 *************************************************************************/
-void DFontPreviewer::setPreviewFontPath(const QString font)
+void DFontPreviewer::setPreviewFontPath(const QString &font)
 {
     if (m_fontPath != font) {
         m_fontPath = font;

@@ -109,7 +109,7 @@ public:
     QThread *m_thread;
 
     //静态变量
-    static constexpr char const *FMT_FONT_SIZE = "%dpx";
+    static constexpr char const *FMT_FONT_SIZE = "%1px";
     static constexpr int MIN_FONT_SIZE = 6;
     static constexpr int MAX_FONT_SIZE = 60;
     static constexpr int DEFAULT_FONT_SIZE = FTM_DEFAULT_PREVIEW_FONTSIZE;
@@ -278,7 +278,7 @@ signals:
     //信号-文管中选中系统字体打开
     void fileSelectedInSys(const QStringList &files) const;
     //信号-设置正常安装模式
-    void quickModeInstall(const QStringList files) const;
+    void quickModeInstall(const QStringList &files) const;
     //信号-加载启动过程中未加载的字体完成
     void singalLoadLeftFontsFinsih();
 

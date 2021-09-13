@@ -64,7 +64,7 @@ TEST_F(TestDFontMenuManager, checkCreateToolBarSettingsMenu)
     item->subMenulist.append(new DFontMenuManager::FMenuItem(DApplication::translate("Menu", "Add font"),
                                                              DFontMenuManager::MenuAction::M_AddFont, false, false));
     fm->m_fontToolBarMenuData.append(item);
-    menu = fm->createToolBarSettingsMenu();
+    fm->createToolBarSettingsMenu();
     EXPECT_TRUE(fm->m_fontToolBarMenuData.count() == 5);
 }
 
@@ -82,7 +82,7 @@ TEST_F(TestDFontMenuManager, checkCreateRightKeyMenu)
     item->subMenulist.append(new DFontMenuManager::FMenuItem(DApplication::translate("Menu", "Add font"),
                                                              DFontMenuManager::MenuAction::M_AddFont, false, false));
     fm->m_fontRightMenuData.append(item);
-    menu = fm->createRightKeyMenu();
+    fm->createRightKeyMenu();
     EXPECT_FALSE(fm->m_fontRightKeyMenus.value(DFontMenuManager::MenuAction::M_AddFont)->fGroupSubMenu);
 }
 

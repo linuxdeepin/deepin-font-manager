@@ -136,7 +136,8 @@ TEST_F(TestDFDeleteDialog, checkInitMessageDetail)
 TEST_F(TestDFDeleteDialog, getDeleting)
 {
     DFontMgrMainWindow *w1 = new DFontMgrMainWindow;
-    DFDeleteTTCDialog *fm1 = new DFDeleteTTCDialog(w1, "");
+    QString file;
+    DFDeleteTTCDialog *fm1 = new DFDeleteTTCDialog(w1, file);
     QFont font;
     fm->onFontChanged(font);
     EXPECT_TRUE(fm->messageDetail->sizePolicy() == QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
@@ -157,7 +158,7 @@ TEST_F(TestDFDeleteDialog, getDeleting)
     SAFE_DELETE_ELE(fm1);
 
     bool isEnable = false;
-    DFDisableTTCDialog *fm2 = new DFDisableTTCDialog(w1, "", isEnable);
+    DFDisableTTCDialog *fm2 = new DFDisableTTCDialog(w1, file, isEnable);
     fm2->m_bAapplyToAll = true;
     EXPECT_TRUE(fm2->getAapplyToAll());
     fm2->m_confirm = false;
@@ -175,7 +176,7 @@ TEST_F(TestDFDeleteDialog, getDeleting)
 
     SAFE_DELETE_ELE(fm2);
     isEnable = true;
-    fm2 = new DFDisableTTCDialog(w1, "", isEnable);
+    fm2 = new DFDisableTTCDialog(w1, file, isEnable);
 //    fm2->m_isEnable=true;
     fm2->initMessageTitle();
     EXPECT_TRUE(fm2->messageTitle->text().contains(QLatin1String("enabled")));

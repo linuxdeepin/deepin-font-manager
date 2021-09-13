@@ -77,7 +77,7 @@ QList<DFontPreviewItemData> stub_getFontModelList()
     return list;
 }
 
-DFontInfo  stub_getFontInfoError(const QString filePath)
+DFontInfo  stub_getFontInfoError(const QString &filePath)
 {
     Q_UNUSED(filePath)
 
@@ -89,7 +89,7 @@ DFontInfo  stub_getFontInfoError(const QString filePath)
     return f;
 }
 
-DFontInfo  stub_getFontInfoInstalled(const QString filePath)
+DFontInfo  stub_getFontInfoInstalled(const QString &filePath)
 {
     Q_UNUSED(filePath)
 
@@ -101,7 +101,7 @@ DFontInfo  stub_getFontInfoInstalled(const QString filePath)
     return f;
 }
 
-DFontInfo  stub_getFontInfoNotInstalled(const QString filePath)
+DFontInfo  stub_getFontInfoNotInstalled(const QString &filePath)
 {
     Q_UNUSED(filePath)
 
@@ -133,11 +133,6 @@ bool stub_isSystemFontFalse(DFontInfo &f)
     Q_UNUSED(f)
 
     return false;
-}
-
-void stub_respondToInstallOver()
-{
-    return;
 }
 
 void stub_docmd()

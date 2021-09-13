@@ -37,7 +37,7 @@ using DTK_GUI_NAMESPACE::DSvgRenderer;
  <Return>        FontIconText    Description:返回一个构造字体图标对象
  <Note>          null
 *************************************************************************/
-FontIconText::FontIconText(const QString picPath, QWidget *parent)
+FontIconText::FontIconText(const QString &picPath, QWidget *parent)
     : QWidget(parent)
     , m_picPath(picPath)
     , render(new DSvgRenderer(this))

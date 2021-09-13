@@ -75,11 +75,6 @@ bool stub_copy(void *, const QString &)
     g_funcname = __FUNCTION__;
     return true;
 }
-bool stub_waitForDone(int)
-{
-    g_funcname = __FUNCTION__;
-    return true;
-}
 bool stub_removeRecursively()
 {
     g_funcname = __FUNCTION__;

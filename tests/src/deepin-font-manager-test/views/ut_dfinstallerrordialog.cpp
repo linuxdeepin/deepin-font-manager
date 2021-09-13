@@ -66,7 +66,7 @@ protected:
 
 };
 
-DFontInfo  stub_getFontInfoError(const QString filePath)
+DFontInfo  stub_getFontInfoError(const QString &filePath)
 {
 //    qDebug() << filePath << endl;
     Q_UNUSED(filePath)
@@ -79,7 +79,7 @@ DFontInfo  stub_getFontInfoError(const QString filePath)
     return f;
 }
 
-DFontInfo  stub_getFontInfoInstalled(const QString filePath)
+DFontInfo  stub_getFontInfoInstalled(const QString &filePath)
 {
     Q_UNUSED(filePath)
 
@@ -91,7 +91,7 @@ DFontInfo  stub_getFontInfoInstalled(const QString filePath)
     return f;
 }
 
-DFontInfo  stub_getFontInfo(const QString filePath)
+DFontInfo  stub_getFontInfo(const QString &filePath)
 {
     Q_UNUSED(filePath)
 

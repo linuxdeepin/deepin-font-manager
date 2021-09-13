@@ -149,10 +149,10 @@ DFontInfoManager *DFontInfoManager::instance()
 
 DFontInfoManager::DFontInfoManager(QObject *parent)
     : QObject(parent)
+    , m_strSysLanguage(QLocale::system().name())
 {
     //Should not be called in constructor
     //refreshList();
-    m_strSysLanguage = QLocale::system().name();
 
     QMap<QString, ushort> langmap;
     langmap.insert("zh_HK", TT_MS_LANGID_CHINESE_HONG_KONG);

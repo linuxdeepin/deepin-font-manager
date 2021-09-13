@@ -580,8 +580,7 @@ void DFontMgrMainWindow::respondToValueChanged(int value)
 {
     D_D(DFontMgrMainWindow);
     m_previewFontSize = static_cast<qint8>(value);
-    QString fontSizeText;
-    fontSizeText.sprintf(FMT_FONT_SIZE, value);
+    QString fontSizeText = QString(FMT_FONT_SIZE).arg(value);
     //d->fontSizeLabel->setText(fontSizeText);
     //调节右下角字体大小显示label显示内容/*UT000539*/
     autoLabelWidth(fontSizeText, d->fontSizeLabel, d->fontSizeLabel->fontMetrics());
@@ -918,8 +917,7 @@ void DFontMgrMainWindow::initStateBar()
     DFontSizeManager::instance()->bind(d->fontSizeLabel, DFontSizeManager::T6);
     // d->fontSizeLabel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     // Init the default font size
-    QString defaultFontSize;
-    defaultFontSize.sprintf(FMT_FONT_SIZE, DEFAULT_FONT_SIZE);
+    QString defaultFontSize = QString(FMT_FONT_SIZE).arg(DEFAULT_FONT_SIZE);
 
     //调节右下角字体大小显示label显示内容/*UT000539*/
     autoLabelWidth(defaultFontSize, d->fontSizeLabel, d->fontSizeLabel->fontMetrics());

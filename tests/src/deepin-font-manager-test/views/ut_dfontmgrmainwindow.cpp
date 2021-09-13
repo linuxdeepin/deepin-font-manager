@@ -217,16 +217,6 @@ QStringList stub_getInstalledFontsPath()
 
 }
 
-QStringList stub_getAllFontPath()
-{
-
-    QStringList list;
-    list << "second";
-
-    return list;
-
-}
-
 QAction *stub_exec(const QPoint &pos, QAction *at = nullptr)
 {
     Q_UNUSED(pos)

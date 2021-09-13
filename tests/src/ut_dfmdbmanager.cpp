@@ -96,18 +96,13 @@ bool stub_findRecords(const QList<QString> &, const QMap<QString, QString> &,
     g_funcname = __FUNCTION__;
     return true;
 }
-void stub_appendAllKeys(void *, QList<QString> &keyList)
-{
-    keyList.append("fontId");
-    keyList.append("fontName");
-}
+
 bool stub_findAllRecords(void *, const QList<QString> &, QList<QMap<QString, QString>> &row, const QString &)
 {
     QMap<QString, QString> mapRow;
     mapRow.insert("fontId", "1");
     mapRow.insert("fontName", "1Font");
     row.append(mapRow);
-    mapRow.value("fondId");
     return true;
 }
 DFontPreviewItemData stub_parseRecordToItemData(void *, const QMap<QString, QString> &record)
@@ -171,7 +166,6 @@ TEST_F(TestDFMDBManager, checkGetAllFontInfo)
     Stub s;
     s.set(ADDR(DSqliteUtil, findAllRecords), stub_findAllRecords);
     s.set(ADDR(DFMDBManager, parseRecordToItemData), stub_parseRecordToItemData);
-//    s.set(ADDR(DFMDBManager, appendAllKeys), stub_appendAllKeys);
     typedef bool (QFileInfo::*fptr)()const;
     fptr A_foo = (fptr)(&QFileInfo::exists);
     s.set(A_foo, stub_exists);

@@ -116,12 +116,6 @@ DFontInfo stub_getFontinfo()
 
     return info;
 }
-
-bool stub_returnTrue()
-{
-    return true;
-}
-
 }
 
 QString stub_returnStr()
@@ -281,6 +275,8 @@ TEST_F(TestDFontInfoManager, checkgetFonts)
     list = dfm->getFonts(DFontInfoManager::Chinese);
 
     list = dfm->getFonts(DFontInfoManager::MonoSpace);
+
+    Q_UNUSED(list)
 }
 
 TEST_F(TestDFontInfoManager, getAllChineseFontCount_is_normal)

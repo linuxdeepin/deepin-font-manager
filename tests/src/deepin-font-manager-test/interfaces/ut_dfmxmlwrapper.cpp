@@ -25,7 +25,6 @@
 
 #include <QFile>
 
-static int cnt = 0;
 namespace {
 class TestDFMXmlWrapper: public testing::Test
 {
@@ -106,7 +105,7 @@ TEST_F(TestDFMXmlWrapper, checkGetNodeByName)
         QDomElement rootDomElement = doc.documentElement();
         QDomElement nodeDomElement;
         EXPECT_TRUE(xmlWrapper->getNodeByName(rootDomElement, "patelt", nodeDomElement));
-        EXPECT_TRUE("patelt"==nodeDomElement.tagName());
+        EXPECT_TRUE("patelt" == nodeDomElement.tagName());
     } while (false);
 }
 
@@ -114,7 +113,7 @@ TEST_F(TestDFMXmlWrapper, checkGetNodeByName)
 TEST_F(TestDFMXmlWrapper, checkAddNodesWithTextList)
 {
     QFile file("./doctest.xml");
-    if (!file.open(QIODevice::ReadWrite|QIODevice::Truncate)) {
+    if (!file.open(QIODevice::ReadWrite | QIODevice::Truncate)) {
         return ;
     }
 
@@ -136,12 +135,6 @@ TEST_F(TestDFMXmlWrapper, checkAddNodesWithTextList)
 
 bool TestDFMXmlWrapper::stub_exists()
 {
-    return false;
-}
-
-bool stub_gexists(const QString &fileName)
-{
-    Q_UNUSED(fileName)
     return false;
 }
 
@@ -207,7 +200,7 @@ TEST_F(TestDFMXmlWrapper, checkAddPatternNodesWithTextList)
 
 
 
-    QString confilename="tmp.config";
+    QString confilename = "tmp.config";
     QFile file(confilename);
     file.open(QIODevice::WriteOnly);
     file.write(confilename.toStdString().data());
@@ -218,7 +211,7 @@ TEST_F(TestDFMXmlWrapper, checkAddPatternNodesWithTextList)
     st.set((bool (QFile::*)() const)ADDR(QFile, exists), ADDR(TestDFMXmlWrapper, stub_exists));
     xmlWrapper->createFontConfigFile(confilename);
 
-    QFile::setPermissions(confilename, QFileDevice::ReadOwner|QFileDevice::WriteOwner);
+    QFile::setPermissions(confilename, QFileDevice::ReadOwner | QFileDevice::WriteOwner);
     QFile::remove(confilename);
 }
 

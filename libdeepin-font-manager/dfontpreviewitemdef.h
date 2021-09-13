@@ -308,7 +308,7 @@ struct DFontPreviewItemData {
                          const QString &_version, const QString &_copyright, const QString &_desc, const QString &_sysVer,
                          const QString &_fullname, const QString &_psname, const QString &_trademark, bool _isInstalled,
                          bool _isError, bool _isSystemFont, bool _isEnabled, bool _isCollected, bool _isChinese,
-                         bool _isMono, const QString &_strFontName, const QString &_sp3FamilyName, QString _strFontId)
+                         bool _isMono, const QString &_strFontName, const QString &_sp3FamilyName, const QString &_strFontId)
         : fontInfo(DFontInfo(_filePath, _familyName, _styleName, _type, _version, _copyright, _desc, _sysVer, _fullname,
                              _psname, _trademark, _isInstalled, _isError, _isSystemFont, _sp3FamilyName))
         , fontData(FontData(_strFontName, _isEnabled, _isCollected, _isChinese, _isMono, _type, fontInfo.isSystemFont))
