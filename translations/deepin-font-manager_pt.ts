@@ -36,25 +36,19 @@
     <name>DFDeleteDialog</name>
     <message>
         <source>Cancel</source>
+        <comment>button</comment>
         <translation>Cancelar</translation>
     </message>
 </context>
 <context>
     <name>DFDeleteTTCDialog</name>
     <message>
-        <source>Apply to all selected font families</source>
-        <translation>Aplicar a todas as famílias de fontes selecionadas</translation>
-    </message>
-    <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be deleted</source>
         <translation>%1 é uma família de fontes, se prosseguir, todas as fontes nela contidas serão eliminadas</translation>
     </message>
     <message>
-        <source>Cancel</source>
-        <translation>Cancelar</translation>
-    </message>
-    <message>
         <source>Delete</source>
+        <comment>button</comment>
         <translation>Eliminar</translation>
     </message>
 </context>
@@ -69,20 +63,25 @@
         <translation>%1 é uma família de fontes, se prosseguir, todas as fontes nela contidas serão desativadas</translation>
     </message>
     <message>
-        <source>Apply to all selected font families</source>
-        <translation>Aplicar a todas as famílias de fontes selecionadas</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Cancelar</translation>
-    </message>
-    <message>
         <source>Enable</source>
+        <comment>button</comment>
         <translation>Ativar</translation>
     </message>
     <message>
         <source>Disable</source>
+        <comment>button</comment>
         <translation>Desativar</translation>
+    </message>
+</context>
+<context>
+    <name>DFHandleTTCDialog</name>
+    <message>
+        <source>Apply to all selected font families</source>
+        <translation type="unfinished">Aplicar a todas as famílias de fontes selecionadas</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Cancelar</translation>
     </message>
 </context>
 <context>
@@ -194,6 +193,7 @@
     </message>
     <message>
         <source>Delete</source>
+        <comment>button</comment>
         <translation>Eliminar</translation>
     </message>
 </context>
@@ -211,16 +211,18 @@
         <translation>Verificação da fonte</translation>
     </message>
     <message>
+        <source>No fonts to be installed</source>
+        <translation>Sem fontes a instalar</translation>
+    </message>
+    <message>
         <source>Exit</source>
+        <comment>button</comment>
         <translation>Sair</translation>
     </message>
     <message>
         <source>Continue</source>
+        <comment>button</comment>
         <translation>Continuar</translation>
-    </message>
-    <message>
-        <source>No fonts to be installed</source>
-        <translation>Sem fontes a instalar</translation>
     </message>
 </context>
 <context>

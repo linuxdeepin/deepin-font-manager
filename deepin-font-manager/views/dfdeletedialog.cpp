@@ -33,6 +33,53 @@
 #include <QHBoxLayout>
 #include <QKeyEvent>
 
+struct NewStr {
+    QStringList strList; //每行的字符串
+    QString resultStr; //添加'\n'后的字符串
+    int fontHeifht = 0; //当前字体的高度
+};
+
+/**
+ * @brief autoCutText 根据字符串长度和pDesLbl宽度适当添加'\n'
+ * @param text
+ * @param pDesLbl
+ * @return
+ */
+NewStr autoCutText(const QString &text, DLabel *pDesLbl)
+{
+    if (text.isNull() || nullptr == pDesLbl) {
+        return NewStr();
+    }
+
+    QFont font; // 应用使用字体对象
+    QFontMetrics font_label(font);
+    QString strText = text;
+    int titlewidth = font_label.width(strText);
+    QString str;
+    NewStr newstr;
+    int width = pDesLbl->width();
+    if (titlewidth < width) {
+        newstr.strList.append(strText);
+        newstr.resultStr += strText;
+    } else {
+        for (int i = 0; i < strText.count(); i++) {
+            str += strText.at(i);
+
+            if (font_label.width(str) > width) { //根据label宽度调整每行字符数
+                str.remove(str.count() - 1, 1);
+                newstr.strList.append(str);
+                newstr.resultStr += str + "\n";
+                str.clear();
+                --i;
+            }
+        }
+        newstr.strList.append(str);
+        newstr.resultStr += str;
+    }
+    newstr.fontHeifht = font_label.height();
+    return newstr;
+}
+
 /*************************************************************************
  <Function>      DFDeleteDialog
  <Description>   构造函数：此类为字体删除确认页面，主要功能为确认删除字体和取消删除字体
@@ -220,11 +267,11 @@ QLayout *DFDeleteDialog::initBottomButtons()
 
     m_cancelBtn = new DPushButton(this);
     m_cancelBtn->setFixedSize(170, 36);
-    m_cancelBtn->setText(DApplication::translate("DFDeleteDialog", "Cancel"));
+    m_cancelBtn->setText(DApplication::translate("DFDeleteDialog", "Cancel", "button"));
 
     m_confirmBtn = new DWarningButton(this);
     m_confirmBtn->setFixedSize(170, 36);
-    m_confirmBtn->setText(DApplication::translate("DeleteConfirmDailog", "Delete"));
+    m_confirmBtn->setText(DApplication::translate("DeleteConfirmDailog", "Delete", "button"));
 
     DVerticalLine *verticalSplite = new DVerticalLine(this);
     DPalette pa = DApplicationHelper::instance()->palette(verticalSplite);
@@ -311,190 +358,25 @@ void DFDeleteDialog::setTheme()
     }
 }
 
-DFDeleteTTCDialog::DFDeleteTTCDialog(DFontMgrMainWindow *win, QString &file, QWidget *parent)
+DFHandleTTCDialog::DFHandleTTCDialog(DFontMgrMainWindow *win, QString &file, QWidget *parent)
     : DFontBaseDialog(parent)
     , m_mainWindow(win)
     , fontset(file)
 {
-    initUI();
-    initConnections();
+
 }
 
-bool DFDeleteTTCDialog::getDeleting()
-{
-    return m_deleting;
-}
-
-bool DFDeleteTTCDialog::getAapplyToAll()
-{
-    return m_bAapplyToAll;
-}
-
-void DFDeleteTTCDialog::onFontChanged(const QFont &font)
-{
-    Q_UNUSED(font);
-//    messageDetail->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    resize(sizeHint());
-}
-
-bool DFDeleteTTCDialog::eventFilter(QObject *watched, QEvent *event)
-{
-    if (watched == applyAllCkb) {
-        if (event->type() == QEvent::KeyPress) {
-            QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
-            if (keyEvent->key() == Qt::Key_Return || keyEvent->key() == Qt::Key_Enter) {
-                applyAllCkb->setChecked(!applyAllCkb->isChecked()); // 应用全部
-                m_bAapplyToAll = applyAllCkb->isChecked();
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            return false;
-        }
-    } else {
-        return DFontBaseDialog::eventFilter(watched, event);
-    }
-}
-
-void DFDeleteTTCDialog::keyPressEvent(QKeyEvent *event)
-{
-    bool received = false;
-    if (event->key() == Qt::Key_Escape) {
-        reject();
-        close();
-        received = true;
-    }
-    if (!received)
-        DFontBaseDialog::keyPressEvent(event);
-}
-
-void DFDeleteTTCDialog::initUI()
-{
-    setFixedWidth(DEFAULT_WINDOW_W);
-
-    initMessageTitle();
-    initMessageDetail();
-    setIconPixmap(Utils::renderSVG("://exception-logo.svg", QSize(32, 32)));
-    QLayout *buttonsLayout = initBottomButtons();
-
-    QVBoxLayout *mainLayout = new QVBoxLayout();
-    mainLayout->setSpacing(0);
-    mainLayout->setContentsMargins(10, 0, 10, 10);
-    mainLayout->addWidget(messageTitle, 0, Qt::AlignCenter);
-    mainLayout->addSpacing(6);
-    mainLayout->addWidget(applyAllCkb, 0, Qt::AlignCenter);
-    mainLayout->addSpacing(16);
-    mainLayout->addLayout(buttonsLayout);
-
-    QWidget *mainFrame = new QWidget(this);
-    mainFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    mainFrame->setLayout(mainLayout);
-
-    //#000794 解决显示不全的问题
-    messageTitle->setMinimumWidth(DEFAULT_WINDOW_W - 20);
-
-    addContent(mainFrame);
-    applyAllCkb->installEventFilter(this);
-}
-
-void DFDeleteTTCDialog::initConnections()
-{
-    connect(m_cancelBtn, &DPushButton::clicked, this, [ = ]() {
-        reject();
-        close();
-//        emit m_signalManager->cancelDel();
-    });
-    connect(m_confirmBtn, &DPushButton::clicked, this, [ = ]() {
-//        if (m_deleting)
-//            return;
-        m_deleting = true;
-        accept();
-        close();
-    });
-
-    connect(applyAllCkb, &DCheckBox::clicked, this, [ = ]() {
-        m_bAapplyToAll = applyAllCkb->isChecked();
-    });
-
-//    connect(qApp, &DApplication::fontChanged, this, &DFDeleteDialog::onFontChanged);
-}
-
-void DFDeleteTTCDialog::initMessageTitle()
-{
-    messageTitle = new DLabel(this);
-    messageTitle->setText(tr("%1 is a font family, if you proceed, all fonts in it will be deleted").arg(fontset));
-
-    /* Bug#21515 UT000591*/
-    messageTitle->setFixedWidth(DEFAULT_WINDOW_W - 22);
-    messageTitle->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
-    messageTitle->setWordWrap(true);
-    messageTitle->setAlignment(Qt::AlignCenter);
-
-    DFontSizeManager::instance()->bind(messageTitle, DFontSizeManager::T6, QFont::Medium);
-    messageTitle->setForegroundRole(DPalette::WindowText);
-}
-
-void DFDeleteTTCDialog::initMessageDetail()
-{
-    applyAllCkb = new DCheckBox(tr("Apply to all selected font families"), this);
-    applyAllCkb->setAccessibleName("Applyall_btn");
-    DFontSizeManager::instance()->bind(applyAllCkb, DFontSizeManager::T6, QFont::Medium);
-}
-
-QLayout *DFDeleteTTCDialog::initBottomButtons()
-{
-    QHBoxLayout *layout = new QHBoxLayout();
-    layout->setSpacing(0);
-    layout->setContentsMargins(0, 0, 0, 0);
-
-    m_cancelBtn = new DPushButton(this);
-    m_cancelBtn->setFixedSize(170, 36);
-    m_cancelBtn->setText(tr("Cancel"));
-
-    m_confirmBtn = new DWarningButton(this);
-    m_confirmBtn->setFixedSize(170, 36);
-    m_confirmBtn->setText(tr("Delete"));
-
-    DVerticalLine *verticalSplite = new DVerticalLine(this);
-    DPalette pa = DApplicationHelper::instance()->palette(verticalSplite);
-    QColor splitColor = pa.color(DPalette::ItemBackground);
-    pa.setBrush(DPalette::Background, splitColor);
-    verticalSplite->setPalette(pa);
-    verticalSplite->setBackgroundRole(QPalette::Background);
-    verticalSplite->setAutoFillBackground(true);
-    verticalSplite->setFixedSize(3, 28);
-
-    layout->addWidget(m_cancelBtn);
-    layout->addSpacing(9);
-    layout->addWidget(verticalSplite);
-    layout->addSpacing(9);
-    layout->addWidget(m_confirmBtn);
-
-    return layout;
-}
-
-DFDisableTTCDialog::DFDisableTTCDialog(DFontMgrMainWindow *win, QString &file, bool &isEnable, QWidget *parent)
-    : DFontBaseDialog(parent)
-    , m_mainWindow(win)
-    , m_isEnable(isEnable)
-    , fontset(file)
-{
-    initUI();
-    initConnections();
-}
-
-bool DFDisableTTCDialog::getDeleting()
+bool DFHandleTTCDialog::getDeleting()
 {
     return m_confirm;
 }
 
-bool DFDisableTTCDialog::getAapplyToAll()
+bool DFHandleTTCDialog::getAapplyToAll()
 {
     return m_bAapplyToAll;
 }
 
-bool DFDisableTTCDialog::eventFilter(QObject *watched, QEvent *event)
+bool DFHandleTTCDialog::eventFilter(QObject *watched, QEvent *event)
 {
     if (watched == applyAllCkb) {
         if (event->type() == QEvent::KeyPress) {
@@ -514,14 +396,7 @@ bool DFDisableTTCDialog::eventFilter(QObject *watched, QEvent *event)
     }
 }
 
-void DFDisableTTCDialog::onFontChanged(const QFont &font)
-{
-    Q_UNUSED(font);
-//    messageDetail->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    resize(sizeHint());
-}
-
-void DFDisableTTCDialog::keyPressEvent(QKeyEvent *event)
+void DFHandleTTCDialog::keyPressEvent(QKeyEvent *event)
 {
     bool received = false;
     if (event->key() == Qt::Key_Escape) {
@@ -529,17 +404,11 @@ void DFDisableTTCDialog::keyPressEvent(QKeyEvent *event)
         close();
         received = true;
     }
-//    if (event->key() == Qt::Key_Return) {
-//        if (!getCloseButton()->hasFocus() && !m_cancelBtn->hasFocus() && !applyAllCkb->hasFocus()) {
-//            m_confirmBtn->click();
-//            received = true;
-//        }
-//    }
     if (!received)
         DFontBaseDialog::keyPressEvent(event);
 }
 
-void DFDisableTTCDialog::initUI()
+void DFHandleTTCDialog::initUI()
 {
     setFixedWidth(DEFAULT_WINDOW_W);
 
@@ -562,13 +431,15 @@ void DFDisableTTCDialog::initUI()
     mainFrame->setLayout(mainLayout);
 
     //#000794 解决显示不全的问题
-    messageTitle->setMinimumWidth(DEFAULT_WINDOW_W - 20);
+    messageTitle->setMinimumWidth(DEFAULT_WINDOW_W - 40); //删除/禁用/启用字体集提示窗口中文字边距设为20
 
     addContent(mainFrame);
     applyAllCkb->installEventFilter(this);
+
+    moveToCenter();
 }
 
-void DFDisableTTCDialog::initConnections()
+void DFHandleTTCDialog::initConnections()
 {
     connect(m_cancelBtn, &DPushButton::clicked, this, [ = ]() {
         reject();
@@ -585,33 +456,30 @@ void DFDisableTTCDialog::initConnections()
     });
 }
 
-void DFDisableTTCDialog::initMessageTitle()
+void DFHandleTTCDialog::initMessageTitle()
 {
     messageTitle = new DLabel(this);
-    if (m_isEnable) {
-        messageTitle->setText(tr("%1 is a font family, if you proceed, all fonts in it will be enabled").arg(fontset));
-    } else {
-        messageTitle->setText(tr("%1 is a font family, if you proceed, all fonts in it will be disabled").arg(fontset));
-    }
+    messageTitle->setObjectName("messageTitle");
+    setMessageTitleText();
 
     /* Bug#21515 UT000591*/
-    messageTitle->setFixedWidth(DEFAULT_WINDOW_W - 22);
-    messageTitle->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
-    messageTitle->setWordWrap(true);
+    messageTitle->setFixedWidth(DEFAULT_WINDOW_W - 40); //删除/禁用/启用字体集提示窗口中文字边距设为20
     messageTitle->setAlignment(Qt::AlignCenter);
 
     DFontSizeManager::instance()->bind(messageTitle, DFontSizeManager::T6, QFont::Medium);
     messageTitle->setForegroundRole(DPalette::WindowText);
+
+    autoFeed(messageTitle);
 }
 
-void DFDisableTTCDialog::initMessageDetail()
+void DFHandleTTCDialog::initMessageDetail()
 {
     applyAllCkb = new DCheckBox(tr("Apply to all selected font families"), this);
     applyAllCkb->setAccessibleName("Applyall_btn");
     DFontSizeManager::instance()->bind(applyAllCkb, DFontSizeManager::T6, QFont::Medium);
 }
 
-QLayout *DFDisableTTCDialog::initBottomButtons()
+QLayout *DFHandleTTCDialog::initBottomButtons()
 {
     QHBoxLayout *layout = new QHBoxLayout();
     layout->setSpacing(0);
@@ -623,11 +491,7 @@ QLayout *DFDisableTTCDialog::initBottomButtons()
 
     m_confirmBtn = new DWarningButton(this);
     m_confirmBtn->setFixedSize(170, 36);
-    if (m_isEnable) {
-        m_confirmBtn->setText(tr("Enable"));
-    } else {
-        m_confirmBtn->setText(tr("Disable"));
-    }
+    setConfirmBtnText();
 
     DVerticalLine *verticalSplite = new DVerticalLine(this);
     DPalette pa = DApplicationHelper::instance()->palette(verticalSplite);
@@ -645,4 +509,78 @@ QLayout *DFDisableTTCDialog::initBottomButtons()
     layout->addWidget(m_confirmBtn);
 
     return layout;
+}
+
+void DFHandleTTCDialog::autoFeed(DLabel *label)
+{
+    NewStr newstr = autoCutText(m_messageTitleText, label);
+    label->setText(newstr.resultStr);
+    int height_lable = newstr.strList.size() * newstr.fontHeifht;
+    label->setFixedHeight(height_lable);
+    if (0 == m_iLabelOldHeight) { // 第一次exec自动调整
+        adjustSize();
+    } else {
+        m_iDialogOldHeight = height();
+        setFixedHeight(m_iDialogOldHeight - m_iLabelOldHeight + height_lable); //字号变化后自适应调整
+    }
+    m_iLabelOldHeight = height_lable;
+}
+
+void DFHandleTTCDialog::changeEvent(QEvent *event)
+{
+    if (QEvent::FontChange == event->type()) {
+        Dtk::Widget::DLabel *p = findChild<Dtk::Widget::DLabel *>("messageTitle");
+        if (nullptr != p) {
+            autoFeed(p);
+        }
+    }
+    DFontBaseDialog::changeEvent(event);
+}
+
+DFDeleteTTCDialog::DFDeleteTTCDialog(DFontMgrMainWindow *win, QString &file, QWidget *parent)
+    : DFHandleTTCDialog(win, file, parent)
+{
+    initUI();
+    initConnections();
+}
+
+void DFDeleteTTCDialog::setConfirmBtnText()
+{
+    if (m_confirmBtn) {
+        m_confirmBtn->setText(tr("Delete", "button"));
+    }
+}
+
+void DFDeleteTTCDialog::setMessageTitleText()
+{
+    m_messageTitleText = (tr("%1 is a font family, if you proceed, all fonts in it will be deleted").arg(fontset));
+}
+
+DFDisableTTCDialog::DFDisableTTCDialog(DFontMgrMainWindow *win, QString &file, bool &isEnable, QWidget *parent)
+    : DFHandleTTCDialog(win, file, parent)
+    , m_isEnable(isEnable)
+{
+    initUI();
+    initConnections();
+}
+void DFDisableTTCDialog::setMessageTitleText()
+{
+    if (m_isEnable) {
+        m_messageTitleText = (tr("%1 is a font family, if you proceed, all fonts in it will be enabled").arg(fontset));
+    } else {
+        m_messageTitleText = (tr("%1 is a font family, if you proceed, all fonts in it will be disabled").arg(fontset));
+    }
+}
+
+void DFDisableTTCDialog::setConfirmBtnText()
+{
+    if (!m_confirmBtn) {
+        return;
+    }
+
+    if (m_isEnable) {
+        m_confirmBtn->setText(tr("Enable", "button"));
+    } else {
+        m_confirmBtn->setText(tr("Disable", "button"));
+    }
 }

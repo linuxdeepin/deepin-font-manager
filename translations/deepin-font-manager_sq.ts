@@ -36,25 +36,19 @@
     <name>DFDeleteDialog</name>
     <message>
         <source>Cancel</source>
+        <comment>button</comment>
         <translation>Anuloje</translation>
     </message>
 </context>
 <context>
     <name>DFDeleteTTCDialog</name>
     <message>
-        <source>Apply to all selected font families</source>
-        <translation>Aplikoje te krejt familjet e përzgjedhura të shkronjave</translation>
-    </message>
-    <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be deleted</source>
         <translation>%1 është një familje shkronjash, nëse vazhdoni, do të fshihen krejt shkronjat në të</translation>
     </message>
     <message>
-        <source>Cancel</source>
-        <translation>Anuloje</translation>
-    </message>
-    <message>
         <source>Delete</source>
+        <comment>button</comment>
         <translation>Fshije</translation>
     </message>
 </context>
@@ -69,20 +63,25 @@
         <translation>%1 është një familje shkronjash, nëse vazhdoni, krejt shkronjat në të do të çaktivizohen</translation>
     </message>
     <message>
-        <source>Apply to all selected font families</source>
-        <translation>Aplikoje te krejt familjet e përzgjedhura të shkronjave</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Anuloje</translation>
-    </message>
-    <message>
         <source>Enable</source>
+        <comment>button</comment>
         <translation>Aktivizoji</translation>
     </message>
     <message>
         <source>Disable</source>
+        <comment>button</comment>
         <translation>Çaktivizoji</translation>
+    </message>
+</context>
+<context>
+    <name>DFHandleTTCDialog</name>
+    <message>
+        <source>Apply to all selected font families</source>
+        <translation type="unfinished">Aplikoje te krejt familjet e përzgjedhura të shkronjave</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Anuloje</translation>
     </message>
 </context>
 <context>
@@ -194,6 +193,7 @@
     </message>
     <message>
         <source>Delete</source>
+        <comment>button</comment>
         <translation>Fshije</translation>
     </message>
 </context>
@@ -211,16 +211,18 @@
         <translation>Verifikim Shkronjash</translation>
     </message>
     <message>
+        <source>No fonts to be installed</source>
+        <translation>S’ka shkronja për instalim</translation>
+    </message>
+    <message>
         <source>Exit</source>
+        <comment>button</comment>
         <translation>Dalje</translation>
     </message>
     <message>
         <source>Continue</source>
+        <comment>button</comment>
         <translation>Vazhdo</translation>
-    </message>
-    <message>
-        <source>No fonts to be installed</source>
-        <translation>S’ka shkronja për instalim</translation>
     </message>
 </context>
 <context>

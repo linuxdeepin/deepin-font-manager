@@ -36,26 +36,20 @@
     <name>DFDeleteDialog</name>
     <message>
         <source>Cancel</source>
-        <translation>取消</translation>
+        <comment>button</comment>
+        <translation>取 消</translation>
     </message>
 </context>
 <context>
     <name>DFDeleteTTCDialog</name>
     <message>
-        <source>Apply to all selected font families</source>
-        <translation>應用到所有選定的字體集</translation>
-    </message>
-    <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be deleted</source>
         <translation>%1是一個字體集，將它刪除可能會刪除屬於它的所有字體</translation>
     </message>
     <message>
-        <source>Cancel</source>
-        <translation>取消</translation>
-    </message>
-    <message>
         <source>Delete</source>
-        <translation>刪除</translation>
+        <comment>button</comment>
+        <translation>刪 除</translation>
     </message>
 </context>
 <context>
@@ -69,20 +63,25 @@
         <translation>%1是一個字體集，將它禁用可能會禁用屬於它的所有字體</translation>
     </message>
     <message>
-        <source>Apply to all selected font families</source>
-        <translation>應用到所有選定的字體集</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>取消</translation>
-    </message>
-    <message>
         <source>Enable</source>
-        <translation>啟用</translation>
+        <comment>button</comment>
+        <translation>啟 用</translation>
     </message>
     <message>
         <source>Disable</source>
-        <translation>禁用</translation>
+        <comment>button</comment>
+        <translation>禁 用</translation>
+    </message>
+</context>
+<context>
+    <name>DFHandleTTCDialog</name>
+    <message>
+        <source>Apply to all selected font families</source>
+        <translation type="unfinished">應用到所有選定的字體集</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">取 消</translation>
     </message>
 </context>
 <context>
@@ -194,7 +193,8 @@
     </message>
     <message>
         <source>Delete</source>
-        <translation>刪除</translation>
+        <comment>button</comment>
+        <translation>刪 除</translation>
     </message>
 </context>
 <context>
@@ -211,16 +211,18 @@
         <translation>字體驗證</translation>
     </message>
     <message>
+        <source>No fonts to be installed</source>
+        <translation>無可用安裝字體</translation>
+    </message>
+    <message>
         <source>Exit</source>
-        <translation>離開</translation>
+        <comment>button</comment>
+        <translation>退 出</translation>
     </message>
     <message>
         <source>Continue</source>
-        <translation>繼續</translation>
-    </message>
-    <message>
-        <source>No fonts to be installed</source>
-        <translation>無可用安裝字體</translation>
+        <comment>button</comment>
+        <translation>繼 續</translation>
     </message>
 </context>
 <context>

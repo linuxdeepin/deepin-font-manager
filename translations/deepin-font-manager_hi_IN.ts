@@ -36,25 +36,19 @@
     <name>DFDeleteDialog</name>
     <message>
         <source>Cancel</source>
+        <comment>button</comment>
         <translation>रद्द करें</translation>
     </message>
 </context>
 <context>
     <name>DFDeleteTTCDialog</name>
     <message>
-        <source>Apply to all selected font families</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be deleted</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>रद्द करें</translation>
+        <translation>%1 एक मुद्रलिपि समूह है, इच्छित कार्य जारी रखने से इसमें सम्मिलित सभी मुद्रलिपियाँ हटा दी जाएँगी</translation>
     </message>
     <message>
         <source>Delete</source>
+        <comment>button</comment>
         <translation>हटाएँ</translation>
     </message>
 </context>
@@ -62,27 +56,32 @@
     <name>DFDisableTTCDialog</name>
     <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be enabled</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 एक मुद्रलिपि समूह है, इच्छित कार्य जारी रखने से इसमें सम्मिलित सभी मुद्रलिपियाँ सक्रिय होंगी</translation>
     </message>
     <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be disabled</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Apply to all selected font families</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>रद्द करें</translation>
+        <translation>%1 एक मुद्रलिपि समूह है, इच्छित कार्य जारी रखने से इसमें सम्मिलित सभी मुद्रलिपियाँ निष्क्रिय होंगी</translation>
     </message>
     <message>
         <source>Enable</source>
+        <comment>button</comment>
         <translation>सक्रिय</translation>
     </message>
     <message>
         <source>Disable</source>
+        <comment>button</comment>
         <translation>निष्क्रिय</translation>
+    </message>
+</context>
+<context>
+    <name>DFHandleTTCDialog</name>
+    <message>
+        <source>Apply to all selected font families</source>
+        <translation type="unfinished">सभी चयनित मुद्रलिपि समूहों पर लागू करें</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">रद्द करें</translation>
     </message>
 </context>
 <context>
@@ -152,11 +151,11 @@
     </message>
     <message>
         <source>Alt+M</source>
-        <translation type="unfinished"></translation>
+        <translation>Alt+M</translation>
     </message>
     <message>
         <source>CTRL+I</source>
-        <translation type="unfinished"></translation>
+        <translation>CTRL+I</translation>
     </message>
 </context>
 <context>
@@ -194,6 +193,7 @@
     </message>
     <message>
         <source>Delete</source>
+        <comment>button</comment>
         <translation>हटाएँ</translation>
     </message>
 </context>
@@ -211,16 +211,18 @@
         <translation>मुद्रलिपि प्रमाणीकरण</translation>
     </message>
     <message>
+        <source>No fonts to be installed</source>
+        <translation>कोई मुद्रलिपि इंस्टॉल नहीं होगी</translation>
+    </message>
+    <message>
         <source>Exit</source>
+        <comment>button</comment>
         <translation>बंद करें</translation>
     </message>
     <message>
         <source>Continue</source>
+        <comment>button</comment>
         <translation>जारी रखें</translation>
-    </message>
-    <message>
-        <source>No fonts to be installed</source>
-        <translation>कोई मुद्रलिपि इंस्टॉल नहीं होगी</translation>
     </message>
 </context>
 <context>

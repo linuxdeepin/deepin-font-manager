@@ -36,25 +36,19 @@
     <name>DFDeleteDialog</name>
     <message>
         <source>Cancel</source>
+        <comment>button</comment>
         <translation>Cancelar</translation>
     </message>
 </context>
 <context>
     <name>DFDeleteTTCDialog</name>
     <message>
-        <source>Apply to all selected font families</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be deleted</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Cancel</source>
-        <translation>Cancelar</translation>
-    </message>
-    <message>
         <source>Delete</source>
+        <comment>button</comment>
         <translation>Eliminar</translation>
     </message>
 </context>
@@ -69,20 +63,25 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Enable</source>
+        <comment>button</comment>
+        <translation>Activar</translation>
+    </message>
+    <message>
+        <source>Disable</source>
+        <comment>button</comment>
+        <translation>Desactivar</translation>
+    </message>
+</context>
+<context>
+    <name>DFHandleTTCDialog</name>
+    <message>
         <source>Apply to all selected font families</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Cancelar</translation>
-    </message>
-    <message>
-        <source>Enable</source>
-        <translation>Activar</translation>
-    </message>
-    <message>
-        <source>Disable</source>
-        <translation>Desactivar</translation>
+        <translation type="unfinished">Cancelar</translation>
     </message>
 </context>
 <context>
@@ -194,6 +193,7 @@
     </message>
     <message>
         <source>Delete</source>
+        <comment>button</comment>
         <translation>Eliminar</translation>
     </message>
 </context>
@@ -211,16 +211,18 @@
         <translation>Verificación da fonte</translation>
     </message>
     <message>
+        <source>No fonts to be installed</source>
+        <translation>Non hai fontes a instalar</translation>
+    </message>
+    <message>
         <source>Exit</source>
+        <comment>button</comment>
         <translation>Saír</translation>
     </message>
     <message>
         <source>Continue</source>
+        <comment>button</comment>
         <translation>Continuar</translation>
-    </message>
-    <message>
-        <source>No fonts to be installed</source>
-        <translation>Non hai fontes a instalar</translation>
     </message>
 </context>
 <context>

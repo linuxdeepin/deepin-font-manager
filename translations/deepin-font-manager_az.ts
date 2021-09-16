@@ -36,25 +36,19 @@
     <name>DFDeleteDialog</name>
     <message>
         <source>Cancel</source>
+        <comment>button</comment>
         <translation>İmtina</translation>
     </message>
 </context>
 <context>
     <name>DFDeleteTTCDialog</name>
     <message>
-        <source>Apply to all selected font families</source>
-        <translation>Bütün seçilmiş şrift ailəsini tətbiq edin</translation>
-    </message>
-    <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be deleted</source>
         <translation>%1 bir şrift ailəsidir, əgər davam etsəniz ondakı bütün şriftlər silinəcəkdir</translation>
     </message>
     <message>
-        <source>Cancel</source>
-        <translation>İmtina</translation>
-    </message>
-    <message>
         <source>Delete</source>
+        <comment>button</comment>
         <translation>Silmək</translation>
     </message>
 </context>
@@ -69,20 +63,25 @@
         <translation>%1 şrift ailəsidir, əgər davam etsəniz, ondakı bütün şriftlər söndürüləcəkdir</translation>
     </message>
     <message>
-        <source>Apply to all selected font families</source>
-        <translation>Bütün seçilmiş şrift ailəsini tətbiq edin</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>İmtina</translation>
-    </message>
-    <message>
         <source>Enable</source>
+        <comment>button</comment>
         <translation>Aktiv etmək</translation>
     </message>
     <message>
         <source>Disable</source>
+        <comment>button</comment>
         <translation>Söndürmək</translation>
+    </message>
+</context>
+<context>
+    <name>DFHandleTTCDialog</name>
+    <message>
+        <source>Apply to all selected font families</source>
+        <translation type="unfinished">Bütün seçilmiş şrift ailəsini tətbiq edin</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">İmtina</translation>
     </message>
 </context>
 <context>
@@ -194,6 +193,7 @@
     </message>
     <message>
         <source>Delete</source>
+        <comment>button</comment>
         <translation>Silmək</translation>
     </message>
 </context>
@@ -211,16 +211,18 @@
         <translation>Şriftin doğrulanması</translation>
     </message>
     <message>
+        <source>No fonts to be installed</source>
+        <translation>Qurulacaq şriftlər yoxdur</translation>
+    </message>
+    <message>
         <source>Exit</source>
+        <comment>button</comment>
         <translation>Çıxış</translation>
     </message>
     <message>
         <source>Continue</source>
+        <comment>button</comment>
         <translation>Davam etmək</translation>
-    </message>
-    <message>
-        <source>No fonts to be installed</source>
-        <translation>Qurulacaq şriftlər yoxdur</translation>
     </message>
 </context>
 <context>

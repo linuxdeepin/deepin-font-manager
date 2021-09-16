@@ -36,25 +36,19 @@
     <name>DFDeleteDialog</name>
     <message>
         <source>Cancel</source>
+        <comment>button</comment>
         <translation>Annuleren</translation>
     </message>
 </context>
 <context>
     <name>DFDeleteTTCDialog</name>
     <message>
-        <source>Apply to all selected font families</source>
-        <translation>Toepassen op alle geselecteerde lettertypefamilies</translation>
-    </message>
-    <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be deleted</source>
         <translation>%1 is een lettertypefamilie. Als je doorgaat, worden alle bijbehorende lettertypen verwijderd.</translation>
     </message>
     <message>
-        <source>Cancel</source>
-        <translation>Annuleren</translation>
-    </message>
-    <message>
         <source>Delete</source>
+        <comment>button</comment>
         <translation>Verwijderen</translation>
     </message>
 </context>
@@ -69,20 +63,25 @@
         <translation>%1 is een lettertypefamilie. Als je doorgaat, worden alle bijbehorende lettertypen uitgeschakeld.</translation>
     </message>
     <message>
-        <source>Apply to all selected font families</source>
-        <translation>Toepassen op alle geselecteerde lettertypefamilies</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Annuleren</translation>
-    </message>
-    <message>
         <source>Enable</source>
+        <comment>button</comment>
         <translation>Inschakelen</translation>
     </message>
     <message>
         <source>Disable</source>
+        <comment>button</comment>
         <translation>Uitschakelen</translation>
+    </message>
+</context>
+<context>
+    <name>DFHandleTTCDialog</name>
+    <message>
+        <source>Apply to all selected font families</source>
+        <translation type="unfinished">Toepassen op alle geselecteerde lettertypefamilies</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Annuleren</translation>
     </message>
 </context>
 <context>
@@ -194,6 +193,7 @@
     </message>
     <message>
         <source>Delete</source>
+        <comment>button</comment>
         <translation>Verwijderen</translation>
     </message>
 </context>
@@ -211,16 +211,18 @@
         <translation>Lettertypeverificatie</translation>
     </message>
     <message>
+        <source>No fonts to be installed</source>
+        <translation>Er zijn geen te installeren lettertypen</translation>
+    </message>
+    <message>
         <source>Exit</source>
+        <comment>button</comment>
         <translation>Afsluiten</translation>
     </message>
     <message>
         <source>Continue</source>
+        <comment>button</comment>
         <translation>Doorgaan</translation>
-    </message>
-    <message>
-        <source>No fonts to be installed</source>
-        <translation>Er zijn geen te installeren lettertypen</translation>
     </message>
 </context>
 <context>

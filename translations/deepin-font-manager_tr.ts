@@ -36,25 +36,19 @@
     <name>DFDeleteDialog</name>
     <message>
         <source>Cancel</source>
+        <comment>button</comment>
         <translation>İptal</translation>
     </message>
 </context>
 <context>
     <name>DFDeleteTTCDialog</name>
     <message>
-        <source>Apply to all selected font families</source>
-        <translation>Tüm seçili yazı tipi ailelerine uygula</translation>
-    </message>
-    <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be deleted</source>
         <translation>%1 bir yazı tipi ailesi, devam ederseniz, içindeki tüm yazı tipleri silinecek</translation>
     </message>
     <message>
-        <source>Cancel</source>
-        <translation>İptal</translation>
-    </message>
-    <message>
         <source>Delete</source>
+        <comment>button</comment>
         <translation>Sil</translation>
     </message>
 </context>
@@ -69,20 +63,25 @@
         <translation>%1 bir yazı tipi ailesi, devam ederseniz, içindeki tüm yazı tipleri devre dışı bırakılacak</translation>
     </message>
     <message>
-        <source>Apply to all selected font families</source>
-        <translation>Tüm seçili yazı tipi ailelerine uygula</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>İptal</translation>
-    </message>
-    <message>
         <source>Enable</source>
+        <comment>button</comment>
         <translation>Etkinleştir</translation>
     </message>
     <message>
         <source>Disable</source>
+        <comment>button</comment>
         <translation>Devre dışı</translation>
+    </message>
+</context>
+<context>
+    <name>DFHandleTTCDialog</name>
+    <message>
+        <source>Apply to all selected font families</source>
+        <translation type="unfinished">Tüm seçili yazı tipi ailelerine uygula</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">İptal</translation>
     </message>
 </context>
 <context>
@@ -194,6 +193,7 @@
     </message>
     <message>
         <source>Delete</source>
+        <comment>button</comment>
         <translation>Sil</translation>
     </message>
 </context>
@@ -211,16 +211,18 @@
         <translation>Yazı Tipi Doğrulaması</translation>
     </message>
     <message>
+        <source>No fonts to be installed</source>
+        <translation>Kurulacak yazı tipi yok</translation>
+    </message>
+    <message>
         <source>Exit</source>
+        <comment>button</comment>
         <translation>Çıkış</translation>
     </message>
     <message>
         <source>Continue</source>
+        <comment>button</comment>
         <translation>Devam</translation>
-    </message>
-    <message>
-        <source>No fonts to be installed</source>
-        <translation>Kurulacak yazı tipi yok</translation>
     </message>
 </context>
 <context>

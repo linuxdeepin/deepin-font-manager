@@ -36,25 +36,19 @@
     <name>DFDeleteDialog</name>
     <message>
         <source>Cancel</source>
+        <comment>button</comment>
         <translation>إلغاء</translation>
     </message>
 </context>
 <context>
     <name>DFDeleteTTCDialog</name>
     <message>
-        <source>Apply to all selected font families</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be deleted</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Cancel</source>
-        <translation>إلغاء</translation>
-    </message>
-    <message>
         <source>Delete</source>
+        <comment>button</comment>
         <translation>حذف</translation>
     </message>
 </context>
@@ -69,20 +63,25 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Enable</source>
+        <comment>button</comment>
+        <translation>تفعيل</translation>
+    </message>
+    <message>
+        <source>Disable</source>
+        <comment>button</comment>
+        <translation>تعطيل</translation>
+    </message>
+</context>
+<context>
+    <name>DFHandleTTCDialog</name>
+    <message>
         <source>Apply to all selected font families</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>إلغاء</translation>
-    </message>
-    <message>
-        <source>Enable</source>
-        <translation>تفعيل</translation>
-    </message>
-    <message>
-        <source>Disable</source>
-        <translation>تعطيل</translation>
+        <translation type="unfinished">إلغاء</translation>
     </message>
 </context>
 <context>
@@ -194,6 +193,7 @@
     </message>
     <message>
         <source>Delete</source>
+        <comment>button</comment>
         <translation>حذف</translation>
     </message>
 </context>
@@ -211,16 +211,18 @@
         <translation>التحقق من الخط</translation>
     </message>
     <message>
+        <source>No fonts to be installed</source>
+        <translation>لا توجد خطوط ليتم تثبيتها</translation>
+    </message>
+    <message>
         <source>Exit</source>
+        <comment>button</comment>
         <translation>خروج</translation>
     </message>
     <message>
         <source>Continue</source>
+        <comment>button</comment>
         <translation>تأكيد</translation>
-    </message>
-    <message>
-        <source>No fonts to be installed</source>
-        <translation>لا توجد خطوط ليتم تثبيتها</translation>
     </message>
 </context>
 <context>

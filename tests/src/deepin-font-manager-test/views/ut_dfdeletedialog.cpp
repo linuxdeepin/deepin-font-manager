@@ -138,12 +138,8 @@ TEST_F(TestDFDeleteDialog, getDeleting)
     DFontMgrMainWindow *w1 = new DFontMgrMainWindow;
     QString file;
     DFDeleteTTCDialog *fm1 = new DFDeleteTTCDialog(w1, file);
-    QFont font;
-    fm->onFontChanged(font);
-    EXPECT_TRUE(fm->messageDetail->sizePolicy() == QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
     fm1->m_bAapplyToAll = false;
     EXPECT_FALSE(fm1->getAapplyToAll());
-    fm1->onFontChanged(font);
     QKeyEvent *kev = new QKeyEvent(QEvent::KeyPress, Qt::Key_Return, Qt::NoModifier);
     fm1->initMessageDetail();
     EXPECT_TRUE(fm1->applyAllCkb->text() == "Apply to all selected font families");
@@ -166,7 +162,6 @@ TEST_F(TestDFDeleteDialog, getDeleting)
     kev = new QKeyEvent(QEvent::KeyPress, Qt::Key_Return, Qt::NoModifier);
     fm2->eventFilter((QObject *)fm2->applyAllCkb, kev);
     fm2->eventFilter((QObject *)fm2, kev);
-    fm2->onFontChanged(font);
     fm2->keyPressEvent(kev);
     SAFE_DELETE_ELE(kev);
     kev = new QKeyEvent(QEvent::KeyPress, Qt::Key_Escape, Qt::NoModifier);

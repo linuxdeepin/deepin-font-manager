@@ -36,25 +36,19 @@
     <name>DFDeleteDialog</name>
     <message>
         <source>Cancel</source>
+        <comment>button</comment>
         <translation>Cancel·la</translation>
     </message>
 </context>
 <context>
     <name>DFDeleteTTCDialog</name>
     <message>
-        <source>Apply to all selected font families</source>
-        <translation>Aplica-ho a totes les famílies de lletres seleccionades.</translation>
-    </message>
-    <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be deleted</source>
         <translation>%1 és una família de lletres. Si procediu, se n&apos;eliminaran totes les lletres.</translation>
     </message>
     <message>
-        <source>Cancel</source>
-        <translation>Cancel·la</translation>
-    </message>
-    <message>
         <source>Delete</source>
+        <comment>button</comment>
         <translation>Elimina</translation>
     </message>
 </context>
@@ -69,20 +63,25 @@
         <translation>%1 és una família de lletres. Si procediu, se n&apos;inhabilitaran totes les lletres.</translation>
     </message>
     <message>
-        <source>Apply to all selected font families</source>
-        <translation>Aplica-ho a totes les famílies de lletres seleccionades.</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Cancel·la</translation>
-    </message>
-    <message>
         <source>Enable</source>
+        <comment>button</comment>
         <translation>Habilita</translation>
     </message>
     <message>
         <source>Disable</source>
+        <comment>button</comment>
         <translation>Inhabilita</translation>
+    </message>
+</context>
+<context>
+    <name>DFHandleTTCDialog</name>
+    <message>
+        <source>Apply to all selected font families</source>
+        <translation type="unfinished">Aplica-ho a totes les famílies de lletres seleccionades.</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Cancel·la</translation>
     </message>
 </context>
 <context>
@@ -194,6 +193,7 @@
     </message>
     <message>
         <source>Delete</source>
+        <comment>button</comment>
         <translation>Elimina</translation>
     </message>
 </context>
@@ -211,16 +211,18 @@
         <translation>Verificació de la lletra</translation>
     </message>
     <message>
+        <source>No fonts to be installed</source>
+        <translation>Cap font per instal·lar</translation>
+    </message>
+    <message>
         <source>Exit</source>
+        <comment>button</comment>
         <translation>Surt</translation>
     </message>
     <message>
         <source>Continue</source>
+        <comment>button</comment>
         <translation>Continua</translation>
-    </message>
-    <message>
-        <source>No fonts to be installed</source>
-        <translation>Cap font per instal·lar</translation>
     </message>
 </context>
 <context>

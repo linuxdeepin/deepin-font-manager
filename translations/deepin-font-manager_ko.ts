@@ -36,25 +36,19 @@
     <name>DFDeleteDialog</name>
     <message>
         <source>Cancel</source>
+        <comment>button</comment>
         <translation>취소</translation>
     </message>
 </context>
 <context>
     <name>DFDeleteTTCDialog</name>
     <message>
-        <source>Apply to all selected font families</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be deleted</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Cancel</source>
-        <translation>취소</translation>
-    </message>
-    <message>
         <source>Delete</source>
+        <comment>button</comment>
         <translation>삭제</translation>
     </message>
 </context>
@@ -69,20 +63,25 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Enable</source>
+        <comment>button</comment>
+        <translation>사용가능</translation>
+    </message>
+    <message>
+        <source>Disable</source>
+        <comment>button</comment>
+        <translation>사용안함</translation>
+    </message>
+</context>
+<context>
+    <name>DFHandleTTCDialog</name>
+    <message>
         <source>Apply to all selected font families</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>취소</translation>
-    </message>
-    <message>
-        <source>Enable</source>
-        <translation>사용가능</translation>
-    </message>
-    <message>
-        <source>Disable</source>
-        <translation>사용안함</translation>
+        <translation type="unfinished">취소</translation>
     </message>
 </context>
 <context>
@@ -194,6 +193,7 @@
     </message>
     <message>
         <source>Delete</source>
+        <comment>button</comment>
         <translation>삭제</translation>
     </message>
 </context>
@@ -211,16 +211,18 @@
         <translation>글꼴 확인</translation>
     </message>
     <message>
+        <source>No fonts to be installed</source>
+        <translation>설치할 폰트가 없습니다</translation>
+    </message>
+    <message>
         <source>Exit</source>
+        <comment>button</comment>
         <translation>종료</translation>
     </message>
     <message>
         <source>Continue</source>
+        <comment>button</comment>
         <translation>계속</translation>
-    </message>
-    <message>
-        <source>No fonts to be installed</source>
-        <translation>설치할 폰트가 없습니다</translation>
     </message>
 </context>
 <context>

@@ -36,25 +36,19 @@
     <name>DFDeleteDialog</name>
     <message>
         <source>Cancel</source>
+        <comment>button</comment>
         <translation>Скасувати</translation>
     </message>
 </context>
 <context>
     <name>DFDeleteTTCDialog</name>
     <message>
-        <source>Apply to all selected font families</source>
-        <translation>Застосувати до усіх позначених гарнітур шрифтів</translation>
-    </message>
-    <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be deleted</source>
         <translation>%1 є гарнітурою — якщо ви підтвердите виконання дії, усі шрифти у гарнітурі буде вилучено</translation>
     </message>
     <message>
-        <source>Cancel</source>
-        <translation>Скасувати</translation>
-    </message>
-    <message>
         <source>Delete</source>
+        <comment>button</comment>
         <translation>Вилучення</translation>
     </message>
 </context>
@@ -69,20 +63,25 @@
         <translation>%1 є гарнітурою — якщо ви підтвердите виконання дії, усі шрифти у гарнітурі буде вимкнено</translation>
     </message>
     <message>
-        <source>Apply to all selected font families</source>
-        <translation>Застосувати до усіх позначених гарнітур шрифтів</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Скасувати</translation>
-    </message>
-    <message>
         <source>Enable</source>
+        <comment>button</comment>
         <translation>Увімкнути</translation>
     </message>
     <message>
         <source>Disable</source>
+        <comment>button</comment>
         <translation>Вимкнути</translation>
+    </message>
+</context>
+<context>
+    <name>DFHandleTTCDialog</name>
+    <message>
+        <source>Apply to all selected font families</source>
+        <translation type="unfinished">Застосувати до усіх позначених гарнітур шрифтів</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Скасувати</translation>
     </message>
 </context>
 <context>
@@ -194,6 +193,7 @@
     </message>
     <message>
         <source>Delete</source>
+        <comment>button</comment>
         <translation>Вилучення</translation>
     </message>
 </context>
@@ -211,16 +211,18 @@
         <translation>Перевірка шрифту</translation>
     </message>
     <message>
+        <source>No fonts to be installed</source>
+        <translation>Не буде встановлено жодного шрифту</translation>
+    </message>
+    <message>
         <source>Exit</source>
+        <comment>button</comment>
         <translation>Вийти</translation>
     </message>
     <message>
         <source>Continue</source>
+        <comment>button</comment>
         <translation>Продовжити</translation>
-    </message>
-    <message>
-        <source>No fonts to be installed</source>
-        <translation>Не буде встановлено жодного шрифту</translation>
     </message>
 </context>
 <context>

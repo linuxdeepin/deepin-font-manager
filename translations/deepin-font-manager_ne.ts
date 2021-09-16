@@ -36,25 +36,19 @@
     <name>DFDeleteDialog</name>
     <message>
         <source>Cancel</source>
+        <comment>button</comment>
         <translation>रद्द गर्नुहोस्</translation>
     </message>
 </context>
 <context>
     <name>DFDeleteTTCDialog</name>
     <message>
-        <source>Apply to all selected font families</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be deleted</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Cancel</source>
-        <translation>रद्द गर्नुहोस्</translation>
-    </message>
-    <message>
         <source>Delete</source>
+        <comment>button</comment>
         <translation>हटाउनुहोस्</translation>
     </message>
 </context>
@@ -69,20 +63,25 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Enable</source>
+        <comment>button</comment>
+        <translation>सक्षम गर्नुहोस्</translation>
+    </message>
+    <message>
+        <source>Disable</source>
+        <comment>button</comment>
+        <translation>असक्षम गर्नुहोस्</translation>
+    </message>
+</context>
+<context>
+    <name>DFHandleTTCDialog</name>
+    <message>
         <source>Apply to all selected font families</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>रद्द गर्नुहोस्</translation>
-    </message>
-    <message>
-        <source>Enable</source>
-        <translation>सक्षम गर्नुहोस्</translation>
-    </message>
-    <message>
-        <source>Disable</source>
-        <translation>असक्षम गर्नुहोस्</translation>
+        <translation type="unfinished">रद्द गर्नुहोस्</translation>
     </message>
 </context>
 <context>
@@ -194,6 +193,7 @@
     </message>
     <message>
         <source>Delete</source>
+        <comment>button</comment>
         <translation>हटाउनुहोस्</translation>
     </message>
 </context>
@@ -211,16 +211,18 @@
         <translation>फन्ट प्रमाणीकरण</translation>
     </message>
     <message>
+        <source>No fonts to be installed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Exit</source>
+        <comment>button</comment>
         <translation>बाहिर निस्कनुहोस्</translation>
     </message>
     <message>
         <source>Continue</source>
+        <comment>button</comment>
         <translation>जारी राख्नुहोस्</translation>
-    </message>
-    <message>
-        <source>No fonts to be installed</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

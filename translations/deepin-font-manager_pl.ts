@@ -36,25 +36,19 @@
     <name>DFDeleteDialog</name>
     <message>
         <source>Cancel</source>
+        <comment>button</comment>
         <translation>Anuluj</translation>
     </message>
 </context>
 <context>
     <name>DFDeleteTTCDialog</name>
     <message>
-        <source>Apply to all selected font families</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be deleted</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Anuluj</translation>
+        <translation>%1 jest rodziną czcionkową, jeśli zamierzasz kontynuować, wszystkie czcionki w niej zostaną usunięte</translation>
     </message>
     <message>
         <source>Delete</source>
+        <comment>button</comment>
         <translation>Usuń</translation>
     </message>
 </context>
@@ -62,27 +56,32 @@
     <name>DFDisableTTCDialog</name>
     <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be enabled</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 jest rodziną czcionkową, jeśli zamierzasz kontynuować, wszystkie czcionki w niej zostaną włączone</translation>
     </message>
     <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be disabled</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Apply to all selected font families</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Anuluj</translation>
+        <translation>%1 jest rodziną czcionkową, jeśli zamierzasz kontynuować, wszystkie czcionki w niej zostaną wyłączone</translation>
     </message>
     <message>
         <source>Enable</source>
+        <comment>button</comment>
         <translation>Włącz</translation>
     </message>
     <message>
         <source>Disable</source>
+        <comment>button</comment>
         <translation>Wyłącz</translation>
+    </message>
+</context>
+<context>
+    <name>DFHandleTTCDialog</name>
+    <message>
+        <source>Apply to all selected font families</source>
+        <translation type="unfinished">Zastosuj do wszystkich zaznaczonych rodzin czcionkowych</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Anuluj</translation>
     </message>
 </context>
 <context>
@@ -194,6 +193,7 @@
     </message>
     <message>
         <source>Delete</source>
+        <comment>button</comment>
         <translation>Usuń</translation>
     </message>
 </context>
@@ -211,16 +211,18 @@
         <translation>Weryfikacja czcionki</translation>
     </message>
     <message>
+        <source>No fonts to be installed</source>
+        <translation>Brak czcionek do zainstalowania</translation>
+    </message>
+    <message>
         <source>Exit</source>
+        <comment>button</comment>
         <translation>Wyjście</translation>
     </message>
     <message>
         <source>Continue</source>
+        <comment>button</comment>
         <translation>Kontynuuj</translation>
-    </message>
-    <message>
-        <source>No fonts to be installed</source>
-        <translation>Brak czcionek do zainstalowania</translation>
     </message>
 </context>
 <context>

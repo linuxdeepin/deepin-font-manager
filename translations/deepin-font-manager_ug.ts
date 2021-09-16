@@ -36,25 +36,19 @@
     <name>DFDeleteDialog</name>
     <message>
         <source>Cancel</source>
+        <comment>button</comment>
         <translation>بىكار قىلىش</translation>
     </message>
 </context>
 <context>
     <name>DFDeleteTTCDialog</name>
     <message>
-        <source>Apply to all selected font families</source>
-        <translation>تاللانغان فونت گۇرۇپپىسىغا قوللىنىش</translation>
-    </message>
-    <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be deleted</source>
         <translation>%1 بولسا بىر فونت گۇرۇپپىسى، ئۇنى ئۆچۈرسىڭىز ئۇنىڭغا تەۋە بارلىق فونتلار ئۆچۈرۈلۈپ كېتىشى مۇمكىن</translation>
     </message>
     <message>
-        <source>Cancel</source>
-        <translation>بىكار قىلىش</translation>
-    </message>
-    <message>
         <source>Delete</source>
+        <comment>button</comment>
         <translation>ئۆچۈرۈش</translation>
     </message>
 </context>
@@ -69,20 +63,25 @@
         <translation>%1 بولسا بىر فونت گۇرۇپپىسى، ئۇنى چەكلىۋەتسىڭىز ئۇنىڭغا تەۋە بارلىق فونتلار چەكلىنىشى مۇمكىن</translation>
     </message>
     <message>
-        <source>Apply to all selected font families</source>
-        <translation>تاللانغان فونت گۇرۇپپىسىغا قوللىنىش</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>بىكار قىلىش</translation>
-    </message>
-    <message>
         <source>Enable</source>
+        <comment>button</comment>
         <translation>خەت شەكلىنى قوزغىتىش</translation>
     </message>
     <message>
         <source>Disable</source>
+        <comment>button</comment>
         <translation>خەت شەكلىنى چەكلەش</translation>
+    </message>
+</context>
+<context>
+    <name>DFHandleTTCDialog</name>
+    <message>
+        <source>Apply to all selected font families</source>
+        <translation type="unfinished">تاللانغان فونت گۇرۇپپىسىغا قوللىنىش</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">بىكار قىلىش</translation>
     </message>
 </context>
 <context>
@@ -194,6 +193,7 @@
     </message>
     <message>
         <source>Delete</source>
+        <comment>button</comment>
         <translation>ئۆچۈرۈش</translation>
     </message>
 </context>
@@ -211,16 +211,18 @@
         <translation>خەت شەكلىنى دەلىللەش</translation>
     </message>
     <message>
+        <source>No fonts to be installed</source>
+        <translation>قاچىلىغىلى بولىدىغان خەت شەكلى يوق</translation>
+    </message>
+    <message>
         <source>Exit</source>
+        <comment>button</comment>
         <translation>چېكىنىش</translation>
     </message>
     <message>
         <source>Continue</source>
+        <comment>button</comment>
         <translation>داۋاملاشتۇرۇش</translation>
-    </message>
-    <message>
-        <source>No fonts to be installed</source>
-        <translation>قاچىلىغىلى بولىدىغان خەت شەكلى يوق</translation>
     </message>
 </context>
 <context>

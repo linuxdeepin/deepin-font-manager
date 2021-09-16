@@ -5,118 +5,105 @@
     <name>Category</name>
     <message>
         <source>All Fonts</source>
-        <translation type="unfinished"></translation>
+        <translation>Toles fontes</translation>
     </message>
     <message>
         <source>System</source>
-        <translation type="unfinished"></translation>
+        <translation>Fontes del sistema</translation>
     </message>
     <message>
         <source>User</source>
-        <translation type="unfinished"></translation>
+        <translation>Fontes del usuariu</translation>
     </message>
     <message>
         <source>Favorites</source>
-        <translation type="unfinished"></translation>
+        <translation>Fontes favorites</translation>
     </message>
     <message>
         <source>Active</source>
-        <translation type="unfinished"></translation>
+        <translation>Fontes actives</translation>
     </message>
     <message>
         <source>Chinese</source>
-        <translation type="unfinished"></translation>
+        <translation>Sinogrames</translation>
     </message>
     <message>
         <source>Monospaced</source>
-        <translation type="unfinished"></translation>
+        <translation>Fontes monospaciaes</translation>
     </message>
 </context>
 <context>
     <name>DFDeleteDialog</name>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <comment>button</comment>
+        <translation>Encaboxar</translation>
     </message>
 </context>
 <context>
     <name>DFDeleteTTCDialog</name>
     <message>
-        <source>Apply to all selected font families</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be deleted</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 ye una familia de fontes. Si sigues, van desaniciase toles sos fontes</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <comment>button</comment>
+        <translation>Desaniciar</translation>
     </message>
 </context>
 <context>
     <name>DFDisableTTCDialog</name>
     <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be enabled</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 ye una familia de fontes. Si sigues, van activase toles sos fontes</translation>
     </message>
     <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be disabled</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 ye una familia de fontes. Si sigues, van desactivase toles sos fontes</translation>
     </message>
+    <message>
+        <source>Enable</source>
+        <comment>button</comment>
+        <translation>Activar</translation>
+    </message>
+    <message>
+        <source>Disable</source>
+        <comment>button</comment>
+        <translation>Desactivar</translation>
+    </message>
+</context>
+<context>
+    <name>DFHandleTTCDialog</name>
     <message>
         <source>Apply to all selected font families</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Enable</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Disable</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Encaboxar</translation>
     </message>
 </context>
 <context>
     <name>DFInstallErrorDialog</name>
     <message>
         <source>Broken file</source>
-        <translation type="unfinished"></translation>
+        <translation>El ficheru ta toyíu</translation>
     </message>
     <message>
         <source>Same version installed</source>
-        <translation type="unfinished">Ta instalada la mesma versión</translation>
+        <translation>Instalóse la mesma versión</translation>
     </message>
     <message>
         <source>System Font</source>
-        <translation type="unfinished"></translation>
+        <translation>Fonte del sistema</translation>
     </message>
 </context>
 <context>
     <name>DFontMgrMainWindow</name>
     <message>
-        <source>Ctrl+=</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ctrl+-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ctrl+0</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Ctrl+Shift+/</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+/</translation>
     </message>
     <message>
         <source>PgUp</source>
@@ -128,57 +115,65 @@
     </message>
     <message>
         <source>Ctrl+Alt+F</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Alt+F</translation>
     </message>
     <message>
         <source>Ctrl+F</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Alt+M</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+F</translation>
     </message>
     <message>
         <source>Ctrl+O</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>CTRL+I</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>%1 font installed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>%1 fonts installed</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+O</translation>
     </message>
     <message>
         <source>Fonts</source>
-        <translation type="unfinished"></translation>
+        <translation>Fontes</translation>
+    </message>
+    <message>
+        <source>Ctrl+=</source>
+        <translation>Ctrl+=</translation>
+    </message>
+    <message>
+        <source>Ctrl+-</source>
+        <translation>Ctrl+-</translation>
+    </message>
+    <message>
+        <source>Ctrl+0</source>
+        <translation>Ctrl+0</translation>
+    </message>
+    <message>
+        <source>%1 font installed</source>
+        <translation>Instalóse %1 fonte</translation>
+    </message>
+    <message>
+        <source>%1 fonts installed</source>
+        <translation>Instaláronse %1 fontes</translation>
+    </message>
+    <message>
+        <source>Alt+M</source>
+        <translation>Alt+M</translation>
+    </message>
+    <message>
+        <source>CTRL+I</source>
+        <translation>CTRL+I</translation>
     </message>
 </context>
 <context>
     <name>DFontWidget</name>
     <message>
         <source>Broken file</source>
-        <translation type="unfinished"></translation>
+        <translation>El ficheru ta toyíu</translation>
     </message>
 </context>
 <context>
     <name>DeleteConfirmDailog</name>
     <message>
-        <source>Are you sure you want to delete %1 font(s)?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>This font will not be available to applications</source>
-        <translation type="unfinished"></translation>
+        <translation>Esta fonte nun va tar disponible pa les aplicaciones</translation>
     </message>
     <message>
         <source>These fonts will not be available to applications</source>
-        <translation type="unfinished"></translation>
+        <translation>Estes fontes nun van tar disponibles pa les aplicaciones</translation>
     </message>
     <message>
         <source>The other %1 system fonts cannot be deleted</source>
@@ -186,75 +181,86 @@
     </message>
     <message>
         <source>The font &quot;%1&quot; in use cannot be deleted</source>
-        <translation type="unfinished"></translation>
+        <translation>La fonte «%1» ta n&apos;usu y nun pue desaniciase</translation>
     </message>
     <message>
         <source>The other %1 system fonts and the font &quot;%2&quot; in use cannot be deleted</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Delete</source>
+        <source>Are you sure you want to delete %1 font(s)?</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <comment>button</comment>
+        <translation>Desaniciar</translation>
     </message>
 </context>
 <context>
     <name>Dfuninstalldialog</name>
     <message>
         <source>Deleting fonts, please wait...</source>
-        <translation type="unfinished"></translation>
+        <translation>Desaniciando les fontes, espera…</translation>
     </message>
 </context>
 <context>
     <name>ExceptionWindow</name>
     <message>
         <source>Font Verification</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Exit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Continue</source>
-        <translation type="unfinished"></translation>
+        <translation>Verificación de fontes</translation>
     </message>
     <message>
         <source>No fonts to be installed</source>
-        <translation type="unfinished"></translation>
+        <translation>Nun va instalase nenguna fonte</translation>
+    </message>
+    <message>
+        <source>Exit</source>
+        <comment>button</comment>
+        <translation>Colar</translation>
+    </message>
+    <message>
+        <source>Continue</source>
+        <comment>button</comment>
+        <translation>Siguir</translation>
     </message>
 </context>
 <context>
     <name>Font</name>
     <message>
         <source>Don&apos;t let your dreams be dreams</source>
-        <translation type="unfinished"></translation>
+        <translation>Fai que los suaños nun seyan sueños</translation>
     </message>
 </context>
 <context>
     <name>FontDetailDailog</name>
     <message>
+        <source>Basic info</source>
+        <translation>Información básica</translation>
+    </message>
+    <message>
         <source>Style</source>
-        <translation type="unfinished"></translation>
+        <translation>Estilu</translation>
     </message>
     <message>
         <source>Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Tipu</translation>
     </message>
     <message>
         <source>Version</source>
-        <translation type="unfinished"></translation>
+        <translation>Versión</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation type="unfinished"></translation>
+        <translation>Descripción</translation>
     </message>
     <message>
         <source>Unknown</source>
-        <translation type="unfinished">Desconozse</translation>
+        <translation>Desconozse</translation>
     </message>
     <message>
         <source>Full name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nome completu</translation>
     </message>
     <message>
         <source>Ps name</source>
@@ -262,104 +268,100 @@
     </message>
     <message>
         <source>Trademark</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Basic info</source>
-        <translation type="unfinished"></translation>
+        <translation>Copyright</translation>
     </message>
 </context>
 <context>
     <name>Main</name>
     <message>
         <source>Font Manager</source>
-        <translation type="unfinished"></translation>
+        <translation>Xestor de fontes</translation>
     </message>
     <message>
         <source>Font Manager helps users install and manage fonts.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The font exported to your desktop</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>%1 fonts exported to your desktop</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Failed to export 1 font. There is not enough disk space.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Failed to export %1 fonts. There is not enough disk space.</source>
-        <translation type="unfinished"></translation>
+        <translation>Deepin Font Manager ayuda a los usuarios a instalar y xestionar fontes.</translation>
     </message>
     <message>
         <source>Loading fonts, please wait...</source>
-        <translation type="unfinished"></translation>
+        <translation>Cargando les fontes, espera…</translation>
+    </message>
+    <message>
+        <source>The font exported to your desktop</source>
+        <translation>La fonte esportóse al escritoriu</translation>
+    </message>
+    <message>
+        <source>%1 fonts exported to your desktop</source>
+        <translation>Esportáronse %1 fontes al escritoriu</translation>
+    </message>
+    <message>
+        <source>Failed to export 1 font. There is not enough disk space.</source>
+        <translation>Hebo un fallu al esportar 1 fonte. Nun hai abondu espaciu nel discu.</translation>
+    </message>
+    <message>
+        <source>Failed to export %1 fonts. There is not enough disk space.</source>
+        <translation>Hebo un fallu al esportar %1 fontes. Nun hai abondu espaciu nel discu.</translation>
     </message>
 </context>
 <context>
     <name>Menu</name>
     <message>
         <source>Add font</source>
-        <translation type="unfinished"></translation>
+        <translation>Amestar fontes</translation>
     </message>
     <message>
         <source>Enable</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Export</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Favorite</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Details</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Display in file manager</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unfavorite</source>
-        <translation type="unfinished"></translation>
+        <translation>Activar</translation>
     </message>
     <message>
         <source>Disable</source>
-        <translation type="unfinished"></translation>
+        <translation>Desactivar</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>Desaniciar</translation>
+    </message>
+    <message>
+        <source>Favorite</source>
+        <translation>Amestar a Favoritos</translation>
+    </message>
+    <message>
+        <source>Unfavorite</source>
+        <translation>Quitar de Favoritos</translation>
+    </message>
+    <message>
+        <source>Details</source>
+        <translation>Detalles</translation>
+    </message>
+    <message>
+        <source>Display in file manager</source>
+        <translation>Amosar nel xestor de ficheros</translation>
+    </message>
+    <message>
+        <source>Export</source>
+        <translation>Esportar</translation>
     </message>
 </context>
 <context>
     <name>MessageManager</name>
     <message>
-        <source>%1 is in use, so you cannot disable it</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>You cannot disable system fonts and the fonts in use</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>You cannot disable system fonts</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>deactivated</source>
-        <translation type="unfinished"></translation>
+        <translation>desactivóse</translation>
     </message>
     <message>
         <source>The fonts have been deactivated</source>
-        <translation type="unfinished"></translation>
+        <translation>Desactiváronse les fontes</translation>
+    </message>
+    <message>
+        <source>%1 is in use, so you cannot disable it</source>
+        <translation>%1 ta n&apos;usu polo que nun pues desactivar la fonte</translation>
+    </message>
+    <message>
+        <source>You cannot disable system fonts and the fonts in use</source>
+        <translation>Nun pues desactivar les fontes del sistema y les que tán n&apos;usu</translation>
+    </message>
+    <message>
+        <source>You cannot disable system fonts</source>
+        <translation>Nun pues desactivar les fontes del sistema</translation>
     </message>
 </context>
 <context>
@@ -370,29 +372,29 @@
     </message>
     <message>
         <source>Verifying...</source>
-        <translation type="unfinished"></translation>
+        <translation>Verificando…</translation>
     </message>
 </context>
 <context>
     <name>QuickInstallWindow</name>
     <message>
         <source>Unknown</source>
-        <translation type="unfinished">Desconozse</translation>
-    </message>
-    <message>
-        <source>Install Font</source>
-        <translation type="unfinished"></translation>
+        <translation>Desconozse</translation>
     </message>
     <message>
         <source>Broken file</source>
-        <translation type="unfinished"></translation>
+        <translation>El ficheru ta toyíu</translation>
     </message>
     <message>
         <source>Installed</source>
-        <translation type="unfinished">Instalóse</translation>
+        <translation>Instalóse</translation>
     </message>
     <message>
         <source>Not Installed</source>
+        <translation>Nun s&apos;instaló</translation>
+    </message>
+    <message>
+        <source>Install Font</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -400,26 +402,26 @@
     <name>SearchBar</name>
     <message>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>Buscar</translation>
     </message>
     <message>
         <source>No search results</source>
-        <translation type="unfinished"></translation>
+        <translation>Nun hai resultaos</translation>
     </message>
     <message>
         <source>No fonts</source>
-        <translation type="unfinished"></translation>
+        <translation>Nun hai fontes</translation>
     </message>
 </context>
 <context>
     <name>Shortcut</name>
     <message>
         <source>Help</source>
-        <translation type="unfinished"></translation>
+        <translation>Ayuda</translation>
     </message>
     <message>
         <source>Display shortcuts</source>
-        <translation type="unfinished"></translation>
+        <translation>Amosar los atayos</translation>
     </message>
     <message>
         <source>Page up</source>
@@ -431,19 +433,19 @@
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>Desaniciar</translation>
     </message>
     <message>
         <source>Add font</source>
-        <translation type="unfinished"></translation>
+        <translation>Amestar fontes</translation>
     </message>
     <message>
         <source>Favorite</source>
-        <translation type="unfinished"></translation>
+        <translation>Amestar a Favoritos</translation>
     </message>
     <message>
         <source>Unfavorite</source>
-        <translation type="unfinished"></translation>
+        <translation>Quitar de favoritos</translation>
     </message>
     <message>
         <source>Font info</source>
@@ -454,7 +456,7 @@
     <name>StateBar</name>
     <message>
         <source>Input preview text</source>
-        <translation type="unfinished"></translation>
+        <translation>Teclexa pa previsualizar el testu</translation>
     </message>
 </context>
 </TS>

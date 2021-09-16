@@ -36,25 +36,19 @@
     <name>DFDeleteDialog</name>
     <message>
         <source>Cancel</source>
+        <comment>button</comment>
         <translation>Откажи</translation>
     </message>
 </context>
 <context>
     <name>DFDeleteTTCDialog</name>
     <message>
-        <source>Apply to all selected font families</source>
-        <translation>Примени на све изабране породице фонтова</translation>
-    </message>
-    <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be deleted</source>
         <translation>%1 је породица фонтова, ако нставите, сви фонтови у њој ће бити обрисани</translation>
     </message>
     <message>
-        <source>Cancel</source>
-        <translation>Откажи</translation>
-    </message>
-    <message>
         <source>Delete</source>
+        <comment>button</comment>
         <translation>Обриши</translation>
     </message>
 </context>
@@ -69,20 +63,25 @@
         <translation>%1 је породица фонтова, ако нставите, сви фонтови у њој ће бити онемогућени</translation>
     </message>
     <message>
-        <source>Apply to all selected font families</source>
-        <translation>Примени на све изабране породице фонтова</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Откажи</translation>
-    </message>
-    <message>
         <source>Enable</source>
+        <comment>button</comment>
         <translation>Омогући</translation>
     </message>
     <message>
         <source>Disable</source>
+        <comment>button</comment>
         <translation>Онемогући</translation>
+    </message>
+</context>
+<context>
+    <name>DFHandleTTCDialog</name>
+    <message>
+        <source>Apply to all selected font families</source>
+        <translation type="unfinished">Примени на све изабране породице фонтова</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Откажи</translation>
     </message>
 </context>
 <context>
@@ -194,6 +193,7 @@
     </message>
     <message>
         <source>Delete</source>
+        <comment>button</comment>
         <translation>Обриши</translation>
     </message>
 </context>
@@ -211,16 +211,18 @@
         <translation>Провера фонта</translation>
     </message>
     <message>
+        <source>No fonts to be installed</source>
+        <translation>Нема фонтова за инсталацију</translation>
+    </message>
+    <message>
         <source>Exit</source>
+        <comment>button</comment>
         <translation>Изађи</translation>
     </message>
     <message>
         <source>Continue</source>
+        <comment>button</comment>
         <translation>Настави</translation>
-    </message>
-    <message>
-        <source>No fonts to be installed</source>
-        <translation>Нема фонтова за инсталацију</translation>
     </message>
 </context>
 <context>

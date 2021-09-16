@@ -36,25 +36,19 @@
     <name>DFDeleteDialog</name>
     <message>
         <source>Cancel</source>
+        <comment>button</comment>
         <translation>Prekini</translation>
     </message>
 </context>
 <context>
     <name>DFDeleteTTCDialog</name>
     <message>
-        <source>Apply to all selected font families</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be deleted</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Prekini</translation>
+        <translation>%1 ni družina pisav. Če boste nadaljevali, bodo izbrisane vse pisave</translation>
     </message>
     <message>
         <source>Delete</source>
+        <comment>button</comment>
         <translation>Izbriši</translation>
     </message>
 </context>
@@ -62,27 +56,32 @@
     <name>DFDisableTTCDialog</name>
     <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be enabled</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 je družina pisav. Če boste nadaljevali, bodo vklopljene vse pisave</translation>
     </message>
     <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be disabled</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Apply to all selected font families</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Prekini</translation>
+        <translation>%1 je družina pisav. Če boste nadaljevali, bodo izklopljene vse pisave</translation>
     </message>
     <message>
         <source>Enable</source>
+        <comment>button</comment>
         <translation>Omogoči</translation>
     </message>
     <message>
         <source>Disable</source>
+        <comment>button</comment>
         <translation>Onemogoči</translation>
+    </message>
+</context>
+<context>
+    <name>DFHandleTTCDialog</name>
+    <message>
+        <source>Apply to all selected font families</source>
+        <translation type="unfinished">Uporabi za vse izbrane družine pisav</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Prekini</translation>
     </message>
 </context>
 <context>
@@ -152,11 +151,11 @@
     </message>
     <message>
         <source>Alt+M</source>
-        <translation type="unfinished"></translation>
+        <translation>Alt+M</translation>
     </message>
     <message>
         <source>CTRL+I</source>
-        <translation type="unfinished"></translation>
+        <translation>CTRL+I</translation>
     </message>
 </context>
 <context>
@@ -194,6 +193,7 @@
     </message>
     <message>
         <source>Delete</source>
+        <comment>button</comment>
         <translation>Izbriši</translation>
     </message>
 </context>
@@ -211,16 +211,18 @@
         <translation>Preverjanje pisav</translation>
     </message>
     <message>
+        <source>No fonts to be installed</source>
+        <translation>Nobena pisava ne bo namščena</translation>
+    </message>
+    <message>
         <source>Exit</source>
+        <comment>button</comment>
         <translation>Izhod</translation>
     </message>
     <message>
         <source>Continue</source>
+        <comment>button</comment>
         <translation>Nadaljevanje</translation>
-    </message>
-    <message>
-        <source>No fonts to be installed</source>
-        <translation>Nobena pisava ne bo namščena</translation>
     </message>
 </context>
 <context>

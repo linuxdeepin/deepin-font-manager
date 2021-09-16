@@ -36,25 +36,19 @@
     <name>DFDeleteDialog</name>
     <message>
         <source>Cancel</source>
+        <comment>button</comment>
         <translation>Annuler</translation>
     </message>
 </context>
 <context>
     <name>DFDeleteTTCDialog</name>
     <message>
-        <source>Apply to all selected font families</source>
-        <translation>Appliquer à toutes les familles de polices sélectionnées</translation>
-    </message>
-    <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be deleted</source>
         <translation>%1 est une famille de polices, si vous continuez, toutes les polices qu&apos;elle contient seront supprimées </translation>
     </message>
     <message>
-        <source>Cancel</source>
-        <translation>Annuler</translation>
-    </message>
-    <message>
         <source>Delete</source>
+        <comment>button</comment>
         <translation>Supprimer</translation>
     </message>
 </context>
@@ -69,20 +63,25 @@
         <translation>%1 est une famille de polices, si vous continuez, toutes les polices de cette famille seront désactivées.</translation>
     </message>
     <message>
-        <source>Apply to all selected font families</source>
-        <translation>Appliquer à toutes les familles de polices sélectionnées</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Annuler</translation>
-    </message>
-    <message>
         <source>Enable</source>
+        <comment>button</comment>
         <translation>Activer</translation>
     </message>
     <message>
         <source>Disable</source>
+        <comment>button</comment>
         <translation>Désactiver</translation>
+    </message>
+</context>
+<context>
+    <name>DFHandleTTCDialog</name>
+    <message>
+        <source>Apply to all selected font families</source>
+        <translation type="unfinished">Appliquer à toutes les familles de polices sélectionnées</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Annuler</translation>
     </message>
 </context>
 <context>
@@ -194,6 +193,7 @@
     </message>
     <message>
         <source>Delete</source>
+        <comment>button</comment>
         <translation>Supprimer</translation>
     </message>
 </context>
@@ -211,16 +211,18 @@
         <translation>Vérification des polices</translation>
     </message>
     <message>
+        <source>No fonts to be installed</source>
+        <translation>Aucune police à installer</translation>
+    </message>
+    <message>
         <source>Exit</source>
+        <comment>button</comment>
         <translation>Quitter</translation>
     </message>
     <message>
         <source>Continue</source>
+        <comment>button</comment>
         <translation>Continuer</translation>
-    </message>
-    <message>
-        <source>No fonts to be installed</source>
-        <translation>Aucune police à installer</translation>
     </message>
 </context>
 <context>

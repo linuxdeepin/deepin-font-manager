@@ -36,25 +36,19 @@
     <name>DFDeleteDialog</name>
     <message>
         <source>Cancel</source>
+        <comment>button</comment>
         <translation>Peruuta</translation>
     </message>
 </context>
 <context>
     <name>DFDeleteTTCDialog</name>
     <message>
-        <source>Apply to all selected font families</source>
-        <translation>Käytä kaikkiin valittuihin fonttiperheisiin</translation>
-    </message>
-    <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be deleted</source>
         <translation>%1 on fonttiperhe, jos jatkat niin kaikki perheen fontit poistetaan</translation>
     </message>
     <message>
-        <source>Cancel</source>
-        <translation>Peruuta</translation>
-    </message>
-    <message>
         <source>Delete</source>
+        <comment>button</comment>
         <translation>Poista</translation>
     </message>
 </context>
@@ -69,20 +63,25 @@
         <translation>%1 on fonttiperhe, jos jatkat niin kaikki perheen fontit poistetaan käytöstä</translation>
     </message>
     <message>
-        <source>Apply to all selected font families</source>
-        <translation>Käytä kaikkiin valittuihin fonttiperheisiin</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Peruuta</translation>
-    </message>
-    <message>
         <source>Enable</source>
+        <comment>button</comment>
         <translation>Käytössä</translation>
     </message>
     <message>
         <source>Disable</source>
+        <comment>button</comment>
         <translation>Estä</translation>
+    </message>
+</context>
+<context>
+    <name>DFHandleTTCDialog</name>
+    <message>
+        <source>Apply to all selected font families</source>
+        <translation type="unfinished">Käytä kaikkiin valittuihin fonttiperheisiin</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Peruuta</translation>
     </message>
 </context>
 <context>
@@ -194,6 +193,7 @@
     </message>
     <message>
         <source>Delete</source>
+        <comment>button</comment>
         <translation>Poista</translation>
     </message>
 </context>
@@ -211,16 +211,18 @@
         <translation>Fontin varmennus</translation>
     </message>
     <message>
+        <source>No fonts to be installed</source>
+        <translation>Ei asennettavia fontteja</translation>
+    </message>
+    <message>
         <source>Exit</source>
+        <comment>button</comment>
         <translation>Poistu</translation>
     </message>
     <message>
         <source>Continue</source>
+        <comment>button</comment>
         <translation>Jatka</translation>
-    </message>
-    <message>
-        <source>No fonts to be installed</source>
-        <translation>Ei asennettavia fontteja</translation>
     </message>
 </context>
 <context>

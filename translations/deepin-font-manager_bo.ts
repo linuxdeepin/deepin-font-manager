@@ -36,25 +36,19 @@
     <name>DFDeleteDialog</name>
     <message>
         <source>Cancel</source>
+        <comment>button</comment>
         <translation>འདོར་བ།</translation>
     </message>
 </context>
 <context>
     <name>DFDeleteTTCDialog</name>
     <message>
-        <source>Apply to all selected font families</source>
-        <translation>བདམས་ཡོད་པའི་ཡིག་གཟུགས་ཚང་མར་སྤྱོད་པ།</translation>
-    </message>
-    <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be deleted</source>
         <translation>%1ནི་ཡིག་གཟུགས་ཚོགས་པ་ཞིག་ཡིན་པས་དེ་བསུབ་ཚེ་དེའི་ཁོངས་གཏོགས་ཀྱི་ཡིག་གཟུགས་ཚང་མ་བསུབ་སྲིད།</translation>
     </message>
     <message>
-        <source>Cancel</source>
-        <translation>འདོར་བ།</translation>
-    </message>
-    <message>
         <source>Delete</source>
+        <comment>button</comment>
         <translation>ཡིག་གཟུགས་སུབ་པ།</translation>
     </message>
 </context>
@@ -69,20 +63,25 @@
         <translation>%1ནི་ཡིག་གཟུགས་ཚོགས་པ་ཞིག་ཡིན་པས་དེ་བཀོལ་མི་ཆོག་པ་བཟོས་ཚེ་དེའི་ཁོངས་གཏོགས་ཀྱི་ཡིག་གཟུགས་ཚང་མ་བཀོལ་མི་ཆོག</translation>
     </message>
     <message>
-        <source>Apply to all selected font families</source>
-        <translation>བདམས་ཡོད་པའི་ཡིག་གཟུགས་ཚང་མར་སྤྱོད་པ།</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>འདོར་བ།</translation>
-    </message>
-    <message>
         <source>Enable</source>
+        <comment>button</comment>
         <translation>ཡིག་གཟུགས་སྤྱོད་འགོ་ཚུགས་པ།</translation>
     </message>
     <message>
         <source>Disable</source>
+        <comment>button</comment>
         <translation>ཡིག་གཟུགས་སྤྱོད་མི་ཆོག</translation>
+    </message>
+</context>
+<context>
+    <name>DFHandleTTCDialog</name>
+    <message>
+        <source>Apply to all selected font families</source>
+        <translation type="unfinished">བདམས་ཡོད་པའི་ཡིག་གཟུགས་ཚང་མར་སྤྱོད་པ།</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">འདོར་བ།</translation>
     </message>
 </context>
 <context>
@@ -194,7 +193,8 @@
     </message>
     <message>
         <source>Delete</source>
-        <translation>སུབ་པ།</translation>
+        <comment>button</comment>
+        <translation>ཡིག་གཟུགས་སུབ་པ།</translation>
     </message>
 </context>
 <context>
@@ -211,16 +211,18 @@
         <translation>ཡིག་གཟུགས་ར་སྤྲོད།</translation>
     </message>
     <message>
+        <source>No fonts to be installed</source>
+        <translation>སྒྲིག་སྦྱོར་བྱེད་རུང་བའི་ཡིག་གཟུགས་མེད།</translation>
+    </message>
+    <message>
         <source>Exit</source>
+        <comment>button</comment>
         <translation>ཕྱིར་འབུད།</translation>
     </message>
     <message>
         <source>Continue</source>
+        <comment>button</comment>
         <translation>མུ་མཐུད།</translation>
-    </message>
-    <message>
-        <source>No fonts to be installed</source>
-        <translation>སྒྲིག་སྦྱོར་བྱེད་རུང་བའི་ཡིག་གཟུགས་མེད།</translation>
     </message>
 </context>
 <context>
