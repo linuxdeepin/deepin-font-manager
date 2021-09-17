@@ -2196,8 +2196,9 @@ void DFontPreviewListView::changeFontFile(const QString &path, bool force)
             m_dataThread->removePathWatcher(filePath);
             iter = m_dataThread->m_fontModelList.erase(iter);
             Q_EMIT itemRemoved(itemData);
-            if (!isDir)
+            if (!isDir && !itemData.fontInfo.filePath.endsWith(".ttc", Qt::CaseInsensitive)) {
                 break;
+            }
         } else {
             ++iter;
         }
