@@ -345,8 +345,10 @@ void DFontPreviewListDataThread::forceDeleteFiles(QStringList &files)
 *************************************************************************/
 void DFontPreviewListDataThread::onRemoveFileWatchers(const QStringList &files)
 {
-    qDebug() << __FUNCTION__ << files.size() << m_fsWatcher->removePaths(files);
-    Q_UNUSED(files)
+    if (!files.isEmpty()) {
+        //消除files为空的警告
+        qDebug() << __FUNCTION__ << files.size() << m_fsWatcher->removePaths(files);
+    }
     m_fsWatcher->removePath(FONTS_DIR);
     m_fsWatcher->removePath(FONTS_UP_DIR);
 }

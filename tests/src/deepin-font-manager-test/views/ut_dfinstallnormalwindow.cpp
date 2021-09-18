@@ -47,12 +47,18 @@
 #include <DLog>
 
 namespace {
+void dowork_stub()
+{
+
+}
 class TestDFInstallNormalWindow : public testing::Test
 {
 
 protected:
     void SetUp()
     {
+        Stub s;
+        s.set(ADDR(DFInstallNormalWindow, dowork), dowork_stub);
         iw = new DFInstallNormalWindow();
     }
     void TearDown()
