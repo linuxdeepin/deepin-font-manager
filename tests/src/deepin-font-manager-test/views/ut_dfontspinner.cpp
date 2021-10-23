@@ -27,13 +27,14 @@
 #include "commonheaderfile.h"
 #include "utils.h"
 
+#include <DFontSizeManager>
+
 #include <QPaintEvent>
 #include <QVBoxLayout>
 #include <QApplication>
 #include <QDebug>
 #include <QTimer>
-
-#include <DFontSizeManager>
+#include <QPainterPath>
 
 namespace {
 class TestDFontSpinner : public testing::Test
