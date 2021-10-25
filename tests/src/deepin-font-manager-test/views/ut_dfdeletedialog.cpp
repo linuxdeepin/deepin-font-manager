@@ -80,12 +80,17 @@ TEST_F(TestDFDeleteDialog, checksetTheme)
     Stub s1;
     s1.set(ADDR(DGuiApplicationHelper, themeType), stub_themeType);
     fm->setTheme();
-    EXPECT_TRUE(DApplicationHelper::instance()->palette(fm).color(DPalette::Background) == QColor(25, 25, 25, 80));
+    DPalette pamessageTitle = DApplicationHelper::instance()->palette(fm->messageTitle);
+    QColor pamessageTitleColor = pamessageTitle.color(DPalette::Active, DPalette::BrightText);
+    pamessageTitleColor.setAlphaF(1.0);
+    EXPECT_TRUE(pamessageTitle.color(DPalette::Active, DPalette::WindowText) == pamessageTitleColor);
 
     Stub s2;
     s2.set(ADDR(DGuiApplicationHelper, themeType), stub_themeType2);
     fm->setTheme();
-    EXPECT_TRUE(DApplicationHelper::instance()->palette(fm).color(DPalette::Background) == QColor(247, 247, 247, 80));
+    pamessageTitleColor = pamessageTitle.color(DPalette::Active, DPalette::BrightText);
+    pamessageTitleColor.setAlphaF(10.9);
+    EXPECT_TRUE(pamessageTitle.color(DPalette::Active, DPalette::WindowText) == pamessageTitleColor);
 }
 
 TEST_F(TestDFDeleteDialog, checkConnect)

@@ -199,12 +199,6 @@ void DFDeleteDialog::initMessageTitle()
     messageTitle->setAlignment(Qt::AlignCenter);
 
     DFontSizeManager::instance()->bind(messageTitle, DFontSizeManager::T6, QFont::Medium);
-
-    DPalette pa = DApplicationHelper::instance()->palette(messageTitle);
-    QColor color = pa.toolTipText().color();
-    color.setAlphaF(0.9);
-    pa.setColor(DPalette::WindowText, color);
-    DApplicationHelper::instance()->setPalette(messageTitle, pa);
 }
 
 /*************************************************************************
@@ -243,12 +237,7 @@ void DFDeleteDialog::initMessageDetail()
     messageDetail->setWordWrap(true);
     messageDetail->setAlignment(Qt::AlignCenter);
 
-    DFontSizeManager::instance()->bind(messageDetail, DFontSizeManager::T6, QFont::Normal);
-    DPalette pa = DApplicationHelper::instance()->palette(messageDetail);
-    QColor color = pa.toolTipText().color();
-    color.setAlphaF(0.7);
-    pa.setColor(DPalette::WindowText, color);
-    DApplicationHelper::instance()->setPalette(messageDetail, pa);
+    DFontSizeManager::instance()->bind(messageDetail, DFontSizeManager::T6, QFont::Medium);
 }
 
 /*************************************************************************
@@ -347,15 +336,22 @@ void DFDeleteDialog::keyPressEvent(QKeyEvent *event)
 *************************************************************************/
 void DFDeleteDialog::setTheme()
 {
+    // 根据主题设置文字颜色
+    DPalette pamessageTitle = DApplicationHelper::instance()->palette(messageTitle);
+    DPalette pamessageDetail = DApplicationHelper::instance()->palette(messageDetail);
+    QColor pamessageTitleColor = pamessageTitle.color(DPalette::Active, DPalette::BrightText);
+    QColor pamessageDetailColor = pamessageDetail.color(DPalette::Active, DPalette::BrightText);
     if (DApplicationHelper::DarkType == DApplicationHelper::instance()->themeType()) {
-        DPalette pa = DApplicationHelper::instance()->palette(this);
-        pa.setColor(DPalette::Background, QColor(25, 25, 25, 80));
-        DApplicationHelper::instance()->setPalette(this, pa);
+        pamessageTitleColor.setAlphaF(1.0);
+        pamessageDetailColor.setAlphaF(0.7);
     } else {
-        DPalette pa = DApplicationHelper::instance()->palette(this);
-        pa.setColor(DPalette::Background, QColor(247, 247, 247, 80));
-        DApplicationHelper::instance()->setPalette(this, pa);
+        pamessageTitleColor.setAlphaF(0.9);
+        pamessageDetailColor.setAlphaF(0.7);
     }
+    pamessageTitle.setColor(DPalette::Active, DPalette::WindowText, pamessageTitleColor);
+    DApplicationHelper::instance()->setPalette(messageTitle, pamessageTitle);
+    pamessageDetail.setColor(DPalette::Active, DPalette::WindowText, pamessageDetailColor);
+    DApplicationHelper::instance()->setPalette(messageDetail, pamessageDetail);
 }
 
 DFHandleTTCDialog::DFHandleTTCDialog(DFontMgrMainWindow *win, QString &file, QWidget *parent)
