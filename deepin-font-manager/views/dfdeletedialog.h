@@ -108,6 +108,11 @@ public:
     bool getDeleting();
     bool getAapplyToAll();
     bool eventFilter(QObject *watched, QEvent *event) Q_DECL_OVERRIDE;
+    /**
+     * @brief execDialog 优化后的exec
+     * @return
+     */
+    int execDialog();
 
 protected:
     //响应键盘press事件中的esc按键

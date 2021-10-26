@@ -392,6 +392,17 @@ bool DFHandleTTCDialog::eventFilter(QObject *watched, QEvent *event)
     }
 }
 
+int DFHandleTTCDialog::execDialog()
+{
+    // 因为使用了adjustSize()，在exec之前dialog的大小未知，
+    // 所以需要延时5ms(经验值)后moveToCenter才准确
+    QTimer::singleShot(5, this, [&]() {
+        moveToCenter();
+    });
+
+    return exec();
+}
+
 void DFHandleTTCDialog::keyPressEvent(QKeyEvent *event)
 {
     bool received = false;
@@ -431,8 +442,6 @@ void DFHandleTTCDialog::initUI()
 
     addContent(mainFrame);
     applyAllCkb->installEventFilter(this);
-
-    moveToCenter();
 }
 
 void DFHandleTTCDialog::initConnections()
