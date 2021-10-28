@@ -1502,7 +1502,7 @@ void DFontMgrMainWindow::onFontListViewRowCountChanged()
             bShow = 1; //未找到字体
         }
     }
-    qDebug() << __FUNCTION__ << filterModel->rowCount() << "-------" << bShow << endl;
+    qDebug() << __FUNCTION__ << filterModel->rowCount() << "-------" << bShow;
     bool isSpinnerHidden = m_fontLoadingSpinner->isHidden();
     switch (bShow) {
     case 0:

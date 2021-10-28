@@ -27,6 +27,7 @@
 #include <DComboBox>
 #include <DLabel>
 #include <DMainWindow>
+#include <DPushButton>
 
 DWIDGET_USE_NAMESPACE
 
