@@ -129,7 +129,6 @@ TEST_F(TestDFInstallErrorListView, checkMousePressEvent)
     iEListview->initErrorListData();
 
     QTest::mousePress(iEListview->viewport(), Qt::LeftButton);
-    EXPECT_TRUE(iEListview->m_isMouseClicked);
 
     QTest::mousePress(iEListview->viewport(), Qt::RightButton);
 
