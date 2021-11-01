@@ -136,9 +136,7 @@ private:
     QList<DFInstallErrorItemModel> m_installErrorFontModelList;
     QList<QString> m_errorFontlist;
     int beforeSelectRow = 0;
-    bool m_isMouseClicked = false;
     bool m_IsTabFocus = false;
-    bool m_isInstallFocus = false;
     bool m_ifFirstFocus = true;
     //初始选中第一个可选项
     void initSelectedItem();

@@ -790,33 +790,6 @@ bool DFInstallErrorListView::getIsTabFocus() const
     return m_IsTabFocus;
 }
 
-///*************************************************************************
-// <Function>      setIsInstallFocus
-// <Description>   更新tab聚焦状态
-// <Author>
-// <Input>
-//    <param1>     isInstallFocus  Description:用于设置tab聚焦标志位的参数
-// <Return>        null            Description:null
-// <Note>          null
-//*************************************************************************/
-//void DFInstallErrorListView::setIsInstallFocus(bool isInstallFocus)
-//{
-//    m_isInstallFocus = isInstallFocus;
-//}
-
-///*************************************************************************
-// <Function>      getIsInstallFocus
-// <Description>   查看是否为列表新增获取的tab聚焦
-// <Author>
-// <Input>         null
-// <Return>        m_isInstallFocus Description:是否为列表新增获取的tab聚焦
-// <Note>          null
-//*************************************************************************/
-//bool DFInstallErrorListView::getIsInstallFocus() const
-//{
-//    return m_isInstallFocus;
-//}
-
 /*************************************************************************
  <Function>      mousePressEvent
  <Description>   重写鼠标press事件
@@ -828,7 +801,6 @@ bool DFInstallErrorListView::getIsTabFocus() const
 *************************************************************************/
 void DFInstallErrorListView::mousePressEvent(QMouseEvent *event)
 {
-    m_isMouseClicked = true;
     if (event->button() == Qt::LeftButton) {
         QPoint point = event->pos();
         QModelIndex modelIndex = indexAt(point);
@@ -1080,9 +1052,7 @@ bool DFInstallErrorListView::eventFilter(QObject *obj, QEvent *event)
 
         //需要排除因为窗口切换导致errorlistview失去焦点的情况，这种情况不需要清空标志位
         if (focusEvent->reason() != Qt::ActiveWindowFocusReason) {
-            m_isMouseClicked = false;
             m_IsTabFocus = false;
-            m_isInstallFocus = false;
         }
 
     }
@@ -1094,14 +1064,7 @@ bool DFInstallErrorListView::eventFilter(QObject *obj, QEvent *event)
         if (focusEvent->reason() != Qt::ActiveWindowFocusReason) {
             //不是因为窗口切换获取到焦点时，判断获取焦点的方式，如果不是通过鼠标点击或者安装过程后设置的焦点，就
             //判断为通过tab获取到的焦点。
-            if (!m_isMouseClicked && !m_isInstallFocus) {
-                //刚打开窗口第一次获取焦点时不需要tab的效果.
-//                if (m_ifFirstFocus) {
-//                    m_ifFirstFocus = false;
-//                } else {
-                m_IsTabFocus = true;
-//                }
-            }
+            m_IsTabFocus = true;
         }
 
         //没有选中项时，切换到异常字体列表时，默认选中第一个
