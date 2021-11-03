@@ -407,6 +407,7 @@ TEST_F(TestDFontMgrMainWindow, checkCheckFilesSpace)
 
     EXPECT_TRUE(fm->checkFilesSpace(list).isEmpty());
 
+    s1.reset(ADDR(QFileInfo, size));
     s1.set(ADDR(QFileInfo, size), stub_getSizeS);
     EXPECT_TRUE(fm->checkFilesSpace(list).contains("first"));
 }
@@ -548,7 +549,7 @@ TEST_F(TestDFontMgrMainWindow, checkDragEnterEvent)
 
     fm->dragEnterEvent(e);
 
-    Stub s4;
+    s1.reset(ADDR(QMimeData, urls));
     s1.set(ADDR(QMimeData, urls), stub_urlssin);
     fm->dragEnterEvent(e);
 
@@ -811,8 +812,9 @@ TEST_F(TestDFontMgrMainWindow, checkForceNoramlInstalltionQuitIfNeeded)
     fm->forceNoramlInstalltionQuitIfNeeded();
 
     fm->m_fIsInstalling = true;
-
+    fm->m_dfNormalInstalldlg = new DFInstallNormalWindow();
     fm->forceNoramlInstalltionQuitIfNeeded();
+    delete fm->m_dfNormalInstalldlg;
 }
 
 //这个函数中主要是完全无用的代码，暂时标注掉
@@ -900,10 +902,12 @@ TEST_F(TestDFontMgrMainWindow, checkHandleMenuEvent)
     fm->handleMenuEvent(actionList.at(3));
 
     s.set(ADDR(DFontMgrMainWindow, exportFont), stub_return);
+    s2.reset(ADDR(DFontPreviewListView, syncTabStatus));
     s2.set(ADDR(DFontPreviewListView, syncTabStatus), stub_return);
     fm->handleMenuEvent(actionList.at(4));
 
     s.set(ADDR(DFontPreviewListView, onCollectBtnClicked), stub_return);
+    s2.reset(ADDR(DFontPreviewListView, syncTabStatus));
     s2.set(ADDR(DFontPreviewListView, syncTabStatus), stub_return);
     fm->handleMenuEvent(actionList.at(5));
 
@@ -952,6 +956,7 @@ TEST_F(TestDFontMgrMainWindow, checkinitShortcutsReSize)
 
     emit fm->m_scWndReize->activated();
 
+    s.reset(ADDR(QWidget, windowState));
     s.set(ADDR(QWidget, windowState), stub_windowStateNo);
     s1.set(ADDR(QWidget, showMaximized), stub_return);
     emit fm->m_scWndReize->activated();

@@ -54,15 +54,17 @@ class TestDFInstallErrorDialog: public testing::Test
 protected:
     void SetUp()
     {
-        DFErrDialog = new DFInstallErrorDialog;
+        parent = new DFInstallNormalWindow;
+        DFErrDialog = new DFInstallErrorDialog(parent);
 
     }
     void TearDown()
     {
-        delete DFErrDialog;
+//        delete DFErrDialog;
+        delete parent;
     }
-    DFInstallErrorDialog *DFErrDialog;
-
+    DFInstallErrorDialog *DFErrDialog = nullptr;
+    DFInstallNormalWindow *parent = nullptr;
 };
 
 DFontInfo  stub_getFontInfoError(const QString filePath)
