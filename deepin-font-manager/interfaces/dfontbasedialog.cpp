@@ -22,6 +22,7 @@
 
 #include "dfontbasedialog.h"
 #include "globaldef.h"
+#include "utils.h"
 
 #include <QVBoxLayout>
 #include <QApplication>
@@ -79,6 +80,10 @@ void DFontBaseDialog::initUI()
     m_closeButton = new DWindowCloseButton(this);
 //    m_closeButton->setFocusPolicy(Qt::NoFocus);//SP3--设置tab顺序--设置close按钮可聚焦(539)
     m_closeButton->setIconSize(QSize(50, 50));
+    // waylandh环境下隐藏关闭按钮
+    if (Utils::isWayland()) {
+        m_closeButton->setVisible(false);
+    }
 
     m_tileText = new DLabel(this);
     m_tileText->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
