@@ -215,8 +215,7 @@ void DFInstallErrorListDelegate::drawFontStyle(QPainter *painter, const QStyleOp
     QFontMetrics stateFontMetric(installStatusFont);
     QString elidedStatusText = fontMetric.elidedText(strStatus,
                                                      Qt::ElideRight,
-                                                     installStatusRect.width(),
-                                                     Qt::TextShowMnemonic);
+                                                     installStatusRect.width());
 
     DGuiApplicationHelper::ColorType themeType = DGuiApplicationHelper::instance()->themeType();
     if (themeType == DGuiApplicationHelper::LightType) {

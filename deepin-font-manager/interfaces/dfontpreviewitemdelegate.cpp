@@ -114,7 +114,7 @@ void DFontPreviewItemDelegate::paintForegroundFontName(QPainter *painter, const 
                                option.rect.width() - 20, FONT_NAME_HEIGHT);
 
     QFontMetrics mt(nameFont);//特殊图案字体下截断字体名称/*UT000539*/
-    QString elidedText = mt.elidedText(itemData.strFontName, Qt::ElideRight, option.rect.width() - 120, Qt::TextShowMnemonic);
+    QString elidedText = mt.elidedText(itemData.strFontName, Qt::ElideRight, option.rect.width() - 120);
     painter->drawText(fontNameRect, Qt::AlignLeft | Qt::AlignVCenter, elidedText);
 }
 
@@ -273,7 +273,7 @@ void DFontPreviewItemDelegate::paintForegroundPreviewFont(QPainter *painter, con
 
     QFontMetrics fontMetric(previewFont);
 
-    QString elidedText = fontMetric.elidedText(fontPreviewText, Qt::ElideRight, fontPreviewRect.width(), Qt::TextShowMnemonic);
+    QString elidedText = fontMetric.elidedText(fontPreviewText, Qt::ElideRight, fontPreviewRect.width());
 
     QPoint baseLinePoint = adjustPreviewFontBaseLinePoint(fontPreviewRect, fontMetric);
     /* 使用baseline规则绘制预览文字，这样不用考虑特殊字体 UT000591 */
