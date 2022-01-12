@@ -27,7 +27,7 @@
 
 - 在字體管理器介面單擊  ![close_icon](../common/close_icon.svg)，關閉字體管理器。
 - 在任務欄右鍵單擊 ![deepin_font_manager](../common/deepin_font_manager.svg)，選擇 **全部關閉** 來關閉字體管理器。
-- 在字體管理器介面單擊 ![icon_menu](../common/icon_menu.svg)，選擇 **離開** 來關閉字體管理器。
+- 在字體管理器介面單擊 ![icon_menu](../common/icon_menu.svg)，選擇 **退出** 關閉字體管理器。
 
 ### 查看快捷鍵
 
@@ -53,7 +53,7 @@
 
 字體管理器可以安裝單個字體，也可以批次安裝多個字體，您可以透過以下方式進行安裝。
 
-- 在字體管理器介面，單擊選單欄上的圖示 ![add](../common/add.svg) 或 ![icon_menu](../common/icon_menu.svg) > **添加字體**，或右鍵單擊字體選擇 **添加字體**，選擇需要安裝的字體檔案。
+- 在字體管理器介面，單擊選單欄上的圖示 ![add](../common/icon_plus.svg) 或 ![icon_menu](../common/icon_menu.svg) > **添加字體**，或右鍵單擊字體選擇 **添加字體**，選擇需要安裝的字體檔案。
 - 右鍵單擊字體檔案並選擇 **用其他程式開啟** > ![deepin_font_manager](../common/deepin_font_manager.svg)**字體管理器**，進入字體管理器介面，安裝字體。
 - 雙擊字體檔案，安裝字體。
 - 將字體檔案拖曳到字體管理器介面或圖示上。
@@ -171,7 +171,7 @@
 2. 單擊 **關於**。
 3. 查看字體管理器的版本和介紹。
 
-### 離開
+### 退出
 
 1. 在字體管理器介面，單擊 ![icon_menu](../common/icon_menu.svg)。
-2. 單擊 **離開**。
+2. 單擊 **退出**。

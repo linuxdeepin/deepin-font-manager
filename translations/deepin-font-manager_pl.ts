@@ -5,7 +5,7 @@
     <name>Category</name>
     <message>
         <source>All Fonts</source>
-        <translation>Wszystkie czcionki</translation>
+        <translation>Wszystkie</translation>
     </message>
     <message>
         <source>System</source>
@@ -256,7 +256,7 @@
     </message>
     <message>
         <source>Unknown</source>
-        <translation>Nieznany</translation>
+        <translation>Nieznana</translation>
     </message>
     <message>
         <source>Full name</source>
@@ -338,7 +338,7 @@
     </message>
     <message>
         <source>Export</source>
-        <translation>Eksport</translation>
+        <translation>Eksportuj</translation>
     </message>
 </context>
 <context>
@@ -379,7 +379,7 @@
     <name>QuickInstallWindow</name>
     <message>
         <source>Unknown</source>
-        <translation>Nieznany</translation>
+        <translation>Nieznana</translation>
     </message>
     <message>
         <source>Broken file</source>
@@ -425,11 +425,11 @@
     </message>
     <message>
         <source>Page up</source>
-        <translation>Strona w górę</translation>
+        <translation>Przewiń stronę do góry</translation>
     </message>
     <message>
         <source>Page down</source>
-        <translation>Strona w dół</translation>
+        <translation>Przewiń stronę w dół </translation>
     </message>
     <message>
         <source>Delete</source>

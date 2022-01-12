@@ -425,7 +425,7 @@
     </message>
     <message>
         <source>Page up</source>
-        <translation>O stranu nahoru</translation>
+        <translation>O stránku nahoru</translation>
     </message>
     <message>
         <source>Page down</source>
