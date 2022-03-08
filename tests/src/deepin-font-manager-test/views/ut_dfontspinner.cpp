@@ -27,13 +27,14 @@
 #include "commonheaderfile.h"
 #include "utils.h"
 
+#include <DFontSizeManager>
+
 #include <QPaintEvent>
 #include <QVBoxLayout>
 #include <QApplication>
 #include <QDebug>
 #include <QTimer>
-
-#include <DFontSizeManager>
+#include <QPainterPath>
 
 namespace {
 class TestDFontSpinner : public testing::Test
@@ -78,12 +79,9 @@ TEST_F(TestDFontSpinner, checkStart)
 {
     Stub s;
     s.set((void(QTimer::*)())ADDR(QTimer, start), stub_start);
-    s.set(ADDR(QTimer, stop), stub_stop);
 
     fs->start();
     EXPECT_TRUE(g_funcname == QLatin1String("stub_start"));
-    fs->stop();
-    EXPECT_TRUE(g_funcname == QLatin1String("stub_stop"));
 }
 
 TEST_F(TestDFontSpinner, checkPaintEvent)

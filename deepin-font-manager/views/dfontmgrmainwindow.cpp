@@ -1502,7 +1502,7 @@ void DFontMgrMainWindow::onFontListViewRowCountChanged()
             bShow = 1; //未找到字体
         }
     }
-    qDebug() << __FUNCTION__ << filterModel->rowCount() << "-------" << bShow << endl;
+    qDebug() << __FUNCTION__ << filterModel->rowCount() << "-------" << bShow;
     bool isSpinnerHidden = m_fontLoadingSpinner->isHidden();
     switch (bShow) {
     case 0:
@@ -1839,7 +1839,7 @@ void DFontMgrMainWindow::onHandleDeleteTTC(QString filePath, bool &isDelete, boo
     }
 
     DFDeleteTTCDialog *confirmDelDlg = new DFDeleteTTCDialog(this, fontNames, this);
-    confirmDelDlg->exec();
+    confirmDelDlg->execDialog();
 
     isDelete = confirmDelDlg->getDeleting();
     isAapplyToAll = confirmDelDlg->getAapplyToAll();
@@ -1966,7 +1966,7 @@ void DFontMgrMainWindow::onHandleDisableTTC(const QString &filePath, bool &isEna
     }
 
     DFDisableTTCDialog *confirmDelDlg = new DFDisableTTCDialog(this, fontNames, isEnable, this);
-    confirmDelDlg->exec();
+    confirmDelDlg->execDialog();
 
     isConfirm = confirmDelDlg->getDeleting();
     isAapplyToAll = confirmDelDlg->getAapplyToAll();

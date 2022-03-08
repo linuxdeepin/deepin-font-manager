@@ -22,6 +22,7 @@
 
 #include "dfontbasedialog.h"
 #include "globaldef.h"
+#include "utils.h"
 
 #include <QVBoxLayout>
 #include <QApplication>

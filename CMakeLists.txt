@@ -42,6 +42,9 @@ FIND_PACKAGE(DtkGui REQUIRED)
 FIND_PACKAGE(Freetype REQUIRED)
 FIND_PACKAGE(PkgConfig REQUIRED)
 
+#社区版上 MOC 时，会缺少 include 路径 /usr/include，
+#暂未找到原因，先手动添加 /usr/include 规避
+INCLUDE_DIRECTORIES(/usr/include/)
 
 PKG_SEARCH_MODULE(FontConfig REQUIRED fontconfig IMPORTED_TARGET)
 #PKG_SEARCH_MODULE(QGsettings REQUIRED gsettings-qt IMPORTED_TARGET)
@@ -67,6 +70,12 @@ ADD_SUBDIRECTORY(deepin-font-preview-plugin)
 #安装帮助手册需要文件
 install(DIRECTORY ${CMAKE_SOURCE_DIR}/deepin-font-manager-assets/deepin-font-manager
    DESTINATION /usr/share/deepin-manual/manual-assets/application/)
+
+#代码覆盖率开关
+if(CMAKE_COVERAGE_ARG STREQUAL "CMAKE_COVERAGE_ARG_ON")
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -Wall -fprofile-arcs -ftest-coverage")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -fprofile-arcs -ftest-coverage")
+endif()
 
 ADD_SUBDIRECTORY(tests)
 

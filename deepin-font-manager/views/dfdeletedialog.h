@@ -44,7 +44,7 @@ class DFDeleteDialog : public DFontBaseDialog
 {
     Q_OBJECT
 public:
-    explicit DFDeleteDialog(DFontMgrMainWindow *win, int deleteCnt = 0, int systemCnt = 0, bool hasCurrent = false, QWidget *parent = nullptr);
+    DFDeleteDialog(DFontMgrMainWindow *win, int deleteCnt = 0, int systemCnt = 0, bool hasCurrent = false, QWidget *parent = nullptr);
 
     static constexpr int DEFAULT_WINDOW_W = 380;
     static constexpr int DEFAULT_WINDOW_H = 160;
@@ -101,13 +101,18 @@ class DFHandleTTCDialog : public DFontBaseDialog
 {
     Q_OBJECT
 public:
-    explicit DFHandleTTCDialog(DFontMgrMainWindow *win, QString &file, QWidget *parent = nullptr);
+    DFHandleTTCDialog(DFontMgrMainWindow *win, QString &file, QWidget *parent = nullptr);
 
     static constexpr int DEFAULT_WINDOW_W = 380;
     static constexpr int DEFAULT_WINDOW_H = 160;
     bool getDeleting();
     bool getAapplyToAll();
     bool eventFilter(QObject *watched, QEvent *event) Q_DECL_OVERRIDE;
+    /**
+     * @brief execDialog 优化后的exec
+     * @return
+     */
+    int execDialog();
 
 protected:
     //响应键盘press事件中的esc按键
@@ -140,10 +145,9 @@ protected:
     int m_iLabelOldHeight = 0;
     int m_iDialogOldHeight = 0;
 
-    DPushButton *m_cancelBtn;
-    DWarningButton *m_confirmBtn;
-    DFontMgrMainWindow *m_mainWindow; //父窗口
-
+    DPushButton *m_cancelBtn = nullptr;
+    DWarningButton *m_confirmBtn = nullptr;
+    DFontMgrMainWindow *m_mainWindow = nullptr; //父窗口
     bool m_confirm = false; //是否删除
     bool m_bAapplyToAll = false; //是否应用全部
     QString fontset; // 字体集内所有字体名称
@@ -159,7 +163,7 @@ class DFDeleteTTCDialog : public DFHandleTTCDialog
 {
     Q_OBJECT
 public:
-    explicit DFDeleteTTCDialog(DFontMgrMainWindow *win, QString &file, QWidget *parent = nullptr);
+    DFDeleteTTCDialog(DFontMgrMainWindow *win, QString &file, QWidget *parent = nullptr);
 
     void setConfirmBtnText() override;
     void setMessageTitleText() override;
@@ -176,7 +180,7 @@ class DFDisableTTCDialog : public DFHandleTTCDialog
 {
     Q_OBJECT
 public:
-    explicit DFDisableTTCDialog(DFontMgrMainWindow *win, QString &file, bool &isEnable, QWidget *parent = nullptr);
+    DFDisableTTCDialog(DFontMgrMainWindow *win, QString &file, bool &isEnable, QWidget *parent = nullptr);
 
 protected:
     void setConfirmBtnText() override;

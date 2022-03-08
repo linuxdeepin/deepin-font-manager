@@ -45,6 +45,9 @@ public:
     static QPixmap renderSVG(const QString &filePath, const QSize &size);
 
     static QString convertToPreviewString(const QString &fontFilePath, const QString &srcString);
+
+    //判断是否wayland环境
+    static bool isWayland();
 };
 
 #endif

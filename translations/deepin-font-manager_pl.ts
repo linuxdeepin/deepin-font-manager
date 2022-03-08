@@ -5,15 +5,15 @@
     <name>Category</name>
     <message>
         <source>All Fonts</source>
-        <translation>Wszystkie czcionki</translation>
+        <translation>Wszystkie</translation>
     </message>
     <message>
         <source>System</source>
-        <translation>System</translation>
+        <translation>Systemowe</translation>
     </message>
     <message>
         <source>User</source>
-        <translation>Użytkownik</translation>
+        <translation>Użytkownika</translation>
     </message>
     <message>
         <source>Favorites</source>
@@ -21,11 +21,11 @@
     </message>
     <message>
         <source>Active</source>
-        <translation>Aktywny</translation>
+        <translation>Aktywna</translation>
     </message>
     <message>
         <source>Chinese</source>
-        <translation>Chiński</translation>
+        <translation>Chińskie</translation>
     </message>
     <message>
         <source>Monospaced</source>
@@ -44,7 +44,7 @@
     <name>DFDeleteTTCDialog</name>
     <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be deleted</source>
-        <translation>%1 jest rodziną czcionkową, jeśli zamierzasz kontynuować, wszystkie czcionki w niej zostaną usunięte</translation>
+        <translation>%1 jest rodziną czcionek, jeśli zamierzasz kontynuować, wszystkie czcionki w niej zostaną usunięte</translation>
     </message>
     <message>
         <source>Delete</source>
@@ -56,11 +56,11 @@
     <name>DFDisableTTCDialog</name>
     <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be enabled</source>
-        <translation>%1 jest rodziną czcionkową, jeśli zamierzasz kontynuować, wszystkie czcionki w niej zostaną włączone</translation>
+        <translation>%1 jest rodziną czcionek, jeśli zamierzasz kontynuować, wszystkie czcionki w niej zostaną włączone</translation>
     </message>
     <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be disabled</source>
-        <translation>%1 jest rodziną czcionkową, jeśli zamierzasz kontynuować, wszystkie czcionki w niej zostaną wyłączone</translation>
+        <translation>%1 jest rodziną czcionek, jeśli zamierzasz kontynuować, wszystkie czcionki w niej zostaną wyłączone</translation>
     </message>
     <message>
         <source>Enable</source>
@@ -77,11 +77,11 @@
     <name>DFHandleTTCDialog</name>
     <message>
         <source>Apply to all selected font families</source>
-        <translation type="unfinished">Zastosuj do wszystkich zaznaczonych rodzin czcionkowych</translation>
+        <translation>Zastosuj do wszystkich zaznaczonych rodzin czcionek</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Anuluj</translation>
+        <translation>Anuluj</translation>
     </message>
 </context>
 <context>
@@ -256,7 +256,7 @@
     </message>
     <message>
         <source>Unknown</source>
-        <translation>Nieznany</translation>
+        <translation>Nieznana</translation>
     </message>
     <message>
         <source>Full name</source>
@@ -279,7 +279,7 @@
     </message>
     <message>
         <source>Font Manager helps users install and manage fonts.</source>
-        <translation>Menedżer czcionek pomaga użytkownikom instalować czcionki i zarządzać nimi.</translation>
+        <translation>Zarządzanie czcionkami pomaga użytkownikom instalować czcionki i zarządzać nimi.</translation>
     </message>
     <message>
         <source>Loading fonts, please wait...</source>
@@ -322,7 +322,7 @@
     </message>
     <message>
         <source>Favorite</source>
-        <translation>Ulubiony</translation>
+        <translation>Dodaj do ulubionych</translation>
     </message>
     <message>
         <source>Unfavorite</source>
@@ -338,7 +338,7 @@
     </message>
     <message>
         <source>Export</source>
-        <translation>Eksport</translation>
+        <translation>Eksportuj</translation>
     </message>
 </context>
 <context>
@@ -379,7 +379,7 @@
     <name>QuickInstallWindow</name>
     <message>
         <source>Unknown</source>
-        <translation>Nieznany</translation>
+        <translation>Nieznana</translation>
     </message>
     <message>
         <source>Broken file</source>
@@ -425,11 +425,11 @@
     </message>
     <message>
         <source>Page up</source>
-        <translation>Strona w górę</translation>
+        <translation>Przewiń stronę do góry</translation>
     </message>
     <message>
         <source>Page down</source>
-        <translation>Strona w dół</translation>
+        <translation>Przewiń stronę w dół </translation>
     </message>
     <message>
         <source>Delete</source>
@@ -441,7 +441,7 @@
     </message>
     <message>
         <source>Favorite</source>
-        <translation>Ulubiony</translation>
+        <translation>Dodaj do ulubionych</translation>
     </message>
     <message>
         <source>Unfavorite</source>
@@ -456,7 +456,7 @@
     <name>StateBar</name>
     <message>
         <source>Input preview text</source>
-        <translation>Wprowadź tekst podglądu</translation>
+        <translation>Wprowadź tekst do podglądu</translation>
     </message>
 </context>
 </TS>

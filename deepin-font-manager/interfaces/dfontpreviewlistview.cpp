@@ -298,7 +298,8 @@ void DFontPreviewListView::initConnections()
     /*切换listview后，scrolltotop UT000539*/
     connect(m_signalManager, &SignalManager::changeView, this, &DFontPreviewListView::viewChanged);
     connect(m_signalManager, &SignalManager::clearRecoverList, this, [ = ] {
-        m_recoverSelectStateList.clear();
+        m_recoverSelectStateSysfontList.clear();
+        m_recoverSelectStateUserfontMultiMap.clear();
         setUserFontInUseSelected(false);
     });
 
@@ -717,6 +718,8 @@ void DFontPreviewListView::setFontData(const QModelIndex &index, const DFontPrev
  <Input>
     <param1>     isAtBottom            Description:是否在列表底部
     <param2>     isAtTop               Description:是否在列表顶部
+    <param2>     isCollectionPage      Description:是否是收藏页取消收藏操作
+    <param2>     hasDisableFailedFont  Description:是否有不能禁用的系统字体
  <Return>        null            Description:null
  <Note>          null
 *************************************************************************/
@@ -724,7 +727,10 @@ void DFontPreviewListView::selectItemAfterRemoved(bool isAtBottom, bool isAtTop,
 {
     int param = getOnePageCount();
     if (m_selectAfterDel != -1) {
-        if (m_selectAfterDel != -2 || isCollectionPage) {
+        if ((m_selectAfterDel != -2 || isCollectionPage)
+                && !m_userFontInUseSelected
+                && 0 == m_recoverSelectStateSysfontList.count()
+                && 0 == m_recoverSelectStateUserfontMultiMap.count()) {
             int nextIndexRow = -1;
             //删除最后一个
             if (m_selectAfterDel == this->count()) {
@@ -783,16 +789,33 @@ void DFontPreviewListView::selectItemAfterRemoved(bool isAtBottom, bool isAtTop,
                 setCurrentIndex(m_fontPreviewProxyModel->index(nextIndexRow, 0));
             }
         }
+
+        // 跳过未删除的用户字体(不包括当前使用的字体)，恢复选中状态
+        QMultiMap<QString, DFontPreviewItemData>::iterator it = m_recoverSelectStateUserfontMultiMap.begin();
+        while (it != m_recoverSelectStateUserfontMultiMap.end()) {
+            for (int i = 0; i < count(); i++) {
+                QModelIndex modelIndex = m_fontPreviewProxyModel->index(i, 0);
+                QVariant varModel = m_fontPreviewProxyModel->data(modelIndex, Qt::DisplayRole);
+                FontData fdata = varModel.value<FontData>();
+                if (it.value().fontData == fdata) {
+                    selectionModel()->select(m_fontPreviewProxyModel->index(i, 0), QItemSelectionModel::Select);
+                    break;
+                }
+            }
+            ++it;
+        }
+        m_recoverSelectStateUserfontMultiMap.clear();
+
         //不能删除的系统列表，恢复选中状态
-        if (m_recoverSelectStateList.count() > 0) {
+        if (m_recoverSelectStateSysfontList.count() > 0) {
             if (!isCollectionPage) {
-                for (auto &idx : m_recoverSelectStateList) {
+                for (auto &idx : m_recoverSelectStateSysfontList) {
                     selectionModel()->select(m_fontPreviewProxyModel->index(idx, 0), QItemSelectionModel::Select);
                 }
                 //如果选中项包含系统字体，则删除后滚动到恢复选中的系统字体
                 scrollTo(selectedIndexes().last());
             }
-            m_recoverSelectStateList.clear();
+            m_recoverSelectStateSysfontList.clear();
         }
         //操作前已选中的当前正在使用的用户字体，恢复选中状态
         if (m_userFontInUseSelected) {
@@ -968,7 +991,7 @@ void DFontPreviewListView::mouseMoveEvent(QMouseEvent *event)
 *************************************************************************/
 void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
 {
-    qDebug() << "\n" << __FUNCTION__ << event->type() << event->button();
+    qDebug() << __FUNCTION__ << event->type() << event->button();
     //检查当前是否有选中，恢复起始位
     checkIfHasSelection();
     QListView::mousePressEvent(event);
@@ -1760,7 +1783,7 @@ void DFontPreviewListView::onEnableBtnClicked(QModelIndexList &itemIndexes, int 
 
     DFontPreviewProxyModel *filterModel = getFontPreviewProxyModel();
     int oldFilterGroup = filterModel->getFilterGroup(); // 保存当前字体组
-    filterModel->setFilterGroup(DSplitListWidget::UserFont); // 只用用户字体才能被禁用
+    filterModel->setFilterGroup(DSplitListWidget::UserFont); // 只有用户字体才能被禁用
     for (int i = 0; i < filterModel->rowCount(); ++i) {
         QModelIndex index = filterModel->index(i, 0);
         FontData fdata = qvariant_cast<FontData>(m_fontPreviewProxyModel->data(index));
@@ -2149,6 +2172,7 @@ void DFontPreviewListView::deleteCurFonts(QStringList &files, bool force)
             QFontDatabase::removeApplicationFont(itemData.appFontId);
             m_dataThread->removePathWatcher(filePath);
             iter = m_dataThread->m_fontModelList.erase(iter);
+            m_recoverSelectStateUserfontMultiMap.remove(filePath);
         } else {
             ++iter;
         }
@@ -2256,7 +2280,8 @@ void DFontPreviewListView::selectedFonts(const DFontPreviewItemData &curData,
         disableIndexList->clear();
     if (allMinusSysFontList != nullptr)
         allMinusSysFontList->clear();
-    m_recoverSelectStateList.clear();
+    m_recoverSelectStateSysfontList.clear();
+    m_recoverSelectStateUserfontMultiMap.clear();
 
     QModelIndexList list = selectedIndexes();
 
@@ -2297,7 +2322,7 @@ void DFontPreviewListView::selectedFonts(const DFontPreviewItemData &curData,
                 }
             }
             //系统字体不可删除,记录idx便于恢复选中状态
-            m_recoverSelectStateList.append(index.row());
+            m_recoverSelectStateSysfontList.append(index.row());
             if (systemCnt != nullptr)
                 *systemCnt += 1;
             if (calCollect && (curCollected == itemData.fontData.isCollected()))
@@ -2319,6 +2344,7 @@ void DFontPreviewListView::selectedFonts(const DFontPreviewItemData &curData,
                 *deleteCnt += 1;
 
             appendFilePath(delFontList, itemData.fontInfo.filePath);
+            m_recoverSelectStateUserfontMultiMap.insert(itemData.fontInfo.filePath, itemData);
             appendFilePath(allMinusSysFontList, itemData.fontInfo.filePath);
 
             if (calDisable && (curEnabled == itemData.fontData.isEnabled())) {
@@ -2334,7 +2360,6 @@ void DFontPreviewListView::selectedFonts(const DFontPreviewItemData &curData,
         }
     }
 
-//    qInfo() << allIndexList->count() << "1111111111" << endl;
     if (delFontList && deleteCnt)
         qDebug() << __FUNCTION__ << delFontList->size() << *deleteCnt;
 }

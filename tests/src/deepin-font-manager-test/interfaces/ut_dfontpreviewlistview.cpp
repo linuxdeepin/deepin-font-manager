@@ -111,14 +111,14 @@ QList<DFontPreviewItemData>  stub_DFontPreviewItemDatavalue()
     dpitemdata.fontInfo.filePath = "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttcc";
 
     DFontPreviewItemData dpitemdata1;
-    dpitemdata.fontInfo.filePath = "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc";
-    dpitemdata.fontInfo.isSystemFont = false;
-    dpitemdata.fontInfo.familyName = "b";
+    dpitemdata1.fontInfo.filePath = "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc";
+    dpitemdata1.fontInfo.isSystemFont = false;
+    dpitemdata1.fontInfo.familyName = "b";
 
     DFontPreviewItemData dpitemdata2;
-    dpitemdata.fontInfo.filePath = "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc";
-    dpitemdata.fontInfo.isSystemFont = false;
-    dpitemdata.fontInfo.familyName = "a";
+    dpitemdata2.fontInfo.filePath = "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc";
+    dpitemdata2.fontInfo.isSystemFont = false;
+    dpitemdata2.fontInfo.familyName = "a";
 
     QList<DFontPreviewItemData> itemdata;
     itemdata.append(dpitemdata);
@@ -213,6 +213,11 @@ IconStatus stub_getHoverState()
 int stub_height()
 {
     return 5 * FTM_PREVIEW_ITEM_HEIGHT;
+}
+
+void stub_start(QThread::Priority)
+{
+
 }
 }
 
@@ -1049,6 +1054,7 @@ TEST_F(TestDFontPreviewListView, checkLoadLeftFonts)
 {
     Stub s;
     s.set(ADDR(DFontPreviewListView, isListDataLoadFinished), stub_True);
+    s.set(ADDR(QThread, start), stub_start);
 
     QSignalSpy spy(listview, SIGNAL(loadUserAddFont()));
 
