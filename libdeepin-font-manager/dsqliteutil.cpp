@@ -142,16 +142,6 @@ trademark TEXT, \
 isChineseFont TINYINT,\
 isMonoSpace TINYINT)";
 
-    if (!m_query->exec(createTableSql)) {
-        qDebug() << "create table failed!";
-        finish();
-        return false;
-    } else {
-        finish();
-        qDebug() << "create table sucess!";
-        // return true;
-    }
-
     QString createTable2Sql =
         "create table if not exists t_fontmanagerinfo(\
             id INTEGER PRIMARY KEY,\
@@ -167,11 +157,46 @@ isMonoSpace TINYINT)";
     }
 
     bool ret = true;
-    if (!findFontManagerInfoRecords()) {
-        ret = delAllRecords();
+    if (!findFontManagerInfoRecords()) {//false:1.未建表,查询失败 2.语言切换
+        int num = saveRecord();//保存旧数据，待后续进行恢复
+        setDBDeleted(true);
+
+        if(-1 < num){
+            QMutexLocker m_locker(&mutex);
+            QString dropTableSql = "DROP TABLE t_fontmanager";
+            if (!m_query->prepare(dropTableSql)) {
+                qDebug() << "prepares query failed!";
+                return false;
+            }
+            if (!m_query->exec(dropTableSql)) {
+                qDebug() << "DROP TABLE t_fontmanager failed!";
+                finish();
+                return false;
+            } else {
+                finish();
+                qDebug() << "DROP TABLE t_fontmanager sucess!";
+            }
+        }
+
         if (!addFontManagerInfoRecord()) {
             ret = updateFontManagerInfoRecord();
+            if(!ret){
+                qDebug() << "updateFontManagerInfoRecord failed!";
+                return ret;
+            }
         }
+    }
+    else {
+        setDBDeleted(false);
+    }
+
+    if (!m_query->exec(createTableSql)) {
+        qDebug() << "createTableSql TABLE t_fontmanager failed!";
+        finish();
+        return false;
+    } else {
+        finish();
+        qDebug() << "createTableSql TABLE t_fontmanager sucess!";
     }
 
     return ret;
@@ -964,4 +989,78 @@ bool DSqliteUtil::delAllRecords(const QString &table_name)
         qDebug() << "delete all records success!";
         return true;
     }
+}
+
+
+//保存旧数据
+int DSqliteUtil::saveRecord()
+{
+    int ret = -1;//没有表
+    //保存t_fontmanager数据
+    QStringList fileList;
+    QString sql = "SELECT filePath      \
+                         ,isEnabled     \
+                         ,isCollected   \
+                   FROM  t_fontmanager  \
+                   WHERE isEnabled = 0 or isCollected = 1;";
+
+    QMutexLocker m_locker(&mutex);
+    if (!m_query->prepare(sql)) {
+        qDebug() << "prepares query failed!";
+        return ret;//没有表
+    }
+    ret = 0;//有表，数据条目为0
+    if (m_query->exec()) {
+        while (m_query->next()) {
+            QMap<QString, QString> mapRow;
+            mapRow.insert("filePath",    m_query->value(0).toString());
+            mapRow.insert("isEnabled",   m_query->value(1).toString());
+            mapRow.insert("isCollected", m_query->value(2).toString());
+            m_lstFontRecord.append(mapRow);
+            qDebug() <<"filePath:   " << m_query->value(0);
+            qDebug() <<"isEnabled:  " << m_query->value(1);
+            qDebug() <<"isCollected:" << m_query->value(2);
+            ret += 1;//有表，数据条目+1
+        }
+    }
+    finish();
+    return ret;
+}
+
+//更新数据
+bool DSqliteUtil::updateOld2Record()
+{
+    if(0 == m_lstFontRecord.length()){
+        return true;
+    }
+    //更新t_fontmanager数据
+    QMutexLocker m_locker(&mutex);
+
+    QString sql = "update t_fontmanager set isEnabled = ?, isCollected = ? where filePath = ?";
+    qDebug() << sql;
+    if (!m_query->prepare(sql)) {
+        qDebug() << "prepares query failed!";
+        return false;
+    }
+
+    QVariantList keyList1;
+    QVariantList keyList2;
+    QVariantList filePathList;
+    for (int i = 0; i<m_lstFontRecord.length(); i++) {
+        keyList1 << m_lstFontRecord[i]["isEnabled"];
+        keyList2 << m_lstFontRecord[i]["isCollected"];
+        filePathList << m_lstFontRecord[i]["filePath"];
+    }
+    m_lstFontRecord.clear();
+    m_query->addBindValue(keyList1);
+    m_query->addBindValue(keyList2);
+    m_query->addBindValue(filePathList);
+
+    if (!m_query->execBatch()) {
+        qDebug() << "update data failed!" << filePathList;
+    } else {
+        qDebug() << __FUNCTION__ << "true";
+    }
+    finish();
+    return true;
 }
