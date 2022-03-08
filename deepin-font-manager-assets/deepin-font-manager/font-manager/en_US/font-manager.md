@@ -14,20 +14,19 @@ You can run, exit, and create shortcuts for Font Manager in the following ways.
 
 ### Run Font Manager
 
-1. Click ![launcher](../common/deepin_launcher.svg) in the dock to enter the Launcher interface.
+1. Click the Launcher icon ![launcher](../common/deepin_launcher.svg) in the Dock to enter the Launcher interface.
 
-2. Locate ![deepin_font_manager](../common/deepin_font_manager.svg) by scrolling the mouse wheel or searching "font manager" in the Launcher interface, and click it to run.
+2. Locate Font Manager ![deepin_font_manager](../common/deepin_font_manager.svg) by scrolling the mouse wheel or searching "font manager" in the Launcher interface, and click it to run.
 
 3. Right-click ![deepin_font_manager](../common/deepin_font_manager.svg) , and you can:
 
    - Click **Send to desktop** to create a desktop shortcut
    - Click **Send to dock** to fix it in the Dock.
    - Click **Add to startup** to add the application to startup, and it will automatically run when the system starts up.
-   
 ### Exit Font Manager
 
 - Click ![close](../common/close_icon.svg) on the Font Manager interface to exit Font Manager.
-- Right-click ![deepin_font_manager](../common/deepin_font_manager.svg) in the dock, and select **Close All** to exit.
+- Right-click ![deepin_font_manager](../common/deepin_font_manager.svg) in the Dock, and select **Close All** to exit.
 - Click ![icon_menu](../common/icon_menu.svg) on the Font Manager interface, and select **Exit** to exit.
 
 ### View Shortcuts
@@ -90,11 +89,12 @@ The default preview copy is **Don't let your dreams be dreams**, and is displaye
 ### Export Fonts
 
 1. Right-click a font in the User list.
+
 2.  Select **Export**.
 
 The exported font is saved in the desk folder by default, with Font as its default folder name.
 
-> ![notes](../common/notes.svg) Notes: Single and batch font(s) export are supported. System font cannot be exported.
+> ![notes](../common/notes.svg) Notes: Single and batch font(s) export are supported. System fonts cannot be exported.
 
 
 ### Favorite/Unfavorite Fonts
@@ -106,7 +106,6 @@ You can favorite or unfavorite a font via Font Manager.
 2. Click the ![collect](../common/collection_normal.svg) icon to the right of an favorited font or right-click the font to select **Unfavorite** to unfavorite the font.  
 
    The favorited font will be displayed in the **Favorites** list.
-   
 > ![notes](../common/notes.svg) Notes: Favorite/Unfavorite are available for a single font and a batch of fonts.
 
 ### Enable/Disable Fonts
@@ -116,13 +115,14 @@ You can enable or disable a user font (enabled by default) in the Font Manager i
 1. Uncheck the checked font or right-click the font to select **Disable** to disable the font.
 2. Check the unchecked font or right-click it to select **Enable**. The font will be enabled and displayed in the **Active** list. 
 
-> ![notes](../common/notes.svg) Notes: Enable/Disable functions are available for a single font and a batch of fonts. System font and font currently being used can not be disabled.
+> ![notes](../common/notes.svg) Notes: Enable/Disable functions are available for a single font and a batch of fonts. System fonts and fonts currently being used can not be disabled.
 
 ### View Basic Font Information
 
 You can view the basic font information via Font Manager.
 
 1. Right-click the font and select **Details** in the font sets list on the Font Manager interface.
+
 2. You can view the font icon, name, style, type, version, and description information.
 
 ![0|info](fig/info.png)
@@ -137,12 +137,12 @@ Right-click a font in the font sets list and select **Display in file manager** 
 
 You can delete a font through Font Manager.
 
-> ![notes](../common/notes.svg) Notes: Delete function is available for a single font and a batch of fonts. System font and font currently being used can not be deleted.
+> ![notes](../common/notes.svg) Notes: Delete function is available for a single font and a batch of fonts. System fonts and fonts currently being used can not be deleted.
 
 1. Select a font in the **User** list on the Font Manager interface, right-click and select **Delete**.
 2. Click **Delete** in the pop-up box.
 
-![0|font-delete](fig/font-delete.png)
+![0|font_delete](fig/font_delete.png)
 
 ## Main Menu
 
