@@ -719,7 +719,9 @@ TEST_F(TestDFontPreviewListView, checkOnRightMenuShortCutActivated)
     listview->m_parentWidget = mw;
     listview->setParent(mw);
     listview->selectAll();
+    listview->m_rightMenu = new QMenu();
     listview->onRightMenuShortCutActivated();
+    delete listview->m_rightMenu;
 }
 
 TEST_F(TestDFontPreviewListView, checkHoverState)
@@ -763,6 +765,7 @@ TEST_F(TestDFontPreviewListView, checkDisableFonts)
     listview->disableFonts();
     EXPECT_TRUE(listview->m_disableFontList.count() == 0);
 
+    s1.reset(ADDR(DFMXmlWrapper, createFontConfigFile));
     s1.set(ADDR(DFMXmlWrapper, createFontConfigFile), stub_False);
 
     listview->disableFont("first");
@@ -778,6 +781,7 @@ TEST_F(TestDFontPreviewListView, checkEnableFonts)
     listview->enableFonts();
     EXPECT_TRUE(listview->m_enableFontList.count() == 0);
 
+    s1.reset(ADDR(DFMXmlWrapper, createFontConfigFile));
     s1.set(ADDR(DFMXmlWrapper, createFontConfigFile), stub_False);
 
     listview->enableFont("first");
