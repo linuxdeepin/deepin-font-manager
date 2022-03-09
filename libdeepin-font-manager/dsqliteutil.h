@@ -50,6 +50,12 @@ public:
     //创建数据库表
     bool createTable();
 
+    //保存旧数据
+    int saveRecord();
+
+    //更新旧数据
+    bool updateOld2Record();
+
     //增加数据
     bool addRecord(QMap<QString, QString> data, const QString &table_name = "t_fontmanager");
 
@@ -107,6 +113,11 @@ public:
             return;
         m_query->finish();
     }
+    bool isDBDeleted(){return m_bDbDeleted;}
+    void setDBDeleted(bool isDBDeleted)
+    {
+        m_bDbDeleted = isDBDeleted;
+    }
 
     QSqlDatabase m_db;
 
@@ -116,6 +127,8 @@ protected:
 
 private:
     QString m_strDatabase;
+    QList<QMap<QString, QString> > m_lstFontRecord;
+    bool m_bDbDeleted = false;
 
     QSqlQuery *m_query;
     mutable QMutex mutex;

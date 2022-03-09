@@ -67,13 +67,21 @@ void GetFontListWorker::run()
     if (m_type == Startup) {
         thread->m_allFontPathList.clear();
         thread->m_allFontPathList = inst->getAllFontPath(true);
-
 //        removeUserAddFonts();
 
-        DFMDBManager::instance()->getAllRecords();
-        QList<DFontPreviewItemData> list = DFMDBManager::instance()->getFontInfo(50, &thread->m_delFontInfoList);
-        thread->m_startModelList = list;
-        thread->m_fontModelList.append(list);
+        if(DFMDBManager::instance()->isDBDeleted()){
+            thread->updateDb();//想把它放在第1个，getStartFontList之前
+            DFMDBManager::instance()->getAllRecords();
+            QList<DFontPreviewItemData> list = DFMDBManager::instance()->getFontInfo(50, &thread->m_delFontInfoList);//DFMDBManager::recordList
+            thread->m_fontModelList.clear();
+            thread->m_fontModelList.append(list);
+        }
+        else {
+            DFMDBManager::instance()->getAllRecords();
+            QList<DFontPreviewItemData> list = DFMDBManager::instance()->getFontInfo(50, &thread->m_delFontInfoList);
+            thread->m_startModelList = list;
+            thread->m_fontModelList.append(list);
+        }
     }
 
     if (m_type == ALL || m_type == AllInSquence) {

@@ -568,14 +568,28 @@ void DFMDBManager::commitUpdateFontInfo()
 
     beginTransaction();
     m_sqlUtil->updateFontInfo(m_updateFontList, m_strKey);
+    //m_sqlUtil->updateOld2Record();//数据库表被重建时，先saveRecord，再updateOld2Record。
     endTransaction();
     m_updateFontList.clear();
+}
+/*************************************************************************
+ <Function>      syncOldRecords
+ <Description>   开启事务,批量更新数据，将更新语言时被删除的数据同步到新数据库中
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
+void DFMDBManager::syncOldRecords()
+{
+    beginTransaction();
+    m_sqlUtil->updateOld2Record();//数据库表被重建时，先saveRecord，再updateOld2Record。
+    endTransaction();
 }
 
 void DFMDBManager::getAllRecords()
 {
-    QList<DFontPreviewItemData> fontItemDataList;
-
     QList<QString> keyList;
     appendAllKeys(keyList);
 

@@ -104,24 +104,24 @@ void DFontPreviewListDataThread::doWork()
     m_fontModelList.clear();
 
     qDebug() << "doWork thread id = " << QThread::currentThreadId();
+
+    //withoutDbRefreshDb(m_allFontPathList);//想把它放在第1个，getStartFontList之前
     QStringList disableFontList = DFMXmlWrapper::getFontConfigDisableFontPathList();
 
     if (disableFontList.count()  > 0) {
         syncFontEnableDisableStatusData(disableFontList);
     }
+
     //获取启动时的需要用到的字体列表
     FontManager::instance()->getStartFontList();
-
     if (!m_startModelList.isEmpty()) {
         //从fontconfig配置文件同步字体启用/禁用状态数据
-//        syncFontEnableDisableStatusData(disableFontList);
+        //syncFontEnableDisableStatusData(disableFontList);
         refreshStartupFontListData();
         m_view->onFinishedDataLoad(); //当前只加载了50条数据所以切换到用户数据显示未安装
         return;
     }
-
-    withoutDbRefreshDb(m_allFontPathList);
-
+    //withoutDbRefreshDb(m_allFontPathList);
     Q_EMIT m_view->multiItemsAdded(m_fontModelList, DFontSpinnerWidget::StartupLoad);
 }
 
@@ -406,6 +406,20 @@ void DFontPreviewListDataThread::onRefreshUserAddFont(QList<DFontInfo> &fontInfo
     m_isAllLoaded = true; //用户字体加载完成才是全部完成
     emit m_view->refreshListview(m_diffFontModelList);
 }
+/*************************************************************************
+ <Function>      updateDb
+ <Description>   当数据库表结构更新时（数据被清空），从系统读取字体配置，并将旧数据库数据更新到数据库
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
+void DFontPreviewListDataThread::updateDb()
+{
+    withoutDbRefreshDb();
+    return;
+}
 
 /*************************************************************************
  <Function>      withoutDbRefreshDb
@@ -416,8 +430,11 @@ void DFontPreviewListDataThread::onRefreshUserAddFont(QList<DFontInfo> &fontInfo
  <Return>        null            Description:null
  <Note>          null
 *************************************************************************/
-void DFontPreviewListDataThread::withoutDbRefreshDb(QStringList &m_allFontPathList)
+void DFontPreviewListDataThread::withoutDbRefreshDb()
 {
+    if(!m_dbManager->isDBDeleted()){
+        return;
+    }
     qDebug() << "strAllFontList.size()" << m_allFontPathList.size() << endl;
 
     int index = 0;
@@ -437,6 +454,8 @@ void DFontPreviewListDataThread::withoutDbRefreshDb(QStringList &m_allFontPathLi
     }
 
     m_dbManager->commitAddFontInfo();
+
+    m_dbManager->syncOldRecords();//数据库t_fontmanager表被重建时，先saveRecord，再updateOld2Record。
     m_view->onFinishedDataLoad();
 }
 
