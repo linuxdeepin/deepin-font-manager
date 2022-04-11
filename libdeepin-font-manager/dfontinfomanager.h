@@ -159,6 +159,7 @@ public:
     QStringList getAllFclistPathList()const;
     QString getFontType(const QString &filePath);
     DFontInfo getFontInfo(const QString &filePath, bool withPreviewTxt = false);
+    void setFontInfo(DFontInfo& fontInfo);//按照新规则处理字体familyname
     QString getDefaultPreview(const QString &filePath, qint8 &preivewLang);
     QStringList getCurrentFontFamily();
     QString getFontPath();

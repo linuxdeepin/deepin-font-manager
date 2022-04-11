@@ -509,52 +509,10 @@ int DFontPreviewListDataThread::insertFontItemData(const DFontInfo info,
     DFontPreviewItemData itemData;
     itemData.fontInfo = info;
 
-    /*****************************************
-    字体显示名称规则
-    规则说明：
-    规则一：
-    条件：familyname不为空，不包含“？”；
-    规则：字体名称使用 familyname+“-”+style；
-    规则二：
-    条件：familyname为空或者包含“？”，fullname不为空；
-    规则：字体名称使用 fullname+“-”+style；
-    规则三
-    条件：familyname为空或者包含“？”，fullname为空；
-    规则：字体名称使用 PSname；
-    规则四
-    条件：familyname为空或者包含“？”，fullname为空，PSname为空；
-    规则：字体名称显示“UntitledFont”；
-    规则对所有字体（包括系统字体、用户字体）有效；
-    ****************************************/
-    QString familyName;
-    if (itemData.fontInfo.sp3FamilyName.isEmpty() || itemData.fontInfo.sp3FamilyName.contains(QChar('?'))) {
-        int appFontId = QFontDatabase::addApplicationFont(itemData.fontInfo.filePath);
-
-        itemData.appFontId = appFontId;
-        QStringList fontFamilyList = QFontDatabase::applicationFontFamilies(appFontId);
-        for (QString &family : fontFamilyList) {
-            if (family.contains(QChar('?')))
-                continue;
-            familyName = family;
-        }
-        if (familyName.isEmpty()) {
-            if (!itemData.fontInfo.fullname.isEmpty() && !itemData.fontInfo.fullname.contains(QChar('?'))) {
-                familyName = itemData.fontInfo.fullname;
-            } else if (!itemData.fontInfo.psname.isEmpty() && !itemData.fontInfo.psname.contains(QChar('?'))) {
-                familyName = itemData.fontInfo.fullname;
-            } else {
-                familyName = QLatin1String("UntitledFont");
-            }
-        }
-        itemData.fontInfo.sp3FamilyName = familyName;
+    if (!itemData.fontInfo.styleName.isEmpty() && !itemData.fontInfo.familyName.endsWith(itemData.fontInfo.styleName) && itemData.fontInfo.familyName != QLatin1String("UntitledFont")) {
+        itemData.fontData.strFontName = QString("%1-%2").arg(itemData.fontInfo.familyName).arg(itemData.fontInfo.styleName);
     } else {
-        familyName = itemData.fontInfo.sp3FamilyName;
-    }
-
-    if (!itemData.fontInfo.styleName.isEmpty() && !familyName.endsWith(itemData.fontInfo.styleName) && familyName != QLatin1String("UntitledFont")) {
-        itemData.fontData.strFontName = QString("%1-%2").arg(familyName).arg(itemData.fontInfo.styleName);
-    } else {
-        itemData.fontData.strFontName = familyName;
+        itemData.fontData.strFontName = itemData.fontInfo.familyName;
     }
 
     itemData.strFontId = QString::number(index);
