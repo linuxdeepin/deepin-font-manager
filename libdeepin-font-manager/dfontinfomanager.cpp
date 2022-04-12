@@ -400,6 +400,72 @@ struct NameIdFlag {
     char TT_NAME_ID_TRADEMARK_flag = 0;
     char TT_NAME_ID_PS_NAME_flag = 0;
 };
+/*************************************************************************
+ <Function>      setFontInfo
+ <Description>   按照新规则处理字体familyname
+ <Author>        null
+ <Input>
+    <param1>     DFontInfo     Description:该字体文件的字体信息
+ <Return>        null
+ <Note>          null
+*************************************************************************/
+void DFontInfoManager::setFontInfo(DFontInfo& fontInfo)
+{
+    /*****************************************
+    字体显示名称规则
+    规则说明：
+    规则一：
+    条件：familyname不为空，不包含“？”；
+    规则：字体名称使用 familyname+“-”+style；
+    规则二：
+    条件：familyname为空或者包含“？”，fullname不为空；
+    规则：字体名称使用 fullname+“-”+style；
+    规则三
+    条件：familyname为空或者包含“？”，fullname为空；
+    规则：字体名称使用 PSname；
+    规则四
+    条件：familyname为空或者包含“？”，fullname为空，PSname为空；
+    规则：字体名称显示“UntitledFont”；
+    规则对所有字体（包括系统字体、用户字体）有效；
+    ****************************************/
+    QString familyName;
+    if (fontInfo.sp3FamilyName.isEmpty() || fontInfo.sp3FamilyName.contains(QChar('?'))) {
+        int appFontId = QFontDatabase::addApplicationFont(fontInfo.filePath);
+
+        QStringList fontFamilyList = QFontDatabase::applicationFontFamilies(appFontId);
+        for (QString &family : fontFamilyList) {
+            if (family.contains(QChar('?')))
+                continue;
+            familyName = family;
+        }
+        if (familyName.isEmpty()) {
+            if (!fontInfo.fullname.isEmpty() && !fontInfo.fullname.contains(QChar('?'))) {
+                familyName = fontInfo.fullname;
+            } else if (!fontInfo.psname.isEmpty() && !fontInfo.psname.contains(QChar('?'))) {
+                familyName = fontInfo.fullname;
+            } else {
+                familyName = QLatin1String("UntitledFont");
+            }
+        }
+        fontInfo.sp3FamilyName = familyName;
+    } else {
+        familyName = fontInfo.sp3FamilyName;
+    }
+
+    if (!fontInfo.styleName.isEmpty() && !familyName.endsWith(fontInfo.styleName) && familyName != QLatin1String("UntitledFont")) {
+        fontInfo.familyName = familyName;//从Sfnt接口获取的familyname读取宋体文件时解析为韩语或者?，替换为字体显示名称
+    } else {
+        //从Sfnt接口获取的familyname读取宋体文件时解析为韩语或者?，替换为字体显示名称
+        // 例如Consolas-Regular(或Consolas Regular)获取到Consolas
+        if(fontInfo.styleName.isEmpty()){
+            fontInfo.familyName = familyName;
+        }
+        else {
+            fontInfo.familyName = familyName.replace(QRegExp(QString("[ -]" + fontInfo.styleName + "$")), "");
+        }
+    }
+    return;
+}
 
 /*************************************************************************
  <Function>      getFontInfo
@@ -560,6 +626,7 @@ DFontInfo DFontInfoManager:: getFontInfo(const QString &filePath, bool withPrevi
     library = nullptr;
 
     checkStyleName(fontInfo);
+    setFontInfo(fontInfo);
 
     DFMDBManager *dbManager = DFMDBManager::instance();
     if (dbManager->getRecordCount() > 0) {
@@ -572,7 +639,6 @@ DFontInfo DFontInfoManager:: getFontInfo(const QString &filePath, bool withPrevi
     } /*else {
         fontInfo.isInstalled = isFontInstalled(fontInfo);
     }*/
-
     return fontInfo;
 }
 
