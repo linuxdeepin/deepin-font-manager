@@ -645,7 +645,6 @@ void DFontMgrMainWindow::initTileFrame()
     d->searchFontEdit->setFixedSize(QSize(FTM_SEARCH_BAR_W, FTM_SEARCH_BAR_H));
     d->searchFontEdit->setPlaceHolder(DApplication::translate("SearchBar", "Search"));
 
-    titlebar()->addWidget(d->searchFontEdit, Qt::AlignCenter);
     titlebar()->addWidget(d->titleActionArea, Qt::AlignLeft | Qt::AlignVCenter);
 }
 
@@ -2162,6 +2161,21 @@ void DFontMgrMainWindow::resizeEvent(QResizeEvent *event)
     } else {
         m_IsWindowMax = true;
     }
+
+    D_D(DFontMgrMainWindow);
+
+    int w = event->size().width();
+    QPoint point = d->searchFontEdit->pos();
+    int x = point.x();
+    if(w >= 760){
+        x = (w - FTM_SEARCH_BAR_W) / 2;
+    }
+    else {
+        x = (760 - FTM_SEARCH_BAR_W) / 2 - (760 - w);
+    }
+    point.setX(x);
+    point.setY(3); // titlebar()->size(): 50px searchFontEdit->size(): 44
+    d->searchFontEdit->move(point);
 
     DMainWindow::resizeEvent(event);
 }
