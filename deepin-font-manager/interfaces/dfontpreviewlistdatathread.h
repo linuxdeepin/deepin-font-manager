@@ -78,8 +78,9 @@ public:
     DFontPreviewListView *getView() const;
 
     //通过DFontData信息获取DFontPreviewItemData
-    inline static DFontPreviewItemData getFontData(const FontData &fontData)
+    inline DFontPreviewItemData getFontData(const FontData &fontData)
     {
+        QMutexLocker locker(m_mutex);
         DFontPreviewItemData itemdata;
         itemdata.fontData = fontData;
 //        qDebug() << __FUNCTION__ << fontData.strFontName;

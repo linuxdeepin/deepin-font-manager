@@ -242,11 +242,11 @@ TEST_F(TestDFontPreviewListDataThread, checkGetFontData)
 
     DFontPreviewItemData da;
 
-    da = DFontPreviewListDataThread::getFontData(data);
+    da = dfdatathead->getFontData(data);
     EXPECT_TRUE(da.appFontId == 2);
 
     data.strFontName = "bbb";
-    da = DFontPreviewListDataThread::getFontData(data);
+    da = dfdatathead->getFontData(data);
     EXPECT_TRUE(da.appFontId == -1);
 
 }
