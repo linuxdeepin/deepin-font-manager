@@ -887,7 +887,9 @@ void DFontPreviewListView::selectFonts(const QStringList &fileList)
     for (int i = 0; i < filterModel->rowCount(); ++i) {
         QModelIndex index = filterModel->index(i, 0);
         FontData fdata = qvariant_cast<FontData>(m_fontPreviewProxyModel->data(index));
+        QMutexLocker locker(&m_mutex);
         DFontPreviewItemData itemData = m_dataThread->getFontData(fdata);
+        locker.unlock();
         if (itemData.fontInfo.filePath.isEmpty()) {
             qDebug() << __FUNCTION__ << fdata.strFontName;
             continue;
@@ -2094,7 +2096,7 @@ void DFontPreviewListView::updateChangedDir()
         QString filePath = itemData.fontInfo.filePath;
         QFileInfo filePathInfo(filePath);
         //如果字体文件已经不存在，则从t_manager表中删除
-        if (!filePathInfo.exists()) {
+        if (!filePath.isEmpty() && !filePathInfo.exists()) {
             //删除字体之前启用字体，防止下次重新安装后就被禁用
             enableFont((itemData).fontInfo.filePath);
             DFMDBManager::instance()->deleteFontInfo(itemData);
