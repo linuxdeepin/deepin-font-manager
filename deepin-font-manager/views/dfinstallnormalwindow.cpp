@@ -24,6 +24,7 @@
 #include "fontmanagercore.h"
 #include "dfontpreviewlistdatathread.h"
 #include "dfinstallerrordialog.h"
+#include "dcomworker.h"
 
 #include <DApplication>
 #include <DFontSizeManager>
@@ -270,6 +271,9 @@ void DFInstallNormalWindow::verifyFontFiles()
 
     for (auto &it : m_installFiles) {
         fontInfo = m_fontInfoManager->getFontInfo(it);
+        if(m_fontInfoManager->isFontInInstalledDirs(fontInfo.filePath)){
+            needRefresh = true;
+        }
         if (Q_UNLIKELY(fontInfo.isError)) {
             m_damagedFiles.append(it);
 
@@ -662,6 +666,10 @@ void DFInstallNormalWindow::onCancelInstall()
     qDebug() << __FUNCTION__ << " called";
 #endif
     m_errCancelInstall = true;
+
+    if(needRefresh){
+        emit m_signalManager->refreshUserFont();
+    }
 }
 
 /*************************************************************************
@@ -683,6 +691,9 @@ void DFInstallNormalWindow::onContinueInstall(const QStringList &continueInstall
     //继续安装不需恢复添加按钮tab聚焦状态
     m_skipStateRecovery = true;
     batchReInstall(continueInstallFontFileList);
+    if(needRefresh){
+        emit m_signalManager->refreshUserFont();
+    }
 }
 
 /*************************************************************************

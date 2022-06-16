@@ -295,6 +295,8 @@ public slots:
     void onLeftSiderBarItemClicked(int index = 0, bool needClearSelect = true);
     //安装后添加至listview
     void onFontInstallFinished(const QStringList &fileList);
+    //刷新用户字体列表
+    void onRefreshUserFont();
     //字体删除fc-cache操作后恢复标志位
     void onUninstallFcCacheFinish();
     //切换字体菜单后判断FontListView的结果并显示对应状态

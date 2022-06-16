@@ -257,6 +257,8 @@ void DFontMgrMainWindow::initConnections()
 
     //安装结束后刷新字体列表
     connect(m_signalManager, &SignalManager::finishFontInstall, this, &DFontMgrMainWindow::onFontInstallFinished);
+    //安装结束后刷新字体列表
+    connect(m_signalManager, &SignalManager::refreshUserFont, this, &DFontMgrMainWindow::onRefreshUserFont);
     //字体验证框弹出
     connect(m_signalManager, &SignalManager::popInstallErrorDialog, this, [ = ] {
         m_isPopInstallErrorDialog = true;
@@ -1457,6 +1459,11 @@ void DFontMgrMainWindow::onFontInstallFinished(const QStringList &fileList)
     qDebug() << __FUNCTION__ << fileList.size();
     m_isInstallOver = true;
     m_installOutFileList = fileList;
+}
+
+void DFontMgrMainWindow::onRefreshUserFont()
+{
+    afterAllStartup();
 }
 
 /*************************************************************************

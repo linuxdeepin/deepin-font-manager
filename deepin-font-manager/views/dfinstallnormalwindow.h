@@ -185,6 +185,7 @@ private:
     friend class Worker;  //声明 Worker 为友元类
     Worker *m_pworker = nullptr;
     QThread *m_pthread = nullptr;
+    bool needRefresh = false;
 };
 
 #endif  // DFINSTALLNORMALWINDOW_H
