@@ -216,6 +216,10 @@ QString DCopyFilesManager::getTargetPath(const QString &inPath, QString &srcPath
         targetPath = src;
         return familyName;
     }
+    if(DFontInfoManager::instance()->isFontInInstalledDirs(fontInfo.filePath)){
+        targetPath = QDir::homePath() + "/.local/share/fonts" + fontInfo.filePath.mid(fontInfo.filePath.lastIndexOf("/"));
+        return familyName;
+    }
 
     const QFileInfo info(srcPath);
     QString dirName = familyName;
