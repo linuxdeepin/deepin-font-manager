@@ -32,8 +32,10 @@ FontPreview::FontPreview(QObject *parent):
 
 FontPreview::~FontPreview()
 {
-    if (m_previewWidget)
-        m_previewWidget->deleteLater();
+//    https://pms.uniontech.com/bug-view-142781.html
+//    插件中不需要释放。释放会导致文管异常退出。
+//    if (m_previewWidget)
+//        m_previewWidget->deleteLater();
 }
 
 /*************************************************************************
