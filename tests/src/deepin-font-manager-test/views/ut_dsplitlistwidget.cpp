@@ -64,22 +64,36 @@ int stub_returnRow()
     return 5;
 }
 
-
+static QString g_funcname;
+void stub_paintBackground(QPainter *, const QStyleOptionViewItem &, const QRect &, const QPalette::ColorGroup)
+{
+    g_funcname = __FUNCTION__;
+}
+void stub_fillRect(void *, const QRect &, const QColor &)
+{
+    g_funcname = __FUNCTION__;
+}
+void stub_hideTooltipImmediately()
+{
+    g_funcname = __FUNCTION__;
+}
 }
 
 TEST_F(TestDSplitListWidget, checkMousePressEvent)
 {
     QTest::mouseClick(dsp->viewport(), Qt::LeftButton);
+    EXPECT_TRUE(dsp->m_IsMouseClicked);
 
     QModelIndex modelIndex = dsp->m_categoryItemModell->index(1, 0);
     dsp->setCurrentIndex(modelIndex);
 
     QTest::mouseClick(dsp->viewport(), Qt::LeftButton, Qt::NoModifier, QPoint(50, 50));
+    EXPECT_TRUE(dsp->m_IsMouseClicked);
+    EXPECT_TRUE(dsp->lastTouchBeginPos == QPoint(50, 50));
 }
 
 TEST_F(TestDSplitListWidget, checkHelpEvent)
 {
-//    QTest::mouseMove(dsp->viewport(), QPoint(50, 50), 100);
     QHelpEvent *e = new QHelpEvent(QEvent::ToolTip, QPoint(50, 50), QPoint(600, 400));
 
     QModelIndex modelIndex = dsp->m_categoryItemModell->index(1, 0);
@@ -87,15 +101,13 @@ TEST_F(TestDSplitListWidget, checkHelpEvent)
     QStyleOptionViewItem option;
     EXPECT_FALSE(dsp->itemDelegate()->helpEvent(e, dsp, option, modelIndex));
 
+    Stub s;
+    s.set(ADDR(DNoFocusDelegate, hideTooltipImmediately), stub_hideTooltipImmediately);
+
     QHelpEvent *e1 = new QHelpEvent(QEvent::ToolTip, QPoint(45, 200), QPoint(600, 500));
     modelIndex = dsp->m_categoryItemModell->index(5, 0);
     EXPECT_FALSE(dsp->itemDelegate()->helpEvent(e1, dsp, option, modelIndex));
-//    QTest::mouseMove(dsp->viewport());
-
-//    传其他事件的时候崩溃
-//    e = new QHelpEvent(QEvent::None, QPoint(50, 50), QPoint(600, 400));
-
-//    EXPECT_TRUE(dsp->itemDelegate()->helpEvent(e, dsp, option, modelIndex));
+    EXPECT_TRUE(g_funcname == QLatin1String("stub_hideTooltipImmediately"));
 
 
     SAFE_DELETE_ELE(e)
@@ -205,6 +217,7 @@ TEST_F(TestDSplitListWidget, checkMouseMoveEvent)
     QMouseEvent *e = new QMouseEvent(QEvent::MouseMove, QPoint(600, 500), Qt::LeftButton, Qt::NoButton, Qt::NoModifier);
 
     dsp->mouseMoveEvent(e);
+    EXPECT_TRUE(dsp->m_isMouseMoved);
 
     QHelpEvent *e2 = new QHelpEvent(QEvent::ToolTip, QPoint(50, 50), QPoint(600, 400));
     QModelIndex modelIndex = dsp->m_categoryItemModell->index(1, 0);
@@ -212,6 +225,8 @@ TEST_F(TestDSplitListWidget, checkMouseMoveEvent)
 
     EXPECT_FALSE(dsp->itemDelegate()->helpEvent(e2, dsp, option, modelIndex));
     dsp->mouseMoveEvent(e);
+    EXPECT_TRUE(dsp->m_isMouseMoved);
+    EXPECT_TRUE(dsp->m_IsPositive);
 
     SAFE_DELETE_ELE(e)
     SAFE_DELETE_ELE(e2)
@@ -220,7 +235,6 @@ TEST_F(TestDSplitListWidget, checkMouseMoveEvent)
 
 TEST_F(TestDSplitListWidget, checkGetSetStatus)
 {
-
     FocusStatus s1;
     s1.m_IsMouseClicked = false;
     s1.m_IsFirstFocus = false;
@@ -241,31 +255,21 @@ TEST_F(TestDSplitListWidget, checkGetSetStatus)
 
 }
 
-//TEST_F(TestDSplitListWidget, checkCurrentChanged)
-//{
-//    QSignalSpy spy(dsp, SIGNAL(onListWidgetItemClicked(int)));
-
-//    QModelIndex modelIndex1 = dsp->m_categoryItemModell->index(4, 0);
-//    QModelIndex modelIndex2 = dsp->m_categoryItemModell->index(5, 0);
-
-//    dsp->currentChanged(modelIndex2, modelIndex1);
-
-//    dsp->currentChanged(modelIndex1, modelIndex2);
-
-//    EXPECT_TRUE(spy.count() == 1);
-//}
-
 TEST_F(TestDSplitListWidget, checkPaint)
 {
     QPainter *p = new QPainter;
     QStyleOptionViewItem option;
     QModelIndex modelIndex1 = dsp->m_categoryItemModell->index(4, 0);
 
+    Stub s;
+    s.set(ADDR(DNoFocusDelegate, paintBackground), stub_paintBackground);
     dsp->itemDelegate()->paint(p, option, modelIndex1);
+    EXPECT_TRUE(g_funcname == QLatin1String("stub_paintBackground"));
 
     option.state = QStyle::State_Selected;
     dsp->m_IsTabFocus = true;
     dsp->itemDelegate()->paint(p, option, modelIndex1);
+    EXPECT_TRUE(g_funcname == QLatin1String("stub_paintBackground"));
 
     option.state.setFlag(QStyle::State_MouseOver);
     dsp->m_IsTabFocus = true;
@@ -274,12 +278,26 @@ TEST_F(TestDSplitListWidget, checkPaint)
     dsp->m_IsTabFocus = false;
     option.state.setFlag(QStyle::State_Selected);
     dsp->itemDelegate()->paint(p, option, modelIndex1);
+    EXPECT_TRUE(g_funcname == QLatin1String("stub_paintBackground"));
 
     option.state.setFlag(QStyle::State_MouseOver);
     dsp->itemDelegate()->paint(p, option, modelIndex1);
+    EXPECT_TRUE(g_funcname == QLatin1String("stub_paintBackground"));
 
+    dsp->m_IsTabFocus = true;
+    option.state.setFlag(QStyle::State_MouseOver);
+    dsp->itemDelegate()->paint(p, option, modelIndex1);
+    EXPECT_TRUE(g_funcname == QLatin1String("stub_paintBackground"));
+
+    option.state = QStyle::State_MouseOver;
+    dsp->m_IsTabFocus = true;
+    dsp->itemDelegate()->paint(p, option, modelIndex1);
+    EXPECT_TRUE(g_funcname == QLatin1String("stub_paintBackground"));
+
+    s.set((void(QPainter::*)(const QRect &, const QColor &))ADDR(QPainter, fillRect), stub_fillRect);
     modelIndex1 = dsp->m_categoryItemModell->index(5, 0);
     dsp->itemDelegate()->paint(p, option, modelIndex1);
+    EXPECT_TRUE(g_funcname == QLatin1String("stub_fillRect"));
 
     SAFE_DELETE_ELE(p)
 }
@@ -293,6 +311,9 @@ TEST_F(TestDSplitListWidget, checkMouseReleaseEvent)
     Stub s;
     s.set(ADDR(QModelIndex, row), stub_returnRow);
 
+    dsp->m_isIstalling = false;
+    dsp->mouseMoveEvent(e);
+    EXPECT_FALSE(dsp->m_IsPositive);
     SAFE_DELETE_ELE(e)
 }
 

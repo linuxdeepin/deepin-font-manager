@@ -68,10 +68,11 @@ TEST_F(TestDFontPreviewProxyModel, checkSetFilterFontNamePattern)
 
 TEST_F(TestDFontPreviewProxyModel, checkIsFontNameContainsPattern)
 {
+    fpm->m_fontNamePattern = "";
     EXPECT_TRUE(fpm->isFontNameContainsPattern("aaa"));
 
-    fpm->setFilterFontNamePattern("qqq");
-    EXPECT_TRUE(fpm->isFontNameContainsPattern("qqq"));
+    fpm->m_fontNamePattern = "qqq";
+    EXPECT_TRUE(fpm->isFontNameContainsPattern("aqqqa"));
 }
 
 TEST_F(TestDFontPreviewProxyModel, checkFilterAcceptsRow)
@@ -79,12 +80,10 @@ TEST_F(TestDFontPreviewProxyModel, checkFilterAcceptsRow)
     QStandardItemModel *m_fontPreviewItemModel = new QStandardItemModel;
     m_fontPreviewItemModel->setColumnCount(1);
     fpm->setSourceModel(m_fontPreviewItemModel);
-//    DFontMgrMainWindow *mw = new DFontMgrMainWindow;
     DFontPreviewListView *listview = new DFontPreviewListView;
     listview->setModel(fpm);
     m_fontPreviewItemModel->insertRow(0, QModelIndex());
 
-//    QModelIndex index = fpm->index(0, 0);
     EXPECT_TRUE(fpm->filterAcceptsRow(0, QModelIndex()));
 
     fpm->setFilterGroup(1);
@@ -132,8 +131,6 @@ TEST_F(TestDFontPreviewProxyModel, checkFilterAcceptsRowAllSysFonts)
     itemdata.fontData.strFontName = "aaa";
     DFontPreviewListDataThread::instance()->m_fontModelList.append(itemdata);
 
-//    QList<DFontPreviewItemData> list = DFontPreviewListDataThread::instance()->getFontModelList();
-//    FontData fdata = list.last().fontData;
     m_fontPreviewItemModel->setData(index, QVariant::fromValue(fdata), Qt::DisplayRole);
     fpm->setFilterGroup(1);
     EXPECT_TRUE(fpm->filterAcceptsRow(0,  QModelIndex()));
@@ -162,8 +159,6 @@ TEST_F(TestDFontPreviewProxyModel, checkFilterAcceptsRowAllUserFonts)
     itemdata.fontData.strFontName = "aaa";
     DFontPreviewListDataThread::instance()->m_fontModelList.append(itemdata);
 
-//    QList<DFontPreviewItemData> list = DFontPreviewListDataThread::instance()->getFontModelList();
-//    FontData fdata = list.last().fontData;
     m_fontPreviewItemModel->setData(index, QVariant::fromValue(fdata), Qt::DisplayRole);
     fpm->setFilterGroup(1);
     qDebug() << fpm->filterAcceptsRow(0,  QModelIndex());
@@ -194,8 +189,6 @@ TEST_F(TestDFontPreviewProxyModel, checkFilterAcceptsRowAllCollectFonts)
     itemdata.fontData.strFontName = "aaa";
     DFontPreviewListDataThread::instance()->m_fontModelList.append(itemdata);
 
-//    QList<DFontPreviewItemData> list = DFontPreviewListDataThread::instance()->getFontModelList();
-//    FontData fdata = list.last().fontData;
     m_fontPreviewItemModel->setData(index, QVariant::fromValue(fdata), Qt::DisplayRole);
     fpm->setFilterGroup(3);
     EXPECT_TRUE(fpm->filterAcceptsRow(0,  QModelIndex()));
@@ -225,8 +218,6 @@ TEST_F(TestDFontPreviewProxyModel, checkFilterAcceptsRowAllActiviteFonts)
     itemdata.fontData.strFontName = "aaa";
     DFontPreviewListDataThread::instance()->m_fontModelList.append(itemdata);
 
-//    QList<DFontPreviewItemData> list = DFontPreviewListDataThread::instance()->getFontModelList();
-//    FontData fdata = list.last().fontData;
     m_fontPreviewItemModel->setData(index, QVariant::fromValue(fdata), Qt::DisplayRole);
     fpm->setFilterGroup(4);
     EXPECT_TRUE(fpm->filterAcceptsRow(0,  QModelIndex()));
@@ -253,9 +244,6 @@ TEST_F(TestDFontPreviewProxyModel, checkFilterAcceptsRowAllChineseFonts)
     itemdata.fontData = fdata;
     itemdata.fontData.strFontName = "aaa";
     DFontPreviewListDataThread::instance()->m_fontModelList.append(itemdata);
-
-//    QList<DFontPreviewItemData> list = DFontPreviewListDataThread::instance()->getFontModelList();
-//    FontData fdata = list.last().fontData;
     m_fontPreviewItemModel->setData(index, QVariant::fromValue(fdata), Qt::DisplayRole);
     fpm->setFilterGroup(5);
     EXPECT_TRUE(fpm->filterAcceptsRow(0,  QModelIndex()));
@@ -283,8 +271,6 @@ TEST_F(TestDFontPreviewProxyModel, checkFilterAcceptsRowAllMonoFonts)
     itemdata.fontData.strFontName = "aaa";
     DFontPreviewListDataThread::instance()->m_fontModelList.append(itemdata);
 
-//    QList<DFontPreviewItemData> list = DFontPreviewListDataThread::instance()->getFontModelList();
-//    FontData fdata = list.last().fontData;
     m_fontPreviewItemModel->setData(index, QVariant::fromValue(fdata), Qt::DisplayRole);
     fpm->setFilterGroup(6);
     EXPECT_TRUE(fpm->filterAcceptsRow(0,  QModelIndex()));

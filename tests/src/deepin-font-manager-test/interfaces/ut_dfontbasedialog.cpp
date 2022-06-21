@@ -58,21 +58,18 @@ TEST_F(TestDFontBaseDialog, checkSetIconPixmap)
 
     fm->setIconPixmap(map);
 
-    EXPECT_TRUE(fm->m_logoIcon->pixmap()->size() == QSize(32, 32));
-//    EXPECT_TRUE(fm->getContent() != nullptr);
+    EXPECT_TRUE(*fm->m_logoIcon->pixmap() == map);
 }
 
 TEST_F(TestDFontBaseDialog, checkGetCloseButton)
 {
     DWindowCloseButton *b = fm->getCloseButton();
-    EXPECT_TRUE(b != nullptr);
+    EXPECT_TRUE(b == fm->m_closeButton);
 }
 
 TEST_F(TestDFontBaseDialog, checkSetLogoVisable)
 {
     //设置为true，但结果仍不可见，怀疑时没有窗口弹出的问题，与代码无关。
-//    fm->setLogoVisable(true);
-//    EXPECT_TRUE(fm->m_logoIcon->isVisible() == true);
 
     fm->setLogoVisable(false);
     EXPECT_TRUE(fm->m_logoIcon->isVisible() == false);
@@ -86,7 +83,8 @@ TEST_F(TestDFontBaseDialog, checkSetTitle)
 
 TEST_F(TestDFontBaseDialog, checkGetContentLayout)
 {
-    EXPECT_TRUE(fm->getContentLayout() != nullptr);
+    QLayout * vbl = fm->getContentLayout();
+    EXPECT_TRUE(fm->m_contentLayout == vbl);
 }
 
 TEST_F(TestDFontBaseDialog, checkAddContent)

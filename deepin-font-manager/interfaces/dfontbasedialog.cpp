@@ -22,6 +22,7 @@
 
 #include "dfontbasedialog.h"
 #include "globaldef.h"
+#include "utils.h"
 
 #include <QVBoxLayout>
 #include <QApplication>
@@ -178,9 +179,9 @@ QLayout *DFontBaseDialog::getContentLayout()
 *************************************************************************/
 void DFontBaseDialog::addContent(QWidget *content)
 {
-    Q_ASSERT(nullptr != getContentLayout());
-
-    getContentLayout()->addWidget(content);
+    if (nullptr != getContentLayout()) {
+        getContentLayout()->addWidget(content);
+    }
 }
 
 

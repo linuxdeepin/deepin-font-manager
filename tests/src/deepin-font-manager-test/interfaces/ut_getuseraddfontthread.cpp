@@ -27,6 +27,9 @@
 #include "../third-party/stub/stub.h"
 //#include "commonheaderfile.h"
 
+
+#include <QSignalSpy>
+
 namespace {
 class TestGetUserAddFontThread : public testing::Test
 {
@@ -58,10 +61,19 @@ void onRefreshUserAddFont_stub(QList<DFontInfo> &fontInfoList)
 {
     return;
 }
+
+QStringList getAllFclistPathList_stub()
+{
+    QStringList strlist;
+    strlist << "111" << "22334";
+    return strlist;
+}
+
 TEST_F(TestGetUserAddFontThread, checkrun)
 {
     Stub stub;
     stub.set(ADDR(FontManager, getChineseAndMonoFont), getChineseAndMonoFont_stub);
     stub.set(ADDR(DFontPreviewListDataThread, onRefreshUserAddFont), onRefreshUserAddFont_stub);
+    stub.set(ADDR(DFontInfoManager, getAllFclistPathList), getAllFclistPathList_stub);
     fm->run();
 }

@@ -26,6 +26,7 @@
 #include "../third-party/stub/addr_pri.h"
 #include "views/dfinstallnormalwindow.h"
 #include "commonheaderfile.h"
+#include "fontmanagercore.h"
 
 #include "globaldef.h"
 #include "interfaces/dfontmenumanager.h"
@@ -83,7 +84,7 @@ protected:
     DFontMgrMainWindow *fm;
 };
 
-
+static int cnt = 0;
 
 bool stub_false()
 {
@@ -92,6 +93,15 @@ bool stub_false()
 
 bool stub_true()
 {
+    return true;
+}
+
+bool stub_hasfource()
+{
+    if (cnt == 0) {
+        cnt++;
+        return false;
+    }
     return true;
 }
 
@@ -197,26 +207,11 @@ DFontPreviewItemData stub_getFontData()
     return data;
 }
 
-//int stub_exec()
-//{
-//    return 1;
-//}
-
 QStringList stub_getInstalledFontsPath()
 {
 
     QStringList list;
     list << "first";
-
-    return list;
-
-}
-
-QStringList stub_getAllFontPath()
-{
-
-    QStringList list;
-    list << "second";
 
     return list;
 
@@ -236,12 +231,83 @@ int stub_dialogExec()
     return 1;
 }
 
+void hideSpinner_stub()
+{
 }
+
+QStringList checkFilesSpace_stub()
+{
+    QStringList strlist;
+    strlist << "1233";
+    return strlist;
+}
+
+void stub_onExportFont(QStringList &fontList)
+{
+    Q_UNUSED(fontList)
+}
+static QStringList g_m_installFiles;
+void stub_onFileSelected(const QStringList &fileList)
+{
+    Q_UNUSED(fileList)
+    g_m_installFiles.append("first");
+}
+
+DMenu *stub_createRightKeyMenu()
+{
+    DMenu *menu = new DMenu();
+    menu->setTitle("test");
+    return menu;
+}
+
+static DFontMenuManager::MenuAction g_menuaction;
+void stub_handleAddFontEvent()
+{
+    g_menuaction = DFontMenuManager::M_AddFont;
+}
+
+void stub_exportFont()
+{
+    g_menuaction = DFontMenuManager::M_ExportFont;
+}
+void stub_onEnableBtnClicked()
+{
+    g_menuaction = DFontMenuManager::M_EnableOrDisable;
+}
+void stub_onCollectBtnClicked()
+{
+    g_menuaction = DFontMenuManager::M_Faverator;
+}
+void stub_showFontFilePostion()
+{
+    g_menuaction = DFontMenuManager::M_ShowFontPostion;
+}
+
+static QString g_windowstate;
+void stub_showNormal()
+{
+    g_windowstate = "showNormal";
+}
+void stub_showMaximized()
+{
+    g_windowstate = "showMaximized";
+}
+void stub_delCurrentFont()
+{
+    g_menuaction = DFontMenuManager::M_DeleteFont;
+    g_windowstate = "delCurrentFont";
+}
+void stub_onShowMessage(int successCount)
+{
+    Q_UNUSED(successCount)
+    g_windowstate = "onShowMessage";
+}
+}
+
 
 TEST_F(TestDFontMgrMainWindow, checkSetNextTabFocus)
 {
     fm->setNextTabFocus(fm->m_ptr->addFontButton);
-
 
 //    代码setfocus成功，但是检测焦点状态有问题
 //    EXPECT_TRUE(fm->m_ptr->searchFontEdit->lineEdit()->hasFocus());
@@ -407,7 +473,8 @@ TEST_F(TestDFontMgrMainWindow, checkCheckFilesSpace)
 
     EXPECT_TRUE(fm->checkFilesSpace(list).isEmpty());
 
-    s1.set(ADDR(QFileInfo, size), stub_getSizeS);
+    Stub s2;
+    s2.set(ADDR(QFileInfo, size), stub_getSizeS);
     EXPECT_TRUE(fm->checkFilesSpace(list).contains("first"));
 }
 
@@ -427,9 +494,17 @@ TEST_F(TestDFontMgrMainWindow, checkOnPreviewTextChanged)
 
     fm->m_fontPreviewListView->getFontPreviewProxyModel()->insertRows(0, 5);
     fm->onPreviewTextChanged();
+    DFontPreviewProxyModel *filterModel = fm->m_fontPreviewListView->getFontPreviewProxyModel();
+    QModelIndex modelIndex = filterModel->index(0, 0);
+    QString itemPreviewTxt = filterModel->data(modelIndex, DFontPreviewItemDelegate::FontSizeRole).toString();
+    EXPECT_TRUE(itemPreviewTxt == QLatin1String("30"));
 
     fm->onPreviewTextChanged("first");
     fm->onPreviewTextChanged();
+    filterModel = fm->m_fontPreviewListView->getFontPreviewProxyModel();
+    modelIndex = filterModel->index(0, 0);
+    itemPreviewTxt = filterModel->data(modelIndex, DFontPreviewItemDelegate::FontPreviewRole).toString();
+    EXPECT_TRUE(itemPreviewTxt == QLatin1String("first"));
 }
 
 TEST_F(TestDFontMgrMainWindow, checkWaitForInsert)
@@ -451,20 +526,17 @@ TEST_F(TestDFontMgrMainWindow, checkHideSpinner)
 {
     fm->m_cacheFinish = true;
     fm->m_installFinish = true;
+    fm->m_ptr->leftSiderBar->m_isIstalling = true;
+    fm->m_isNoResultViewShow = true;
 
     fm->hideSpinner();
+
+    EXPECT_FALSE(fm->m_isNoResultViewShow);
+    EXPECT_FALSE(fm->m_ptr->leftSiderBar->m_isIstalling);
     //定时器触发lambda函数，无法测试到
 }
 
-//TEST_F(TestDFontMgrMainWindow, checkShowSpinner)
-//{
-//    Stub s;
-//    s.set(ADDR(QWidget, show), stub_show);
 
-//    fm->showSpinner(DFontSpinnerWidget::Load);
-
-//    fm->showSpinner(DFontSpinnerWidget::Load, true);
-//}
 
 TEST_F(TestDFontMgrMainWindow, checkShowInstalledFiles)
 {
@@ -472,13 +544,7 @@ TEST_F(TestDFontMgrMainWindow, checkShowInstalledFiles)
     s.set(ADDR(DFontMgrMainWindow, onLeftSiderBarItemClicked), stub_onLeftSiderBarItemClicked);
 
     fm->showInstalledFiles();
-}
-
-TEST_F(TestDFontMgrMainWindow, checkShowAllShortcut)
-{
-//    //startDetached函数打桩失败，导致会有界面弹出。之后再研究这里如何打桩
-//    fm->showAllShortcut();
-//    delete fm;
+    EXPECT_TRUE(fm->m_ptr->leftSiderBar->m_LastPageNumber == 2);
 }
 
 TEST_F(TestDFontMgrMainWindow, checkResizeEvent)
@@ -487,11 +553,15 @@ TEST_F(TestDFontMgrMainWindow, checkResizeEvent)
     QResizeEvent *e = new QResizeEvent(QSize(), QSize());
 
     fm->resizeEvent(e);
+    EXPECT_TRUE(fm->m_winHight == 480);
+    EXPECT_TRUE(fm->m_winWidth == 640);
+    EXPECT_FALSE(fm->m_IsWindowMax);
 
     QScreen *screen = QGuiApplication::primaryScreen();
     QRect screenRect =  screen->availableVirtualGeometry();
     fm->resize(screenRect.size());
     fm->resizeEvent(e);
+    EXPECT_TRUE(fm->m_IsWindowMax);
 
     SAFE_DELETE_ELE(e)
 }
@@ -505,6 +575,7 @@ TEST_F(TestDFontMgrMainWindow, checkDropEvent)
 
     QDropEvent *e = new QDropEvent(p, Qt::CopyAction, &data, Qt::LeftButton, Qt::NoModifier);
     fm->dropEvent(e);
+    EXPECT_FALSE(e->isAccepted());
 
     Stub s;
     s.set(ADDR(QMimeData, hasUrls), stub_true);
@@ -518,10 +589,9 @@ TEST_F(TestDFontMgrMainWindow, checkDropEvent)
     Stub s3;
     s3.set(ADDR(DFontMgrMainWindow, installFont), stub_true);
 
-
     fm->dropEvent(e);
-//    EXPECT_TRUE(spy.count() == 1);
-//    fm->dropEvent(e);
+    EXPECT_TRUE(e->isAccepted());
+
     SAFE_DELETE_ELE(e)
 }
 
@@ -533,6 +603,7 @@ TEST_F(TestDFontMgrMainWindow, checkDragEnterEvent)
 
     QDragEnterEvent *e = new QDragEnterEvent(p, Qt::CopyAction, &data, Qt::LeftButton, Qt::NoModifier);
     fm->dropEvent(e);
+    EXPECT_FALSE(e->isAccepted());
 
     Stub s;
     s.set(ADDR(QMimeData, hasUrls), stub_true);
@@ -547,10 +618,12 @@ TEST_F(TestDFontMgrMainWindow, checkDragEnterEvent)
     s3.set(ADDR(DFontMgrMainWindow, installFont), stub_true);
 
     fm->dragEnterEvent(e);
+    EXPECT_TRUE(e->isAccepted());
 
     Stub s4;
-    s1.set(ADDR(QMimeData, urls), stub_urlssin);
+    s4.set(ADDR(QMimeData, urls), stub_urlssin);
     fm->dragEnterEvent(e);
+    EXPECT_TRUE(e->isAccepted());
 
     SAFE_DELETE_ELE(e)
 }
@@ -580,6 +653,7 @@ TEST_F(TestDFontMgrMainWindow, checkExportFont)
 
     Stub s1;
     s1.set(ADDR(DFontMgrMainWindow, checkFilesSpace), stub_checkFilesSpace);
+    s1.set(ADDR(DFontPreviewListDataThread, onExportFont), stub_onExportFont);
 
     fm->exportFont();
 
@@ -601,6 +675,8 @@ TEST_F(TestDFontMgrMainWindow, checkDelCurrentFont)
     s1.set(ADDR(DFontPreviewListDataThread, getFontData), stub_getFontData);
 
     fm->delCurrentFont(false);
+    EXPECT_TRUE(fm->m_fIsDeleting == DFontMgrMainWindow::UnDeleting);
+    EXPECT_FALSE(fm->m_fontPreviewListView->m_userFontInUseSelected);
 }
 
 TEST_F(TestDFontMgrMainWindow, checkOnconfirmDelDlgAccept)
@@ -608,6 +684,7 @@ TEST_F(TestDFontMgrMainWindow, checkOnconfirmDelDlgAccept)
     QSignalSpy spy(DFontPreviewListDataThread::instance(), SIGNAL(requestRemoveFileWatchers(const QStringList &)));
 
     fm->onconfirmDelDlgAccept();
+    EXPECT_TRUE(FontManagerCore::instance()->m_type == FontManagerCore::UnInstall);
     EXPECT_TRUE(spy.count() == 1);
 }
 
@@ -635,6 +712,7 @@ TEST_F(TestDFontMgrMainWindow, checkOnLoadStatus0)
     s1.set(ADDR(QWidget, show), stub_show);
 
     fm->onLoadStatus(0);
+    EXPECT_FALSE(fm->m_fontLoadingSpinner->isHidden());
 }
 
 TEST_F(TestDFontMgrMainWindow, checkOnLoadStatus1)
@@ -656,8 +734,8 @@ TEST_F(TestDFontMgrMainWindow, checkOnLoadStatus1)
 
     QSignalSpy spy(fm->m_ptr->searchFontEdit, SIGNAL(textChanged(const QString &)));
     fm->onLoadStatus(1);
-    qDebug() << spy.count() << endl;
-    EXPECT_TRUE(spy.count() == 1);
+    EXPECT_FALSE(fm->m_openfirst);
+    EXPECT_TRUE(spy.count() == 1) << spy.count();
 }
 
 TEST_F(TestDFontMgrMainWindow, checkOnFontListViewRowCountChanged0)
@@ -674,7 +752,9 @@ TEST_F(TestDFontMgrMainWindow, checkOnFontListViewRowCountChanged0)
 
     fm->m_fontPreviewListView->getFontPreviewProxyModel()->insertRows(0, 5);
     fm->onFontListViewRowCountChanged();
+    EXPECT_FALSE(fm->m_isNoResultViewShow);
 }
+
 
 TEST_F(TestDFontMgrMainWindow, checkOnFontListViewRowCountChanged1)
 {
@@ -692,9 +772,11 @@ TEST_F(TestDFontMgrMainWindow, checkOnFontListViewRowCountChanged1)
     fm->m_fIsInstalling = false;
 
     fm->onFontListViewRowCountChanged();
+    EXPECT_TRUE(fm->m_isNoResultViewShow);
 
     fm->m_isNoResultViewShow = true;
     fm->onFontListViewRowCountChanged();
+    EXPECT_TRUE(fm->m_isNoResultViewShow);
 }
 
 TEST_F(TestDFontMgrMainWindow, checkOnFontListViewRowCountChanged2)
@@ -708,9 +790,6 @@ TEST_F(TestDFontMgrMainWindow, checkOnFontListViewRowCountChanged2)
     s1.set(ADDR(QWidget, isVisible), stub_true);
 
     fm->m_fontPreviewListView->m_bLoadDataFinish = true;
-    //    fm->onPreviewTextChanged();
-
-//    fm->m_fontPreviewListView->getFontPreviewProxyModel()->insertRows(0, 5);
     fm->onFontListViewRowCountChanged();
 
     EXPECT_FALSE(fm->m_isNoResultViewShow);
@@ -721,8 +800,7 @@ TEST_F(TestDFontMgrMainWindow, checkOnUninstallFcCacheFinish)
     fm->m_fIsDeleting = 1;
     fm->onUninstallFcCacheFinish();
 
-    qDebug() << fm->m_fIsDeleting << endl;
-    EXPECT_TRUE(fm->m_fIsDeleting == 0);
+    EXPECT_TRUE(fm->m_fIsDeleting == 0) << fm->m_fIsDeleting;
 }
 
 TEST_F(TestDFontMgrMainWindow, checkOnFontInstallFinished)
@@ -746,6 +824,8 @@ TEST_F(TestDFontMgrMainWindow, checkOnLeftSiderBarItemClicked)
 
     fm->m_fontPreviewListView->m_bLoadDataFinish = true;
     fm->onLeftSiderBarItemClicked(2);
+    EXPECT_TRUE(fm->m_leftIndex == 2);
+    EXPECT_TRUE(fm->filterGroup  == DSplitListWidget::UserFont);
 }
 
 //static 重载函数打桩
@@ -757,23 +837,27 @@ TEST_F(TestDFontMgrMainWindow, checkShowFontFilePostion)
     Stub s1;
     typedef bool (*FP)(QString, const QString &);
 
-//    s1.set((bool(DDesktopServices::*)(QString, const QString &))ADDR(DDesktopServices, showFileItem), stub_show);
     s1.set(FP ADDR(DDesktopServices, showFileItem), stub_return);
-//    Stub s1;
-//    s1.set(ADDR(DDesktopServices, showFileItem), stub_true);
     fm->showFontFilePostion();
 }
 
 TEST_F(TestDFontMgrMainWindow, checkOnFontSizeChanged)
 {
-    fm->onFontSizeChanged(20);
-    fm->m_fontPreviewListView->m_bLoadDataFinish = false;
-    fm->onFontSizeChanged(20);
+    {
+        fm->m_fontPreviewListView->m_bLoadDataFinish = false;
+        fm->onFontSizeChanged(20);
+        DFontPreviewProxyModel *filterModel = fm->m_fontPreviewListView->getFontPreviewProxyModel();
+        EXPECT_FALSE(filterModel == nullptr);
+    }
 
-    fm->m_fontPreviewListView->m_bLoadDataFinish = true;
-
-    fm->m_fontPreviewListView->getFontPreviewProxyModel()->insertRows(0, 5);
-    fm->onFontSizeChanged(20);
+    {
+        fm->m_fontPreviewListView->m_bLoadDataFinish = true;
+        fm->m_fontPreviewListView->getFontPreviewProxyModel()->insertRows(0, 5);
+        fm->onFontSizeChanged(30);
+        DFontPreviewProxyModel *filterModel = fm->m_fontPreviewListView->getFontPreviewProxyModel();
+        QModelIndex modelIndex = filterModel->index(4, 0);
+        EXPECT_TRUE(filterModel->data(modelIndex, DFontPreviewItemDelegate::FontSizeRole).toInt() == 30);
+    }
 }
 
 TEST_F(TestDFontMgrMainWindow, checkOnPreviewTextChangedR)
@@ -793,6 +877,7 @@ TEST_F(TestDFontMgrMainWindow, checkOnSearchTextChanged)
     DFontPreviewProxyModel *filterModel = fm->m_fontPreviewListView->getFontPreviewProxyModel();
 
     EXPECT_TRUE(filterModel->filterKeyColumn() == 0);
+    EXPECT_FALSE(fm->m_searchTextStatusIsEmpty);
 }
 
 TEST_F(TestDFontMgrMainWindow, checkSetDeleteFinish)
@@ -807,12 +892,11 @@ TEST_F(TestDFontMgrMainWindow, checkForceNoramlInstalltionQuitIfNeeded)
     Stub s;
     s.set(ADDR(DFInstallNormalWindow, breakInstalltion), stub_return);
 
-
-    fm->forceNoramlInstalltionQuitIfNeeded();
-
     fm->m_fIsInstalling = true;
-
+    fm->m_fontPreviewListView->m_IsTabFocus = true;
+    fm->m_dfNormalInstalldlg = new DFInstallNormalWindow(QStringList(), fm);
     fm->forceNoramlInstalltionQuitIfNeeded();
+    EXPECT_FALSE(fm->m_fontPreviewListView->m_IsTabFocus);
 }
 
 //这个函数中主要是完全无用的代码，暂时标注掉
@@ -822,12 +906,16 @@ TEST_F(TestDFontMgrMainWindow, checkInitQuickWindowIfNeeded)
     s.set(ADDR(QWidget, show), stub_return);
 
     Stub s1;
-    s1.set(ADDR(QWidget, raise), stub_return);
+    s.set(ADDR(QWidget, raise), stub_return);
 
     Stub s2;
-    s2.set(ADDR(QWidget, activateWindow), stub_return);
-
+    s.set(ADDR(QWidget, activateWindow), stub_return);
+    s.set(ADDR(DFQuickInstallWindow, onFileSelected), stub_onFileSelected);
     fm->InitQuickWindowIfNeeded();
+    QStringList files;
+    Q_EMIT fm->quickModeInstall(files);
+    EXPECT_TRUE(g_m_installFiles.first() == QLatin1String("first"));
+
 }
 
 //setQuickInstallMode
@@ -841,9 +929,10 @@ TEST_F(TestDFontMgrMainWindow, checkSetQuickInstallMode)
 TEST_F(TestDFontMgrMainWindow, checkInitRightKeyMenu)
 {
     Stub s;
-    s.set(ADDR(DFontMenuManager, createRightKeyMenu), stub_return);
-
+    s.set(ADDR(DFontMenuManager, createRightKeyMenu), stub_createRightKeyMenu);
     fm->initRightKeyMenu();
+    EXPECT_TRUE(fm->d_func()->rightKeyMenu->title() == "test");
+    SAFE_DELETE_ELE(fm->d_func()->rightKeyMenu)
 }
 
 TEST_F(TestDFontMgrMainWindow, checkInstallFontFromSys)
@@ -889,26 +978,30 @@ TEST_F(TestDFontMgrMainWindow, checkHandleMenuEvent)
 
     QList<QAction *> actionList = fm->m_ptr->rightKeyMenu->actions();
 
-    s.set(ADDR(DFontMgrMainWindow, handleAddFontEvent), stub_return);
+    s.set(ADDR(DFontMgrMainWindow, handleAddFontEvent), stub_handleAddFontEvent);
     fm->handleMenuEvent(actionList.first());
+    EXPECT_TRUE(g_menuaction == DFontMenuManager::M_AddFont);
 
-    s.set(ADDR(DFontPreviewListView, onEnableBtnClicked), stub_return);
+    s.set(ADDR(DFontPreviewListView, onEnableBtnClicked), stub_onEnableBtnClicked);
     s2.set(ADDR(DFontPreviewListView, syncTabStatus), stub_return);
     fm->handleMenuEvent(actionList.at(2));
+    EXPECT_TRUE(g_menuaction == DFontMenuManager::M_EnableOrDisable);
 
-    s.set(ADDR(DFontMgrMainWindow, delCurrentFont), stub_return);
+    s.set(ADDR(DFontMgrMainWindow, delCurrentFont), stub_delCurrentFont);
     fm->handleMenuEvent(actionList.at(3));
+    EXPECT_TRUE(g_menuaction == DFontMenuManager::M_DeleteFont);
 
-    s.set(ADDR(DFontMgrMainWindow, exportFont), stub_return);
-    s2.set(ADDR(DFontPreviewListView, syncTabStatus), stub_return);
+    s.set(ADDR(DFontMgrMainWindow, exportFont), stub_exportFont);
     fm->handleMenuEvent(actionList.at(4));
+    EXPECT_TRUE(g_menuaction == DFontMenuManager::M_ExportFont);
 
-    s.set(ADDR(DFontPreviewListView, onCollectBtnClicked), stub_return);
-    s2.set(ADDR(DFontPreviewListView, syncTabStatus), stub_return);
+    s.set(ADDR(DFontPreviewListView, onCollectBtnClicked), stub_onCollectBtnClicked);
     fm->handleMenuEvent(actionList.at(5));
+    EXPECT_TRUE(g_menuaction == DFontMenuManager::M_Faverator);
 
-    s.set(ADDR(DFontMgrMainWindow, showFontFilePostion), stub_return);
-    fm->handleMenuEvent(actionList.last());
+//    s.set(ADDR(DFontMgrMainWindow, showFontFilePostion), stub_showFontFilePostion);
+//    fm->handleMenuEvent(actionList.last());
+//    EXPECT_TRUE(g_menuaction == DFontMenuManager::M_ShowFontPostion);
 }
 
 TEST_F(TestDFontMgrMainWindow, checkinitShortcutsFontSize)
@@ -945,16 +1038,17 @@ TEST_F(TestDFontMgrMainWindow, checkInlineFunction)
 TEST_F(TestDFontMgrMainWindow, checkinitShortcutsReSize)
 {
     Stub s;
-    Stub s1;
-
     s.set(ADDR(QWidget, windowState), stub_windowStateMax);
-    s1.set(ADDR(QWidget, showNormal), stub_return);
-
+    s.set(ADDR(QWidget, showNormal), stub_showNormal);
     emit fm->m_scWndReize->activated();
+    EXPECT_TRUE("showNormal" == g_windowstate);
 
-    s.set(ADDR(QWidget, windowState), stub_windowStateNo);
-    s1.set(ADDR(QWidget, showMaximized), stub_return);
+    Stub s1;
+    s1.set(ADDR(QWidget, windowState), stub_windowStateNo);
+    s1.set(ADDR(QWidget, showMaximized), stub_showMaximized);
     emit fm->m_scWndReize->activated();
+    EXPECT_TRUE("showMaximized" == g_windowstate);
+
 }
 
 
@@ -964,12 +1058,13 @@ TEST_F(TestDFontMgrMainWindow, checkinitShortcutsDel)
     Stub s1;
 
     s.set(ADDR(DFontPreviewListView, syncRecoveryTabStatus), stub_return);
-    s1.set(ADDR(DFontMgrMainWindow, delCurrentFont), stub_return);
+    s1.set(ADDR(DFontMgrMainWindow, delCurrentFont), stub_delCurrentFont);
 
     fm->m_cacheFinish = false;
     fm->m_installFinish = false;
 
     emit fm->m_scDeleteFont->activated();
+    EXPECT_TRUE("delCurrentFont" == g_windowstate);
 }
 
 TEST_F(TestDFontMgrMainWindow, checkinitShortcutsMenu)
@@ -977,14 +1072,14 @@ TEST_F(TestDFontMgrMainWindow, checkinitShortcutsMenu)
     Stub s;
     Stub s1;
 
-    QSignalSpy spy(fm->m_signalManager, SIGNAL(onMenuHidden()));
-
-    s.set(ADDR(QWidget, hasFocus), stub_true);
+    QSignalSpy spy(fm->m_scShowMenu, SIGNAL(activated()));
+    s.set(ADDR(QWidget, hasFocus), stub_hasfource);
     s1.set(ADDR(QApplication, sendEvent), stub_return);
 
     fm->m_isSearchLineEditMenuPoped = false;
 
     emit fm->m_scShowMenu->activated();
+    EXPECT_TRUE(spy.count() == 1);
 }
 
 TEST_F(TestDFontMgrMainWindow, checkinitShortcutsAdd)
@@ -992,12 +1087,13 @@ TEST_F(TestDFontMgrMainWindow, checkinitShortcutsAdd)
     Stub s;
     Stub s1;
 
-    QSignalSpy spy(fm->m_signalManager, SIGNAL(onMenuHidden()));
+    QSignalSpy spy(fm->m_scAddNewFont, SIGNAL(activated()));
 
     s.set(ADDR(DFontPreviewListView, syncRecoveryTabStatus), stub_return);
     s1.set(ADDR(DFontMgrMainWindow, handleAddFontEvent), stub_return);
 
     emit fm->m_scAddNewFont->activated();
+    EXPECT_TRUE(spy.count() == 1);
 }
 
 
@@ -1020,6 +1116,8 @@ TEST_F(TestDFontMgrMainWindow, checkinitShortcutsElse)
     emit fm->m_scPageDown->activated();
 
     emit fm->m_scFindFont->activated();
+
+    emit fm->m_scFontInfo->activated();
 }
 
 TEST_F(TestDFontMgrMainWindow, checkonRightMenuShortCutActivated)
@@ -1031,35 +1129,14 @@ TEST_F(TestDFontMgrMainWindow, checkonRightMenuShortCutActivated)
     fm->m_fontPreviewListView->selectAll();
 
     fm->m_fontPreviewListView->onRightMenuShortCutActivated();
+    EXPECT_FALSE(fm->m_fontPreviewListView->m_isMousePressNow);
 
     Stub s1;
     s1.set(ADDR(QWidget, visibleRegion), stub_getRegin);
     fm->m_fontPreviewListView->onRightMenuShortCutActivated();
+    EXPECT_FALSE(fm->m_fontPreviewListView->m_isMousePressNow);
 }
 
-
-//TEST_F(TestDFontMgrMainWindow, checkInstallFont)
-//{
-//    Stub s;
-//    s.set(QDialog_exec, stub_dialogExec);
-
-//    QStringList list;
-//    list << "qqqq";
-//    fm->installFont(list, false);
-//}
-
-//TEST_F(TestDFontMgrMainWindow, aaa)
-//{
-//    fm->InitQuickWindowIfNeeded();
-//    QStringList list;
-//    list << "aaaaaaaaaa";
-//    fm->m_quickInstallWnd->onFileSelected(list);
-//}
-
-void hideSpinner_stub()
-{
-
-}
 TEST_F(TestDFontMgrMainWindow, checkononCacheFinish)
 {
     Stub s;
@@ -1067,5 +1144,36 @@ TEST_F(TestDFontMgrMainWindow, checkononCacheFinish)
 
     fm->onCacheFinish();
     ASSERT_EQ(fm->m_cacheFinish, true);
+}
+
+TEST_F(TestDFontMgrMainWindow, handleAddFontEvent)
+{
+    Stub s;
+    s.set(ADDR(DFontMgrMainWindow, onShowMessage), stub_onShowMessage);
+
+    QStringList filelist;
+    fm->m_fIsInstalling = true;
+    fm->installFont(filelist, false);
+    EXPECT_TRUE(g_windowstate == "onShowMessage");
+
+    s.set(ADDR(DFontMgrMainWindow, checkFilesSpace), checkFilesSpace_stub);
+    fm->m_cacheFinish = true;
+    fm->m_installFinish = true;
+    fm->installFont(filelist, false);
+    EXPECT_TRUE(fm->m_cacheFinish);
+    EXPECT_TRUE(fm->m_installFinish);
+
+    s.set(ADDR(DFontPreviewListView, currModelData), stub_currModelData);
+    fm->onRightMenuAboutToShow();
+    EXPECT_FALSE(fm->m_hasMenuTriggered);
+    EXPECT_TRUE(fm->m_menuCurData.fontInfo.filePath == QLatin1String("first"));
+
+    fm->onRightMenuAboutToHide();
+    fm->onRequestInstFontsUiAdded();
+    EXPECT_TRUE(fm->m_installFinish);
+
+    fm->onFontChanged();
+    EXPECT_TRUE(fm->d_func()->fontSizeLabel->width() == 65);
+    EXPECT_TRUE(fm->d_func()->fontSizeLabel->text() == QLatin1String("30px"));
 }
 

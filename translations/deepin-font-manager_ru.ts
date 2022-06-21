@@ -41,6 +41,50 @@
     </message>
 </context>
 <context>
+    <name>DFDeleteTTCDialog</name>
+    <message>
+        <source>%1 is a font family, if you proceed, all fonts in it will be deleted</source>
+        <translation>%1 не является семейством шрифтов, если Вы продолжите, все шрифты в нем будут удалены</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <comment>button</comment>
+        <translation>Удалить</translation>
+    </message>
+</context>
+<context>
+    <name>DFDisableTTCDialog</name>
+    <message>
+        <source>%1 is a font family, if you proceed, all fonts in it will be enabled</source>
+        <translation>%1 - это семейство шрифтов, если Вы продолжите, все шрифты в нем будут включены</translation>
+    </message>
+    <message>
+        <source>%1 is a font family, if you proceed, all fonts in it will be disabled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable</source>
+        <comment>button</comment>
+        <translation>Включить</translation>
+    </message>
+    <message>
+        <source>Disable</source>
+        <comment>button</comment>
+        <translation>Отключить</translation>
+    </message>
+</context>
+<context>
+    <name>DFHandleTTCDialog</name>
+    <message>
+        <source>Apply to all selected font families</source>
+        <translation type="unfinished">Применить ко всем выбранным семействам шрифтов</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Отменить</translation>
+    </message>
+</context>
+<context>
     <name>DFInstallErrorDialog</name>
     <message>
         <source>Broken file</source>
@@ -107,11 +151,11 @@
     </message>
     <message>
         <source>Alt+M</source>
-        <translation type="unfinished"></translation>
+        <translation>Alt+M</translation>
     </message>
     <message>
         <source>CTRL+I</source>
-        <translation type="unfinished"></translation>
+        <translation>CTRL+I</translation>
     </message>
 </context>
 <context>
@@ -133,19 +177,19 @@
     </message>
     <message>
         <source>The other %1 system fonts cannot be deleted</source>
-        <translation type="unfinished"></translation>
+        <translation>Другие системные шрифты %1 не могут быть удалены</translation>
     </message>
     <message>
         <source>The font &quot;%1&quot; in use cannot be deleted</source>
-        <translation type="unfinished"></translation>
+        <translation>Используемый шрифт &quot;%1&quot; нельзя удалить</translation>
     </message>
     <message>
         <source>The other %1 system fonts and the font &quot;%2&quot; in use cannot be deleted</source>
-        <translation type="unfinished"></translation>
+        <translation>Другие системные шрифты %1 и используемый шрифт &quot;%2&quot; не могут быть удалены</translation>
     </message>
     <message>
         <source>Are you sure you want to delete %1 font(s)?</source>
-        <translation type="unfinished"></translation>
+        <translation>Вы действительно хотите удалить %1 шрифт(ы)?</translation>
     </message>
     <message>
         <source>Delete</source>
@@ -309,11 +353,11 @@
     </message>
     <message>
         <source>%1 is in use, so you cannot disable it</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 используется, поэтому Вы не можете отключить его</translation>
     </message>
     <message>
         <source>You cannot disable system fonts and the fonts in use</source>
-        <translation type="unfinished"></translation>
+        <translation>Вы не можете отключить системные шрифты и используемые шрифты</translation>
     </message>
     <message>
         <source>You cannot disable system fonts</source>

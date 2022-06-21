@@ -50,8 +50,17 @@ public:
     //创建数据库表
     bool createTable();
 
+    //保存旧数据
+    int saveRecord();
+
+    //更新旧数据
+    bool updateOld2Record();
+
     //增加数据
     bool addRecord(QMap<QString, QString> data, const QString &table_name = "t_fontmanager");
+
+    //增加表t_fontmanagerinfo数据
+    bool addFontManagerInfoRecord(const QString &table_name = "t_fontmanagerinfo");
 
     //删除一条记录
     bool delRecord(QMap<QString, QString> where, const QString &table_name = "t_fontmanager");
@@ -62,6 +71,9 @@ public:
     //更新数据
     bool updateRecord(QMap<QString, QString> where, QMap<QString, QString> data,
                       const QString &table_name = "t_fontmanager");
+
+    //更新表t_fontmanagerinfo数据
+    bool updateFontManagerInfoRecord(const QString &table_name = "t_fontmanagerinfo");
 
     //查找所有记录
     bool findAllRecords(const QList<QString> &key, QList<QMap<QString, QString>> &row,
@@ -74,6 +86,10 @@ public:
     //按条件查找
     bool findRecords(const QList<QString> &key, const QMap<QString, QString> &where, QList<QMap<QString, QString>> *row,
                      const QString &table_name = "t_fontmanager");
+
+    //查找表t_fontmanagerinfo所有记录
+    bool findFontManagerInfoRecords(const QString &table_name = "t_fontmanagerinfo");
+
     //获取记录总数
     int getRecordCount(const QString &table_name = "t_fontmanager");
     //获取最大字体id
@@ -97,6 +113,11 @@ public:
             return;
         m_query->finish();
     }
+    bool isDBDeleted(){return m_bDbDeleted;}
+    void setDBDeleted(bool isDBDeleted)
+    {
+        m_bDbDeleted = isDBDeleted;
+    }
 
     QSqlDatabase m_db;
 
@@ -106,6 +127,8 @@ protected:
 
 private:
     QString m_strDatabase;
+    QList<QMap<QString, QString> > m_lstFontRecord;
+    bool m_bDbDeleted = false;
 
     QSqlQuery *m_query;
     mutable QMutex mutex;

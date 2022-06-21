@@ -24,6 +24,7 @@
 #include "fontmanagercore.h"
 #include "dfontpreviewlistdatathread.h"
 #include "dfinstallerrordialog.h"
+#include "dcomworker.h"
 
 #include <DApplication>
 #include <DFontSizeManager>
@@ -31,8 +32,40 @@
 
 #include <QFileInfo>
 #include <QVBoxLayout>
+#include <QFontDatabase>
 
 DWIDGET_USE_NAMESPACE
+
+class Worker: public QObject
+{
+    Q_OBJECT
+public:
+    explicit Worker(QObject *parent = nullptr);
+
+public slots:
+    /**
+     * @brief slot_dowork 字体安装及之前的准备工作
+     * @param w
+     */
+    void slot_dowork(DFInstallNormalWindow *w);
+};
+
+Worker::Worker(QObject *parent)
+    : QObject(parent)
+{
+
+}
+
+void Worker::slot_dowork(DFInstallNormalWindow *w)
+{
+    // Install the font list ,which may be changed in exception window
+    if (nullptr != w) {
+        w->getAllSysfiles();
+        // Check installed & damaged font file here
+        w->verifyFontFiles();
+        w->batchInstall();
+    }
+}
 
 /*************************************************************************
  <Function>      DFInstallNormalWindow
@@ -49,11 +82,13 @@ DFInstallNormalWindow::DFInstallNormalWindow(const QStringList &files, QWidget *
     , m_installFiles(files)
     , m_fontInfoManager(DFontInfoManager::instance())
     , m_fontManager(FontManagerCore::instance())
-    , m_verifyTimer(new QTimer(this))
-
+    , m_pworker(new Worker())
+    , m_pthread(new QThread())
 {
     initUI();
     initConnections();
+    m_pworker->moveToThread(m_pthread);
+    dowork();
 }
 
 /*************************************************************************
@@ -67,6 +102,12 @@ DFInstallNormalWindow::DFInstallNormalWindow(const QStringList &files, QWidget *
 DFInstallNormalWindow::~DFInstallNormalWindow()
 {
     qDebug() << __func__ << "start" << endl;
+
+    // 结束线程
+    m_pthread->quit();
+    m_pthread->wait();
+    m_pthread->deleteLater();
+
     m_installFiles.clear();
     m_installedFiles.clear();
     m_newInstallFiles.clear();
@@ -151,21 +192,6 @@ void DFInstallNormalWindow::initUI()
 }
 
 /*************************************************************************
- <Function>      initVerifyTimer
- <Description>   初始化文件过滤定时器
- <Author>
- <Input>         null
- <Return>        null            Description:null
- <Note>          null
-*************************************************************************/
-void DFInstallNormalWindow::initVerifyTimer()
-{
-    m_verifyTimer->setSingleShot(true);
-    m_verifyTimer->setTimerType(Qt::PreciseTimer);
-    m_verifyTimer->start(VERIFY_DELYAY_TIME);
-}
-
-/*************************************************************************
  <Function>      initConnections
  <Description>   初始化信号和槽connect连接函数
  <Author>
@@ -175,16 +201,6 @@ void DFInstallNormalWindow::initVerifyTimer()
 *************************************************************************/
 void DFInstallNormalWindow::initConnections()
 {
-    // Install the font list ,which may be changed in exception window
-    connect(m_verifyTimer.get(), &QTimer::timeout, this, [ = ]() {
-        getAllSysfiles();
-        // Check installed & damaged font file here
-        verifyFontFiles();
-
-        // Install the font list ,which may be changed in exception window
-        batchInstall();
-    });
-
     connect(m_signalManager, &SignalManager::installDuringPopErrorDialog, this, &DFInstallNormalWindow::batchHalfwayInstall);
 
     connect(m_fontManager, &FontManagerCore::batchInstall, this, &DFInstallNormalWindow::onProgressChanged);
@@ -201,7 +217,9 @@ void DFInstallNormalWindow::initConnections()
         m_currentFontLabel->setFixedHeight(m_currentFontLabel->fontMetrics().height());
     });
 
-    initVerifyTimer();
+    connect(m_pthread, &QThread::finished, m_pworker, &QObject::deleteLater); //线程结束资源释放
+    connect(this, &DFInstallNormalWindow::sigdowork, m_pworker, &Worker::slot_dowork);
+    connect(this, &DFInstallNormalWindow::sigShowInstallErrDlg, this, &DFInstallNormalWindow::showInstallErrDlg);
 }
 
 /*************************************************************************
@@ -253,6 +271,9 @@ void DFInstallNormalWindow::verifyFontFiles()
 
     for (auto &it : m_installFiles) {
         fontInfo = m_fontInfoManager->getFontInfo(it);
+        if(m_fontInfoManager->isFontInInstalledDirs(fontInfo.filePath)){
+            needRefresh = true;
+        }
         if (Q_UNLIKELY(fontInfo.isError)) {
             m_damagedFiles.append(it);
 
@@ -353,9 +374,24 @@ bool DFInstallNormalWindow::ifNeedShowExceptionWindow() const
 bool DFInstallNormalWindow::isSystemFont(DFontInfo &f)
 {
     QString fontFullname = f.familyName + f.styleName;
+    bool ret = m_AllSysFilesfamilyName.contains(fontFullname);
+
+    // ttc文件包含多种ttf字体，需特殊处理
+    if (!ret && f.filePath.endsWith(QLatin1String(".ttc"), Qt::CaseInsensitive)) {
+        QStringList fontFamilyList = QFontDatabase::applicationFontFamilies(QFontDatabase::addApplicationFont(f.filePath));
+        if (fontFamilyList.size() > 1) {
+            for (QString &fontFamily : fontFamilyList) {
+                fontFullname = fontFamily + f.styleName;
+                ret = (ret || m_AllSysFilesfamilyName.contains(fontFullname));
+                if (ret) {
+                    break;
+                }
+            }
+        }
+    }
 
 
-    return (m_AllSysFilesfamilyName.contains(fontFullname));
+    return ret;
 }
 
 /*************************************************************************
@@ -378,7 +414,7 @@ void DFInstallNormalWindow::checkShowMessage()
     } else if (getInstallMessage == true && m_popedInstallErrorDialg == false) {
         if (ifNeedShowExceptionWindow()) {
             qDebug() << "need reinstall " << endl;
-            showInstallErrDlg();
+            Q_EMIT sigShowInstallErrDlg();
         } else {
             qDebug() << "no need reinstall" << endl;
             //不需恢复添加按钮tab状态
@@ -630,6 +666,10 @@ void DFInstallNormalWindow::onCancelInstall()
     qDebug() << __FUNCTION__ << " called";
 #endif
     m_errCancelInstall = true;
+
+    if(needRefresh){
+        emit m_signalManager->refreshUserFont();
+    }
 }
 
 /*************************************************************************
@@ -651,6 +691,9 @@ void DFInstallNormalWindow::onContinueInstall(const QStringList &continueInstall
     //继续安装不需恢复添加按钮tab聚焦状态
     m_skipStateRecovery = true;
     batchReInstall(continueInstallFontFileList);
+    if(needRefresh){
+        emit m_signalManager->refreshUserFont();
+    }
 }
 
 /*************************************************************************
@@ -792,6 +835,11 @@ void DFInstallNormalWindow::setAddBtnHasTabs(bool AddBtnHasTabs)
 {
     m_AddBtnHasTabs = AddBtnHasTabs;
 }
+void DFInstallNormalWindow::dowork()
+{
+    m_pthread->start();
+    emit sigdowork(this);
+}
 
 /*************************************************************************
  <Function>      setSkipException
@@ -843,3 +891,5 @@ void DFInstallNormalWindow::keyPressEvent(QKeyEvent *event)
         close();
     }
 }
+
+#include "dfinstallnormalwindow.moc"

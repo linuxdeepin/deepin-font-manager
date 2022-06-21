@@ -95,9 +95,11 @@ public:
 
     //
     void onRefreshUserAddFont(QList<DFontInfo> &fontInfoList);
-
+    void updateDb();//当数据库表结构更新时（数据被清空），从系统读取字体配置，并将旧数据库数据更新到数据库
 private:
-    void withoutDbRefreshDb(QStringList &m_allFontPathList);
+    void withoutDbRefreshDb();
+    // 添加符合条件的itemData
+    void appendItemData(const DFontPreviewItemData &itemData, const bool &isStartup);
 
 signals:
     //发出删除字体文件请求

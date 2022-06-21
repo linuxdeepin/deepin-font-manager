@@ -41,6 +41,50 @@
     </message>
 </context>
 <context>
+    <name>DFDeleteTTCDialog</name>
+    <message>
+        <source>%1 is a font family, if you proceed, all fonts in it will be deleted</source>
+        <translation>%1 bir şrift ailəsidir, əgər davam etsəniz ondakı bütün şriftlər silinəcəkdir</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <comment>button</comment>
+        <translation>Silmək</translation>
+    </message>
+</context>
+<context>
+    <name>DFDisableTTCDialog</name>
+    <message>
+        <source>%1 is a font family, if you proceed, all fonts in it will be enabled</source>
+        <translation>%1 şrift ailəsidir, əgər davam etsəniz ondakı bütün şriftlər aktiv ediləcəkdir</translation>
+    </message>
+    <message>
+        <source>%1 is a font family, if you proceed, all fonts in it will be disabled</source>
+        <translation>%1 şrift ailəsidir, əgər davam etsəniz, ondakı bütün şriftlər söndürüləcəkdir</translation>
+    </message>
+    <message>
+        <source>Enable</source>
+        <comment>button</comment>
+        <translation>Aktiv etmək</translation>
+    </message>
+    <message>
+        <source>Disable</source>
+        <comment>button</comment>
+        <translation>Söndürmək</translation>
+    </message>
+</context>
+<context>
+    <name>DFHandleTTCDialog</name>
+    <message>
+        <source>Apply to all selected font families</source>
+        <translation type="unfinished">Bütün seçilmiş şrift ailəsini tətbiq edin</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">İmtina</translation>
+    </message>
+</context>
+<context>
     <name>DFInstallErrorDialog</name>
     <message>
         <source>Broken file</source>

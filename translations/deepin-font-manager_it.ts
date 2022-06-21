@@ -41,6 +41,50 @@
     </message>
 </context>
 <context>
+    <name>DFDeleteTTCDialog</name>
+    <message>
+        <source>%1 is a font family, if you proceed, all fonts in it will be deleted</source>
+        <translation>%1 è una famiglia di Font, procedendo saranno eliminati tutti i Font in essa contenuti</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <comment>button</comment>
+        <translation>Elimina</translation>
+    </message>
+</context>
+<context>
+    <name>DFDisableTTCDialog</name>
+    <message>
+        <source>%1 is a font family, if you proceed, all fonts in it will be enabled</source>
+        <translation>%1 è una famiglia di font, procedendo saranno abilitati tutti i font in essa contenuti</translation>
+    </message>
+    <message>
+        <source>%1 is a font family, if you proceed, all fonts in it will be disabled</source>
+        <translation>%1 è una famiglia di font, procedendo saranno disabilitati tutti i font in essa contenuti</translation>
+    </message>
+    <message>
+        <source>Enable</source>
+        <comment>button</comment>
+        <translation>Abilita</translation>
+    </message>
+    <message>
+        <source>Disable</source>
+        <comment>button</comment>
+        <translation>Disabilita</translation>
+    </message>
+</context>
+<context>
+    <name>DFHandleTTCDialog</name>
+    <message>
+        <source>Apply to all selected font families</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Annulla</translation>
+    </message>
+</context>
+<context>
     <name>DFInstallErrorDialog</name>
     <message>
         <source>Broken file</source>

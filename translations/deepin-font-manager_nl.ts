@@ -41,6 +41,50 @@
     </message>
 </context>
 <context>
+    <name>DFDeleteTTCDialog</name>
+    <message>
+        <source>%1 is a font family, if you proceed, all fonts in it will be deleted</source>
+        <translation>%1 is een lettertypefamilie. Als je doorgaat, worden alle bijbehorende lettertypen verwijderd.</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <comment>button</comment>
+        <translation>Verwijderen</translation>
+    </message>
+</context>
+<context>
+    <name>DFDisableTTCDialog</name>
+    <message>
+        <source>%1 is a font family, if you proceed, all fonts in it will be enabled</source>
+        <translation>%1 is een lettertypefamilie. Als je doorgaat, worden alle bijbehorende lettertypen ingeschakeld.</translation>
+    </message>
+    <message>
+        <source>%1 is a font family, if you proceed, all fonts in it will be disabled</source>
+        <translation>%1 is een lettertypefamilie. Als je doorgaat, worden alle bijbehorende lettertypen uitgeschakeld.</translation>
+    </message>
+    <message>
+        <source>Enable</source>
+        <comment>button</comment>
+        <translation>Inschakelen</translation>
+    </message>
+    <message>
+        <source>Disable</source>
+        <comment>button</comment>
+        <translation>Uitschakelen</translation>
+    </message>
+</context>
+<context>
+    <name>DFHandleTTCDialog</name>
+    <message>
+        <source>Apply to all selected font families</source>
+        <translation type="unfinished">Toepassen op alle geselecteerde lettertypefamilies</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Annuleren</translation>
+    </message>
+</context>
+<context>
     <name>DFInstallErrorDialog</name>
     <message>
         <source>Broken file</source>

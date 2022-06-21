@@ -69,9 +69,11 @@ TEST_F(TestFontIconText, checkPaintEvent)
     QPaintEvent *e = new QPaintEvent(QRect());
 
     fit->setContent(true);
+    EXPECT_TRUE(fit->m_isTtf);
     fit->paintEvent(e);
 
     fit->setContent(false);
+    EXPECT_FALSE(fit->m_isTtf);
     fit->paintEvent(e);
 
     SAFE_DELETE_ELE(e)
@@ -84,6 +86,7 @@ TEST_P(TestcheckStyleName, checkStyleName_Is_Normal)
     QString n =  GetParam();
 
     fit->setFontName("first", n);
+    EXPECT_TRUE(fit->m_font.family() == QLatin1String("first"));
 }
 
 

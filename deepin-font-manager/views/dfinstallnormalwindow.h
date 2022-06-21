@@ -39,6 +39,7 @@ DWIDGET_USE_NAMESPACE
 class FontManagerCore;
 class DFontInfoManager;
 class DFInstallErrorDialog;
+class Worker;
 
 /*************************************************************************
  <Class>         DFInstallNormalWindow
@@ -61,6 +62,8 @@ public:
 
     void setAddBtnHasTabs(bool AddBtnHasTabs);
 
+    void dowork();
+
 protected:
     static constexpr int VERIFY_DELYAY_TIME = 10;
     //初始化主页面
@@ -69,8 +72,6 @@ protected:
     void initConnections();
     //从数据库中读取系统字体，用于之后的判断
     void getAllSysfiles();
-    //初始化文件过滤定时器
-    void initVerifyTimer();
     //字体文件过滤器，过滤后得到需要新安装的字体，重复安装字体，损毁字体，系统字体,以及字体验证框弹出时安装的字体
     void verifyFontFiles();
     //检测是否要弹出字体验证框，存在重复安装字体，系统字体时，损坏字体时弹出字体验证框
@@ -124,6 +125,9 @@ signals:
     //信号-安装完成
     void finishFontInstall(const QStringList &fileList);
 
+    void sigdowork(DFInstallNormalWindow *w);
+
+    void sigShowInstallErrDlg();
 private:
     /*************************************************************************
      <Enum>          InstallState
@@ -178,7 +182,10 @@ private:
 
     DFInstallErrorDialog *m_pexceptionDlg {nullptr};
 
-    QScopedPointer<QTimer> m_verifyTimer {nullptr};
+    friend class Worker;  //声明 Worker 为友元类
+    Worker *m_pworker = nullptr;
+    QThread *m_pthread = nullptr;
+    bool needRefresh = false;
 };
 
 #endif  // DFINSTALLNORMALWINDOW_H

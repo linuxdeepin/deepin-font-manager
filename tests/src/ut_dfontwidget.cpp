@@ -45,6 +45,16 @@ protected:
     QString filepath = "/home/zhaogongqiang/Desktop/1048字体/ArkanaScriptRough.otf";
     DFontWidget *fw;
 };
+
+static QString g_funcname;
+int stub_addApplicationFontFromData(const QByteArray &)
+{
+    return 0;
+}
+void stub_setFileUrl(const QString &)
+{
+    g_funcname = __FUNCTION__;
+}
 }
 
 TEST_F(TestDFontWidget, initTest)
@@ -66,20 +76,23 @@ TEST_F(TestDFontWidget, checkSetFileUrl)
 TEST_F(TestDFontWidget, checkHandleFinished_dataEmpty)
 {
     QByteArray data;
-//    fw->setFileUrl(filepath);
     fw->handleFinished(data);
     EXPECT_EQ(true, fw->m_layout->currentIndex() == 0);
     EXPECT_EQ(false, fw->m_preview->isVisible());
+    EXPECT_TRUE(fw->m_errMsg->text() == DApplication::translate("DFontWidget", "Broken file"));
 }
 
 TEST_F(TestDFontWidget, checkHandleFinished_data)
 {
+    Stub s;
+    s.set(ADDR(QFontDatabase, addApplicationFontFromData), stub_addApplicationFontFromData);
+    s.set(ADDR(DFontPreview, setFileUrl), stub_setFileUrl);
+
     QString filepath = "/home/zhaogongqiang/Desktop/1048字体/ArkanaScriptRough.otf";
     QFile file(filepath);
     file.open(QIODevice::ReadOnly);
     QByteArray fileContent = file.readAll();
-//    fw->setFileUrl(filepath);
     fw->handleFinished(fileContent);
-    EXPECT_EQ(true, fw->m_errMsg->text() == DApplication::translate("DFontWidget", "Broken file"));
-//    EXPECT_EQ(true, fw->m_preview->isVisible());
+    EXPECT_FALSE(fw->m_errMsg->text() == DApplication::translate("DFontWidget", "Broken file"));
+    EXPECT_TRUE(g_funcname == QLatin1String("stub_setFileUrl"));
 }

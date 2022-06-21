@@ -41,6 +41,50 @@
     </message>
 </context>
 <context>
+    <name>DFDeleteTTCDialog</name>
+    <message>
+        <source>%1 is a font family, if you proceed, all fonts in it will be deleted</source>
+        <translation>%1 एक मुद्रलिपि समूह है, इच्छित कार्य जारी रखने से इसमें सम्मिलित सभी मुद्रलिपियाँ हटा दी जाएँगी</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <comment>button</comment>
+        <translation>हटाएँ</translation>
+    </message>
+</context>
+<context>
+    <name>DFDisableTTCDialog</name>
+    <message>
+        <source>%1 is a font family, if you proceed, all fonts in it will be enabled</source>
+        <translation>%1 एक मुद्रलिपि समूह है, इच्छित कार्य जारी रखने से इसमें सम्मिलित सभी मुद्रलिपियाँ सक्रिय होंगी</translation>
+    </message>
+    <message>
+        <source>%1 is a font family, if you proceed, all fonts in it will be disabled</source>
+        <translation>%1 एक मुद्रलिपि समूह है, इच्छित कार्य जारी रखने से इसमें सम्मिलित सभी मुद्रलिपियाँ निष्क्रिय होंगी</translation>
+    </message>
+    <message>
+        <source>Enable</source>
+        <comment>button</comment>
+        <translation>सक्रिय</translation>
+    </message>
+    <message>
+        <source>Disable</source>
+        <comment>button</comment>
+        <translation>निष्क्रिय</translation>
+    </message>
+</context>
+<context>
+    <name>DFHandleTTCDialog</name>
+    <message>
+        <source>Apply to all selected font families</source>
+        <translation type="unfinished">सभी चयनित मुद्रलिपि समूहों पर लागू करें</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">रद्द करें</translation>
+    </message>
+</context>
+<context>
     <name>DFInstallErrorDialog</name>
     <message>
         <source>Broken file</source>
@@ -107,11 +151,11 @@
     </message>
     <message>
         <source>Alt+M</source>
-        <translation type="unfinished"></translation>
+        <translation>Alt+M</translation>
     </message>
     <message>
         <source>CTRL+I</source>
-        <translation type="unfinished"></translation>
+        <translation>CTRL+I</translation>
     </message>
 </context>
 <context>

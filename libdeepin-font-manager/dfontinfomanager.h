@@ -125,7 +125,7 @@ struct DFontInfo {
 
     }
 
-    bool operator==(const DFontInfo &info)
+    bool operator==(const DFontInfo &info) const
     {
         return info.familyName == familyName && info.styleName == styleName && info.fullname == fullname && info.filePath == filePath;
     }
@@ -159,18 +159,26 @@ public:
     QStringList getAllFclistPathList()const;
     QString getFontType(const QString &filePath);
     DFontInfo getFontInfo(const QString &filePath, bool withPreviewTxt = false);
+    void setFontInfo(DFontInfo& fontInfo);//按照新规则处理字体familyname
     QString getDefaultPreview(const QString &filePath, qint8 &preivewLang);
     QStringList getCurrentFontFamily();
     QString getFontPath();
     QStringList getFontFamilyStyle(const QString &filePah);
     QStringList getFonts(FontTYpe type) const;
     bool isFontInstalled(DFontInfo &data);
+    bool isFontInInstalledDirs(const QString &filePath);
     void getDefaultPreview(DFontInfo &data);
     void updateSP3FamilyName(const QList<DFontInfo> &fontList, bool inFontList = false);
     void checkStyleName(DFontInfo &f);
 
     //获取文件夹下及子文件夹下所有字体文件
     QStringList getFileNames(const QString &path)const;
+
+private:
+    QString m_strSysLanguage; // 当前系统语言
+    ushort m_langpriority1; // 优先使用的语言（优先级最低）
+    ushort m_langpriority2;
+    ushort m_langpriority3; // 优先使用的语言（优先级最高）
 };
 
 #endif

@@ -27,6 +27,7 @@
 #include <DComboBox>
 #include <DLabel>
 #include <DMainWindow>
+#include <DPushButton>
 
 DWIDGET_USE_NAMESPACE
 
@@ -40,7 +41,7 @@ class DFQuickInstallWindow : public DMainWindow
 {
     Q_OBJECT
 public:
-    explicit DFQuickInstallWindow(QStringList files = QStringList(), QWidget *parent = nullptr);
+    explicit DFQuickInstallWindow(const QStringList &files = QStringList(), QWidget *parent = nullptr);
 
     ~DFQuickInstallWindow() override;
 

@@ -390,7 +390,7 @@ void DFInstallErrorDialog::keyPressEvent(QKeyEvent *event)
     else if ((event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter)) {
         if (m_installErrorListView->hasFocus()) {
             if (m_installErrorListView->selectionModel()->selectedIndexes().count() == 1) {
-                onListItemClicked(m_installErrorListView->currentIndex());
+                onListItemClicked(m_installErrorListView->selectionModel()->selectedIndexes().first());
                 return;
             } else if (m_installErrorListView->selectionModel()->selectedIndexes().count() > 1) {
                 onListItemsClicked(m_installErrorListView->selectionModel()->selectedIndexes());

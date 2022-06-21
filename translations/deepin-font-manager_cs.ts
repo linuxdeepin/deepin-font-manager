@@ -37,7 +37,51 @@
     <message>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation>Zrušit</translation>
+        <translation>Storno</translation>
+    </message>
+</context>
+<context>
+    <name>DFDeleteTTCDialog</name>
+    <message>
+        <source>%1 is a font family, if you proceed, all fonts in it will be deleted</source>
+        <translation>%1 je množina písem. Pokud budete pokračovat, všechna písma v ní budou smazána</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <comment>button</comment>
+        <translation>Smazat</translation>
+    </message>
+</context>
+<context>
+    <name>DFDisableTTCDialog</name>
+    <message>
+        <source>%1 is a font family, if you proceed, all fonts in it will be enabled</source>
+        <translation>%1 je množina písem. Pokud budete pokračovat, všechna písma v ní budou zapnuta</translation>
+    </message>
+    <message>
+        <source>%1 is a font family, if you proceed, all fonts in it will be disabled</source>
+        <translation>%1 je množina písem. Pokud budete pokračovat, všechna písma v ní budou vypnuta</translation>
+    </message>
+    <message>
+        <source>Enable</source>
+        <comment>button</comment>
+        <translation>Povolit</translation>
+    </message>
+    <message>
+        <source>Disable</source>
+        <comment>button</comment>
+        <translation>Zakázat</translation>
+    </message>
+</context>
+<context>
+    <name>DFHandleTTCDialog</name>
+    <message>
+        <source>Apply to all selected font families</source>
+        <translation>Použít na všechny vybrané rodiny písma</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Storno</translation>
     </message>
 </context>
 <context>
@@ -107,11 +151,11 @@
     </message>
     <message>
         <source>Alt+M</source>
-        <translation type="unfinished"></translation>
+        <translation>Alt+M</translation>
     </message>
     <message>
         <source>CTRL+I</source>
-        <translation type="unfinished"></translation>
+        <translation>CTRL+I</translation>
     </message>
 </context>
 <context>
@@ -381,7 +425,7 @@
     </message>
     <message>
         <source>Page up</source>
-        <translation>O stranu nahoru</translation>
+        <translation>O stránku nahoru</translation>
     </message>
     <message>
         <source>Page down</source>

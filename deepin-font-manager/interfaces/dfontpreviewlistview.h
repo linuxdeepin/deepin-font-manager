@@ -317,13 +317,14 @@ private:
     QStringList m_currentFont;
     FontData m_curFontData;
 
-    QList<int> m_recoverSelectStateList;
+    QList<int> m_recoverSelectStateSysfontList; //需要恢复选中状态系统字体idx列表
+    QMultiMap<QString, DFontPreviewItemData> m_recoverSelectStateUserfontMultiMap; //需要恢复选中状态用户字体MultiMap
     QRect m_curRect;
-    //是否需要恢复tab状态
-    bool m_recoveryTabFocusState = false;
-    bool m_userFontInUseSelected{false};
+
+    bool m_recoveryTabFocusState = false;//是否需要恢复tab状态
+    bool m_userFontInUseSelected{false}; //选中的用户字体字体是否正在被使用
     int m_currentSelectedRow = -1;
-    int m_selectAfterDel = -1;/*539 删除后的选中位置*/
+    int m_selectAfterDel = -1; //删除后的选中位置，如果为系统字体，更新变量值m_selectAfterDel为-2的状态
     int m_tryCnt = 0;
     qint64 m_curTm {0};
 
@@ -351,6 +352,8 @@ signals:
     //加载用户自己添加的字体
     void loadUserAddFont();
     void refreshListview(QList<DFontPreviewItemData> &data);
+    //禁用/启用ttc里的某个字体
+    void signalHandleDisableTTC(const QString &filePath, bool &isEnable, bool &isConfirm, bool &isAapplyToAll);
 
 public slots:
     //listview中启用禁用响应函数

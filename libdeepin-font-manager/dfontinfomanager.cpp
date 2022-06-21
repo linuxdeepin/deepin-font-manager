@@ -149,9 +149,40 @@ DFontInfoManager *DFontInfoManager::instance()
 
 DFontInfoManager::DFontInfoManager(QObject *parent)
     : QObject(parent)
+    , m_strSysLanguage(QLocale::system().name())
 {
     //Should not be called in constructor
     //refreshList();
+
+    QMap<QString, ushort> langmap;
+    langmap.insert("zh_HK", TT_MS_LANGID_CHINESE_HONG_KONG);
+    langmap.insert("zh_TW", TT_MS_LANGID_CHINESE_TAIWAN);
+    langmap.insert("zh_CN", TT_MS_LANGID_CHINESE_PRC);
+    langmap.insert("zh_MO", TT_MS_LANGID_CHINESE_MACAO);
+    langmap.insert("bo_CN", TT_MS_LANGID_TIBETAN_PRC); // 藏语
+    langmap.insert("ug_CN", TT_MS_LANGID_UIGHUR_PRC); // 维吾尔语
+    langmap.insert("ii_MO", TT_MS_LANGID_YI_PRC); // 彝语
+    QSet<int> cnlangset{TT_MS_LANGID_CHINESE_HONG_KONG,
+                        TT_MS_LANGID_CHINESE_TAIWAN,
+                        TT_MS_LANGID_CHINESE_PRC,
+                        TT_MS_LANGID_CHINESE_MACAO,
+                        TT_MS_LANGID_TIBETAN_PRC,
+                        TT_MS_LANGID_UIGHUR_PRC,
+                        TT_MS_LANGID_YI_PRC};
+    if (langmap.contains(m_strSysLanguage)) {
+        m_langpriority3 = langmap.value(m_strSysLanguage);
+        if (cnlangset.contains(m_langpriority3)) {
+            m_langpriority2 = TT_MS_LANGID_CHINESE_PRC;
+            m_langpriority1 = TT_MS_LANGID_ENGLISH_UNITED_STATES;
+        } else {
+            m_langpriority2 = TT_MS_LANGID_ENGLISH_UNITED_STATES;
+            m_langpriority1 = TT_MS_LANGID_ENGLISH_UNITED_STATES;
+        }
+    } else {
+        m_langpriority3 = TT_MS_LANGID_ENGLISH_UNITED_STATES;
+        m_langpriority2 = TT_MS_LANGID_ENGLISH_UNITED_STATES;
+        m_langpriority1 = TT_MS_LANGID_ENGLISH_UNITED_STATES;
+    }
 }
 
 DFontInfoManager::~DFontInfoManager() {}
@@ -361,6 +392,81 @@ QString DFontInfoManager::getFontType(const QString &filePath)
     }
 }
 
+struct NameIdFlag {
+    char TT_NAME_ID_COPYRIGHT_flag = 0;
+    char TT_NAME_ID_VERSION_STRING_flag = 0;
+    char TT_NAME_ID_DESCRIPTION_flag = 0;
+    char TT_NAME_ID_FULL_NAME_flag = 0;
+    char TT_NAME_ID_TRADEMARK_flag = 0;
+    char TT_NAME_ID_PS_NAME_flag = 0;
+};
+/*************************************************************************
+ <Function>      setFontInfo
+ <Description>   按照新规则处理字体familyname
+ <Author>        null
+ <Input>
+    <param1>     DFontInfo     Description:该字体文件的字体信息
+ <Return>        null
+ <Note>          null
+*************************************************************************/
+void DFontInfoManager::setFontInfo(DFontInfo& fontInfo)
+{
+    /*****************************************
+    字体显示名称规则
+    规则说明：
+    规则一：
+    条件：familyname不为空，不包含“？”；
+    规则：字体名称使用 familyname+“-”+style；
+    规则二：
+    条件：familyname为空或者包含“？”，fullname不为空；
+    规则：字体名称使用 fullname+“-”+style；
+    规则三
+    条件：familyname为空或者包含“？”，fullname为空；
+    规则：字体名称使用 PSname；
+    规则四
+    条件：familyname为空或者包含“？”，fullname为空，PSname为空；
+    规则：字体名称显示“UntitledFont”；
+    规则对所有字体（包括系统字体、用户字体）有效；
+    ****************************************/
+    QString familyName;
+    if (fontInfo.sp3FamilyName.isEmpty() || fontInfo.sp3FamilyName.contains(QChar('?'))) {
+        int appFontId = QFontDatabase::addApplicationFont(fontInfo.filePath);
+
+        QStringList fontFamilyList = QFontDatabase::applicationFontFamilies(appFontId);
+        for (QString &family : fontFamilyList) {
+            if (family.contains(QChar('?')))
+                continue;
+            familyName = family;
+        }
+        if (familyName.isEmpty()) {
+            if (!fontInfo.fullname.isEmpty() && !fontInfo.fullname.contains(QChar('?'))) {
+                familyName = fontInfo.fullname;
+            } else if (!fontInfo.psname.isEmpty() && !fontInfo.psname.contains(QChar('?'))) {
+                familyName = fontInfo.fullname;
+            } else {
+                familyName = QLatin1String("UntitledFont");
+            }
+        }
+        fontInfo.sp3FamilyName = familyName;
+    } else {
+        familyName = fontInfo.sp3FamilyName;
+    }
+
+    if (!fontInfo.styleName.isEmpty() && !familyName.endsWith(fontInfo.styleName) && familyName != QLatin1String("UntitledFont")) {
+        fontInfo.familyName = familyName;//从Sfnt接口获取的familyname读取宋体文件时解析为韩语或者?，替换为字体显示名称
+    } else {
+        //从Sfnt接口获取的familyname读取宋体文件时解析为韩语或者?，替换为字体显示名称
+        // 例如Consolas-Regular(或Consolas Regular)获取到Consolas
+        if(fontInfo.styleName.isEmpty()){
+            fontInfo.familyName = familyName;
+        }
+        else {
+            fontInfo.familyName = familyName.replace(QRegExp(QString("[ -]" + fontInfo.styleName + "$")), "");
+        }
+    }
+    return;
+}
+
 /*************************************************************************
  <Function>      getFontInfo
  <Description>   获取字体信息
@@ -397,10 +503,13 @@ DFontInfo DFontInfoManager:: getFontInfo(const QString &filePath, bool withPrevi
 
     fontInfo.type = getFontType(filePath);
 
+    bool flagsetsp3FN = true;
+
     if (FT_IS_SFNT(face)) {
         FT_SfntName sname;
         const unsigned int count = FT_Get_Sfnt_Name_Count(face);
 
+        struct NameIdFlag nameidflag;
         for (unsigned int i = 0; i < count; ++i) {
             if (FT_Get_Sfnt_Name(face, i, &sname) != 0) {
                 continue;
@@ -411,31 +520,75 @@ DFontInfo DFontInfoManager:: getFontInfo(const QString &filePath, bool withPrevi
                 continue;
             }
 
+            char flag = 0;
+            if (sname.language_id == m_langpriority3) {
+                flag = 3;
+            } else if (sname.language_id == m_langpriority2) {
+                flag = 2;
+            } else if (sname.language_id == m_langpriority1) {
+                flag = 1;
+            }
+
             switch (sname.name_id) {
-            case TT_NAME_ID_COPYRIGHT:
-                fontInfo.copyright = convertToUtf8(sname.string, sname.string_len).simplified();
-                break;
+            // 0
+            case TT_NAME_ID_COPYRIGHT: {
+                if (flag >= nameidflag.TT_NAME_ID_COPYRIGHT_flag) {
+                    fontInfo.copyright = convertToUtf8(sname.string, sname.string_len).simplified();
+                    nameidflag.TT_NAME_ID_COPYRIGHT_flag = flag;
+                }
+            }
+            break;
+            // 5
+            case TT_NAME_ID_VERSION_STRING: {
+                if (flag >= nameidflag.TT_NAME_ID_VERSION_STRING_flag) {
+                    fontInfo.version = convertToUtf8(sname.string, sname.string_len);
+                    fontInfo.version = fontInfo.version.remove("Version").simplified();
+                    nameidflag.TT_NAME_ID_VERSION_STRING_flag = flag;
+                }
+            }
+            break;
+            // 10
+            case TT_NAME_ID_DESCRIPTION: {
+                if (flag >= nameidflag.TT_NAME_ID_DESCRIPTION_flag) {
+                    fontInfo.description = convertToUtf8(sname.string, sname.string_len).simplified();
+                    nameidflag.TT_NAME_ID_DESCRIPTION_flag = flag;
+                }
+            }
+            break;
 
-            case TT_NAME_ID_VERSION_STRING:
-                fontInfo.version = convertToUtf8(sname.string, sname.string_len);
-                fontInfo.version = fontInfo.version.remove("Version").simplified();
-                break;
-
-            case TT_NAME_ID_DESCRIPTION:
-                fontInfo.description = convertToUtf8(sname.string, sname.string_len).simplified();
-                break;
-
-            case TT_NAME_ID_FULL_NAME:
-                fontInfo.fullname = convertToUtf8(sname.string, sname.string_len).simplified();
-                break;
-
-            case TT_NAME_ID_TRADEMARK:
-                fontInfo.trademark = convertToUtf8(sname.string, sname.string_len).simplified();
-                break;
-
-            case TT_NAME_ID_PS_NAME:
-                fontInfo.psname = convertToUtf8(sname.string, sname.string_len).simplified();
-                break;
+            // 4
+            case TT_NAME_ID_FULL_NAME: {
+                if (flag >= nameidflag.TT_NAME_ID_FULL_NAME_flag) {
+                    if (sname.encoding_id == TT_MS_ID_UNICODE_CS) {
+                        fontInfo.fullname = convertToUtf8(sname.string, sname.string_len).simplified();
+                        flagsetsp3FN = true;
+                    } else {
+                        fontInfo.fullname = QString::fromLatin1(face->family_name).trimmed();
+                        flagsetsp3FN = false;
+                        if (fontInfo.fullname.isEmpty()) {
+                            fontInfo.fullname = convertToUtf8(sname.string, sname.string_len).simplified();
+                        }
+                    }
+                    nameidflag.TT_NAME_ID_FULL_NAME_flag = flag;
+                }
+            }
+            break;
+            // 7
+            case TT_NAME_ID_TRADEMARK: {
+                if (flag >= nameidflag.TT_NAME_ID_TRADEMARK_flag) {
+                    fontInfo.trademark = convertToUtf8(sname.string, sname.string_len).simplified();
+                    nameidflag.TT_NAME_ID_TRADEMARK_flag = flag;
+                }
+            }
+            break;
+            // 6
+            case TT_NAME_ID_PS_NAME: {
+                if (flag >= nameidflag.TT_NAME_ID_FULL_NAME_flag) {
+                    fontInfo.psname = convertToUtf8(sname.string, sname.string_len).simplified();
+                    nameidflag.TT_NAME_ID_FULL_NAME_flag = flag;
+                }
+            }
+            break;
 
             default:
                 break;
@@ -443,14 +596,19 @@ DFontInfo DFontInfoManager:: getFontInfo(const QString &filePath, bool withPrevi
         }
     }
     //compitable with SP2 update1 and previous versions
-    if (!fontInfo.fullname.isEmpty())
-        fontInfo.familyName = fontInfo.fullname.replace(QRegExp(QString(" " + fontInfo.styleName + "$")), "");
-
-    if (fontInfo.familyName.trimmed().length() < 1) {
-        fontInfo.familyName = QString::fromLatin1(face->family_name);
+    if (!fontInfo.fullname.isEmpty()) {
+        // 例如Consolas-Regular(或Consolas Regular)获取到Consolas
+        fontInfo.familyName = fontInfo.fullname.replace(QRegExp(QString("[ -]" + fontInfo.styleName + "$")), "");
     }
 
-    fontInfo.sp3FamilyName = QString::fromLatin1(face->family_name).trimmed();
+    if (fontInfo.familyName.trimmed().length() < 1) {
+        fontInfo.familyName = QString::fromLatin1(face->family_name).trimmed();
+    }
+
+    // 防止部分sp3FamilyName乱码
+    if (flagsetsp3FN) {
+        fontInfo.sp3FamilyName = fontInfo.familyName;
+    }
 
     //default preview text
     if (withPreviewTxt) {
@@ -468,6 +626,7 @@ DFontInfo DFontInfoManager:: getFontInfo(const QString &filePath, bool withPrevi
     library = nullptr;
 
     checkStyleName(fontInfo);
+    setFontInfo(fontInfo);
 
     DFMDBManager *dbManager = DFMDBManager::instance();
     if (dbManager->getRecordCount() > 0) {
@@ -480,7 +639,9 @@ DFontInfo DFontInfoManager:: getFontInfo(const QString &filePath, bool withPrevi
     } /*else {
         fontInfo.isInstalled = isFontInstalled(fontInfo);
     }*/
-
+    if(!fontInfo.isInstalled){
+        fontInfo.isInstalled = isFontInInstalledDirs(fontInfo.filePath);
+    }
     return fontInfo;
 }
 
@@ -600,7 +761,7 @@ QStringList DFontInfoManager::getCurrentFontFamily()
 
 /*************************************************************************
  <Function>      getFontPath
- <Description>   获取字体的路径信息
+ <Description>   获取当前使用字体的路径信息
  <Author>        null
  <Input>
     <param1>     null
@@ -782,6 +943,30 @@ bool DFontInfoManager::isFontInstalled(DFontInfo &data)
 }
 
 /*************************************************************************
+ <Function>      isFontInInstalledDirs
+ <Description>   检查需要安装的字体文件是否在.local/share/fonts目录下，或者是否有同名文件
+ <Author>
+ <Input>
+    <param1>     filePath        Description:待安装字体文件
+ <Return>        bool            Description:return true 是；return false 否
+ <Note>          null
+*************************************************************************/
+bool DFontInfoManager::isFontInInstalledDirs(const QString &filePath)
+{
+    if (filePath.contains(QDir::homePath() + "/.local/share/fonts/")) {
+        return true;
+    }
+    if (filePath.lastIndexOf("/") < 0){
+        return false;
+    }
+    QFile file(QDir::homePath() + "/.local/share/fonts" + filePath.mid(filePath.lastIndexOf("/")));
+    if (file.exists()) {
+        return true;
+    }
+    return false;
+}
+
+/*************************************************************************
  <Function>      getDefaultPreview
  <Description>   获取默认的字体预览效果现实内容
  <Author>        null
@@ -830,7 +1015,7 @@ void DFontInfoManager::checkStyleName(DFontInfo &f)
 {
     //有些字体文件因为不规范导致的stylename为空，通过psname来判断该字体的stylename。
     //之前代码顺序出现问题，导致有的时候contains判断出错 比如DemiBold与Bold，现在调整代码顺序
-    if (f.styleName.contains("?")) {
+    if (f.styleName.contains("?") || f.styleName.isEmpty()) {
         if (f.psname != "") {
             if (f.psname.contains("Regular", Qt::CaseInsensitive)) {
                 f.styleName = "Regular";

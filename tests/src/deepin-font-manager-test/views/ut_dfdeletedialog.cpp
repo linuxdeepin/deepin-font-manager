@@ -28,7 +28,7 @@
 
 #include <gtest/gtest.h>
 #include "../third-party/stub/stub.h"
-
+#include "commonheaderfile.h"
 #include <QSignalSpy>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
@@ -43,6 +43,7 @@
 #include <DFontSizeManager>
 #include <DTipLabel>
 #include <DScrollArea>
+#include <DCheckBox>
 
 namespace {
 class TestDFDeleteDialog : public testing::Test
@@ -62,26 +63,34 @@ protected:
     DFDeleteDialog *fm;
 };
 
-//DApplicationHelper::ColorType stub_themeTypeDark()
-//{
-//    return DApplicationHelper::DarkType;
-//}
+}
 
-//DApplicationHelper::ColorType stub_themeTypeLight()
-//{
-//    return DApplicationHelper::LightType;
-//}
+DGuiApplicationHelper::ColorType stub_themeType()
+{
+    return DGuiApplicationHelper::DarkType;
+}
 
+DGuiApplicationHelper::ColorType stub_themeType2()
+{
+    return DGuiApplicationHelper::LightType;
 }
 
 TEST_F(TestDFDeleteDialog, checksetTheme)
 {
-//    Stub s;
-//    s.set(ADDR(DApplicationHelper, themeType), stub_themeTypeDark());
+    Stub s1;
+    s1.set(ADDR(DGuiApplicationHelper, themeType), stub_themeType);
     fm->setTheme();
-    fm->onFontChanged(QFont());
-////    s.set(ADDR(DApplicationHelper, themeType), stub_themeTypeLight());
-//    fm->setTheme();
+    DPalette pamessageTitle = DApplicationHelper::instance()->palette(fm->messageTitle);
+    QColor pamessageTitleColor = pamessageTitle.color(DPalette::Active, DPalette::BrightText);
+    pamessageTitleColor.setAlphaF(1.0);
+    EXPECT_TRUE(pamessageTitle.color(DPalette::Active, DPalette::WindowText) == pamessageTitleColor);
+
+    Stub s2;
+    s2.set(ADDR(DGuiApplicationHelper, themeType), stub_themeType2);
+    fm->setTheme();
+    pamessageTitleColor = pamessageTitle.color(DPalette::Active, DPalette::BrightText);
+    pamessageTitleColor.setAlphaF(10.9);
+    EXPECT_TRUE(pamessageTitle.color(DPalette::Active, DPalette::WindowText) == pamessageTitleColor);
 }
 
 TEST_F(TestDFDeleteDialog, checkConnect)
@@ -129,5 +138,51 @@ TEST_F(TestDFDeleteDialog, checkInitMessageDetail)
 }
 
 
+TEST_F(TestDFDeleteDialog, getDeleting)
+{
+    DFontMgrMainWindow *w1 = new DFontMgrMainWindow;
+    QString file;
+    DFDeleteTTCDialog *fm1 = new DFDeleteTTCDialog(w1, file);
+    fm1->m_bAapplyToAll = false;
+    EXPECT_FALSE(fm1->getAapplyToAll());
+    QKeyEvent *kev = new QKeyEvent(QEvent::KeyPress, Qt::Key_Return, Qt::NoModifier);
+    fm1->initMessageDetail();
+    EXPECT_TRUE(fm1->applyAllCkb->text() == "Apply to all selected font families");
+    fm1->eventFilter((QObject *)fm1->applyAllCkb, kev);
+    EXPECT_TRUE(fm1->m_bAapplyToAll);
+    fm1->eventFilter((QObject *)fm1, kev);
+    fm1->keyPressEvent(kev);
+    SAFE_DELETE_ELE(kev);
+    kev = new QKeyEvent(QEvent::KeyPress, Qt::Key_Escape, Qt::NoModifier);
+    fm1->keyPressEvent(kev);
+    SAFE_DELETE_ELE(kev);
+    SAFE_DELETE_ELE(fm1);
 
+    bool isEnable = false;
+    DFDisableTTCDialog *fm2 = new DFDisableTTCDialog(w1, file, isEnable);
+    fm2->m_bAapplyToAll = true;
+    EXPECT_TRUE(fm2->getAapplyToAll());
+    fm2->m_confirm = false;
+    EXPECT_FALSE(fm2->getDeleting());
+    kev = new QKeyEvent(QEvent::KeyPress, Qt::Key_Return, Qt::NoModifier);
+    fm2->eventFilter((QObject *)fm2->applyAllCkb, kev);
+    fm2->eventFilter((QObject *)fm2, kev);
+    fm2->keyPressEvent(kev);
+    SAFE_DELETE_ELE(kev);
+    kev = new QKeyEvent(QEvent::KeyPress, Qt::Key_Escape, Qt::NoModifier);
+    fm2->keyPressEvent(kev);
+    EXPECT_TRUE(fm2->messageTitle->text().contains(QLatin1String("disabled")));
+    fm2->initMessageTitle();
+
+    SAFE_DELETE_ELE(fm2);
+    isEnable = true;
+    fm2 = new DFDisableTTCDialog(w1, file, isEnable);
+//    fm2->m_isEnable=true;
+    fm2->initMessageTitle();
+    EXPECT_TRUE(fm2->messageTitle->text().contains(QLatin1String("enabled")));
+    SAFE_DELETE_ELE(fm2);
+    SAFE_DELETE_ELE(w1);
+    SAFE_DELETE_ELE(kev);
+
+}
 

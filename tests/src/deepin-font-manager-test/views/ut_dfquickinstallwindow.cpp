@@ -117,6 +117,11 @@ void stub_installFont(const QStringList &files)
     Q_UNUSED(files)
     return ;
 }
+static QString g_funcname;
+void stub_resizeEvent(void *, QResizeEvent *)
+{
+    g_funcname = __FUNCTION__;
+}
 }
 
 TEST_F(TestDFQuickInstallWindow, checkOnFileSelectedFirst)
@@ -124,30 +129,42 @@ TEST_F(TestDFQuickInstallWindow, checkOnFileSelectedFirst)
     QStringList list;
     list << "aaaaaaaaaa";
     fqi->onFileSelected(list);
+    EXPECT_TRUE(fqi->m_installFiles.count() == 1);
+    EXPECT_TRUE(fqi->m_stateLabel->text() == QLatin1String("Broken file"));
+    EXPECT_TRUE(fqi->m_fontType->itemText(0) == QLatin1String("Unknown"));
 
     Stub s;
     s.set(ADDR(DFontInfoManager, getFontInfo), stub_getFontInfoFirst);
     fqi->onFileSelected(list);
+    EXPECT_TRUE(fqi->m_stateLabel->text() == QLatin1String("Installed"));
+    EXPECT_TRUE(fqi->m_fontType->itemText(0) == QLatin1String("Unknown"));
+    EXPECT_TRUE(fqi->m_titleLabel->text() == QLatin1String("familyname"));
 }
 
 TEST_F(TestDFQuickInstallWindow, checkOnFileSelectedSecond)
 {
     QStringList list;
     list << "aaaaaaaaaa";
-    fqi->onFileSelected(list);
-
     Stub s;
     s.set(ADDR(DFontInfoManager, getFontInfo), stub_getFontInfoSecond);
     fqi->onFileSelected(list);
+    EXPECT_TRUE(fqi->m_installFiles.count() == 1);
+    EXPECT_TRUE(fqi->m_stateLabel->text() == QLatin1String("Not Installed"));
+    EXPECT_TRUE(fqi->m_fontType->itemText(0) == QLatin1String("Unknown"));
 }
 
 TEST_F(TestDFQuickInstallWindow, checkresizeEvent)
 {
     QSize s;
     QResizeEvent *e = new QResizeEvent(s, s);
+    typedef void (*fptr)(DMainWindow *, QResizeEvent);
+    fptr DMainWindow_resizeEvent = (fptr)(&DMainWindow::resizeEvent);   //获取虚函数地址
+    Stub stub;
+    stub.set(DMainWindow_resizeEvent, stub_resizeEvent);
 
     fqi->resizeEvent(e);
     SAFE_DELETE_ELE(e)
+    EXPECT_TRUE(g_funcname == QLatin1String("stub_resizeEvent"));
 }
 
 
@@ -165,14 +182,6 @@ TEST_F(TestDFQuickInstallWindow, checkOnInstallBtnClicked)
     EXPECT_TRUE(spy.count() == 1);
 }
 
-////installFont exec之后会崩溃
-//TEST_F(TestDFQuickInstallWindow, checkInstallFont)
-//{
-
-//    QStringList list;
-//    list << "a";
-//    fqi->installFont(list);
-//}
 
 TEST_F(TestDFQuickInstallWindow, checkOnFontInstallFinishedFirst)
 {
@@ -206,9 +215,11 @@ TEST_P(TestcheckInitPreviewFont, checkInitPreviewFont)
 {
     QString n =  GetParam();
     DFontInfo f;
+    f.familyName = "familyName";
     f.styleName = QString(n);
 
     fqi->InitPreviewFont(f);
+    EXPECT_TRUE(fqi->m_titleLabel->text() == "familyName");
 }
 
 INSTANTIATE_TEST_CASE_P(HandleTrueReturn, TestcheckInitPreviewFont, testing::Values("Italic", "Regular", "ExtraLight", "ExtraBold",

@@ -112,6 +112,11 @@ void DFontWidget::setFileUrl(const QString &url)
     m_thread->start();
 }
 
+QSize DFontWidget::sizeHint() const
+{
+    return QSize(FIXED_WIDTH, FIXED_HEIGHT);
+}
+
 /*************************************************************************
  <Function>      handleFinished
  <Description>   显示预览结果

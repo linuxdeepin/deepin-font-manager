@@ -109,7 +109,7 @@ public:
     QThread *m_thread;
 
     //静态变量
-    static constexpr char const *FMT_FONT_SIZE = "%dpx";
+    static constexpr char const *FMT_FONT_SIZE = "%1px";
     static constexpr int MIN_FONT_SIZE = 6;
     static constexpr int MAX_FONT_SIZE = 60;
     static constexpr int DEFAULT_FONT_SIZE = FTM_DEFAULT_PREVIEW_FONTSIZE;
@@ -278,7 +278,7 @@ signals:
     //信号-文管中选中系统字体打开
     void fileSelectedInSys(const QStringList &files) const;
     //信号-设置正常安装模式
-    void quickModeInstall(const QStringList files) const;
+    void quickModeInstall(const QStringList &files) const;
     //信号-加载启动过程中未加载的字体完成
     void singalLoadLeftFontsFinsih();
 
@@ -295,6 +295,8 @@ public slots:
     void onLeftSiderBarItemClicked(int index = 0, bool needClearSelect = true);
     //安装后添加至listview
     void onFontInstallFinished(const QStringList &fileList);
+    //刷新用户字体列表
+    void onRefreshUserFont();
     //字体删除fc-cache操作后恢复标志位
     void onUninstallFcCacheFinish();
     //切换字体菜单后判断FontListView的结果并显示对应状态
@@ -317,6 +319,8 @@ public slots:
     void onUninstallFontFinished(QStringList &files);
     //fc-cache执行结束槽函数
     void onCacheFinish();
+    //删除ttc文件确认函数
+    void onHandleDeleteTTC(QString filePath, bool &isDelete, bool &isAapplyToAll);
     //ui界面操作结束槽函数
     void onRequestInstFontsUiAdded();
     //系统字体变化槽函数
@@ -329,6 +333,8 @@ public slots:
     void onMenuHidden();
     //fontmananger线程结束槽函数
     void onFontManagerFinished();
+    //禁用/启用ttc里的某个字体
+    void onHandleDisableTTC(const QString &filePath, bool &isEnable, bool &isConfirm, bool &isAapplyToAll);
 
 protected:
     DFontPreviewListView *m_fontPreviewListView;

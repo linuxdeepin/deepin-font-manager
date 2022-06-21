@@ -41,6 +41,50 @@
     </message>
 </context>
 <context>
+    <name>DFDeleteTTCDialog</name>
+    <message>
+        <source>%1 is a font family, if you proceed, all fonts in it will be deleted</source>
+        <translation>%1 بولسا بىر خەت شەكلى   گۇرۇپپىسى، ئۇنى ئۆچۈرسىڭىز ئۇنىڭغا تەۋە بارلىق خەت شەكلى  لار ئۆچۈرۈلۈپ كېتىشى مۇمكىن</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <comment>button</comment>
+        <translation>ئۆچۈرۈش</translation>
+    </message>
+</context>
+<context>
+    <name>DFDisableTTCDialog</name>
+    <message>
+        <source>%1 is a font family, if you proceed, all fonts in it will be enabled</source>
+        <translation>%1 بولسا بىر خەت شەكلى   گۇرۇپپىسى، ئۇنى قوزغاتسىڭىز ئۇنىڭغا تەۋە بارلىق خەت شەكلى  لار قوزغىلىشى مۇمكىن</translation>
+    </message>
+    <message>
+        <source>%1 is a font family, if you proceed, all fonts in it will be disabled</source>
+        <translation>%1 بولسا بىر خەت شەكلى   گۇرۇپپىسى، ئۇنى چەكلىۋەتسىڭىز ئۇنىڭغا تەۋە بارلىق خەت شەكلى  لار چەكلىنىشى مۇمكىن</translation>
+    </message>
+    <message>
+        <source>Enable</source>
+        <comment>button</comment>
+        <translation>خەت شەكلىنى قوزغىتىش</translation>
+    </message>
+    <message>
+        <source>Disable</source>
+        <comment>button</comment>
+        <translation>خەت شەكلىنى چەكلەش</translation>
+    </message>
+</context>
+<context>
+    <name>DFHandleTTCDialog</name>
+    <message>
+        <source>Apply to all selected font families</source>
+        <translation>تاللانغان خەت شەكلى   گۇرۇپپىسىغا قوللىنىش</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>بىكار قىلىش</translation>
+    </message>
+</context>
+<context>
     <name>DFInstallErrorDialog</name>
     <message>
         <source>Broken file</source>
@@ -231,7 +275,7 @@
     <name>Main</name>
     <message>
         <source>Font Manager</source>
-        <translation>فونت باشقۇرغۇچ</translation>
+        <translation>خەت شەكلى   باشقۇرغۇچ</translation>
     </message>
     <message>
         <source>Font Manager helps users install and manage fonts.</source>

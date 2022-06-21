@@ -20,9 +20,11 @@
 */
 
 #include "utils.h"
+#include <singlefontapplication.h>
 
 #include <QSize>
 #include <QPixmap>
+#include <QRawFont>
 
 #include <gtest/gtest.h>
 #include "../third-party/stub/stub.h"
@@ -43,6 +45,7 @@ protected:
     }
 
     Utils *fm;
+
 };
 }
 
@@ -53,39 +56,29 @@ TEST_F(TestUtils, initTest)
 
 TEST_F(TestUtils, checksuffixList)
 {
-    ASSERT_EQ(fm->suffixList().toStdString(), "Font Files (*.ttf *.ttc *.otf)");
+    EXPECT_EQ(fm->suffixList().toStdString(), "Font Files (*.ttf *.ttc *.otf)");
 }
 
 TEST_F(TestUtils, checkisFontMimeType)
 {
-    ASSERT_EQ(fm->isFontMimeType("方正兰亭特黑_SC.otf"), false);
+    EXPECT_EQ(fm->isFontMimeType("方正兰亭特黑_SC.otf"), false);
 }
 
 TEST_F(TestUtils, checkgetConfigPath)
 {
-    ASSERT_EQ(fm->getConfigPath().isEmpty(), false);
+    EXPECT_EQ(fm->getConfigPath().isEmpty(), false);
 }
 
 
 TEST_F(TestUtils, checkrenderSVG_001)
 {
-    ASSERT_EQ(fm->renderSVG("://ok.svg", QSize(32, 32)).isNull(), false);
+    EXPECT_EQ(fm->renderSVG("://ok.svg", QSize(32, 32)).isNull(), false);
 }
-
-//TEST_F(TestUtils, checkrenderSVG_002)
-//{
-//    ASSERT_EQ(fm->renderSVG("://ok.svg", QSize(32, 32)).isNull(), false);
-//}
 
 TEST_F(TestUtils, checkconvertToPreviewString)
 {
-    ASSERT_EQ(fm->convertToPreviewString("", "hello").toStdString(), "hello");
+    EXPECT_EQ(fm->convertToPreviewString("", "hello").toStdString(), "hello");
 }
-
-//TEST_F(TestUtils, checkconvertToPreviewString_002)
-//{
-//    ASSERT_EQ(fm->convertToPreviewString("", "hello").toStdString(), "hello");
-//}
 
 
 

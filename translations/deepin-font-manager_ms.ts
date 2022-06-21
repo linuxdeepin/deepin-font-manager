@@ -41,6 +41,50 @@
     </message>
 </context>
 <context>
+    <name>DFDeleteTTCDialog</name>
+    <message>
+        <source>%1 is a font family, if you proceed, all fonts in it will be deleted</source>
+        <translation>%1 ialah sebuah keluarga fon, jika anda teruskan, semua fon di dalamnya akan terpadam</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <comment>button</comment>
+        <translation>Padam</translation>
+    </message>
+</context>
+<context>
+    <name>DFDisableTTCDialog</name>
+    <message>
+        <source>%1 is a font family, if you proceed, all fonts in it will be enabled</source>
+        <translation>%1 ialah sebuah keluarga fon, jika anda teruskan, semua fon di dalamnya akan dibenarkan</translation>
+    </message>
+    <message>
+        <source>%1 is a font family, if you proceed, all fonts in it will be disabled</source>
+        <translation>%1 ialah sebuah keluarga fon, jika anda teruskan, semua fon di dalamnya akan dilumpuhkan</translation>
+    </message>
+    <message>
+        <source>Enable</source>
+        <comment>button</comment>
+        <translation>Benarkan</translation>
+    </message>
+    <message>
+        <source>Disable</source>
+        <comment>button</comment>
+        <translation>Lumpuhkan</translation>
+    </message>
+</context>
+<context>
+    <name>DFHandleTTCDialog</name>
+    <message>
+        <source>Apply to all selected font families</source>
+        <translation type="unfinished">Terap kepada semua keluarga fon terpilih</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Batal</translation>
+    </message>
+</context>
+<context>
     <name>DFInstallErrorDialog</name>
     <message>
         <source>Broken file</source>
@@ -107,11 +151,11 @@
     </message>
     <message>
         <source>Alt+M</source>
-        <translation type="unfinished"></translation>
+        <translation>Alt+M</translation>
     </message>
     <message>
         <source>CTRL+I</source>
-        <translation type="unfinished"></translation>
+        <translation>CTRL+I</translation>
     </message>
 </context>
 <context>
@@ -133,19 +177,19 @@
     </message>
     <message>
         <source>The other %1 system fonts cannot be deleted</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 fon sistem yang lain tidak dapat dipadamkan</translation>
     </message>
     <message>
         <source>The font &quot;%1&quot; in use cannot be deleted</source>
-        <translation type="unfinished"></translation>
+        <translation>Fon &quot;%1&quot; yang masih digunakan tidak boleh dipadamkan</translation>
     </message>
     <message>
         <source>The other %1 system fonts and the font &quot;%2&quot; in use cannot be deleted</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 fon sistem yang lain dan fon &quot;%2&quot; yang masih digunakan tidak dapat dipadamkan</translation>
     </message>
     <message>
         <source>Are you sure you want to delete %1 font(s)?</source>
-        <translation type="unfinished"></translation>
+        <translation>Anda pasti mahu memadaam %1 fon?</translation>
     </message>
     <message>
         <source>Delete</source>
@@ -251,11 +295,11 @@
     </message>
     <message>
         <source>Failed to export 1 font. There is not enough disk space.</source>
-        <translation type="unfinished"></translation>
+        <translation>Gagal mengeksport 1 fon. Ruang cakera tidak mencukupi.</translation>
     </message>
     <message>
         <source>Failed to export %1 fonts. There is not enough disk space.</source>
-        <translation type="unfinished"></translation>
+        <translation>Gagal mengeksport %1 fon. Ruang cakera tidak mencukupi.</translation>
     </message>
 </context>
 <context>
@@ -309,15 +353,15 @@
     </message>
     <message>
         <source>%1 is in use, so you cannot disable it</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 masih digunakan, jadi anda tidak boleh melumpuhkannya</translation>
     </message>
     <message>
         <source>You cannot disable system fonts and the fonts in use</source>
-        <translation type="unfinished"></translation>
+        <translation>Anda tidak boleh melumpuhkan fon sistem dan fon yang masih digunakan</translation>
     </message>
     <message>
         <source>You cannot disable system fonts</source>
-        <translation type="unfinished"></translation>
+        <translation>Anda tidak boleh melumpuhkan fon sistem</translation>
     </message>
 </context>
 <context>

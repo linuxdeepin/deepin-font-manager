@@ -49,7 +49,7 @@ protected:
     QList<QMap<QString, QString>> list;
 };
 
-QList<DFontPreviewItemData> stub_getFontInfo()
+QList<DFontPreviewItemData> stub_getFontInfo(void *obj, QList<QMap<QString, QString>>, QList<DFontPreviewItemData> *)
 {
     QList<DFontPreviewItemData> list;
     DFontPreviewItemData data;
@@ -62,18 +62,18 @@ QList<DFontPreviewItemData> stub_getFontInfo()
 
 }
 
+TEST_F(TestLoadFontDataThread, checkDowork)
+{
+    Stub stub;
+    stub.set((QList<DFontPreviewItemData>(DFMDBManager::*)(QList<QMap<QString, QString>>, QList<DFontPreviewItemData> *))
+             ADDR(DFMDBManager, getFontInfo), stub_getFontInfo);
 
-//TEST_F(TestLoadFontDataThread, checkDowork)
-//{
-//    Stub s;
-//    s.set((QList<DFontPreviewItemData>(DFMDBManager::*)(QList<QMap<QString, QString> >, QList<DFontPreviewItemData> *))ADDR(DFMDBManager, getFontInfo), stub_getFontInfo);
-
-//    QSignalSpy spy(fpm, SIGNAL(dataLoadFinish(QList<DFontPreviewItemData> &)));
-//    DFontPreviewItemData data;
-//    data.appFontId = 2;
-
-//    fpm->m_delFontInfoList << data;
-//    fpm->run();
-
-//    EXPECT_TRUE(spy.count() == 1);
-//}
+    DFontPreviewListDataThread::instance()->m_fontModelList.clear();
+    DFontPreviewItemData ptiemdata;
+    fpm->m_delFontInfoList.append(ptiemdata);
+    
+    fpm->run();
+    EXPECT_TRUE(1 == DFontPreviewListDataThread::instance()->m_fontModelList.count());
+    EXPECT_FALSE(SignalManager::m_isOnLoad);
+    EXPECT_TRUE(SignalManager::m_isDataLoadFinish);
+}

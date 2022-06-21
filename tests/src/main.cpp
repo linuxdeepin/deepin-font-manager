@@ -30,11 +30,6 @@
 
 int main(int argc, char *argv[])
 {
-    // 之后在程序函数主入口添加log输出的代码
-#if defined(CMAKE_SAFETYTEST_ARG_ON)
-    __sanitizer_set_report_path("asan.log");
-#endif
-
     qDebug() << "start libdeepin-font-manager test cases ..............";
 
     qputenv("QT_QPA_PLATFORM", "offscreen");
@@ -43,5 +38,11 @@ int main(int argc, char *argv[])
     ::testing::InitGoogleTest(&argc, argv);
     int ret = RUN_ALL_TESTS();
     qDebug() << "end libdeepin-font-manager test cases ..............";
+
+    // 之后在程序函数主入口添加log输出的代码
+#if defined(CMAKE_SAFETYTEST_ARG_ON)
+    __sanitizer_set_report_path("asan.log");
+#endif
+
     return ret;
 }

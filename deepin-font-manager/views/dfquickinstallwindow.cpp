@@ -38,7 +38,7 @@
 #include <QFontDatabase>
 #include <QVBoxLayout>
 
-DFQuickInstallWindow::DFQuickInstallWindow(QStringList files, QWidget *parent)
+DFQuickInstallWindow::DFQuickInstallWindow(const QStringList &files, QWidget *parent)
     : DMainWindow(parent)
     , m_fontInfoManager(DFontInfoManager::instance())
     , m_fontManager(FontManagerCore::instance())

@@ -48,7 +48,7 @@ public:
     void InitConnections();
 
     //设置当前字体路径
-    void setPreviewFontPath(const QString font);
+    void setPreviewFontPath(const QString &font);
 
 signals:
     //预览字体变化信号

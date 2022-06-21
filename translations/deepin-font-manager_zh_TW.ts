@@ -41,6 +41,50 @@
     </message>
 </context>
 <context>
+    <name>DFDeleteTTCDialog</name>
+    <message>
+        <source>%1 is a font family, if you proceed, all fonts in it will be deleted</source>
+        <translation>%1是一個字體集，將它刪除可能會刪除屬於它的所有字體</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <comment>button</comment>
+        <translation>刪 除</translation>
+    </message>
+</context>
+<context>
+    <name>DFDisableTTCDialog</name>
+    <message>
+        <source>%1 is a font family, if you proceed, all fonts in it will be enabled</source>
+        <translation>%1是一個字體集，將它啟用可能會啟用屬於它的所有字體</translation>
+    </message>
+    <message>
+        <source>%1 is a font family, if you proceed, all fonts in it will be disabled</source>
+        <translation>%1是一個字體集，將它禁用可能會禁用屬於它的所有字體</translation>
+    </message>
+    <message>
+        <source>Enable</source>
+        <comment>button</comment>
+        <translation>啟 用</translation>
+    </message>
+    <message>
+        <source>Disable</source>
+        <comment>button</comment>
+        <translation>禁 用</translation>
+    </message>
+</context>
+<context>
+    <name>DFHandleTTCDialog</name>
+    <message>
+        <source>Apply to all selected font families</source>
+        <translation type="unfinished">應用到所有選定的字體集</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">取 消</translation>
+    </message>
+</context>
+<context>
     <name>DFInstallErrorDialog</name>
     <message>
         <source>Broken file</source>
@@ -173,7 +217,7 @@
     <message>
         <source>Exit</source>
         <comment>button</comment>
-        <translation>離 開</translation>
+        <translation>退 出</translation>
     </message>
     <message>
         <source>Continue</source>

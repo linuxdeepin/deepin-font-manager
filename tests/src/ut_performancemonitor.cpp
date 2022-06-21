@@ -104,15 +104,3 @@ TEST_F(TestPerformanceMonitor, checkDeleteFontStart)
     EXPECT_TRUE(m_pM->deleteFontStartMs == 1);
 }
 
-//TEST_F(TestPerformanceMonitor, checkFavoriteFontFinish)
-//{
-//    Stub s;
-//    s.set(ADDR(QDateTime, toMSecsSinceEpoch), stub_toMSecSOne);
-
-//    m_pM->favoriteFontFinish(true, 1);
-////    EXPECT_TRUE(m_pM->favoriteFontFinishMs == 1);
-
-//    m_pM->favoriteFontFinish(false, 1);
-////    EXPECT_TRUE(m_pM->favoriteFontFinishMs == 1);
-//}
-

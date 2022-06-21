@@ -54,8 +54,6 @@ protected:
     }
     void TearDown()
     {
-//        p->restore();
-//        delete listview;
         delete DfpDelegate;
         delete w;
         delete p;
@@ -66,7 +64,6 @@ protected:
     DFontPreviewItemDelegate *DfpDelegate;
     QPainter *p = new QPainter;
     QStyleOptionViewItem option;
-//    QModelIndex index;
     FontData f;
 
 };
@@ -89,7 +86,7 @@ QString stub_string()
 
 }
 
-TEST_F(TestDFontPreviewItemDelegate, checkPaintBackgroundSelectAndTabfocus)
+TEST_F(TestDFontPreviewItemDelegate, checkPaint)
 {
     QStandardItemModel *m_fontPreviewItemModel = new QStandardItemModel;
     m_fontPreviewItemModel->setColumnCount(1);
@@ -113,13 +110,7 @@ TEST_F(TestDFontPreviewItemDelegate, checkPaintBackgroundSelectAndTabfocus)
 
     m_fontPreviewItemModel->setData(index, QVariant::fromValue(fdata), Qt::DisplayRole);
 
-//    DFontPreviewProxyModel *filterModel = listview->getFontPreviewProxyModel();
-
-
-//    DFontPreviewProxyModel *filterModel = listview->getFontPreviewProxyModel();
-
-//     filterModel->setData(index, QVariant(s), DFontPreviewItemDelegate::FontPreviewRole);
-    qDebug() << m_fontPreviewItemModel->setData(index, QVariant(qint8(30)), DFontPreviewItemDelegate::FontPreviewRole);
+    m_fontPreviewItemModel->setData(index, QVariant(qint8(30)), DFontPreviewItemDelegate::FontPreviewRole);
 
     Stub s1;
     s1.set(ADDR(DFontPreviewListDataThread, getFontModelList), stub_getFontModeList);
@@ -128,21 +119,16 @@ TEST_F(TestDFontPreviewItemDelegate, checkPaintBackgroundSelectAndTabfocus)
     s2.set(ADDR(QVariant, toString), stub_string);
 
     option.state.setFlag(QStyle::State_Selected);
-//    listview->m_IsTabFocus = true;
     DfpDelegate->paint(p, option, index);
 
     Stub s3;
     s3.set(ADDR(DFontPreviewListView, getIsTabFocus), stub_getIsTabFocus);
 
     option.state.setFlag(QStyle::State_Selected);
-//    listview->m_IsTabFocus = true;
     DfpDelegate->paint(p, option, index);
 
     option.state.setFlag(QStyle::State_None);
-//    listview->m_IsTabFocus = true;
     DfpDelegate->paint(p, option, index);
-
-
 }
 
 
@@ -153,5 +139,39 @@ TEST_F(TestDFontPreviewItemDelegate, checkEventFilter)
     QHoverEvent *e = new QHoverEvent(QEvent::HoverLeave, p1, p2);
     DfpDelegate->eventFilter(listview, e);
     SAFE_DELETE_ELE(e)
+}
+
+
+
+TEST_F(TestDFontPreviewItemDelegate, paintForegroundCollectIcon)
+{
+    QPainter painter;
+    QStyleOptionViewItem stypelopeitem;
+    FontData fontData;
+    fontData.setHoverState(IconStatus::IconHover);
+    DfpDelegate->paintForegroundCollectIcon(&painter, stypelopeitem, fontData);
+
+    fontData.setHoverState(IconStatus::IconPress);
+    DfpDelegate->paintForegroundCollectIcon(&painter, stypelopeitem, fontData);
+
+    fontData.setHoverState(IconStatus::IconNormal);
+    fontData.setCollected(true);
+    DfpDelegate->paintForegroundCollectIcon(&painter, stypelopeitem, fontData);
+}
+
+
+TEST_F(TestDFontPreviewItemDelegate, adjustPreviewRect)
+{
+    DfpDelegate->adjustPreviewRect(QRect(0, 0, 0, 0));
+}
+
+
+TEST_F(TestDFontPreviewItemDelegate, paintBackground)
+{
+    QPainter painter;
+    QStyleOptionViewItem stypelopeitem;
+    stypelopeitem.state.setFlag(QStyle::State_Enabled);
+    QModelIndex modelIndex;
+    DfpDelegate->paintBackground(&painter, stypelopeitem, modelIndex);
 }
 

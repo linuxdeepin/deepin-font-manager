@@ -36,7 +36,7 @@ class FontIconText : public QWidget
 {
     Q_OBJECT
 public:
-    explicit FontIconText(const QString picPath, QWidget *parent = nullptr);
+    explicit FontIconText(const QString &picPath, QWidget *parent = nullptr);
     //设置字体名
     void setFontName(const QString &familyName, const QString &styleName);
     //设置是否为ttf字体属性

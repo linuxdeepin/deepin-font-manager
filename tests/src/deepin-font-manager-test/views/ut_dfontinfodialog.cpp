@@ -72,7 +72,10 @@ DGuiApplicationHelper::ColorType stub_darktype()
 {
     return DGuiApplicationHelper::DarkType;
 }
-
+DGuiApplicationHelper::ColorType stub_lighttype()
+{
+    return DGuiApplicationHelper::LightType;
+}
 }
 
 TEST_F(TestDFontInfoDialog, checkKeyPressEvent)
@@ -88,21 +91,6 @@ TEST_F(TestDFontInfoDialog, checkAutoHeight)
     EXPECT_TRUE(dFontInforDialog->m_scrollArea->viewport()->height() == static_cast<int>(200 * 1.1 + 10));
     dFontInforDialog->autoHeight(350);
     EXPECT_TRUE(dFontInforDialog->m_scrollArea->viewport()->height() == 375);
-}
-
-TEST_F(TestDFontInfoDialog, checkResizeEvent)
-{
-    QSize s;
-    QResizeEvent *re = new QResizeEvent(s, s);
-    dFontInforDialog->resizeEvent(re);
-    SAFE_DELETE_ELE(re)
-}
-
-TEST_F(TestDFontInfoDialog, checkInitConnection)
-{
-    emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::DarkType);
-
-    emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::LightType);
 }
 
 TEST_F(TestDFontInfoDialog, checkAutoFeed)
@@ -137,29 +125,32 @@ TEST_F(TestDFontInfoDialog, checkfontinfoAreaEventFilter)
     SAFE_DELETE_ELE(e)
 }
 
-TEST_F(TestDFontInfoDialog, checkInfoScroolArea)
-{
-    DFontPreviewItemData d2;
-    d2.fontInfo.version = "first";
-    d2.fontInfo.description = "second";
-    QWidget *w2 = new QWidget;
-    DFontInfoDialog *dialog = new DFontInfoDialog(&d2, w2);
-    Q_UNUSED(dialog)
-}
-
-TEST_F(TestDFontInfoDialog, checkDarkType)
+TEST_F(TestDFontInfoDialog, checkinitConnections001)
 {
     Stub s;
     s.set(ADDR(DGuiApplicationHelper, themeType), stub_darktype);
-    DFontPreviewItemData d2;
-    d2.fontInfo.version = "first";
-    d2.fontInfo.description = "second";
-    QWidget *w2 = new QWidget;
-    DFontInfoDialog *dialog = new DFontInfoDialog(&d2, w2);
 
+    DPalette paFrame = DApplicationHelper::instance()->palette(dFontInforDialog->m_scrollArea->viewport());
+    QColor colorFrame = paFrame.textLively().color();
+    colorFrame.setAlphaF(0.05);
+    paFrame.setColor(DPalette::Base, colorFrame);
     emit DApplicationHelper::instance()->themeTypeChanged(DApplicationHelper::DarkType);
-    delete dialog;
 
+    EXPECT_TRUE(DApplicationHelper::instance()->palette(dFontInforDialog->m_fontFileName) == paFrame);
+}
+
+TEST_F(TestDFontInfoDialog, checkinitConnections002)
+{
+    Stub s;
+    s.set(ADDR(DGuiApplicationHelper, themeType), stub_lighttype);
+
+    DPalette paFrame = DApplicationHelper::instance()->palette(dFontInforDialog->m_scrollArea->viewport());
+    QColor colorFrame(255, 255, 255);
+    colorFrame.setAlphaF(0.70);
+    paFrame.setColor(DPalette::Base, colorFrame);
+    emit DApplicationHelper::instance()->themeTypeChanged(DApplicationHelper::LightType);
+
+    EXPECT_TRUE(DApplicationHelper::instance()->palette(dFontInforDialog->m_fontFileName) == paFrame);
 }
 
 

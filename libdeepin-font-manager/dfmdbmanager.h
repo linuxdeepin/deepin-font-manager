@@ -44,7 +44,8 @@ public:
     int getCurrMaxFontId();
     QStringList getInstalledFontsPath();
     QString isFontInfoExist(const DFontInfo &newFileFontInfo);
-
+    // 获取指定字体文件的fontname列表
+    QStringList getSpecifiedFontName(const QString &filePath);
     bool addFontInfo(const DFontPreviewItemData &itemData);
     bool updateFontInfo(const QMap<QString, QString> &whereMap, const QMap<QString, QString> &dataMap);
 
@@ -60,6 +61,7 @@ public:
     void updateFontInfo(const QList<DFontPreviewItemData> &fontList, const QString &strKey);
     void commitUpdateFontInfo();
     void getAllRecords();
+    void syncOldRecords();
     //去除非法记录
     void checkIfEmpty();
     //开启事务
@@ -78,6 +80,8 @@ public:
         return filePath.contains("/usr/share/fonts/");
     }
 
+    //获取数据库是否被清空重建
+    bool isDBDeleted(){return m_sqlUtil->isDBDeleted();}
 private:
     DFontPreviewItemData parseRecordToItemData(const QMap<QString, QString> &record);
     QMap<QString, QString> mapItemData(DFontPreviewItemData itemData);

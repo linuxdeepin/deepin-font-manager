@@ -23,8 +23,8 @@
 #include "dfmdbmanager.h"
 #include "dfontinfomanager.h"
 
-
 #include <QDir>
+#include <QFontDatabase>
 
 static DFMDBManager *INSTANCE = nullptr;
 QList<QMap<QString, QString>> DFMDBManager::recordList = QList<QMap<QString, QString>>();
@@ -297,6 +297,20 @@ QString DFMDBManager::isFontInfoExist(const DFontInfo &newFileFontInfo)
     whereMap.insert("familyName", newFileFontInfo.familyName);
     whereMap.insert("styleName", newFileFontInfo.styleName);
 
+    if (newFileFontInfo.filePath.endsWith(".ttc", Qt::CaseInsensitive)) {
+        QStringList fontFamilyList = QFontDatabase::applicationFontFamilies(QFontDatabase::addApplicationFont(newFileFontInfo.filePath));
+        if (fontFamilyList.size() > 1) {
+            for (QString &fontFamily : fontFamilyList) {
+                whereMap.insert("familyName", fontFamily);
+                m_sqlUtil->findRecords(keyList, whereMap, &recordList);
+                if (recordList.size() > 0) {
+                    QString result = recordList.first().value("filePath");
+                    return result;
+                }
+            }
+        }
+    }
+
     m_sqlUtil->findRecords(keyList, whereMap, &recordList);
 
     if (recordList.size() > 0) {
@@ -305,6 +319,36 @@ QString DFMDBManager::isFontInfoExist(const DFontInfo &newFileFontInfo)
     }
 
     return QString();
+}
+
+/*************************************************************************
+ <Function>      getSpecifiedFontName
+ <Description>   获取指定字体文件的fontname
+ <Author>        null
+ <Input>
+    <param1>     filePath               字体文件全路径名
+ <Return>        QStringList
+ <Note>          null
+*************************************************************************/
+QStringList DFMDBManager::getSpecifiedFontName(const QString &filePath)
+{
+    QList<QString> keyList;
+    keyList.append("fontName");
+
+    QMap<QString, QString> whereMap;
+    whereMap.insert("filePath", filePath);
+
+    QStringList result;
+    QList<QMap<QString, QString>> recordList;
+
+    m_sqlUtil->findRecords(keyList, whereMap, &recordList);
+    if (!recordList.empty()) {
+        QListIterator<QMap<QString, QString>> iter(recordList);
+        while (iter.hasNext()) {
+            result.append(iter.next().value("fontName"));
+        }
+    }
+    return result;
 }
 
 ///*************************************************************************
@@ -356,9 +400,9 @@ QString DFMDBManager::isFontInfoExist(const DFontInfo &newFileFontInfo)
 bool DFMDBManager::addFontInfo(const DFontPreviewItemData &itemData)
 {
 //    qDebug() << __FUNCTION__ << itemData.fontInfo.toString();
-    if (!m_addFontList.contains(itemData) || itemData.fontInfo.isSystemFont)
-//        m_addFontList << itemData;
+    if (!m_addFontList.contains(itemData) || itemData.fontInfo.isSystemFont) {
         m_addFontList.append(itemData);
+    }
     return true;
 //    return m_sqlUtil->addRecord(mapItemData(itemData));
 }
@@ -524,14 +568,28 @@ void DFMDBManager::commitUpdateFontInfo()
 
     beginTransaction();
     m_sqlUtil->updateFontInfo(m_updateFontList, m_strKey);
+    //m_sqlUtil->updateOld2Record();//数据库表被重建时，先saveRecord，再updateOld2Record。
     endTransaction();
     m_updateFontList.clear();
+}
+/*************************************************************************
+ <Function>      syncOldRecords
+ <Description>   开启事务,批量更新数据，将更新语言时被删除的数据同步到新数据库中
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        null            Description:null
+ <Note>          null
+*************************************************************************/
+void DFMDBManager::syncOldRecords()
+{
+    beginTransaction();
+    m_sqlUtil->updateOld2Record();//数据库表被重建时，先saveRecord，再updateOld2Record。
+    endTransaction();
 }
 
 void DFMDBManager::getAllRecords()
 {
-    QList<DFontPreviewItemData> fontItemDataList;
-
     QList<QString> keyList;
     appendAllKeys(keyList);
 

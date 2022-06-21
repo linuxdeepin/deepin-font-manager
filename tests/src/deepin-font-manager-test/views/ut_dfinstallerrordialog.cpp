@@ -20,8 +20,7 @@
 */
 
 #include "views/dfinstallerrordialog.h"
-
-
+#include "views/dfinstallerrorlistview.h"
 #include "views/dfinstallnormalwindow.h"
 #include "dstyleoption.h"
 #include "dfontinfomanager.h"
@@ -54,18 +53,20 @@ class TestDFInstallErrorDialog: public testing::Test
 protected:
     void SetUp()
     {
-        DFErrDialog = new DFInstallErrorDialog;
+        installNormalWindow = new DFInstallNormalWindow();
+        DFErrDialog = new DFInstallErrorDialog(installNormalWindow);
 
     }
     void TearDown()
     {
-        delete DFErrDialog;
+        delete installNormalWindow;
     }
     DFInstallErrorDialog *DFErrDialog;
+    DFInstallNormalWindow *installNormalWindow;
 
 };
 
-DFontInfo  stub_getFontInfoError(const QString filePath)
+DFontInfo  stub_getFontInfoError(const QString &filePath)
 {
 //    qDebug() << filePath << endl;
     Q_UNUSED(filePath)
@@ -78,9 +79,8 @@ DFontInfo  stub_getFontInfoError(const QString filePath)
     return f;
 }
 
-DFontInfo  stub_getFontInfoInstalled(const QString filePath)
+DFontInfo  stub_getFontInfoInstalled(const QString &filePath)
 {
-//    qDebug() << filePath << endl;
     Q_UNUSED(filePath)
 
     DFontInfo f;
@@ -91,9 +91,8 @@ DFontInfo  stub_getFontInfoInstalled(const QString filePath)
     return f;
 }
 
-DFontInfo  stub_getFontInfo(const QString filePath)
+DFontInfo  stub_getFontInfo(const QString &filePath)
 {
-//    qDebug() << filePath << endl;
     Q_UNUSED(filePath)
 
     DFontInfo f;
@@ -120,12 +119,11 @@ bool stub_isSystemFontFalse(DFontInfo &f)
     return false;
 
 }
-
-
 }
 
 TEST_F(TestDFInstallErrorDialog, checkGetErrorFontCheckedCount)
 {
+    DFErrDialog->m_installErrorListView->m_errorListSourceModel = new QStandardItemModel(2, 1);
     int count = DFErrDialog->getErrorFontCheckedCount();
     EXPECT_TRUE(count == 0);
 }
@@ -134,10 +132,9 @@ TEST_F(TestDFInstallErrorDialog, checkInitDataError)
 {
     Stub s;
     s.set(ADDR(DFontInfoManager, getFontInfo), stub_getFontInfoError);
-
     DFErrDialog->m_errorInstallFiles.append("first");
-
     DFErrDialog->initData();
+    EXPECT_TRUE(DFErrDialog->m_installErrorFontModelList.size() == 1);
 }
 
 TEST_F(TestDFInstallErrorDialog, checkInitDataInstalled)
@@ -145,31 +142,24 @@ TEST_F(TestDFInstallErrorDialog, checkInitDataInstalled)
 
     Stub s;
     s.set(ADDR(DFontInfoManager, getFontInfo), stub_getFontInfoInstalled);
-
     Stub s1;
     s1.set(ADDR(DFInstallNormalWindow, isSystemFont), stub_isSystemFontFalse);
-
     DFErrDialog->m_errorInstallFiles.append("first");
-
     DFErrDialog->initData();
+    EXPECT_TRUE(DFErrDialog->m_installErrorFontModelList.size() == 1);
 }
-
 
 TEST_F(TestDFInstallErrorDialog, checkInitDataSystem)
 {
 
     Stub s;
     s.set(ADDR(DFInstallNormalWindow, isSystemFont), stub_isSystemFont);
-
     Stub s2;
     s2.set(ADDR(DFontInfoManager, getFontInfo), stub_getFontInfo);
-
     DFErrDialog->m_errorInstallFiles.append("first");
-
     DFErrDialog->initData();
+    EXPECT_TRUE(DFErrDialog->m_installErrorFontModelList.size() == 1);
 }
-
-
 
 TEST_F(TestDFInstallErrorDialog, checkAddDataError)
 {
@@ -180,6 +170,8 @@ TEST_F(TestDFInstallErrorDialog, checkAddDataError)
     s.set(ADDR(DFontInfoManager, getFontInfo), stub_getFontInfoError);
 
     DFErrDialog->addData(list, list2, list2, list2);
+    EXPECT_TRUE(DFErrDialog->m_installErrorListView->m_errorFontlist.size() == 1);
+    EXPECT_TRUE(DFErrDialog->m_installErrorListView->m_installErrorFontModelList.size() == 1);
 }
 
 TEST_F(TestDFInstallErrorDialog, checkAddDataInstalled)
@@ -194,6 +186,8 @@ TEST_F(TestDFInstallErrorDialog, checkAddDataInstalled)
     s1.set(ADDR(DFInstallNormalWindow, isSystemFont), stub_isSystemFontFalse);
 
     DFErrDialog->addData(list, list2, list2, list2);
+    EXPECT_TRUE(DFErrDialog->m_installErrorListView->m_errorFontlist.size() == 1);
+    EXPECT_TRUE(DFErrDialog->m_installErrorListView->m_installErrorFontModelList.size() == 1);
 }
 
 
@@ -202,8 +196,6 @@ TEST_F(TestDFInstallErrorDialog, checkAddDataSystem)
     QStringList list;
     QStringList list2 = QStringList();
     list << "a";
-//    Stub s;
-//    s.set(ADDR(DFInstallErrorDialog, isSystemFont), stub_isSystemFont);
 
     Stub s;
     s.set(ADDR(DFInstallNormalWindow, isSystemFont), stub_isSystemFont);
@@ -212,6 +204,8 @@ TEST_F(TestDFInstallErrorDialog, checkAddDataSystem)
     s2.set(ADDR(DFontInfoManager, getFontInfo), stub_getFontInfo);
 
     DFErrDialog->addData(list, list2, list2, list2);
+    EXPECT_TRUE(DFErrDialog->m_installErrorListView->m_errorFontlist.size() == 1);
+    EXPECT_TRUE(DFErrDialog->m_installErrorListView->m_installErrorFontModelList.size() == 1);
 }
 
 //onListItemsClicked
@@ -229,9 +223,6 @@ TEST_F(TestDFInstallErrorDialog, checkOnListItemClicked)
     DFInstallErrorItemModel itemModel =
         qvariant_cast<DFInstallErrorItemModel>(DFErrDialog->m_installErrorListView->getErrorListSourceModel()->data(index));
     EXPECT_TRUE(itemModel.bChecked);
-
-    //    DFErrDialog->m_installErrorListView;
-
 }
 
 //onListItemsClicked
@@ -251,7 +242,6 @@ TEST_F(TestDFInstallErrorDialog, checkOnListItemsClicked)
     DFInstallErrorItemModel itemModel =
         qvariant_cast<DFInstallErrorItemModel>(DFErrDialog->m_installErrorListView->getErrorListSourceModel()->data(index));
     EXPECT_TRUE(itemModel.bChecked);
-    //    DFErrDialog->m_installErrorListView;
 
 }
 
@@ -307,18 +297,6 @@ TEST_F(TestDFInstallErrorDialog, checkKeyPressEvent)
     QTest::keyPress(DFErrDialog, Qt::Key_PageDown);
 
 }
-
-//mark
-//TEST_F(TestDFInstallErrorDialog, checkDFMSuggestButton)
-//{
-//    DFMSuggestButton *button = new DFMSuggestButton(DFErrDialog);
-
-//    QRect t;
-//    QPaintEvent *e = new QPaintEvent(t);
-
-//    button->paintEvent(e);
-//    delete button;
-//}
 
 
 
