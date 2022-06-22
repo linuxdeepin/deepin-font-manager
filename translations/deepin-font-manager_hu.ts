@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="hu">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="hu">
 <context>
     <name>Category</name>
     <message>
@@ -77,11 +75,11 @@
     <name>DFHandleTTCDialog</name>
     <message>
         <source>Apply to all selected font families</source>
-        <translation type="unfinished">Az összes kiválasztott betűtípus család alkalmazása</translation>
+        <translation>Az összes kiválasztott betűtípus család alkalmazása</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Mégsem</translation>
+        <translation>Mégsem</translation>
     </message>
 </context>
 <context>
@@ -126,10 +124,6 @@
         <translation>Ctrl+O</translation>
     </message>
     <message>
-        <source>Fonts</source>
-        <translation>Betűtípusok</translation>
-    </message>
-    <message>
         <source>Ctrl+=</source>
         <translation>Ctrl+=</translation>
     </message>
@@ -157,12 +151,13 @@
         <source>CTRL+I</source>
         <translation>CTRL+I</translation>
     </message>
-</context>
-<context>
-    <name>DFontWidget</name>
     <message>
-        <source>Broken file</source>
-        <translation>Sérült fájl</translation>
+        <source>Failed to install %1 font. There is not enough disk space.</source>
+        <translation>A %1 betűtípus telepítése sikertelen. Nincs elég lemezterület.</translation>
+    </message>
+    <message>
+        <source>Failed to install %1 fonts. There is not enough disk space.</source>
+        <translation>A %1 betűtípusok telepítése sikertelen. Nincs elég lemezterület.</translation>
     </message>
 </context>
 <context>
@@ -223,13 +218,6 @@
         <source>Continue</source>
         <comment>button</comment>
         <translation>Folytatás</translation>
-    </message>
-</context>
-<context>
-    <name>Font</name>
-    <message>
-        <source>Don&apos;t let your dreams be dreams</source>
-        <translation>Ne hagyd, hogy az álmaid csak álmok legyenek</translation>
     </message>
 </context>
 <context>

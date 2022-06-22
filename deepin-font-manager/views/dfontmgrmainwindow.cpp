@@ -1092,7 +1092,7 @@ bool DFontMgrMainWindow::installFont(const QStringList &files, bool isAddBtnHasT
 
     QStringList installFiles = checkFilesSpace(files);
     if (installFiles.count() == 0) {
-        onShowMessage(0);
+        onShowMessage(files.count(), false);
         return false;
     }
 
@@ -1635,19 +1635,27 @@ void DFontMgrMainWindow::onLoadStatus(int type)
  <Return>        null           Description:null
  <Note>          null
 *************************************************************************/
-void DFontMgrMainWindow::onShowMessage(int successCount)
+void DFontMgrMainWindow::onShowMessage(int totalCount, bool success)
 {
     QString message;
 
-    if (successCount == 1) {
-        message = DApplication::translate("DFontMgrMainWindow", "%1 font installed").arg(successCount);
-    } else if (successCount > 1) {
-        message = DApplication::translate("DFontMgrMainWindow", "%1 fonts installed").arg(successCount);
+    if (success) {
+        if (totalCount == 1) {
+            message = DApplication::translate("DFontMgrMainWindow", "%1 font installed").arg(totalCount);
+        } else if (totalCount > 1) {
+            message = DApplication::translate("DFontMgrMainWindow", "%1 fonts installed").arg(totalCount);
+        }
+        DMessageManager::instance()->sendMessage(this, QIcon("://ok.svg"), message);
+    } else {
+        if (totalCount == 1) {
+            message = DApplication::translate("DFontMgrMainWindow", "Failed to install %1 font. There is not enough disk space.").arg(totalCount);
+        } else if (totalCount > 1) {
+            message = DApplication::translate("DFontMgrMainWindow", "Failed to install %1 fonts. There is not enough disk space.").arg(totalCount);
+        }
+        DMessageManager::instance()->sendMessage(this, QIcon("://exception-logo.svg"), message);
     }
 
-    DMessageManager::instance()->sendMessage(this, QIcon("://ok.svg"), message);
-
-    PerformanceMonitor::installFontFinish(successCount);
+    PerformanceMonitor::installFontFinish(totalCount);
 
     qDebug() << __FUNCTION__ << " pop toast message " << message << " total (ms) :" << QDateTime::currentMSecsSinceEpoch() - m_installTm;
 }

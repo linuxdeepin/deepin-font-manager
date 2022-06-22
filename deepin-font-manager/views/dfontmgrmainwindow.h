@@ -304,7 +304,7 @@ public slots:
     //刷新加载状态
     void onLoadStatus(int type);
     //安装字体提示信息
-    void onShowMessage(int totalCount);
+    void onShowMessage(int totalCount, bool success=true);
     //显示或停止旋转进度图标
     void onShowSpinner(bool bShow, bool force, DFontSpinnerWidget::SpinnerStyles style);
     //删除窗口确认删除槽函数

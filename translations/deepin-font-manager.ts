@@ -126,10 +126,6 @@
         <translation>Ctrl+O</translation>
     </message>
     <message>
-        <source>Fonts</source>
-        <translation>Fonts</translation>
-    </message>
-    <message>
         <source>Ctrl+=</source>
         <translation>Ctrl+=</translation>
     </message>
@@ -157,12 +153,13 @@
         <source>CTRL+I</source>
         <translation type="unfinished"></translation>
     </message>
-</context>
-<context>
-    <name>DFontWidget</name>
     <message>
-        <source>Broken file</source>
-        <translation>Broken file</translation>
+        <source>Failed to install %1 font. There is not enough disk space.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Failed to install %1 fonts. There is not enough disk space.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -223,13 +220,6 @@
         <source>Continue</source>
         <comment>button</comment>
         <translation type="unfinished">Continue</translation>
-    </message>
-</context>
-<context>
-    <name>Font</name>
-    <message>
-        <source>Don&apos;t let your dreams be dreams</source>
-        <translation>Don&apos;t let your dreams be dreams</translation>
     </message>
 </context>
 <context>

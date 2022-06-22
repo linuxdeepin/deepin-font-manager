@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="pl">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="pl">
 <context>
     <name>Category</name>
     <message>
@@ -21,7 +19,7 @@
     </message>
     <message>
         <source>Active</source>
-        <translation>Aktywna</translation>
+        <translation>Aktywne</translation>
     </message>
     <message>
         <source>Chinese</source>
@@ -126,10 +124,6 @@
         <translation>Ctrl+O</translation>
     </message>
     <message>
-        <source>Fonts</source>
-        <translation>Czcionki</translation>
-    </message>
-    <message>
         <source>Ctrl+=</source>
         <translation>Ctrl+=</translation>
     </message>
@@ -157,12 +151,13 @@
         <source>CTRL+I</source>
         <translation>CTRL+I</translation>
     </message>
-</context>
-<context>
-    <name>DFontWidget</name>
     <message>
-        <source>Broken file</source>
-        <translation>Uszkodzony plik</translation>
+        <source>Failed to install %1 font. There is not enough disk space.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Failed to install %1 fonts. There is not enough disk space.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -181,11 +176,11 @@
     </message>
     <message>
         <source>The font &quot;%1&quot; in use cannot be deleted</source>
-        <translation>Nie można usunąć używanej czcionki „%1”</translation>
+        <translation>Czcionka &quot;%1&quot; jest w użyciu i nie może zostać usunięta</translation>
     </message>
     <message>
         <source>The other %1 system fonts and the font &quot;%2&quot; in use cannot be deleted</source>
-        <translation>Nie można usunąć innych czcionek systemowych %1 i używanej czcionki „%2”</translation>
+        <translation>%1 czcionek systemowych i czcionka &quot;%2&quot; w użyciu nie może zostać usunięta</translation>
     </message>
     <message>
         <source>Are you sure you want to delete %1 font(s)?</source>
@@ -226,17 +221,10 @@
     </message>
 </context>
 <context>
-    <name>Font</name>
-    <message>
-        <source>Don&apos;t let your dreams be dreams</source>
-        <translation>Nie pozwól, aby twoje sny były snami</translation>
-    </message>
-</context>
-<context>
     <name>FontDetailDailog</name>
     <message>
         <source>Basic info</source>
-        <translation>Podstawowa informacja</translation>
+        <translation>Podstawowe informacje</translation>
     </message>
     <message>
         <source>Style</source>
@@ -283,7 +271,7 @@
     </message>
     <message>
         <source>Loading fonts, please wait...</source>
-        <translation>Ładowanie czcionek, proszę czekać...</translation>
+        <translation>Wczytywanie czcionek, proszę czekać...</translation>
     </message>
     <message>
         <source>The font exported to your desktop</source>
@@ -338,7 +326,7 @@
     </message>
     <message>
         <source>Export</source>
-        <translation>Eksportuj</translation>
+        <translation>Eksport</translation>
     </message>
 </context>
 <context>
@@ -353,11 +341,11 @@
     </message>
     <message>
         <source>%1 is in use, so you cannot disable it</source>
-        <translation>%1 jest używana, więc nie możesz jej wyłączyć</translation>
+        <translation>%1 jest w użyciu, więc nie możesz jej wyłączyć</translation>
     </message>
     <message>
         <source>You cannot disable system fonts and the fonts in use</source>
-        <translation>Nie można wyłączyć czcionek systemowych ani używanych czcionek</translation>
+        <translation>Nie można wyłączyć czcionek systemowych, ani tych w użyciu</translation>
     </message>
     <message>
         <source>You cannot disable system fonts</source>
@@ -372,7 +360,7 @@
     </message>
     <message>
         <source>Verifying...</source>
-        <translation>Weryfikacja...</translation>
+        <translation>Weryfikowanie...</translation>
     </message>
 </context>
 <context>
@@ -425,11 +413,11 @@
     </message>
     <message>
         <source>Page up</source>
-        <translation>Przewiń stronę do góry</translation>
+        <translation>Strona w górę</translation>
     </message>
     <message>
         <source>Page down</source>
-        <translation>Przewiń stronę w dół </translation>
+        <translation>Strona w dół</translation>
     </message>
     <message>
         <source>Delete</source>
