@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="de">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="de">
 <context>
     <name>Category</name>
     <message>
@@ -44,7 +42,7 @@
     <name>DFDeleteTTCDialog</name>
     <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be deleted</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 ist eine Schriftenfamilie. Wenn Sie fortsetzen, werden alle Schriften darin gelöscht</translation>
     </message>
     <message>
         <source>Delete</source>
@@ -56,11 +54,11 @@
     <name>DFDisableTTCDialog</name>
     <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be enabled</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 ist eine Schriftenfamilie. Wenn Sie fortsetzen, werden alle Schriften darin aktiviert</translation>
     </message>
     <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be disabled</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 ist eine Schriftenfamilie. Wenn Sie fortsetzen, werden alle Schriften darin deaktiviert</translation>
     </message>
     <message>
         <source>Enable</source>
@@ -77,11 +75,11 @@
     <name>DFHandleTTCDialog</name>
     <message>
         <source>Apply to all selected font families</source>
-        <translation type="unfinished"></translation>
+        <translation>Auf alle ausgewählten Schriftfamilien anwenden</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Abbrechen</translation>
+        <translation>Abbrechen</translation>
     </message>
 </context>
 <context>
@@ -126,10 +124,6 @@
         <translation>Strg+O</translation>
     </message>
     <message>
-        <source>Fonts</source>
-        <translation>Schriftarten</translation>
-    </message>
-    <message>
         <source>Ctrl+=</source>
         <translation>Strg+=</translation>
     </message>
@@ -157,12 +151,13 @@
         <source>CTRL+I</source>
         <translation>Strg+I</translation>
     </message>
-</context>
-<context>
-    <name>DFontWidget</name>
     <message>
-        <source>Broken file</source>
-        <translation>Beschädigte Datei</translation>
+        <source>Failed to install %1 font. There is not enough disk space.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Failed to install %1 fonts. There is not enough disk space.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -177,15 +172,15 @@
     </message>
     <message>
         <source>The other %1 system fonts cannot be deleted</source>
-        <translation type="unfinished"></translation>
+        <translation>Die anderen %1 Systemschriftarten können nicht gelöscht werden</translation>
     </message>
     <message>
         <source>The font &quot;%1&quot; in use cannot be deleted</source>
-        <translation type="unfinished"></translation>
+        <translation>Die Schriftart &quot;%1&quot; kann nicht gelöscht werden, da sie gerade verwendet wird</translation>
     </message>
     <message>
         <source>The other %1 system fonts and the font &quot;%2&quot; in use cannot be deleted</source>
-        <translation type="unfinished"></translation>
+        <translation>Die anderen %1 Systemschriftarten und die gerade verwendete Schriftart &quot;%2&quot; können nicht gelöscht werden </translation>
     </message>
     <message>
         <source>Are you sure you want to delete %1 font(s)?</source>
@@ -223,13 +218,6 @@
         <source>Continue</source>
         <comment>button</comment>
         <translation>Fortsetzen</translation>
-    </message>
-</context>
-<context>
-    <name>Font</name>
-    <message>
-        <source>Don&apos;t let your dreams be dreams</source>
-        <translation>Franz jagt im komplett verwahrlosten Taxi quer durch Bayern</translation>
     </message>
 </context>
 <context>
@@ -295,7 +283,7 @@
     </message>
     <message>
         <source>Failed to export 1 font. There is not enough disk space.</source>
-        <translation type="unfinished"></translation>
+        <translation>1 Schriftart konnte nicht exportiert werden. Es ist nicht genug Speicherplatz verfügbar-</translation>
     </message>
     <message>
         <source>Failed to export %1 fonts. There is not enough disk space.</source>
@@ -357,7 +345,7 @@
     </message>
     <message>
         <source>You cannot disable system fonts and the fonts in use</source>
-        <translation type="unfinished"></translation>
+        <translation>Sie können Systemschriftarten und gerade verwendete Schriftarten nicht deaktivieren</translation>
     </message>
     <message>
         <source>You cannot disable system fonts</source>

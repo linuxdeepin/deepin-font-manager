@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="en">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="en">
 <context>
     <name>Category</name>
     <message>
@@ -77,11 +75,11 @@
     <name>DFHandleTTCDialog</name>
     <message>
         <source>Apply to all selected font families</source>
-        <translation type="unfinished">Apply to all selected font families</translation>
+        <translation>Apply to all selected font families</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Cancel</translation>
+        <translation>Cancel</translation>
     </message>
 </context>
 <context>
@@ -126,10 +124,6 @@
         <translation>Ctrl+O</translation>
     </message>
     <message>
-        <source>Fonts</source>
-        <translation>Fonts</translation>
-    </message>
-    <message>
         <source>Ctrl+=</source>
         <translation>Ctrl+=</translation>
     </message>
@@ -157,12 +151,13 @@
         <source>CTRL+I</source>
         <translation>CTRL+I</translation>
     </message>
-</context>
-<context>
-    <name>DFontWidget</name>
     <message>
-        <source>Broken file</source>
-        <translation>Broken file</translation>
+        <source>Failed to install %1 font. There is not enough disk space.</source>
+        <translation>Failed to install %1 font. There is not enough disk space.</translation>
+    </message>
+    <message>
+        <source>Failed to install %1 fonts. There is not enough disk space.</source>
+        <translation>Failed to install %1 fonts. There is not enough disk space.</translation>
     </message>
 </context>
 <context>
@@ -223,13 +218,6 @@
         <source>Continue</source>
         <comment>button</comment>
         <translation>Continue</translation>
-    </message>
-</context>
-<context>
-    <name>Font</name>
-    <message>
-        <source>Don&apos;t let your dreams be dreams</source>
-        <translation>Don&apos;t let your dreams be dreams</translation>
     </message>
 </context>
 <context>

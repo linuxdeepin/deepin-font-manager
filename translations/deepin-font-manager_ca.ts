@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="ca">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="ca">
 <context>
     <name>Category</name>
     <message>
@@ -77,11 +75,11 @@
     <name>DFHandleTTCDialog</name>
     <message>
         <source>Apply to all selected font families</source>
-        <translation type="unfinished">Aplica-ho a totes les famílies de lletres seleccionades.</translation>
+        <translation>Aplica-ho a totes les famílies de lletres seleccionades.</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Cancel·la</translation>
+        <translation>Cancel·la</translation>
     </message>
 </context>
 <context>
@@ -126,10 +124,6 @@
         <translation>Ctrl + O</translation>
     </message>
     <message>
-        <source>Fonts</source>
-        <translation>Lletres</translation>
-    </message>
-    <message>
         <source>Ctrl+=</source>
         <translation>Ctrl + =</translation>
     </message>
@@ -157,12 +151,13 @@
         <source>CTRL+I</source>
         <translation>CTRL+I</translation>
     </message>
-</context>
-<context>
-    <name>DFontWidget</name>
     <message>
-        <source>Broken file</source>
-        <translation>Fitxer trencat</translation>
+        <source>Failed to install %1 font. There is not enough disk space.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Failed to install %1 fonts. There is not enough disk space.</source>
+        <translation>Ha fallat instal·lar %1 lletres. No hi ha prou espai de disc.</translation>
     </message>
 </context>
 <context>
@@ -223,13 +218,6 @@
         <source>Continue</source>
         <comment>button</comment>
         <translation>Continua</translation>
-    </message>
-</context>
-<context>
-    <name>Font</name>
-    <message>
-        <source>Don&apos;t let your dreams be dreams</source>
-        <translation>No deixeu que els somnis siguin somnis.</translation>
     </message>
 </context>
 <context>

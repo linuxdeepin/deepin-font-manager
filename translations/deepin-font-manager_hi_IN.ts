@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="hi_IN">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="hi_IN">
 <context>
     <name>Category</name>
     <message>
@@ -77,11 +75,11 @@
     <name>DFHandleTTCDialog</name>
     <message>
         <source>Apply to all selected font families</source>
-        <translation type="unfinished">सभी चयनित मुद्रलिपि समूहों पर लागू करें</translation>
+        <translation>सभी चयनित मुद्रलिपि समूहों पर लागू करें</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">रद्द करें</translation>
+        <translation>रद्द करें</translation>
     </message>
 </context>
 <context>
@@ -126,10 +124,6 @@
         <translation>Ctrl+O</translation>
     </message>
     <message>
-        <source>Fonts</source>
-        <translation>मुद्रलिपियाँ</translation>
-    </message>
-    <message>
         <source>Ctrl+=</source>
         <translation>Ctrl+=</translation>
     </message>
@@ -157,12 +151,13 @@
         <source>CTRL+I</source>
         <translation>CTRL+I</translation>
     </message>
-</context>
-<context>
-    <name>DFontWidget</name>
     <message>
-        <source>Broken file</source>
-        <translation>विकृत फाइल</translation>
+        <source>Failed to install %1 font. There is not enough disk space.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Failed to install %1 fonts. There is not enough disk space.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -223,13 +218,6 @@
         <source>Continue</source>
         <comment>button</comment>
         <translation>जारी रखें</translation>
-    </message>
-</context>
-<context>
-    <name>Font</name>
-    <message>
-        <source>Don&apos;t let your dreams be dreams</source>
-        <translation>ऐसा न हो कि स्वप्न केवल स्वप्न ही रह जाएँ</translation>
     </message>
 </context>
 <context>

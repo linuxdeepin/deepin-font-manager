@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="zh_CN">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="zh_CN">
 <context>
     <name>Category</name>
     <message>
@@ -126,10 +124,6 @@
         <translation>Ctrl+O</translation>
     </message>
     <message>
-        <source>Fonts</source>
-        <translation>字体</translation>
-    </message>
-    <message>
         <source>Ctrl+=</source>
         <translation>Ctrl+=</translation>
     </message>
@@ -157,12 +151,13 @@
         <source>CTRL+I</source>
         <translation>CTRL+I</translation>
     </message>
-</context>
-<context>
-    <name>DFontWidget</name>
     <message>
-        <source>Broken file</source>
-        <translation>文件已损坏</translation>
+        <source>Failed to install %1 font. There is not enough disk space.</source>
+        <translation>目标磁盘空间不足，%1 个文件安装失败</translation>
+    </message>
+    <message>
+        <source>Failed to install %1 fonts. There is not enough disk space.</source>
+        <translation>目标磁盘空间不足，%1 个文件安装失败</translation>
     </message>
 </context>
 <context>
@@ -223,13 +218,6 @@
         <source>Continue</source>
         <comment>button</comment>
         <translation>继 续</translation>
-    </message>
-</context>
-<context>
-    <name>Font</name>
-    <message>
-        <source>Don&apos;t let your dreams be dreams</source>
-        <translation>因理想而出生，为责任而成长</translation>
     </message>
 </context>
 <context>
