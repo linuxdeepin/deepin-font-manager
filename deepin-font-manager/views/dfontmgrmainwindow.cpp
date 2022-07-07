@@ -904,6 +904,7 @@ void DFontMgrMainWindow::initStateBar()
     d->fontScaleSlider->setMaximum(MAX_FONT_SIZE);
     //设置初始显示字体大小
     d->fontScaleSlider->setValue(DEFAULT_FONT_SIZE);
+    setTabOrder(d->textInputEdit->lineEdit(), d->fontScaleSlider);
 
     d->fontSizeLabel = new DLabel(this);
     QFont fontScaleFont;
@@ -2664,7 +2665,7 @@ bool DFontMgrMainWindow::eventFilter(QObject *obj, QEvent *event)
     D_D(DFontMgrMainWindow);
     if (event->type() == QEvent::KeyPress) {
         QKeyEvent *keyEvent = dynamic_cast<QKeyEvent *>(event);
-        if (keyEvent->key() == Qt::Key_Tab) {
+            if (keyEvent->key() == Qt::Key_Tab) {
             if (obj == d->searchFontEdit->lineEdit()) {
                 setNextTabFocus(obj);
                 //下个控件为titlebar时需要多执行一次keyPressEvent
@@ -2690,11 +2691,24 @@ bool DFontMgrMainWindow::eventFilter(QObject *obj, QEvent *event)
         return QWidget::eventFilter(obj, event);
     }
 
+    if (event->type() == QEvent::KeyRelease) {
+        DWindowCloseButton *pWindowCloseButton = titlebar()->findChild<DWindowCloseButton *>("DTitlebarDWindowCloseButton");
+        if (pWindowCloseButton->hasFocus()) {
+            setNextTabFocus(obj);
+        }
+    }
+
     if (event->type() == QEvent::FocusOut) {
         mainwindowFocusOutCheck(obj, event);
     }
 
     if (event->type() == QEvent::FocusIn) {
+        if (obj == d->searchFontEdit->lineEdit() && m_lastIsCloseBtn) {
+            m_lastIsCloseBtn = false;
+            d->searchFontEdit->lineEdit()->clear();
+            setNextTabFocus(d->leftSiderBar);
+            return true;
+        }
         mainwindowFocusInCheck(obj, event);
     }
 
@@ -2729,12 +2743,12 @@ bool DFontMgrMainWindow::eventFilter(QObject *obj, QEvent *event)
 void DFontMgrMainWindow::setNextTabFocus(QObject *obj)
 {
     D_D(DFontMgrMainWindow);
+    DWindowCloseButton *pWindowCloseButton = titlebar()->findChild<DWindowCloseButton *>("DTitlebarDWindowCloseButton");
     //因setTabOrder无法实现功能，所以手动设置顺序
     if (obj == d->addFontButton) {
         d->searchFontEdit->lineEdit()->setFocus(Qt::TabFocusReason);
     } else if (obj == d->searchFontEdit->lineEdit()) {
         // 焦点切换，搜索框到右上角按钮区域 buttonArea
-        DWindowCloseButton *pWindowCloseButton = titlebar()->findChild<DWindowCloseButton *>("DTitlebarDWindowCloseButton");
         if (nullptr != pWindowCloseButton) {
             qobject_cast<QWidget *>(pWindowCloseButton->parent())->setFocus(Qt::TabFocusReason);
         }
@@ -2757,6 +2771,9 @@ void DFontMgrMainWindow::setNextTabFocus(QObject *obj)
     } /*else if (obj == d->fontScaleSlider) {
         d->addFontButton->setFocus(Qt::TabFocusReason);
     }*/
+    else if (obj == titlebar() && pWindowCloseButton->hasFocus()) {
+        m_lastIsCloseBtn = true;
+    }
     //如果点击设置了无字体页面焦点，则Tab切换至添加字体按钮
     else {
         d->addFontButton->setFocus(Qt::TabFocusReason);
