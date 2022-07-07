@@ -47,6 +47,7 @@
 #include <DTitlebar>
 #include <DMessageManager>
 #include <DDesktopServices>
+#include <DWindowOptionButton>
 
 #include <QFileSystemWatcher>
 #include <QDBusConnection>
@@ -637,7 +638,6 @@ void DFontMgrMainWindow::initTileFrame()
     d->addFontButton = new DIconButton(DStyle::StandardPixmap::SP_IncreaseElement, this);
     d->addFontButton->setFixedSize(QSize(FTM_ADDBUTTON_PATAM, FTM_ADDBUTTON_PATAM));
     d->addFontButton->setFlat(false);
-    d->addFontButton->setFocusPolicy(Qt::FocusPolicy::NoFocus);
 
     titleActionAreaLayout->addWidget(d->addFontButton);
 
@@ -984,7 +984,7 @@ void DFontMgrMainWindow::handleAddFontEvent()
     if (mode != QDialog::Accepted) {
         //SP3--添加字体按钮取消安装后恢复选中状态
         if (hasTabFocus) {
-            QTimer::singleShot(10, [ = ] {
+            QTimer::singleShot(100, [ = ] {
                 d->addFontButton->setFocus(Qt::TabFocusReason);
             });
         }
@@ -2689,6 +2689,19 @@ bool DFontMgrMainWindow::eventFilter(QObject *obj, QEvent *event)
                 d->searchFontEdit->lineEdit()->clear();
         }
         return QWidget::eventFilter(obj, event);
+    }
+
+    if (event->type() == QEvent::WindowDeactivate && obj == titlebar()) {
+        DWindowOptionButton *pWindowCloseButton = titlebar()->findChild<DWindowOptionButton *>("DTitlebarDWindowOptionButton");
+        if (pWindowCloseButton->hasFocus()) {
+            m_focusInMenu = true;
+        }
+    }
+
+    if (event->type() == QEvent::WindowActivate && m_focusInMenu) {
+        m_focusInMenu = false;
+        DWindowOptionButton *pWindowCloseButton = titlebar()->findChild<DWindowOptionButton *>("DTitlebarDWindowOptionButton");
+        pWindowCloseButton->setFocus(Qt::TabFocusReason);
     }
 
     if (event->type() == QEvent::KeyRelease) {
