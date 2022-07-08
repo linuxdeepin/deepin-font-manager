@@ -387,6 +387,8 @@ protected:
 
     bool m_isSearchLineEditMenuPoped{false};
     bool m_isInputLineEditMunuPoped{false};
+    bool m_lastIsCloseBtn {false};
+    bool m_focusInMenu {false};
     //菜单关闭的原因是否为触发action
     bool m_hasMenuTriggered{false};
     //is in installing font flow
