@@ -1,3 +1,9 @@
+deepin-font-manager (1.0.1) unstable; urgency=medium
+
+  * Initial Release.
+
+ -- xiepengfei <xiepengfei@uniontech.com>  Tue, 26 Jul 2022 13:47:28 +0800
+
 deepin-font-manager (0.1-1) unstable; urgency=medium
 
   * Initial Release.
