@@ -18,7 +18,7 @@ INSTALL(FILES ${TRANSLATION_FILES} DESTINATION share/${APP_BIN}/translations)
 SET(LIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../libdeepin-font-manager)
 FILE(GLOB LIB_SRC_FILES ${LIB_DIR}/*.cpp ${LIB_DIR}/*.h)
 #INSTALL(FILES ${LIB_DIR}/schemas/com.deepin.font-manager.gschema.xml
-#        DESTINATION /usr/share/glib-2.0/schemas)
+#        DESTINATION ${CMAKE_INSTALL_DATADIR}/glib-2.0/schemas)
 #用deepin-turbo对Dapplication进行加速
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wl,--as-needed -fPIE")
 SET(CMAKE_EXE_LINKER_FLAGS "-pie")
@@ -42,13 +42,13 @@ TARGET_LINK_LIBRARIES(${APP_BIN} PUBLIC Qt5::Core Qt5::Widgets Qt5::Gui Qt5::Sql
                                         ${DtkCore_LIBRARIES} ${DtkWidget_LIBRARIES} ${FREETYPE_LIBRARIES}
                                         ${FREETYPE_LIBRARIES} PkgConfig::FontConfig)
 
-INSTALL(TARGETS ${APP_BIN} RUNTIME DESTINATION bin)
+INSTALL(TARGETS ${APP_BIN} RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
 SET(DESKTOP_FILE ${CMAKE_CURRENT_SOURCE_DIR}/../deepin-font-manager-assets/deepin-font-manager.desktop)
-INSTALL(FILES ${DESKTOP_FILE} DESTINATION share/applications)
+INSTALL(FILES ${DESKTOP_FILE} DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)
 
 SET(ICON_FILE ${CMAKE_CURRENT_SOURCE_DIR}/../deepin-font-manager-assets/deepin-font-manager.svg)
-INSTALL(FILES ${ICON_FILE} DESTINATION share/icons/hicolor/scalable/apps)
+INSTALL(FILES ${ICON_FILE} DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/scalable/apps)
 
 SET(PREVIEW_CONTENT_FILE ${CMAKE_CURRENT_SOURCE_DIR}/../deepin-font-manager-assets/contents.txt)
-INSTALL(FILES ${PREVIEW_CONTENT_FILE} DESTINATION share/${APP_BIN}/)
+INSTALL(FILES ${PREVIEW_CONTENT_FILE} DESTINATION ${CMAKE_INSTALL_DATADIR}/${APP_BIN}/)
