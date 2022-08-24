@@ -51,7 +51,10 @@ PKG_SEARCH_MODULE(FontConfig REQUIRED fontconfig IMPORTED_TARGET)
 
 #CMAKE 3.14版本才有的模块
 #INCLUDE(FindFontconfig)
-SET(CMAKE_INSTALL_PREFIX /usr)
+include(GNUInstallDirs)
+if (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+    set(CMAKE_INSTALL_PREFIX /usr)
+endif ()
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall ")
 
 #安全编译参数
@@ -70,7 +73,7 @@ ADD_SUBDIRECTORY(deepin-font-preview-plugin)
 
 #安装帮助手册需要文件
 install(DIRECTORY ${CMAKE_SOURCE_DIR}/deepin-font-manager-assets/deepin-font-manager
-   DESTINATION /usr/share/deepin-manual/manual-assets/application/)
+   DESTINATION ${CMAKE_INSTALL_DATADIR}/deepin-manual/manual-assets/application/)
 
 #代码覆盖率开关
 if(CMAKE_COVERAGE_ARG STREQUAL "CMAKE_COVERAGE_ARG_ON")
