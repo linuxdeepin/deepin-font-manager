@@ -63,6 +63,7 @@ ENDIF()
 IF (CMAKE_BUILD_TYPE MATCHES "Debug")
     # Enable Qt builtin debug mode
     ADD_DEFINITIONS("-DQT_MESSAGELOGCONTEXT")
+    ADD_SUBDIRECTORY(tests)
 ENDIF()
 ADD_SUBDIRECTORY(deepin-font-manager)
 ADD_SUBDIRECTORY(deepin-font-preview-plugin)
@@ -76,6 +77,4 @@ if(CMAKE_COVERAGE_ARG STREQUAL "CMAKE_COVERAGE_ARG_ON")
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -Wall -fprofile-arcs -ftest-coverage")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -fprofile-arcs -ftest-coverage")
 endif()
-
-ADD_SUBDIRECTORY(tests)
 
