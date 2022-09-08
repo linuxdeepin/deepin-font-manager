@@ -1,7 +1,7 @@
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Upstream-Name: deepin-ocr
+Upstream-Name: deepin-font-manager
 Upstream-Contact: UnionTech Software Technology Co., Ltd. <>
-Source: https://github.com/linuxdeepin/deepin-ocr
+Source: https://github.com/linuxdeepin/deepin-font-manager
 
 # ci
 Files: .github/*
