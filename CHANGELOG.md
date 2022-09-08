@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+
+SPDX-License-Identifier: GPL-3.0-or-later
+-->
+
 <a name="1.1.5"></a>
 ## 1.1.5 (2019-04-10)
 

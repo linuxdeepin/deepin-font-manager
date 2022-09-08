@@ -1,6 +1,8 @@
+// Copyright 2019 VW-Mobvoi Inc. All Rights Reserved.
+// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
 
-//    Copyright 2019 VW-Mobvoi Inc. All Rights Reserved.
-//    Author: buwang@vw-mobvoi.com (wangbu)
 #ifndef LINUX_SPEECH_DOMAINS_AMBIENTLIGHT_SRC_ADDR_PRI_H_
 #define LINUX_SPEECH_DOMAINS_AMBIENTLIGHT_SRC_ADDR_PRI_H_
 
