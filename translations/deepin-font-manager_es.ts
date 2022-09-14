@@ -153,11 +153,11 @@
     </message>
     <message>
         <source>Failed to install %1 font. There is not enough disk space.</source>
-        <translation type="unfinished"/>
+        <translation>Error al instalar la fuente %1. No hay suficiente espacio en disco.</translation>
     </message>
     <message>
         <source>Failed to install %1 fonts. There is not enough disk space.</source>
-        <translation>La instalación de %1 fuentes falló. El espacio en el disco es insuficiente.</translation>
+        <translation>Error al instalar las fuentes %1. No hay suficiente espacio en disco.</translation>
     </message>
 </context>
 <context>

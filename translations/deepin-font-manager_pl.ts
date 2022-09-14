@@ -90,7 +90,7 @@
     </message>
     <message>
         <source>Same version installed</source>
-        <translation>Zainstalowano tę samą wersję</translation>
+        <translation>Zainstalowana ta sama wersja</translation>
     </message>
     <message>
         <source>System Font</source>
@@ -153,11 +153,11 @@
     </message>
     <message>
         <source>Failed to install %1 font. There is not enough disk space.</source>
-        <translation type="unfinished"/>
+        <translation>Nie udało się zainstalować %1 czcionki. Niewystarczająca ilość miejsca na dysku.</translation>
     </message>
     <message>
         <source>Failed to install %1 fonts. There is not enough disk space.</source>
-        <translation type="unfinished"/>
+        <translation>Nie udało się zainstalować %1 czcionek. Niewystarczająca ilość miejsca na dysku.</translation>
     </message>
 </context>
 <context>
@@ -184,7 +184,7 @@
     </message>
     <message>
         <source>Are you sure you want to delete %1 font(s)?</source>
-        <translation>Czy na pewno chcesz usunąć %1 czcionka(ek)?</translation>
+        <translation>Czy na pewno chcesz usunąć %1 czcionki?</translation>
     </message>
     <message>
         <source>Delete</source>
@@ -224,7 +224,7 @@
     <name>FontDetailDailog</name>
     <message>
         <source>Basic info</source>
-        <translation>Podstawowe informacje</translation>
+        <translation>Informacje podstawowe</translation>
     </message>
     <message>
         <source>Style</source>
@@ -275,19 +275,19 @@
     </message>
     <message>
         <source>The font exported to your desktop</source>
-        <translation>Czcionka wyeksportowana na pulpit</translation>
+        <translation>Wyeksportowano czcionkę na pulpit</translation>
     </message>
     <message>
         <source>%1 fonts exported to your desktop</source>
-        <translation>%1 czcionek wyeksportowanych na pulpit</translation>
+        <translation>Wyeksportowano %1 czcionek na pulpit</translation>
     </message>
     <message>
         <source>Failed to export 1 font. There is not enough disk space.</source>
-        <translation>Nie udało się wyeksportować 1 czcionki. Za mało miejsca na dysku.</translation>
+        <translation>Nie udało się wyeksportować 1 czcionki. Brak miejsca na dysku.</translation>
     </message>
     <message>
         <source>Failed to export %1 fonts. There is not enough disk space.</source>
-        <translation>Nie udało się wyeksportować %1 czcionek. Za mało miejsca na dysku.</translation>
+        <translation>Nie udało się wyeksportować %1 czcionek. Brak miejsca na dysku.</translation>
     </message>
 </context>
 <context>
@@ -322,11 +322,11 @@
     </message>
     <message>
         <source>Display in file manager</source>
-        <translation>Wyświetl w menedżerze plików</translation>
+        <translation>Wyświetl w Menedżerze plików</translation>
     </message>
     <message>
         <source>Export</source>
-        <translation>Eksport</translation>
+        <translation>Eksportuj</translation>
     </message>
 </context>
 <context>
