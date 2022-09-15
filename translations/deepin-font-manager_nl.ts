@@ -153,7 +153,7 @@
     </message>
     <message>
         <source>Failed to install %1 font. There is not enough disk space.</source>
-        <translation type="unfinished"/>
+        <translation>%1 lettertype kan niet worden geïnstalleerd omdat er onvoldoende vrije schijfruimte is.</translation>
     </message>
     <message>
         <source>Failed to install %1 fonts. There is not enough disk space.</source>
