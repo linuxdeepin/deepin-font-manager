@@ -153,11 +153,11 @@
     </message>
     <message>
         <source>Failed to install %1 font. There is not enough disk space.</source>
-        <translation type="unfinished"/>
+        <translation>Installation von %1 Schriftart ist fehlgeschlagen. Es ist nicht genügend Speicherplatz vorhanden.</translation>
     </message>
     <message>
         <source>Failed to install %1 fonts. There is not enough disk space.</source>
-        <translation type="unfinished"/>
+        <translation>Installation von %1 Schriftarten ist fehlgeschlagen. Es ist nicht genügend Speicherplatz vorhanden.</translation>
     </message>
 </context>
 <context>
@@ -310,11 +310,11 @@
     </message>
     <message>
         <source>Favorite</source>
-        <translation>Favorit</translation>
+        <translation>Favorisieren</translation>
     </message>
     <message>
         <source>Unfavorite</source>
-        <translation>Kein Favorit</translation>
+        <translation>Entfavorisieren</translation>
     </message>
     <message>
         <source>Details</source>
@@ -429,11 +429,11 @@
     </message>
     <message>
         <source>Favorite</source>
-        <translation>Favorit</translation>
+        <translation>Favorisieren</translation>
     </message>
     <message>
         <source>Unfavorite</source>
-        <translation>Kein Favorit</translation>
+        <translation>Entfavorisieren</translation>
     </message>
     <message>
         <source>Font info</source>

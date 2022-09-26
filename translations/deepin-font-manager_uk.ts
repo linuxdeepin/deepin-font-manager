@@ -153,7 +153,7 @@
     </message>
     <message>
         <source>Failed to install %1 font. There is not enough disk space.</source>
-        <translation type="unfinished"/>
+        <translation>Не вдалося встановити %1 шрифт. На диску недостатньо місця.</translation>
     </message>
     <message>
         <source>Failed to install %1 fonts. There is not enough disk space.</source>

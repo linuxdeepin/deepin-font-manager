@@ -153,11 +153,11 @@
     </message>
     <message>
         <source>Failed to install %1 font. There is not enough disk space.</source>
-        <translation type="unfinished"/>
+        <translation>%1 şrifti quraşdırıla bilmədi. Diskdə kifayət qədər boş yer qalmayıb.</translation>
     </message>
     <message>
         <source>Failed to install %1 fonts. There is not enough disk space.</source>
-        <translation type="unfinished"/>
+        <translation>%1 şrifti quraşdırmaq mümkün olmadı. Diskdə kifayət qədər boş yer qalmayıb.</translation>
     </message>
 </context>
 <context>

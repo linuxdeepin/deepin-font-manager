@@ -153,7 +153,7 @@
     </message>
     <message>
         <source>Failed to install %1 font. There is not enough disk space.</source>
-        <translation type="unfinished"/>
+        <translation>S’u arrit të instalohet %1 lloj shkronjash. S’ka hapësirë të mjaftueshme në disk.</translation>
     </message>
     <message>
         <source>Failed to install %1 fonts. There is not enough disk space.</source>
