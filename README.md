@@ -35,5 +35,5 @@ We encourage you to report issues and contribute changes
 
 ## License
 
-Deepin Font Manager is licensed under [GPLv3](LICENSE).
+Deepin Font Manager is licensed under [GPL-3.0-or-later](LICENSE).
 
