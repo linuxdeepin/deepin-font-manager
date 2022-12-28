@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="fi">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="fi">
 <context>
     <name>Category</name>
     <message>
@@ -75,11 +77,11 @@
     <name>DFHandleTTCDialog</name>
     <message>
         <source>Apply to all selected font families</source>
-        <translation>Käytä kaikkiin valittuihin fonttiperheisiin</translation>
+        <translation type="unfinished">Käytä kaikkiin valittuihin fonttiperheisiin</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Peruuta</translation>
+        <translation type="unfinished">Peruuta</translation>
     </message>
 </context>
 <context>
@@ -124,6 +126,10 @@
         <translation>Ctrl+O</translation>
     </message>
     <message>
+        <source>Fonts</source>
+        <translation>Fontit</translation>
+    </message>
+    <message>
         <source>Ctrl+=</source>
         <translation>Ctrl+=</translation>
     </message>
@@ -151,13 +157,12 @@
         <source>CTRL+I</source>
         <translation>CTRL+I</translation>
     </message>
+</context>
+<context>
+    <name>DFontWidget</name>
     <message>
-        <source>Failed to install %1 font. There is not enough disk space.</source>
-        <translation>%1 fontin asennus epäonnistui. Levytila ei riitä.</translation>
-    </message>
-    <message>
-        <source>Failed to install %1 fonts. There is not enough disk space.</source>
-        <translation>%1 kirjasimen asentaminen epäonnistui. Levytila ei riitä.</translation>
+        <source>Broken file</source>
+        <translation>Virheellinen tiedosto</translation>
     </message>
 </context>
 <context>
@@ -218,6 +223,13 @@
         <source>Continue</source>
         <comment>button</comment>
         <translation>Jatka</translation>
+    </message>
+</context>
+<context>
+    <name>Font</name>
+    <message>
+        <source>Don&apos;t let your dreams be dreams</source>
+        <translation>Älä anna unelmiesi olla unelmia</translation>
     </message>
 </context>
 <context>

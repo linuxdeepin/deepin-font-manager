@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="es">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="es">
 <context>
     <name>Category</name>
     <message>
@@ -75,11 +77,11 @@
     <name>DFHandleTTCDialog</name>
     <message>
         <source>Apply to all selected font families</source>
-        <translation>Aplicar a todas las familias de fuentes seleccionadas</translation>
+        <translation type="unfinished">Aplicar a todas las familias de fuentes seleccionadas</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Cancelar</translation>
+        <translation type="unfinished">Cancelar</translation>
     </message>
 </context>
 <context>
@@ -124,6 +126,10 @@
         <translation>Ctrl + O</translation>
     </message>
     <message>
+        <source>Fonts</source>
+        <translation>Fuentes</translation>
+    </message>
+    <message>
         <source>Ctrl+=</source>
         <translation>Ctrl + =</translation>
     </message>
@@ -151,13 +157,12 @@
         <source>CTRL+I</source>
         <translation>CTRL+I</translation>
     </message>
+</context>
+<context>
+    <name>DFontWidget</name>
     <message>
-        <source>Failed to install %1 font. There is not enough disk space.</source>
-        <translation>Error al instalar la fuente %1. No hay suficiente espacio en disco.</translation>
-    </message>
-    <message>
-        <source>Failed to install %1 fonts. There is not enough disk space.</source>
-        <translation>Error al instalar las fuentes %1. No hay suficiente espacio en disco.</translation>
+        <source>Broken file</source>
+        <translation>Archivo roto</translation>
     </message>
 </context>
 <context>
@@ -218,6 +223,13 @@
         <source>Continue</source>
         <comment>button</comment>
         <translation>Continuar</translation>
+    </message>
+</context>
+<context>
+    <name>Font</name>
+    <message>
+        <source>Don&apos;t let your dreams be dreams</source>
+        <translation>No dejes que tus sueños sean sueños</translation>
     </message>
 </context>
 <context>

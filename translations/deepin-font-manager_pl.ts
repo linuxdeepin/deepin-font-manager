@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="pl">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="pl">
 <context>
     <name>Category</name>
     <message>
@@ -19,7 +21,7 @@
     </message>
     <message>
         <source>Active</source>
-        <translation>Aktywne</translation>
+        <translation>Aktywna</translation>
     </message>
     <message>
         <source>Chinese</source>
@@ -90,7 +92,7 @@
     </message>
     <message>
         <source>Same version installed</source>
-        <translation>Zainstalowana ta sama wersja</translation>
+        <translation>Zainstalowano tę samą wersję</translation>
     </message>
     <message>
         <source>System Font</source>
@@ -124,6 +126,10 @@
         <translation>Ctrl+O</translation>
     </message>
     <message>
+        <source>Fonts</source>
+        <translation>Czcionki</translation>
+    </message>
+    <message>
         <source>Ctrl+=</source>
         <translation>Ctrl+=</translation>
     </message>
@@ -151,13 +157,12 @@
         <source>CTRL+I</source>
         <translation>CTRL+I</translation>
     </message>
+</context>
+<context>
+    <name>DFontWidget</name>
     <message>
-        <source>Failed to install %1 font. There is not enough disk space.</source>
-        <translation>Nie udało się zainstalować %1 czcionki. Niewystarczająca ilość miejsca na dysku.</translation>
-    </message>
-    <message>
-        <source>Failed to install %1 fonts. There is not enough disk space.</source>
-        <translation>Nie udało się zainstalować %1 czcionek. Niewystarczająca ilość miejsca na dysku.</translation>
+        <source>Broken file</source>
+        <translation>Uszkodzony plik</translation>
     </message>
 </context>
 <context>
@@ -176,15 +181,15 @@
     </message>
     <message>
         <source>The font &quot;%1&quot; in use cannot be deleted</source>
-        <translation>Czcionka &quot;%1&quot; jest w użyciu i nie może zostać usunięta</translation>
+        <translation>Nie można usunąć używanej czcionki „%1”</translation>
     </message>
     <message>
         <source>The other %1 system fonts and the font &quot;%2&quot; in use cannot be deleted</source>
-        <translation>%1 czcionek systemowych i czcionka &quot;%2&quot; w użyciu nie może zostać usunięta</translation>
+        <translation>Nie można usunąć innych czcionek systemowych %1 i używanej czcionki „%2”</translation>
     </message>
     <message>
         <source>Are you sure you want to delete %1 font(s)?</source>
-        <translation>Czy na pewno chcesz usunąć %1 czcionki?</translation>
+        <translation>Czy na pewno chcesz usunąć %1 czcionka(ek)?</translation>
     </message>
     <message>
         <source>Delete</source>
@@ -221,10 +226,17 @@
     </message>
 </context>
 <context>
+    <name>Font</name>
+    <message>
+        <source>Don&apos;t let your dreams be dreams</source>
+        <translation>Nie pozwól, aby twoje sny były snami</translation>
+    </message>
+</context>
+<context>
     <name>FontDetailDailog</name>
     <message>
         <source>Basic info</source>
-        <translation>Informacje podstawowe</translation>
+        <translation>Podstawowa informacja</translation>
     </message>
     <message>
         <source>Style</source>
@@ -271,23 +283,23 @@
     </message>
     <message>
         <source>Loading fonts, please wait...</source>
-        <translation>Wczytywanie czcionek, proszę czekać...</translation>
+        <translation>Ładowanie czcionek, proszę czekać...</translation>
     </message>
     <message>
         <source>The font exported to your desktop</source>
-        <translation>Wyeksportowano czcionkę na pulpit</translation>
+        <translation>Czcionka wyeksportowana na pulpit</translation>
     </message>
     <message>
         <source>%1 fonts exported to your desktop</source>
-        <translation>Wyeksportowano %1 czcionek na pulpit</translation>
+        <translation>%1 czcionek wyeksportowanych na pulpit</translation>
     </message>
     <message>
         <source>Failed to export 1 font. There is not enough disk space.</source>
-        <translation>Nie udało się wyeksportować 1 czcionki. Brak miejsca na dysku.</translation>
+        <translation>Nie udało się wyeksportować 1 czcionki. Za mało miejsca na dysku.</translation>
     </message>
     <message>
         <source>Failed to export %1 fonts. There is not enough disk space.</source>
-        <translation>Nie udało się wyeksportować %1 czcionek. Brak miejsca na dysku.</translation>
+        <translation>Nie udało się wyeksportować %1 czcionek. Za mało miejsca na dysku.</translation>
     </message>
 </context>
 <context>
@@ -322,7 +334,7 @@
     </message>
     <message>
         <source>Display in file manager</source>
-        <translation>Wyświetl w Menedżerze plików</translation>
+        <translation>Wyświetl w menedżerze plików</translation>
     </message>
     <message>
         <source>Export</source>
@@ -341,11 +353,11 @@
     </message>
     <message>
         <source>%1 is in use, so you cannot disable it</source>
-        <translation>%1 jest w użyciu, więc nie możesz jej wyłączyć</translation>
+        <translation>%1 jest używana, więc nie możesz jej wyłączyć</translation>
     </message>
     <message>
         <source>You cannot disable system fonts and the fonts in use</source>
-        <translation>Nie można wyłączyć czcionek systemowych, ani tych w użyciu</translation>
+        <translation>Nie można wyłączyć czcionek systemowych ani używanych czcionek</translation>
     </message>
     <message>
         <source>You cannot disable system fonts</source>
@@ -360,7 +372,7 @@
     </message>
     <message>
         <source>Verifying...</source>
-        <translation>Weryfikowanie...</translation>
+        <translation>Weryfikacja...</translation>
     </message>
 </context>
 <context>
@@ -413,11 +425,11 @@
     </message>
     <message>
         <source>Page up</source>
-        <translation>Strona w górę</translation>
+        <translation>Przewiń stronę do góry</translation>
     </message>
     <message>
         <source>Page down</source>
-        <translation>Strona w dół</translation>
+        <translation>Przewiń stronę w dół </translation>
     </message>
     <message>
         <source>Delete</source>

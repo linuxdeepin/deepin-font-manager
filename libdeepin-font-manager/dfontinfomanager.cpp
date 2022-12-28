@@ -625,9 +625,6 @@ DFontInfo DFontInfoManager:: getFontInfo(const QString &filePath, bool withPrevi
     } /*else {
         fontInfo.isInstalled = isFontInstalled(fontInfo);
     }*/
-    if(!fontInfo.isInstalled){
-        fontInfo.isInstalled = isFontInInstalledDirs(fontInfo.filePath);
-    }
     return fontInfo;
 }
 
@@ -925,30 +922,6 @@ bool DFontInfoManager::isFontInstalled(DFontInfo &data)
         }
     }
 
-    return false;
-}
-
-/*************************************************************************
- <Function>      isFontInInstalledDirs
- <Description>   检查需要安装的字体文件是否在.local/share/fonts目录下，或者是否有同名文件
- <Author>
- <Input>
-    <param1>     filePath        Description:待安装字体文件
- <Return>        bool            Description:return true 是；return false 否
- <Note>          null
-*************************************************************************/
-bool DFontInfoManager::isFontInInstalledDirs(const QString &filePath)
-{
-    if (filePath.contains(QDir::homePath() + "/.local/share/fonts/")) {
-        return true;
-    }
-    if (filePath.lastIndexOf("/") < 0){
-        return false;
-    }
-    QFile file(QDir::homePath() + "/.local/share/fonts" + filePath.mid(filePath.lastIndexOf("/")));
-    if (file.exists()) {
-        return true;
-    }
     return false;
 }
 

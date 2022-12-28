@@ -1,25 +1,7 @@
-#/*****************************************************************************
-#* Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd.
-#*
-#* Author:     Xiao Zhiguo <xiaozhiguo@uniontech.com>
-#* Date:       2020-09-09
-#*
-#* Maintainer: Xiao Zhiguo <xiaozhiguo@uniontech.com>
-#*
-#* This program is free software: you can redistribute it and/or modify
-#* it under the terms of the GNU General Public License as published by
-#* the Free Software Foundation, either version 3 of the License, or
-#* any later version.
-#*
-#* This program is distributed in the hope that it will be useful,
-#* but WITHOUT ANY WARRANTY; without even the implied warranty of
-#* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#* GNU General Public License for more details.
-#*
-#* You should have received a copy of the GNU General Public License
-#* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#*
-#*****************************************************************************/
+# Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd.
+# SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
 
 CMAKE_MINIMUM_REQUIRED(VERSION 3.7)
 
@@ -51,10 +33,7 @@ PKG_SEARCH_MODULE(FontConfig REQUIRED fontconfig IMPORTED_TARGET)
 
 #CMAKE 3.14版本才有的模块
 #INCLUDE(FindFontconfig)
-include(GNUInstallDirs)
-if (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-    set(CMAKE_INSTALL_PREFIX /usr)
-endif ()
+SET(CMAKE_INSTALL_PREFIX /usr)
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall ")
 
 #安全编译参数
@@ -66,14 +45,13 @@ ENDIF()
 IF (CMAKE_BUILD_TYPE MATCHES "Debug")
     # Enable Qt builtin debug mode
     ADD_DEFINITIONS("-DQT_MESSAGELOGCONTEXT")
-    ADD_SUBDIRECTORY(tests)
 ENDIF()
 ADD_SUBDIRECTORY(deepin-font-manager)
 ADD_SUBDIRECTORY(deepin-font-preview-plugin)
 
 #安装帮助手册需要文件
 install(DIRECTORY ${CMAKE_SOURCE_DIR}/deepin-font-manager-assets/deepin-font-manager
-   DESTINATION ${CMAKE_INSTALL_DATADIR}/deepin-manual/manual-assets/application/)
+   DESTINATION /usr/share/deepin-manual/manual-assets/application/)
 
 #代码覆盖率开关
 if(CMAKE_COVERAGE_ARG STREQUAL "CMAKE_COVERAGE_ARG_ON")
@@ -81,4 +59,5 @@ if(CMAKE_COVERAGE_ARG STREQUAL "CMAKE_COVERAGE_ARG_ON")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -fprofile-arcs -ftest-coverage")
 endif()
 
+#ADD_SUBDIRECTORY(tests)
 

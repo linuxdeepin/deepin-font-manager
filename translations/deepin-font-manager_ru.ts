@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="ru">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="ru">
 <context>
     <name>Category</name>
     <message>
@@ -58,7 +60,7 @@
     </message>
     <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be disabled</source>
-        <translation>%1 - это семейство шрифтов; если вы продолжите, все шрифты в нем будут отключены</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Enable</source>
@@ -75,11 +77,11 @@
     <name>DFHandleTTCDialog</name>
     <message>
         <source>Apply to all selected font families</source>
-        <translation>Применить ко всем выбранным семействам шрифтов</translation>
+        <translation type="unfinished">Применить ко всем выбранным семействам шрифтов</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Отменить</translation>
+        <translation type="unfinished">Отменить</translation>
     </message>
 </context>
 <context>
@@ -124,6 +126,10 @@
         <translation>Ctrl+O</translation>
     </message>
     <message>
+        <source>Fonts</source>
+        <translation>Шрифты</translation>
+    </message>
+    <message>
         <source>Ctrl+=</source>
         <translation>Ctrl+=</translation>
     </message>
@@ -151,13 +157,12 @@
         <source>CTRL+I</source>
         <translation>CTRL+I</translation>
     </message>
+</context>
+<context>
+    <name>DFontWidget</name>
     <message>
-        <source>Failed to install %1 font. There is not enough disk space.</source>
-        <translation>Не удалось установить шрифты (%1 шт.). Недостаточно места на диске.</translation>
-    </message>
-    <message>
-        <source>Failed to install %1 fonts. There is not enough disk space.</source>
-        <translation>Не удалось установить шрифты % 1. Недостаточно места на диске.</translation>
+        <source>Broken file</source>
+        <translation>Поврежденный файл</translation>
     </message>
 </context>
 <context>
@@ -218,6 +223,13 @@
         <source>Continue</source>
         <comment>button</comment>
         <translation>Продолжить</translation>
+    </message>
+</context>
+<context>
+    <name>Font</name>
+    <message>
+        <source>Don&apos;t let your dreams be dreams</source>
+        <translation>Не позволяй своим мечтам быть мечтами.</translation>
     </message>
 </context>
 <context>
@@ -349,7 +361,7 @@
     </message>
     <message>
         <source>You cannot disable system fonts</source>
-        <translation>Нельзя отключить системные шрифты</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="nl">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="nl">
 <context>
     <name>Category</name>
     <message>
@@ -75,11 +77,11 @@
     <name>DFHandleTTCDialog</name>
     <message>
         <source>Apply to all selected font families</source>
-        <translation>Toepassen op alle geselecteerde lettertypefamilies</translation>
+        <translation type="unfinished">Toepassen op alle geselecteerde lettertypefamilies</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Annuleren</translation>
+        <translation type="unfinished">Annuleren</translation>
     </message>
 </context>
 <context>
@@ -124,6 +126,10 @@
         <translation>Ctrl+O</translation>
     </message>
     <message>
+        <source>Fonts</source>
+        <translation>Lettertypen</translation>
+    </message>
+    <message>
         <source>Ctrl+=</source>
         <translation>Ctrl+=</translation>
     </message>
@@ -151,13 +157,12 @@
         <source>CTRL+I</source>
         <translation>CTRL+I</translation>
     </message>
+</context>
+<context>
+    <name>DFontWidget</name>
     <message>
-        <source>Failed to install %1 font. There is not enough disk space.</source>
-        <translation>%1 lettertype kan niet worden geïnstalleerd omdat er onvoldoende vrije schijfruimte is.</translation>
-    </message>
-    <message>
-        <source>Failed to install %1 fonts. There is not enough disk space.</source>
-        <translation>%1 lettertypen kunnen niet worden geïnstalleerd omdat er onvoldoende vrije schijfruimte is.</translation>
+        <source>Broken file</source>
+        <translation>Beschadigd bestand</translation>
     </message>
 </context>
 <context>
@@ -218,6 +223,13 @@
         <source>Continue</source>
         <comment>button</comment>
         <translation>Doorgaan</translation>
+    </message>
+</context>
+<context>
+    <name>Font</name>
+    <message>
+        <source>Don&apos;t let your dreams be dreams</source>
+        <translation>Laat je dromen uitkomen</translation>
     </message>
 </context>
 <context>

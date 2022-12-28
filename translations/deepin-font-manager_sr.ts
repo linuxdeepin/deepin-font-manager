@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="sr">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="sr">
 <context>
     <name>Category</name>
     <message>
@@ -75,11 +77,11 @@
     <name>DFHandleTTCDialog</name>
     <message>
         <source>Apply to all selected font families</source>
-        <translation>Примени на све изабране породице фонтова</translation>
+        <translation type="unfinished">Примени на све изабране породице фонтова</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Откажи</translation>
+        <translation type="unfinished">Откажи</translation>
     </message>
 </context>
 <context>
@@ -124,6 +126,10 @@
         <translation>Ctrl+O</translation>
     </message>
     <message>
+        <source>Fonts</source>
+        <translation>Фонтови</translation>
+    </message>
+    <message>
         <source>Ctrl+=</source>
         <translation>Ctrl+=</translation>
     </message>
@@ -151,13 +157,12 @@
         <source>CTRL+I</source>
         <translation>CTRL+I</translation>
     </message>
+</context>
+<context>
+    <name>DFontWidget</name>
     <message>
-        <source>Failed to install %1 font. There is not enough disk space.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Failed to install %1 fonts. There is not enough disk space.</source>
-        <translation>Неуспешно инсталирање %1 фонта/ова. Недовољно простора на диску.</translation>
+        <source>Broken file</source>
+        <translation>Оштећена датотека</translation>
     </message>
 </context>
 <context>
@@ -218,6 +223,13 @@
         <source>Continue</source>
         <comment>button</comment>
         <translation>Настави</translation>
+    </message>
+</context>
+<context>
+    <name>Font</name>
+    <message>
+        <source>Don&apos;t let your dreams be dreams</source>
+        <translation>Не дозволи да твоји снови остану снови</translation>
     </message>
 </context>
 <context>

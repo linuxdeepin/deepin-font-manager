@@ -5,20 +5,18 @@
 
 #include "fontpreview.h"
 
-DFM_BEGIN_NAMESPACE
+//DFM_BEGIN_NAMESPACE
 
 FontPreview::FontPreview(QObject *parent):
-    DFMFilePreview(parent),
+//    DFMFilePreview(parent),
     m_previewWidget(new DFontWidget)
 {
 }
 
 FontPreview::~FontPreview()
 {
-//    https://pms.uniontech.com/bug-view-142781.html
-//    插件中不需要释放。释放会导致文管异常退出。
-//    if (m_previewWidget)
-//        m_previewWidget->deleteLater();
+    if (m_previewWidget)
+        m_previewWidget->deleteLater();
 }
 
 /*************************************************************************
@@ -30,10 +28,10 @@ FontPreview::~FontPreview()
  <Return>        DUrl            Description:返回字体文件的url路径
  <Note>          null
 *************************************************************************/
-DUrl FontPreview::fileUrl() const
-{
-    return m_url;
-}
+//DUrl FontPreview::fileUrl() const
+//{
+//    return m_url;
+//}
 
 /*************************************************************************
  <Function>      setFileUrl
@@ -44,29 +42,29 @@ DUrl FontPreview::fileUrl() const
  <Return>        bool                Description:是否设置成功
  <Note>          null
 *************************************************************************/
-bool FontPreview::setFileUrl(const DUrl &url)
-{
-    if (m_url == url)
-        return true;
+//bool FontPreview::setFileUrl(const DUrl &url)
+//{
+//    if (m_url == url)
+//        return true;
 
-    if (!url.isLocalFile())
-        return false;
+//    if (!url.isLocalFile())
+//        return false;
 
-    m_url = url;
-    qDebug() << __FUNCTION__ << m_url << "m_url";
-    m_previewWidget->setFileUrl(url.toLocalFile());
-    m_title = url.toString();
-    qDebug() << __FUNCTION__ << m_title << url.toLocalFile() << "m_title";
+//    m_url = url;
+//    qDebug() << __FUNCTION__ << m_url << "m_url";
+//    m_previewWidget->setFileUrl(url.toLocalFile());
+//    m_title = url.toString();
+//    qDebug() << __FUNCTION__ << m_title << url.toLocalFile() << "m_title";
 
-    if (!m_title.split("/").isEmpty()) {
-        m_title = m_title.split("/").last();
-        qDebug() << __FUNCTION__ << m_title;
-    }
+//    if (!m_title.split("/").isEmpty()) {
+//        m_title = m_title.split("/").last();
+//        qDebug() << __FUNCTION__ << m_title;
+//    }
 
-    Q_EMIT titleChanged();
+//    Q_EMIT titleChanged();
 
-    return true;
-}
+//    return true;
+//}
 
 ///*************************************************************************
 // <Function>      contentWidget
@@ -77,10 +75,10 @@ bool FontPreview::setFileUrl(const DUrl &url)
 // <Return>        QWidget *            Description:预览控件的指针
 // <Note>          null
 //*************************************************************************/
-QWidget *FontPreview::contentWidget() const
-{
-    return m_previewWidget;
-}
+//QWidget *FontPreview::contentWidget() const
+//{
+//    return m_previewWidget;
+//}
 
 /*************************************************************************
  <Function>      title
@@ -91,9 +89,9 @@ QWidget *FontPreview::contentWidget() const
  <Return>        QString            Description:label显示内容
  <Note>          null
 *************************************************************************/
-QString FontPreview::title() const
-{
-    return m_title;
-}
+//QString FontPreview::title() const
+//{
+//    return m_title;
+//}
 
-DFM_END_NAMESPACE
+//DFM_END_NAMESPACE

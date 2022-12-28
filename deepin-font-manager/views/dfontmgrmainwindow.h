@@ -278,8 +278,6 @@ public slots:
     void onLeftSiderBarItemClicked(int index = 0, bool needClearSelect = true);
     //安装后添加至listview
     void onFontInstallFinished(const QStringList &fileList);
-    //刷新用户字体列表
-    void onRefreshUserFont();
     //字体删除fc-cache操作后恢复标志位
     void onUninstallFcCacheFinish();
     //切换字体菜单后判断FontListView的结果并显示对应状态
@@ -287,7 +285,7 @@ public slots:
     //刷新加载状态
     void onLoadStatus(int type);
     //安装字体提示信息
-    void onShowMessage(int totalCount, bool success=true);
+    void onShowMessage(int totalCount);
     //显示或停止旋转进度图标
     void onShowSpinner(bool bShow, bool force, DFontSpinnerWidget::SpinnerStyles style);
     //删除窗口确认删除槽函数
@@ -370,8 +368,6 @@ protected:
 
     bool m_isSearchLineEditMenuPoped{false};
     bool m_isInputLineEditMunuPoped{false};
-    bool m_lastIsCloseBtn {false};
-    bool m_focusInMenu {false};
     //菜单关闭的原因是否为触发action
     bool m_hasMenuTriggered{false};
     //is in installing font flow

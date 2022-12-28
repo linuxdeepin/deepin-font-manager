@@ -21,7 +21,6 @@ Homepage: http://www.deepin.org
 Package: deepin-font-manager
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Recommends: uos-reporter, deepin-event-log
 Replaces: deepin-font-installer
 Conflicts: deepin-font-installer
 Description: Deepin Font Manager binary

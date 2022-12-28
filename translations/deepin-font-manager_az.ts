@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="az">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="az">
 <context>
     <name>Category</name>
     <message>
@@ -75,11 +77,11 @@
     <name>DFHandleTTCDialog</name>
     <message>
         <source>Apply to all selected font families</source>
-        <translation>Bütün seçilmiş şrift ailəsini tətbiq edin</translation>
+        <translation type="unfinished">Bütün seçilmiş şrift ailəsini tətbiq edin</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>İmtina</translation>
+        <translation type="unfinished">İmtina</translation>
     </message>
 </context>
 <context>
@@ -124,6 +126,10 @@
         <translation>Ctrl+O</translation>
     </message>
     <message>
+        <source>Fonts</source>
+        <translation>Şriftlər</translation>
+    </message>
+    <message>
         <source>Ctrl+=</source>
         <translation>Ctrl+=</translation>
     </message>
@@ -151,13 +157,12 @@
         <source>CTRL+I</source>
         <translation>CTRL+I</translation>
     </message>
+</context>
+<context>
+    <name>DFontWidget</name>
     <message>
-        <source>Failed to install %1 font. There is not enough disk space.</source>
-        <translation>%1 şrifti quraşdırıla bilmədi. Diskdə kifayət qədər boş yer qalmayıb.</translation>
-    </message>
-    <message>
-        <source>Failed to install %1 fonts. There is not enough disk space.</source>
-        <translation>%1 şrifti quraşdırmaq mümkün olmadı. Diskdə kifayət qədər boş yer qalmayıb.</translation>
+        <source>Broken file</source>
+        <translation>Pozulmuş fayl</translation>
     </message>
 </context>
 <context>
@@ -218,6 +223,13 @@
         <source>Continue</source>
         <comment>button</comment>
         <translation>Davam etmək</translation>
+    </message>
+</context>
+<context>
+    <name>Font</name>
+    <message>
+        <source>Don&apos;t let your dreams be dreams</source>
+        <translation>Arzularınızın, arzular kimi qalmasına imkan verməyin</translation>
     </message>
 </context>
 <context>

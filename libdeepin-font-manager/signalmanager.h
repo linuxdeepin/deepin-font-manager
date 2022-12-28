@@ -24,10 +24,6 @@ public:
 signals:
     //触发完成安装信号
     void finishFontInstall(const QStringList &fileList);
-
-    //触发刷新用户字体列表信号
-    void refreshUserFont();
-
     //触发大小改变信号
     void sizeChange(int height);
     //触发弹出字体验证框请求

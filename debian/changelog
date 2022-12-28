@@ -1,8 +1,8 @@
-deepin-font-manager (5.9.13) unstable; urgency=medium
+deepin-font-manager (6.0.0.1) stable; urgency=medium
 
-  * New version 5.9.13.
-
- -- muyuankai <muyuankai@uniontech.com>  Mon, 29 Aug 2022 10:08:00 +0800
+  * update V23 baseline version  
+  
+ -- xiepengfei <xiepengfei@uniontech.com>  Tue, 29 Jun 2022 06:56:58 +0000
 
 deepin-font-manager (0.1-1) unstable; urgency=medium
 

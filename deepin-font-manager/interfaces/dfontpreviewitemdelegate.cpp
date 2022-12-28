@@ -2,27 +2,6 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-/*
-* Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd.
-*
-* Author:
-*
-* Maintainer:
-*
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
 #include "dfontpreviewitemdelegate.h"
 #include "dfontpreviewlistview.h"
 #include "globaldef.h"
@@ -53,8 +32,7 @@ const int FONT_PREVIEW_TOP_MARGIN = FONT_NAME_HEIGHT + FONT_NAME_TOP_MARGIN;
 const int FONT_PREVIEW_BOTTOM_MARGIN = 10;
 
 DFontPreviewItemDelegate::DFontPreviewItemDelegate(QAbstractItemView *parent)
-    : QStyledItemDelegate(parent)
-    , m_parentView(qobject_cast<DFontPreviewListView *>(parent))
+    : QStyledItemDelegate(parent), m_parentView(qobject_cast<DFontPreviewListView *>(parent))
 {
     parent->viewport()->installEventFilter(this);
 }
@@ -87,7 +65,6 @@ void DFontPreviewItemDelegate::paintForegroundCheckBox(QPainter *painter, const 
     DApplication::style()->drawPrimitive(QStyle::PE_IndicatorCheckBox, &checkBoxOption, painter, &checkBox);
 }
 
-
 /*************************************************************************
  <Function>      paintForegroundFontName
  <Description>   绘制字体预览列表中的字体名字
@@ -117,7 +94,7 @@ void DFontPreviewItemDelegate::paintForegroundFontName(QPainter *painter, const 
     QRect fontNameRect = QRect(option.rect.x() + FONT_NAME_LEFT_MARGIN, option.rect.y() + FONT_NAME_TOP_MARGIN,
                                option.rect.width() - 20, FONT_NAME_HEIGHT);
 
-    QFontMetrics mt(nameFont);//特殊图案字体下截断字体名称/*UT000539*/
+    QFontMetrics mt(nameFont);   //特殊图案字体下截断字体名称/*UT000539*/
     QString elidedText = mt.elidedText(itemData.strFontName, Qt::ElideRight, option.rect.width() - 120);
     painter->drawText(fontNameRect, Qt::AlignLeft | Qt::AlignVCenter, elidedText);
 }
@@ -150,7 +127,7 @@ void DFontPreviewItemDelegate::paintForegroundCollectIcon(QPainter *painter, con
     }
 
     //fix bug-14120 -> clear hover state, if mouse leaved
-//    iconStatus = (false == option.state.testFlag(QStyle::State_MouseOver)) ? QString("normal") : iconStatus;
+    //    iconStatus = (false == option.state.testFlag(QStyle::State_MouseOver)) ? QString("normal") : iconStatus;
 
     QString strImageSrc;
     QPixmap pixmap;
@@ -171,25 +148,24 @@ void DFontPreviewItemDelegate::paintForegroundCollectIcon(QPainter *painter, con
 
     // 针对鼠标按下时进行处理
     if (IconPress == status) {
-        QImage originImage = pixmap.toImage();  // 将原始图片转为image
+        QImage originImage = pixmap.toImage();   // 将原始图片转为image
         int iWidth = originImage.width();
         int iHeight = originImage.height();
 
-        QImage tempImage(iWidth, iHeight, QImage::Format_ARGB32); // 创建临时image
+        QImage tempImage(iWidth, iHeight, QImage::Format_ARGB32);   // 创建临时image
 
         // 对每一个像素点进行设置RGBA
         for (int w = 0; w < iWidth; ++w) {
             for (int h = 0; h < iHeight; ++h) {
-                bgColor.setAlpha(qAlpha(originImage.pixel(w, h)));    // 替换RGB
-                tempImage.setPixel(w, h, bgColor.rgba());             // 设置色值
+                bgColor.setAlpha(qAlpha(originImage.pixel(w, h)));   // 替换RGB
+                tempImage.setPixel(w, h, bgColor.rgba());   // 设置色值
             }
         }
 
-        painter->drawPixmap(collectIconRealRect, QPixmap::fromImage(tempImage));    // 使用新图片绘制
+        painter->drawPixmap(collectIconRealRect, QPixmap::fromImage(tempImage));   // 使用新图片绘制
     } else {
         painter->drawPixmap(collectIconRealRect, pixmap);   // 使用原始图片绘制
     }
-
 }
 
 /*************************************************************************
@@ -225,12 +201,12 @@ QPoint DFontPreviewItemDelegate::adjustPreviewFontBaseLinePoint(const QRect &fon
 {
     Q_UNUSED(previewFontMetrics);
     /* 部分不规则的字体无法获取到有效QFontMetrics::height(),即 QFontMetrics::ascent(), QFontMetrics::descent()无效. */
-//    int baseLineY = 0;
-//    if (previewFontMetrics.ascent() == previewFontMetrics.descent()) {
-//        baseLineY = fontPreviewRect.bottom() - fontPreviewRect.height() / 2;
-//    } else {
-//        baseLineY = fontPreviewRect.bottom() - (fontPreviewRect.height() - previewFontMetrics.height()) / 2;
-//    }
+    //    int baseLineY = 0;
+    //    if (previewFontMetrics.ascent() == previewFontMetrics.descent()) {
+    //        baseLineY = fontPreviewRect.bottom() - fontPreviewRect.height() / 2;
+    //    } else {
+    //        baseLineY = fontPreviewRect.bottom() - (fontPreviewRect.height() - previewFontMetrics.height()) / 2;
+    //    }
     /* Bug#20555 调整descent值，用来调整预览效果 UT000591 */
     int commonFontDescent = fontPreviewRect.height() / 5;
     int baseLineX = fontPreviewRect.x();
@@ -268,7 +244,7 @@ void DFontPreviewItemDelegate::paintForegroundPreviewFont(QPainter *painter, con
         return;
 
     QRect fontPreviewRect = adjustPreviewRect(option.rect);
-//    painter->setPen(QPen(option.palette.color(DPalette::Text)));
+    //    painter->setPen(QPen(option.palette.color(DPalette::Text)));
     //SP3--禁用置灰(539)
     QColor color(option.palette.color(DPalette::Text));
     if (!isEnabled)
@@ -365,7 +341,8 @@ void DFontPreviewItemDelegate::paintTabFocusBackground(QPainter *painter, const 
     setPaintPath(bgRect, path3, 3, 3, 6);
 
     DPalette::ColorGroup cg = (option.state & QStyle::State_Enabled)
-                              ? DPalette::Normal : DPalette::Disabled;
+            ? DPalette::Normal
+            : DPalette::Disabled;
     if (cg == DPalette::Normal && !(option.state & QStyle::State_Active)) {
         cg = DPalette::Inactive;
     }
@@ -415,7 +392,6 @@ void DFontPreviewItemDelegate::setPaintPath(const QRect &bgRect, QPainterPath &p
     path.arcTo(QRect(QPoint(path_bottomRight - QPoint(radius * 2, radius * 2)), QSize(radius * 2, radius * 2)), 270, 90);
 }
 
-
 /*************************************************************************
  <Function>    paint
  <Description>   代理的绘画函数
@@ -439,7 +415,8 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
         fontPixelSize = (fontPixelSize <= 0) ? FTM_DEFAULT_PREVIEW_FONTSIZE : fontPixelSize;
         FontDelegateData dData = index.data(FontFamilyStylePreviewRole).value<FontDelegateData>();
         QString fontPreviewContent = index.data(FontPreviewRole).toString().isEmpty()
-                                     ? dData.ownPreview : index.data(FontPreviewRole).toString();
+                ? dData.ownPreview
+                : index.data(FontPreviewRole).toString();
         if ((fontPreviewContent.isEmpty() || 0 == fontPixelSize)) {
             painter->restore();
             return;

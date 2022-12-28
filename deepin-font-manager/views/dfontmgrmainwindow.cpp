@@ -30,7 +30,6 @@
 #include <DTitlebar>
 #include <DMessageManager>
 #include <DDesktopServices>
-#include <DWindowOptionButton>
 
 #include <QFileSystemWatcher>
 #include <QDBusConnection>
@@ -241,8 +240,6 @@ void DFontMgrMainWindow::initConnections()
 
     //安装结束后刷新字体列表
     connect(m_signalManager, &SignalManager::finishFontInstall, this, &DFontMgrMainWindow::onFontInstallFinished);
-    //安装结束后刷新字体列表
-    connect(m_signalManager, &SignalManager::refreshUserFont, this, &DFontMgrMainWindow::onRefreshUserFont);
     //字体验证框弹出
     connect(m_signalManager, &SignalManager::popInstallErrorDialog, this, [ = ] {
         m_isPopInstallErrorDialog = true;
@@ -621,6 +618,7 @@ void DFontMgrMainWindow::initTileFrame()
     d->addFontButton = new DIconButton(DStyle::StandardPixmap::SP_IncreaseElement, this);
     d->addFontButton->setFixedSize(QSize(FTM_ADDBUTTON_PATAM, FTM_ADDBUTTON_PATAM));
     d->addFontButton->setFlat(false);
+    d->addFontButton->setFocusPolicy(Qt::FocusPolicy::NoFocus);
 
     titleActionAreaLayout->addWidget(d->addFontButton);
 
@@ -887,7 +885,6 @@ void DFontMgrMainWindow::initStateBar()
     d->fontScaleSlider->setMaximum(MAX_FONT_SIZE);
     //设置初始显示字体大小
     d->fontScaleSlider->setValue(DEFAULT_FONT_SIZE);
-    setTabOrder(d->textInputEdit->lineEdit(), d->fontScaleSlider);
 
     d->fontSizeLabel = new DLabel(this);
     QFont fontScaleFont;
@@ -967,7 +964,7 @@ void DFontMgrMainWindow::handleAddFontEvent()
     if (mode != QDialog::Accepted) {
         //SP3--添加字体按钮取消安装后恢复选中状态
         if (hasTabFocus) {
-            QTimer::singleShot(100, [ = ] {
+            QTimer::singleShot(10, [ = ] {
                 d->addFontButton->setFocus(Qt::TabFocusReason);
             });
         }
@@ -1076,7 +1073,7 @@ bool DFontMgrMainWindow::installFont(const QStringList &files, bool isAddBtnHasT
 
     QStringList installFiles = checkFilesSpace(files);
     if (installFiles.count() == 0) {
-        onShowMessage(files.count(), false);
+        onShowMessage(0);
         return false;
     }
 
@@ -1445,11 +1442,6 @@ void DFontMgrMainWindow::onFontInstallFinished(const QStringList &fileList)
     m_installOutFileList = fileList;
 }
 
-void DFontMgrMainWindow::onRefreshUserFont()
-{
-    afterAllStartup();
-}
-
 /*************************************************************************
  <Function>      onUninstallFcCacheFinish
  <Description>   字体删除fc-cache操作后恢复标志位
@@ -1619,27 +1611,19 @@ void DFontMgrMainWindow::onLoadStatus(int type)
  <Return>        null           Description:null
  <Note>          null
 *************************************************************************/
-void DFontMgrMainWindow::onShowMessage(int totalCount, bool success)
+void DFontMgrMainWindow::onShowMessage(int successCount)
 {
     QString message;
 
-    if (success) {
-        if (totalCount == 1) {
-            message = DApplication::translate("DFontMgrMainWindow", "%1 font installed").arg(totalCount);
-        } else if (totalCount > 1) {
-            message = DApplication::translate("DFontMgrMainWindow", "%1 fonts installed").arg(totalCount);
-        }
-        DMessageManager::instance()->sendMessage(this, QIcon("://ok.svg"), message);
-    } else {
-        if (totalCount == 1) {
-            message = DApplication::translate("DFontMgrMainWindow", "Failed to install %1 font. There is not enough disk space.").arg(totalCount);
-        } else if (totalCount > 1) {
-            message = DApplication::translate("DFontMgrMainWindow", "Failed to install %1 fonts. There is not enough disk space.").arg(totalCount);
-        }
-        DMessageManager::instance()->sendMessage(this, QIcon("://exception-logo.svg"), message);
+    if (successCount == 1) {
+        message = DApplication::translate("DFontMgrMainWindow", "%1 font installed").arg(successCount);
+    } else if (successCount > 1) {
+        message = DApplication::translate("DFontMgrMainWindow", "%1 fonts installed").arg(successCount);
     }
 
-    PerformanceMonitor::installFontFinish(totalCount);
+    DMessageManager::instance()->sendMessage(this, QIcon("://ok.svg"), message);
+
+    PerformanceMonitor::installFontFinish(successCount);
 
     qDebug() << __FUNCTION__ << " pop toast message " << message << " total (ms) :" << QDateTime::currentMSecsSinceEpoch() - m_installTm;
 }
@@ -2648,7 +2632,7 @@ bool DFontMgrMainWindow::eventFilter(QObject *obj, QEvent *event)
     D_D(DFontMgrMainWindow);
     if (event->type() == QEvent::KeyPress) {
         QKeyEvent *keyEvent = dynamic_cast<QKeyEvent *>(event);
-            if (keyEvent->key() == Qt::Key_Tab) {
+        if (keyEvent->key() == Qt::Key_Tab) {
             if (obj == d->searchFontEdit->lineEdit()) {
                 setNextTabFocus(obj);
                 //下个控件为titlebar时需要多执行一次keyPressEvent
@@ -2674,37 +2658,11 @@ bool DFontMgrMainWindow::eventFilter(QObject *obj, QEvent *event)
         return QWidget::eventFilter(obj, event);
     }
 
-    if (event->type() == QEvent::WindowDeactivate && obj == titlebar()) {
-        DWindowOptionButton *pWindowCloseButton = titlebar()->findChild<DWindowOptionButton *>("DTitlebarDWindowOptionButton");
-        if (pWindowCloseButton->hasFocus()) {
-            m_focusInMenu = true;
-        }
-    }
-
-    if (event->type() == QEvent::WindowActivate && m_focusInMenu) {
-        m_focusInMenu = false;
-        DWindowOptionButton *pWindowCloseButton = titlebar()->findChild<DWindowOptionButton *>("DTitlebarDWindowOptionButton");
-        pWindowCloseButton->setFocus(Qt::TabFocusReason);
-    }
-
-    if (event->type() == QEvent::KeyRelease) {
-        DWindowCloseButton *pWindowCloseButton = titlebar()->findChild<DWindowCloseButton *>("DTitlebarDWindowCloseButton");
-        if (pWindowCloseButton->hasFocus()) {
-            setNextTabFocus(obj);
-        }
-    }
-
     if (event->type() == QEvent::FocusOut) {
         mainwindowFocusOutCheck(obj, event);
     }
 
     if (event->type() == QEvent::FocusIn) {
-        if (obj == d->searchFontEdit->lineEdit() && m_lastIsCloseBtn) {
-            m_lastIsCloseBtn = false;
-            d->searchFontEdit->lineEdit()->clear();
-            setNextTabFocus(d->leftSiderBar);
-            return true;
-        }
         mainwindowFocusInCheck(obj, event);
     }
 
@@ -2739,12 +2697,12 @@ bool DFontMgrMainWindow::eventFilter(QObject *obj, QEvent *event)
 void DFontMgrMainWindow::setNextTabFocus(QObject *obj)
 {
     D_D(DFontMgrMainWindow);
-    DWindowCloseButton *pWindowCloseButton = titlebar()->findChild<DWindowCloseButton *>("DTitlebarDWindowCloseButton");
     //因setTabOrder无法实现功能，所以手动设置顺序
     if (obj == d->addFontButton) {
         d->searchFontEdit->lineEdit()->setFocus(Qt::TabFocusReason);
     } else if (obj == d->searchFontEdit->lineEdit()) {
         // 焦点切换，搜索框到右上角按钮区域 buttonArea
+        DWindowCloseButton *pWindowCloseButton = titlebar()->findChild<DWindowCloseButton *>("DTitlebarDWindowCloseButton");
         if (nullptr != pWindowCloseButton) {
             qobject_cast<QWidget *>(pWindowCloseButton->parent())->setFocus(Qt::TabFocusReason);
         }
@@ -2767,9 +2725,6 @@ void DFontMgrMainWindow::setNextTabFocus(QObject *obj)
     } /*else if (obj == d->fontScaleSlider) {
         d->addFontButton->setFocus(Qt::TabFocusReason);
     }*/
-    else if (obj == titlebar() && pWindowCloseButton->hasFocus()) {
-        m_lastIsCloseBtn = true;
-    }
     //如果点击设置了无字体页面焦点，则Tab切换至添加字体按钮
     else {
         d->addFontButton->setFocus(Qt::TabFocusReason);

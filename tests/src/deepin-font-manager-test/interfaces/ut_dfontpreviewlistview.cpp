@@ -228,7 +228,7 @@ TEST_F(TestDFontPreviewListView, checkOnItemRemovedSys)
 }
 
 
-INSTANTIATE_TEST_CASE_P(HandleTrueReturn, TestUpdateCurrentFontGroup, testing::Values(0, 1, 2, 3, 4, 5, 6));
+//INSTANTIATE_TEST_CASE_P(HandleTrueReturn, TestUpdateCurrentFontGroup, testing::Values(0, 1, 2, 3, 4, 5, 6));
 
 
 TEST_F(TestDFontPreviewListView, checkCount)

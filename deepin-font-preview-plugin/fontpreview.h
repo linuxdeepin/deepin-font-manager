@@ -8,34 +8,34 @@
 
 #include <QObject>
 
-#include "dfmfilepreview.h"
-#include "durl.h"
+//#include "dfmfilepreview.h"
+//#include "durl.h"
 #include "dfontwidget.h"
 
-DFM_BEGIN_NAMESPACE
+//DFM_BEGIN_NAMESPACE
 
-class FontPreview : public DFMFilePreview
+class FontPreview /*: public DFMFilePreview*/: public QObject
 {
     Q_OBJECT
 
 public:
     explicit FontPreview(QObject *parent = nullptr);
-    ~FontPreview()Q_DECL_OVERRIDE;
+    ~FontPreview()/*Q_DECL_OVERRIDE*/;
 
-    DUrl fileUrl() const Q_DECL_OVERRIDE;
-    bool setFileUrl(const DUrl &url) Q_DECL_OVERRIDE;
+//    DUrl fileUrl() const Q_DECL_OVERRIDE;
+//    bool setFileUrl(const DUrl &url) Q_DECL_OVERRIDE;
 
-    QWidget *contentWidget() const Q_DECL_OVERRIDE;
+//    QWidget *contentWidget() const Q_DECL_OVERRIDE;
 
-    QString title() const Q_DECL_OVERRIDE;
+//    QString title() const Q_DECL_OVERRIDE;
 
 private:
-    DUrl m_url;
+//    DUrl m_url;
     QString m_title;
 
     DFontWidget *m_previewWidget;
 };
 
-DFM_END_NAMESPACE
+//DFM_END_NAMESPACE
 
 #endif // FONTPREVIEWPLUGIN_H

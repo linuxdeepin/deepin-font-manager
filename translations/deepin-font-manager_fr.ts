@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="fr">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="fr">
 <context>
     <name>Category</name>
     <message>
@@ -75,11 +77,11 @@
     <name>DFHandleTTCDialog</name>
     <message>
         <source>Apply to all selected font families</source>
-        <translation>Appliquer à toutes les familles de polices sélectionnées</translation>
+        <translation type="unfinished">Appliquer à toutes les familles de polices sélectionnées</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Annuler</translation>
+        <translation type="unfinished">Annuler</translation>
     </message>
 </context>
 <context>
@@ -124,6 +126,10 @@
         <translation>Ctrl+O</translation>
     </message>
     <message>
+        <source>Fonts</source>
+        <translation>Polices</translation>
+    </message>
+    <message>
         <source>Ctrl+=</source>
         <translation>Ctrl+=</translation>
     </message>
@@ -151,13 +157,12 @@
         <source>CTRL+I</source>
         <translation>CTRL+I</translation>
     </message>
+</context>
+<context>
+    <name>DFontWidget</name>
     <message>
-        <source>Failed to install %1 font. There is not enough disk space.</source>
-        <translation>Échec de l&apos;installation de la police %1. Il n&apos;y a pas assez d&apos;espace disque.</translation>
-    </message>
-    <message>
-        <source>Failed to install %1 fonts. There is not enough disk space.</source>
-        <translation>Impossible d&apos;installer les polices %1. L&apos;espace disque est insuffisant.</translation>
+        <source>Broken file</source>
+        <translation>Fichier corrompu</translation>
     </message>
 </context>
 <context>
@@ -221,10 +226,17 @@
     </message>
 </context>
 <context>
+    <name>Font</name>
+    <message>
+        <source>Don&apos;t let your dreams be dreams</source>
+        <translation>Ne laissez pas vos rêves devenir des rêves</translation>
+    </message>
+</context>
+<context>
     <name>FontDetailDailog</name>
     <message>
         <source>Basic info</source>
-        <translation>Info de base</translation>
+        <translation>Informations de base</translation>
     </message>
     <message>
         <source>Style</source>
