@@ -1160,6 +1160,14 @@ void DFontMgrMainWindow::installFontFromSys(const QStringList &files)
             return;
         } else if (m_isPopInstallErrorDialog) {
             emit m_signalManager->installDuringPopErrorDialog(reduceSameFiles);
+        } else if (m_fIsInstalling || m_fontLoadingSpinner->isVisible()) {
+            qDebug() << "Font is installing , save installation task and reinstall later";
+            for(QString it: reduceSameFiles) {
+                if (!m_waitForInstall.contains(it)) {
+                    m_waitForInstall.append(it);
+                }
+            }
+            return;
         } else {
             installFont(reduceSameFiles, false);
         }
@@ -1739,6 +1747,7 @@ void DFontMgrMainWindow::onInstallWindowDestroyed(QObject *)
     //文件复制结束后,将之前移除的文件监视器添加回来
     emit  DFontPreviewListDataThread::instance()->requestAutoDirWatchers();
     m_fIsInstalling = false;
+    waitForInsert();
     qDebug() << __FUNCTION__ << "end";
 }
 
@@ -2363,6 +2372,7 @@ void DFontMgrMainWindow::hideSpinner()
     //更新选中位置和设置滚动
     m_fontPreviewListView->scrollWithTheSelected();
     m_fontPreviewListView->refreshFocuses();
+    waitForInsert();
 }
 
 void DFontMgrMainWindow::afterAllStartup()
