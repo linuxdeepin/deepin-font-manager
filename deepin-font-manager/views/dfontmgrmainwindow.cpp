@@ -1162,7 +1162,7 @@ void DFontMgrMainWindow::installFontFromSys(const QStringList &files)
             emit m_signalManager->installDuringPopErrorDialog(reduceSameFiles);
         } else if (m_fIsInstalling || m_fontLoadingSpinner->isVisible()) {
             qDebug() << "Font is installing , save installation task and reinstall later";
-            for(QString it: reduceSameFiles) {
+            for (QString &it: reduceSameFiles) {
                 if (!m_waitForInstall.contains(it)) {
                     m_waitForInstall.append(it);
                 }
