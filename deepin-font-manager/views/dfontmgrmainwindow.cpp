@@ -283,6 +283,10 @@ void DFontMgrMainWindow::initConnections()
     connect(m_fontPreviewListView, &DFontPreviewListView::deleteFinished, this, &DFontMgrMainWindow::setDeleteFinish);
     connect(m_fontPreviewListView, &DFontPreviewListView::loadUserAddFont, this, &DFontMgrMainWindow::afterAllStartup);
     connect(m_fontPreviewListView, &DFontPreviewListView::signalHandleDisableTTC, this, &DFontMgrMainWindow::onHandleDisableTTC);
+
+#ifdef DTKWIDGET_CLASS_DSizeMode
+    connect(DGuiApplicationHelper::instance(),&DGuiApplicationHelper::sizeModeChanged,this, &DFontMgrMainWindow::slotSizeModeChanged);
+#endif
 }
 
 /*************************************************************************
@@ -590,8 +594,6 @@ void DFontMgrMainWindow::initTileBar()
     d->toolBarMenu = DFontMenuManager::getInstance()->createToolBarSettingsMenu();
     titlebar()->setMenu(d->toolBarMenu);
     titlebar()->setContentsMargins(0, 0, 0, 0);
-
-    titlebar()->setFixedHeight(FTM_TITLE_FIXED_HEIGHT);
 }
 
 /*************************************************************************
@@ -611,15 +613,13 @@ void DFontMgrMainWindow::initTileFrame()
 
     //Action area add a extra space
     d->titleActionArea = new QWidget(this);
-    d->titleActionArea->setFixedSize(QSize(FTM_TITLE_FIXED_WIDTH, FTM_TITLE_FIXED_HEIGHT));
 
     QHBoxLayout *titleActionAreaLayout = new QHBoxLayout(d->titleActionArea);
     titleActionAreaLayout->setSpacing(0);
-    titleActionAreaLayout->setContentsMargins(0, 0, 0, 0);
+    titleActionAreaLayout->setContentsMargins(5, 0, 0, 0);
 
     // Add Font
     d->addFontButton = new DIconButton(DStyle::StandardPixmap::SP_IncreaseElement, this);
-    d->addFontButton->setFixedSize(QSize(FTM_ADDBUTTON_PATAM, FTM_ADDBUTTON_PATAM));
     d->addFontButton->setFlat(false);
 
     titleActionAreaLayout->addWidget(d->addFontButton);
@@ -627,7 +627,7 @@ void DFontMgrMainWindow::initTileFrame()
     // Search font
     d->searchFontEdit = new DSearchEdit(this);
     DFontSizeManager::instance()->bind(d->searchFontEdit, DFontSizeManager::T6);
-    d->searchFontEdit->setFixedSize(QSize(FTM_SEARCH_BAR_W, FTM_SEARCH_BAR_H));
+    d->searchFontEdit->setFixedWidth(FTM_SEARCH_BAR_W);
     d->searchFontEdit->setPlaceHolder(DApplication::translate("SearchBar", "Search"));
 
     titlebar()->addWidget(d->titleActionArea, Qt::AlignLeft | Qt::AlignVCenter);
@@ -1162,7 +1162,7 @@ void DFontMgrMainWindow::installFontFromSys(const QStringList &files)
             emit m_signalManager->installDuringPopErrorDialog(reduceSameFiles);
         } else if (m_fIsInstalling || m_fontLoadingSpinner->isVisible()) {
             qDebug() << "Font is installing , save installation task and reinstall later";
-            for (QString &it: reduceSameFiles) {
+            for (QString &it : reduceSameFiles) {
                 if (!m_waitForInstall.contains(it)) {
                     m_waitForInstall.append(it);
                 }
@@ -1979,6 +1979,25 @@ void DFontMgrMainWindow::onHandleDisableTTC(const QString &filePath, bool &isEna
     isAapplyToAll = confirmDelDlg->getAapplyToAll();
 }
 
+#ifdef DTKWIDGET_CLASS_DSizeMode
+void DFontMgrMainWindow::slotSizeModeChanged(DGuiApplicationHelper::SizeMode sizeMode)
+{
+    // update search edit position
+    D_D(DFontMgrMainWindow);
+    int w = this->rect().width();
+    QPoint point = d->searchFontEdit->pos();
+    int x = point.x();
+    if (w >= 760) {
+        x = (w - FTM_SEARCH_BAR_W) / 2;
+    } else {
+        x = (760 - FTM_SEARCH_BAR_W) / 2 - (760 - w);
+    }
+    point.setX(x);
+    point.setY((titlebar()->height() - d->searchFontEdit->height()) / 2);
+    d->searchFontEdit->move(point);
+}
+#endif
+
 /*************************************************************************
  <Function>      delCurrentFont
  <Description>   字体删除处理函数
@@ -2175,14 +2194,13 @@ void DFontMgrMainWindow::resizeEvent(QResizeEvent *event)
     int w = event->size().width();
     QPoint point = d->searchFontEdit->pos();
     int x = point.x();
-    if(w >= 760){
+    if (w >= 760) {
         x = (w - FTM_SEARCH_BAR_W) / 2;
-    }
-    else {
+    } else {
         x = (760 - FTM_SEARCH_BAR_W) / 2 - (760 - w);
     }
     point.setX(x);
-    point.setY(3); // titlebar()->size(): 50px searchFontEdit->size(): 44
+    point.setY((titlebar()->height() - d->searchFontEdit->height()) / 2); // titlebar()->size(): 50px searchFontEdit->size(): 44
     d->searchFontEdit->move(point);
 
     DMainWindow::resizeEvent(event);
@@ -2658,7 +2676,7 @@ bool DFontMgrMainWindow::eventFilter(QObject *obj, QEvent *event)
     D_D(DFontMgrMainWindow);
     if (event->type() == QEvent::KeyPress) {
         QKeyEvent *keyEvent = dynamic_cast<QKeyEvent *>(event);
-            if (keyEvent->key() == Qt::Key_Tab) {
+        if (keyEvent->key() == Qt::Key_Tab) {
             if (obj == d->searchFontEdit->lineEdit()) {
                 setNextTabFocus(obj);
                 //下个控件为titlebar时需要多执行一次keyPressEvent
