@@ -20,6 +20,7 @@
 #include <DHorizontalLine>
 #include <DMainWindow>
 #include <DFrame>
+#include <DGuiApplicationHelper>
 
 #include <QSettings>
 #include <QDir>
@@ -318,6 +319,10 @@ public slots:
     void onFontManagerFinished();
     //禁用/启用ttc里的某个字体
     void onHandleDisableTTC(const QString &filePath, bool &isEnable, bool &isConfirm, bool &isAapplyToAll);
+#ifdef DTKWIDGET_CLASS_DSizeMode
+    //紧凑模式切换
+    void slotSizeModeChanged(DGuiApplicationHelper::SizeMode sizeMode);
+#endif
 
 protected:
     DFontPreviewListView *m_fontPreviewListView;
