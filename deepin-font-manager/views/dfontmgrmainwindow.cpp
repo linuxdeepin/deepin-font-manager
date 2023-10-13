@@ -40,6 +40,13 @@
 #include <QFocusEvent>
 #include <QKeyEvent>
 #include <QMouseEvent>
+#include <QMimeData>
+#include <QJsonObject>
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QProcess>
+#include <QStorageInfo>
+#include <QStandardPaths>
 
 /*************************************************************************
  <Function>      DFontMgrMainWindow
