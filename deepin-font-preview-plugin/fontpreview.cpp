@@ -5,10 +5,19 @@
 
 #include "fontpreview.h"
 
+#ifdef DFM_BASE
+DFMBASE_BEGIN_NAMESPACE
+#else
 DFM_BEGIN_NAMESPACE
+#endif
 
+#ifdef DFM_BASE
+FontPreview::FontPreview(QObject *parent):
+    AbstractBasePreview(parent),
+#else
 FontPreview::FontPreview(QObject *parent):
     DFMFilePreview(parent),
+#endif
     m_previewWidget(new DFontWidget)
 {
 }
@@ -22,20 +31,6 @@ FontPreview::~FontPreview()
 }
 
 /*************************************************************************
- <Function>      fileUrl
- <Description>   获取文件的url路径
- <Author>        null
- <Input>
-    <param1>     null            Description:null
- <Return>        DUrl            Description:返回字体文件的url路径
- <Note>          null
-*************************************************************************/
-DUrl FontPreview::fileUrl() const
-{
-    return m_url;
-}
-
-/*************************************************************************
  <Function>      setFileUrl
  <Description>   设置url路径
  <Author>        null
@@ -44,7 +39,11 @@ DUrl FontPreview::fileUrl() const
  <Return>        bool                Description:是否设置成功
  <Note>          null
 *************************************************************************/
+#ifdef DFM_BASE
+bool FontPreview::setFileUrl(const QUrl &url)
+#else
 bool FontPreview::setFileUrl(const DUrl &url)
+#endif
 {
     if (m_url == url)
         return true;
@@ -68,15 +67,33 @@ bool FontPreview::setFileUrl(const DUrl &url)
     return true;
 }
 
-///*************************************************************************
-// <Function>      contentWidget
-// <Description>   获取预览控件
-// <Author>        null
-// <Input>
-//    <param1>     null                 Description:null
-// <Return>        QWidget *            Description:预览控件的指针
-// <Note>          null
-//*************************************************************************/
+/*************************************************************************
+ <Function>      fileUrl
+ <Description>   获取文件的url路径
+ <Author>        null
+ <Input>
+    <param1>     null            Description:null
+ <Return>        DUrl            Description:返回字体文件的url路径
+ <Note>          null
+*************************************************************************/
+#ifdef DFM_BASE
+QUrl FontPreview::fileUrl() const
+#else
+DUrl FontPreview::fileUrl() const
+#endif
+{
+    return m_url;
+}
+
+/*************************************************************************
+ <Function>      contentWidget
+ <Description>   获取预览控件
+ <Author>        null
+ <Input>
+    <param1>     null                 Description:null
+ <Return>        QWidget *            Description:预览控件的指针
+ <Note>          null
+*************************************************************************/
 QWidget *FontPreview::contentWidget() const
 {
     return m_previewWidget;
@@ -96,4 +113,9 @@ QString FontPreview::title() const
     return m_title;
 }
 
+#ifdef DFM_BASE
+DFMBASE_END_NAMESPACE
+#else
 DFM_END_NAMESPACE
+#endif
+
