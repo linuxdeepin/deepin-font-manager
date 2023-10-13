@@ -43,14 +43,18 @@ const int CHECKBOX_SIZE = 20;
 const int COLLECT_ICON_SIZE = 24;
 const int COLLECT_ICON_RIGHT_MARGIN = 19;
 const int COLLECT_ICON_TOP_MARGIN = 10;
+const int COLLECT_ICON_TOP_COMPACT_MARGIN = 1;
 
 const int FONT_NAME_HEIGHT = 30;
+const int FONT_NAME_COMPACT_HEIGHT = 21;
 const int FONT_NAME_LEFT_MARGIN = 50;
 const int FONT_NAME_TOP_MARGIN = 3;
 const int FONT_PREVIEW_LEFT_MARGIN = 50;
 const int FONT_PREVIEW_RIGHT_MARGIN = COLLECT_ICON_SIZE + COLLECT_ICON_RIGHT_MARGIN;
 const int FONT_PREVIEW_TOP_MARGIN = FONT_NAME_HEIGHT + FONT_NAME_TOP_MARGIN;
+const int FONT_PREVIEW_TOP_COMPACT_MARGIN = FONT_NAME_COMPACT_HEIGHT + 5;
 const int FONT_PREVIEW_BOTTOM_MARGIN = 10;
+const int FONT_PREVIEW_BOTTOM_COMPACT_MARGIN = 5;
 
 DFontPreviewItemDelegate::DFontPreviewItemDelegate(QAbstractItemView *parent)
     : QStyledItemDelegate(parent)
@@ -77,6 +81,12 @@ void DFontPreviewItemDelegate::paintForegroundCheckBox(QPainter *painter, const 
     int checkBoxHeight = CHECKBOX_SIZE - 4;
 
     QRect rect = QRect(option.rect.x() + 25, option.rect.y() + 10, checkBoxWidth, checkBoxHeight);
+
+#ifdef DTKWIDGET_CLASS_DSizeMode
+    if (DGuiApplicationHelper::instance()->sizeMode() == DGuiApplicationHelper::SizeMode::CompactMode) {
+        rect = QRect(option.rect.x() + 25, option.rect.y() + 6, checkBoxWidth, checkBoxHeight);
+    }
+#endif
 
     QStyleOptionButton checkBoxOption;
     checkBoxOption.state |= QStyle::State_Enabled;
@@ -116,6 +126,11 @@ void DFontPreviewItemDelegate::paintForegroundFontName(QPainter *painter, const 
 
     QRect fontNameRect = QRect(option.rect.x() + FONT_NAME_LEFT_MARGIN, option.rect.y() + FONT_NAME_TOP_MARGIN,
                                option.rect.width() - 20, FONT_NAME_HEIGHT);
+#ifdef DTKWIDGET_CLASS_DSizeMode
+    if (DGuiApplicationHelper::instance()->sizeMode() == DGuiApplicationHelper::SizeMode::CompactMode) {
+        fontNameRect.setHeight(FONT_NAME_COMPACT_HEIGHT);
+    }
+#endif
 
     QFontMetrics mt(nameFont);//特殊图案字体下截断字体名称/*UT000539*/
     QString elidedText = mt.elidedText(itemData.strFontName, Qt::ElideRight, option.rect.width() - 120);
@@ -165,6 +180,14 @@ void DFontPreviewItemDelegate::paintForegroundCollectIcon(QPainter *painter, con
     QRect collectIconRealRect = QRect(option.rect.right() - COLLECT_ICON_SIZE - COLLECT_ICON_RIGHT_MARGIN,
                                       option.rect.top() + COLLECT_ICON_TOP_MARGIN,
                                       COLLECT_ICON_SIZE, COLLECT_ICON_SIZE);
+#ifdef DTKWIDGET_CLASS_DSizeMode
+    if (DGuiApplicationHelper::instance()->sizeMode() == DGuiApplicationHelper::SizeMode::CompactMode) {
+        collectIconRealRect = QRect(option.rect.right() - COLLECT_ICON_SIZE - COLLECT_ICON_RIGHT_MARGIN,
+                                              option.rect.top() + COLLECT_ICON_TOP_COMPACT_MARGIN,
+                                              COLLECT_ICON_SIZE, COLLECT_ICON_SIZE);
+    }
+#endif
+
 
     // 获取系统活动色
     QColor bgColor = Dtk::Gui::DGuiApplicationHelper::instance()->applicationPalette().highlight().color();
@@ -208,6 +231,13 @@ QRect DFontPreviewItemDelegate::adjustPreviewRect(const QRect bgRect) const
     int fontRectWidth = bgRect.width() - FONT_PREVIEW_LEFT_MARGIN - FONT_PREVIEW_RIGHT_MARGIN;
     fontPreviewRect = QRect(bgRect.x() + FONT_PREVIEW_LEFT_MARGIN, bgRect.y() + FONT_PREVIEW_TOP_MARGIN,
                             fontRectWidth, bgRect.height() - FONT_PREVIEW_TOP_MARGIN - FONT_PREVIEW_BOTTOM_MARGIN);
+
+#ifdef DTKWIDGET_CLASS_DSizeMode
+    if (DGuiApplicationHelper::instance()->sizeMode() == DGuiApplicationHelper::SizeMode::CompactMode) {
+        fontPreviewRect = QRect(bgRect.x() + FONT_PREVIEW_LEFT_MARGIN, bgRect.y() + FONT_PREVIEW_TOP_COMPACT_MARGIN,
+                                fontRectWidth, bgRect.height() - FONT_PREVIEW_TOP_COMPACT_MARGIN - FONT_PREVIEW_BOTTOM_COMPACT_MARGIN);
+    }
+#endif
     return fontPreviewRect;
 }
 
@@ -474,6 +504,12 @@ QSize DFontPreviewItemDelegate::sizeHint(const QStyleOptionViewItem &option, con
     int fontSize = (false == index.data(FontSizeRole).isNull()) ? index.data(FontSizeRole).toInt() : FTM_DEFAULT_PREVIEW_FONTSIZE;
 
     int itemHeight = FTM_PREVIEW_ITEM_HEIGHT;
+#ifdef DTKWIDGET_CLASS_DSizeMode
+    if (DGuiApplicationHelper::instance()->sizeMode() == DGuiApplicationHelper::SizeMode::CompactMode) {
+        itemHeight = FTM_PREVIEW_ITEM_COMPACT_HEIGHT;
+    }
+#endif
+
     if (fontSize > 30) {
         itemHeight += static_cast<int>(((fontSize - 30) + 1) * 1.5);
     }

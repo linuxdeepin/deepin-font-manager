@@ -238,11 +238,11 @@ QLayout *DFDeleteDialog::initBottomButtons()
     layout->setContentsMargins(0, 0, 0, 0);
 
     m_cancelBtn = new DPushButton(this);
-    m_cancelBtn->setFixedSize(170, 36);
+    m_cancelBtn->setFixedWidth(170);
     m_cancelBtn->setText(DApplication::translate("DFDeleteDialog", "Cancel", "button"));
 
     m_confirmBtn = new DWarningButton(this);
-    m_confirmBtn->setFixedSize(170, 36);
+    m_confirmBtn->setFixedWidth(170);
     m_confirmBtn->setText(DApplication::translate("DeleteConfirmDailog", "Delete", "button"));
 
     DVerticalLine *verticalSplite = new DVerticalLine(this);

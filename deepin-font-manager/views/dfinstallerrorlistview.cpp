@@ -60,9 +60,9 @@ void DFInstallErrorListDelegate::drawCheckBox(QPainter *painter, DFInstallErrorI
         checkBoxOption.state |= QStyle::State_Off;
     }
 
-    int checkBoxSize = 20;
+    int checkBoxSize = 16;
     DCheckBox checkBox;
-    QRect checkboxRect = QRect(bgRect.left() + 10, bgRect.top() + 14 + 2, checkBoxSize - 4, checkBoxSize - 4);
+    QRect checkboxRect = QRect(bgRect.left() + 10, bgRect.top() + (bgRect.height() - checkBoxSize) / 2, checkBoxSize, checkBoxSize);
     checkBoxOption.rect = checkboxRect;
     DApplication::style()->drawPrimitive(QStyle::PE_IndicatorCheckBox,
                                          &checkBoxOption,
@@ -82,9 +82,9 @@ void DFInstallErrorListDelegate::drawCheckBox(QPainter *painter, DFInstallErrorI
 *************************************************************************/
 void DFInstallErrorListDelegate::drawCheckBoxIcon(QPainter *painter, QRect bgRect) const
 {
-    int checkBoxSize = 20;
-    QRect checkboxRect = QRect(bgRect.left() + 5, bgRect.top() + 10, checkBoxSize + 10, checkBoxSize + 10);
-//    QRect checkboxRect = QRect(bgRect.left() + 0, bgRect.top(), checkBoxSize - 4, checkBoxSize - 4);
+    int checkBoxSize = 30;
+    QRect checkboxRect = QRect(bgRect.left() + 5, bgRect.top() + (bgRect.height() - checkBoxSize) / 2, checkBoxSize, checkBoxSize);
+
     DGuiApplicationHelper::ColorType themeType = DGuiApplicationHelper::instance()->themeType();
     if (themeType == DGuiApplicationHelper::LightType) {
         QImage checkBox("://checkbox_unchecked_light.svg");
@@ -129,10 +129,12 @@ void DFInstallErrorListDelegate::drawFontName(QPainter *painter, const QStyleOpt
         m_StatusWidth = statusLabelMaxWidth;
     int m_NameWidth = fontMetric.width(strFontFileName);
 
+    int fontFileNameRectHeight = 30;
     QRect fontFileNameRect = QRect(bgRect.left() + fontNameLeft,
-                                   checkboxRect.top() - 5,
+                                   bgRect.top() + (bgRect.height() - fontFileNameRectHeight) / 2,
                                    bgRect.width() - fontNameLeft - m_StatusWidth,
-                                   checkboxRect.height() + 15);
+                                   fontFileNameRectHeight);
+
     QString elidedFontFileNameText;
 
     if (m_NameWidth  + m_StatusWidth < 360) {
@@ -434,7 +436,11 @@ QSize DFInstallErrorListDelegate::sizeHint(const QStyleOptionViewItem &option,
                                            const QModelIndex &index) const
 {
     Q_UNUSED(index)
-
+#ifdef DTKWIDGET_CLASS_DSizeMode
+    if (DGuiApplicationHelper::instance()->sizeMode() == DGuiApplicationHelper::SizeMode::CompactMode) {
+        return QSize(option.rect.width(), 40);
+    }
+#endif
     return QSize(option.rect.width(), 48);
 }
 

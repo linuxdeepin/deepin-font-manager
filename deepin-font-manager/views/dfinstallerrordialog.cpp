@@ -273,20 +273,13 @@ void DFInstallErrorDialog::initInstallErrorFontViews()
     QFont btnFont = font();
     //btnFont.setPixelSize(14);
 
-    m_quitInstallBtn = new DPushButton;
-    m_quitInstallBtn->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    m_quitInstallBtn = new DPushButton(this);
     m_quitInstallBtn->setFont(btnFont);
-    //    m_quitInstallBtn->setFixedSize(204, btnHeight);
-    m_quitInstallBtn->setMinimumSize(204, btnHeight);
-    m_quitInstallBtn->setMaximumSize(204, btnHeight + 5);
+    m_quitInstallBtn->setMinimumWidth(204);
     m_quitInstallBtn->setText(DApplication::translate("ExceptionWindow", "Exit", "button"));
 
-    m_continueInstallBtn = new DSuggestButton;
-    m_continueInstallBtn->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-
-    //    m_continueInstallBtn->setFixedSize(204, btnHeight);
-    m_continueInstallBtn->setMinimumSize(204, btnHeight);
-    m_continueInstallBtn->setMaximumSize(204, btnHeight + 5);
+    m_continueInstallBtn = new DSuggestButton(this);
+    m_continueInstallBtn->setMinimumWidth(204);
     m_continueInstallBtn->setFont(btnFont);
     m_continueInstallBtn->setText(DApplication::translate("ExceptionWindow", "Continue", "button"));
 
