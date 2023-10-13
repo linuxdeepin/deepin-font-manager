@@ -21,7 +21,13 @@
 #*
 #*****************************************************************************/
 
-PKG_SEARCH_MODULE(DeepinFileManager REQUIRED dde-file-manager IMPORTED_TARGET)
+find_package(dfm-base)
+find_package(dde-file-manager)
+if (dfm-base_FOUND)
+    message("dfm-base founded.")
+    add_definitions(-DDFM_BASE)
+endif()
+
 
 #libdeepin-font-manager
 SET(LIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../libdeepin-font-manager)
@@ -34,11 +40,30 @@ ADD_LIBRARY(${APP_PLUGIN} SHARED "")
 
 TARGET_SOURCES(${APP_PLUGIN} PRIVATE ${SRC_FILES} ${LIB_SRC_FILES})
 TARGET_INCLUDE_DIRECTORIES(${APP_PLUGIN} PRIVATE ${LIB_DIR})
-TARGET_INCLUDE_DIRECTORIES(${APP_PLUGIN} PRIVATE ${DeepinFileManager_INCLUDE_DIRS})
 TARGET_INCLUDE_DIRECTORIES(${APP_PLUGIN} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
-TARGET_LINK_LIBRARIES(${APP_PLUGIN} PRIVATE ${FREETYPE_LIBRARIES} PkgConfig::FontConfig
-                                            ${DtkWidget_LIBRARIES}  PkgConfig::DeepinFileManager
-                                            Qt5::Core Qt5::Widgets Qt5::Gui Qt5::Sql)
+
+if (dfm-base_FOUND)
+    TARGET_INCLUDE_DIRECTORIES(${APP_PLUGIN} PRIVATE ${dfm-base_INCLUDE_DIRS})
+elseif(dde-file-manager_FOUND)
+    TARGET_INCLUDE_DIRECTORIES(${APP_PLUGIN} PRIVATE ${dde-file-manager_INCLUDE_DIRS})
+endif()
+
+set(LIBS
+    ${FREETYPE_LIBRARIES}
+    PkgConfig::FontConfig
+    ${DtkWidget_LIBRARIES}
+    Qt5::Core
+    Qt5::Widgets
+    Qt5::Gui
+    Qt5::Sql
+    )
+if (dfm-base_FOUND)
+    list(APPEND LIBS dfm-base)
+elseif(dde-file-manager_FOUND)
+    list(APPEND LIBS dde-file-manager)
+endif()
+
+TARGET_LINK_LIBRARIES(${APP_PLUGIN} PRIVATE ${LIBS})
 
 SET(PLUGIN_INSTALL_DIR lib/${CMAKE_LIBRARY_ARCHITECTURE}/dde-file-manager/plugins/previews)
 INSTALL(TARGETS ${APP_PLUGIN} LIBRARY DESTINATION ${PLUGIN_INSTALL_DIR})

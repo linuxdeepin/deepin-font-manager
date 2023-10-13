@@ -20,6 +20,8 @@
 
 #include <QFontDatabase>
 #include <QVBoxLayout>
+#include <QFileInfo>
+#include <QDir>
 
 DFQuickInstallWindow::DFQuickInstallWindow(const QStringList &files, QWidget *parent)
     : DMainWindow(parent)

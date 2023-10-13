@@ -35,10 +35,10 @@ public:
                    const QModelIndex &index) const override;
     //绘制菜单项背景
     void paintBackground(QPainter *painter, const QStyleOptionViewItem &option,
-                         const QRect &backgroundRect, const DPalette::ColorGroup cg)const;
+                         const QRect &backgroundRect, const QPalette::ColorGroup cg)const;
 
     void paintTabBackground(QPainter *painter, const QStyleOptionViewItem &option,
-                            const QRect &backgroundRect, const DPalette::ColorGroup cg, const bool isHover)const;
+                            const QRect &backgroundRect, const QPalette::ColorGroup cg, const bool isHover)const;
 
     //获取需要绘制区域的路径
     void setPaintPath(const QRect &bgRect, QPainterPath &path, const int xDifference, const int yDifference, const int radius)const;
