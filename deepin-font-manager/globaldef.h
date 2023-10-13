@@ -12,11 +12,8 @@
 #define MIN_WINDOWS_HEIGHT 300
 
 // Tool Search bar
-#define FTM_TITLE_FIXED_HEIGHT 50
 #define FTM_TITLE_FIXED_WIDTH 58
 #define FTM_SEARCH_BAR_W 358
-#define FTM_SEARCH_BAR_H 44
-#define FTM_ADDBUTTON_PATAM 38
 
 // Left navigation bar
 #define FTM_LEFT_SIDE_BAR_WIDTH 160
