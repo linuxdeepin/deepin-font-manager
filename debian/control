@@ -12,7 +12,7 @@ Build-Depends:
  libqt5svg5-dev,
  libfontconfig1-dev,
  libfreetype6-dev,
- libdde-file-manager-dev,
+ dde-file-manager-dev,
  deepin-gettext-tools,
  libgtest-dev
 Standards-Version: 3.9.8
