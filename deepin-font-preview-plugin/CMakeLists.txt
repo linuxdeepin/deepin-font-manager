@@ -22,10 +22,12 @@
 #*****************************************************************************/
 
 find_package(dfm-base)
-find_package(dde-file-manager)
+PKG_SEARCH_MODULE(DeepinFileManager dde-file-manager IMPORTED_TARGET)
 if (dfm-base_FOUND)
     message("dfm-base founded.")
     add_definitions(-DDFM_BASE)
+elseif(DeepinFileManager_FOUND)
+    message("dde-file-manager founded.")
 endif()
 
 
@@ -44,8 +46,8 @@ TARGET_INCLUDE_DIRECTORIES(${APP_PLUGIN} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 
 if (dfm-base_FOUND)
     TARGET_INCLUDE_DIRECTORIES(${APP_PLUGIN} PRIVATE ${dfm-base_INCLUDE_DIRS})
-elseif(dde-file-manager_FOUND)
-    TARGET_INCLUDE_DIRECTORIES(${APP_PLUGIN} PRIVATE ${dde-file-manager_INCLUDE_DIRS})
+elseif(DeepinFileManager_FOUND)
+    TARGET_INCLUDE_DIRECTORIES(${APP_PLUGIN} PRIVATE ${DeepinFileManager_INCLUDE_DIRS})
 endif()
 
 set(LIBS
@@ -60,7 +62,7 @@ set(LIBS
 if (dfm-base_FOUND)
     list(APPEND LIBS dfm-base)
 elseif(dde-file-manager_FOUND)
-    list(APPEND LIBS dde-file-manager)
+    list(APPEND LIBS PkgConfig::DeepinFileManager)
 endif()
 
 TARGET_LINK_LIBRARIES(${APP_PLUGIN} PRIVATE ${LIBS})
