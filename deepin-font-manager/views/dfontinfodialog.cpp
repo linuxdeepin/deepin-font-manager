@@ -17,6 +17,7 @@
 #include <QScrollArea>
 #include <QKeyEvent>
 #include <QBitmap>
+#include <QFileInfo>
 
 #define NAME_TITLE_WIDTH 300
 

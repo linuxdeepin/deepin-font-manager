@@ -16,6 +16,7 @@
 #include <QPainter>
 #include <QMouseEvent>
 #include <QPainterPath>
+#include <QTimer>
 
 #define FTM_SPLIT_TOP_SPACE_TAG "_space_"
 #define FTM_SPLIT_TOP_SPLIT_TAG "_split_"
@@ -132,6 +133,17 @@ QSize DNoFocusDelegate::sizeHint(const QStyleOptionViewItem &option,
     Q_UNUSED(index)
 
     int rowIndex = index.row();
+
+#ifdef DTKWIDGET_CLASS_DSizeMode
+    if (DGuiApplicationHelper::instance()->sizeMode() == DGuiApplicationHelper::SizeMode::CompactMode) {
+        if (FTM_SPLIT_LINE_INDEX == rowIndex) {
+            return QSize(option.rect.width(), 20);
+        } else {
+            return QSize(option.rect.width(), 24);
+        }
+    }
+#endif
+
     if (FTM_SPLIT_LINE_INDEX == rowIndex) {
         return QSize(option.rect.width(), 24);
     } else {
