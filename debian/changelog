@@ -1,3 +1,10 @@
+deepin-font-manager (6.0.2) unstable; urgency=medium
+
+  * feat: adapt to compact mode
+  * feat: adapt to dde-file-manager preview plugin
+
+ -- fengli<fengli@uniontech.com>  Tue, 24 Oct 2023 11:13:01 +0800
+
 deepin-font-manager (6.0.1) unstable; urgency=medium
 
   * fix: batch install error from dde-file-manager
