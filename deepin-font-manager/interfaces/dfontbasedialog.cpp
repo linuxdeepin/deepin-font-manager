@@ -20,6 +20,9 @@ DFontBaseDialog::DFontBaseDialog(QWidget *parent)
     setAttribute(Qt::WA_DeleteOnClose);
     initUI();
     InitConnections();
+#ifdef DTKWIDGET_CLASS_DSizeMode
+    slotSizeModeChanged(DGuiApplicationHelper::instance()->sizeMode());
+#endif
 }
 
 DFontBaseDialog::~DFontBaseDialog()
@@ -102,6 +105,9 @@ void DFontBaseDialog::InitConnections()
         Q_EMIT closeBtnClicked();
         this->close();
     });
+#ifdef DTKWIDGET_CLASS_DSizeMode
+    connect(DGuiApplicationHelper::instance(),&DGuiApplicationHelper::sizeModeChanged,this, &DFontBaseDialog::slotSizeModeChanged);
+#endif
 }
 
 /*************************************************************************
@@ -192,6 +198,24 @@ void DFontBaseDialog::closeEvent(QCloseEvent *event)
 
     Q_EMIT closed();
 }
+
+
+#ifdef DTKWIDGET_CLASS_DSizeMode
+void DFontBaseDialog::slotSizeModeChanged(DGuiApplicationHelper::SizeMode sizeMode)
+{
+    if (sizeMode == DGuiApplicationHelper::SizeMode::CompactMode) {
+        m_titleBar->setFixedHeight(40);
+        m_logoIcon->setFixedSize(QSize(25, 25));
+        m_logoIcon->setPixmap(QIcon::fromTheme("deepin-font-manager").pixmap(QSize(25, 25)));
+        m_closeButton->setIconSize(QSize(40, 40));
+    } else {
+        m_titleBar->setFixedHeight(50);
+        m_logoIcon->setFixedSize(QSize(32, 32));
+        m_logoIcon->setPixmap(QIcon::fromTheme("deepin-font-manager").pixmap(QSize(32, 32)));
+        m_closeButton->setIconSize(QSize(50, 50));
+    }
+}
+#endif
 
 /*************************************************************************
  <Function>      getCloseButton

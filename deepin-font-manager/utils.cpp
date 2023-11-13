@@ -160,3 +160,8 @@ bool Utils::isWayland()
         return false;
     }
 }
+
+void Utils::clearImgCache()
+{
+    m_imgCacheHash.clear();
+}

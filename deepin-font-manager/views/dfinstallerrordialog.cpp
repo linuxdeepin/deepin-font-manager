@@ -16,7 +16,7 @@
 #include <QFileInfo>
 
 DWIDGET_USE_NAMESPACE
-#define LISTVIEW_LEFT_SPACING 2
+#define LISTVIEW_LEFT_SPACING 10
 
 /*************************************************************************
  <Function>      DFInstallErrorDialog
@@ -31,7 +31,7 @@ DWIDGET_USE_NAMESPACE
  <Note>          null
 *************************************************************************/
 DFInstallErrorDialog::DFInstallErrorDialog(QWidget *parent, const QStringList &errorInstallFontFileList)
-    : DFontBaseDialog(parent)
+    : DDialog(parent)
     , m_parent(qobject_cast<DFInstallNormalWindow *>(parent))
     , m_signalManager(SignalManager::instance())
     , m_errorInstallFiles(errorInstallFontFileList)
@@ -43,7 +43,13 @@ DFInstallErrorDialog::DFInstallErrorDialog(QWidget *parent, const QStringList &e
     emit m_signalManager->popInstallErrorDialog();
     connect(m_signalManager, &SignalManager::updateInstallErrorListview, this, &DFInstallErrorDialog::addData);
     resetContinueInstallBtnStatus();
-//    m_installErrorListView->setFocus();
+
+    connect(this, &DFInstallErrorDialog::buttonClicked, this, &DFInstallErrorDialog::onControlButtonClicked);
+
+#ifdef DTKWIDGET_CLASS_DSizeMode
+    slotSizeModeChanged(DGuiApplicationHelper::instance()->sizeMode());
+    connect(DGuiApplicationHelper::instance(),&DGuiApplicationHelper::sizeModeChanged,this, &DFInstallErrorDialog::slotSizeModeChanged);
+#endif
 }
 
 /*************************************************************************
@@ -130,66 +136,44 @@ void DFInstallErrorDialog::initData()
 *************************************************************************/
 void DFInstallErrorDialog::initUI()
 {
-    initMainFrame();
-    initTitleBar();
-    initInstallErrorFontViews();
+    setContentsMargins(0, 0, 0, 0);
+    setIconPixmap(Utils::renderSVG("://exception-logo.svg", QSize(32, 32)));
+    setWindowTitle(DApplication::translate("ExceptionWindow", "Font Verification"));
 
-    connect(this, &DFInstallErrorDialog::closeBtnClicked, this, &DFInstallErrorDialog::onCancelInstall);
-}
-
-/*************************************************************************
- <Function>      resizeEvent
- <Description>   字体验证框大小重绘页面
- <Author>
- <Input>
-    <param1>     event           Description:事件对象
- <Return>        null            Description:null
- <Note>          null
-*************************************************************************/
-void DFInstallErrorDialog::resizeEvent(QResizeEvent *event)
-{
-    DFontBaseDialog::resizeEvent(event);
-    m_mainFrame->resize(event->size().width(), event->size().height());
-}
-
-/*************************************************************************
- <Function>      initMainFrame
- <Description>   初始化字体验证框页面框架
- <Author>
- <Input>         null
- <Return>        null            Description:null
- <Note>          null
-*************************************************************************/
-void DFInstallErrorDialog::initMainFrame()
-{
     this->setFixedSize(448, 302);
 
     m_mainLayout = new QVBoxLayout;
-    m_mainLayout->setMargin(0);
     m_mainLayout->setSpacing(0);
     m_mainLayout->setContentsMargins(0, 0, 0, 0);
 
     m_mainFrame = new QWidget(this);
     m_mainFrame->setContentsMargins(0, 0, 0, 0);
     m_mainFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-
     m_mainFrame->setLayout(m_mainLayout);
+    addContent(m_mainFrame, Qt::AlignHCenter);
 
-    addContent(m_mainFrame);
-}
+    DVerticalLine *verticalSplit = new DVerticalLine;
+    verticalSplit->setFixedWidth(1);
+    verticalSplit->setFixedHeight(28);
+    DPalette pa = DApplicationHelper::instance()->palette(verticalSplit);
+    QBrush splitBrush = pa.brush(DPalette::ItemBackground);
+    pa.setBrush(DPalette::Background, splitBrush);
+    verticalSplit->setPalette(pa);
+    verticalSplit->setBackgroundRole(QPalette::Background);
+    verticalSplit->setAutoFillBackground(true);
 
-/*************************************************************************
- <Function>      initTitleBar
- <Description>   初始化标题栏信息
- <Author>
- <Input>         null
- <Return>        null            Description:null
- <Note>          null
-*************************************************************************/
-void DFInstallErrorDialog::initTitleBar()
-{
-    setIconPixmap(Utils::renderSVG("://exception-logo.svg", QSize(32, 32)));
-    setTitle(DApplication::translate("ExceptionWindow", "Font Verification"));
+    m_installErrorListView = new DFInstallErrorListView(m_installErrorFontModelList, this);
+    m_installErrorListView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    m_installErrorListView->setFixedWidth(width() - LISTVIEW_LEFT_SPACING * 2);
+    m_installErrorListView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    m_installErrorListView->setSelectionMode(QAbstractItemView::ExtendedSelection);
+    m_mainLayout->addWidget(m_installErrorListView);
+
+    insertButton(0, DApplication::translate("ExceptionWindow", "Exit"), false, ButtonNormal);
+    insertButton(1, DApplication::translate("ExceptionWindow", "Continue"), true, ButtonRecommend);
+
+    connect(m_installErrorListView, SIGNAL(clickedErrorListItem(QModelIndex)), this,
+            SLOT(onListItemClicked(QModelIndex)));
 }
 
 /*************************************************************************
@@ -239,86 +223,6 @@ int DFInstallErrorDialog::getErrorFontSelectableCount()
 }
 
 /*************************************************************************
- <Function>      initInstallErrorFontViews
- <Description>   初始化字体验证列表视图布局
- <Author>
- <Input>         null
- <Return>        null            Description:null
- <Note>          null
-*************************************************************************/
-void DFInstallErrorDialog::initInstallErrorFontViews()
-{
-    //contentFrame = new QWidget(this);
-    //contentFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-
-    m_mainLayout->setMargin(0);
-    m_mainLayout->setSpacing(0);
-    m_mainLayout->setContentsMargins(0, 0, 0, 0);
-
-    QHBoxLayout *buttonLayout = new QHBoxLayout;
-    buttonLayout->setMargin(0);
-    buttonLayout->setSpacing(0);
-    buttonLayout->setContentsMargins(10, 0, 10, 0);
-
-    int btnHeight = 38;
-    QWidget *btnFrame = new QWidget;
-    btnFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    btnFrame->setFixedHeight(btnHeight + 15);
-    btnFrame->setLayout(buttonLayout);
-
-    QButtonGroup *btnGroup = new QButtonGroup(this);
-
-    btnGroup->setExclusive(true);
-
-    QFont btnFont = font();
-    //btnFont.setPixelSize(14);
-
-    m_quitInstallBtn = new DPushButton(this);
-    m_quitInstallBtn->setFont(btnFont);
-    m_quitInstallBtn->setMinimumWidth(204);
-    m_quitInstallBtn->setText(DApplication::translate("ExceptionWindow", "Exit", "button"));
-
-    m_continueInstallBtn = new DSuggestButton(this);
-    m_continueInstallBtn->setMinimumWidth(204);
-    m_continueInstallBtn->setFont(btnFont);
-    m_continueInstallBtn->setText(DApplication::translate("ExceptionWindow", "Continue", "button"));
-
-    btnGroup->addButton(m_quitInstallBtn, 0);
-    btnGroup->addButton(m_continueInstallBtn, 1);
-
-    connect(btnGroup, SIGNAL(buttonClicked(int)), this, SLOT(onControlButtonClicked(int)));
-
-    DVerticalLine *verticalSplit = new DVerticalLine;
-    verticalSplit->setFixedWidth(1);
-    verticalSplit->setFixedHeight(28);
-    DPalette pa = DApplicationHelper::instance()->palette(verticalSplit);
-    QBrush splitBrush = pa.brush(DPalette::ItemBackground);
-    pa.setBrush(DPalette::Background, splitBrush);
-    verticalSplit->setPalette(pa);
-    verticalSplit->setBackgroundRole(QPalette::Background);
-    verticalSplit->setAutoFillBackground(true);
-
-    buttonLayout->addWidget(m_quitInstallBtn);
-    buttonLayout->addSpacing(10);
-    buttonLayout->addWidget(verticalSplit);
-    buttonLayout->addSpacing(9);
-    buttonLayout->addWidget(m_continueInstallBtn);
-
-    m_installErrorListView = new DFInstallErrorListView(m_installErrorFontModelList, this);
-    m_installErrorListView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    m_installErrorListView->setFixedWidth(width() - LISTVIEW_LEFT_SPACING);
-    m_installErrorListView->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    m_installErrorListView->setSelectionMode(QAbstractItemView::ExtendedSelection);
-
-    m_mainLayout->addWidget(m_installErrorListView);
-    m_mainLayout->addWidget(btnFrame);
-    m_mainLayout->addStretch();
-
-    connect(m_installErrorListView, SIGNAL(clickedErrorListItem(QModelIndex)), this,
-            SLOT(onListItemClicked(QModelIndex)));
-}
-
-/*************************************************************************
  <Function>      resetContinueInstallBtnStatus
  <Description>   刷新继续按钮的状态-选中数量大于1时，继续按钮可用
  <Author>
@@ -331,14 +235,13 @@ void DFInstallErrorDialog::resetContinueInstallBtnStatus()
     //所有字体都未勾选时，禁止点击"继续安装"
     if (0 == getErrorFontCheckedCount()) {
         if (m_errorInstallFiles.count() > 0) {
-            m_continueInstallBtn->setToolTip(DApplication::translate("ExceptionWindow", "No fonts to be installed"));
+            getButton(1)->setToolTip(DApplication::translate("ExceptionWindow", "No fonts to be installed"));
         }
-
-        m_continueInstallBtn->setDisabled(true);
-        m_continueInstallBtn->setFocusPolicy(Qt::NoFocus);
+        getButton(1)->setDisabled(true);
+        getButton(1)->setFocusPolicy(Qt::NoFocus);
     } else {
-        m_continueInstallBtn->setEnabled(true);
-        m_continueInstallBtn->setFocusPolicy(Qt::TabFocus);
+        getButton(1)->setEnabled(true);
+        getButton(1)->setFocusPolicy(Qt::TabFocus);
     }
 
     if (getErrorFontSelectableCount() > 0) {
@@ -361,9 +264,8 @@ void DFInstallErrorDialog::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Escape) {
         this->close();
-    }
-    //SP3--安装验证页面，回车取消/选中
-    else if ((event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter)) {
+    } else if ((event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter)) {
+        //SP3--安装验证页面，回车取消/选中
         if (m_installErrorListView->hasFocus()) {
             if (m_installErrorListView->selectionModel()->selectedIndexes().count() == 1) {
                 onListItemClicked(m_installErrorListView->selectionModel()->selectedIndexes().first());
@@ -371,13 +273,12 @@ void DFInstallErrorDialog::keyPressEvent(QKeyEvent *event)
             } else if (m_installErrorListView->selectionModel()->selectedIndexes().count() > 1) {
                 onListItemsClicked(m_installErrorListView->selectionModel()->selectedIndexes());
             }
-        }
-        //默认字体列表无焦点情况下，回车执行“继续”或“取消”按钮
-        else {
-            if (m_continueInstallBtn->isEnabled())
-                emit m_continueInstallBtn->click();
-            else {
-                m_quitInstallBtn->click();
+        } else {
+            //默认字体列表无焦点情况下，回车执行“继续”或“取消”按钮
+            if (getButton(1)->isEnabled()) {
+                emit getButton(1)->click();
+            } else {
+                emit getButton(0)->click();
             }
         }
     } else if (event->key() == Qt::Key_Home && event->modifiers() == Qt::NoModifier) {
@@ -409,6 +310,8 @@ void DFInstallErrorDialog::closeEvent(QCloseEvent *event)
 
     //关闭窗口时发送取消安装信号
     emit onCancelInstall();
+
+    DDialog::closeEvent(event);
 }
 
 /*************************************************************************
@@ -576,7 +479,20 @@ void DFInstallErrorDialog::onControlButtonClicked(int btnIndex)
         }
 
         emit onContinueInstall(continueInstallFontFileList);
-//        this->close();
         this->reject();
     }
 }
+
+#ifdef DTKWIDGET_CLASS_DSizeMode
+void DFInstallErrorDialog::slotSizeModeChanged(DGuiApplicationHelper::SizeMode sizeMode)
+{
+    Utils::clearImgCache();
+    if (sizeMode == DGuiApplicationHelper::SizeMode::CompactMode) {
+        this->setFixedSize(448, 259);
+        setIconPixmap(Utils::renderSVG("://exception-logo.svg", QSize(25, 25)));
+    } else {
+        this->setFixedSize(448, 302);
+        setIconPixmap(Utils::renderSVG("://exception-logo.svg", QSize(32, 32)));
+    }
+}
+#endif
