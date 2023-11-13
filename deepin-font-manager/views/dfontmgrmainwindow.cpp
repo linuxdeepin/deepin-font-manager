@@ -151,6 +151,10 @@ void DFontMgrMainWindow::initUI()
     initTileBar();
     initRightKeyMenu();
     initMainVeiws();
+
+#ifdef DTKWIDGET_CLASS_DSizeMode
+    slotSizeModeChanged(DGuiApplicationHelper::instance()->sizeMode());
+#endif
 }
 
 /*************************************************************************
@@ -870,15 +874,10 @@ void DFontMgrMainWindow::initStateBar()
     stateBarLayout->setSpacing(0);
 
     d->stateBar = new QWidget(this);
-    //d->stateBar->setFrameShape(DFrame::NoFrame);
     d->stateBar->setFixedHeight(FTM_SBAR_HEIGHT);
     d->stateBar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     d->textInputEdit = new DLineEdit(this);
-    //    QFont searchFont;
-    //    searchFont.setPixelSize(14);
-    //    d->textInputEdit->setFont(searchFont);
-    //d->textInputEdit->setMinimumSize(QSize(FTM_SBAR_TXT_EDIT_W,FTM_SBAR_TXT_EDIT_H));
     DFontSizeManager::instance()->bind(d->textInputEdit, DFontSizeManager::T6);
     d->textInputEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     d->textInputEdit->setClearButtonEnabled(true);
@@ -886,10 +885,6 @@ void DFontMgrMainWindow::initStateBar()
 
     d->fontScaleSlider = new DSlider(Qt::Orientation::Horizontal, this);
     d->fontScaleSlider->setFixedSize(FTM_SBAR_SLIDER_W, FTM_SBAR_SLIDER_H);
-    // d->fontScaleSlider->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    //    d->fontScaleSlider->setTracking(true);
-    //    d->fontScaleSlider->setTickPosition(QSlider::NoTicks);
-    //    d->fontScaleSlider->setRange(MIN_FONT_SIZE, MAX_FONT_SIZE);
     d->fontScaleSlider->setMinimum(MIN_FONT_SIZE);
     d->fontScaleSlider->setMaximum(MAX_FONT_SIZE);
     //设置初始显示字体大小
@@ -903,17 +898,12 @@ void DFontMgrMainWindow::initStateBar()
     d->fontSizeLabel->setFixedSize(FTM_SBAR_FSIZE_LABEL_W, FTM_SBAR_FSIZE_LABEL_H);
     d->fontSizeLabel->setAlignment(Qt::AlignCenter | Qt::AlignVCenter);
 
-    //    QFont fontSize;
-    //    fontSize.setPixelSize(14);
-    //    d->fontSizeLabel->setFont(fontSize);
     DFontSizeManager::instance()->bind(d->fontSizeLabel, DFontSizeManager::T6);
-    // d->fontSizeLabel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     // Init the default font size
     QString defaultFontSize = QString(FMT_FONT_SIZE).arg(DEFAULT_FONT_SIZE);
 
     //调节右下角字体大小显示label显示内容/*UT000539*/
     autoLabelWidth(defaultFontSize, d->fontSizeLabel, d->fontSizeLabel->fontMetrics());
-    //    d->fontSizeLabel->setText(defaultFontSize);
 
     stateBarLayout->addSpacing(10);
     stateBarLayout->addWidget(d->textInputEdit, 1);
@@ -2002,6 +1992,12 @@ void DFontMgrMainWindow::slotSizeModeChanged(DGuiApplicationHelper::SizeMode siz
     point.setX(x);
     point.setY((titlebar()->height() - d->searchFontEdit->height()) / 2);
     d->searchFontEdit->move(point);
+
+    if (sizeMode == DGuiApplicationHelper::SizeMode::CompactMode) {
+        d->stateBar->setFixedHeight(FTM_SBAR_COMPACT_HEIGHT);
+    } else {
+        d->stateBar->setFixedHeight(FTM_SBAR_HEIGHT);
+    }
 }
 #endif
 

@@ -19,6 +19,7 @@
 #define FTM_LEFT_SIDE_BAR_WIDTH 160
 // State bar
 #define FTM_SBAR_HEIGHT 56
+#define FTM_SBAR_COMPACT_HEIGHT 40
 
 //Alt+M rightMenuPositionParam //SP3--Alt+M右键菜单--位置参数
 #define POSITION_PARAM_X 158

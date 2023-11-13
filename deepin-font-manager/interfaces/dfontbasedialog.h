@@ -10,6 +10,7 @@
 
 #include <DLabel>
 #include <DWindowCloseButton>
+#include <DGuiApplicationHelper>
 
 DWIDGET_USE_NAMESPACE
 
@@ -65,6 +66,11 @@ signals:
     void closeBtnClicked();
 
 public slots:
+#ifdef DTKWIDGET_CLASS_DSizeMode
+    //紧凑模式切换
+    void slotSizeModeChanged(DGuiApplicationHelper::SizeMode sizeMode);
+#endif
+
 private:
     QWidget *m_titleBar {nullptr};
     DLabel  *m_logoIcon {nullptr};

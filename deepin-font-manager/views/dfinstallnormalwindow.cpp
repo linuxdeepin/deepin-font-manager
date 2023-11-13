@@ -791,7 +791,7 @@ void DFInstallNormalWindow::showInstallErrDlg()
     connect(m_pexceptionDlg, &DFInstallErrorDialog::onContinueInstall, this,
             &DFInstallNormalWindow::onContinueInstall);
 
-    connect(m_pexceptionDlg, &DFInstallErrorDialog::destroyed, this, [ = ]() {
+    connect(m_pexceptionDlg, &DFInstallErrorDialog::closed, this, [ = ]() {
         if (!m_errCancelInstall)
             return;
         qDebug() << " DFInstallErrorDialog cancel called";

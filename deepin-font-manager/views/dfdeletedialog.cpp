@@ -77,7 +77,7 @@ NewStr autoCutText(const QString &text, DLabel *pDesLbl)
  <Note>          null
 *************************************************************************/
 DFDeleteDialog::DFDeleteDialog(DFontMgrMainWindow *win, int deleteCnt, int systemCnt, bool hasCurrent, QWidget *parent)
-    : DFontBaseDialog(parent)
+    : DDialog(parent)
     , m_mainWindow(win)
     , m_deleteCnt(deleteCnt)
     , m_systemCnt(systemCnt)
@@ -100,10 +100,10 @@ DFDeleteDialog::DFDeleteDialog(DFontMgrMainWindow *win, int deleteCnt, int syste
 void DFDeleteDialog::initUI()
 {
     setFixedWidth(DEFAULT_WINDOW_W);
+    setIcon(QIcon::fromTheme("deepin-font-manager"));
 
     initMessageTitle();
     initMessageDetail();
-    QLayout *buttonsLayout = initBottomButtons();
 
     QVBoxLayout *mainLayout = new QVBoxLayout();
     mainLayout->setSpacing(0);
@@ -111,8 +111,6 @@ void DFDeleteDialog::initUI()
     mainLayout->addWidget(messageTitle, 0, Qt::AlignCenter);
     mainLayout->addSpacing(6);
     mainLayout->addWidget(messageDetail, 0, Qt::AlignCenter);
-    mainLayout->addSpacing(16);
-    mainLayout->addLayout(buttonsLayout);
 
     QWidget *mainFrame = new QWidget(this);
     mainFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -124,6 +122,9 @@ void DFDeleteDialog::initUI()
     messageDetail->setMinimumWidth(DEFAULT_WINDOW_W - 20);
 
     addContent(mainFrame);
+
+    insertButton(0, DApplication::translate("DFDeleteDialog", "Cancel", "button"), false, ButtonNormal);
+    insertButton(1, DApplication::translate("DeleteConfirmDailog", "Delete", "button"), true, ButtonWarning);
 }
 
 /*************************************************************************
@@ -136,19 +137,6 @@ void DFDeleteDialog::initUI()
 *************************************************************************/
 void DFDeleteDialog::initConnections()
 {
-    connect(m_cancelBtn, &DPushButton::clicked, this, [ = ]() {
-        reject();
-        close();
-        emit m_signalManager->cancelDel();
-    });
-    connect(m_confirmBtn, &DPushButton::clicked, this, [ = ]() {
-        if (m_deleting)
-            return;
-        m_deleting = true;
-        accept();
-        close();
-    });
-
     //关闭删除确认对话框并且没有点击"确认"按钮时,取消删除操作
     connect(this, &DFDeleteDialog::closed, this, [ = ]() {
         if (m_mainWindow != nullptr && !m_deleting) {
@@ -157,6 +145,28 @@ void DFDeleteDialog::initConnections()
             emit m_signalManager->clearRecoverList();
         }
     });
+
+    connect(this, &DFDeleteDialog::buttonClicked, this, [=](int index, const QString &text){
+        switch (index) {
+        case 0:
+            reject();
+            close();
+            emit m_signalManager->cancelDel();
+            break;
+
+        case 1:
+            if (m_deleting)
+                return;
+            m_deleting = true;
+            accept();
+            close();
+            break;
+
+        default:
+            break;
+        }
+    });
+
     connect(qApp, &DApplication::fontChanged, this, &DFDeleteDialog::onFontChanged);
 
     connect(DApplicationHelper::instance(), &DApplicationHelper::themeTypeChanged, this, &DFDeleteDialog::setTheme);
@@ -224,46 +234,6 @@ void DFDeleteDialog::initMessageDetail()
 }
 
 /*************************************************************************
- <Function>      initBottomButtons
- <Description>   初始化页面按钮
- <Author>
- <Input>         null
- <Return>        null            Description:null
- <Note>          null
-*************************************************************************/
-QLayout *DFDeleteDialog::initBottomButtons()
-{
-    QHBoxLayout *layout = new QHBoxLayout();
-    layout->setSpacing(0);
-    layout->setContentsMargins(0, 0, 0, 0);
-
-    m_cancelBtn = new DPushButton(this);
-    m_cancelBtn->setFixedWidth(170);
-    m_cancelBtn->setText(DApplication::translate("DFDeleteDialog", "Cancel", "button"));
-
-    m_confirmBtn = new DWarningButton(this);
-    m_confirmBtn->setFixedWidth(170);
-    m_confirmBtn->setText(DApplication::translate("DeleteConfirmDailog", "Delete", "button"));
-
-    DVerticalLine *verticalSplite = new DVerticalLine(this);
-    DPalette pa = DApplicationHelper::instance()->palette(verticalSplite);
-    QColor splitColor = pa.color(DPalette::ItemBackground);
-    pa.setBrush(DPalette::Background, splitColor);
-    verticalSplite->setPalette(pa);
-    verticalSplite->setBackgroundRole(QPalette::Background);
-    verticalSplite->setAutoFillBackground(true);
-    verticalSplite->setFixedSize(3, 28);
-
-    layout->addWidget(m_cancelBtn);
-    layout->addSpacing(9);
-    layout->addWidget(verticalSplite);
-    layout->addSpacing(9);
-    layout->addWidget(m_confirmBtn);
-
-    return layout;
-}
-
-/*************************************************************************
  <Function>      onFontChanged
  <Description>   适应系统字体变化
  <Author>
@@ -300,8 +270,8 @@ void DFDeleteDialog::keyPressEvent(QKeyEvent *event)
         received = true;
     }
     if (event->key() == Qt::Key_Return) {
-        if (!getCloseButton()->hasFocus() && !m_cancelBtn->hasFocus()) {
-            m_confirmBtn->click();
+        if (!getButton(0)->hasFocus() && !getButton(1)->hasFocus()) {
+            getButton(1)->click();
             received = true;
         }
     }

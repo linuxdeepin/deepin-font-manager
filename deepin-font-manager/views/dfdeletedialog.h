@@ -9,6 +9,7 @@
 #include "dfontbasedialog.h"
 #include "signalmanager.h"
 
+#include <DDialog>
 #include <DLabel>
 #include <DPushButton>
 #include <DWarningButton>
@@ -23,7 +24,7 @@ class DFontMgrMainWindow;
  <Author>
  <Note>          null
 *************************************************************************/
-class DFDeleteDialog : public DFontBaseDialog
+class DFDeleteDialog : public DDialog
 {
     Q_OBJECT
 public:
@@ -53,14 +54,10 @@ private:
     void initMessageTitle();
     //初始化页面提示信息内容
     void initMessageDetail();
-    //初始化页面按钮
-    QLayout *initBottomButtons();
 
     DLabel *messageTitle;
     DLabel *messageDetail;
 
-    DPushButton *m_cancelBtn;
-    DWarningButton *m_confirmBtn;
     DFontMgrMainWindow *m_mainWindow;
     SignalManager *m_signalManager = SignalManager::instance();
     int m_deleteCnt;

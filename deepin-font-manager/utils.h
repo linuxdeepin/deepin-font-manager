@@ -34,6 +34,9 @@ public:
 
     //判断是否wayland环境
     static bool isWayland();
+
+    //清除图像缓存
+    static void clearImgCache();
 };
 
 #endif

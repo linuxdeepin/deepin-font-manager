@@ -231,7 +231,7 @@ void DFInstallErrorListDelegate::drawSelectStatus(QPainter *painter, const QStyl
     QPainterPath path;
     const int radius = 8;
 
-    setPaintPath(bgRect, path, 3, 0, radius);
+    setPaintPath(bgRect, path, 0, 0, radius);
 
     if (option.state & QStyle::State_Selected) {
 //        DPalette pa = DApplicationHelper::instance()->palette(m_parentView);//dtk库接口不稳定，更换palette获取方式
@@ -403,7 +403,7 @@ void DFInstallErrorListDelegate::paint(QPainter *painter, const QStyleOptionView
         rect.setWidth(option.rect.width());
         rect.setHeight(option.rect.height());
 
-        QRect bgRect = QRect(rect.left() + 10, rect.top(), rect.width() - 18, rect.height());
+        QRect bgRect = QRect(rect.left(), rect.top(), rect.width(), rect.height());
 
         if (itemModel.bSelectable) {
             drawSelectStatus(painter, option, bgRect);
@@ -438,7 +438,7 @@ QSize DFInstallErrorListDelegate::sizeHint(const QStyleOptionViewItem &option,
     Q_UNUSED(index)
 #ifdef DTKWIDGET_CLASS_DSizeMode
     if (DGuiApplicationHelper::instance()->sizeMode() == DGuiApplicationHelper::SizeMode::CompactMode) {
-        return QSize(option.rect.width(), 40);
+        return QSize(option.rect.width(), 38);
     }
 #endif
     return QSize(option.rect.width(), 48);

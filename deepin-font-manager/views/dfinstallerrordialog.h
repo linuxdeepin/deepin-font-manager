@@ -12,6 +12,7 @@
 
 #include <DPushButton>
 #include <DSuggestButton>
+#include <DDialog>
 
 #include <QResizeEvent>
 
@@ -26,7 +27,7 @@ class DFInstallErrorListView;
  <Author>
  <Note>          null
 *************************************************************************/
-class DFInstallErrorDialog : public DFontBaseDialog
+class DFInstallErrorDialog : public DDialog
 {
     Q_OBJECT
 
@@ -38,14 +39,6 @@ public:
     void initData();
     //字体验证框主页面
     void initUI();
-    //字体验证框大小重绘页面
-    void resizeEvent(QResizeEvent *event)Q_DECL_OVERRIDE;
-    //初始化字体验证框页面框架
-    void initMainFrame();
-    //初始化标题栏信息
-    void initTitleBar();
-    //初始化字体验证列表视图布局
-    void initInstallErrorFontViews();
     //获取已勾选继续安装项个数
     int getErrorFontCheckedCount();
     //获取可勾选项个数
@@ -77,15 +70,17 @@ public slots:
     //按钮点击事件
     void onControlButtonClicked(int btnIndex);
 
+#ifdef DTKWIDGET_CLASS_DSizeMode
+    //紧凑模式切换
+    void slotSizeModeChanged(DGuiApplicationHelper::SizeMode sizeMode);
+#endif
+
 private:
     DFInstallNormalWindow *m_parent;
     QWidget *m_mainFrame;
     QVBoxLayout *m_mainLayout;
 
     DFInstallErrorListView *m_installErrorListView;
-
-    DPushButton *m_quitInstallBtn;
-    DSuggestButton *m_continueInstallBtn;
 
     SignalManager *m_signalManager;
 
