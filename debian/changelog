@@ -1,3 +1,9 @@
+deepin-font-manager (6.0.3) unstable; urgency=medium
+
+  * New version 6.0.3
+
+ --  fengli<fengli@uniontech.com>  Mon, 27 Nov 2023 13:45:25 +0800
+
 deepin-font-manager (6.0.2) unstable; urgency=medium
 
   * feat: adapt to compact mode
