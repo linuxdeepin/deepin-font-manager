@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="fi">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="fi">
 <context>
     <name>Category</name>
     <message>
@@ -159,6 +161,17 @@
         <source>Failed to install %1 fonts. There is not enough disk space.</source>
         <translation>%1 kirjasimen asentaminen epäonnistui. Levytila ei riitä.</translation>
     </message>
+    <message>
+        <source>Fonts</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DFontWidget</name>
+    <message>
+        <source>Broken file</source>
+        <translation type="unfinished">Virheellinen tiedosto</translation>
+    </message>
 </context>
 <context>
     <name>DeleteConfirmDailog</name>
@@ -211,13 +224,18 @@
     </message>
     <message>
         <source>Exit</source>
-        <comment>button</comment>
-        <translation>Poistu</translation>
+        <translation type="unfinished">Poistu</translation>
     </message>
     <message>
         <source>Continue</source>
-        <comment>button</comment>
-        <translation>Jatka</translation>
+        <translation type="unfinished">Jatka</translation>
+    </message>
+</context>
+<context>
+    <name>Font</name>
+    <message>
+        <source>Don&apos;t let your dreams be dreams</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -257,6 +275,14 @@
     <message>
         <source>Trademark</source>
         <translation>Tavaramerkki</translation>
+    </message>
+    <message>
+        <source>Copyright</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>License Description</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

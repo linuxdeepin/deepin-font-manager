@@ -161,6 +161,17 @@
         <source>Failed to install %1 fonts. There is not enough disk space.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Fonts</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DFontWidget</name>
+    <message>
+        <source>Broken file</source>
+        <translation type="unfinished">Broken file</translation>
+    </message>
 </context>
 <context>
     <name>DeleteConfirmDailog</name>
@@ -213,13 +224,18 @@
     </message>
     <message>
         <source>Exit</source>
-        <comment>button</comment>
         <translation type="unfinished">Exit</translation>
     </message>
     <message>
         <source>Continue</source>
-        <comment>button</comment>
         <translation type="unfinished">Continue</translation>
+    </message>
+</context>
+<context>
+    <name>Font</name>
+    <message>
+        <source>Don&apos;t let your dreams be dreams</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -259,6 +275,14 @@
     <message>
         <source>Trademark</source>
         <translation>Trademark</translation>
+    </message>
+    <message>
+        <source>Copyright</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>License Description</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

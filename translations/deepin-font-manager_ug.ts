@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="ug">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="ug">
 <context>
     <name>Category</name>
     <message>
@@ -153,11 +155,22 @@
     </message>
     <message>
         <source>Failed to install %1 font. There is not enough disk space.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Failed to install %1 fonts. There is not enough disk space.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fonts</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DFontWidget</name>
+    <message>
+        <source>Broken file</source>
+        <translation type="unfinished">ھۆججەت بۇزۇلغان</translation>
     </message>
 </context>
 <context>
@@ -211,13 +224,18 @@
     </message>
     <message>
         <source>Exit</source>
-        <comment>button</comment>
-        <translation>چېكىنىش</translation>
+        <translation type="unfinished">چېكىنىش</translation>
     </message>
     <message>
         <source>Continue</source>
-        <comment>button</comment>
-        <translation>داۋاملاشتۇرۇش</translation>
+        <translation type="unfinished">داۋاملاشتۇرۇش</translation>
+    </message>
+</context>
+<context>
+    <name>Font</name>
+    <message>
+        <source>Don&apos;t let your dreams be dreams</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -257,6 +275,14 @@
     <message>
         <source>Trademark</source>
         <translation>تاۋار ماركىسى</translation>
+    </message>
+    <message>
+        <source>Copyright</source>
+        <translation>نەشىر ھوقۇقى</translation>
+    </message>
+    <message>
+        <source>License Description</source>
+        <translation>ئىجازەتنامىنى تەسۋىرلەش </translation>
     </message>
 </context>
 <context>

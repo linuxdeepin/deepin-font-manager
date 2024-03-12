@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="fr">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="fr">
 <context>
     <name>Category</name>
     <message>
@@ -159,6 +161,17 @@
         <source>Failed to install %1 fonts. There is not enough disk space.</source>
         <translation>Impossible d&apos;installer les polices %1. L&apos;espace disque est insuffisant.</translation>
     </message>
+    <message>
+        <source>Fonts</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DFontWidget</name>
+    <message>
+        <source>Broken file</source>
+        <translation type="unfinished">Fichier corrompu</translation>
+    </message>
 </context>
 <context>
     <name>DeleteConfirmDailog</name>
@@ -211,13 +224,18 @@
     </message>
     <message>
         <source>Exit</source>
-        <comment>button</comment>
-        <translation>Quitter</translation>
+        <translation type="unfinished">Quitter</translation>
     </message>
     <message>
         <source>Continue</source>
-        <comment>button</comment>
-        <translation>Continuer</translation>
+        <translation type="unfinished">Continuer</translation>
+    </message>
+</context>
+<context>
+    <name>Font</name>
+    <message>
+        <source>Don&apos;t let your dreams be dreams</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -257,6 +275,14 @@
     <message>
         <source>Trademark</source>
         <translation>Marque déposée</translation>
+    </message>
+    <message>
+        <source>Copyright</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>License Description</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

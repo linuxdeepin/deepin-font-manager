@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="zh_CN">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="zh_CN">
 <context>
     <name>Category</name>
     <message>
@@ -159,6 +161,17 @@
         <source>Failed to install %1 fonts. There is not enough disk space.</source>
         <translation>目标磁盘空间不足，%1 个文件安装失败</translation>
     </message>
+    <message>
+        <source>Fonts</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DFontWidget</name>
+    <message>
+        <source>Broken file</source>
+        <translation type="unfinished">文件已损坏</translation>
+    </message>
 </context>
 <context>
     <name>DeleteConfirmDailog</name>
@@ -211,13 +224,18 @@
     </message>
     <message>
         <source>Exit</source>
-        <comment>button</comment>
-        <translation>退 出</translation>
+        <translation type="unfinished">退 出</translation>
     </message>
     <message>
         <source>Continue</source>
-        <comment>button</comment>
-        <translation>继 续</translation>
+        <translation type="unfinished">继 续</translation>
+    </message>
+</context>
+<context>
+    <name>Font</name>
+    <message>
+        <source>Don&apos;t let your dreams be dreams</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -257,6 +275,14 @@
     <message>
         <source>Trademark</source>
         <translation>商标</translation>
+    </message>
+    <message>
+        <source>Copyright</source>
+        <translation>版权</translation>
+    </message>
+    <message>
+        <source>License Description</source>
+        <translation>许可证描述</translation>
     </message>
 </context>
 <context>
