@@ -157,6 +157,14 @@
         <source>Fonts</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Failed to install %1 font. There is not enough disk space.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Failed to install %1 fonts. There is not enough disk space.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>DFontWidget</name>
@@ -216,12 +224,10 @@
     </message>
     <message>
         <source>Exit</source>
-        <comment>button</comment>
         <translation type="unfinished">Izađi</translation>
     </message>
     <message>
         <source>Continue</source>
-        <comment>button</comment>
         <translation type="unfinished">Nastavi</translation>
     </message>
 </context>
@@ -268,6 +274,14 @@
     </message>
     <message>
         <source>Trademark</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copyright</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>License Description</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

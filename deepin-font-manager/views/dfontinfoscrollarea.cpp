@@ -9,6 +9,9 @@
 #include <DApplication>
 
 #include <QTimer>
+#include "freetype/ftsnames.h"
+#include "freetype/ttnameid.h"
+QString convertToUtf8(unsigned char *content, unsigned int len);
 
 #define LAEBL_TEXT_WIDTH   165
 #define TITLE_VISIBLE_WIDTH 90
@@ -45,6 +48,10 @@ dfontinfoscrollarea::dfontinfoscrollarea(DFontPreviewItemData *pData,  DWidget *
 *************************************************************************/
 void dfontinfoscrollarea::initUi()
 {
+    QStringList sFontList;
+    sFontList << "Bitstream Charter-Regular" << "Bitstream Charter-Bold" << "Bitstream Charter-Italic"
+              <<"Bitstream Charter-Bold Italic" << "Courier 10 Pitch-Italic" << "Courier 10 Pitch-Bold Italic"
+              << "Courier 10 Pitch-Regular" << "Courier 10 Pitch-Bold";
     auto gridLayout = new QGridLayout;
     gridLayout->setContentsMargins(0, 6, 0, 6);
     gridLayout->setSpacing(3);
@@ -70,7 +77,54 @@ void dfontinfoscrollarea::initUi()
     createLabel(gridLayout, 4, DApplication::translate("FontDetailDailog", "Full name"), m_fontInfo->fontInfo.fullname);
     createLabel(gridLayout, 5, DApplication::translate("FontDetailDailog", "Ps name"), m_fontInfo->fontInfo.psname);
     createLabel(gridLayout, 6, DApplication::translate("FontDetailDailog", "Trademark"), m_fontInfo->fontInfo.trademark);
+    //获取 LICENSE
+    FT_Library library = nullptr;
+    FT_Init_FreeType(&library);
+    FT_Face face = nullptr;
+    FT_Error error = FT_New_Face(library,  m_fontInfo->fontInfo.filePath.toUtf8().constData(), 0, &face);
+    QString sLicense = "";
+    if (error == 0) {
+         if (FT_IS_SFNT(face)) {
+             FT_SfntName sname;
+             const unsigned int count = FT_Get_Sfnt_Name_Count(face);
+             for (unsigned int i = 0; i < count; ++i) {
+                 if (FT_Get_Sfnt_Name(face, i, &sname) != 0) {
+                     continue;
+                 }
 
+                 // only handle the unicode names for US langid.
+                 if (sname.language_id == 0) {
+                     continue;
+                 }
+                 bool bExitLoop = false;
+                 switch (sname.name_id) {
+                 // 0
+                 case TT_NAME_ID_LICENSE: {
+                        sLicense = convertToUtf8(sname.string, sname.string_len).simplified();
+                        bExitLoop = true;
+                        break;
+                     }
+                 default:
+                     break;
+                 }
+                 if(bExitLoop) break;
+            }
+        }
+    }
+    FT_Done_Face(face);
+    FT_Done_FreeType(library);
+    if(sFontList.contains(m_fontInfo->fontData.strFontName)) {
+        QString version = "Copyright 1989-1992, Bitstream Inc., Cambridge, MA.";
+        QString sLicenseDes = "You are hereby granted permission under all Bitstream propriety rights to use, copy, modify, sublicense, sell, and redistribute the 4 Bitstream Charter (r) \
+Type 1 outline fonts and the 4 Courier Type 1 outline fonts for any purpose and without restriction; \
+provided, that this notice is left intact on all copies of such fonts and that Bitstream's trademark is acknowledged as shown below on all unmodified copies of the 4 Charter Type 1 fonts. \
+BITSTREAM CHARTER is a registered trademark of Bitstream Inc.";
+        createLabel(gridLayout, 7, DApplication::translate("FontDetailDailog", "Copyright"), m_fontInfo->fontInfo.copyright.isEmpty()?version:m_fontInfo->fontInfo.copyright);
+        createLabel(gridLayout, 8, DApplication::translate("FontDetailDailog", "License Description"), sLicense.isEmpty()?sLicenseDes:sLicense);
+    } else {
+        createLabel(gridLayout, 7, DApplication::translate("FontDetailDailog", "Copyright"), m_fontInfo->fontInfo.copyright.isEmpty()?DApplication::translate("FontDetailDailog", "Unknown"):m_fontInfo->fontInfo.copyright);
+        createLabel(gridLayout, 8, DApplication::translate("FontDetailDailog", "License Description"), sLicense.isEmpty()?DApplication::translate("FontDetailDailog", "Unknown"):sLicense);
+    }
     auto vLayout = new QVBoxLayout;
     vLayout->setContentsMargins(10, 10, 10, 10);
     basicLabel = new DLabel(DApplication::translate("FontDetailDailog", "Basic info"));
