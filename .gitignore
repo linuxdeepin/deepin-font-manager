@@ -8,3 +8,7 @@ build/
 *.user
 obj-x86_64-linux-gnu
 .vscode/
+
+#linglong building dir
+linglong
+build
