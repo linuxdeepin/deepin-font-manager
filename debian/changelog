@@ -1,3 +1,10 @@
+deepin-font-manager (6.5.0) unstable; urgency=medium
+
+  * New version 6.5.0
+  * Adapt linglong.
+
+-- re2zero <yangwu@uniontech.com>  Fri, 13 Sep 2024 14:06:16 +0800
+
 deepin-font-manager (6.0.4) unstable; urgency=medium
 
   * changelog 6.0.4
