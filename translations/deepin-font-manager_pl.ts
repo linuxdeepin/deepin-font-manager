@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="pl">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="pl">
 <context>
     <name>Category</name>
     <message>
@@ -29,7 +27,7 @@
     </message>
     <message>
         <source>Monospaced</source>
-        <translation>Monospaced</translation>
+        <translation>O stałej szerokości</translation>
     </message>
 </context>
 <context>
@@ -88,7 +86,7 @@
     <name>DFInstallErrorDialog</name>
     <message>
         <source>Broken file</source>
-        <translation>Uszkodzony plik</translation>
+        <translation>Plik uszkodzony</translation>
     </message>
     <message>
         <source>Same version installed</source>
@@ -155,22 +153,22 @@
     </message>
     <message>
         <source>Failed to install %1 font. There is not enough disk space.</source>
-        <translation>Nie udało się zainstalować %1 czcionki. Niewystarczająca ilość miejsca na dysku.</translation>
+        <translation>Nie udało się zainstalować %1 czcionki. Za mało miejsca na dysku.</translation>
     </message>
     <message>
         <source>Failed to install %1 fonts. There is not enough disk space.</source>
-        <translation>Nie udało się zainstalować %1 czcionek. Niewystarczająca ilość miejsca na dysku.</translation>
+        <translation>Nie udało się zainstalować %1 czcionek. Za mało miejsca na dysku.</translation>
     </message>
     <message>
         <source>Fonts</source>
-        <translation type="unfinished"></translation>
+        <translation>Czcionki</translation>
     </message>
 </context>
 <context>
     <name>DFontWidget</name>
     <message>
         <source>Broken file</source>
-        <translation type="unfinished">Uszkodzony plik</translation>
+        <translation>Uszkodzony plik</translation>
     </message>
 </context>
 <context>
@@ -224,18 +222,18 @@
     </message>
     <message>
         <source>Exit</source>
-        <translation type="unfinished">Wyjście</translation>
+        <translation>Wyjście</translation>
     </message>
     <message>
         <source>Continue</source>
-        <translation type="unfinished">Kontynuuj</translation>
+        <translation>Kontynuuj</translation>
     </message>
 </context>
 <context>
     <name>Font</name>
     <message>
         <source>Don&apos;t let your dreams be dreams</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie pozwól, aby twoje sny były snami</translation>
     </message>
 </context>
 <context>
@@ -278,11 +276,11 @@
     </message>
     <message>
         <source>Copyright</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>License Description</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -363,7 +361,7 @@
     </message>
     <message>
         <source>The fonts have been deactivated</source>
-        <translation>Czcionki zostały dezaktywowane</translation>
+        <translation>Czcionki zostały wyłączone</translation>
     </message>
     <message>
         <source>%1 is in use, so you cannot disable it</source>
