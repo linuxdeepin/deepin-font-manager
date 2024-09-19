@@ -276,11 +276,11 @@
     </message>
     <message>
         <source>Copyright</source>
-        <translation type="unfinished"/>
+        <translation>Copyright</translation>
     </message>
     <message>
         <source>License Description</source>
-        <translation type="unfinished"/>
+        <translation>Lisenssin kuvaus</translation>
     </message>
 </context>
 <context>
@@ -291,7 +291,7 @@
     </message>
     <message>
         <source>Font Manager helps users install and manage fonts.</source>
-        <translation>Fontit auttaa hallitsemaan ja asentamaan fontteja.</translation>
+        <translation>Fontit hallitsee ja asentaa fontteja.</translation>
     </message>
     <message>
         <source>Loading fonts, please wait...</source>
