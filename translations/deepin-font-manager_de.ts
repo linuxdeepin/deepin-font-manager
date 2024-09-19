@@ -280,7 +280,7 @@
     </message>
     <message>
         <source>License Description</source>
-        <translation type="unfinished"/>
+        <translation>Lizenzbeschreibung</translation>
     </message>
 </context>
 <context>
