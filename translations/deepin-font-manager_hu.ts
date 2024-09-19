@@ -276,11 +276,11 @@
     </message>
     <message>
         <source>Copyright</source>
-        <translation type="unfinished"/>
+        <translation>Szerzői jog</translation>
     </message>
     <message>
         <source>License Description</source>
-        <translation type="unfinished"/>
+        <translation>Licensz leírás</translation>
     </message>
 </context>
 <context>
