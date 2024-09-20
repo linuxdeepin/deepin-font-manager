@@ -276,11 +276,11 @@
     </message>
     <message>
         <source>Copyright</source>
-        <translation type="unfinished"/>
+        <translation>Derechos de autor</translation>
     </message>
     <message>
         <source>License Description</source>
-        <translation type="unfinished"/>
+        <translation>Descripción de la licencia</translation>
     </message>
 </context>
 <context>
