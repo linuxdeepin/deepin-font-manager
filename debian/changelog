@@ -1,3 +1,9 @@
+deepin-font-manager (6.5.1) unstable; urgency=medium
+
+  * feat: [translation]add transifex config(Task: 361363)
+
+ -- renbin <renbin@uniontech.com>  Fri, 20 Sep 2024 14:27:30 +0800
+
 deepin-font-manager (6.5.0) unstable; urgency=medium
 
   * New version 6.5.0
