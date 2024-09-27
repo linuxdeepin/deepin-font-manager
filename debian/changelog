@@ -1,4 +1,10 @@
-deepin-movie-reborn (6.5.2) unstable; urgency=medium
+deepin-font-manager (6.5.3) unstable; urgency=medium
+
+  * New version 6.5.3
+
+ -- re2zero <yangwu@uniontech.com>  Fri, 27 Sep 2024 17:25:16 +0800
+
+deepin-font-manager (6.5.2) unstable; urgency=medium
 
   * New version 6.5.2
   * Slimming down the linglong layer package.
