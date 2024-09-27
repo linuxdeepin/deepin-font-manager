@@ -7,7 +7,7 @@ version: "1"
 package:
   id: org.deepin.fontmanager
   name: "deepin-font-manager"
-  version: 6.5.0.1
+  version: 6.5.3.1
   kind: app
   description: |
     font manager for deepin os.
@@ -26,7 +26,7 @@ build: |
   # 获取版本号
   VERSION=$(head -1 debian/changelog | awk -F'[()]' '{print $2}')
   # 使用sed命令替换version的值
-  sed -i "s/^  version: .*/  version: ${VERSION}.1/" linglong.yaml
+  # sed -i "s/^  version: .*/  version: ${VERSION}.1/" linglong.yaml
 
   cmake -B build ${conf_args} \
         -DCMAKE_SAFETYTEST_ARG="CMAKE_SAFETYTEST_ARG_OFF" \
