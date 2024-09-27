@@ -1,3 +1,10 @@
+deepin-movie-reborn (6.5.2) unstable; urgency=medium
+
+  * New version 6.5.2
+  * Slimming down the linglong layer package.
+
+ -- re2zero <yangwu@uniontech.com>  Fri, 27 Sep 2024 14:55:16 +0800
+
 deepin-font-manager (6.5.1) unstable; urgency=medium
 
   * feat: [translation]add transifex config(Task: 361363)
@@ -9,7 +16,7 @@ deepin-font-manager (6.5.0) unstable; urgency=medium
   * New version 6.5.0
   * Adapt linglong.
 
--- re2zero <yangwu@uniontech.com>  Fri, 13 Sep 2024 14:06:16 +0800
+ -- re2zero <yangwu@uniontech.com>  Fri, 13 Sep 2024 14:06:16 +0800
 
 deepin-font-manager (6.0.4) unstable; urgency=medium
 
