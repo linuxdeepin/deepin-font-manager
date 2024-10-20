@@ -338,7 +338,7 @@
     </message>
     <message>
         <source>Unfavorite</source>
-        <translation>Remover dos Favoritos</translation>
+        <translation>Remover dos favoritos</translation>
     </message>
     <message>
         <source>Details</source>
@@ -457,7 +457,7 @@
     </message>
     <message>
         <source>Unfavorite</source>
-        <translation>Remover dos Favoritos</translation>
+        <translation>Remover dos favoritos</translation>
     </message>
     <message>
         <source>Font info</source>
