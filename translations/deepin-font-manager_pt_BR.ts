@@ -195,7 +195,7 @@
     </message>
     <message>
         <source>Are you sure you want to delete %1 font(s)?</source>
-        <translation>Excluir %1 fonte(s)?</translation>
+        <translation>Excluir a(s) fonte(s) %1?</translation>
     </message>
     <message>
         <source>Delete</source>
