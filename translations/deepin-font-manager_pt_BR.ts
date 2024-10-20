@@ -365,15 +365,15 @@
     </message>
     <message>
         <source>%1 is in use, so you cannot disable it</source>
-        <translation>% 1 está em uso; portanto não é possível desativá-lo</translation>
+        <translation>% 1 está em uso, impossível desativá-la</translation>
     </message>
     <message>
         <source>You cannot disable system fonts and the fonts in use</source>
-        <translation>Não é possível desativar as fontes do sistema e as fontes em uso</translation>
+        <translation>Impossível desativar as fontes do sistema e as fontes em uso</translation>
     </message>
     <message>
         <source>You cannot disable system fonts</source>
-        <translation>Não é possível desativar as fontes do sistema</translation>
+        <translation>Impossível desativar as fontes do sistema</translation>
     </message>
 </context>
 <context>
@@ -468,7 +468,7 @@
     <name>StateBar</name>
     <message>
         <source>Input preview text</source>
-        <translation>Insira o texto de pré-visualização</translation>
+        <translation>Digite qualquer texto para pré-visualizá-lo</translation>
     </message>
 </context>
 </TS>
