@@ -94,7 +94,7 @@
     </message>
     <message>
         <source>System Font</source>
-        <translation>Fonte do Sistema</translation>
+        <translation>Fonte do sistema</translation>
     </message>
 </context>
 <context>
