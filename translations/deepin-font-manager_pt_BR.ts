@@ -105,11 +105,11 @@
     </message>
     <message>
         <source>PgUp</source>
-        <translation>PgUp</translation>
+        <translation>Página acima</translation>
     </message>
     <message>
         <source>PgDown</source>
-        <translation>PgDown</translation>
+        <translation>Página abaixo</translation>
     </message>
     <message>
         <source>Ctrl+Alt+F</source>
@@ -291,7 +291,7 @@
     </message>
     <message>
         <source>Font Manager helps users install and manage fonts.</source>
-        <translation>O Gerenciador de Fontes facilita a instalação e o gerenciamento fontes.</translation>
+        <translation>O Gerenciador de Fontes ajuda os usuários a instalar e gerenciar fontes.</translation>
     </message>
     <message>
         <source>Loading fonts, please wait...</source>
