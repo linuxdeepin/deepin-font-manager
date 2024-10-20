@@ -42,7 +42,7 @@
     <name>DFDeleteTTCDialog</name>
     <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be deleted</source>
-        <translation>%1 é uma família de fontes; se prosseguir, todas as fontes nela contidas serão excluídas</translation>
+        <translation>%1 é uma família de fontes, se você continuar, todas as fontes serão excluídas</translation>
     </message>
     <message>
         <source>Delete</source>
@@ -54,11 +54,11 @@
     <name>DFDisableTTCDialog</name>
     <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be enabled</source>
-        <translation>%1 é uma família de fontes: se prosseguir, todas as fontes serão desabilitadas</translation>
+        <translation>%1 é uma família de fontes, se você continuar, todas as fontes serão ativadas</translation>
     </message>
     <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be disabled</source>
-        <translation>%1 é uma família de fontes; se prosseguir, todas as fontes serão desabilitadas</translation>
+        <translation>%1 é uma família de fontes, se você continuar, todas as fontes serão desativadas</translation>
     </message>
     <message>
         <source>Enable</source>
@@ -90,7 +90,7 @@
     </message>
     <message>
         <source>Same version installed</source>
-        <translation>A mesma versão já está instalada</translation>
+        <translation>A mesma versão está instalada</translation>
     </message>
     <message>
         <source>System Font</source>
