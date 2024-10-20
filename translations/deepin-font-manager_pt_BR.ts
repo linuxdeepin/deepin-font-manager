@@ -214,11 +214,11 @@
     <name>ExceptionWindow</name>
     <message>
         <source>Font Verification</source>
-        <translation>Verificação da Fonte</translation>
+        <translation>Verificação de fonte</translation>
     </message>
     <message>
         <source>No fonts to be installed</source>
-        <translation>Nenhuma fonte para instalar</translation>
+        <translation>Nenhuma fonte a ser instalada</translation>
     </message>
     <message>
         <source>Exit</source>
@@ -268,11 +268,11 @@
     </message>
     <message>
         <source>Ps name</source>
-        <translation>Nome do postscript</translation>
+        <translation>Nome do ps</translation>
     </message>
     <message>
         <source>Trademark</source>
-        <translation>Marca comercial</translation>
+        <translation>Marca registrada</translation>
     </message>
     <message>
         <source>Copyright</source>
@@ -334,7 +334,7 @@
     </message>
     <message>
         <source>Favorite</source>
-        <translation>Favorito</translation>
+        <translation>Favoritar</translation>
     </message>
     <message>
         <source>Unfavorite</source>
@@ -380,7 +380,7 @@
     <name>NormalInstallWindow</name>
     <message>
         <source>Install Font</source>
-        <translation>Instalar Fonte</translation>
+        <translation>Instalar fonte</translation>
     </message>
     <message>
         <source>Verifying...</source>
@@ -407,7 +407,7 @@
     </message>
     <message>
         <source>Install Font</source>
-        <translation>Instalar Fonte</translation>
+        <translation>Instalar fonte</translation>
     </message>
 </context>
 <context>
@@ -453,7 +453,7 @@
     </message>
     <message>
         <source>Favorite</source>
-        <translation>Favorito</translation>
+        <translation>Favoritar</translation>
     </message>
     <message>
         <source>Unfavorite</source>
