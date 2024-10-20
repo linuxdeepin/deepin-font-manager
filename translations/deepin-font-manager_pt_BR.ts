@@ -3,7 +3,7 @@
     <name>Category</name>
     <message>
         <source>All Fonts</source>
-        <translation>Todas as Fontes</translation>
+        <translation>Todas as fontes</translation>
     </message>
     <message>
         <source>System</source>
@@ -27,7 +27,7 @@
     </message>
     <message>
         <source>Monospaced</source>
-        <translation>Monoespaçada</translation>
+        <translation>Monoespaçado</translation>
     </message>
 </context>
 <context>
@@ -145,11 +145,11 @@
     </message>
     <message>
         <source>Alt+M</source>
-        <translation>Alt + M</translation>
+        <translation>Alt+M</translation>
     </message>
     <message>
         <source>CTRL+I</source>
-        <translation>CTRL + I</translation>
+        <translation>CTRL+I</translation>
     </message>
     <message>
         <source>Failed to install %1 font. There is not enough disk space.</source>
