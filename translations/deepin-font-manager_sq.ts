@@ -3,7 +3,7 @@
     <name>Category</name>
     <message>
         <source>All Fonts</source>
-        <translation>Krejt shkronjat</translation>
+        <translation>Krejt Shkronjat</translation>
     </message>
     <message>
         <source>System</source>
@@ -23,7 +23,7 @@
     </message>
     <message>
         <source>Chinese</source>
-        <translation>Kinezçe</translation>
+        <translation>Kineze</translation>
     </message>
     <message>
         <source>Monospaced</source>
@@ -187,11 +187,11 @@
     </message>
     <message>
         <source>The font &quot;%1&quot; in use cannot be deleted</source>
-        <translation>Lloji &quot;%1&quot; i shkronjave në përdorim s’mund të fshihet</translation>
+        <translation>Lloji “%1” i shkronjave në përdorim s’mund të fshihet</translation>
     </message>
     <message>
         <source>The other %1 system fonts and the font &quot;%2&quot; in use cannot be deleted</source>
-        <translation>%1 llojet e tjera të shkronjave të sistemit dhe shkronjat &quot;%2&quot;s’mund të fshihen</translation>
+        <translation>%1 llojet e tjera të shkronjave të sistemit dhe shkronjat “%2”s’mund të fshihen</translation>
     </message>
     <message>
         <source>Are you sure you want to delete %1 font(s)?</source>
@@ -240,7 +240,7 @@
     <name>FontDetailDailog</name>
     <message>
         <source>Basic info</source>
-        <translation>Të dhëna elementare</translation>
+        <translation>Hollësi elementare</translation>
     </message>
     <message>
         <source>Style</source>
@@ -276,11 +276,11 @@
     </message>
     <message>
         <source>Copyright</source>
-        <translation type="unfinished"/>
+        <translation>Të drejta kopjimi</translation>
     </message>
     <message>
         <source>License Description</source>
-        <translation type="unfinished"/>
+        <translation>Përshkrim Licence</translation>
     </message>
 </context>
 <context>
@@ -437,11 +437,11 @@
     </message>
     <message>
         <source>Page up</source>
-        <translation>Tasti Page Up</translation>
+        <translation>Tasti “Page Up”</translation>
     </message>
     <message>
         <source>Page down</source>
-        <translation>Tasti Page Down</translation>
+        <translation>Tasti “Page Down”</translation>
     </message>
     <message>
         <source>Delete</source>
@@ -461,7 +461,7 @@
     </message>
     <message>
         <source>Font info</source>
-        <translation>Të dhëna shkronjash</translation>
+        <translation>Hollësi shkronjash</translation>
     </message>
 </context>
 <context>
