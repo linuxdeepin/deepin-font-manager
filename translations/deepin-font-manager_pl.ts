@@ -276,7 +276,7 @@
     </message>
     <message>
         <source>Copyright</source>
-        <translation>Prawo autorskie</translation>
+        <translation>Copyright</translation>
     </message>
     <message>
         <source>License Description</source>
