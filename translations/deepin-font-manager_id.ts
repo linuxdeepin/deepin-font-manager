@@ -1,35 +1,33 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="id">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="id">
 <context>
     <name>Category</name>
     <message>
         <source>All Fonts</source>
-        <translation type="unfinished"></translation>
+        <translation>Semua Huruf</translation>
     </message>
     <message>
         <source>System</source>
-        <translation type="unfinished"></translation>
+        <translation>Sistem</translation>
     </message>
     <message>
         <source>User</source>
-        <translation type="unfinished"></translation>
+        <translation>Pengguna</translation>
     </message>
     <message>
         <source>Favorites</source>
-        <translation type="unfinished"></translation>
+        <translation>Kesukaan</translation>
     </message>
     <message>
         <source>Active</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktif</translation>
     </message>
     <message>
         <source>Chinese</source>
-        <translation type="unfinished"></translation>
+        <translation>Aksara Cina</translation>
     </message>
     <message>
         <source>Monospaced</source>
-        <translation type="unfinished"></translation>
+        <translation>Monospace</translation>
     </message>
 </context>
 <context>
@@ -37,440 +35,440 @@
     <message>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation type="unfinished"></translation>
+        <translation>Batal</translation>
     </message>
 </context>
 <context>
     <name>DFDeleteTTCDialog</name>
     <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be deleted</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Delete</source>
         <comment>button</comment>
-        <translation type="unfinished"></translation>
+        <translation>Hapus</translation>
     </message>
 </context>
 <context>
     <name>DFDisableTTCDialog</name>
     <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be enabled</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be disabled</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Enable</source>
         <comment>button</comment>
-        <translation type="unfinished"></translation>
+        <translation>Nyalakan</translation>
     </message>
     <message>
         <source>Disable</source>
         <comment>button</comment>
-        <translation type="unfinished"></translation>
+        <translation>Matikan</translation>
     </message>
 </context>
 <context>
     <name>DFHandleTTCDialog</name>
     <message>
         <source>Apply to all selected font families</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Batal</translation>
     </message>
 </context>
 <context>
     <name>DFInstallErrorDialog</name>
     <message>
         <source>Broken file</source>
-        <translation type="unfinished"></translation>
+        <translation>File rusak</translation>
     </message>
     <message>
         <source>Same version installed</source>
-        <translation type="unfinished">Versi yang sama telah terpasang</translation>
+        <translation>Versi yang sama telah dipasang</translation>
     </message>
     <message>
         <source>System Font</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>DFontMgrMainWindow</name>
     <message>
-        <source>Ctrl+=</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ctrl+-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ctrl+0</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Ctrl+Shift+/</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>PgUp</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>PgDown</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Ctrl+Alt+F</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Ctrl+F</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Alt+M</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Ctrl+O</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <source>CTRL+I</source>
-        <translation type="unfinished"></translation>
+        <source>Ctrl+=</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Ctrl+-</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Ctrl+0</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>%1 font installed</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>%1 fonts installed</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <source>Fonts</source>
-        <translation type="unfinished"></translation>
+        <source>Alt+M</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>CTRL+I</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Failed to install %1 font. There is not enough disk space.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Failed to install %1 fonts. There is not enough disk space.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Fonts</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>DFontWidget</name>
     <message>
         <source>Broken file</source>
-        <translation type="unfinished"></translation>
+        <translation>File rusak</translation>
     </message>
 </context>
 <context>
     <name>DeleteConfirmDailog</name>
     <message>
-        <source>Are you sure you want to delete %1 font(s)?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>This font will not be available to applications</source>
-        <translation type="unfinished"></translation>
+        <translation>Huruf ini tidak akan tersedia bagi aplikasi</translation>
     </message>
     <message>
         <source>These fonts will not be available to applications</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>The other %1 system fonts cannot be deleted</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>The font &quot;%1&quot; in use cannot be deleted</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>The other %1 system fonts and the font &quot;%2&quot; in use cannot be deleted</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Are you sure you want to delete %1 font(s)?</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Delete</source>
         <comment>button</comment>
-        <translation type="unfinished"></translation>
+        <translation>Hapus</translation>
     </message>
 </context>
 <context>
     <name>Dfuninstalldialog</name>
     <message>
         <source>Deleting fonts, please wait...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>ExceptionWindow</name>
     <message>
         <source>Font Verification</source>
-        <translation type="unfinished"></translation>
+        <translation>Memeriksa Huruf</translation>
     </message>
     <message>
         <source>No fonts to be installed</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Exit</source>
-        <translation type="unfinished"></translation>
+        <translation>Keluar</translation>
     </message>
     <message>
         <source>Continue</source>
-        <translation type="unfinished"></translation>
+        <translation>Lanjutkan</translation>
     </message>
 </context>
 <context>
     <name>Font</name>
     <message>
         <source>Don&apos;t let your dreams be dreams</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>FontDetailDailog</name>
     <message>
+        <source>Basic info</source>
+        <translation>Informasi dasar</translation>
+    </message>
+    <message>
         <source>Style</source>
-        <translation type="unfinished"></translation>
+        <translation>Gaya</translation>
     </message>
     <message>
         <source>Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Tipe</translation>
     </message>
     <message>
         <source>Version</source>
-        <translation type="unfinished"></translation>
+        <translation>Versi</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation type="unfinished"></translation>
+        <translation>Deskripsi</translation>
     </message>
     <message>
         <source>Unknown</source>
-        <translation type="unfinished">Tidak diketahui</translation>
+        <translation>Tidak diketahui</translation>
     </message>
     <message>
         <source>Full name</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Ps name</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Trademark</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Basic info</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Copyright</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>License Description</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>Main</name>
     <message>
         <source>Font Manager</source>
-        <translation type="unfinished"></translation>
+        <translation>Pengelola Huruf</translation>
     </message>
     <message>
         <source>Font Manager helps users install and manage fonts.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The font exported to your desktop</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>%1 fonts exported to your desktop</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Failed to export 1 font. There is not enough disk space.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Failed to export %1 fonts. There is not enough disk space.</source>
-        <translation type="unfinished"></translation>
+        <translation>Font Manager membantu pengguna memasang dan mengatur huruf</translation>
     </message>
     <message>
         <source>Loading fonts, please wait...</source>
-        <translation type="unfinished"></translation>
+        <translation>Memuat huruf, mohon menunggu...</translation>
+    </message>
+    <message>
+        <source>The font exported to your desktop</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>%1 fonts exported to your desktop</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Failed to export 1 font. There is not enough disk space.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Failed to export %1 fonts. There is not enough disk space.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>Menu</name>
     <message>
         <source>Add font</source>
-        <translation type="unfinished"></translation>
+        <translation>Tambah Huruf</translation>
     </message>
     <message>
         <source>Enable</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Export</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Favorite</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Details</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Display in file manager</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unfavorite</source>
-        <translation type="unfinished"></translation>
+        <translation>Nyalakan</translation>
     </message>
     <message>
         <source>Disable</source>
-        <translation type="unfinished"></translation>
+        <translation>Matikan</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>Hapus</translation>
+    </message>
+    <message>
+        <source>Favorite</source>
+        <translation>Sukai</translation>
+    </message>
+    <message>
+        <source>Unfavorite</source>
+        <translation>Tidak disukai</translation>
+    </message>
+    <message>
+        <source>Details</source>
+        <translation>Rincian</translation>
+    </message>
+    <message>
+        <source>Display in file manager</source>
+        <translation>Tampilkan pada file manager</translation>
+    </message>
+    <message>
+        <source>Export</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>MessageManager</name>
     <message>
-        <source>%1 is in use, so you cannot disable it</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>You cannot disable system fonts and the fonts in use</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>You cannot disable system fonts</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>deactivated</source>
-        <translation type="unfinished"></translation>
+        <translation>Nonaktifkan</translation>
     </message>
     <message>
         <source>The fonts have been deactivated</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>%1 is in use, so you cannot disable it</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>You cannot disable system fonts and the fonts in use</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>You cannot disable system fonts</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>NormalInstallWindow</name>
     <message>
         <source>Install Font</source>
-        <translation type="unfinished"></translation>
+        <translation>Pasang Huruf</translation>
     </message>
     <message>
         <source>Verifying...</source>
-        <translation type="unfinished"></translation>
+        <translation>Memeriksa...</translation>
     </message>
 </context>
 <context>
     <name>QuickInstallWindow</name>
     <message>
         <source>Unknown</source>
-        <translation type="unfinished">Tidak diketahui</translation>
-    </message>
-    <message>
-        <source>Install Font</source>
-        <translation type="unfinished"></translation>
+        <translation>Tidak diketahui</translation>
     </message>
     <message>
         <source>Broken file</source>
-        <translation type="unfinished"></translation>
+        <translation>File rusak</translation>
     </message>
     <message>
         <source>Installed</source>
-        <translation type="unfinished">Terpasang</translation>
+        <translation>Terpasang</translation>
     </message>
     <message>
         <source>Not Installed</source>
-        <translation type="unfinished"></translation>
+        <translation>Tidak terpasang</translation>
+    </message>
+    <message>
+        <source>Install Font</source>
+        <translation>Pasang Huruf</translation>
     </message>
 </context>
 <context>
     <name>SearchBar</name>
     <message>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>Cari</translation>
     </message>
     <message>
         <source>No search results</source>
-        <translation type="unfinished"></translation>
+        <translation>Hasil pencarian kosong</translation>
     </message>
     <message>
         <source>No fonts</source>
-        <translation type="unfinished"></translation>
+        <translation>Tidak ada huruf</translation>
     </message>
 </context>
 <context>
     <name>Shortcut</name>
     <message>
         <source>Help</source>
-        <translation type="unfinished"></translation>
+        <translation>Bantuan</translation>
     </message>
     <message>
         <source>Display shortcuts</source>
-        <translation type="unfinished"></translation>
+        <translation>Tampilkan shortcut</translation>
     </message>
     <message>
         <source>Page up</source>
-        <translation type="unfinished"></translation>
+        <translation>Halaman Naik</translation>
     </message>
     <message>
         <source>Page down</source>
-        <translation type="unfinished"></translation>
+        <translation>Halaman Turun</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>Hapus</translation>
     </message>
     <message>
         <source>Add font</source>
-        <translation type="unfinished"></translation>
+        <translation>Tambah Huruf</translation>
     </message>
     <message>
         <source>Favorite</source>
-        <translation type="unfinished"></translation>
+        <translation>Sukai</translation>
     </message>
     <message>
         <source>Unfavorite</source>
-        <translation type="unfinished"></translation>
+        <translation>Tidak disukai</translation>
     </message>
     <message>
         <source>Font info</source>
-        <translation type="unfinished"></translation>
+        <translation>Info Huruf</translation>
     </message>
 </context>
 <context>
     <name>StateBar</name>
     <message>
         <source>Input preview text</source>
-        <translation type="unfinished"></translation>
+        <translation>Input teks pratinjau</translation>
     </message>
 </context>
 </TS>

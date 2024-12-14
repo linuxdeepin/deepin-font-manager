@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="ug">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="ug">
 <context>
     <name>Category</name>
     <message>
@@ -155,22 +153,22 @@
     </message>
     <message>
         <source>Failed to install %1 font. There is not enough disk space.</source>
-        <translation type="unfinished"></translation>
+        <translation>نىشان دىسكىنىڭ سىغىمى يېتىشمىگەچكە، %1 ھۆججەت قاچىلانمىدى</translation>
     </message>
     <message>
         <source>Failed to install %1 fonts. There is not enough disk space.</source>
-        <translation type="unfinished"></translation>
+        <translation>نىشان دىسكىنىڭ سىغىمى يېتىشمىگەچكە، %1 ھۆججەت قاچىلانمىدى</translation>
     </message>
     <message>
         <source>Fonts</source>
-        <translation type="unfinished"></translation>
+        <translation>خەت شەكلى</translation>
     </message>
 </context>
 <context>
     <name>DFontWidget</name>
     <message>
         <source>Broken file</source>
-        <translation type="unfinished">ھۆججەت بۇزۇلغان</translation>
+        <translation>ھۆججەت بۇزۇلغان</translation>
     </message>
 </context>
 <context>
@@ -224,18 +222,18 @@
     </message>
     <message>
         <source>Exit</source>
-        <translation type="unfinished">چېكىنىش</translation>
+        <translation>چېكىنىش</translation>
     </message>
     <message>
         <source>Continue</source>
-        <translation type="unfinished">داۋاملاشتۇرۇش</translation>
+        <translation>داۋاملاشتۇرۇش</translation>
     </message>
 </context>
 <context>
     <name>Font</name>
     <message>
         <source>Don&apos;t let your dreams be dreams</source>
-        <translation type="unfinished"></translation>
+        <translation>ئارزۇ ئۈچۈن بارلىققا كەلگەن، مەسئۇلىيەت ئۈچۈن يېتىلگەن</translation>
     </message>
 </context>
 <context>
@@ -278,11 +276,11 @@
     </message>
     <message>
         <source>Copyright</source>
-        <translation>نەشىر ھوقۇقى</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>License Description</source>
-        <translation>ئىجازەتنامىنى تەسۋىرلەش </translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -309,11 +307,11 @@
     </message>
     <message>
         <source>Failed to export 1 font. There is not enough disk space.</source>
-        <translation>نىشان دىسكىنىڭ سىغىمى يېتىشمىگەچكە، 1 دانە ھۆججەتنى چىقىرالمىدى</translation>
+        <translation>نىشان دىسكىنىڭ سىغىمى يېتىشمىگەچكە، 1 ھۆججەتنى چىقىرالمىدى</translation>
     </message>
     <message>
         <source>Failed to export %1 fonts. There is not enough disk space.</source>
-        <translation>نىشان دىسكىنىڭ سىغىمى يېتىشمىگەچكە، %1 دانە ھۆججەتنى چىقىرالمىدى</translation>
+        <translation>نىشان دىسكىنىڭ سىغىمى يېتىشمىگەچكە، %1 ھۆججەتنى چىقىرالمىدى</translation>
     </message>
 </context>
 <context>

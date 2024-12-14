@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="ar">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="ar">
 <context>
     <name>Category</name>
     <message>
@@ -44,7 +42,7 @@
     <name>DFDeleteTTCDialog</name>
     <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be deleted</source>
-        <translation type="unfinished"></translation>
+        <translation>٪1 هو يعتبر عائلة خطوط ، في حالة المتابعة سيتم حذف جميع الخطوط الموجودة في هذه العائلة</translation>
     </message>
     <message>
         <source>Delete</source>
@@ -56,11 +54,11 @@
     <name>DFDisableTTCDialog</name>
     <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be enabled</source>
-        <translation type="unfinished"></translation>
+        <translation>٪1 هو يعتبر عائلة خطوط ، في حالة المتابعة سيتم تفعيل جميع الخطوط الموجودة في هذه العائلة</translation>
     </message>
     <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be disabled</source>
-        <translation type="unfinished"></translation>
+        <translation>٪1 هو يعتبر عائلة خطوط ، في حالة المتابعة سيتم تعطيل جميع الخطوط الموجودة في هذه العائلة</translation>
     </message>
     <message>
         <source>Enable</source>
@@ -77,7 +75,7 @@
     <name>DFHandleTTCDialog</name>
     <message>
         <source>Apply to all selected font families</source>
-        <translation type="unfinished"></translation>
+        <translation>تطبيق على جميع عائلات الخطوط المحددة</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -147,30 +145,30 @@
     </message>
     <message>
         <source>Alt+M</source>
-        <translation type="unfinished"></translation>
+        <translation>Alt+M</translation>
     </message>
     <message>
         <source>CTRL+I</source>
-        <translation type="unfinished"></translation>
+        <translation>CTRL+I</translation>
     </message>
     <message>
         <source>Failed to install %1 font. There is not enough disk space.</source>
-        <translation type="unfinished"></translation>
+        <translation>فشل تثبيت الخط 1% ، لا توجد مساحة كافية على القرص.</translation>
     </message>
     <message>
         <source>Failed to install %1 fonts. There is not enough disk space.</source>
-        <translation type="unfinished"></translation>
+        <translation>فشل تثبيت الخطوط 1% ، لا توجد مساحة كافية على القرص.</translation>
     </message>
     <message>
         <source>Fonts</source>
-        <translation type="unfinished"></translation>
+        <translation>الخطوط</translation>
     </message>
 </context>
 <context>
     <name>DFontWidget</name>
     <message>
         <source>Broken file</source>
-        <translation type="unfinished">ملف معطوب</translation>
+        <translation>ملف معطوب</translation>
     </message>
 </context>
 <context>
@@ -185,19 +183,19 @@
     </message>
     <message>
         <source>The other %1 system fonts cannot be deleted</source>
-        <translation type="unfinished"></translation>
+        <translation>لا يمكن الحذف نظراً لأن ٪1 تعتبر من خطوط النظام</translation>
     </message>
     <message>
         <source>The font &quot;%1&quot; in use cannot be deleted</source>
-        <translation type="unfinished"></translation>
+        <translation>لا يمكن الحذف الخط &quot;1%&quot; لأنه قيد الاستخدام</translation>
     </message>
     <message>
         <source>The other %1 system fonts and the font &quot;%2&quot; in use cannot be deleted</source>
-        <translation type="unfinished"></translation>
+        <translation>لا يمكن الحذف نظراً لأن  ٪1 تعتبر من خطوط النظام، بالإضافة إلى أن الخط &quot;٪2&quot; قيد الاستخدام حالياً</translation>
     </message>
     <message>
         <source>Are you sure you want to delete %1 font(s)?</source>
-        <translation type="unfinished"></translation>
+        <translation>هل أنت متأكد من أنك تريد حذف الخط (الخطوط) 1% ؟</translation>
     </message>
     <message>
         <source>Delete</source>
@@ -224,18 +222,18 @@
     </message>
     <message>
         <source>Exit</source>
-        <translation type="unfinished">خروج</translation>
+        <translation>خروج</translation>
     </message>
     <message>
         <source>Continue</source>
-        <translation type="unfinished">تأكيد</translation>
+        <translation>تأكيد</translation>
     </message>
 </context>
 <context>
     <name>Font</name>
     <message>
         <source>Don&apos;t let your dreams be dreams</source>
-        <translation type="unfinished"></translation>
+        <translation>لا تجعل أحلامك تكون أحلام فقط</translation>
     </message>
 </context>
 <context>
@@ -278,11 +276,11 @@
     </message>
     <message>
         <source>Copyright</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>License Description</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -309,11 +307,11 @@
     </message>
     <message>
         <source>Failed to export 1 font. There is not enough disk space.</source>
-        <translation type="unfinished"></translation>
+        <translation>فشل تصدير الخط 1% ، لا توجد مساحة كافية على القرص.</translation>
     </message>
     <message>
         <source>Failed to export %1 fonts. There is not enough disk space.</source>
-        <translation type="unfinished"></translation>
+        <translation>فشل تصدير الخطوط 1% ، لا توجد مساحة كافية على القرص.</translation>
     </message>
 </context>
 <context>
@@ -367,15 +365,15 @@
     </message>
     <message>
         <source>%1 is in use, so you cannot disable it</source>
-        <translation type="unfinished"></translation>
+        <translation>لا يمكن تعطيل 1% لأنه قيد الاستخدام</translation>
     </message>
     <message>
         <source>You cannot disable system fonts and the fonts in use</source>
-        <translation type="unfinished"></translation>
+        <translation>لا يمكن تعطيل خطوط النظام و الخطوط التي قيد الاستخدام</translation>
     </message>
     <message>
         <source>You cannot disable system fonts</source>
-        <translation type="unfinished"></translation>
+        <translation>لا يمكن تعطيل خطوط النظام</translation>
     </message>
 </context>
 <context>
