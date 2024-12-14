@@ -105,7 +105,7 @@
     </message>
     <message>
         <source>PgUp</source>
-        <translation>أعلى الصفحة</translation>
+        <translation>إعلى الصفحة</translation>
     </message>
     <message>
         <source>PgDown</source>
@@ -141,7 +141,7 @@
     </message>
     <message>
         <source>%1 fonts installed</source>
-        <translation>%1 خطوط مثبتة</translation>
+        <translation>%1 خط مثبت</translation>
     </message>
     <message>
         <source>Alt+M</source>
@@ -295,7 +295,7 @@
     </message>
     <message>
         <source>Loading fonts, please wait...</source>
-        <translation>جاي تحميل الخطوط، الرجاء الانتظار... </translation>
+        <translation>جاي تحميل الخطوط، نرجوا الإنتظار...</translation>
     </message>
     <message>
         <source>The font exported to your desktop</source>
@@ -303,7 +303,7 @@
     </message>
     <message>
         <source>%1 fonts exported to your desktop</source>
-        <translation>تم تصدير 1% خط/خطوط إلى سطح المكتب</translation>
+        <translation>تم تصدير %1 خط/خطوط إلى سطح المكتب</translation>
     </message>
     <message>
         <source>Failed to export 1 font. There is not enough disk space.</source>
@@ -414,7 +414,7 @@
     <name>SearchBar</name>
     <message>
         <source>Search</source>
-        <translation>بحث</translation>
+        <translation>البحث</translation>
     </message>
     <message>
         <source>No search results</source>
