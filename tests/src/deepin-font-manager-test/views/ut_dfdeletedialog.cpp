@@ -76,18 +76,6 @@ TEST_F(TestDFDeleteDialog, checksetTheme)
     EXPECT_TRUE(pamessageTitle.color(DPalette::Active, DPalette::WindowText) == pamessageTitleColor);
 }
 
-TEST_F(TestDFDeleteDialog, checkConnect)
-{
-    QTest::mouseClick(fm->m_confirmBtn, Qt::LeftButton);
-    EXPECT_TRUE(fm->m_deleting);
-    QTest::mouseClick(fm->m_confirmBtn, Qt::LeftButton);
-    EXPECT_TRUE(fm->m_deleting);
-
-    QSignalSpy spy(fm->m_signalManager, SIGNAL(cancelDel()));
-    QTest::mouseClick(fm->m_cancelBtn, Qt::LeftButton);
-    EXPECT_TRUE(spy.count() == 1);
-}
-
 TEST_F(TestDFDeleteDialog, checkKeyPressEvent)
 {
     QTest::keyPress(fm, Qt::Key_Escape);

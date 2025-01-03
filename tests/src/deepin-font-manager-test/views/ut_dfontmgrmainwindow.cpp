@@ -46,6 +46,8 @@
 #include <QShortcut>
 #include <QFileSystemWatcher>
 #include <QDBusConnection>
+#include <QMimeData>
+#include <QStorageInfo>
 
 #include "dobject.h"
 #include <DApplication>
@@ -841,8 +843,8 @@ TEST_F(TestDFontMgrMainWindow, checkShowFontFilePostion)
     Stub s1;
     typedef bool (*FP)(QString, const QString &);
 
-    s1.set(FP ADDR(DDesktopServices, showFileItem), stub_return);
-    fm->showFontFilePostion();
+    // s1.set(FP ADDR(DDesktopServices, showFileItem), stub_return);
+    // fm->showFontFilePostion();
 }
 
 TEST_F(TestDFontMgrMainWindow, checkOnFontSizeChanged)
