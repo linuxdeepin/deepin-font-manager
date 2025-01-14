@@ -21,7 +21,9 @@
 #include <DLog>
 #include <DStyleHelper>
 #include <DApplication>
+#if QT_VERSION_MAJOR <= 5
 #include <DApplicationHelper>
+#endif
 #include <DCheckBox>
 #include <DFontSizeManager>
 

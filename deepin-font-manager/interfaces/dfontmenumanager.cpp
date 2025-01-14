@@ -5,7 +5,11 @@
 
 #include "interfaces/dfontmenumanager.h"
 
+#include <QActionGroup>
+
+#if QT_VERSION_MAJOR <= 5
 #include <DApplicationHelper>
+#endif
 #include <DApplication>
 
 DWIDGET_USE_NAMESPACE

@@ -260,7 +260,7 @@ void DFontPreviewListDataThread::onFileAdded(const QStringList &files)
 
     if (m_mutex != nullptr)
         QMutexLocker locker(m_mutex);
-    qDebug() << __func__ << "S" << QThread::currentThreadId() << endl;
+    qDebug() << __func__ << "S" << QThread::currentThreadId() << Qt::endl;
     refreshFontListData(false, files);
 }
 
@@ -418,7 +418,7 @@ void DFontPreviewListDataThread::withoutDbRefreshDb()
     if(!m_dbManager->isDBDeleted()){
         return;
     }
-    qDebug() << "strAllFontList.size()" << m_allFontPathList.size() << endl;
+    qDebug() << "strAllFontList.size()" << m_allFontPathList.size() << Qt::endl;
 
     int index = 0;
     DFontInfoManager *fontInfoMgr = DFontInfoManager::instance();
@@ -614,17 +614,25 @@ void DFontPreviewListDataThread:: refreshFontListData(bool isStartup, const QStr
     m_diffFontModelList.clear();
 
     //根据文件路径比较出不同的字体文件
+#if QT_VERSION_MAJOR > 5
+    QSet<QString> allFontListSet(m_allFontPathList.begin(), m_allFontPathList.end());
+#else
     QSet<QString> allFontListSet = m_allFontPathList.toSet();
+#endif
     QSet<QString> diffSet = allFontListSet.subtract(dbFilePathSet);
 
     qInfo() << "diffSet count:" << diffSet.count();
     if (diffSet.count() > 0) {
         int maxFontId = m_dbManager->getCurrMaxFontId();
+#if QT_VERSION_MAJOR > 5
+    QSet<QString> diffFilePathList(diffSet.begin(), diffSet.end());
+#else
         QList<QString> diffFilePathList = diffSet.toList();
+#endif
         int index = maxFontId + 1;
         DFontInfoManager *fontInfoMgr = DFontInfoManager::instance();
         DFontInfo info;
-        for (QString &filePath : diffFilePathList) {
+        for (const QString &filePath : diffFilePathList) {
             if (m_dbManager->isSystemFont(filePath) || installFont.contains(filePath)) {
                 bool isEnabled = (isStartup && installFont.contains(filePath)) ? false : true;
                 info = fontInfoMgr->getFontInfo(filePath, true);

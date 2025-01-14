@@ -84,7 +84,7 @@ DFInstallNormalWindow::DFInstallNormalWindow(const QStringList &files, QWidget *
 *************************************************************************/
 DFInstallNormalWindow::~DFInstallNormalWindow()
 {
-    qDebug() << __func__ << "start" << endl;
+    qDebug() << __func__ << "start" << Qt::endl;
 
     // 结束线程
     m_pthread->quit();
@@ -111,7 +111,7 @@ DFInstallNormalWindow::~DFInstallNormalWindow()
         //恢复标志位
         m_skipStateRecovery = false;
     }
-    qDebug() << __func__ << "end" << this << endl;
+    qDebug() << __func__ << "end" << this << Qt::endl;
 }
 
 /*************************************************************************
@@ -220,7 +220,7 @@ void DFInstallNormalWindow::getAllSysfiles()
             QString systemFileName;
             systemFileName.append(font.fontInfo.familyName).append(font.fontInfo.styleName);
             m_fontName.append(font.fontData.strFontName);
-            qDebug() << font.fontInfo.fullname << endl;
+            qDebug() << font.fontInfo.fullname << Qt::endl;
             m_AllSysFilesfamilyName.append(systemFileName);
 
         }
@@ -389,17 +389,17 @@ bool DFInstallNormalWindow::isSystemFont(DFontInfo &f)
 *************************************************************************/
 void DFInstallNormalWindow::checkShowMessage()
 {
-    qDebug() << "Install over" << endl;
+    qDebug() << "Install over" << Qt::endl;
 
     if (getInstallMessage == true && getReInstallMessage == true) {
         qDebug() << "install refresh over";
         finishInstall();
     } else if (getInstallMessage == true && m_popedInstallErrorDialg == false) {
         if (ifNeedShowExceptionWindow()) {
-            qDebug() << "need reinstall " << endl;
+            qDebug() << "need reinstall " << Qt::endl;
             Q_EMIT sigShowInstallErrDlg();
         } else {
-            qDebug() << "no need reinstall" << endl;
+            qDebug() << "no need reinstall" << Qt::endl;
             //不需恢复添加按钮tab状态
             m_skipStateRecovery = true;
             finishInstall();
@@ -530,7 +530,7 @@ void DFInstallNormalWindow::batchInstall()
 //        qDebug() << " Prepare install file: " << it + "|" + familyName;
     }
 
-//    qDebug() << installListWithFamliyName << endl;
+//    qDebug() << installListWithFamliyName << Qt::endl;
 
     if (ifNeedShowExceptionWindow()) {
         m_fontManager->setCacheStatus(FontManagerCore::CacheLater);
@@ -555,7 +555,7 @@ void DFInstallNormalWindow::batchInstall()
 *************************************************************************/
 void DFInstallNormalWindow::batchReInstall(const QStringList &reinstallFiles)
 {
-    qDebug() << "start" << __FUNCTION__ << endl;
+    qDebug() << "start" << __FUNCTION__ << Qt::endl;
 
     QStringList installListWithFamliyName;
     for (auto &it : reinstallFiles) {
@@ -585,7 +585,7 @@ void DFInstallNormalWindow::batchHalfwayInstall(const QStringList &filelist)
     m_installFiles = filelist;
     verifyFontFiles();
 
-    qDebug() << m_newHalfInstalledFiles.count() << "*" << m_oldHalfInstalledFiles.count() << endl;
+    qDebug() << m_newHalfInstalledFiles.count() << "*" << m_oldHalfInstalledFiles.count() << Qt::endl;
     m_halfInstalledFiles.append(m_newHalfInstalledFiles);
 
     //当安装的字体是需要新添加到字体验证框时或者已经添加到字体验证框时,刷新listview.
@@ -799,7 +799,7 @@ void DFInstallNormalWindow::showInstallErrDlg()
         finishInstall();
     });
 
-    qDebug() << geometry().center() << "+" << m_pexceptionDlg->rect().center() << endl;
+    qDebug() << geometry().center() << "+" << m_pexceptionDlg->rect().center() << Qt::endl;
 
     m_pexceptionDlg->move(geometry().center() - m_pexceptionDlg->rect().center());
     m_pexceptionDlg->exec();

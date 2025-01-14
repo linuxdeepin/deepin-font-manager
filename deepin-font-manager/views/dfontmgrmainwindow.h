@@ -324,6 +324,7 @@ public slots:
     void slotSizeModeChanged(DGuiApplicationHelper::SizeMode sizeMode);
 #endif
 
+
 protected:
     DFontPreviewListView *m_fontPreviewListView;
     DListView *m_noResultListView;

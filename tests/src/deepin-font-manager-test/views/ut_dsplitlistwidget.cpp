@@ -19,7 +19,9 @@
 
 #include <DStyleHelper>
 #include <DApplication>
+#if QT_VERSION_MAJOR <= 5
 #include <DApplicationHelper>
+#endif
 #include <DLog>
 #include <DFontSizeManager>
 
@@ -145,6 +147,7 @@ TEST_F(TestDSplitListWidget, checkKyPressEvent)
 
 }
 
+#if QT_VERSION_MAJOR <= 5
 TEST_F(TestDSplitListWidget, checkWheelEventDeltaP)
 {
     QWheelEvent *e = new QWheelEvent(QPoint(45, 200), QPoint(600, 500), 10, Qt::NoButton, Qt::NoModifier);
@@ -194,7 +197,7 @@ TEST_F(TestDSplitListWidget, checkWheelEventDeltaN)
 
     SAFE_DELETE_ELE(e)
 }
-
+#endif
 
 TEST_F(TestDSplitListWidget, checkMouseMoveEvent)
 {

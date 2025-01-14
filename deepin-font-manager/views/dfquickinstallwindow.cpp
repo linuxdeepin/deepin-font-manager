@@ -16,7 +16,9 @@
 #include <DLog>
 #include <DPushButton>
 #include <DTitlebar>
+#if QT_VERSION_MAJOR <= 5
 #include <DApplicationHelper>
+#endif
 
 #include <QFontDatabase>
 #include <QVBoxLayout>
@@ -63,7 +65,7 @@ void DFQuickInstallWindow::initUI()
     setWindowIcon(QIcon::fromTheme(DEEPIN_FONT_MANAGER));
 
     //Clear titlebar's background
-    titlebar()->setBackgroundRole(QPalette::Background);
+    titlebar()->setBackgroundRole(QPalette::Window);
     titlebar()->setAutoFillBackground(false);
 
     titlebar()->setFixedHeight(44);
@@ -105,10 +107,17 @@ void DFQuickInstallWindow::initUI()
     m_stateLabel->setFixedHeight(m_stateLabel->fontMetrics().height());
     m_stateLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     // m_stateLabel->setFont(actionFont);
+#if QT_VERSION_MAJOR > 5
+    DPalette pa = m_stateLabel->palette();
+    pa.setBrush(DPalette::WindowText, pa.color(DPalette::TextTips));
+    m_stateLabel->setPalette(pa);
+    m_oldPaStateLbl = m_stateLabel->palette();
+#else
     DPalette pa = DApplicationHelper::instance()->palette(m_stateLabel);
     pa.setBrush(DPalette::WindowText, pa.color(DPalette::TextTips));
     m_stateLabel->setPalette(pa);
     m_oldPaStateLbl = DApplicationHelper::instance()->palette(m_stateLabel);
+#endif
 
     m_actionBtn = new DPushButton(this);
     m_actionBtn->setFixedSize(QSize(120, 40));
@@ -193,7 +202,11 @@ void DFQuickInstallWindow::onFileSelected(const QStringList &fileList)
         DFontInfo fontInfo = m_fontInfoManager->getFontInfo(file);
         if (fontInfo.isError) {
             m_stateLabel->setText(DApplication::translate("QuickInstallWindow", "Broken file"));
+#if QT_VERSION_MAJOR > 5
+            DPalette pa = m_stateLabel->palette();
+#else
             DPalette pa = DApplicationHelper::instance()->palette(m_stateLabel);
+#endif
             pa.setBrush(DPalette::WindowText, pa.color(DPalette::TextWarning));
             m_stateLabel->setPalette(pa);
 
@@ -202,7 +215,11 @@ void DFQuickInstallWindow::onFileSelected(const QStringList &fileList)
             m_fontType->addItem(DApplication::translate("QuickInstallWindow", "Unknown"));
         } else {
             if (fontInfo.isInstalled) {
+#if QT_VERSION_MAJOR > 5
+                DPalette pa = m_stateLabel->palette();
+#else
                 DPalette pa = DApplicationHelper::instance()->palette(m_stateLabel);
+#endif
                 pa.setBrush(DPalette::WindowText, QColor("#417505")/* pa.color(DPalette::TextWarning)*/);
                 m_stateLabel->setPalette(pa);
                 m_stateLabel->setText(DApplication::translate("QuickInstallWindow", "Installed"));

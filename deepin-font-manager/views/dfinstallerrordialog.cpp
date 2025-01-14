@@ -9,7 +9,9 @@
 #include "utils.h"
 
 #include <DApplication>
+#if QT_VERSION_MAJOR <= 5
 #include <DApplicationHelper>
+#endif
 #include <DVerticalLine>
 
 #include <QButtonGroup>
@@ -62,12 +64,12 @@ DFInstallErrorDialog::DFInstallErrorDialog(QWidget *parent, const QStringList &e
 *************************************************************************/
 DFInstallErrorDialog::~DFInstallErrorDialog()
 {
-    qDebug() << __func__ << "start" << endl;
+    qDebug() << __func__ << "start" << Qt::endl;
     emit m_signalManager->hideInstallErrorDialog();
     m_errorInstallFiles.clear();
     m_installErrorFontModelList.clear();
 //    m_NeedSelectFiles.clear();
-    qDebug() << __func__ << "end" << endl;
+    qDebug() << __func__ << "end" << Qt::endl;
 }
 
 /*************************************************************************
@@ -137,7 +139,11 @@ void DFInstallErrorDialog::initData()
 void DFInstallErrorDialog::initUI()
 {
     setContentsMargins(0, 0, 0, 0);
+#if QT_VERSION_MAJOR > 5
+    setIcon(Utils::renderSVG("://exception-logo.svg", QSize(32, 32)));
+#else
     setIconPixmap(Utils::renderSVG("://exception-logo.svg", QSize(32, 32)));
+#endif
     setWindowTitle(DApplication::translate("ExceptionWindow", "Font Verification"));
 
     this->setFixedSize(448, 302);
@@ -155,11 +161,15 @@ void DFInstallErrorDialog::initUI()
     DVerticalLine *verticalSplit = new DVerticalLine;
     verticalSplit->setFixedWidth(1);
     verticalSplit->setFixedHeight(28);
+#if QT_VERSION_MAJOR > 5
+    DPalette pa = verticalSplit->palette();
+#else
     DPalette pa = DApplicationHelper::instance()->palette(verticalSplit);
+#endif
     QBrush splitBrush = pa.brush(DPalette::ItemBackground);
-    pa.setBrush(DPalette::Background, splitBrush);
+    pa.setBrush(DPalette::Window, splitBrush);
     verticalSplit->setPalette(pa);
-    verticalSplit->setBackgroundRole(QPalette::Background);
+    verticalSplit->setBackgroundRole(QPalette::Window);
     verticalSplit->setAutoFillBackground(true);
 
     m_installErrorListView = new DFInstallErrorListView(m_installErrorFontModelList, this);
@@ -358,7 +368,7 @@ void DFInstallErrorDialog::onListItemsClicked(const QModelIndexList &indexList)
         qvariant_cast<DFInstallErrorItemModel>(m_installErrorListView->getErrorListSourceModel()->data(firstIndex));
 
     for (auto &it : indexList) {
-        qDebug() << it.row() << "++++++++++++++++++++++++++++++" << endl;
+        qDebug() << it.row() << "++++++++++++++++++++++++++++++" << Qt::endl;
         DFInstallErrorItemModel itemModel2 =
             qvariant_cast<DFInstallErrorItemModel>(m_installErrorListView->getErrorListSourceModel()->data(it));
         if (itemModel2.bIsNormalUserFont) {
@@ -387,7 +397,7 @@ void DFInstallErrorDialog::addData(QStringList &errorFileList, QStringList &half
 
     for (auto &it : errorFileList) {
         fontInfo = fontInfoManager->getFontInfo(it);
-        qDebug() << "getfontinfo success!!!!!!!!!!1" << endl;
+        qDebug() << "getfontinfo success!!!!!!!!!!1" << Qt::endl;
         DFInstallErrorItemModel itemModel;
         if (fontInfo.isError) {
             QFileInfo fileInfo(it);
@@ -489,10 +499,18 @@ void DFInstallErrorDialog::slotSizeModeChanged(DGuiApplicationHelper::SizeMode s
     Utils::clearImgCache();
     if (sizeMode == DGuiApplicationHelper::SizeMode::CompactMode) {
         this->setFixedSize(448, 259);
+#if QT_VERSION_MAJOR > 5
+        setIcon(Utils::renderSVG("://exception-logo.svg", QSize(25, 25)));
+#else
         setIconPixmap(Utils::renderSVG("://exception-logo.svg", QSize(25, 25)));
+#endif
     } else {
         this->setFixedSize(448, 302);
+#if QT_VERSION_MAJOR > 5
+        setIcon(Utils::renderSVG("://exception-logo.svg", QSize(32, 32)));
+#else
         setIconPixmap(Utils::renderSVG("://exception-logo.svg", QSize(32, 32)));
+#endif
     }
 }
 #endif

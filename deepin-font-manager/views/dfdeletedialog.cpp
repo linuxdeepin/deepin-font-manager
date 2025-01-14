@@ -9,7 +9,9 @@
 #include "dfontmgrmainwindow.h"
 
 #include <DApplication>
+#if QT_VERSION_MAJOR <= 5
 #include <DApplicationHelper>
+#endif
 #include <DFontSizeManager>
 #include <DCheckBox>
 
@@ -37,7 +39,11 @@ NewStr autoCutText(const QString &text, DLabel *pDesLbl)
     QFont font; // 应用使用字体对象
     QFontMetrics font_label(font);
     QString strText = text;
+#if QT_VERSION_MAJOR > 5
+    int titlewidth = font_label.boundingRect(strText).width();
+#else
     int titlewidth = font_label.width(strText);
+#endif
     QString str;
     NewStr newstr;
     int width = pDesLbl->width();
@@ -48,7 +54,11 @@ NewStr autoCutText(const QString &text, DLabel *pDesLbl)
         for (int i = 0; i < strText.count(); i++) {
             str += strText.at(i);
 
+#if QT_VERSION_MAJOR > 5
+            if (font_label.boundingRect(str).width() > width) { //根据label宽度调整每行字符数
+#else
             if (font_label.width(str) > width) { //根据label宽度调整每行字符数
+#endif
                 str.remove(str.count() - 1, 1);
                 newstr.strList.append(str);
                 newstr.resultStr += str + "\n";
@@ -169,7 +179,11 @@ void DFDeleteDialog::initConnections()
 
     connect(qApp, &DApplication::fontChanged, this, &DFDeleteDialog::onFontChanged);
 
+#if QT_VERSION_MAJOR > 5
+    connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, this, &DFDeleteDialog::setTheme);
+#else
     connect(DApplicationHelper::instance(), &DApplicationHelper::themeTypeChanged, this, &DFDeleteDialog::setTheme);
+#endif
 }
 
 /*************************************************************************
@@ -290,11 +304,19 @@ void DFDeleteDialog::keyPressEvent(QKeyEvent *event)
 void DFDeleteDialog::setTheme()
 {
     // 根据主题设置文字颜色
+#if QT_VERSION_MAJOR > 5
+    DPalette pamessageTitle = messageTitle->palette();
+    DPalette pamessageDetail = messageDetail->palette();
+    QColor pamessageTitleColor = pamessageTitle.color(DPalette::Active, DPalette::BrightText);
+    QColor pamessageDetailColor = pamessageDetail.color(DPalette::Active, DPalette::BrightText);
+    if (DGuiApplicationHelper::DarkType == DGuiApplicationHelper::instance()->themeType()) {
+#else
     DPalette pamessageTitle = DApplicationHelper::instance()->palette(messageTitle);
     DPalette pamessageDetail = DApplicationHelper::instance()->palette(messageDetail);
     QColor pamessageTitleColor = pamessageTitle.color(DPalette::Active, DPalette::BrightText);
     QColor pamessageDetailColor = pamessageDetail.color(DPalette::Active, DPalette::BrightText);
     if (DApplicationHelper::DarkType == DApplicationHelper::instance()->themeType()) {
+#endif
         pamessageTitleColor.setAlphaF(1.0);
         pamessageDetailColor.setAlphaF(0.7);
     } else {
@@ -302,9 +324,14 @@ void DFDeleteDialog::setTheme()
         pamessageDetailColor.setAlphaF(0.7);
     }
     pamessageTitle.setColor(DPalette::Active, DPalette::WindowText, pamessageTitleColor);
-    DApplicationHelper::instance()->setPalette(messageTitle, pamessageTitle);
     pamessageDetail.setColor(DPalette::Active, DPalette::WindowText, pamessageDetailColor);
+#if QT_VERSION_MAJOR > 5
+    messageTitle->setPalette(pamessageTitle);
+    messageDetail->setPalette(pamessageDetail);
+#else
+    DApplicationHelper::instance()->setPalette(messageTitle, pamessageTitle);
     DApplicationHelper::instance()->setPalette(messageDetail, pamessageDetail);
+#endif
 }
 
 DFHandleTTCDialog::DFHandleTTCDialog(DFontMgrMainWindow *win, QString &file, QWidget *parent)
@@ -452,11 +479,15 @@ QLayout *DFHandleTTCDialog::initBottomButtons()
     setConfirmBtnText();
 
     DVerticalLine *verticalSplite = new DVerticalLine(this);
+#if QT_VERSION_MAJOR > 5
+    DPalette pa = verticalSplite->palette();
+#else
     DPalette pa = DApplicationHelper::instance()->palette(verticalSplite);
+#endif
     QColor splitColor = pa.color(DPalette::ItemBackground);
-    pa.setBrush(DPalette::Background, splitColor);
+    pa.setBrush(DPalette::Window, splitColor);
     verticalSplite->setPalette(pa);
-    verticalSplite->setBackgroundRole(QPalette::Background);
+    verticalSplite->setBackgroundRole(QPalette::Window);
     verticalSplite->setAutoFillBackground(true);
     verticalSplite->setFixedSize(3, 28);
 

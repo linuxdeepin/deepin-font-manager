@@ -14,6 +14,9 @@
 #include <QProcess>
 #include <QDateTime>
 #include <QDirIterator>
+#if QT_VERSION_MAJOR > 5
+#include <QRegularExpression>
+#endif
 
 #include <fontconfig/fontconfig.h>
 #include <ft2build.h>
@@ -447,7 +450,11 @@ void DFontInfoManager::setFontInfo(DFontInfo& fontInfo)
             fontInfo.familyName = familyName;
         }
         else {
+#if QT_VERSION_MAJOR > 5
+            fontInfo.familyName = familyName.replace(QRegularExpression(QString("[ -]" + fontInfo.styleName + "$")), "");
+#else
             fontInfo.familyName = familyName.replace(QRegExp(QString("[ -]" + fontInfo.styleName + "$")), "");
+#endif
         }
     }
     return;
@@ -584,7 +591,11 @@ DFontInfo DFontInfoManager:: getFontInfo(const QString &filePath, bool withPrevi
     //compitable with SP2 update1 and previous versions
     if (!fontInfo.fullname.isEmpty()) {
         // 例如Consolas-Regular(或Consolas Regular)获取到Consolas
+#if QT_VERSION_MAJOR > 5
+        fontInfo.familyName = fontInfo.fullname.replace(QRegularExpression(QString("[ -]" + fontInfo.styleName + "$")), "");
+#else
         fontInfo.familyName = fontInfo.fullname.replace(QRegExp(QString("[ -]" + fontInfo.styleName + "$")), "");
+#endif
     }
 
     if (fontInfo.familyName.trimmed().length() < 1) {
