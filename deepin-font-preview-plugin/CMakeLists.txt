@@ -53,11 +53,11 @@ endif()
 set(LIBS
     ${FREETYPE_LIBRARIES}
     PkgConfig::FontConfig
-    ${DtkWidget_LIBRARIES}
-    Qt5::Core
-    Qt5::Widgets
-    Qt5::Gui
-    Qt5::Sql
+    Dtk${DTK_VERSION}::Widget
+    Qt${QT_VERSION_MAJOR}::Core
+    Qt${QT_VERSION_MAJOR}::Widgets
+    Qt${QT_VERSION_MAJOR}::Gui
+    Qt${QT_VERSION_MAJOR}::Sql
     )
 if (dfm-base_FOUND)
     list(APPEND LIBS dfm-base)

@@ -13,7 +13,9 @@
 #include <DApplication>
 #include <DLog>
 #include <DWidgetUtil>
+#if QT_VERSION_MAJOR <= 5
 #include <DApplicationSettings>
+#endif
 
 #include <QDebug>
 #include <QDBusConnection>
@@ -57,7 +59,9 @@ int main(int argc, char *argv[])
     app.setApplicationDescription(DApplication::translate("Main", "Font Manager helps users install and manage fonts."));
     app.setApplicationDisplayName(DApplication::translate("Main", "Font Manager"));
 
+#if QT_VERSION_MAJOR <= 5
     DApplicationSettings savetheme;
+#endif
 
     DLogManager::registerConsoleAppender();
     DLogManager::registerFileAppender();

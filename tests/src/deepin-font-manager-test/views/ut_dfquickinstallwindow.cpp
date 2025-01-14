@@ -23,7 +23,9 @@
 #include <DPalette>
 #include <DPushButton>
 #include <DTitlebar>
+#if QT_VERSION_MAJOR <= 5
 #include <DApplicationHelper>
+#endif
 #include <DWidgetUtil>
 
 #include <QTest>

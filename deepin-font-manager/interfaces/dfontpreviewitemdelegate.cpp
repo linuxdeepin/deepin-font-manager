@@ -29,7 +29,9 @@
 #include "utils.h"
 
 #include <DApplication>
+#if QT_VERSION_MAJOR <= 5
 #include <DApplicationHelper>
+#endif
 #include <DStyleHelper>
 
 #include <QPainter>
@@ -115,8 +117,13 @@ void DFontPreviewItemDelegate::paintForegroundFontName(QPainter *painter, const 
     nameFont.setPixelSize(DFontSizeManager::instance()->fontPixelSize(DFontSizeManager::T6));
     painter->setFont(nameFont);
 
+#if QT_VERSION_MAJOR > 5
+    DGuiApplicationHelper *dAppHelper = DGuiApplicationHelper::instance();
+    DPalette palette = dAppHelper->applicationPalette();
+#else
     DApplicationHelper *dAppHelper = DApplicationHelper::instance();
     DPalette palette = dAppHelper->applicationPalette();
+#endif
     QColor fillColor = palette.color(DPalette::TextTips);
     // SP3--禁用置灰(539)
     if (!itemData.isEnabled()) {
@@ -359,7 +366,11 @@ void DFontPreviewItemDelegate::paintBackground(QPainter *painter, const QStyleOp
             painter->fillPath(path, fillColor);
         }
     } else {
+#if QT_VERSION_MAJOR > 5
+        DPalette pa = DGuiApplicationHelper::instance()->applicationPalette();
+#else
         DPalette pa = DApplicationHelper::instance()->palette(m_parentView);
+#endif
         DStyleHelper styleHelper;
         QColor fillColor = styleHelper.getColor(static_cast<const QStyleOption *>(&option), pa, DPalette::ItemBackground);
         painter->setBrush(QBrush(fillColor));

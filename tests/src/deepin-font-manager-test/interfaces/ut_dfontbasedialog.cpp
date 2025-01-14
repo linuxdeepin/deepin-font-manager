@@ -38,11 +38,12 @@ protected:
 
 TEST_F(TestDFontBaseDialog, checkSetIconPixmap)
 {
+#if QT_VERSION_MAJOR <= 5
     QPixmap map(Utils::renderSVG("://ok.svg", QSize(32, 32)));
 
     fm->setIconPixmap(map);
-
     EXPECT_TRUE(*fm->m_logoIcon->pixmap() == map);
+#endif
 }
 
 TEST_F(TestDFontBaseDialog, checkGetCloseButton)

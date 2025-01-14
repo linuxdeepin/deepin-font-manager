@@ -225,7 +225,11 @@ void SingleFontApplication::activateWindow()
 void SingleFontApplication::slotBatchInstallFonts()
 {
     qDebug() << "batch install fonts";
+#if QT_VERSION_MAJOR > 5
+    m_selectedFiles << QList<QString>(waitForInstallSet.begin(), waitForInstallSet.end());
+#else
     m_selectedFiles << waitForInstallSet.toList();
+#endif
     activateWindow();
     m_selectedFiles.clear();
     waitForInstallSet.clear();

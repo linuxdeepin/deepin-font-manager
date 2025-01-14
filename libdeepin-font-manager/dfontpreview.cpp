@@ -127,7 +127,11 @@ void DFontPreview::paintEvent(QPaintEvent *e)
 
     /*根据获取的新point进行绘制 UT000539 fix bug 27030*/
     if (checkFontContainText(m_face, lowerTextStock)) {
+#if QT_VERSION_MAJOR > 5
+        const int lowerWidth = metrics.boundingRect(lowerTextStock).width();
+#else
         const int lowerWidth = metrics.width(lowerTextStock);
+#endif
         isNeedScroll(lowerWidth);
         const int lowerHeight = metrics.height();
         QPoint baseLinePoint = adjustPreviewFontBaseLinePoint(QRect(x, y + padding, lowerWidth, lowerHeight), metrics);
@@ -136,7 +140,11 @@ void DFontPreview::paintEvent(QPaintEvent *e)
     }
 
     if (checkFontContainText(m_face, upperTextStock)) {
+#if QT_VERSION_MAJOR > 5
+        const int upperWidth = metrics.boundingRect(upperTextStock).width();
+#else
         const int upperWidth = metrics.width(upperTextStock);
+#endif
         isNeedScroll(upperWidth);
         const int upperHeight = metrics.height();
         QPoint baseLinePoint = adjustPreviewFontBaseLinePoint(QRect(x, y + padding, upperWidth, upperHeight), metrics);
@@ -145,7 +153,11 @@ void DFontPreview::paintEvent(QPaintEvent *e)
     }
 
     if (checkFontContainText(m_face, punctuationTextStock)) {
+#if QT_VERSION_MAJOR > 5
+        const int punWidth = metrics.boundingRect(punctuationTextStock).width();
+#else
         const int punWidth = metrics.width(punctuationTextStock);
+#endif
         isNeedScroll(punWidth);
         int punHeight = metrics.height();
         QPoint baseLinePoint = adjustPreviewFontBaseLinePoint(QRect(x, y + padding, punWidth, punHeight), metrics);
@@ -159,7 +171,11 @@ void DFontPreview::paintEvent(QPaintEvent *e)
         painter.setFont(font);
 
         QFontMetrics met(font);
+#if QT_VERSION_MAJOR > 5
+        int sampleWidth = met.boundingRect(sampleString).width();
+#else
         int sampleWidth = met.width(sampleString);
+#endif
         isNeedScroll(sampleWidth);
         int sampleHeight = met.height();
 
@@ -286,7 +302,11 @@ QString DFontPreview::getLanguageSampleString(const QString &language)
     if (m_contents.contains(language)) {
         key = language;
     } else {
+#if QT_VERSION_MAJOR > 5
+        const QStringList parseList = language.split("_", Qt::SkipEmptyParts);
+#else
         const QStringList parseList = language.split("_", QString::SkipEmptyParts);
+#endif
         if (parseList.length() > 0 &&
                 m_contents.contains(parseList.first())) {
             key = parseList.first();

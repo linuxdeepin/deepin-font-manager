@@ -45,7 +45,7 @@ DFontWidget::DFontWidget(QWidget *parent)
     m_area->setWidget(m_preview);
 
     QPalette pal = palette();
-    pal.setColor(QPalette::Background, QColor(0x00, 0xff, 0x00, 0x00));
+    pal.setColor(QPalette::Window, QColor(0x00, 0xff, 0x00, 0x00));
     m_area->setPalette(pal);
     setPalette(pal);
 

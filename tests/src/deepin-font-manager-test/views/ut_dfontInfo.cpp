@@ -172,7 +172,7 @@ TEST_F(TestDFontInfoManager, checkGetFileNames)
     path = "/usr/share/fonts/truetype/";
     list = dfm->getFileNames(path);
     //通过这行看编译环境中可能存在的字体文件,用来调整测试用例
-    qDebug() << list << "+++++++++++++++++++++++++++++++++++++++++++" << endl;
+    qDebug() << list << "+++++++++++++++++++++++++++++++++++++++++++" << Qt::endl;
     EXPECT_TRUE(list.count() != 0);
 }
 

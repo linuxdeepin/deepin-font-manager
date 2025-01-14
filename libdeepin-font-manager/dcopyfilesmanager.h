@@ -98,7 +98,11 @@ public:
         int end = fonts.size() / 2;
 
         for (int i = 0; i < end; ++i) {
+#if QT_VERSION_MAJOR > 5
+            fonts.swapItemsAt(i, fonts.size() - 1 - i);
+#else
             fonts.swap(i, fonts.size() - 1 - i);
+#endif
         }
     }
 

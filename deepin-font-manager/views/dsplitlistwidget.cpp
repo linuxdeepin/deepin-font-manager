@@ -9,7 +9,9 @@
 
 #include <DApplication>
 #include <DStyleHelper>
+#if QT_VERSION_MAJOR <= 5
 #include <DApplicationHelper>
+#endif
 #include <DLog>
 
 #include <QToolTip>
@@ -74,7 +76,11 @@ void DNoFocusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
             lineRect.setWidth(option.rect.width() - 20);
             lineRect.setHeight(2);
             //绘制分割线
+#if QT_VERSION_MAJOR > 5
+            DPalette pa = DGuiApplicationHelper::instance()->applicationPalette();
+#else
             DPalette pa = DApplicationHelper::instance()->palette(m_parentView);
+#endif
             DStyleHelper styleHelper;
             QColor fillColor = styleHelper.getColor(static_cast<const QStyleOption *>(&option), pa, DPalette::ItemBackground);
             painter->fillRect(lineRect, fillColor);
@@ -184,7 +190,11 @@ void DNoFocusDelegate::paintBackground(QPainter *painter, const QStyleOptionView
             QColor fillColor = option.palette.color(cg, DPalette::Highlight);
             //如果为hover状态，颜色亮度需要加亮
             if (option.state & QStyle::State_MouseOver) {
+#if QT_VERSION_MAJOR > 5
+                fillColor = fillColor.lighter(120);
+#else
                 fillColor = fillColor.light(120);
+#endif
             }
             painter->setBrush(QBrush(fillColor));
             painter->fillPath(pathFirst, painter->brush());
@@ -232,7 +242,11 @@ void DNoFocusDelegate::paintTabBackground(QPainter *painter, const QStyleOptionV
 
     //如果为hover状态，颜色亮度需要加亮
     if (isHover) {
+#if QT_VERSION_MAJOR > 5
+        fillColor = fillColor.lighter(120);
+#else
         fillColor = fillColor.light(120);
+#endif
     }
     painter->setBrush(QBrush(fillColor));
     painter->fillPath(pathFirst, painter->brush());
@@ -297,12 +311,20 @@ QString DNoFocusDelegate::adjustLength(QString &titleName, QFont &font) const
 
     for (auto str : titleName) {
         m_curTitle += str;
+#if QT_VERSION_MAJOR > 5
+        if (fontMetric.boundingRect(m_curTitle).width() > TITLE_VISIBLE_WIDTH) {
+#else
         if (fontMetric.width(m_curTitle) > TITLE_VISIBLE_WIDTH) {
+#endif
             if (m_curTitle == titleName) {
                 finalTitle = m_curTitle;
                 break;
             } else {
+#if QT_VERSION_MAJOR > 5
+                if (fontMetric.boundingRect("...").width() > IS_NEED_ELLIPSIS) {
+#else
                 if (fontMetric.width("...") > IS_NEED_ELLIPSIS) {
+#endif
                     finalTitle = m_curTitle;
                 } else {
                     finalTitle =   m_curTitle.append("...");
@@ -509,7 +531,11 @@ void DSplitListWidget::wheelEvent(QWheelEvent *event)
     else
         now = selectedIndexes().last().row();
     int next = now;
+#if QT_VERSION_MAJOR > 5
+    if (event->angleDelta().y() > 0) {
+#else
     if (event->delta() > 0) {
+#endif
         if (now > 0) {
             if (now == 6) {
                 next = now - 2;

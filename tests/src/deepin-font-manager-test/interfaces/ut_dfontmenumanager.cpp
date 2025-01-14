@@ -5,7 +5,9 @@
 
 #include "interfaces/dfontmenumanager.h"
 
+#if QT_VERSION_MAJOR <= 5
 #include <DApplicationHelper>
+#endif
 #include <DApplication>
 #include <DMenu>
 #include <DLog>

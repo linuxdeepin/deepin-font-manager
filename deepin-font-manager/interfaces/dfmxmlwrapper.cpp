@@ -500,11 +500,11 @@ bool DFMXmlWrapper::deleteNodeWithTextList(const QString &fileName, const QStrin
             if (parentNode.isElement()) {
                 parentNode.removeChild(removeNode);
             } else {
-                qDebug() << "delete node failed!" << endl;
+                qDebug() << "delete node failed!" << Qt::endl;
                 return false;
             }
         } else {
-            qDebug() << "delete node failed!" << endl;
+            qDebug() << "delete node failed!" << Qt::endl;
         }
     }
 
