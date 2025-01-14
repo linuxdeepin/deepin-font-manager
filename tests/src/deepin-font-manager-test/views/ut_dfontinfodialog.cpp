@@ -25,7 +25,9 @@
 
 #include <DGuiApplicationHelper>
 #include <DApplication>
+#if QT_VERSION_MAJOR <= 5
 #include <DApplicationHelper>
+#endif
 #include <DLog>
 #include <DFontSizeManager>
 #include <DTipLabel>
@@ -81,14 +83,14 @@ TEST_F(TestDFontInfoDialog, checkAutoFeed)
 {
     QString str;
     str.fill('a', 100);
-    qDebug() << str << endl;
+    qDebug() << str << Qt::endl;
     str = dFontInforDialog->AutoFeed(str);
     //进行处理之后字符串长度发生变化
     EXPECT_TRUE(str.size() != 100);
 
 
     str.fill('a', 300);
-    qDebug() << str << endl;
+    qDebug() << str << Qt::endl;
     str = dFontInforDialog->AutoFeed(str);
     //进行处理之后字符串长度发生变化
     EXPECT_TRUE(str.size() != 300);
@@ -114,13 +116,23 @@ TEST_F(TestDFontInfoDialog, checkinitConnections001)
     Stub s;
     s.set(ADDR(DGuiApplicationHelper, themeType), stub_darktype);
 
+#if QT_VERSION_MAJOR > 5
+    DPalette paFrame = dFontInforDialog->m_scrollArea->viewport()->palette();
+#else
     DPalette paFrame = DApplicationHelper::instance()->palette(dFontInforDialog->m_scrollArea->viewport());
+#endif
     QColor colorFrame = paFrame.textLively().color();
     colorFrame.setAlphaF(0.05);
     paFrame.setColor(DPalette::Base, colorFrame);
+#if QT_VERSION_MAJOR > 5
+    emit DGuiApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::DarkType);
+
+    EXPECT_TRUE(dFontInforDialog->m_fontFileName->palette() == paFrame);
+#else
     emit DApplicationHelper::instance()->themeTypeChanged(DApplicationHelper::DarkType);
 
     EXPECT_TRUE(DApplicationHelper::instance()->palette(dFontInforDialog->m_fontFileName) == paFrame);
+#endif
 }
 
 TEST_F(TestDFontInfoDialog, checkinitConnections002)
@@ -128,6 +140,15 @@ TEST_F(TestDFontInfoDialog, checkinitConnections002)
     Stub s;
     s.set(ADDR(DGuiApplicationHelper, themeType), stub_lighttype);
 
+#if QT_VERSION_MAJOR > 5
+    DPalette paFrame = dFontInforDialog->m_scrollArea->viewport()->palette();
+    QColor colorFrame(255, 255, 255);
+    colorFrame.setAlphaF(0.70);
+    paFrame.setColor(DPalette::Base, colorFrame);
+    emit DGuiApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::LightType);
+
+    EXPECT_TRUE(dFontInforDialog->m_fontFileName->palette() == paFrame);
+#else
     DPalette paFrame = DApplicationHelper::instance()->palette(dFontInforDialog->m_scrollArea->viewport());
     QColor colorFrame(255, 255, 255);
     colorFrame.setAlphaF(0.70);
@@ -135,6 +156,7 @@ TEST_F(TestDFontInfoDialog, checkinitConnections002)
     emit DApplicationHelper::instance()->themeTypeChanged(DApplicationHelper::LightType);
 
     EXPECT_TRUE(DApplicationHelper::instance()->palette(dFontInforDialog->m_fontFileName) == paFrame);
+#endif
 }
 
 

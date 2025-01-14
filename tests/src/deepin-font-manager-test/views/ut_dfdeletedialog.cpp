@@ -21,7 +21,9 @@
 
 #include <DGuiApplicationHelper>
 #include <DApplication>
+#if QT_VERSION_MAJOR <= 5
 #include <DApplicationHelper>
+#endif
 #include <DFrame>
 #include <DFontSizeManager>
 #include <DTipLabel>
@@ -63,7 +65,11 @@ TEST_F(TestDFDeleteDialog, checksetTheme)
     Stub s1;
     s1.set(ADDR(DGuiApplicationHelper, themeType), stub_themeType);
     fm->setTheme();
+#if QT_VERSION_MAJOR > 5
+    DPalette pamessageTitle = fm->messageTitle->palette();
+#else
     DPalette pamessageTitle = DApplicationHelper::instance()->palette(fm->messageTitle);
+#endif
     QColor pamessageTitleColor = pamessageTitle.color(DPalette::Active, DPalette::BrightText);
     pamessageTitleColor.setAlphaF(1.0);
     EXPECT_TRUE(pamessageTitle.color(DPalette::Active, DPalette::WindowText) == pamessageTitleColor);

@@ -11,7 +11,9 @@
 #include "commonheaderfile.h"
 
 #include <DApplication>
+#if QT_VERSION_MAJOR <= 5
 #include <DApplicationHelper>
+#endif
 #include <DStyleHelper>
 #include <DPalette>
 #include <DLog>

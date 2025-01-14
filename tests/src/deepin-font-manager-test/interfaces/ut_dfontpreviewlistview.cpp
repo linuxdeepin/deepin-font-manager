@@ -65,7 +65,7 @@ bool stub_False()
 
 bool stub_True()
 {
-    qDebug() << "!!!!!!!!!!!11111" << endl;
+    qDebug() << "!!!!!!!!!!!11111" << Qt::endl;
     return true;
 }
 
@@ -458,7 +458,7 @@ TEST_F(TestDFontPreviewListView, checkDeleteCurFonts)
     list << "first";
 
     listview->deleteCurFonts(list, true);
-    qDebug() << spy.count() << endl;
+    qDebug() << spy.count() << Qt::endl;
     EXPECT_TRUE(spy.count() == 2);
     list.clear();
     list << "";
@@ -483,7 +483,7 @@ TEST_F(TestDFontPreviewListView, checkUpdateChangedDir)
 
     listview->updateChangedDir();
 
-    qDebug() << spy.count() << "!!!!!!!!!!" << spy2.count() << endl;
+    qDebug() << spy.count() << "!!!!!!!!!!" << spy2.count() << Qt::endl;
     EXPECT_TRUE(spy.count() == 1);
     EXPECT_TRUE(spy2.count() == 1);
 }
@@ -658,7 +658,7 @@ TEST_F(TestDFontPreviewListView, checkOnCollectBtnClicked)
     FontData itemData =
         qvariant_cast<FontData>(listview->m_fontPreviewProxyModel->data(index));
     //mark
-    qDebug() << itemData.fontState << endl;
+    qDebug() << itemData.fontState << Qt::endl;
     EXPECT_TRUE(itemData.fontState == 0x03);
 
     qDebug() << spy.count();
@@ -697,7 +697,7 @@ TEST_F(TestDFontPreviewListView, checkOnEnableBtnClickedEnable)
 
     FontData itemData =
         qvariant_cast<FontData>(listview->m_fontPreviewProxyModel->data(index));
-    qDebug() << itemData.fontState << endl;
+    qDebug() << itemData.fontState << Qt::endl;
     EXPECT_TRUE(itemData.fontState == 0x00);
 
     DFontMgrMainWindow *mw = new DFontMgrMainWindow;
@@ -743,7 +743,10 @@ bool stub_contains(void *, const QPoint &, bool)
 TEST_F(TestDFontPreviewListView, checkHoverState)
 {
     Stub s;
+
+#if QT_VERSION_MAJOR <= 5
     s.set(ADDR(QWidget, mapFromGlobal), stub_pos);
+#endif
     typedef  QModelIndex(*fptr)(const QPoint &);
     fptr DFontPreviewListView_indexAt = (fptr)(&DFontPreviewListView::indexAt);
     s.set(DFontPreviewListView_indexAt, stub_indexAt);
@@ -1004,30 +1007,50 @@ TEST_F(TestDFontPreviewListView, checkMousePressEventMid)
 {
     listview->m_fontPreviewProxyModel->insertRows(0, 5);
     listview->selectAll();
+#if QT_VERSION_MAJOR > 5
+    QMouseEvent *e = new QMouseEvent(QEvent::MouseButtonPress, QPoint(), Qt::MiddleButton, Qt::NoButton, Qt::NoModifier);
+#else
     QMouseEvent *e = new QMouseEvent(QEvent::MouseButtonPress, QPoint(), Qt::MidButton, Qt::NoButton, Qt::NoModifier);
+#endif
     listview->mousePressEvent(e);
     EXPECT_TRUE(listview->selectionModel()->selectedRows().count() == 1);
     SAFE_DELETE_ELE(e);
 
     listview->clearSelection();
+#if QT_VERSION_MAJOR > 5
+    QMouseEvent *e2 = new QMouseEvent(QEvent::MouseButtonPress, QPoint(), Qt::MiddleButton, Qt::NoButton, Qt::ShiftModifier);
+#else
     QMouseEvent *e2 = new QMouseEvent(QEvent::MouseButtonPress, QPoint(), Qt::MidButton, Qt::NoButton, Qt::ShiftModifier);
+#endif
     listview->mousePressEvent(e2);
     EXPECT_FALSE(listview->m_IsTabFocus);
     SAFE_DELETE_ELE(e2);
 
     listview->selectAll();
+#if QT_VERSION_MAJOR > 5
+    QMouseEvent *e3 = new QMouseEvent(QEvent::MouseButtonPress, QPoint(), Qt::MiddleButton, Qt::NoButton, Qt::ShiftModifier);
+#else
     QMouseEvent *e3 = new QMouseEvent(QEvent::MouseButtonPress, QPoint(), Qt::MidButton, Qt::NoButton, Qt::ShiftModifier);
+#endif
     listview->mousePressEvent(e3);
     SAFE_DELETE_ELE(e3);
 
+#if QT_VERSION_MAJOR > 5
+    QMouseEvent *e4 = new QMouseEvent(QEvent::MouseButtonPress, QPoint(), Qt::MiddleButton, Qt::NoButton, Qt::ControlModifier);
+#else
     QMouseEvent *e4 = new QMouseEvent(QEvent::MouseButtonPress, QPoint(), Qt::MidButton, Qt::NoButton, Qt::ControlModifier);
+#endif
     listview->mousePressEvent(e4);
     SAFE_DELETE_ELE(e4);
 
     Stub s;
     s.set(ADDR(QModelIndex, isValid), stub_False);
     listview->selectAll();
+#if QT_VERSION_MAJOR > 5
+    QMouseEvent *e5 = new QMouseEvent(QEvent::MouseButtonPress, QPoint(), Qt::MiddleButton, Qt::NoButton, Qt::NoModifier);
+#else
     QMouseEvent *e5 = new QMouseEvent(QEvent::MouseButtonPress, QPoint(), Qt::MidButton, Qt::NoButton, Qt::NoModifier);
+#endif
     listview->mousePressEvent(e5);
     EXPECT_TRUE(listview->selectionModel()->selectedRows().count() == 0);
 
@@ -1047,7 +1070,7 @@ TEST_F(TestDFontPreviewListView, checkLoadLeftFonts)
 
     emit listview->m_dataLoadThread->dataLoadFinish(str);
 
-    qDebug() << spy.count() << endl;
+    qDebug() << spy.count() << Qt::endl;
     EXPECT_TRUE(spy.count() == 1);
 }
 
@@ -1179,7 +1202,11 @@ TEST_F(TestDFontPreviewListView, checkMouseReleaseEvent)
 
     s.set(ADDR(DFontPreviewListView, onMouseLeftBtnReleased), stub_Return);
 
+#if QT_VERSION_MAJOR > 5
+    QMouseEvent *e1 = new QMouseEvent(QEvent::MouseButtonRelease, QPoint(623, 23), Qt::MiddleButton, Qt::NoButton, Qt::NoModifier);
+#else
     QMouseEvent *e1 = new QMouseEvent(QEvent::MouseButtonRelease, QPoint(623, 23), Qt::MidButton, Qt::NoButton, Qt::NoModifier);
+#endif
     listview->mouseReleaseEvent(e1);
 
     QMouseEvent *e2 = new QMouseEvent(QEvent::MouseButtonRelease, QPoint(623, 23), Qt::LeftButton, Qt::NoButton, Qt::NoModifier);
@@ -1272,7 +1299,7 @@ TEST_F(TestDFontPreviewListView, checkSelectedFontsNotElse)
     listview->selectedFonts(data, &deleteCnt, &disableSysCnt, &systemCnt, &curFontCnt, &disableCnt,
                             &list, &indexlist, &disableIndexList, &allMinusSysFontList);
 
-    qDebug() << deleteCnt << disableSysCnt << systemCnt << curFontCnt << disableCnt << list.count() << disableIndexList.count() << allMinusSysFontList.count() << endl;
+    qDebug() << deleteCnt << disableSysCnt << systemCnt << curFontCnt << disableCnt << list.count() << disableIndexList.count() << allMinusSysFontList.count() << Qt::endl;
 
     EXPECT_TRUE(deleteCnt == 5);
     EXPECT_TRUE(disableCnt == 5);

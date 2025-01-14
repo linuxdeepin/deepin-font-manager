@@ -258,18 +258,30 @@ QString dfontinfoscrollarea::elideText(QString &titleName) const
     int curWidth = 0;
 
     for (auto str : titleName) {
+#if QT_VERSION_MAJOR > 5
+        if (str == "\t") {
+            curWidth  += fontMetric.boundingRect("a").width();
+        } else {
+            curWidth  += fontMetric.boundingRect(str).width();
+        }
+#else
         if (str == "\t") {
             curWidth  += fontMetric.width("a");
         } else {
             curWidth  += fontMetric.width(str);
         }
+#endif
         m_curTitle += str;
         if (curWidth > TITLE_VISIBLE_WIDTH) {
             if (m_curTitle == titleName) {
                 finalTitle = titleName;
                 break;
             } else {
+#if QT_VERSION_MAJOR > 5
+                if (fontMetric.boundingRect("...").width() > IS_NEED_ELLIPSIS) {
+#else
                 if (fontMetric.width("...") > IS_NEED_ELLIPSIS) {
+#endif
                     finalTitle = m_curTitle;
                 } else {
                     finalTitle =   m_curTitle.append("...");
@@ -299,13 +311,21 @@ QString dfontinfoscrollarea::elideText(const QString &text, const QFont &font, i
 {
     QFontMetrics fm(font);
     QString strText = text;
+#if QT_VERSION_MAJOR > 5
+    int n_TextSize = fm.boundingRect(strText).width();
+#else
     int n_TextSize = fm.width(strText);
+#endif
     int count  = 0;
     if (n_TextSize > nLabelSize) {
         int n_position = 0;
         long n_curSumWidth = 0;
         for (int i = 0; i < strText.size(); i++) {
+#if QT_VERSION_MAJOR > 5
+            n_curSumWidth += fm.boundingRect(strText.at(i)).width();
+#else
             n_curSumWidth += fm.width(strText.at(i));
+#endif
             if (n_curSumWidth > nLabelSize * (count + 1)) {
                 n_position = i;
                 strText.insert(n_position, "\n");

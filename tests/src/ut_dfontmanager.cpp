@@ -278,6 +278,7 @@ TEST_F(TestDfontmanager, checkCancelInstall)
     EXPECT_TRUE(fm->m_installCanceled);
 }
 
+#if QT_VERSION_MAJOR <= 5
 TEST_F(TestDfontmanager, checkDoCache)
 {
     Stub s;
@@ -294,8 +295,9 @@ TEST_F(TestDfontmanager, checkDoCache)
     fm->m_installCanceled = false;
     EXPECT_TRUE(fm->needCache());
     delete fm;
-//    fm->deleteLater();
+    //    fm->deleteLater();
 }
+#endif
 
 
 

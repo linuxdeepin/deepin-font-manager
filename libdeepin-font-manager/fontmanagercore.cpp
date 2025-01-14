@@ -71,7 +71,7 @@ FontManagerCore::~FontManagerCore()
 *************************************************************************/
 void FontManagerCore::setType(Type type)
 {
-    qDebug() << type << endl;
+    qDebug() << type << Qt::endl;
     m_type = type;
 }
 
@@ -86,7 +86,7 @@ void FontManagerCore::setType(Type type)
 *************************************************************************/
 void FontManagerCore::setInstallFileList(const QStringList &list)
 {
-    qDebug() << __FUNCTION__ << "start" << endl;
+    qDebug() << __FUNCTION__ << "start" << Qt::endl;
     if (!m_instFileList.isEmpty()) {
         m_instFileList.clear();
     }
@@ -120,7 +120,7 @@ void FontManagerCore::setUnInstallFile(const QStringList &filePath)
 *************************************************************************/
 void FontManagerCore::run()
 {
-    qInfo() << __FUNCTION__ << "start" << m_type << endl;
+    qInfo() << __FUNCTION__ << "start" << m_type << Qt::endl;
     switch (m_type) {
     case Install:
     case HalfwayInstall:
@@ -151,7 +151,7 @@ void FontManagerCore::run()
 void FontManagerCore::doCmd(QStringList &arguments)
 {
     qDebug() << "QProcess start";
-    qDebug() << m_type << endl;
+    qDebug() << m_type << Qt::endl;
     switch (m_type) {
     case Install:
     case ReInstall:
@@ -209,7 +209,7 @@ void FontManagerCore::handleUnInstall()
 *************************************************************************/
 void FontManagerCore::doInstall(QStringList &fileList)
 {
-    qDebug() << __func__ << "s" << endl;
+    qDebug() << __func__ << "s" << Qt::endl;
 
     m_installOutList.clear();
     m_installCanceled = false;

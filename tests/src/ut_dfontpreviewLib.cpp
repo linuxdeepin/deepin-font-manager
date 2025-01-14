@@ -8,7 +8,9 @@
 
 #include <QApplication>
 #include <QGuiApplication>
+#if QT_VERSION_MAJOR <= 5
 #include <QDesktopWidget>
+#endif
 #include <QTextStream>
 #include <QFileInfo>
 #include <QPainter>

@@ -51,7 +51,9 @@
 
 #include "dobject.h"
 #include <DApplication>
+#if QT_VERSION_MAJOR <= 5
 #include <DApplicationHelper>
+#endif
 #include <DFontSizeManager>
 #include <DFileDialog>
 #include <DIconButton>
@@ -177,7 +179,11 @@ QStringList stub_checkFilesSpace()
 DFontPreviewItemData stub_currModelData()
 {
     DFontPreviewItemData data;
+#if QT_VERSION_MAJOR > 5
+    data.strFontId = QString::number(1);
+#else
     data.strFontId = 1;
+#endif
     data.fontInfo.filePath = "first";
 
     return data;

@@ -26,7 +26,9 @@
 #include <QTest>
 
 #include <DApplication>
+#if QT_VERSION_MAJOR <= 5
 #include <DApplicationHelper>
+#endif
 #include <DFontSizeManager>
 #include <DLog>
 

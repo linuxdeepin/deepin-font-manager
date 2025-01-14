@@ -9,7 +9,9 @@
 
 #include <DStyleHelper>
 #include <DApplication>
+#if QT_VERSION_MAJOR <= 5
 #include <DApplicationHelper>
+#endif
 #include <DCheckBox>
 #include <DFontSizeManager>
 
@@ -124,10 +126,18 @@ void DFInstallErrorListDelegate::drawFontName(QPainter *painter, const QStyleOpt
     int fontNameLeft = FTM_ERROR_ITEM_FONTNAME_LEFT;
 
     QFontMetrics fontMetric(nameFont);
+#if QT_VERSION_MAJOR > 5
+    int m_StatusWidth = fontMetric.boundingRect(strStatus).width();
+#else
     int m_StatusWidth = fontMetric.width(strStatus);
+#endif
     if (m_StatusWidth > statusLabelMaxWidth)
         m_StatusWidth = statusLabelMaxWidth;
+#if QT_VERSION_MAJOR > 5
+    int m_NameWidth = fontMetric.boundingRect(strFontFileName).width();
+#else
     int m_NameWidth = fontMetric.width(strFontFileName);
+#endif
 
     int fontFileNameRectHeight = 30;
     QRect fontFileNameRect = QRect(bgRect.left() + fontNameLeft,
@@ -239,7 +249,6 @@ void DFInstallErrorListDelegate::drawSelectStatus(QPainter *painter, const QStyl
         if (m_parentView->getIsTabFocus() == true) {
             paintTabFocusBackground(painter, option, bgRect);
         } else {
-            DPalette pa = DApplicationHelper::instance()->applicationPalette();
             DStyleHelper styleHelper;
             QColor fillColor = styleHelper.getColor(static_cast<const QStyleOption *>(&option), DPalette::ToolTipText);
             fillColor.setAlphaF(0.2);
@@ -292,7 +301,6 @@ void DFInstallErrorListDelegate::paintTabFocusBackground(QPainter *painter, cons
     painter->fillPath(path2, painter->brush());
 
     DStyleHelper styleHelper;
-    DPalette pa = DApplicationHelper::instance()->applicationPalette();
 
     QColor fillColor3 = styleHelper.getColor(static_cast<const QStyleOption *>(&option), DPalette::ToolTipText);
     fillColor3.setAlphaF(0.2);
@@ -323,7 +331,11 @@ QString DFInstallErrorListDelegate::lengthAutoFeed(QPainter *painter, QString so
     m_Suffix.append(sourceStr.right(5));
     m_TargetStr.append(m_Suffix);
 
+#if QT_VERSION_MAJOR > 5
+    int m_TargetStrWidth = fontMetric.boundingRect(m_TargetStr).width();
+#else
     int m_TargetStrWidth = fontMetric.width(m_TargetStr);
+#endif
 
     int m_index = 1;
 
@@ -331,7 +343,11 @@ QString DFInstallErrorListDelegate::lengthAutoFeed(QPainter *painter, QString so
 
 //      每次插入一个字符，直到长度超过最大范围
         m_TargetStr.insert(m_index, sourceStr.at(m_index));
+#if QT_VERSION_MAJOR > 5
+        m_TargetStrWidth = fontMetric.boundingRect(m_TargetStr).width();
+#else
         m_TargetStrWidth = fontMetric.width(m_TargetStr);
+#endif
         m_index++;
     }
 

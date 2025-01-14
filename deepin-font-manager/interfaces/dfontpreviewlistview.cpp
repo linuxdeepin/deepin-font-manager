@@ -12,6 +12,10 @@
 #include "performancemonitor.h"
 #include "dcomworker.h"
 
+#if QT_VERSION_MAJOR > 5
+#include <algorithm>
+#include <functional>
+#endif
 
 #include <DMessageManager>
 
@@ -337,7 +341,7 @@ void DFontPreviewListView::loadLeftFonts()
     if (isListDataLoadFinished()) {
         m_fontLoadTimer->stop();
 //        m_parentWidget->showSpinner(DFontSpinnerWidget::Load);
-        qDebug() << DFMDBManager::recordList.count() << endl;
+        qDebug() << DFMDBManager::recordList.count() << Qt::endl;
         qDebug() << QThread::currentThreadId() << __func__ << "------------";
 
         m_dataLoadThread = new LoadFontDataThread(DFMDBManager::recordList, this);
@@ -408,7 +412,11 @@ void DFontPreviewListView::markPositionBeforeRemoved()
 {
     QModelIndexList deleteFontList = selectedIndexes();
     if (deleteFontList.count() > 0) {
+#if QT_VERSION_MAJOR > 5
+        std::sort(deleteFontList.begin(), deleteFontList.end(), std::greater<QModelIndex>());
+#else
         qSort(deleteFontList.begin(), deleteFontList.end(), qGreater<QModelIndex>());
+#endif
         QVariant varModel = m_fontPreviewProxyModel->data(deleteFontList.last(), Qt::DisplayRole);
         //获取首个选中字体，判断是否为系统字体
         FontData fdata = varModel.value<FontData>();
@@ -528,7 +536,7 @@ void DFontPreviewListView::updateModel(int deleteCount, bool showSpinner)
     selectItemAfterRemoved(m_bListviewAtButtom, m_bListviewAtTop, false, false);
 
     //删除之后设置焦点
-    qDebug() << m_FontViewHasFocus << endl;
+    qDebug() << m_FontViewHasFocus << Qt::endl;
     if (m_FontViewHasFocus) {
         refreshFocuses();
         setFontViewHasFocus(false);
@@ -994,7 +1002,11 @@ void DFontPreviewListView::mousePressEvent(QMouseEvent *event)
             onMouseLeftBtnPressed(modelIndex, clickPoint, isShiftMd, isCtrlMd);
         } else if (event->button() == Qt::RightButton) {
             onMouseRightBtnPressed(modelIndex, isShiftMd);
-        } else if (event->button() == Qt::MidButton) {
+#if QT_VERSION_MAJOR > 5
+            } else if (event->button() == Qt::MiddleButton) {
+#else
+            } else if (event->button() == Qt::MidButton) {
+#endif
             if (!isShiftMd && !isCtrlMd) {
                 clearSelection();
                 setCurrentIndex(modelIndex);
@@ -1093,7 +1105,7 @@ void DFontPreviewListView::onMouseRightBtnPressed(const QModelIndex &modelIndex,
     }
     //记录焦点状态
     syncRecoveryTabStatus();
-    qDebug() << hasFocus() << endl;
+    qDebug() << hasFocus() << Qt::endl;
     setFontViewHasFocus(hasFocus());
     //弹出右键菜单
     onListViewShowContextMenu();
@@ -1113,7 +1125,11 @@ void DFontPreviewListView::onMouseRightBtnPressed(const QModelIndex &modelIndex,
 *************************************************************************/
 void DFontPreviewListView::mouseReleaseEvent(QMouseEvent *event)
 {
+#if QT_VERSION_MAJOR > 5
+    if (Qt::MiddleButton == event->button()) {
+#else
     if (Qt::MidButton == event->button()) {
+#endif
         return;
     }
     QListView::mouseReleaseEvent(event);
@@ -1339,7 +1355,11 @@ void DFontPreviewListView::keyPressEvent(QKeyEvent *event)
     } else {
         if (event->key() == Qt::Key_Up || event->key() == Qt::Key_Down) {
             QModelIndexList list = selectedIndexes();
+#if QT_VERSION_MAJOR > 5
+            std::sort(list.begin(), list.end(), std::greater<QModelIndex>());
+#else
             qSort(list.begin(), list.end(), qGreater<QModelIndex>());
+#endif
             //判断当前shift+上下键选中
             if (QApplication::keyboardModifiers() == Qt::ShiftModifier && list.count() > 0) {
                 if (event->key() == Qt::Key_Up) {
@@ -1635,7 +1655,11 @@ void DFontPreviewListView::onRightMenuShortCutActivated()
     DFontMgrMainWindow *mw = qobject_cast<DFontMgrMainWindow *>(m_parentWidget);
     QModelIndexList indexes = selectedIndexes();
     //排序选中项
+#if QT_VERSION_MAJOR > 5
+    std::sort(indexes.begin(), indexes.end());
+#else
     qSort(indexes.begin(), indexes.end());
+#endif
     //菜单弹出位置
     QPoint showMenuPosition;
     //记录鼠标位置下的QModelIndex
@@ -1733,8 +1757,13 @@ void DFontPreviewListView::onEnableBtnClicked(QModelIndexList &itemIndexes, int 
     QMutexLocker locker(&m_mutex);
     QString fontName;
 
+#if QT_VERSION_MAJOR > 5
+    if (isFromActiveFont)
+        std::sort(itemIndexes.begin(), itemIndexes.end(), std::greater<QModelIndex>());
+#else
     if (isFromActiveFont)
         qSort(itemIndexes.begin(), itemIndexes.end(), qGreater<QModelIndex>());
+#endif
 
     //记录禁用前选中位置
     getAtListViewPosition();
@@ -1863,8 +1892,13 @@ void DFontPreviewListView::onCollectBtnClicked(QModelIndexList &indexList, bool 
     qDebug() << __FUNCTION__ << " before " << currModelIndex().row() << currentIndex().row();
 
     QMutexLocker locker(&m_mutex);
+#if QT_VERSION_MAJOR > 5
+    if (isFromCollectFont)
+        std::sort(indexList.begin(), indexList.end(), std::greater<QModelIndex>());
+#else
     if (isFromCollectFont)
         qSort(indexList.begin(), indexList.end(), qGreater<QModelIndex>());
+#endif
     m_selectAfterDel = indexList.last().row();
 
     getAtListViewPosition();
@@ -2369,7 +2403,11 @@ void DFontPreviewListView::scrollWithTheSelected()
         return;
     }
     QModelIndexList indexes = selectionModel()->selectedIndexes();
+#if QT_VERSION_MAJOR > 5
+    std::sort(indexes.begin(), indexes.end(), std::greater<QModelIndex>());
+#else
     qSort(indexes.begin(), indexes.end(), qGreater<QModelIndex>());
+#endif
     bool needScroll = true;
     for (auto &idx : indexes) {
         QRect rect = visualRect(idx);

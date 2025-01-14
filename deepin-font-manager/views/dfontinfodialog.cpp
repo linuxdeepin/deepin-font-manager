@@ -10,7 +10,9 @@
 #include "dfontinfoscrollarea.h"
 
 #include <DApplication>
+#if QT_VERSION_MAJOR <= 5
 #include <DApplicationHelper>
+#endif
 #include <DLog>
 #include <DFontSizeManager>
 
@@ -56,13 +58,21 @@ QString DFontInfoDialog::AutoFeed(QString text)
 {
     QFont m_CurrentFont = this->font();
     QFontMetrics fm(m_CurrentFont);
+#if QT_VERSION_MAJOR > 5
+    int n_TextSize = fm.boundingRect(text).width();
+#else
     int n_TextSize = fm.width(text);
+#endif
     int count  = 0;
     if (n_TextSize > NAME_TITLE_WIDTH) {
         int n_position = 0;
         long n_curSumWidth = 0;
         for (int i = 0; i < text.size(); i++) {
+#if QT_VERSION_MAJOR > 5
+            n_curSumWidth += fm.boundingRect(text.at(i)).width();
+#else
             n_curSumWidth += fm.width(text.at(i));
+#endif
             if (n_curSumWidth >= NAME_TITLE_WIDTH * (count + 1)) {
                 n_position = i;
                 text.insert(n_position, "\n");
@@ -93,12 +103,21 @@ QString DFontInfoDialog::AutoFeed(QString text)
 *************************************************************************/
 QString DFontInfoDialog::adaptiveLengthForNameTitle(QFontMetrics fm, QString thirdLineText, int lineWidth)
 {
+#if QT_VERSION_MAJOR > 5
+    if (fm.boundingRect(thirdLineText).width() > lineWidth) {
+#else
     if (fm.width(thirdLineText) > lineWidth) {
+#endif
         QString s = thirdLineText.right(6);
         int width = 0;
         for (int i = 0; i < thirdLineText.size(); i++) {
+#if QT_VERSION_MAJOR > 5
+            width += fm.boundingRect(thirdLineText.at(i)).width();
+            if (width > (lineWidth - (fm.boundingRect(s).width() + fm.boundingRect("...").width()))) {
+#else
             width += fm.width(thirdLineText.at(i));
             if (width > (lineWidth - (fm.width(s) + fm.width("...")))) {
+#endif
                 thirdLineText.remove(i, thirdLineText.size());
                 thirdLineText.append("...").append(s);
                 break;
@@ -157,7 +176,11 @@ void DFontInfoDialog::initUI()
     m_fontFileName->setText(text);
 
     // Set color
+#if QT_VERSION_MAJOR > 5
+    DPalette pa = m_fontFileName->palette();
+#else
     DPalette pa = DApplicationHelper::instance()->palette(m_fontFileName);
+#endif
     pa.setBrush(DPalette::WindowText, pa.color(DPalette::ToolTipText));
     m_fontFileName->setPalette(pa);
 
@@ -174,7 +197,7 @@ void DFontInfoDialog::initUI()
     p.drawRoundedRect(bmp.rect(), 12, 12);
     p.setRenderHint(QPainter::Antialiasing);
 
-    m_scrollArea->viewport()->setMask(bmp);
+    m_scrollArea->viewport()->setMask(QBitmap::fromPixmap(bmp));
     m_scrollArea->setFrameShape(QFrame::Shape::NoFrame);
 
     m_fontinfoArea = new dfontinfoscrollarea(m_fontInfo, this);
@@ -193,19 +216,35 @@ void DFontInfoDialog::initUI()
     m_mainFrame->setLayout(mainLayout);
     addContent(m_mainFrame);
 
+#if QT_VERSION_MAJOR > 5
+    if (DGuiApplicationHelper::DarkType == DGuiApplicationHelper::instance()->themeType()) {
+        DPalette paFrame = m_scrollArea->viewport()->palette();
+#else
     if (DApplicationHelper::DarkType == DGuiApplicationHelper::instance()->themeType()) {
         DPalette paFrame = DApplicationHelper::instance()->palette(m_scrollArea->viewport());
+#endif
         QColor colorFrame = paFrame.textLively().color();
         colorFrame.setAlphaF(0.05);
         paFrame.setColor(DPalette::Base, colorFrame);
+#if QT_VERSION_MAJOR > 5
+        m_scrollArea->viewport()->setPalette(paFrame);
+
+    } else if (DGuiApplicationHelper::LightType == DGuiApplicationHelper::instance()->themeType()) {
+        DPalette paFrame = m_scrollArea->viewport()->palette();
+#else
         DApplicationHelper::instance()->setPalette(m_scrollArea->viewport(), paFrame);
 
     } else if (DApplicationHelper::LightType == DGuiApplicationHelper::instance()->themeType()) {
         DPalette paFrame = DApplicationHelper::instance()->palette(m_scrollArea->viewport());
+#endif
         QColor colorFrame = paFrame.textLively().color();
         colorFrame.setAlphaF(0.70);
         paFrame.setColor(DPalette::Base, colorFrame);
+#if QT_VERSION_MAJOR > 5
+        m_scrollArea->viewport()->setPalette(paFrame);
+#else
         DApplicationHelper::instance()->setPalette(m_scrollArea->viewport(), paFrame);
+#endif
     }
     m_fontinfoArea->autoHeight();
     m_scrollArea->setFocus(Qt::MouseFocusReason);
@@ -221,6 +260,33 @@ void DFontInfoDialog::initUI()
 *************************************************************************/
 void DFontInfoDialog::initConnections()
 {
+#if QT_VERSION_MAJOR > 5
+    connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, this, [ = ] {
+        DGuiApplicationHelper::ColorType themeType = DGuiApplicationHelper::instance()->themeType();
+
+        if (DGuiApplicationHelper::DarkType == themeType)
+        {
+            DPalette paFrame = m_scrollArea->viewport()->palette();
+            QColor colorFrame = paFrame.textLively().color();
+            colorFrame.setAlphaF(0.05);
+            paFrame.setColor(DPalette::Base, colorFrame);
+            m_scrollArea->viewport()->setPalette(paFrame);
+            //通过m_fontFileName->setPalette(pa)未实现更新字体颜色，在此根据主题变化同步更新字体名称标签的颜色属性
+            m_fontFileName->setPalette(paFrame);
+
+        } else if (DGuiApplicationHelper::LightType == themeType)
+        {
+            DPalette paFrame = m_scrollArea->viewport()->palette();
+            //使用构造函数中有关设置，会导致颜色重叠的异常的情况，故在此使用固定颜色，与textLively中#FFFFFF同色号
+            QColor colorFrame(255, 255, 255);
+            colorFrame.setAlphaF(0.70);
+            paFrame.setColor(DPalette::Base, colorFrame);
+            m_scrollArea->viewport()->setPalette(paFrame);
+            //同时更新字体名称标签的颜色属性,跟随主题，原因同上
+            m_fontFileName->setPalette(paFrame);
+        }
+    });
+#else
     connect(DApplicationHelper::instance(), &DApplicationHelper::themeTypeChanged, this, [ = ] {
         DGuiApplicationHelper::ColorType themeType = DGuiApplicationHelper::instance()->themeType();
 
@@ -246,6 +312,7 @@ void DFontInfoDialog::initConnections()
             DApplicationHelper::instance()->setPalette(m_fontFileName, paFrame);
         }
     });
+#endif
 }
 
 /*************************************************************************
@@ -290,7 +357,11 @@ void DFontInfoDialog::autoHeight(int height)
         p.setBrush(Qt::black);
         p.drawRoundedRect(bmp.rect(), 12, 12);
         p.setRenderHint(QPainter::Antialiasing);
+#if QT_VERSION_MAJOR > 5
+        m_scrollArea->viewport()->setMask(QBitmap::fromPixmap(bmp));
+#else
         m_scrollArea->viewport()->setMask(bmp);
+#endif
         m_scrollArea->viewport()->setFixedHeight(static_cast<int>(height * 1.1 + 10));
         m_scrollArea->setFixedHeight(static_cast<int>(height * 1.1 + 10));
     } else {
@@ -302,7 +373,7 @@ void DFontInfoDialog::autoHeight(int height)
         p.setBrush(Qt::black);
         p.drawRoundedRect(bmp.rect(), 12, 12);
         p.setRenderHint(QPainter::Antialiasing);
-        m_scrollArea->viewport()->setMask(bmp);
+        m_scrollArea->viewport()->setMask(QBitmap::fromPixmap(bmp));
         m_scrollArea->viewport()->setFixedHeight(375);
         m_scrollArea->setFixedHeight(375);
     }

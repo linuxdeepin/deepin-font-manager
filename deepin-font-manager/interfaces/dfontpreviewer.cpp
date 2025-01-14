@@ -6,12 +6,16 @@
 #include "dfontpreviewer.h"
 #include "utils.h"
 
+#if QT_VERSION_MAJOR <= 5
 #include <DApplicationHelper>
+#endif
+#include <DPalette>
 
 #include <QPainter>
 #include <QPaintEvent>
 #include <QPainterPath>
 
+DGUI_USE_NAMESPACE
 DFontPreviewer::DFontPreviewer(QWidget *parent)
     : QWidget(parent)
 {
@@ -107,7 +111,11 @@ void DFontPreviewer::paintEvent(QPaintEvent *event)
     QPen oldPen = painter.pen();
 
     painter.setRenderHint(QPainter::Antialiasing);
+#if QT_VERSION_MAJOR > 5
+    DPalette pa = this->palette();
+#else
     DPalette pa = DApplicationHelper::instance()->palette(this);
+#endif
     painter.setBrush(QBrush(pa.color(DPalette::Base)));
     painter.setPen(Qt::transparent);
 
