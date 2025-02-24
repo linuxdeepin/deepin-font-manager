@@ -276,11 +276,11 @@
     </message>
     <message>
         <source>Copyright</source>
-        <translation type="unfinished"/>
+        <translation>版权</translation>
     </message>
     <message>
         <source>License Description</source>
-        <translation type="unfinished"/>
+        <translation>许可证描述</translation>
     </message>
 </context>
 <context>
@@ -445,7 +445,7 @@
     </message>
     <message>
         <source>Delete</source>
-        <translation>删除字体</translation>
+        <translation>删除</translation>
     </message>
     <message>
         <source>Add font</source>
