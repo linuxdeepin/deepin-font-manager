@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="az">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="az">
 <context>
     <name>Category</name>
     <message>
@@ -163,14 +161,14 @@
     </message>
     <message>
         <source>Fonts</source>
-        <translation type="unfinished"></translation>
+        <translation>Şriftlər</translation>
     </message>
 </context>
 <context>
     <name>DFontWidget</name>
     <message>
         <source>Broken file</source>
-        <translation type="unfinished">Pozulmuş fayl</translation>
+        <translation>Pozulmuş fayl</translation>
     </message>
 </context>
 <context>
@@ -224,18 +222,18 @@
     </message>
     <message>
         <source>Exit</source>
-        <translation type="unfinished">Çıxış</translation>
+        <translation>Çıxış</translation>
     </message>
     <message>
         <source>Continue</source>
-        <translation type="unfinished">Davam etmək</translation>
+        <translation>Davam etmək</translation>
     </message>
 </context>
 <context>
     <name>Font</name>
     <message>
         <source>Don&apos;t let your dreams be dreams</source>
-        <translation type="unfinished"></translation>
+        <translation>Arzularınızın, arzular kimi qalmasına imkan verməyin</translation>
     </message>
 </context>
 <context>
@@ -278,11 +276,11 @@
     </message>
     <message>
         <source>Copyright</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>License Description</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="zh_CN">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="zh_CN">
 <context>
     <name>Category</name>
     <message>
@@ -163,14 +161,14 @@
     </message>
     <message>
         <source>Fonts</source>
-        <translation type="unfinished"></translation>
+        <translation>字体</translation>
     </message>
 </context>
 <context>
     <name>DFontWidget</name>
     <message>
         <source>Broken file</source>
-        <translation type="unfinished">文件已损坏</translation>
+        <translation>文件已损坏</translation>
     </message>
 </context>
 <context>
@@ -224,18 +222,18 @@
     </message>
     <message>
         <source>Exit</source>
-        <translation type="unfinished">退 出</translation>
+        <translation>退出</translation>
     </message>
     <message>
         <source>Continue</source>
-        <translation type="unfinished">继 续</translation>
+        <translation>继续</translation>
     </message>
 </context>
 <context>
     <name>Font</name>
     <message>
         <source>Don&apos;t let your dreams be dreams</source>
-        <translation type="unfinished"></translation>
+        <translation>因理想而出生，为责任而成长</translation>
     </message>
 </context>
 <context>

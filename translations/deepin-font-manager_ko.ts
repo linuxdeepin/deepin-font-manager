@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="ko">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="ko">
 <context>
     <name>Category</name>
     <message>
@@ -44,7 +42,7 @@
     <name>DFDeleteTTCDialog</name>
     <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be deleted</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Delete</source>
@@ -56,11 +54,11 @@
     <name>DFDisableTTCDialog</name>
     <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be enabled</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be disabled</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Enable</source>
@@ -77,7 +75,7 @@
     <name>DFHandleTTCDialog</name>
     <message>
         <source>Apply to all selected font families</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Cancel</source>
@@ -147,15 +145,15 @@
     </message>
     <message>
         <source>Alt+M</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>CTRL+I</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Failed to install %1 font. There is not enough disk space.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Failed to install %1 fonts. There is not enough disk space.</source>
@@ -163,14 +161,14 @@
     </message>
     <message>
         <source>Fonts</source>
-        <translation type="unfinished"></translation>
+        <translation>글꼴</translation>
     </message>
 </context>
 <context>
     <name>DFontWidget</name>
     <message>
         <source>Broken file</source>
-        <translation type="unfinished">깨진 파일</translation>
+        <translation>깨진 파일</translation>
     </message>
 </context>
 <context>
@@ -224,18 +222,18 @@
     </message>
     <message>
         <source>Exit</source>
-        <translation type="unfinished">종료</translation>
+        <translation>종료</translation>
     </message>
     <message>
         <source>Continue</source>
-        <translation type="unfinished">계속</translation>
+        <translation>계속</translation>
     </message>
 </context>
 <context>
     <name>Font</name>
     <message>
         <source>Don&apos;t let your dreams be dreams</source>
-        <translation type="unfinished"></translation>
+        <translation>당신의 꿈을 꿈으로 만들지 마십시오</translation>
     </message>
 </context>
 <context>
@@ -278,11 +276,11 @@
     </message>
     <message>
         <source>Copyright</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>License Description</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

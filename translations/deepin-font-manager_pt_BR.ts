@@ -1,11 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="pt_BR">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="pt_BR">
 <context>
     <name>Category</name>
     <message>
         <source>All Fonts</source>
-        <translation>Todas as Fontes</translation>
+        <translation>Todas as fontes</translation>
     </message>
     <message>
         <source>System</source>
@@ -29,7 +27,7 @@
     </message>
     <message>
         <source>Monospaced</source>
-        <translation>Monoespaçada</translation>
+        <translation>Monoespaçado</translation>
     </message>
 </context>
 <context>
@@ -44,7 +42,7 @@
     <name>DFDeleteTTCDialog</name>
     <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be deleted</source>
-        <translation>%1 é uma família de fontes; se prosseguir, todas as fontes nela contidas serão excluídas</translation>
+        <translation>%1 é uma família de fontes, se você continuar, todas as fontes serão excluídas</translation>
     </message>
     <message>
         <source>Delete</source>
@@ -56,11 +54,11 @@
     <name>DFDisableTTCDialog</name>
     <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be enabled</source>
-        <translation>%1 é uma família de fontes: se prosseguir, todas as fontes serão desabilitadas</translation>
+        <translation>%1 é uma família de fontes, se você continuar, todas as fontes serão ativadas</translation>
     </message>
     <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be disabled</source>
-        <translation>%1 é uma família de fontes; se prosseguir, todas as fontes serão desabilitadas</translation>
+        <translation>%1 é uma família de fontes, se você continuar, todas as fontes serão desativadas</translation>
     </message>
     <message>
         <source>Enable</source>
@@ -92,11 +90,11 @@
     </message>
     <message>
         <source>Same version installed</source>
-        <translation>A mesma versão já está instalada</translation>
+        <translation>A mesma versão está instalada</translation>
     </message>
     <message>
         <source>System Font</source>
-        <translation>Fonte do Sistema</translation>
+        <translation>Fonte do sistema</translation>
     </message>
 </context>
 <context>
@@ -107,11 +105,11 @@
     </message>
     <message>
         <source>PgUp</source>
-        <translation>PgUp</translation>
+        <translation>Página acima</translation>
     </message>
     <message>
         <source>PgDown</source>
-        <translation>PgDown</translation>
+        <translation>Página abaixo</translation>
     </message>
     <message>
         <source>Ctrl+Alt+F</source>
@@ -147,15 +145,15 @@
     </message>
     <message>
         <source>Alt+M</source>
-        <translation>Alt + M</translation>
+        <translation>Alt+M</translation>
     </message>
     <message>
         <source>CTRL+I</source>
-        <translation>CTRL + I</translation>
+        <translation>CTRL+I</translation>
     </message>
     <message>
         <source>Failed to install %1 font. There is not enough disk space.</source>
-        <translation type="unfinished"></translation>
+        <translation>Falha ao instalar %1 fonte. Não há espaço disponível em disco.</translation>
     </message>
     <message>
         <source>Failed to install %1 fonts. There is not enough disk space.</source>
@@ -163,14 +161,14 @@
     </message>
     <message>
         <source>Fonts</source>
-        <translation type="unfinished"></translation>
+        <translation>Fontes</translation>
     </message>
 </context>
 <context>
     <name>DFontWidget</name>
     <message>
         <source>Broken file</source>
-        <translation type="unfinished">Arquivo corrompido</translation>
+        <translation>Arquivo corrompido</translation>
     </message>
 </context>
 <context>
@@ -197,7 +195,7 @@
     </message>
     <message>
         <source>Are you sure you want to delete %1 font(s)?</source>
-        <translation>Excluir %1 fonte(s)?</translation>
+        <translation>Excluir a(s) fonte(s) %1?</translation>
     </message>
     <message>
         <source>Delete</source>
@@ -216,26 +214,26 @@
     <name>ExceptionWindow</name>
     <message>
         <source>Font Verification</source>
-        <translation>Verificação da Fonte</translation>
+        <translation>Verificação de fonte</translation>
     </message>
     <message>
         <source>No fonts to be installed</source>
-        <translation>Nenhuma fonte para instalar</translation>
+        <translation>Nenhuma fonte a ser instalada</translation>
     </message>
     <message>
         <source>Exit</source>
-        <translation type="unfinished">Sair</translation>
+        <translation>Sair</translation>
     </message>
     <message>
         <source>Continue</source>
-        <translation type="unfinished">Continuar</translation>
+        <translation>Continuar</translation>
     </message>
 </context>
 <context>
     <name>Font</name>
     <message>
         <source>Don&apos;t let your dreams be dreams</source>
-        <translation type="unfinished"></translation>
+        <translation>Não deixe seus sonhos serem apenas sonhos</translation>
     </message>
 </context>
 <context>
@@ -270,19 +268,19 @@
     </message>
     <message>
         <source>Ps name</source>
-        <translation>Nome do postscript</translation>
+        <translation>Nome do ps</translation>
     </message>
     <message>
         <source>Trademark</source>
-        <translation>Marca comercial</translation>
+        <translation>Marca registrada</translation>
     </message>
     <message>
         <source>Copyright</source>
-        <translation type="unfinished"></translation>
+        <translation>Copyright</translation>
     </message>
     <message>
         <source>License Description</source>
-        <translation type="unfinished"></translation>
+        <translation>Descrição da licença</translation>
     </message>
 </context>
 <context>
@@ -293,7 +291,7 @@
     </message>
     <message>
         <source>Font Manager helps users install and manage fonts.</source>
-        <translation>O Gerenciador de Fontes facilita a instalação e o gerenciamento fontes.</translation>
+        <translation>O Gerenciador de Fontes ajuda os usuários a instalar e gerenciar fontes.</translation>
     </message>
     <message>
         <source>Loading fonts, please wait...</source>
@@ -336,11 +334,11 @@
     </message>
     <message>
         <source>Favorite</source>
-        <translation>Favorito</translation>
+        <translation>Favoritar</translation>
     </message>
     <message>
         <source>Unfavorite</source>
-        <translation>Remover dos Favoritos</translation>
+        <translation>Remover dos favoritos</translation>
     </message>
     <message>
         <source>Details</source>
@@ -367,22 +365,22 @@
     </message>
     <message>
         <source>%1 is in use, so you cannot disable it</source>
-        <translation>% 1 está em uso; portanto não é possível desativá-lo</translation>
+        <translation>% 1 está em uso, impossível desativá-la</translation>
     </message>
     <message>
         <source>You cannot disable system fonts and the fonts in use</source>
-        <translation>Não é possível desativar as fontes do sistema e as fontes em uso</translation>
+        <translation>Impossível desativar as fontes do sistema e as fontes em uso</translation>
     </message>
     <message>
         <source>You cannot disable system fonts</source>
-        <translation>Não é possível desativar as fontes do sistema</translation>
+        <translation>Impossível desativar as fontes do sistema</translation>
     </message>
 </context>
 <context>
     <name>NormalInstallWindow</name>
     <message>
         <source>Install Font</source>
-        <translation>Instalar Fonte</translation>
+        <translation>Instalar fonte</translation>
     </message>
     <message>
         <source>Verifying...</source>
@@ -409,7 +407,7 @@
     </message>
     <message>
         <source>Install Font</source>
-        <translation>Instalar Fonte</translation>
+        <translation>Instalar fonte</translation>
     </message>
 </context>
 <context>
@@ -455,11 +453,11 @@
     </message>
     <message>
         <source>Favorite</source>
-        <translation>Favorito</translation>
+        <translation>Favoritar</translation>
     </message>
     <message>
         <source>Unfavorite</source>
-        <translation>Remover dos Favoritos</translation>
+        <translation>Remover dos favoritos</translation>
     </message>
     <message>
         <source>Font info</source>
@@ -470,7 +468,7 @@
     <name>StateBar</name>
     <message>
         <source>Input preview text</source>
-        <translation>Insira o texto de pré-visualização</translation>
+        <translation>Digite qualquer texto para pré-visualizá-lo</translation>
     </message>
 </context>
 </TS>

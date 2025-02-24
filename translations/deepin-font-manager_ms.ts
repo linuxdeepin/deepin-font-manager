@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="ms">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="ms">
 <context>
     <name>Category</name>
     <message>
@@ -155,22 +153,22 @@
     </message>
     <message>
         <source>Failed to install %1 font. There is not enough disk space.</source>
-        <translation type="unfinished"></translation>
+        <translation>Gagal memasang fon %1. Ruang cakera tidak mencukupi.</translation>
     </message>
     <message>
         <source>Failed to install %1 fonts. There is not enough disk space.</source>
-        <translation type="unfinished"></translation>
+        <translation>Gagal memasang fon %1. Ruang cakera tidak mencukupi.</translation>
     </message>
     <message>
         <source>Fonts</source>
-        <translation type="unfinished"></translation>
+        <translation>Fon</translation>
     </message>
 </context>
 <context>
     <name>DFontWidget</name>
     <message>
         <source>Broken file</source>
-        <translation type="unfinished">Fail rosak</translation>
+        <translation>Fail rosak</translation>
     </message>
 </context>
 <context>
@@ -197,7 +195,7 @@
     </message>
     <message>
         <source>Are you sure you want to delete %1 font(s)?</source>
-        <translation>Anda pasti mahu memadam %1 fon?</translation>
+        <translation>Anda pasti mahu memadam fon %1?</translation>
     </message>
     <message>
         <source>Delete</source>
@@ -224,18 +222,18 @@
     </message>
     <message>
         <source>Exit</source>
-        <translation type="unfinished">Keluar</translation>
+        <translation>Keluar</translation>
     </message>
     <message>
         <source>Continue</source>
-        <translation type="unfinished">Teruskan</translation>
+        <translation>Teruskan</translation>
     </message>
 </context>
 <context>
     <name>Font</name>
     <message>
         <source>Don&apos;t let your dreams be dreams</source>
-        <translation type="unfinished"></translation>
+        <translation>Jangan biarkan impian anda kekal sebagai mimpi</translation>
     </message>
 </context>
 <context>
@@ -278,11 +276,11 @@
     </message>
     <message>
         <source>Copyright</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>License Description</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

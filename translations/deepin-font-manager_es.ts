@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="es">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="es">
 <context>
     <name>Category</name>
     <message>
@@ -44,7 +42,7 @@
     <name>DFDeleteTTCDialog</name>
     <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be deleted</source>
-        <translation>% 1 es una familia de fuentes, si continúa, se eliminarán todas las fuentes.</translation>
+        <translation>%1 es una familia de fuentes, si continúa, se eliminarán todas las fuentes.</translation>
     </message>
     <message>
         <source>Delete</source>
@@ -56,11 +54,11 @@
     <name>DFDisableTTCDialog</name>
     <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be enabled</source>
-        <translation>% 1 es una familia de fuentes, si continúa, se habilitarán todas las fuentes.</translation>
+        <translation>%1 es una familia de fuentes, si continúa, se habilitarán todas las fuentes.</translation>
     </message>
     <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be disabled</source>
-        <translation>% 1 es una familia de fuentes, si continúa, se deshabilitarán todas las fuentes.</translation>
+        <translation>%1 es una familia de fuentes, si continúa, se deshabilitarán todas las fuentes.</translation>
     </message>
     <message>
         <source>Enable</source>
@@ -163,14 +161,14 @@
     </message>
     <message>
         <source>Fonts</source>
-        <translation type="unfinished"></translation>
+        <translation>Fuentes</translation>
     </message>
 </context>
 <context>
     <name>DFontWidget</name>
     <message>
         <source>Broken file</source>
-        <translation type="unfinished">Archivo roto</translation>
+        <translation>Archivo roto</translation>
     </message>
 </context>
 <context>
@@ -224,18 +222,18 @@
     </message>
     <message>
         <source>Exit</source>
-        <translation type="unfinished">Salir</translation>
+        <translation>Salir</translation>
     </message>
     <message>
         <source>Continue</source>
-        <translation type="unfinished">Continuar</translation>
+        <translation>Continuar</translation>
     </message>
 </context>
 <context>
     <name>Font</name>
     <message>
         <source>Don&apos;t let your dreams be dreams</source>
-        <translation type="unfinished"></translation>
+        <translation>No dejes que tus sueños sean sueños</translation>
     </message>
 </context>
 <context>
@@ -278,11 +276,11 @@
     </message>
     <message>
         <source>Copyright</source>
-        <translation type="unfinished"></translation>
+        <translation>Derechos de autor</translation>
     </message>
     <message>
         <source>License Description</source>
-        <translation type="unfinished"></translation>
+        <translation>Descripción de la licencia</translation>
     </message>
 </context>
 <context>

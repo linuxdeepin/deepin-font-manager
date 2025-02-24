@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="bo">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="bo">
 <context>
     <name>Category</name>
     <message>
@@ -155,22 +153,22 @@
     </message>
     <message>
         <source>Failed to install %1 font. There is not enough disk space.</source>
-        <translation type="unfinished"></translation>
+        <translation>དམིགས་འབེན་སྡུད་སྡེར་གྱི་བར་སྟོང་མི་འདང་བས། ཡིག་ཆ་%1 སྒྲིག་འཇུག་བྱེད་མ་ཐུབ།</translation>
     </message>
     <message>
         <source>Failed to install %1 fonts. There is not enough disk space.</source>
-        <translation type="unfinished"></translation>
+        <translation>དམིགས་འབེན་སྡུད་སྡེར་གྱི་བར་སྟོང་མི་འདང་བས། ཡིག་ཆ་%1 སྒྲིག་འཇུག་བྱེད་མ་ཐུབ།</translation>
     </message>
     <message>
         <source>Fonts</source>
-        <translation type="unfinished"></translation>
+        <translation>ཡིག་གཟུགས།</translation>
     </message>
 </context>
 <context>
     <name>DFontWidget</name>
     <message>
         <source>Broken file</source>
-        <translation type="unfinished">ཡིག་ཆ་སྐྱོན་ཤོར་ཟིན།</translation>
+        <translation>ཡིག་ཆ་སྐྱོན་ཤོར་ཟིན།</translation>
     </message>
 </context>
 <context>
@@ -224,18 +222,18 @@
     </message>
     <message>
         <source>Exit</source>
-        <translation type="unfinished">ཕྱིར་འབུད།</translation>
+        <translation>ཕྱིར་འབུད།</translation>
     </message>
     <message>
         <source>Continue</source>
-        <translation type="unfinished">མུ་མཐུད།</translation>
+        <translation>མུ་མཐུད།</translation>
     </message>
 </context>
 <context>
     <name>Font</name>
     <message>
         <source>Don&apos;t let your dreams be dreams</source>
-        <translation type="unfinished"></translation>
+        <translation>ཕུགས་འདུན་ཡོད་པས་གསར་ཐོན་བྱུང་། འགན་འཁྲི་ཡོད་པས་འཚར་ལོངས་བྱུང་།</translation>
     </message>
 </context>
 <context>
@@ -278,11 +276,11 @@
     </message>
     <message>
         <source>Copyright</source>
-        <translation>པར་དབང་།</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>License Description</source>
-        <translation>འཁྲོལ་འཛིན་ཞིབ་བརྗོད་བྱས་ཆོག</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

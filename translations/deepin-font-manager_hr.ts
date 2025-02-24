@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="hr">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="hr">
 <context>
     <name>Category</name>
     <message>
@@ -29,7 +27,7 @@
     </message>
     <message>
         <source>Monospaced</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -37,140 +35,140 @@
     <message>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation type="unfinished">Otkaži</translation>
+        <translation>Otkaži</translation>
     </message>
 </context>
 <context>
     <name>DFDeleteTTCDialog</name>
     <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be deleted</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Delete</source>
         <comment>button</comment>
-        <translation type="unfinished">Izbriši</translation>
+        <translation>Izbriši</translation>
     </message>
 </context>
 <context>
     <name>DFDisableTTCDialog</name>
     <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be enabled</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be disabled</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Enable</source>
         <comment>button</comment>
-        <translation type="unfinished">Omogući</translation>
+        <translation>Omogući</translation>
     </message>
     <message>
         <source>Disable</source>
         <comment>button</comment>
-        <translation type="unfinished">Onemogući</translation>
+        <translation>Onemogući</translation>
     </message>
 </context>
 <context>
     <name>DFHandleTTCDialog</name>
     <message>
         <source>Apply to all selected font families</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Otkaži</translation>
+        <translation>Otkaži</translation>
     </message>
 </context>
 <context>
     <name>DFInstallErrorDialog</name>
     <message>
         <source>Broken file</source>
-        <translation type="unfinished">Slomljena datoteka</translation>
+        <translation>Slomljena datoteka</translation>
     </message>
     <message>
         <source>Same version installed</source>
-        <translation type="unfinished">Ista inačica je instalirana</translation>
+        <translation>Ista inačica je instalirana</translation>
     </message>
     <message>
         <source>System Font</source>
-        <translation type="unfinished"></translation>
+        <translation>Font sustava</translation>
     </message>
 </context>
 <context>
     <name>DFontMgrMainWindow</name>
     <message>
-        <source>Ctrl+=</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ctrl+-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ctrl+0</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Ctrl+Shift+/</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+/</translation>
     </message>
     <message>
         <source>PgUp</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>PgDown</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Ctrl+Alt+F</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Alt+F</translation>
     </message>
     <message>
         <source>Ctrl+F</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Alt+M</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+F</translation>
     </message>
     <message>
         <source>Ctrl+O</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+O</translation>
     </message>
     <message>
-        <source>CTRL+I</source>
-        <translation type="unfinished"></translation>
+        <source>Ctrl+=</source>
+        <translation>Ctrl+=</translation>
+    </message>
+    <message>
+        <source>Ctrl+-</source>
+        <translation>Ctrl+-</translation>
+    </message>
+    <message>
+        <source>Ctrl+0</source>
+        <translation>Ctrl+0</translation>
     </message>
     <message>
         <source>%1 font installed</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 font instaliran</translation>
     </message>
     <message>
         <source>%1 fonts installed</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 fontovi instalirani</translation>
     </message>
     <message>
-        <source>Fonts</source>
-        <translation type="unfinished"></translation>
+        <source>Alt+M</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>CTRL+I</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Failed to install %1 font. There is not enough disk space.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Failed to install %1 fonts. There is not enough disk space.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Fonts</source>
+        <translation>Fontovi</translation>
     </message>
 </context>
 <context>
     <name>DFontWidget</name>
     <message>
         <source>Broken file</source>
-        <translation type="unfinished">Slomljena datoteka</translation>
+        <translation>Slomljena datoteka</translation>
     </message>
 </context>
 <context>
@@ -180,36 +178,36 @@
         <translation>Ovaj font neće biti dostupan aplikacijama</translation>
     </message>
     <message>
-        <source>Are you sure you want to delete %1 font(s)?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>These fonts will not be available to applications</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>The other %1 system fonts cannot be deleted</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>The font &quot;%1&quot; in use cannot be deleted</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>The other %1 system fonts and the font &quot;%2&quot; in use cannot be deleted</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Are you sure you want to delete %1 font(s)?</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Delete</source>
         <comment>button</comment>
-        <translation type="unfinished">Izbriši</translation>
+        <translation>Izbriši</translation>
     </message>
 </context>
 <context>
     <name>Dfuninstalldialog</name>
     <message>
         <source>Deleting fonts, please wait...</source>
-        <translation type="unfinished"></translation>
+        <translation>Brišem fontove, molim pričekajte...</translation>
     </message>
 </context>
 <context>
@@ -220,22 +218,22 @@
     </message>
     <message>
         <source>No fonts to be installed</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Exit</source>
-        <translation type="unfinished">Izađi</translation>
+        <translation>Izađi</translation>
     </message>
     <message>
         <source>Continue</source>
-        <translation type="unfinished">Nastavi</translation>
+        <translation>Nastavi</translation>
     </message>
 </context>
 <context>
     <name>Font</name>
     <message>
         <source>Don&apos;t let your dreams be dreams</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -262,27 +260,27 @@
     </message>
     <message>
         <source>Unknown</source>
-        <translation type="unfinished"></translation>
+        <translation>Nepoznato</translation>
     </message>
     <message>
         <source>Full name</source>
-        <translation type="unfinished"></translation>
+        <translation>Puno ime</translation>
     </message>
     <message>
         <source>Ps name</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Trademark</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Copyright</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>License Description</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -301,19 +299,19 @@
     </message>
     <message>
         <source>The font exported to your desktop</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>%1 fonts exported to your desktop</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Failed to export 1 font. There is not enough disk space.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Failed to export %1 fonts. There is not enough disk space.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -352,7 +350,7 @@
     </message>
     <message>
         <source>Export</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -362,20 +360,20 @@
         <translation>deaktivirano</translation>
     </message>
     <message>
+        <source>The fonts have been deactivated</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <source>%1 is in use, so you cannot disable it</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>You cannot disable system fonts and the fonts in use</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>You cannot disable system fonts</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The fonts have been deactivated</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -393,7 +391,7 @@
     <name>QuickInstallWindow</name>
     <message>
         <source>Unknown</source>
-        <translation type="unfinished"></translation>
+        <translation>Nepoznato</translation>
     </message>
     <message>
         <source>Broken file</source>
@@ -431,46 +429,46 @@
     <name>Shortcut</name>
     <message>
         <source>Help</source>
-        <translation type="unfinished">Pomoć</translation>
+        <translation>Pomoć</translation>
     </message>
     <message>
         <source>Display shortcuts</source>
-        <translation type="unfinished">Prikaži prečace</translation>
+        <translation>Prikaži prečace</translation>
     </message>
     <message>
         <source>Page up</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Page down</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished">Izbriši</translation>
+        <translation>Izbriši</translation>
     </message>
     <message>
         <source>Add font</source>
-        <translation type="unfinished">Dodaj font</translation>
+        <translation>Dodaj font</translation>
     </message>
     <message>
         <source>Favorite</source>
-        <translation type="unfinished">Omiljeni</translation>
+        <translation>Omiljeni</translation>
     </message>
     <message>
         <source>Unfavorite</source>
-        <translation type="unfinished">Neomiljeni</translation>
+        <translation>Neomiljeni</translation>
     </message>
     <message>
         <source>Font info</source>
-        <translation type="unfinished"></translation>
+        <translation>Informacije o fontu</translation>
     </message>
 </context>
 <context>
     <name>StateBar</name>
     <message>
         <source>Input preview text</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 </TS>
