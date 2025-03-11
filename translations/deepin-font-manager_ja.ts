@@ -264,7 +264,7 @@
     </message>
     <message>
         <source>Full name</source>
-        <translation type="unfinished"/>
+        <translation>完全な名前</translation>
     </message>
     <message>
         <source>Ps name</source>
@@ -272,15 +272,15 @@
     </message>
     <message>
         <source>Trademark</source>
-        <translation type="unfinished"/>
+        <translation>トレードマーク</translation>
     </message>
     <message>
         <source>Copyright</source>
-        <translation type="unfinished"/>
+        <translation>著作権表示</translation>
     </message>
     <message>
         <source>License Description</source>
-        <translation type="unfinished"/>
+        <translation>ライセンス情報</translation>
     </message>
 </context>
 <context>
