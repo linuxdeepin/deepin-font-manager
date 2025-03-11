@@ -291,27 +291,27 @@
     </message>
     <message>
         <source>Font Manager helps users install and manage fonts.</source>
-        <translation type="unfinished"/>
+        <translation>フォントマネージャーは、フォントのインストールと管理を行うためのツールです。</translation>
     </message>
     <message>
         <source>Loading fonts, please wait...</source>
-        <translation type="unfinished"/>
+        <translation>フォントを読み込んでいます。しばらくお待ちください...</translation>
     </message>
     <message>
         <source>The font exported to your desktop</source>
-        <translation type="unfinished"/>
+        <translation>フォントがデスクトップにエクスポートされました</translation>
     </message>
     <message>
         <source>%1 fonts exported to your desktop</source>
-        <translation type="unfinished"/>
+        <translation>%1 件のフォントがデスクトップにエクスポートされました</translation>
     </message>
     <message>
         <source>Failed to export 1 font. There is not enough disk space.</source>
-        <translation type="unfinished"/>
+        <translation>1 件のフォントをエクスポートできませんでした。ディスク容量が不足しています。</translation>
     </message>
     <message>
         <source>Failed to export %1 fonts. There is not enough disk space.</source>
-        <translation type="unfinished"/>
+        <translation>%1 件のフォントをエクスポートできませんでした。ディスク容量が不足しています。</translation>
     </message>
 </context>
 <context>
@@ -342,49 +342,49 @@
     </message>
     <message>
         <source>Details</source>
-        <translation type="unfinished"/>
+        <translation>詳細</translation>
     </message>
     <message>
         <source>Display in file manager</source>
-        <translation type="unfinished"/>
+        <translation>ファイルマネージャーで表示</translation>
     </message>
     <message>
         <source>Export</source>
-        <translation type="unfinished"/>
+        <translation>エクスポート</translation>
     </message>
 </context>
 <context>
     <name>MessageManager</name>
     <message>
         <source>deactivated</source>
-        <translation type="unfinished"/>
+        <translation>無効化されました</translation>
     </message>
     <message>
         <source>The fonts have been deactivated</source>
-        <translation type="unfinished"/>
+        <translation>フォントが無効化されました</translation>
     </message>
     <message>
         <source>%1 is in use, so you cannot disable it</source>
-        <translation type="unfinished"/>
+        <translation>%1 は使用中のため、無効化できません。</translation>
     </message>
     <message>
         <source>You cannot disable system fonts and the fonts in use</source>
-        <translation type="unfinished"/>
+        <translation>システムフォントと使用中のフォントは無効化できません</translation>
     </message>
     <message>
         <source>You cannot disable system fonts</source>
-        <translation type="unfinished"/>
+        <translation>システムフォントは無効化できません</translation>
     </message>
 </context>
 <context>
     <name>NormalInstallWindow</name>
     <message>
         <source>Install Font</source>
-        <translation type="unfinished"/>
+        <translation>フォントをインストール</translation>
     </message>
     <message>
         <source>Verifying...</source>
-        <translation type="unfinished"/>
+        <translation>検証中...</translation>
     </message>
 </context>
 <context>
@@ -399,49 +399,49 @@
     </message>
     <message>
         <source>Installed</source>
-        <translation type="unfinished"/>
+        <translation>インストール済み</translation>
     </message>
     <message>
         <source>Not Installed</source>
-        <translation type="unfinished"/>
+        <translation>インストールされていません</translation>
     </message>
     <message>
         <source>Install Font</source>
-        <translation type="unfinished"/>
+        <translation>フォントをインストール</translation>
     </message>
 </context>
 <context>
     <name>SearchBar</name>
     <message>
         <source>Search</source>
-        <translation type="unfinished"/>
+        <translation>検索</translation>
     </message>
     <message>
         <source>No search results</source>
-        <translation type="unfinished"/>
+        <translation>検索結果はありません</translation>
     </message>
     <message>
         <source>No fonts</source>
-        <translation type="unfinished"/>
+        <translation>フォントがありまん</translation>
     </message>
 </context>
 <context>
     <name>Shortcut</name>
     <message>
         <source>Help</source>
-        <translation type="unfinished"/>
+        <translation>ヘルプ</translation>
     </message>
     <message>
         <source>Display shortcuts</source>
-        <translation type="unfinished"/>
+        <translation>ショートカットを表示</translation>
     </message>
     <message>
         <source>Page up</source>
-        <translation type="unfinished"/>
+        <translation>Page up</translation>
     </message>
     <message>
         <source>Page down</source>
-        <translation type="unfinished"/>
+        <translation>Page down</translation>
     </message>
     <message>
         <source>Delete</source>
