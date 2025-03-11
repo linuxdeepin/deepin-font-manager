@@ -183,7 +183,7 @@
     </message>
     <message>
         <source>The other %1 system fonts cannot be deleted</source>
-        <translation type="unfinished"/>
+        <translation>これ以外の%1 件のシステムフォントは削除されません</translation>
     </message>
     <message>
         <source>The font &quot;%1&quot; in use cannot be deleted</source>
@@ -195,7 +195,7 @@
     </message>
     <message>
         <source>Are you sure you want to delete %1 font(s)?</source>
-        <translation type="unfinished"/>
+        <translation>%1 件のフォントを削除しますか？</translation>
     </message>
     <message>
         <source>Delete</source>
