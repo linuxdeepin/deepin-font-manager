@@ -233,7 +233,7 @@
     <name>Font</name>
     <message>
         <source>Don&apos;t let your dreams be dreams</source>
-        <translation type="unfinished"/>
+        <translation>Don&apos;t let your dreams be dreams</translation>
     </message>
 </context>
 <context>
@@ -268,7 +268,7 @@
     </message>
     <message>
         <source>Ps name</source>
-        <translation type="unfinished"/>
+        <translation>Ps name</translation>
     </message>
     <message>
         <source>Trademark</source>
