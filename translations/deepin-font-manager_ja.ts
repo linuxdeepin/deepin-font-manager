@@ -42,7 +42,7 @@
     <name>DFDeleteTTCDialog</name>
     <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be deleted</source>
-        <translation>%1 はフォントファミリーです。続行すると、このフォントファミリー内のすべてのフォントが削除されます。</translation>
+        <translation>%1 はフォントファミリーです。続行すると、このフォントファミリー内のすべてのフォントが削除されます</translation>
     </message>
     <message>
         <source>Delete</source>
@@ -54,11 +54,11 @@
     <name>DFDisableTTCDialog</name>
     <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be enabled</source>
-        <translation>%1 はフォントファミリーです。続行すると、このフォントファミリー内のすべてのフォントが有効化されます。</translation>
+        <translation>%1 はフォントファミリーです。続行すると、このフォントファミリー内のすべてのフォントが有効化されます</translation>
     </message>
     <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be disabled</source>
-        <translation>%1 はフォントファミリーです。続行すると、このフォントファミリー内のすべてのフォントが無効化されます。</translation>
+        <translation>%1 はフォントファミリーです。続行すると、このフォントファミリー内のすべてのフォントが無効化されます</translation>
     </message>
     <message>
         <source>Enable</source>
@@ -365,7 +365,7 @@
     </message>
     <message>
         <source>%1 is in use, so you cannot disable it</source>
-        <translation>%1 は使用中のため、無効化できません。</translation>
+        <translation>%1 は使用中のため、無効化できません</translation>
     </message>
     <message>
         <source>You cannot disable system fonts and the fonts in use</source>
