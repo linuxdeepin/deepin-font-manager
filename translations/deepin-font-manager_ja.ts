@@ -287,7 +287,7 @@
     <name>Main</name>
     <message>
         <source>Font Manager</source>
-        <translation>フォントインストーラー</translation>
+        <translation>フォントマネージャー</translation>
     </message>
     <message>
         <source>Font Manager helps users install and manage fonts.</source>
@@ -422,7 +422,7 @@
     </message>
     <message>
         <source>No fonts</source>
-        <translation>フォントがありまん</translation>
+        <translation>フォントがありません</translation>
     </message>
 </context>
 <context>
