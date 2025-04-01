@@ -4,15 +4,6 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 SET(APP_BIN deepin-font-manager)
-ADD_EXECUTABLE(${APP_BIN} "")
-
-#编译翻译文件
-SET(TRANSLATE_SHELL ${CMAKE_CURRENT_LIST_DIR}/../deepin-font-manager-assets/translate_generation.sh)
-SET(TRANSLATION_DIR ${CMAKE_CURRENT_LIST_DIR}/../translations)
-EXECUTE_PROCESS(COMMAND ${TRANSLATE_SHELL} WORKING_DIRECTORY ${TRANSLATION_DIR})
-#安装翻译文件
-FILE(GLOB TRANSLATION_FILES ${CMAKE_CURRENT_LIST_DIR}/../translations/*.qm)
-INSTALL(FILES ${TRANSLATION_FILES} DESTINATION share/${APP_BIN}/translations)
 
 #libdeepin-font-manager
 SET(LIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../libdeepin-font-manager)
@@ -31,6 +22,16 @@ FILE(GLOB SRC_FILES ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp ${CMAKE_CURRENT_SOURCE_DIR
 SET(QRC_FILES ${CMAKE_CURRENT_SOURCE_DIR}/../deepin-font-manager-assets/deepin-font-manager.qrc)
 include_directories(${CMAKE_BINARY_DIR}/deepin-font-manager)
 CONFIGURE_FILE(environments.h.in environments.h @ONLY)
+
+#编译翻译文件
+file(GLOB TS LIST_DIRECTORIES false ../translations/*.ts)
+set_source_files_properties(${TS} PROPERTIES OUTPUT_LOCATION ${PROJECT_SOURCE_DIR}/translations)
+qt_create_translation(QM ${SRC_FILES} ${TS})
+ADD_EXECUTABLE(${APP_BIN} ${QM})
+#安装翻译文件
+install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/../translations
+    DESTINATION share/${APP_BIN}
+    FILES_MATCHING PATTERN "*.qm")
 
 TARGET_SOURCES(${APP_BIN} PRIVATE ${SRC_FILES} ${QRC_FILES} ${LIB_SRC_FILES})
 TARGET_INCLUDE_DIRECTORIES(${APP_BIN} PRIVATE ${LIB_DIR})
