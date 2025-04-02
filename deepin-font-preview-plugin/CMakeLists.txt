@@ -21,9 +21,9 @@
 #*
 #*****************************************************************************/
 
-find_package(dfm-base)
+find_package(dfm${DTK_VERSION}-base)
 PKG_SEARCH_MODULE(DeepinFileManager dde-file-manager IMPORTED_TARGET)
-if (dfm-base_FOUND)
+if (dfm${DTK_VERSION}-base_FOUND)
     message("dfm-base founded.")
     add_definitions(-DDFM_BASE)
 elseif(DeepinFileManager_FOUND)
