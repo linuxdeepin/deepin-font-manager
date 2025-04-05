@@ -42,7 +42,7 @@
     <name>DFDeleteTTCDialog</name>
     <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be deleted</source>
-        <translation type="unfinished"/>
+        <translation>%1 là một bộ chữ, nếu bạn tiếp tục, tất cả các chữ trong nó sẽ bị xóa</translation>
     </message>
     <message>
         <source>Delete</source>
@@ -54,11 +54,11 @@
     <name>DFDisableTTCDialog</name>
     <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be enabled</source>
-        <translation type="unfinished"/>
+        <translation>%1 là một bộ chữ, nếu bạn tiếp tục, tất cả các chữ trong nó sẽ được kích hoạt</translation>
     </message>
     <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be disabled</source>
-        <translation type="unfinished"/>
+        <translation>%1 là một bộ chữ, nếu bạn tiếp tục, tất cả các chữ trong nó sẽ bị vô hiệu hóa</translation>
     </message>
     <message>
         <source>Enable</source>
@@ -75,7 +75,7 @@
     <name>DFHandleTTCDialog</name>
     <message>
         <source>Apply to all selected font families</source>
-        <translation type="unfinished"/>
+        <translation>Áp dụng cho tất cả các bộ chữ đã chọn</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -145,15 +145,15 @@
     </message>
     <message>
         <source>Alt+M</source>
-        <translation type="unfinished"/>
+        <translation>Alt+M</translation>
     </message>
     <message>
         <source>CTRL+I</source>
-        <translation type="unfinished"/>
+        <translation>CTRL+I</translation>
     </message>
     <message>
         <source>Failed to install %1 font. There is not enough disk space.</source>
-        <translation type="unfinished"/>
+        <translation>Không thể cài đặt bộ chữ %1. Không đủ không gian đĩa cứng.</translation>
     </message>
     <message>
         <source>Failed to install %1 fonts. There is not enough disk space.</source>
@@ -183,19 +183,19 @@
     </message>
     <message>
         <source>The other %1 system fonts cannot be deleted</source>
-        <translation type="unfinished"/>
+        <translation>Các bộ chữ hệ thống khác %1 không thể bị xóa</translation>
     </message>
     <message>
         <source>The font &quot;%1&quot; in use cannot be deleted</source>
-        <translation type="unfinished"/>
+        <translation>Bộ chữ &quot;%1&quot; đang sử dụng không thể bị xóa</translation>
     </message>
     <message>
         <source>The other %1 system fonts and the font &quot;%2&quot; in use cannot be deleted</source>
-        <translation type="unfinished"/>
+        <translation>Các bộ chữ hệ thống khác %1 và bộ chữ &quot;%2&quot; đang sử dụng không thể bị xóa</translation>
     </message>
     <message>
         <source>Are you sure you want to delete %1 font(s)?</source>
-        <translation type="unfinished"/>
+        <translation>Bạn có chắc chắn muốn xóa %1 bộ chữ không?</translation>
     </message>
     <message>
         <source>Delete</source>
@@ -276,11 +276,11 @@
     </message>
     <message>
         <source>Copyright</source>
-        <translation type="unfinished"/>
+        <translation>Quyền tác giả</translation>
     </message>
     <message>
         <source>License Description</source>
-        <translation type="unfinished"/>
+        <translation>Mô tả giấy phép</translation>
     </message>
 </context>
 <context>
@@ -365,15 +365,15 @@
     </message>
     <message>
         <source>%1 is in use, so you cannot disable it</source>
-        <translation type="unfinished"/>
+        <translation>%1 đang được sử dụng, do đó bạn không thể vô hiệu hóa nó</translation>
     </message>
     <message>
         <source>You cannot disable system fonts and the fonts in use</source>
-        <translation type="unfinished"/>
+        <translation>Bạn không thể vô hiệu hóa các bộ chữ hệ thống và các bộ chữ đang sử dụng</translation>
     </message>
     <message>
         <source>You cannot disable system fonts</source>
-        <translation type="unfinished"/>
+        <translation>Bạn không thể vô hiệu hóa các bộ chữ hệ thống</translation>
     </message>
 </context>
 <context>
