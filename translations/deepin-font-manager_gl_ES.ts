@@ -42,7 +42,7 @@
     <name>DFDeleteTTCDialog</name>
     <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be deleted</source>
-        <translation type="unfinished"/>
+        <translation>O %1 é unha familia de fuentes, se procedes, todas as fuentes da mesma será eliminadas</translation>
     </message>
     <message>
         <source>Delete</source>
@@ -54,11 +54,11 @@
     <name>DFDisableTTCDialog</name>
     <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be enabled</source>
-        <translation type="unfinished"/>
+        <translation>O %1 é unha familia de fuentes, se procedes, todas as fuentes da mesma será activadas</translation>
     </message>
     <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be disabled</source>
-        <translation type="unfinished"/>
+        <translation>O %1 é unha familia de fuentes, se procedes, todas as fuentes da mesma será desactivadas</translation>
     </message>
     <message>
         <source>Enable</source>
@@ -75,7 +75,7 @@
     <name>DFHandleTTCDialog</name>
     <message>
         <source>Apply to all selected font families</source>
-        <translation type="unfinished"/>
+        <translation>Aplicar a todas as familias de fuentes seleccionadas</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -145,19 +145,19 @@
     </message>
     <message>
         <source>Alt+M</source>
-        <translation type="unfinished"/>
+        <translation>Alt+M</translation>
     </message>
     <message>
         <source>CTRL+I</source>
-        <translation type="unfinished"/>
+        <translation>CTRL+I</translation>
     </message>
     <message>
         <source>Failed to install %1 font. There is not enough disk space.</source>
-        <translation type="unfinished"/>
+        <translation>Fallou a instalación da fount %1. Non hai suficiente espazo de disco.</translation>
     </message>
     <message>
         <source>Failed to install %1 fonts. There is not enough disk space.</source>
-        <translation type="unfinished"/>
+        <translation>Fallou a instalación das founts %1. Non hai suficiente espazo de disco.</translation>
     </message>
     <message>
         <source>Fonts</source>
@@ -276,11 +276,11 @@
     </message>
     <message>
         <source>Copyright</source>
-        <translation type="unfinished"/>
+        <translation>Dereitos de autor</translation>
     </message>
     <message>
         <source>License Description</source>
-        <translation type="unfinished"/>
+        <translation>Descrición da licenza</translation>
     </message>
 </context>
 <context>
