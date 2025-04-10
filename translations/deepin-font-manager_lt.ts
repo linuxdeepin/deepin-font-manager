@@ -1,35 +1,33 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="lt">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="lt">
 <context>
     <name>Category</name>
     <message>
         <source>All Fonts</source>
-        <translation type="unfinished"></translation>
+        <translation>Visi valdžios</translation>
     </message>
     <message>
         <source>System</source>
-        <translation type="unfinished"></translation>
+        <translation>Sistemos</translation>
     </message>
     <message>
         <source>User</source>
-        <translation type="unfinished"></translation>
+        <translation>Vartotojo</translation>
     </message>
     <message>
         <source>Favorites</source>
-        <translation type="unfinished"></translation>
+        <translation>Mėgytos</translation>
     </message>
     <message>
         <source>Active</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktyvus</translation>
     </message>
     <message>
         <source>Chinese</source>
-        <translation type="unfinished"></translation>
+        <translation>Kinų</translation>
     </message>
     <message>
         <source>Monospaced</source>
-        <translation type="unfinished"></translation>
+        <translation>Raktų</translation>
     </message>
 </context>
 <context>
@@ -37,440 +35,440 @@
     <message>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation type="unfinished"></translation>
+        <translation>Atšaukti</translation>
     </message>
 </context>
 <context>
     <name>DFDeleteTTCDialog</name>
     <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be deleted</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 yra šriftų šeima, jei tęsytumėte, jų visi šriftai bus ištrinti</translation>
     </message>
     <message>
         <source>Delete</source>
         <comment>button</comment>
-        <translation type="unfinished"></translation>
+        <translation>Ištrinti</translation>
     </message>
 </context>
 <context>
     <name>DFDisableTTCDialog</name>
     <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be enabled</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 yra šriftų šeima, jei tęsytumėte, jų visi šriftai bus įjungti</translation>
     </message>
     <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be disabled</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 yra šriftų šeima, jei tęsytumėte, jų visi šriftai bus išjungti</translation>
     </message>
     <message>
         <source>Enable</source>
         <comment>button</comment>
-        <translation type="unfinished"></translation>
+        <translation>Įjungti</translation>
     </message>
     <message>
         <source>Disable</source>
         <comment>button</comment>
-        <translation type="unfinished"></translation>
+        <translation>Išjungti</translation>
     </message>
 </context>
 <context>
     <name>DFHandleTTCDialog</name>
     <message>
         <source>Apply to all selected font families</source>
-        <translation type="unfinished"></translation>
+        <translation>Tol.getElementsByName(&apos;translation&apos;)ei į kiekvieną pasirinktą šriftų šeimą</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Atšaukti</translation>
     </message>
 </context>
 <context>
     <name>DFInstallErrorDialog</name>
     <message>
         <source>Broken file</source>
-        <translation type="unfinished"></translation>
+        <translation>Rozinusis failas</translation>
     </message>
     <message>
         <source>Same version installed</source>
-        <translation type="unfinished">Įdiegta ta pati versija</translation>
+        <translation>Įdiegta ta pati versija</translation>
     </message>
     <message>
         <source>System Font</source>
-        <translation type="unfinished"></translation>
+        <translation>Sistemos šriftas</translation>
     </message>
 </context>
 <context>
     <name>DFontMgrMainWindow</name>
     <message>
-        <source>Ctrl+=</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ctrl+-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ctrl+0</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Ctrl+Shift+/</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+/</translation>
     </message>
     <message>
         <source>PgUp</source>
-        <translation type="unfinished"></translation>
+        <translation>PgUp</translation>
     </message>
     <message>
         <source>PgDown</source>
-        <translation type="unfinished"></translation>
+        <translation>PgDown</translation>
     </message>
     <message>
         <source>Ctrl+Alt+F</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Alt+F</translation>
     </message>
     <message>
         <source>Ctrl+F</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Alt+M</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+F</translation>
     </message>
     <message>
         <source>Ctrl+O</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+O</translation>
     </message>
     <message>
-        <source>CTRL+I</source>
-        <translation type="unfinished"></translation>
+        <source>Ctrl+=</source>
+        <translation>Ctrl+=</translation>
+    </message>
+    <message>
+        <source>Ctrl+-</source>
+        <translation>Ctrl+-</translation>
+    </message>
+    <message>
+        <source>Ctrl+0</source>
+        <translation>Ctrl+0</translation>
     </message>
     <message>
         <source>%1 font installed</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 šriftas įdiegtas</translation>
     </message>
     <message>
         <source>%1 fonts installed</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 šriftai įdiegti</translation>
     </message>
     <message>
-        <source>Fonts</source>
-        <translation type="unfinished"></translation>
+        <source>Alt+M</source>
+        <translation>Alt+M</translation>
+    </message>
+    <message>
+        <source>CTRL+I</source>
+        <translation>CTRL+I</translation>
     </message>
     <message>
         <source>Failed to install %1 font. There is not enough disk space.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nepavyko įdiegti %1 šriftą. Nėra pakankamios disko vietos.</translation>
     </message>
     <message>
         <source>Failed to install %1 fonts. There is not enough disk space.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nepavyko įdiegti %1 šriftų. Nėra pakankamios disko vietos.</translation>
+    </message>
+    <message>
+        <source>Fonts</source>
+        <translation>Šriftai</translation>
     </message>
 </context>
 <context>
     <name>DFontWidget</name>
     <message>
         <source>Broken file</source>
-        <translation type="unfinished"></translation>
+        <translation>Klaidingas failas</translation>
     </message>
 </context>
 <context>
     <name>DeleteConfirmDailog</name>
     <message>
-        <source>Are you sure you want to delete %1 font(s)?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>This font will not be available to applications</source>
-        <translation type="unfinished"></translation>
+        <translation>Šis šriftas nebus ypač prieinamas programoms</translation>
     </message>
     <message>
         <source>These fonts will not be available to applications</source>
-        <translation type="unfinished"></translation>
+        <translation>Šie šriftai nebus ypač prieinami programoms</translation>
     </message>
     <message>
         <source>The other %1 system fonts cannot be deleted</source>
-        <translation type="unfinished"></translation>
+        <translation>Kiti %1 sistema šriftai negali būti ištrinti</translation>
     </message>
     <message>
         <source>The font &quot;%1&quot; in use cannot be deleted</source>
-        <translation type="unfinished"></translation>
+        <translation>Naudojama šriftas &quot;%1&quot; negali būti ištrintas</translation>
     </message>
     <message>
         <source>The other %1 system fonts and the font &quot;%2&quot; in use cannot be deleted</source>
-        <translation type="unfinished"></translation>
+        <translation>Kiti %1 sistema šriftai ir naudojamas šriftas &quot;%2&quot; negali būti ištrinti</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete %1 font(s)?</source>
+        <translation>Ar tikrai norite ištrinti %1 šriftą(us)?</translation>
     </message>
     <message>
         <source>Delete</source>
         <comment>button</comment>
-        <translation type="unfinished"></translation>
+        <translation>Ištrinti</translation>
     </message>
 </context>
 <context>
     <name>Dfuninstalldialog</name>
     <message>
         <source>Deleting fonts, please wait...</source>
-        <translation type="unfinished"></translation>
+        <translation>Šriftai ištrinami, palaukite...</translation>
     </message>
 </context>
 <context>
     <name>ExceptionWindow</name>
     <message>
         <source>Font Verification</source>
-        <translation type="unfinished"></translation>
+        <translation>Šriftų patikrinimas</translation>
     </message>
     <message>
         <source>No fonts to be installed</source>
-        <translation type="unfinished"></translation>
+        <translation>Nėra įdiegiamo šriftų</translation>
     </message>
     <message>
         <source>Exit</source>
-        <translation type="unfinished"></translation>
+        <translation>Išeiti</translation>
     </message>
     <message>
         <source>Continue</source>
-        <translation type="unfinished"></translation>
+        <translation>Tęsti</translation>
     </message>
 </context>
 <context>
     <name>Font</name>
     <message>
         <source>Don&apos;t let your dreams be dreams</source>
-        <translation type="unfinished"></translation>
+        <translation>Nepaslėpęs savo mėgstamųjų</translation>
     </message>
 </context>
 <context>
     <name>FontDetailDailog</name>
     <message>
+        <source>Basic info</source>
+        <translation>Pagrindinė informacija</translation>
+    </message>
+    <message>
         <source>Style</source>
-        <translation type="unfinished"></translation>
+        <translation>Stylis</translation>
     </message>
     <message>
         <source>Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Tipas</translation>
     </message>
     <message>
         <source>Version</source>
-        <translation type="unfinished"></translation>
+        <translation>Versija</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation type="unfinished"></translation>
+        <translation>Aprašymas</translation>
     </message>
     <message>
         <source>Unknown</source>
-        <translation type="unfinished">Nežinoma</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Full name</source>
-        <translation type="unfinished"></translation>
+        <translation>Pilnas pavadinimas</translation>
     </message>
     <message>
         <source>Ps name</source>
-        <translation type="unfinished"></translation>
+        <translation>Ps pavadinimas</translation>
     </message>
     <message>
         <source>Trademark</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Basic info</source>
-        <translation type="unfinished"></translation>
+        <translation>Marka</translation>
     </message>
     <message>
         <source>Copyright</source>
-        <translation type="unfinished"></translation>
+        <translation>Teisės įrašai</translation>
     </message>
     <message>
         <source>License Description</source>
-        <translation type="unfinished"></translation>
+        <translation>Licencavimo aprašymas</translation>
     </message>
 </context>
 <context>
     <name>Main</name>
     <message>
         <source>Font Manager</source>
-        <translation type="unfinished"></translation>
+        <translation>Tipografinių ženklų tvarkytojas</translation>
     </message>
     <message>
         <source>Font Manager helps users install and manage fonts.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The font exported to your desktop</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>%1 fonts exported to your desktop</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Failed to export 1 font. There is not enough disk space.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Failed to export %1 fonts. There is not enough disk space.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tipografinių ženklų tvarkytojas padeda vartotojams įdiegti ir tvarkyti tipografinių ženklų.</translation>
     </message>
     <message>
         <source>Loading fonts, please wait...</source>
-        <translation type="unfinished"></translation>
+        <translation>Rodyti tipografinius ženklus, lūkesčiau palaukite...</translation>
+    </message>
+    <message>
+        <source>The font exported to your desktop</source>
+        <translation>Tipografinis ženklas išvežtas į jūsų stebėjimo ekraną</translation>
+    </message>
+    <message>
+        <source>%1 fonts exported to your desktop</source>
+        <translation>%1 tipografiniai ženklai išvežti į jūsų stebėjimo ekraną</translation>
+    </message>
+    <message>
+        <source>Failed to export 1 font. There is not enough disk space.</source>
+        <translation>Nepavyko išvežti 1 tipografinio ženklų. Nėra irogų vietos.</translation>
+    </message>
+    <message>
+        <source>Failed to export %1 fonts. There is not enough disk space.</source>
+        <translation>Nepavyko išvežti %1 tipografinių ženklų. Nėra irogų vietos.</translation>
     </message>
 </context>
 <context>
     <name>Menu</name>
     <message>
         <source>Add font</source>
-        <translation type="unfinished"></translation>
+        <translation>Pridėti tipografinį ženklą</translation>
     </message>
     <message>
         <source>Enable</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Export</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Favorite</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Details</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Display in file manager</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unfavorite</source>
-        <translation type="unfinished"></translation>
+        <translation>Įjungti</translation>
     </message>
     <message>
         <source>Disable</source>
-        <translation type="unfinished"></translation>
+        <translation>Išjungti</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>Ilipti</translation>
+    </message>
+    <message>
+        <source>Favorite</source>
+        <translation>Nagrinėti</translation>
+    </message>
+    <message>
+        <source>Unfavorite</source>
+        <translation>Ištraukti iš nagrinėjimo sąrašo</translation>
+    </message>
+    <message>
+        <source>Details</source>
+        <translation>Detalės</translation>
+    </message>
+    <message>
+        <source>Display in file manager</source>
+        <translation>Rodyti failų tvarkytojo sąraše</translation>
+    </message>
+    <message>
+        <source>Export</source>
+        <translation>Eksportuoti</translation>
     </message>
 </context>
 <context>
     <name>MessageManager</name>
     <message>
-        <source>%1 is in use, so you cannot disable it</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>You cannot disable system fonts and the fonts in use</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>You cannot disable system fonts</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>deactivated</source>
-        <translation type="unfinished"></translation>
+        <translation>išjungta</translation>
     </message>
     <message>
         <source>The fonts have been deactivated</source>
-        <translation type="unfinished"></translation>
+        <translation>Šriftai buvo išjungti</translation>
+    </message>
+    <message>
+        <source>%1 is in use, so you cannot disable it</source>
+        <translation>%1 yra naudojamas, todėl jį negalite išjungti</translation>
+    </message>
+    <message>
+        <source>You cannot disable system fonts and the fonts in use</source>
+        <translation>Ne galite išjungti sisteminius šriftus ir naudojamos šriftus</translation>
+    </message>
+    <message>
+        <source>You cannot disable system fonts</source>
+        <translation>Ne galite išjungti sisteminius šriftus</translation>
     </message>
 </context>
 <context>
     <name>NormalInstallWindow</name>
     <message>
         <source>Install Font</source>
-        <translation type="unfinished"></translation>
+        <translation>Installerinti šriftą</translation>
     </message>
     <message>
         <source>Verifying...</source>
-        <translation type="unfinished"></translation>
+        <translation>Patikrinama...</translation>
     </message>
 </context>
 <context>
     <name>QuickInstallWindow</name>
     <message>
         <source>Unknown</source>
-        <translation type="unfinished">Nežinoma</translation>
-    </message>
-    <message>
-        <source>Install Font</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Broken file</source>
-        <translation type="unfinished"></translation>
+        <translation>Klaidingas failas</translation>
     </message>
     <message>
         <source>Installed</source>
-        <translation type="unfinished">Įdiegtas</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Not Installed</source>
-        <translation type="unfinished"></translation>
+        <translation>Neįdiegtas</translation>
+    </message>
+    <message>
+        <source>Install Font</source>
+        <translation>Installerinti šriftą</translation>
     </message>
 </context>
 <context>
     <name>SearchBar</name>
     <message>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>Ieškoti</translation>
     </message>
     <message>
         <source>No search results</source>
-        <translation type="unfinished"></translation>
+        <translation>Nėra ieškomo duomenų</translation>
     </message>
     <message>
         <source>No fonts</source>
-        <translation type="unfinished"></translation>
+        <translation>Nėra šriftų</translation>
     </message>
 </context>
 <context>
     <name>Shortcut</name>
     <message>
         <source>Help</source>
-        <translation type="unfinished"></translation>
+        <translation>Pagalba</translation>
     </message>
     <message>
         <source>Display shortcuts</source>
-        <translation type="unfinished"></translation>
+        <translation>Rodyti spartus mygtukus</translation>
     </message>
     <message>
         <source>Page up</source>
-        <translation type="unfinished"></translation>
+        <translation>Puslapis atgal</translation>
     </message>
     <message>
         <source>Page down</source>
-        <translation type="unfinished"></translation>
+        <translation>Puslapis priekai</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>Ištrinti</translation>
     </message>
     <message>
         <source>Add font</source>
-        <translation type="unfinished"></translation>
+        <translation>Pridėti šriftą</translation>
     </message>
     <message>
         <source>Favorite</source>
-        <translation type="unfinished"></translation>
+        <translation>Sukurti mėgautinį</translation>
     </message>
     <message>
         <source>Unfavorite</source>
-        <translation type="unfinished"></translation>
+        <translation>Pašalinti mėgautinį</translation>
     </message>
     <message>
         <source>Font info</source>
-        <translation type="unfinished"></translation>
+        <translation>Šriftas informacija</translation>
     </message>
 </context>
 <context>
     <name>StateBar</name>
     <message>
         <source>Input preview text</source>
-        <translation type="unfinished"></translation>
+        <translation>Įvesti preview tekstą</translation>
     </message>
 </context>
 </TS>

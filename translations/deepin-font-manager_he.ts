@@ -1,33 +1,33 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="es">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="he">
 <context>
     <name>Category</name>
     <message>
         <source>All Fonts</source>
-        <translation>Todas las fuentes</translation>
+        <translation>כל המילים ה 自动生成失败，请确保提供的YAML格式正确且包含必要的字段。 </translation>
     </message>
     <message>
         <source>System</source>
-        <translation>Sistema</translation>
+        <translation>מערכת</translation>
     </message>
     <message>
         <source>User</source>
-        <translation>Usuario</translation>
+        <translation>משתמש</translation>
     </message>
     <message>
         <source>Favorites</source>
-        <translation>Favoritas</translation>
+        <translation>מועדפים</translation>
     </message>
     <message>
         <source>Active</source>
-        <translation>Activas</translation>
+        <translation>פעיל</translation>
     </message>
     <message>
         <source>Chinese</source>
-        <translation>Chino</translation>
+        <translation>🇨🇳</translation>
     </message>
     <message>
         <source>Monospaced</source>
-        <translation>Monoespaciado</translation>
+        <translation>שוני רוח</translation>
     </message>
 </context>
 <context>
@@ -35,440 +35,440 @@
     <message>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation>Cancelar</translation>
+        <translation>ביטול</translation>
     </message>
 </context>
 <context>
     <name>DFDeleteTTCDialog</name>
     <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be deleted</source>
-        <translation>%1 es una familia de fuentes, si continúa, se eliminarán todas las fuentes.</translation>
+        <translation>ה-%1 משפחה של מילים, אם תמשיכו, כל המילים בו תימחקו</translation>
     </message>
     <message>
         <source>Delete</source>
         <comment>button</comment>
-        <translation>Borrar</translation>
+        <translation>מחק</translation>
     </message>
 </context>
 <context>
     <name>DFDisableTTCDialog</name>
     <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be enabled</source>
-        <translation>%1 es una familia de fuentes, si continúa, se habilitarán todas las fuentes.</translation>
+        <translation>ה-%1 משפחה של מילים, אם תמשיכו, כל המילים בו תיפקשו</translation>
     </message>
     <message>
         <source>%1 is a font family, if you proceed, all fonts in it will be disabled</source>
-        <translation>%1 es una familia de fuentes, si continúa, se deshabilitarán todas las fuentes.</translation>
+        <translation>ה-%1 משפחה של מילים, אם תמשיכו, כל המילים בו תיפסקו</translation>
     </message>
     <message>
         <source>Enable</source>
         <comment>button</comment>
-        <translation>Habilitar</translation>
+        <translation>הפעלה</translation>
     </message>
     <message>
         <source>Disable</source>
         <comment>button</comment>
-        <translation>Deshabilitar</translation>
+        <translation> Dezactivare</translation>
     </message>
 </context>
 <context>
     <name>DFHandleTTCDialog</name>
     <message>
         <source>Apply to all selected font families</source>
-        <translation>Aplicar a todas las familias de fuentes seleccionadas</translation>
+        <translation>העלא על כל משפחות המילים שנבחרו</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Cancelar</translation>
+        <translation>ביטול</translation>
     </message>
 </context>
 <context>
     <name>DFInstallErrorDialog</name>
     <message>
         <source>Broken file</source>
-        <translation>Archivo roto</translation>
+        <translation>קובץ נזקק</translation>
     </message>
     <message>
         <source>Same version installed</source>
-        <translation>La misma versión está instalada</translation>
+        <translation>הצורה מצורפת</translation>
     </message>
     <message>
         <source>System Font</source>
-        <translation>Fuente del sistema</translation>
+        <translation>מילה של מערכת</translation>
     </message>
 </context>
 <context>
     <name>DFontMgrMainWindow</name>
     <message>
         <source>Ctrl+Shift+/</source>
-        <translation>Ctrl + Mayús + /</translation>
+        <translation>Ctrl+Shift+/</translation>
     </message>
     <message>
         <source>PgUp</source>
-        <translation>AvPág</translation>
+        <translation>PgUp</translation>
     </message>
     <message>
         <source>PgDown</source>
-        <translation>RePág</translation>
+        <translation>PgDown</translation>
     </message>
     <message>
         <source>Ctrl+Alt+F</source>
-        <translation>Ctrl + Alt + F</translation>
+        <translation>Ctrl+Alt+F</translation>
     </message>
     <message>
         <source>Ctrl+F</source>
-        <translation>Ctrl + F</translation>
+        <translation>Ctrl+F</translation>
     </message>
     <message>
         <source>Ctrl+O</source>
-        <translation>Ctrl + O</translation>
+        <translation>Ctrl+O</translation>
     </message>
     <message>
         <source>Ctrl+=</source>
-        <translation>Ctrl + =</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Ctrl+-</source>
-        <translation>Ctrl + -</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Ctrl+0</source>
-        <translation>Ctrl + 0</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>%1 font installed</source>
-        <translation>%1 fuente instalada</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>%1 fonts installed</source>
-        <translation>%1 fuentes instaladas</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Alt+M</source>
-        <translation>Alt+M</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>CTRL+I</source>
-        <translation>CTRL+I</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Failed to install %1 font. There is not enough disk space.</source>
-        <translation>Error al instalar la fuente %1. No hay suficiente espacio en disco.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Failed to install %1 fonts. There is not enough disk space.</source>
-        <translation>Error al instalar las fuentes %1. No hay suficiente espacio en disco.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Fonts</source>
-        <translation>Fuentes</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>DFontWidget</name>
     <message>
         <source>Broken file</source>
-        <translation>Archivo roto</translation>
+        <translation>קובץ נזקק</translation>
     </message>
 </context>
 <context>
     <name>DeleteConfirmDailog</name>
     <message>
         <source>This font will not be available to applications</source>
-        <translation>Esta fuente no estará disponible para las aplicaciones</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>These fonts will not be available to applications</source>
-        <translation>Estas fuentes no estarán disponibles para las aplicaciones</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>The other %1 system fonts cannot be deleted</source>
-        <translation>Las otras fuentes del sistema %1 no pueden ser borradas</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>The font &quot;%1&quot; in use cannot be deleted</source>
-        <translation>La fuente «%1» está en uso no puede ser eliminada</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>The other %1 system fonts and the font &quot;%2&quot; in use cannot be deleted</source>
-        <translation>Las otras %1 fuentes del sistema y la fuente «%2» está en uso, no pueden ser borradas</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Are you sure you want to delete %1 font(s)?</source>
-        <translation>¿Está seguro de que quiere borrar la(s) fuente(s) %1?</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Delete</source>
         <comment>button</comment>
-        <translation>Borrar</translation>
+        <translation>מחק</translation>
     </message>
 </context>
 <context>
     <name>Dfuninstalldialog</name>
     <message>
         <source>Deleting fonts, please wait...</source>
-        <translation>Borrando fuentes, por favor, espere...</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>ExceptionWindow</name>
     <message>
         <source>Font Verification</source>
-        <translation>Verificación de fuente</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>No fonts to be installed</source>
-        <translation>No hay fuentes para instalar</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Exit</source>
-        <translation>Salir</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Continue</source>
-        <translation>Continuar</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>Font</name>
     <message>
         <source>Don&apos;t let your dreams be dreams</source>
-        <translation>No dejes que tus sueños sean sueños</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>FontDetailDailog</name>
     <message>
         <source>Basic info</source>
-        <translation>Información básica</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Style</source>
-        <translation>Estilo</translation>
+        <translation>סגנון</translation>
     </message>
     <message>
         <source>Type</source>
-        <translation>Tipo</translation>
+        <translation>סוג</translation>
     </message>
     <message>
         <source>Version</source>
-        <translation>Versión</translation>
+        <translation>גרסה</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation>Descripción</translation>
+        <translation>תיאור</translation>
     </message>
     <message>
         <source>Unknown</source>
-        <translation>Desconocido</translation>
+        <translation>לא ידוע</translation>
     </message>
     <message>
         <source>Full name</source>
-        <translation>Nombre completo</translation>
+        <translation>שם מלא</translation>
     </message>
     <message>
         <source>Ps name</source>
-        <translation>Nombre PostScript</translation>
+        <translation>שם פס</translation>
     </message>
     <message>
         <source>Trademark</source>
-        <translation>Marca</translation>
+        <translation>&lt;path trademark&gt;</translation>
     </message>
     <message>
         <source>Copyright</source>
-        <translation>Derechos de autor</translation>
+        <translation>&lt;path copyright&gt;</translation>
     </message>
     <message>
         <source>License Description</source>
-        <translation>Descripción de la licencia</translation>
+        <translation>תיאור רישיון</translation>
     </message>
 </context>
 <context>
     <name>Main</name>
     <message>
         <source>Font Manager</source>
-        <translation>Administrador de fuentes</translation>
+        <translation>מנהל גופן</translation>
     </message>
     <message>
         <source>Font Manager helps users install and manage fonts.</source>
-        <translation>Administrador de fuentes de Deepin ayuda a instalar y gestionar fuentes.</translation>
+        <translation>מנהל גופן עוזר למשתמשים להתקין ולנהל גופנים.</translation>
     </message>
     <message>
         <source>Loading fonts, please wait...</source>
-        <translation>Cargando fuentes, por favor espere…</translation>
+        <translation>טועמת גופנים, אנא המתן...</translation>
     </message>
     <message>
         <source>The font exported to your desktop</source>
-        <translation>Fuente exportada al escritorio</translation>
+        <translation>הגופן מופץ לשולחן העבודה שלך</translation>
     </message>
     <message>
         <source>%1 fonts exported to your desktop</source>
-        <translation>%1 fuentes exportadas al escritorio</translation>
+        <translation>%1 גופנים מופצים לשולחן העבודה שלך</translation>
     </message>
     <message>
         <source>Failed to export 1 font. There is not enough disk space.</source>
-        <translation>La instalación de la fuente falló. El espacio en el disco es insuficiente.</translation>
+        <translation>ה🥇 גופן לא יכול להופץ. אין מספיק מקום בדיסק.</translation>
     </message>
     <message>
         <source>Failed to export %1 fonts. There is not enough disk space.</source>
-        <translation>La exportación de %1 fuentes falló. El espacio en el disco es insuficiente.</translation>
+        <translation>ה🥇 גופנים לא יכולו להופץ. אין מספיק מקום בדיסק.</translation>
     </message>
 </context>
 <context>
     <name>Menu</name>
     <message>
         <source>Add font</source>
-        <translation>Añadir fuente</translation>
+        <translation>הוסף גופן</translation>
     </message>
     <message>
         <source>Enable</source>
-        <translation>Habilitar</translation>
+        <translation>הפעל</translation>
     </message>
     <message>
         <source>Disable</source>
-        <translation>Deshabilitar</translation>
+        <translation> Dezלאה</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>Borrar</translation>
+        <translation>מחק</translation>
     </message>
     <message>
         <source>Favorite</source>
-        <translation>Añadir a favoritas</translation>
+        <translation>즐UGE</translation>
     </message>
     <message>
         <source>Unfavorite</source>
-        <translation>Quitar de favoritas</translation>
+        <translation>לא זUGE</translation>
     </message>
     <message>
         <source>Details</source>
-        <translation>Detalles</translation>
+        <translation>פרטים</translation>
     </message>
     <message>
         <source>Display in file manager</source>
-        <translation>Mostrar en el administrador de archivos</translation>
+        <translation>הצג במנהל קבצים</translation>
     </message>
     <message>
         <source>Export</source>
-        <translation>Exportar</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>MessageManager</name>
     <message>
         <source>deactivated</source>
-        <translation>desactivado</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>The fonts have been deactivated</source>
-        <translation>Las fuentes han sido desactivadas</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>%1 is in use, so you cannot disable it</source>
-        <translation>%1 está en uso, por lo que no se puede desactivar</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>You cannot disable system fonts and the fonts in use</source>
-        <translation>No se pueden desactivar las fuentes del sistema y las fuentes en uso</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>You cannot disable system fonts</source>
-        <translation>No se pueden desactivar las fuentes del sistema</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>NormalInstallWindow</name>
     <message>
         <source>Install Font</source>
-        <translation>Instalar la fuente</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Verifying...</source>
-        <translation>Verificando…</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>QuickInstallWindow</name>
     <message>
         <source>Unknown</source>
-        <translation>Desconocido</translation>
+        <translation>לא ידוע</translation>
     </message>
     <message>
         <source>Broken file</source>
-        <translation>Archivo roto</translation>
+        <translation>קובץ נזקק</translation>
     </message>
     <message>
         <source>Installed</source>
-        <translation>Instalada</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Not Installed</source>
-        <translation>No instalada</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Install Font</source>
-        <translation>Instalar la fuente</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>SearchBar</name>
     <message>
         <source>Search</source>
-        <translation>Buscar</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>No search results</source>
-        <translation>No hay resultados de la búsqueda</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>No fonts</source>
-        <translation>Sin fuentes</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>Shortcut</name>
     <message>
         <source>Help</source>
-        <translation>Ayuda</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Display shortcuts</source>
-        <translation>Mostrar atajos</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Page up</source>
-        <translation>Página arriba</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Page down</source>
-        <translation>Página abajo</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Delete</source>
-        <translation>Borrar</translation>
+        <translation>מחק</translation>
     </message>
     <message>
         <source>Add font</source>
-        <translation>Añadir fuente</translation>
+        <translation>הוסף גופן</translation>
     </message>
     <message>
         <source>Favorite</source>
-        <translation>Añadir a favoritas</translation>
+        <translation>즐UGE</translation>
     </message>
     <message>
         <source>Unfavorite</source>
-        <translation>Quitar de favoritas</translation>
+        <translation>לא זUGE</translation>
     </message>
     <message>
         <source>Font info</source>
-        <translation>Información de la fuente</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>StateBar</name>
     <message>
         <source>Input preview text</source>
-        <translation>Introducir texto de vista previa</translation>
+        <translation>הצג טקסט קלט</translation>
     </message>
 </context>
 </TS>
