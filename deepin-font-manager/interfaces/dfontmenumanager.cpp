@@ -35,7 +35,9 @@ DFontMenuManager::DFontMenuManager(QObject *parent)
 *************************************************************************/
 DFontMenuManager *DFontMenuManager::getInstance()
 {
+    qDebug() << "Getting DFontMenuManager instance";
     if (nullptr == instance) {
+        qDebug() << "Creating new DFontMenuManager instance";
         instance = new DFontMenuManager();
     }
 
@@ -52,6 +54,7 @@ DFontMenuManager *DFontMenuManager::getInstance()
 *************************************************************************/
 void DFontMenuManager::initMenuData()
 {
+    qDebug() << "Initializing menu data";
     // ToDo:
     //    Need to localize the menu string
 
@@ -91,6 +94,7 @@ void DFontMenuManager::initMenuData()
 *************************************************************************/
 QMenu *DFontMenuManager::createToolBarSettingsMenu(FMenuActionTriggle actionTriggle)
 {
+    qDebug() << "Creating toolbar settings menu";
     Q_UNUSED(actionTriggle);
 
     DMenu *mainMenu = new DMenu();
@@ -144,6 +148,7 @@ QMenu *DFontMenuManager::createToolBarSettingsMenu(FMenuActionTriggle actionTrig
 *************************************************************************/
 QMenu *DFontMenuManager::createRightKeyMenu(FMenuActionTriggle actionTriggle)
 {
+    qDebug() << "Creating right key menu";
     Q_UNUSED(actionTriggle);
 
     DMenu *rightKeyMenu = new DMenu();
@@ -190,6 +195,7 @@ QMenu *DFontMenuManager::createRightKeyMenu(FMenuActionTriggle actionTriggle)
 *************************************************************************/
 QAction *DFontMenuManager::getActionByMenuAction(MenuAction maction, MenuType menuType)
 {
+    qDebug() << "Getting action for menu action:" << maction << "type:" << menuType;
     QAction *action = nullptr;
 
     if (MenuType::ToolBarMenu == menuType) {
@@ -223,6 +229,8 @@ QAction *DFontMenuManager::getActionByMenuAction(MenuAction maction, MenuType me
 *******************************************************************************************************/
 void DFontMenuManager::onRightKeyMenuPopup(const DFontPreviewItemData &itemData, bool hasUser, bool enableDisable, bool hasCurFont)
 {
+    qDebug() << "Right key menu popup with params - hasUser:" << hasUser
+             << "enableDisable:" << enableDisable << "hasCurFont:" << hasCurFont;
     // Disable delete menu for system font
     QAction *delAction = DFontMenuManager::getInstance()->getActionByMenuAction(
                              DFontMenuManager::M_DeleteFont, DFontMenuManager::MenuType::RightKeyMenu);
@@ -239,35 +247,48 @@ void DFontMenuManager::onRightKeyMenuPopup(const DFontPreviewItemData &itemData,
     // Disable delete menu on system font
     if (nullptr != delAction) {
         if (hasUser) {
+            qDebug() << "Enabling delete action for user font";
             delAction->setDisabled(false);
         } else {
+            qDebug() << "Disabling delete action for system font";
             delAction->setDisabled(true);
         }
+    } else {
+        qWarning() << "Delete action is null";
     }
 
     // Export menu on system font
     if (nullptr != exportAction) {
         if (hasUser || hasCurFont) {
+            qDebug() << "Enabling export action";
             exportAction->setDisabled(false);
         } else {
+            qDebug() << "Disabling export action";
             exportAction->setDisabled(true);
         }
+    } else {
+        qWarning() << "Export action is null";
     }
 
 
     // Favarite font Menu
     if (nullptr != faveriteAction) {
         if (itemData.fontData.isCollected()) {
+            qDebug() << "Setting favorite action to Unfavorite";
             faveriteAction->setText(DApplication::translate("Menu", "Unfavorite"));
         } else {
+            qDebug() << "Setting favorite action to Favorite";
             faveriteAction->setText(DApplication::translate("Menu", "Favorite"));
         }
+    } else {
+        qWarning() << "Favorite action is null";
     }
 
 
     // Enable/Disable Menu
     if (nullptr != enableOrDisableAction) {
         if (itemData.fontData.isEnabled()) {
+            qDebug() << "Font is enabled, setting action to Disable";
             if (enableDisable) {
                 enableOrDisableAction->setEnabled(true);
             } else {
@@ -275,9 +296,12 @@ void DFontMenuManager::onRightKeyMenuPopup(const DFontPreviewItemData &itemData,
             }
             enableOrDisableAction->setText(DApplication::translate("Menu", "Disable"));
         } else {
+            qDebug() << "Font is disabled, setting action to Enable";
             enableOrDisableAction->setEnabled(true);
             enableOrDisableAction->setText(DApplication::translate("Menu", "Enable"));
         }
+    } else {
+        qWarning() << "Enable/Disable action is null";
     }
 
 }

@@ -129,7 +129,9 @@ QString getDefaultPreviewText(FT_Face face, qint8 &lang, int len)
 
 DFontInfoManager *DFontInfoManager::instance()
 {
+    qDebug() << "Getting DFontInfoManager instance";
     if (!INSTANCE) {
+        qDebug() << "Creating new DFontInfoManager instance";
         INSTANCE = new DFontInfoManager;
     }
 
@@ -187,7 +189,9 @@ DFontInfoManager::~DFontInfoManager() {}
 *************************************************************************/
 void DFontInfoManager::refreshList(const QStringList &allFontPathList)
 {
+    qDebug() << "Refreshing font list with" << allFontPathList.size() << "fonts";
     if (!dataList.isEmpty()) {
+        qDebug() << "Clearing existing font data list";
         dataList.clear();
     }
 
@@ -211,6 +215,7 @@ void DFontInfoManager::refreshList(const QStringList &allFontPathList)
 *************************************************************************/
 QStringList DFontInfoManager::getAllFontPath(bool isStartup) const
 {
+    qDebug() << "Getting all font paths, isStartup:" << isStartup;
 #if 0
     QStringList pathList = getFonts(DFontInfoManager::All);
 #endif
@@ -273,10 +278,12 @@ QStringList DFontInfoManager::getAllFclistPathList() const
 *************************************************************************/
 QStringList DFontInfoManager::getFileNames(const QString &path)const
 {
+    qDebug() << "Getting font files from path:" << path;
     QStringList string_list;
     //判断路径是否存在
     QDir dir(path);
     if (!dir.exists()) {
+        qWarning() << "Directory does not exist:" << path;
         return string_list;
     }
 
@@ -369,6 +376,7 @@ QStringList DFontInfoManager::getAllMonoSpaceFontPath() const
 *************************************************************************/
 QString DFontInfoManager::getFontType(const QString &filePath)
 {
+    qDebug() << "Getting font type for:" << filePath;
     const QFileInfo fileInfo(filePath);
     const QString suffix = fileInfo.suffix().toLower();
 
@@ -377,6 +385,7 @@ QString DFontInfoManager::getFontType(const QString &filePath)
     } else if (suffix == "otf") {
         return FONT_OTF;
     } else {
+        qWarning() << "Unknown font type for:" << filePath;
         return FONT_UNKNOWN;
     }
 }
@@ -471,6 +480,7 @@ void DFontInfoManager::setFontInfo(DFontInfo& fontInfo)
 *************************************************************************/
 DFontInfo DFontInfoManager:: getFontInfo(const QString &filePath, bool withPreviewTxt)
 {
+    qDebug() << "Getting font info for:" << filePath << "withPreviewTxt:" << withPreviewTxt;
     DFontInfo fontInfo;
     fontInfo.isSystemFont = isSystemFont(filePath);
 
@@ -481,7 +491,7 @@ DFontInfo DFontInfoManager:: getFontInfo(const QString &filePath, bool withPrevi
     FT_Error error = FT_New_Face(library, filePath.toUtf8().constData(), 0, &face);
 
     if (error != 0) {
-        qDebug() << __FUNCTION__ << " error " << error << filePath;
+        qWarning() << "Failed to load font file:" << filePath << "error:" << error;
         fontInfo.isError = true;
         FT_Done_Face(face);
         FT_Done_FreeType(library);

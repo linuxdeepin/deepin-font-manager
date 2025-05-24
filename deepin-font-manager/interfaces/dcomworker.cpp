@@ -17,18 +17,24 @@ FontManager *FontManager::m_fontManager = nullptr;
 
 FontManager *FontManager::instance()
 {
+    qDebug() << "FontManager instance requested";
     if (m_fontManager == nullptr) {
+        qDebug() << "Creating new FontManager instance";
         m_fontManager = new FontManager;
     }
 
+    qDebug() << "Returning FontManager instance";
     return m_fontManager;
 }
 
 DComWorker::DComWorker(QObject *parent)
     : QObject(parent)
 {
-    if (!autoDelete())
+    qDebug() << "DComWorker created";
+    if (!autoDelete()) {
+        qDebug() << "Setting autoDelete to true";
         setAutoDelete(true);
+    }
 }
 
 void DComWorker::run()
@@ -39,6 +45,7 @@ GetFontListWorker::GetFontListWorker(GetFontListWorker::Type type, QObject *pare
     : DComWorker(parent)
     , m_type(type)
 {
+    qDebug() << "GetFontListWorker created with type:" << type;
 }
 
 
@@ -86,7 +93,9 @@ void GetFontListWorker::run()
 
 void GetFontListWorker::removeUserAddFonts()
 {
+    qDebug() << "Starting removeUserAddFonts";
     if (geteuid() == 0) {
+        qWarning() << "Running as root, skipping user font removal";
         return;
     }
     QStringList installFont = DFMDBManager::instance()->getInstalledFontsPath();
@@ -112,8 +121,10 @@ void GetFontListWorker::removeUserAddFonts()
 
 void FontManager::getFontListInSequence()
 {
+    qDebug() << "Getting font list in sequence";
     GetFontListWorker getFontList(GetFontListWorker::AllInSquence);
     getFontList.run();
+    qDebug() << "Font list sequence completed";
 }
 
 
@@ -127,7 +138,9 @@ void FontManager::getFontListInSequence()
 *************************************************************************/
 void FontManager::getStartFontList()
 {
+    qDebug() << "Getting startup font list";
     QThreadPool *threadPool = DCopyFilesManager::instance()->getPool();
+    qInfo() << "Thread pool worker count:" << threadPool->maxThreadCount();
 
     GetFontListWorker *getAll = new GetFontListWorker(GetFontListWorker::Startup);
     threadPool->start(getAll);
@@ -148,7 +161,9 @@ void FontManager::getStartFontList()
 *************************************************************************/
 void FontManager::getChineseAndMonoFont()
 {
+    qDebug() << "Getting Chinese and monospace fonts";
     QThreadPool *threadPool = DCopyFilesManager::instance()->getPool();
+    qInfo() << "Thread pool worker count:" << threadPool->maxThreadCount();
 
     GetFontListWorker *getChinese = new GetFontListWorker(GetFontListWorker::CHINESE);
     threadPool->start(getChinese);

@@ -32,6 +32,7 @@ DFQuickInstallWindow::DFQuickInstallWindow(const QStringList &files, QWidget *pa
     , m_dbManager(DFMDBManager::instance())
     , m_installFiles(files)
 {
+    qDebug() << "Quick install window created for files:" << files;
     initUI();
     initConnections();
 
@@ -40,7 +41,7 @@ DFQuickInstallWindow::DFQuickInstallWindow(const QStringList &files, QWidget *pa
 
 DFQuickInstallWindow::~DFQuickInstallWindow()
 {
-    qDebug() << __FUNCTION__ << "destructor";
+    qDebug() << "Quick install window destroyed";
 }
 
 /*************************************************************************
@@ -201,6 +202,7 @@ void DFQuickInstallWindow::onFileSelected(const QStringList &fileList)
 
         DFontInfo fontInfo = m_fontInfoManager->getFontInfo(file);
         if (fontInfo.isError) {
+            qWarning() << "Broken font file detected:" << file;
             m_stateLabel->setText(DApplication::translate("QuickInstallWindow", "Broken file"));
 #if QT_VERSION_MAJOR > 5
             DPalette pa = m_stateLabel->palette();
@@ -261,6 +263,7 @@ void DFQuickInstallWindow::onFileSelected(const QStringList &fileList)
 *************************************************************************/
 void DFQuickInstallWindow::onInstallBtnClicked()
 {
+    qInfo() << "Install button clicked, starting font installation";
     // Hide Quick install first
     hide();
     Q_EMIT quickInstall();

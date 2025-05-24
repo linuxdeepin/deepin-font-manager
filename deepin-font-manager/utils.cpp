@@ -32,6 +32,7 @@ QHash<QString, QString> Utils::m_fontNameCache;
 *************************************************************************/
 QString Utils::getConfigPath()
 {
+    qDebug() << "getConfigPath start";
     QDir dir(QDir(QStandardPaths::standardLocations(QStandardPaths::ConfigLocation).first())
              .filePath(qApp->organizationName()));
 
@@ -49,12 +50,14 @@ QString Utils::getConfigPath()
 *************************************************************************/
 bool Utils::isFontMimeType(const QString &filePath)
 {
+    qDebug() << "Checking font mime type for:" << filePath;
     const QString mimeName = QMimeDatabase().mimeTypeForFile(filePath).name();
 
     if (QString(FONT_FILE_MIME).contains(mimeName)) {
         return true;
     }
 
+    qDebug() << "File is not a font:" << filePath;
     return false;
 }
 
@@ -83,6 +86,7 @@ QString Utils::suffixList()
 *************************************************************************/
 QPixmap Utils::renderSVG(const QString &filePath, const QSize &size)
 {
+    qDebug() << "Rendering SVG:" << filePath << "size:" << size;
     if (m_imgCacheHash.contains(filePath)) {
         return m_imgCacheHash.value(filePath);
     }
@@ -98,6 +102,7 @@ QPixmap Utils::renderSVG(const QString &filePath, const QSize &size)
         pixmap = QPixmap::fromImage(reader.read());
         pixmap.setDevicePixelRatio(ratio);
     } else {
+        qWarning() << "Failed to read SVG with QImageReader, fallback to direct load:" << filePath;
         pixmap.load(filePath);
     }
 
@@ -118,6 +123,7 @@ QPixmap Utils::renderSVG(const QString &filePath, const QSize &size)
 *************************************************************************/
 QString Utils::convertToPreviewString(const QString &fontFilePath, const QString &srcString)
 {
+    qDebug() << "Converting to preview string, font:" << fontFilePath << "text:" << srcString;
     if (fontFilePath.isEmpty()) {
         return srcString;
     }
@@ -150,6 +156,7 @@ QString Utils::convertToPreviewString(const QString &fontFilePath, const QString
 
 bool Utils::isWayland()
 {
+    qDebug() << "Checking Wayland environment";
     auto e = QProcessEnvironment::systemEnvironment();
     QString XDG_SESSION_TYPE = e.value(QStringLiteral("XDG_SESSION_TYPE"));
     QString WAYLAND_DISPLAY = e.value(QStringLiteral("WAYLAND_DISPLAY"));
@@ -163,5 +170,6 @@ bool Utils::isWayland()
 
 void Utils::clearImgCache()
 {
+    qDebug() << "Clearing image cache, current size:" << m_imgCacheHash.size();
     m_imgCacheHash.clear();
 }

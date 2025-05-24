@@ -37,6 +37,7 @@ SingleFontApplication::SingleFontApplication(int &argc, char **argv)
     , m_qspMainWnd(nullptr)
     , m_qspQuickWnd(nullptr)
 {
+    qDebug() << "SingleFontApplication constructor";
     connect(SignalManager::instance(), &SignalManager::finishFontInstall, this,
             &SingleFontApplication::onFontInstallFinished);
 }
@@ -51,6 +52,7 @@ SingleFontApplication::SingleFontApplication(int &argc, char **argv)
 *************************************************************************/
 SingleFontApplication::~SingleFontApplication()
 {
+    qDebug() << "SingleFontApplication destructor";
 }
 
 /*************************************************************************
@@ -63,6 +65,7 @@ SingleFontApplication::~SingleFontApplication()
 *************************************************************************/
 bool SingleFontApplication::parseCmdLine(bool bAppExist)
 {
+    qDebug() << "parseCmdLine start, appExist:" << bAppExist;
     QCommandLineParser parser;
     parser.setApplicationDescription("Deepin Font Manager.");
     parser.addHelpOption();
@@ -89,11 +92,11 @@ bool SingleFontApplication::parseCmdLine(bool bAppExist)
         }
 
         if (paraList.size() > 0 && m_selectedFiles.size() == 0) {
-            qDebug() << __FUNCTION__ << "invalid :" << paraList;
+            qWarning() << "Invalid font files in command line:" << paraList;
             return false;
         }
 
-        qDebug() << __FUNCTION__ << m_selectedFiles;
+        qDebug() << "Selected font files:" << m_selectedFiles;
     }
 
     return true;
@@ -109,6 +112,7 @@ bool SingleFontApplication::parseCmdLine(bool bAppExist)
 *************************************************************************/
 void SingleFontApplication::activateWindow()
 {
+    qDebug() << "activateWindow start";
     //If quick install mode
     //不符合逻辑的代码
 //    if (m_selectedFiles.size() < 0) {
@@ -168,7 +172,7 @@ void SingleFontApplication::activateWindow()
 //                                  Q_ARG(QStringList, m_selectedFiles));
 
 //    } else {
-    qDebug() << "++Active quick install window to install file:" << m_selectedFiles;
+    qDebug() << "Activating window with files:" << m_selectedFiles;
     //Hide quick window in normal mode
     if (nullptr != m_qspQuickWnd.get()) {
         m_qspQuickWnd->hide();
@@ -224,7 +228,7 @@ void SingleFontApplication::activateWindow()
 *************************************************************************/
 void SingleFontApplication::slotBatchInstallFonts()
 {
-    qDebug() << "batch install fonts";
+    qDebug() << "Starting batch install fonts, count:" << m_selectedFiles.size();
 #if QT_VERSION_MAJOR > 5
     m_selectedFiles << QList<QString>(waitForInstallSet.begin(), waitForInstallSet.end());
 #else
@@ -246,6 +250,7 @@ void SingleFontApplication::slotBatchInstallFonts()
 *************************************************************************/
 void SingleFontApplication::onFontInstallFinished(const QStringList &fileList)
 {
+    qDebug() << "Font installation finished, files:" << fileList;
     Q_UNUSED(fileList);
     m_selectedFiles.clear();
 }
@@ -261,6 +266,7 @@ void SingleFontApplication::onFontInstallFinished(const QStringList &fileList)
 *************************************************************************/
 void SingleFontApplication::installFonts(const QStringList &fontPathList)
 {
+    qDebug() << "Starting font installation, count:" << fontPathList.size();
     PerformanceMonitor::installFontStart();
 //    qDebug() << __FUNCTION__ << fontPathList;
     for (QString fontPath : fontPathList) {

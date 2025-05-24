@@ -16,6 +16,7 @@
 #include <QFileInfo>
 #include <QVBoxLayout>
 #include <QFontDatabase>
+#include <QDebug>
 
 DWIDGET_USE_NAMESPACE
 
@@ -68,6 +69,7 @@ DFInstallNormalWindow::DFInstallNormalWindow(const QStringList &files, QWidget *
     , m_pworker(new Worker())
     , m_pthread(new QThread())
 {
+    qDebug() << "DFInstallNormalWindow created with" << files.size() << "font files to install";
     initUI();
     initConnections();
     m_pworker->moveToThread(m_pthread);
@@ -84,7 +86,7 @@ DFInstallNormalWindow::DFInstallNormalWindow(const QStringList &files, QWidget *
 *************************************************************************/
 DFInstallNormalWindow::~DFInstallNormalWindow()
 {
-    qDebug() << __func__ << "start" << Qt::endl;
+    qDebug() << "DFInstallNormalWindow destructor start";
 
     // 结束线程
     m_pthread->quit();
@@ -111,7 +113,7 @@ DFInstallNormalWindow::~DFInstallNormalWindow()
         //恢复标志位
         m_skipStateRecovery = false;
     }
-    qDebug() << __func__ << "end" << this << Qt::endl;
+    qDebug() << "DFInstallNormalWindow destructor end";
 }
 
 /*************************************************************************
@@ -259,7 +261,7 @@ void DFInstallNormalWindow::verifyFontFiles()
         }
         if (Q_UNLIKELY(fontInfo.isError)) {
             m_damagedFiles.append(it);
-
+            qWarning() << "Found damaged font file:" << QFileInfo(it).fileName();
 #ifdef QT_QML_DEBUG
 //            qDebug() << __FUNCTION__ << " (" << it << " :Damaged file)";
 #endif
@@ -275,7 +277,7 @@ void DFInstallNormalWindow::verifyFontFiles()
 #endif
         } else if (isSystemFont(fontInfo)) {
             m_systemFiles.append(it);
-
+            qInfo() << "Found system font:" << QFileInfo(it).fileName();
 #ifdef QT_QML_DEBUG
 //            qDebug() << __FUNCTION__ << " (" << it << " :System file)";
 #endif
@@ -389,7 +391,7 @@ bool DFInstallNormalWindow::isSystemFont(DFontInfo &f)
 *************************************************************************/
 void DFInstallNormalWindow::checkShowMessage()
 {
-    qDebug() << "Install over" << Qt::endl;
+    qDebug() << "Font installation process completed";
 
     if (getInstallMessage == true && getReInstallMessage == true) {
         qDebug() << "install refresh over";

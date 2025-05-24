@@ -40,6 +40,7 @@ DFontPreview::DFontPreview(QWidget *parent)
     , m_library(nullptr)
     , m_face(nullptr)
 {
+    qDebug() << "DFontPreview created";
     initContents();
 
     setFixedSize(FIXED_WIDTH, FIXED_HEIGHT);
@@ -72,14 +73,17 @@ DFontPreview::~DFontPreview()
 *************************************************************************/
 void DFontPreview::setFileUrl(const QString &url)
 {
+    qDebug() << "Setting font file url:" << url;
     // fontDatabase->removeAllApplicationFonts();
     // fontDatabase->addApplicationFont(url);
 
     FT_Init_FreeType(&m_library);
     m_error = FT_New_Face(m_library, url.toUtf8().constData(), 0, &m_face);
 
-    if (m_error != 0 && QFileInfo(url).completeSuffix() != "pcf.gz")
+    if (m_error != 0 && QFileInfo(url).completeSuffix() != "pcf.gz") {
+        qWarning() << "Failed to load font file:" << url << "error:" << m_error;
         return;
+    }
 
     sampleString = getSampleString().simplified();
     styleName = QString(m_face->style_name);
@@ -99,8 +103,10 @@ void DFontPreview::setFileUrl(const QString &url)
 void DFontPreview::paintEvent(QPaintEvent *e)
 {
     currentMaxWidth = 1;
-    if (m_error != 0)
+    if (m_error != 0) {
+        qWarning() << "Cannot paint preview - font loading error";
         return;
+    }
 
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing, true);
@@ -229,10 +235,12 @@ void DFontPreview::isNeedScroll(const int width)
 *************************************************************************/
 void DFontPreview::initContents()
 {
+    qDebug() << "Initializing preview contents";
     // libfont-manager.so中已经有CONTENTS.txt，需要重命名为contents.txt才可以安装。
     QFile file("/usr/share/deepin-font-manager/contents.txt");
 
     if (!file.open(QIODevice::ReadOnly)) {
+        qWarning() << "Failed to open contents file:" << file.fileName() << "error:" << file.errorString();
         return;
     }
 
@@ -333,6 +341,7 @@ QString DFontPreview::getLanguageSampleString(const QString &language)
 *************************************************************************/
 bool DFontPreview::checkFontContainText(FT_Face face, const QString &text)
 {
+    qDebug() << "Checking if font contains text:" << text;
     if (face == nullptr || face->num_charmaps == 0)
         return false;
 
@@ -352,6 +361,7 @@ bool DFontPreview::checkFontContainText(FT_Face face, const QString &text)
 
     for (auto ch : text) {
         if (!FT_Get_Char_Index(face, ch.unicode()) && ch != "，") {
+            qDebug() << "Character not found in font:" << ch;
             retval = false;
             break;
         }
@@ -416,6 +426,7 @@ bool isSpecialSymbol(FT_Face face, uint ucs4)
 *************************************************************************/
 QString DFontPreview::buildCharlistForFace(FT_Face face, int length)
 {
+    qDebug() << "Building character list for font preview, length:" << length;
     QString retval;
     if (face == nullptr)
         return retval;

@@ -19,6 +19,7 @@ DSqliteUtil::DSqliteUtil(const QString &strDatabase)
     : m_strDatabase(strDatabase)
     , m_query(nullptr)
 {
+    qDebug() << "Initializing DSqliteUtil with database:" << strDatabase;
     QDir dbdir(QDir::homePath() + "/.local/share/deepin/deepin-font-manager/");
     if (!dbdir.exists()) {
         dbdir.mkdir(QDir::homePath() + "/.local/share/deepin/deepin-font-manager/");
@@ -59,9 +60,9 @@ DSqliteUtil::~DSqliteUtil()
 bool DSqliteUtil::createConnection(const QString &database)
 {
     QStringList drivers = QSqlDatabase::drivers();
-    qDebug() << drivers;
+    qDebug() << "Available database drivers:" << drivers;
     if (!drivers.contains("QSQLITE")) {
-        qDebug() << "no sqlite driver!";
+        qWarning() << "SQLite driver not available";
         drivers.clear();
         return false;
     }
@@ -77,10 +78,10 @@ bool DSqliteUtil::createConnection(const QString &database)
     m_db.setDatabaseName(database);
     //打开数据库
     if (!m_db.open()) {
-        qDebug() << "Open database failed!";
+        qWarning() << "Failed to open database:" << m_db.lastError().text();
         return false;
     } else {
-        qDebug() << "Open database success!";
+        qDebug() << "Database opened successfully";
         return true;
     }
 }
@@ -131,12 +132,12 @@ isMonoSpace TINYINT)";
             version TEXT,\
             language TEXT)";
     if (!m_query->exec(createTable2Sql)) {
-        qDebug() << "create table t_fontmanagerinfo failed!";
+        qWarning() << "Failed to create table t_fontmanagerinfo:" << m_query->lastError().text();
         finish();
         return false;
     } else {
         finish();
-        qDebug() << "create table t_fontmanagerinfo sucess!";
+        qDebug() << "Table t_fontmanagerinfo created successfully";
     }
 
     bool ret = true;
@@ -148,23 +149,23 @@ isMonoSpace TINYINT)";
             QMutexLocker m_locker(&mutex);
             QString dropTableSql = "DROP TABLE t_fontmanager";
             if (!m_query->prepare(dropTableSql)) {
-                qDebug() << "prepares query failed!";
+                qWarning() << "Prepare drop table query failed:" << m_query->lastError().text();
                 return false;
             }
             if (!m_query->exec(dropTableSql)) {
-                qDebug() << "DROP TABLE t_fontmanager failed!";
+                qWarning() << "Failed to drop table t_fontmanager:" << m_query->lastError().text();
                 finish();
                 return false;
             } else {
                 finish();
-                qDebug() << "DROP TABLE t_fontmanager sucess!";
+                qDebug() << "Table t_fontmanager dropped successfully";
             }
         }
 
         if (!addFontManagerInfoRecord()) {
             ret = updateFontManagerInfoRecord();
             if(!ret){
-                qDebug() << "updateFontManagerInfoRecord failed!";
+                qWarning() << "Failed to update font manager info record";
                 return ret;
             }
         }
@@ -174,12 +175,12 @@ isMonoSpace TINYINT)";
     }
 
     if (!m_query->exec(createTableSql)) {
-        qDebug() << "createTableSql TABLE t_fontmanager failed!";
+        qWarning() << "Failed to create table t_fontmanager:" << m_query->lastError().text();
         finish();
         return false;
     } else {
         finish();
-        qDebug() << "createTableSql TABLE t_fontmanager sucess!";
+        qDebug() << "Table t_fontmanager created successfully";
     }
 
     return ret;

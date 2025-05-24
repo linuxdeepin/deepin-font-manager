@@ -62,7 +62,9 @@ DFontPreviewItemDelegate::DFontPreviewItemDelegate(QAbstractItemView *parent)
     : QStyledItemDelegate(parent)
     , m_parentView(qobject_cast<DFontPreviewListView *>(parent))
 {
+    qDebug() << "Creating DFontPreviewItemDelegate";
     parent->viewport()->installEventFilter(this);
+    qDebug() << "Event filter installed on viewport";
 }
 
 /*************************************************************************
@@ -301,8 +303,10 @@ void DFontPreviewItemDelegate::paintForegroundPreviewFont(QPainter *painter, con
     previewFont.setPixelSize(fontPixelSize);
     painter->setFont(previewFont);
 
-    if (painter->fontInfo().family().isEmpty())
+    if (painter->fontInfo().family().isEmpty()) {
+        qWarning() << "Empty font family, skipping preview";
         return;
+    }
 
     QRect fontPreviewRect = adjustPreviewRect(option.rect);
 //    painter->setPen(QPen(option.palette.color(DPalette::Text)));
@@ -482,6 +486,7 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
         QString fontPreviewContent = index.data(FontPreviewRole).toString().isEmpty()
                                      ? dData.ownPreview : index.data(FontPreviewRole).toString();
         if ((fontPreviewContent.isEmpty() || 0 == fontPixelSize)) {
+            qWarning() << "Empty preview content or invalid font size, skipping paint";
             painter->restore();
             return;
         }

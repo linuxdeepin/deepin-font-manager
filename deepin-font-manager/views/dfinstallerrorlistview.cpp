@@ -6,6 +6,7 @@
 #include "dfinstallerrorlistview.h"
 #include "globaldef.h"
 #include "utils.h"
+#include <QDebug>
 
 #include <DStyleHelper>
 #include <DApplication>
@@ -477,6 +478,8 @@ DFInstallErrorListView::DFInstallErrorListView(const QList<DFInstallErrorItemMod
     , m_errorListSourceModel(nullptr)
     , m_installErrorFontModelList(installErrorFontModelList)
 {
+    qDebug() << "DFInstallErrorListView created with" << installErrorFontModelList.size()
+             << "error font items";
 //    QWidget *topSpaceWidget = new QWidget;
 //    topSpaceWidget->setFixedSize(this->width(), 70 - FTM_TITLE_FIXED_HEIGHT);
 //    this->addHeaderWidget(topSpaceWidget);
@@ -484,10 +487,15 @@ DFInstallErrorListView::DFInstallErrorListView(const QList<DFInstallErrorItemMod
     setAutoScroll(true);
     setMouseTracking(true);
 
+    qDebug() << "Initializing error list data";
     initErrorListData();
     initDelegate();
     initSelectedItem();
     installEventFilter(this);
+    qInfo() << "DFInstallErrorListView initialized with"
+            << m_installErrorFontModelList.size() << "error font items,"
+            << "scrollable:" << hasAutoScroll()
+            << "mouseTracking:" << hasMouseTracking();
 }
 
 /*************************************************************************
@@ -500,6 +508,7 @@ DFInstallErrorListView::DFInstallErrorListView(const QList<DFInstallErrorItemMod
 *************************************************************************/
 DFInstallErrorListView::~DFInstallErrorListView()
 {
+    qDebug() << "DFInstallErrorListView destroyed";
     initModel(false);
     m_installErrorFontModelList.clear();
 }

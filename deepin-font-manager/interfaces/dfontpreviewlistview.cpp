@@ -35,6 +35,7 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
     , m_dataThread(nullptr)
     , m_fontChangeTimer(new QTimer(this))
 {
+    qDebug() << "Creating DFontPreviewListView";
     qRegisterMetaType<DFontPreviewItemData>("DFontPreviewItemData &");
     qRegisterMetaType<QList<DFontPreviewItemData>>("QList<DFontPreviewItemData> &");
     qRegisterMetaType<QItemSelection>("QItemSelection");
@@ -67,6 +68,7 @@ DFontPreviewListView::DFontPreviewListView(QWidget *parent)
 
 DFontPreviewListView::~DFontPreviewListView()
 {
+    qDebug() << "Destroying DFontPreviewListView";
     QFontDatabase::removeAllApplicationFonts();
 }
 
@@ -81,6 +83,7 @@ DFontPreviewListView::~DFontPreviewListView()
 *************************************************************************/
 void DFontPreviewListView::initFontListData()
 {
+    qDebug() << "Initializing font list data";
     Q_EMIT onLoadFontsStatus(0);
 }
 
@@ -109,7 +112,7 @@ bool DFontPreviewListView::isListDataLoadFinished()
 *************************************************************************/
 void DFontPreviewListView::onFinishedDataLoad()
 {
-    qDebug() << "onFinishedDataLoad thread id = " << QThread::currentThreadId();
+    qDebug() << "Data load finished, thread id:" << QThread::currentThreadId();
     m_bLoadDataFinish = true;
 }
 
@@ -248,14 +251,18 @@ void DFontPreviewListView::onItemRemoved(DFontPreviewItemData &itemData)
 *************************************************************************/
 void DFontPreviewListView::initDelegate()
 {
+    qDebug() << "Initializing list view delegate";
     m_fontPreviewItemDelegate = new DFontPreviewItemDelegate(this);
     this->setItemDelegate(m_fontPreviewItemDelegate);
+    qDebug() << "Item delegate set";
 
     m_fontPreviewProxyModel = new DFontPreviewProxyModel(this);
     m_fontPreviewProxyModel->setSourceModel(m_fontPreviewItemModel);
     m_fontPreviewProxyModel->setDynamicSortFilter(true);
+    qDebug() << "Proxy model created and configured";
 
     QListView::setModel(m_fontPreviewProxyModel);
+    qDebug() << "Model set for list view";
 }
 
 /*************************************************************************
@@ -269,7 +276,9 @@ void DFontPreviewListView::initDelegate()
 *************************************************************************/
 void DFontPreviewListView::initConnections()
 {
+    qDebug() << "Initializing signal connections";
     connect(this, &DFontPreviewListView::itemsSelected, this, &DFontPreviewListView::selectFonts);
+    qDebug() << "Connected itemsSelected to selectFonts";
     connect(this, &DFontPreviewListView::multiItemsAdded, this, &DFontPreviewListView::onMultiItemsAdded);
     connect(this, &DFontPreviewListView::refreshListview, this, &DFontPreviewListView::onRefreshListview);
     //  connect(this, &DFontPreviewListView::startupMultiItemsAdded, this, &DFontPreviewListView::onStartupMultiItemAdded);
@@ -337,12 +346,12 @@ void DFontPreviewListView::cancelDel()
 *************************************************************************/
 void DFontPreviewListView::loadLeftFonts()
 {
-    qInfo() << QThread::currentThreadId() << "DFontPreviewListView" << __func__;
+    qDebug() << "Loading remaining fonts, thread:" << QThread::currentThreadId();
     if (isListDataLoadFinished()) {
         m_fontLoadTimer->stop();
 //        m_parentWidget->showSpinner(DFontSpinnerWidget::Load);
-        qDebug() << DFMDBManager::recordList.count() << Qt::endl;
-        qDebug() << QThread::currentThreadId() << __func__ << "------------";
+        qDebug() << "Record count:" << DFMDBManager::recordList.count();
+        qDebug() << "Starting data load thread";
 
         m_dataLoadThread = new LoadFontDataThread(DFMDBManager::recordList, this);
         m_dataLoadThread->start();
@@ -353,7 +362,9 @@ void DFontPreviewListView::loadLeftFonts()
 
 void DFontPreviewListView::onRefreshListview(QList<DFontPreviewItemData> &data)
 {
+    qDebug() << "Refreshing list view with" << data.size() << "items";
     QMutexLocker locker(&m_mutex);
+    qDebug() << "Mutex locked for list refresh";
     int rows = m_fontPreviewItemModel->rowCount();
     qInfo() << __FUNCTION__ << data.size() << rows;
 
@@ -394,8 +405,10 @@ void DFontPreviewListView::onRefreshListview(QList<DFontPreviewItemData> &data)
 *************************************************************************/
 void DFontPreviewListView::viewChanged()
 {
+    qDebug() << "View changed, resetting to top";
     scrollToTop();
     m_currentSelectedRow = -1;
+    qDebug() << "Current selection reset";
 }
 
 /*记录移除前位置*/
@@ -410,7 +423,9 @@ void DFontPreviewListView::viewChanged()
 *************************************************************************/
 void DFontPreviewListView::markPositionBeforeRemoved()
 {
+    qDebug() << "Marking position before removal";
     QModelIndexList deleteFontList = selectedIndexes();
+    qDebug() << "Selected items count:" << deleteFontList.count();
     if (deleteFontList.count() > 0) {
 #if QT_VERSION_MAJOR > 5
         std::sort(deleteFontList.begin(), deleteFontList.end(), std::greater<QModelIndex>());
@@ -441,7 +456,7 @@ void DFontPreviewListView::markPositionBeforeRemoved()
 *************************************************************************/
 void DFontPreviewListView::refreshFocuses()
 {
-    qDebug() << __FUNCTION__;
+    qDebug() << "Refreshing focus state";
     if (isVisible())
         setFocus(Qt::MouseFocusReason);
 }
@@ -480,6 +495,7 @@ int DFontPreviewListView::getOnePageCount()
 *************************************************************************/
 void DFontPreviewListView::updateSpinner(DFontSpinnerWidget::SpinnerStyles style, bool force)
 {
+    qDebug() << "Updating spinner with style:" << style << "force:" << force;
     qint64 curtm = QDateTime::currentMSecsSinceEpoch();
     //超过500ms刷新
     if (curtm - m_curTm >= 350) {

@@ -7,6 +7,7 @@
 #include "utils.h"
 #include "globaldef.h"
 #include "dfontmgrmainwindow.h"
+#include <QDebug>
 
 #include <DApplication>
 #if QT_VERSION_MAJOR <= 5
@@ -94,6 +95,8 @@ DFDeleteDialog::DFDeleteDialog(DFontMgrMainWindow *win, int deleteCnt, int syste
     , m_deleting(false)
     , m_hasCurFont(hasCurrent)
 {
+    qDebug() << "DFDeleteDialog constructor - deleteCnt:" << deleteCnt
+             << "systemCnt:" << systemCnt << "hasCurrent:" << hasCurrent;
     initUI();
     initConnections();
     setTheme();
@@ -150,7 +153,7 @@ void DFDeleteDialog::initConnections()
     //关闭删除确认对话框并且没有点击"确认"按钮时,取消删除操作
     connect(this, &DFDeleteDialog::closed, this, [ = ]() {
         if (m_mainWindow != nullptr && !m_deleting) {
-            qDebug() << "cancel delte";
+            qDebug() << "User canceled font deletion";
             m_mainWindow->cancelDelete();
             emit m_signalManager->clearRecoverList();
         }
@@ -168,6 +171,7 @@ void DFDeleteDialog::initConnections()
             if (m_deleting)
                 return;
             m_deleting = true;
+            qDebug() << "User confirmed deletion of" << m_deleteCnt << "fonts";
             accept();
             close();
             break;
@@ -303,6 +307,7 @@ void DFDeleteDialog::keyPressEvent(QKeyEvent *event)
 *************************************************************************/
 void DFDeleteDialog::setTheme()
 {
+    qDebug() << "Theme changed, updating dialog colors";
     // 根据主题设置文字颜色
 #if QT_VERSION_MAJOR > 5
     DPalette pamessageTitle = messageTitle->palette();
@@ -339,7 +344,7 @@ DFHandleTTCDialog::DFHandleTTCDialog(DFontMgrMainWindow *win, QString &file, QWi
     , m_mainWindow(win)
     , fontset(file)
 {
-
+    qDebug() << "DFHandleTTCDialog created for font file:" << file;
 }
 
 bool DFHandleTTCDialog::getDeleting()

@@ -14,10 +14,12 @@ DFontPreviewProxyModel::DFontPreviewProxyModel(QObject *parent)
     , m_useSystemFilter(true)
     , m_fontNamePattern("")
 {
+    qDebug() << "Creating DFontPreviewProxyModel";
 }
 
 DFontPreviewProxyModel::~DFontPreviewProxyModel()
 {
+    qDebug() << "Destroying DFontPreviewProxyModel";
 }
 
 /*************************************************************************
@@ -31,10 +33,12 @@ DFontPreviewProxyModel::~DFontPreviewProxyModel()
 *************************************************************************/
 void DFontPreviewProxyModel::setFilterGroup(int filterGroup)
 {
+    qDebug() << "Setting filter group:" << filterGroup;
     m_useSystemFilter = false;
     m_filterGroup = filterGroup;
 
     invalidateFilter();
+    qDebug() << "Filter invalidated for new group";
 }
 
 int DFontPreviewProxyModel::getFilterGroup()
@@ -53,10 +57,12 @@ int DFontPreviewProxyModel::getFilterGroup()
 *************************************************************************/
 void DFontPreviewProxyModel::setFilterFontNamePattern(const QString &pattern)
 {
+    qDebug() << "Setting font name pattern:" << pattern;
     m_useSystemFilter = false;
     m_fontNamePattern = pattern;
 
     invalidateFilter();
+    qDebug() << "Filter invalidated for new name pattern";
 }
 
 //bool DFontPreviewProxyModel::getEditStatus() const
@@ -80,10 +86,14 @@ void DFontPreviewProxyModel::setFilterFontNamePattern(const QString &pattern)
 *************************************************************************/
 bool DFontPreviewProxyModel::isFontNameContainsPattern(QString fontName) const
 {
+    qDebug() << "Checking if font name" << fontName << "contains pattern:" << m_fontNamePattern;
     if (m_fontNamePattern.length() > 0) {
-        return fontName.contains(m_fontNamePattern, Qt::CaseInsensitive);
+        bool contains = fontName.contains(m_fontNamePattern, Qt::CaseInsensitive);
+        qDebug() << "Pattern match result:" << contains;
+        return contains;
     }
 
+    qDebug() << "No pattern specified, returning true";
     return true;
 }
 
@@ -99,19 +109,23 @@ bool DFontPreviewProxyModel::isFontNameContainsPattern(QString fontName) const
 *************************************************************************/
 bool DFontPreviewProxyModel::isCustomFilterAcceptsRow(const QModelIndex &modelIndex) const
 {
+    qDebug() << "Checking custom filter for row:" << modelIndex.row();
     QVariant varModel = sourceModel()->data(modelIndex, Qt::DisplayRole);
     if (varModel.isValid() == false) {
+        qWarning() << "Invalid model data at row:" << modelIndex.row();
         return false;
     }
 
     //zhangya 20200313  fix varModel is not DFontPreviewItemData crash
     if (varModel.canConvert<FontData>() == false) {
+        qWarning() << "Cannot convert model data to FontData at row:" << modelIndex.row();
         return false;
     }
 
     FontData fdata = varModel.value<FontData>();
-
     const QString &fontName = fdata.strFontName;
+    qDebug() << "Processing font:" << fontName << "isSystem:" << fdata.isSystemFont
+             << "isCollected:" << fdata.isCollected() << "isEnabled:" << fdata.isEnabled();
 
     switch (m_filterGroup) {
     //显示所有字体
@@ -180,21 +194,21 @@ bool DFontPreviewProxyModel::isCustomFilterAcceptsRow(const QModelIndex &modelIn
 bool DFontPreviewProxyModel::filterAcceptsRow(int source_row,
                                               const QModelIndex &source_parent) const
 {
+    qDebug() << "Filtering row:" << source_row;
     if (m_useSystemFilter) {
+        qDebug() << "Using system filter for row:" << source_row;
         return QSortFilterProxyModel::filterAcceptsRow(source_row, source_parent);
     }
 
     QModelIndex modelIndex = sourceModel()->index(source_row, 0, source_parent);
-
     if (modelIndex.isValid() == false) {
+        qWarning() << "Invalid model index for row:" << source_row;
         return false;
     }
 
-    if (isCustomFilterAcceptsRow(modelIndex)) {
-        return true;
-    } else {
-        return false;
-    }
+    bool accepted = isCustomFilterAcceptsRow(modelIndex);
+    qDebug() << "Row" << source_row << (accepted ? "accepted" : "rejected") << "by custom filter";
+    return accepted;
 }
 
 /*************************************************************************
