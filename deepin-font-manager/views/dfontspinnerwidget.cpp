@@ -16,6 +16,7 @@ DFontSpinnerWidget::DFontSpinnerWidget(QWidget *parent,  SpinnerStyles styles) :
 {
     Q_UNUSED(styles)
 //    setStyles(styles);
+    qDebug() << "Spinner widget container created";
     initUI();
 }
 
@@ -52,6 +53,7 @@ void DFontSpinnerWidget::initUI()
 
 DFontSpinnerWidget::~DFontSpinnerWidget()
 {
+    qDebug() << "Spinner widget container destroyed";
 }
 
 /*************************************************************************
@@ -86,6 +88,7 @@ void DFontSpinnerWidget::setStyles(SpinnerStyles styles)
 *************************************************************************/
 void DFontSpinnerWidget::spinnerStart()
 {
+    qDebug() << "Spinner animation started in container";
     m_spinner->start();
 }
 
@@ -100,5 +103,6 @@ void DFontSpinnerWidget::spinnerStart()
 *************************************************************************/
 void DFontSpinnerWidget::spinnerStop()
 {
+    qDebug() << "Spinner animation stopped in container";
     m_spinner->stop();
 }

@@ -44,6 +44,7 @@ DFontSpinner::DFontSpinner(QWidget *parent)
     : QWidget(parent)
     , m_ptr(new DFontSpinnerPrivate(this))
 {
+    qDebug() << "Spinner widget created";
     m_ptr->refreshTimer.setInterval(30);
 
     connect(&m_ptr->refreshTimer, &QTimer::timeout,
@@ -55,6 +56,7 @@ DFontSpinner::DFontSpinner(QWidget *parent)
 
 DFontSpinner::~DFontSpinner()
 {
+    qDebug() << "Spinner widget destroyed";
     delete m_ptr;
 }
 
@@ -69,6 +71,7 @@ DFontSpinner::~DFontSpinner()
 *************************************************************************/
 void DFontSpinner::start()
 {
+    qDebug() << "Spinner animation started";
     m_ptr->currentDegree += 14;
     update();
     m_ptr->refreshTimer.start();
@@ -85,6 +88,7 @@ void DFontSpinner::start()
 *************************************************************************/
 void DFontSpinner::stop()
 {
+    qDebug() << "Spinner animation stopped";
     m_ptr->refreshTimer.stop();
 }
 

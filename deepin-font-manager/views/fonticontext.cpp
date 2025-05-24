@@ -4,6 +4,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "fonticontext.h"
+#include <QDebug>
 
 #include <DStyle>
 
@@ -26,6 +27,7 @@ FontIconText::FontIconText(const QString &picPath, QWidget *parent)
     , render(new DSvgRenderer(this))
     , m_isTtf(false)
 {
+    qDebug() << "Font icon widget created with image:" << picPath;
     render->load(picPath);
     QSize defaultSize = render->defaultSize();
     setFixedSize(defaultSize.width(), defaultSize.height());
@@ -43,6 +45,7 @@ FontIconText::FontIconText(const QString &picPath, QWidget *parent)
 *************************************************************************/
 void FontIconText::setFontName(const QString &familyName, const QString &styleName)
 {
+    qDebug() << "Setting font name to:" << familyName << "style:" << styleName;
     m_font = font();
     m_font.setFamily(familyName);
 
@@ -114,5 +117,6 @@ void FontIconText::paintEvent(QPaintEvent *event)
 *************************************************************************/
 void FontIconText::setContent(bool isTtf)
 {
+    qDebug() << "Setting TTF content flag to:" << isTtf;
     m_isTtf = isTtf;
 }

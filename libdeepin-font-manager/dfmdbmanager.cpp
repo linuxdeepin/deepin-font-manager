@@ -16,6 +16,7 @@ DFMDBManager::DFMDBManager(QObject *parent)
     : QObject(parent)
     , m_sqlUtil(new DSqliteUtil(QDir::homePath() + "/.local/share/deepin/deepin-font-manager/.font_manager.db"))
 {
+    qDebug() << "Initializing DFMDBManager with database:" << QDir::homePath() + "/.local/share/deepin/deepin-font-manager/.font_manager.db";
 }
 
 DFMDBManager::~DFMDBManager()
@@ -26,7 +27,10 @@ DFMDBManager::~DFMDBManager()
 DFMDBManager *DFMDBManager::instance()
 {
     if (!INSTANCE) {
+        qDebug() << "Creating new DFMDBManager instance";
         INSTANCE = new DFMDBManager;
+    } else {
+        qDebug() << "Using existing DFMDBManager instance";
     }
 
     return INSTANCE;
@@ -149,6 +153,7 @@ QList<DFontPreviewItemData> DFMDBManager::getAllFontInfo(QList<DFontPreviewItemD
     QList<QString> keyList;
     appendAllKeys(keyList);
 
+    qDebug() << "Querying all font records from database";
     m_sqlUtil->findAllRecords(keyList, recordList);
     for (QMap<QString, QString> &record : recordList) {
         if (record.size() > 0) {
@@ -285,6 +290,7 @@ QString DFMDBManager::isFontInfoExist(const DFontInfo &newFileFontInfo)
         if (fontFamilyList.size() > 1) {
             for (QString &fontFamily : fontFamilyList) {
                 whereMap.insert("familyName", fontFamily);
+                qDebug() << "Checking if font exists in database:" << newFileFontInfo.familyName << newFileFontInfo.styleName;
                 m_sqlUtil->findRecords(keyList, whereMap, &recordList);
                 if (recordList.size() > 0) {
                     QString result = recordList.first().value("filePath");
@@ -428,8 +434,11 @@ void DFMDBManager::updateSP3FamilyName(const QList<DFontInfo> &fontList, bool in
 *************************************************************************/
 void DFMDBManager::commitAddFontInfo()
 {
-    if (m_addFontList.isEmpty())
+    if (m_addFontList.isEmpty()) {
+        qDebug() << "No fonts to add, skipping commit";
         return;
+    }
+    qDebug() << "Committing" << m_addFontList.size() << "fonts to database";
 
 //    QMutexLocker locker(&m_mutex);
     beginTransaction();
@@ -492,8 +501,11 @@ void DFMDBManager::deleteFontInfo(const QList<DFontPreviewItemData> &fontList)
 *************************************************************************/
 void DFMDBManager::commitDeleteFontInfo()
 {
-    if (m_delFontList.isEmpty())
+    if (m_delFontList.isEmpty()) {
+        qDebug() << "No fonts to delete, skipping commit";
         return;
+    }
+    qDebug() << "Committing deletion of" << m_delFontList.size() << "fonts from database";
 
     beginTransaction();
     m_sqlUtil->deleteFontInfo(m_delFontList);

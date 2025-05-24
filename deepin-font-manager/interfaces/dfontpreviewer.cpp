@@ -19,8 +19,10 @@ DGUI_USE_NAMESPACE
 DFontPreviewer::DFontPreviewer(QWidget *parent)
     : QWidget(parent)
 {
+    qDebug() << "Creating DFontPreviewer";
     InitData();
     InitConnections();
+    qDebug() << "DFontPreviewer initialized";
 }
 
 /*************************************************************************
@@ -34,6 +36,7 @@ DFontPreviewer::DFontPreviewer(QWidget *parent)
 *************************************************************************/
 void DFontPreviewer::InitData()
 {
+    qDebug() << "Initializing preview data";
     m_previewTexts << "汉体书写信息技术标准相容"
                    << "档案下载使用界面简单"
                    << "支援服务升级资讯专业制作"
@@ -53,6 +56,7 @@ void DFontPreviewer::InitData()
 *************************************************************************/
 void DFontPreviewer::InitConnections()
 {
+    qDebug() << "Initializing connections";
     connect(this, &DFontPreviewer::previewFontChanged,
             this, &DFontPreviewer::onPreviewFontChanged);
 }
@@ -69,12 +73,14 @@ void DFontPreviewer::InitConnections()
 *************************************************************************/
 void DFontPreviewer::onPreviewFontChanged()
 {
+    qDebug() << "Preview font changed, path:" << m_fontPath;
     m_previewTexts.clear();
     InitData();
     foreach (auto it, m_previewTexts) {
         QString text = Utils::convertToPreviewString(m_fontPath, it);
         m_previewTexts.replaceInStrings(it, text);
     }
+    qDebug() << "Preview text updated";
 }
 
 /*************************************************************************
@@ -88,9 +94,13 @@ void DFontPreviewer::onPreviewFontChanged()
 *************************************************************************/
 void DFontPreviewer::setPreviewFontPath(const QString &font)
 {
+    qDebug() << "Setting preview font path:" << font;
     if (m_fontPath != font) {
         m_fontPath = font;
+        qInfo() << "Font path changed to:" << font;
         Q_EMIT previewFontChanged();
+    } else {
+        qDebug() << "Font path unchanged";
     }
 }
 

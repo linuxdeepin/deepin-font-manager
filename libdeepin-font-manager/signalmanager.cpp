@@ -4,6 +4,9 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "signalmanager.h"
+
+#include <QDebug>
+
 bool SignalManager::m_isOnLoad = false;
 bool SignalManager::m_isOnStartupLoad = false;
 bool SignalManager::m_isDataLoadFinish = false;
@@ -22,7 +25,10 @@ SignalManager *SignalManager::m_signalManager = nullptr;
 SignalManager *SignalManager::instance()
 {
     if (m_signalManager == nullptr) {
+        qDebug() << "Creating new SignalManager instance";
         m_signalManager = new SignalManager;
+    } else {
+        qDebug() << "Using existing SignalManager instance";
     }
 
     return m_signalManager;
@@ -30,6 +36,7 @@ SignalManager *SignalManager::instance()
 
 SignalManager::~SignalManager()
 {
+    qDebug() << "Destroying SignalManager instance";
     m_signalManager = nullptr;
 }
 
@@ -44,5 +51,5 @@ SignalManager::~SignalManager()
 *************************************************************************/
 SignalManager::SignalManager(QObject *parent) : QObject(parent)
 {
-
+    qDebug() << "SignalManager initialized";
 }

@@ -7,6 +7,7 @@
 #include "dfontinfomanager.h"
 #include "dfinstallnormalwindow.h"
 #include "utils.h"
+#include <QDebug>
 
 #include <DApplication>
 #if QT_VERSION_MAJOR <= 5
@@ -38,6 +39,8 @@ DFInstallErrorDialog::DFInstallErrorDialog(QWidget *parent, const QStringList &e
     , m_signalManager(SignalManager::instance())
     , m_errorInstallFiles(errorInstallFontFileList)
 {
+    qDebug() << "DFInstallErrorDialog created with" << errorInstallFontFileList.size()
+             << "error font files";
 //    setWindowOpacity(0.3); //Debug
     initData();
 
@@ -64,12 +67,12 @@ DFInstallErrorDialog::DFInstallErrorDialog(QWidget *parent, const QStringList &e
 *************************************************************************/
 DFInstallErrorDialog::~DFInstallErrorDialog()
 {
-    qDebug() << __func__ << "start" << Qt::endl;
+    qDebug() << "DFInstallErrorDialog destructor start";
     emit m_signalManager->hideInstallErrorDialog();
     m_errorInstallFiles.clear();
     m_installErrorFontModelList.clear();
 //    m_NeedSelectFiles.clear();
-    qDebug() << __func__ << "end" << Qt::endl;
+    qDebug() << "DFInstallErrorDialog destructor end";
 }
 
 /*************************************************************************
@@ -98,7 +101,7 @@ void DFInstallErrorDialog::initData()
             itemModel.strFontFileName = fileInfo.fileName();
             itemModel.strFontFilePath = fileInfo.filePath();
             itemModel.strFontInstallStatus = DApplication::translate("DFInstallErrorDialog", "Broken file");
-
+            qWarning() << "Found broken font file:" << fileInfo.fileName();
             m_installErrorFontModelList.push_back(itemModel);
         } else if (fontInfo.isInstalled && !m_parent->isSystemFont(fontInfo)) {
             QFileInfo fileInfo(it);
@@ -120,6 +123,7 @@ void DFInstallErrorDialog::initData()
             itemModel.strFontFileName = fileInfo.fileName();
             itemModel.strFontFilePath = fileInfo.filePath();
             itemModel.strFontInstallStatus = DApplication::translate("DFInstallErrorDialog", "System Font");
+            qInfo() << "Found system font:" << fileInfo.fileName();
             m_installErrorFontModelList.push_back(itemModel);
         } else {
 //            qDebug() << "verifyFontFiles->" << it << " :new file";
@@ -476,6 +480,7 @@ void DFInstallErrorDialog::onControlButtonClicked(int btnIndex)
 {
     if (0 == btnIndex) {
         //退出安装
+        qInfo() << "User canceled font installation";
         this->close();
     } else {
         //继续安装
@@ -489,6 +494,8 @@ void DFInstallErrorDialog::onControlButtonClicked(int btnIndex)
         }
 
         emit onContinueInstall(continueInstallFontFileList);
+        qInfo() << "User continued installation with" << continueInstallFontFileList.size()
+               << "selected fonts";
         this->reject();
     }
 }

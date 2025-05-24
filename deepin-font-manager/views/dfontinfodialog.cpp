@@ -39,6 +39,8 @@ DFontInfoDialog::DFontInfoDialog(DFontPreviewItemData *fontInfo, QWidget *parent
     , m_fontinfoArea(nullptr)
     , m_scrollArea(nullptr)
 {
+    qDebug() << "Font info dialog opened for:" << fontInfo->fontInfo.familyName
+             << "Style:" << fontInfo->fontInfo.styleName;
     connect(m_signalManager, &SignalManager::sizeChange, this, &DFontInfoDialog::autoHeight);
     initUI();
     initConnections();
@@ -329,6 +331,7 @@ void DFontInfoDialog::keyPressEvent(QKeyEvent *ev)
     QDialog::keyPressEvent(ev);
     if (QApplication::keyboardModifiers()
             == Qt::ControlModifier && ev->key() == Qt::Key_I) {
+        qDebug() << "Font info dialog closed by shortcut Ctrl+I";
         this->close();
         deleteLater();
     }
@@ -345,6 +348,7 @@ void DFontInfoDialog::keyPressEvent(QKeyEvent *ev)
 *************************************************************************/
 void DFontInfoDialog::autoHeight(int height)
 {
+    qDebug() << "Adjusting dialog height to:" << height;
     //repaint m_fontFileName/*UT000539*/
     m_fontFileName->setText(AutoFeed(m_FileName));
 

@@ -21,6 +21,7 @@ CopyFontThread::CopyFontThread(OPType type, short index)
     : m_opType(type)
     , m_index(index)
 {
+    qDebug() << "CopyFontThread created, type:" << type << "index:" << index;
     if (!autoDelete())
         setAutoDelete(true);
     if (!m_srcFiles.isEmpty())
@@ -29,8 +30,10 @@ CopyFontThread::CopyFontThread(OPType type, short index)
 
 void CopyFontThread::run()
 {
-    if (m_srcFiles.isEmpty())
+    if (m_srcFiles.isEmpty()) {
+        qWarning() << "No source files to process";
         return;
+    }
     qint64 startTm = QDateTime::currentMSecsSinceEpoch();
 
 //    qDebug() << __FUNCTION__ << m_index << m_srcFiles.size() << m_srcFiles;
@@ -46,8 +49,11 @@ void CopyFontThread::run()
                 QFile(target).remove();
             }
 
-            if (!QFile::copy(fontFile, target))
-                qDebug() << __FUNCTION__ << " copy file error " << fontFile << m_index;
+            if (!QFile::copy(fontFile, target)) {
+                qWarning() << "Failed to copy file:" << fontFile << "to:" << target;
+            } else {
+                qDebug() << "Successfully copied file:" << fontFile << "to:" << target;
+            }
         } else if (m_opType == INSTALL) {
             if (DCopyFilesManager::isInstallCanceled()) {
                 DCopyFilesManager::deleteFiles(m_targetFiles, true);
@@ -85,6 +91,7 @@ DCopyFilesManager::DCopyFilesManager(QObject *parent)
     , m_installMaxThreadCnt(static_cast<qint8>(QThread::idealThreadCount()))
     , m_sortOrder(1)
 {
+    qDebug() << "DCopyFilesManager created, max threads:" << m_maxThreadCnt;
     // libdeepin-font-manger.so在安装时需要安装com.deepin.font-manager.gschema.xml
     // 到目录/usr/share/glib-2.0/schemas中。
     // 现在取消libdeepin-font-manger.so，且此配置文件并没有实际作用，故不再使用此文件，
@@ -122,8 +129,10 @@ DCopyFilesManager *DCopyFilesManager::instance()
 */
 void DCopyFilesManager::copyFiles(CopyFontThread::OPType type, QStringList &fontList)
 {
-    if (fontList.isEmpty())
+    if (fontList.isEmpty()) {
+        qWarning() << "Empty font list provided";
         return;
+    }
 
     sortFontList(fontList);
     m_type = type;
@@ -166,6 +175,7 @@ void DCopyFilesManager::copyFiles(CopyFontThread::OPType type, QStringList &font
     getPool()->waitForDone();
 
     if (m_installCanceled) {
+        qWarning() << "Installation was canceled, cleaning up files";
         m_installCanceled = false;
         deleteFiles(fontList, false);
     }
@@ -228,6 +238,7 @@ QString DCopyFilesManager::getTargetPath(const QString &inPath, QString &srcPath
 */
 void DCopyFilesManager::deleteFiles(const QStringList &fileList, bool isTarget)
 {
+    qDebug() << "Deleting files, count:" << fileList.size() << "isTarget:" << isTarget;
     for (const QString &font : fileList) {
         QString target = font;
         QString src;

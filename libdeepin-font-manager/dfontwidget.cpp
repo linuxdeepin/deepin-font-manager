@@ -25,6 +25,7 @@ DFontWidget::DFontWidget(QWidget *parent)
       m_spinner(new DSpinner(this)),
       m_errMsg(new QLabel(this))
 {
+    qDebug() << "Creating DFontWidget";
     QLocale locale;
     QString translationFile = QString("/usr/share/deepin-font-manager/translations/deepin-font-manager_%1.qm").arg(locale.name());
     m_translator.load(translationFile);
@@ -87,15 +88,18 @@ DFontWidget::~DFontWidget()
 *************************************************************************/
 void DFontWidget::setFileUrl(const QString &url)
 {
+    qDebug() << "Setting font file url:" << url;
     m_filePath = url;
 
     m_layout->setCurrentIndex(0);
     m_spinner->start();
+    qDebug() << "Started loading spinner";
 
     m_preview->fontDatabase.removeAllApplicationFonts();
     m_thread->quit();
     m_thread->open(url);
     m_thread->start();
+    qDebug() << "Started font loading thread";
 }
 
 QSize DFontWidget::sizeHint() const
@@ -116,6 +120,7 @@ void DFontWidget::handleFinished(const QByteArray &data)
 {
     /*UT000539 字体损坏弹出提示隐藏view*/
     if (m_preview->fontDatabase.addApplicationFontFromData(data) == -1) {
+        qWarning() << "Failed to load font data, file may be broken";
         m_spinner->stop();
         m_spinner->hide();
         m_preview->hide();
@@ -124,8 +129,11 @@ void DFontWidget::handleFinished(const QByteArray &data)
         m_errMsg->show();
         return;
     }
-    if (m_errMsg->isVisible())
+    if (m_errMsg->isVisible()) {
+        qDebug() << "Hiding error message";
         m_errMsg->hide();
+    }
+    qDebug() << "Font loaded successfully, showing preview";
     m_preview->setFileUrl(m_filePath);
     m_layout->setCurrentIndex(1);
     m_spinner->stop();

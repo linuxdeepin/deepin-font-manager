@@ -20,10 +20,12 @@ FontPreview::FontPreview(QObject *parent):
 #endif
     m_previewWidget(new DFontWidget)
 {
+    qDebug() << "FontPreview constructor";
 }
 
 FontPreview::~FontPreview()
 {
+    qDebug() << "FontPreview destructor";
 //    bug 142781
 //    插件中不需要释放。释放会导致文管异常退出。
 //    if (m_previewWidget)
@@ -45,21 +47,30 @@ bool FontPreview::setFileUrl(const QUrl &url)
 bool FontPreview::setFileUrl(const DUrl &url)
 #endif
 {
-    if (m_url == url)
+    qDebug() << "setFileUrl called with url:" << url;
+    
+    if (m_url == url) {
+        qDebug() << "URL unchanged, skipping";
         return true;
+    }
 
-    if (!url.isLocalFile())
+    if (!url.isLocalFile()) {
+        qWarning() << "Non-local file URL not supported:" << url;
         return false;
+    }
 
     m_url = url;
-    qDebug() << __FUNCTION__ << m_url << "m_url";
+    qInfo() << "Setting new file URL:" << url;
+    
     m_previewWidget->setFileUrl(url.toLocalFile());
+    qDebug() << "Preview widget URL set to:" << url.toLocalFile();
+    
     m_title = url.toString();
-    qDebug() << __FUNCTION__ << m_title << url.toLocalFile() << "m_title";
+    qDebug() << "Initial title:" << m_title;
 
     if (!m_title.split("/").isEmpty()) {
         m_title = m_title.split("/").last();
-        qDebug() << __FUNCTION__ << m_title;
+        qDebug() << "Extracted title:" << m_title;
     }
 
     Q_EMIT titleChanged();
@@ -96,6 +107,7 @@ DUrl FontPreview::fileUrl() const
 *************************************************************************/
 QWidget *FontPreview::contentWidget() const
 {
+    qDebug() << "Getting content widget";
     return m_previewWidget;
 }
 
@@ -110,6 +122,7 @@ QWidget *FontPreview::contentWidget() const
 *************************************************************************/
 QString FontPreview::title() const
 {
+    qDebug() << "Getting title:" << m_title;
     return m_title;
 }
 

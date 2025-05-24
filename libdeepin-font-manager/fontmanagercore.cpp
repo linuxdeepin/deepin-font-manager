@@ -23,9 +23,11 @@ static FontManagerCore *INSTANCE = nullptr;
 *************************************************************************/
 FontManagerCore *FontManagerCore::instance()
 {
+    qDebug() << "Getting FontManagerCore instance";
     QMutex mutex;
     if (INSTANCE == nullptr) {
         QMutexLocker locker(&mutex);
+        qDebug() << "Creating new FontManagerCore instance";
         INSTANCE = new FontManagerCore;
     }
 
@@ -71,7 +73,7 @@ FontManagerCore::~FontManagerCore()
 *************************************************************************/
 void FontManagerCore::setType(Type type)
 {
-    qDebug() << type << Qt::endl;
+    qDebug() << "Setting operation type:" << type;
     m_type = type;
 }
 
@@ -86,7 +88,7 @@ void FontManagerCore::setType(Type type)
 *************************************************************************/
 void FontManagerCore::setInstallFileList(const QStringList &list)
 {
-    qDebug() << __FUNCTION__ << "start" << Qt::endl;
+    qDebug() << "Setting install file list, count:" << list.size();
     if (!m_instFileList.isEmpty()) {
         m_instFileList.clear();
     }
@@ -120,7 +122,7 @@ void FontManagerCore::setUnInstallFile(const QStringList &filePath)
 *************************************************************************/
 void FontManagerCore::run()
 {
-    qInfo() << __FUNCTION__ << "start" << m_type << Qt::endl;
+    qInfo() << "Starting font operation, type:" << m_type;
     switch (m_type) {
     case Install:
     case HalfwayInstall:
@@ -136,7 +138,7 @@ void FontManagerCore::run()
     default:
         break;
     }
-    qInfo() << __FUNCTION__ << "end" << m_type;
+    qInfo() << "Finished font operation, type:" << m_type;
 }
 
 /*************************************************************************
@@ -150,8 +152,7 @@ void FontManagerCore::run()
 *************************************************************************/
 void FontManagerCore::doCmd(QStringList &arguments)
 {
-    qDebug() << "QProcess start";
-    qDebug() << m_type << Qt::endl;
+    qDebug() << "Starting font operation process, type:" << m_type;
     switch (m_type) {
     case Install:
     case ReInstall:
@@ -190,7 +191,7 @@ void FontManagerCore::handleInstall()
 *************************************************************************/
 void FontManagerCore::handleUnInstall()
 {
-    qDebug() << "waitForFinished";
+    qDebug() << "Starting uninstall operation, file count:" << m_uninstFile.size();
     doCmd(m_uninstFile);
 //        qDebug() << __FUNCTION__ << m_uninstFile.size();
 //        emit uninstallFontFinished(m_uninstFile);
@@ -209,7 +210,7 @@ void FontManagerCore::handleUnInstall()
 *************************************************************************/
 void FontManagerCore::doInstall(QStringList &fileList)
 {
-    qDebug() << __func__ << "s" << Qt::endl;
+    qDebug() << "Starting install operation, file count:" << fileList.size();
 
     m_installOutList.clear();
     m_installCanceled = false;
@@ -271,12 +272,12 @@ void FontManagerCore::doUninstall(const QStringList &fileList)
 
     //修复删除时间有时候长的问题, 35479
     Q_EMIT uninstallFontFinished(m_uninstFile);
-    qDebug() << __FUNCTION__ << m_uninstFile.size();
+    qDebug() << "Uninstall completed, files removed:" << m_uninstFile.size();
 
 //发现开机后先删除字体再安装字体时，偶现安装进程无法启动，修改这里后现象消失
     bool ret = QProcess::startDetached("fc-cache");
     Q_EMIT uninstallFcCacheFinish();
-    qDebug() << __FUNCTION__ << ret;
+    qDebug() << "Font cache refresh result:" << ret;
 }
 
 /**
@@ -306,7 +307,7 @@ void FontManagerCore::onInstallResult(const QString &familyName, const QString &
         lastSendPercent = 0.0;
     }
 
-    qDebug() << __FUNCTION__ << m_installOutList.size() << m_CacheStatus;
+    qDebug() << "Install progress - installed:" << m_installOutList.size() << "cache status:" << m_CacheStatus;
     //  bug 47332 47325 Ut000442 在字体验证框弹出时进行安装，类型是HalfwayInstall，之前只对Install类型的做了
     //  安装后的处理导致bug现象的出现
     if (m_type == Install || m_type == HalfwayInstall) {
@@ -362,10 +363,10 @@ void FontManagerCore::cancelInstall()
 *************************************************************************/
 void FontManagerCore::doCache()
 {
-    qDebug() << __FUNCTION__;
+    qDebug() << "Refreshing font cache";
     QProcess process;
     process.start("fc-cache");
     process.waitForFinished(-1);
     Q_EMIT  cacheFinish();
-    qDebug() << __FUNCTION__ << "end";
+    qDebug() << "Font cache refresh completed";
 }

@@ -78,6 +78,7 @@ DFontMgrMainWindow::DFontMgrMainWindow(bool isQuickMode, QWidget *parent)
     , m_quickInstallWnd(nullptr)
     , m_ptr(new DFontMgrMainWindowPrivate(this))
 {
+    qDebug() << "Font manager main window created, quick mode:" << isQuickMode;
     // setWindoDSpinnerwOpacity(0.5); //Debug
     // setWindowFlags(windowFlags() | (Qt::FramelessWindowHint | Qt::WindowMaximizeButtonHint));
     initData();
@@ -104,6 +105,7 @@ DFontMgrMainWindow::~DFontMgrMainWindow()
     //ut000442 bug33870 偶现关闭窗口后,因没有取消dbus服务注册导致的应用无法启动的问题,在这里进行取消
     QDBusConnection dbus = QDBusConnection::sessionBus();
     dbus.unregisterService("com.deepin.FontManager");
+    qDebug() << "Font manager main window destroyed";
 }
 
 /*************************************************************************
@@ -211,6 +213,7 @@ void DFontMgrMainWindow::initConnections()
     connect(this, &DFontMgrMainWindow::fileSelected, this, &DFontMgrMainWindow::installFont);
     //文官中选择字体进行安装
     connect(this, &DFontMgrMainWindow::fileSelectedInSys, this, &DFontMgrMainWindow::installFontFromSys);
+    qDebug() << "Font installation signal connections established";
 
     connect(d->searchFontEdit, &DSearchEdit::searchAborted, [ = ] {
         d->searchFontEdit->lineEdit()->setFocus(Qt::TabFocusReason);
@@ -454,10 +457,13 @@ void DFontMgrMainWindow::initShortcuts()
         connect(m_scDeleteFont, &QShortcut::activated, this, [this] {
             //Only can't delete user font
             //first disable delete
-            qDebug() << m_cacheFinish << m_installFinish << "______________" << Qt::endl;
-            if (m_fIsInstalling)
+            qDebug() << "Delete font requested, cache state:" << m_cacheFinish << "install state:" << m_installFinish;
+            if (m_fIsInstalling) {
+                qWarning() << "Cannot delete font during installation";
                 return;
+            }
             m_fontPreviewListView->syncRecoveryTabStatus();
+            qInfo() << "Deleting current font";
             delCurrentFont(false);
         });
     }

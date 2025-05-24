@@ -32,6 +32,7 @@ dfontinfoscrollarea::dfontinfoscrollarea(DFontPreviewItemData *pData,  DWidget *
     : DFrame(parent)
     , m_fontInfo(pData)
 {
+    qDebug() << "Font info scroll area created for font:" << pData->fontInfo.familyName;
     installEventFilter(this);
 
     setFrameShape(QFrame::NoFrame);
@@ -346,6 +347,7 @@ QString dfontinfoscrollarea::elideText(const QString &text, const QFont &font, i
 *************************************************************************/
 void dfontinfoscrollarea::updateText()
 {
+    qDebug() << "Updating font info text display";
     for (auto pTltle : pTitleMap) {
         if (!pTltle.first) {
             continue;
@@ -374,6 +376,7 @@ void dfontinfoscrollarea::updateText()
 *************************************************************************/
 void dfontinfoscrollarea::autoHeight()
 {
+    qDebug() << "Adjusting scroll area height";
     int totalHeight = 0;
     for (auto plabeliter : pLabelMap) {
         if (!plabeliter.first) {
