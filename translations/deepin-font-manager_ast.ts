@@ -75,7 +75,7 @@
     <name>DFHandleTTCDialog</name>
     <message>
         <source>Apply to all selected font families</source>
-        <translation type="unfinished"/>
+        <translation>Aplicar a toles fontes familiares seleccionaes</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -105,11 +105,11 @@
     </message>
     <message>
         <source>PgUp</source>
-        <translation type="unfinished"/>
+        <translation>PgUp</translation>
     </message>
     <message>
         <source>PgDown</source>
-        <translation type="unfinished"/>
+        <translation>PgDown</translation>
     </message>
     <message>
         <source>Ctrl+Alt+F</source>
@@ -153,11 +153,11 @@
     </message>
     <message>
         <source>Failed to install %1 font. There is not enough disk space.</source>
-        <translation type="unfinished"/>
+        <translation>Non pae instaláu %1 fonte. Non hai espaciu suficiente nel discu</translation>
     </message>
     <message>
         <source>Failed to install %1 fonts. There is not enough disk space.</source>
-        <translation type="unfinished"/>
+        <translation>Non pae instaláu %1 fonts. Non hai espaciu suficiente nel discu</translation>
     </message>
     <message>
         <source>Fonts</source>
@@ -183,19 +183,19 @@
     </message>
     <message>
         <source>The other %1 system fonts cannot be deleted</source>
-        <translation type="unfinished"/>
+        <translation>Les otres %1 fonts del sistema nun puen ser elimináes</translation>
     </message>
     <message>
-        <source>The font &quot;%1&quot; in use cannot be deleted</source>
-        <translation>La fonte «%1» ta n&apos;usu y nun pue desaniciase</translation>
+        <source>The font "%1" in use cannot be deleted</source>
+        <translation>La fonte «%1» ta n'usu y nun pue desaniciase</translation>
     </message>
     <message>
-        <source>The other %1 system fonts and the font &quot;%2&quot; in use cannot be deleted</source>
-        <translation type="unfinished"/>
+        <source>The other %1 system fonts and the font "%2" in use cannot be deleted</source>
+        <translation>Les otres %1 fonts del sistema y la fonte "%2" en usu nun puen ser elimináes</translation>
     </message>
     <message>
         <source>Are you sure you want to delete %1 font(s)?</source>
-        <translation type="unfinished"/>
+        <translation>¿Seguro que quier eliminar %1 fonte(s)?</translation>
     </message>
     <message>
         <source>Delete</source>
@@ -232,7 +232,7 @@
 <context>
     <name>Font</name>
     <message>
-        <source>Don&apos;t let your dreams be dreams</source>
+        <source>Don't let your dreams be dreams</source>
         <translation>Fai que los suaños nun seyan sueños</translation>
     </message>
 </context>
@@ -268,7 +268,7 @@
     </message>
     <message>
         <source>Ps name</source>
-        <translation type="unfinished"/>
+        <translation>Nome PS</translation>
     </message>
     <message>
         <source>Trademark</source>
@@ -276,11 +276,11 @@
     </message>
     <message>
         <source>Copyright</source>
-        <translation type="unfinished"/>
+        <translation>Copyright</translation>
     </message>
     <message>
         <source>License Description</source>
-        <translation type="unfinished"/>
+        <translation>Descripción de la lizencia</translation>
     </message>
 </context>
 <context>
@@ -365,11 +365,11 @@
     </message>
     <message>
         <source>%1 is in use, so you cannot disable it</source>
-        <translation>%1 ta n&apos;usu polo que nun pues desactivar la fonte</translation>
+        <translation>%1 ta n'usu polo que nun pues desactivar la fonte</translation>
     </message>
     <message>
         <source>You cannot disable system fonts and the fonts in use</source>
-        <translation>Nun pues desactivar les fontes del sistema y les que tán n&apos;usu</translation>
+        <translation>Nun pues desactivar les fontes del sistema y les que tán n'usu</translation>
     </message>
     <message>
         <source>You cannot disable system fonts</source>
@@ -403,7 +403,7 @@
     </message>
     <message>
         <source>Not Installed</source>
-        <translation>Nun s&apos;instaló</translation>
+        <translation>Nun s'instaló</translation>
     </message>
     <message>
         <source>Install Font</source>
@@ -437,11 +437,11 @@
     </message>
     <message>
         <source>Page up</source>
-        <translation type="unfinished"/>
+        <translation>Páxina arriba</translation>
     </message>
     <message>
         <source>Page down</source>
-        <translation type="unfinished"/>
+        <translation>Páxina abaxo</translation>
     </message>
     <message>
         <source>Delete</source>
@@ -461,7 +461,7 @@
     </message>
     <message>
         <source>Font info</source>
-        <translation type="unfinished"/>
+        <translation>Información de la fonte</translation>
     </message>
 </context>
 <context>
