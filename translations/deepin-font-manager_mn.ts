@@ -4,473 +4,574 @@
 <context>
     <name>Category</name>
     <message>
+        <location filename="../deepin-font-manager/views/dsplitlistwidget.cpp" line="362"/>
         <source>All Fonts</source>
-        <translation type="unfinished"></translation>
+        <translation>Бүх үсгийн үндэс</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/views/dsplitlistwidget.cpp" line="363"/>
         <source>System</source>
-        <translation type="unfinished"></translation>
+        <translation>Систем</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/views/dsplitlistwidget.cpp" line="364"/>
         <source>User</source>
-        <translation type="unfinished"></translation>
+        <translation>Хэрэглэгч</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/views/dsplitlistwidget.cpp" line="365"/>
         <source>Favorites</source>
-        <translation type="unfinished"></translation>
+        <translation>Хүссэн</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/views/dsplitlistwidget.cpp" line="366"/>
         <source>Active</source>
-        <translation type="unfinished"></translation>
+        <translation>Хөдөлгөөнтэй</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/views/dsplitlistwidget.cpp" line="367"/>
         <source>Chinese</source>
-        <translation type="unfinished"></translation>
+        <translation>Хятад</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/views/dsplitlistwidget.cpp" line="368"/>
         <source>Monospaced</source>
-        <translation type="unfinished"></translation>
+        <translation>Моноспэс</translation>
     </message>
 </context>
 <context>
     <name>DFDeleteDialog</name>
     <message>
+        <location filename="../deepin-font-manager/views/dfdeletedialog.cpp" line="139"/>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation type="unfinished"></translation>
+        <translation>Цуцлах</translation>
     </message>
 </context>
 <context>
     <name>DFDeleteTTCDialog</name>
     <message>
+        <location filename="../deepin-font-manager/views/dfdeletedialog.cpp" line="550"/>
         <source>%1 is a font family, if you proceed, all fonts in it will be deleted</source>
-        <translation type="unfinished"></translation>
+        <translation>'%1 нь үндэсний бүлгийн нэр, та үүнийг үргэлжлүүлэхэд доторх бүх үндэсний үсгүүд устах болно'</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/views/dfdeletedialog.cpp" line="544"/>
         <source>Delete</source>
         <comment>button</comment>
-        <translation type="unfinished"></translation>
+        <translation>Устгах</translation>
     </message>
 </context>
 <context>
     <name>DFDisableTTCDialog</name>
     <message>
+        <location filename="../deepin-font-manager/views/dfdeletedialog.cpp" line="563"/>
         <source>%1 is a font family, if you proceed, all fonts in it will be enabled</source>
-        <translation type="unfinished"></translation>
+        <translation>'%1 нь үндэсний бүлгийн нэр, та үүнийг үргэлжлүүлэхэд доторх бүх үндэсний үсгүүд үүсэх болно'</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/views/dfdeletedialog.cpp" line="565"/>
         <source>%1 is a font family, if you proceed, all fonts in it will be disabled</source>
-        <translation type="unfinished"></translation>
+        <translation>'%1 нь үндэсний бүлгийн нэр, та үүнийг үргэлжлүүлэхэд доторх бүх үндэсний үсгүүд салгах болно'</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/views/dfdeletedialog.cpp" line="576"/>
         <source>Enable</source>
         <comment>button</comment>
-        <translation type="unfinished"></translation>
+        <translation>Тогтоох</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/views/dfdeletedialog.cpp" line="578"/>
         <source>Disable</source>
         <comment>button</comment>
-        <translation type="unfinished"></translation>
+        <translation>Салгах</translation>
     </message>
 </context>
 <context>
     <name>DFHandleTTCDialog</name>
     <message>
+        <location filename="../deepin-font-manager/views/dfdeletedialog.cpp" line="467"/>
         <source>Apply to all selected font families</source>
-        <translation type="unfinished"></translation>
+        <translation>Сонгосон бүх үндэсний бүлгэдээ хэрэглэх</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/views/dfdeletedialog.cpp" line="480"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Цуцлах</translation>
     </message>
 </context>
 <context>
     <name>DFInstallErrorDialog</name>
     <message>
+        <location filename="../deepin-font-manager/views/dfinstallerrordialog.cpp" line="103"/>
         <source>Broken file</source>
-        <translation type="unfinished"></translation>
+        <translation>Хүндэтгүй файл</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/views/dfinstallerrordialog.cpp" line="114"/>
         <source>Same version installed</source>
         <translation type="unfinished">Адил хувилбар суусан байна</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/views/dfinstallerrordialog.cpp" line="125"/>
         <source>System Font</source>
-        <translation type="unfinished"></translation>
+        <translation>Систем үндэс</translation>
     </message>
 </context>
 <context>
     <name>DFontMgrMainWindow</name>
     <message>
+        <location filename="../deepin-font-manager/views/dfontmgrmainwindow.cpp" line="326"/>
         <source>Ctrl+=</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+= </translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/views/dfontmgrmainwindow.cpp" line="342"/>
         <source>Ctrl+-</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+-</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/views/dfontmgrmainwindow.cpp" line="358"/>
         <source>Ctrl+0</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+0</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/views/dfontmgrmainwindow.cpp" line="371"/>
         <source>Ctrl+Shift+/</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+/</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/views/dfontmgrmainwindow.cpp" line="384"/>
         <source>PgUp</source>
-        <translation type="unfinished"></translation>
+        <translation>PgUp</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/views/dfontmgrmainwindow.cpp" line="403"/>
         <source>PgDown</source>
-        <translation type="unfinished"></translation>
+        <translation>PgDown</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/views/dfontmgrmainwindow.cpp" line="423"/>
         <source>Ctrl+Alt+F</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Alt+F</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/views/dfontmgrmainwindow.cpp" line="441"/>
         <source>Ctrl+F</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+F</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/views/dfontmgrmainwindow.cpp" line="474"/>
         <source>Alt+M</source>
-        <translation type="unfinished"></translation>
+        <translation>Alt+M</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/views/dfontmgrmainwindow.cpp" line="521"/>
         <source>Ctrl+O</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+O</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/views/dfontmgrmainwindow.cpp" line="562"/>
         <source>CTRL+I</source>
-        <translation type="unfinished"></translation>
+        <translation>CTRL+I</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/views/dfontmgrmainwindow.cpp" line="1654"/>
         <source>%1 font installed</source>
-        <translation type="unfinished"></translation>
+        <translation>'%1 үндэс тогтоосон'</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/views/dfontmgrmainwindow.cpp" line="1656"/>
         <source>%1 fonts installed</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 үсгийн үзүүлэг</translation>
     </message>
     <message>
+        <location filename="../libdeepin-font-manager/dcopyfilesmanager.h" line="12"/>
         <source>Fonts</source>
-        <translation type="unfinished"></translation>
+        <translation>Үсгийн үзүүлэг</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/views/dfontmgrmainwindow.cpp" line="1661"/>
         <source>Failed to install %1 font. There is not enough disk space.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 үсгийг үзүүлэг болгосон боломжгүй. Хөтөчийн хувьд хандах боломжгүй.</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/views/dfontmgrmainwindow.cpp" line="1663"/>
         <source>Failed to install %1 fonts. There is not enough disk space.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 үсгийг үзүүлэг болгосон боломжгүй. Хөтөчийн хувьд хандах боломжгүй.</translation>
     </message>
 </context>
 <context>
     <name>DFontWidget</name>
     <message>
+        <location filename="../libdeepin-font-manager/dfontwidget.cpp" line="127"/>
         <source>Broken file</source>
-        <translation type="unfinished"></translation>
+        <translation>Хаалтгүй файл</translation>
     </message>
 </context>
 <context>
     <name>DeleteConfirmDailog</name>
     <message>
+        <location filename="../deepin-font-manager/views/dfdeletedialog.cpp" line="204"/>
         <source>Are you sure you want to delete %1 font(s)?</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 үсгийг устгахдаа итгэж байна уу?</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/views/dfdeletedialog.cpp" line="229"/>
         <source>This font will not be available to applications</source>
-        <translation type="unfinished"></translation>
+        <translation>Энэ үсэг програмуудад хандах боломжгүй</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/views/dfdeletedialog.cpp" line="231"/>
         <source>These fonts will not be available to applications</source>
-        <translation type="unfinished"></translation>
+        <translation>Эдгээр үсгүүд програмуудад хандах боломжгүй</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/views/dfdeletedialog.cpp" line="234"/>
         <source>The other %1 system fonts cannot be deleted</source>
-        <translation type="unfinished"></translation>
+        <translation>Эдгээр %1 систем үсгийг устгах боломжгүй</translation>
     </message>
     <message>
-        <source>The font &quot;%1&quot; in use cannot be deleted</source>
-        <translation type="unfinished"></translation>
+        <location filename="../deepin-font-manager/views/dfdeletedialog.cpp" line="237"/>
+        <source>The font "%1" in use cannot be deleted</source>
+        <translation>Хэрэглэгдэж байгаа "%1" үсгийг устгах боломжгүй</translation>
     </message>
     <message>
-        <source>The other %1 system fonts and the font &quot;%2&quot; in use cannot be deleted</source>
-        <translation type="unfinished"></translation>
+        <location filename="../deepin-font-manager/views/dfdeletedialog.cpp" line="240"/>
+        <source>The other %1 system fonts and the font "%2" in use cannot be deleted</source>
+        <translation>Эдгээр %1 систем үсгүүд болон хэрэглэгдэж байгаа "%2" үсгийг устгах боломжгүй</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/views/dfdeletedialog.cpp" line="140"/>
         <source>Delete</source>
         <comment>button</comment>
-        <translation type="unfinished"></translation>
+        <translation>Устгах</translation>
     </message>
 </context>
 <context>
     <name>Dfuninstalldialog</name>
     <message>
+        <location filename="../deepin-font-manager/views/dfontspinnerwidget.cpp" line="74"/>
         <source>Deleting fonts, please wait...</source>
-        <translation type="unfinished"></translation>
+        <translation>Үсгийг устгаж байна, түүнийгүүс дуусах хүртэл түгээлээ.</translation>
     </message>
 </context>
 <context>
     <name>ExceptionWindow</name>
     <message>
+        <location filename="../deepin-font-manager/views/dfinstallerrordialog.cpp" line="151"/>
         <source>Font Verification</source>
-        <translation type="unfinished"></translation>
+        <translation>Үсгийн шалгалт</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/views/dfinstallerrordialog.cpp" line="252"/>
         <source>No fonts to be installed</source>
-        <translation type="unfinished"></translation>
+        <translation>Үзүүлэг болгосон үсгээрээ байхгүй</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/views/dfinstallerrordialog.cpp" line="186"/>
         <source>Exit</source>
-        <translation type="unfinished"></translation>
+        <translation>Гарах</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/views/dfinstallerrordialog.cpp" line="187"/>
         <source>Continue</source>
-        <translation type="unfinished"></translation>
+        <translation>Үргэлжлүүлэх</translation>
     </message>
 </context>
 <context>
     <name>Font</name>
     <message>
-        <source>Don&apos;t let your dreams be dreams</source>
-        <translation type="unfinished"></translation>
+        <location filename="../libdeepin-font-manager/dfontpreviewitemdef.h" line="15"/>
+        <source>Don't let your dreams be dreams</source>
+        <translation>Хүүхэд нь үзүүлэг болгож байгаа хүн биш</translation>
     </message>
 </context>
 <context>
     <name>FontDetailDailog</name>
     <message>
+        <location filename="../deepin-font-manager/views/dfontinfoscrollarea.cpp" line="60"/>
         <source>Style</source>
-        <translation type="unfinished"></translation>
+        <translation>Стиль</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/views/dfontinfoscrollarea.cpp" line="62"/>
         <source>Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Төрөл</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/views/dfontinfoscrollarea.cpp" line="66"/>
         <source>Version</source>
-        <translation type="unfinished"></translation>
+        <translation>Верс</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/views/dfontinfoscrollarea.cpp" line="72"/>
         <source>Description</source>
-        <translation type="unfinished"></translation>
+        <translation>Тайлбар</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/views/dfontinfoscrollarea.cpp" line="73"/>
         <source>Unknown</source>
         <translation type="unfinished">Үл мэдэгдэх</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/views/dfontinfoscrollarea.cpp" line="78"/>
         <source>Full name</source>
-        <translation type="unfinished"></translation>
+        <translation>Дүүргэсэн нэр</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/views/dfontinfoscrollarea.cpp" line="79"/>
         <source>Ps name</source>
-        <translation type="unfinished"></translation>
+        <translation>Ps нэр</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/views/dfontinfoscrollarea.cpp" line="80"/>
         <source>Trademark</source>
-        <translation type="unfinished"></translation>
+        <translation>Тэмдэг</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/views/dfontinfoscrollarea.cpp" line="131"/>
         <source>Basic info</source>
-        <translation type="unfinished"></translation>
+        <translation>Үндсэн мэдээлэл</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/views/dfontinfoscrollarea.cpp" line="123"/>
         <source>Copyright</source>
-        <translation type="unfinished"></translation>
+        <translation>Хуулийн хэмжээ</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/views/dfontinfoscrollarea.cpp" line="124"/>
         <source>License Description</source>
-        <translation type="unfinished"></translation>
+        <translation>Лицензийн тайлбар</translation>
     </message>
 </context>
 <context>
     <name>Main</name>
     <message>
+        <location filename="../deepin-font-manager/main.cpp" line="60"/>
         <source>Font Manager</source>
-        <translation type="unfinished"></translation>
+        <translation>Үсгийн удирдлагын систем</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/main.cpp" line="61"/>
         <source>Font Manager helps users install and manage fonts.</source>
-        <translation type="unfinished"></translation>
+        <translation>Үсгийн удирдлагын систем нь хэрэглэгчид үсгийг үзүүлэг болгох болон удирдах боломжийг олгодог.</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/views/dfontmgrmainwindow.cpp" line="2093"/>
         <source>The font exported to your desktop</source>
-        <translation type="unfinished"></translation>
+        <translation>Хүнцэтгэсэн үсгийг таны хөтөчийн дэлгэцэнд хуваалцаа</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/views/dfontmgrmainwindow.cpp" line="2095"/>
         <source>%1 fonts exported to your desktop</source>
-        <translation type="unfinished"></translation>
+        <translation>'%1 үсгийг таны хөтөчийн дэлгэцэнд хуваалцаа'</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/views/dfontmgrmainwindow.cpp" line="2099"/>
         <source>Failed to export 1 font. There is not enough disk space.</source>
-        <translation type="unfinished"></translation>
+        <translation>1 үсэг хуваалцаагүй. Хөтөчийн үүсгэсэн орон нутгийн хэмжээ хүнцэтгэсэн байхгүй.</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/views/dfontmgrmainwindow.cpp" line="2102"/>
         <source>Failed to export %1 fonts. There is not enough disk space.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 үсэг хуваалцаагүй. Хөтөчийн үүсгэсэн орон нутгийн хэмжээ хүнцэтгэсэн байхгүй.</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/views/dfontspinnerwidget.cpp" line="37"/>
         <source>Loading fonts, please wait...</source>
-        <translation type="unfinished"></translation>
+        <translation>Хүнцэтгэсэн үсгийг ачааллаж байна, хүлээн зөвшөөрнө үү...</translation>
     </message>
 </context>
 <context>
     <name>Menu</name>
     <message>
+        <location filename="../deepin-font-manager/interfaces/dfontmenumanager.cpp" line="63"/>
         <source>Add font</source>
-        <translation type="unfinished"></translation>
+        <translation>Хүнцэтгэх</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/interfaces/dfontmenumanager.cpp" line="71"/>
         <source>Enable</source>
-        <translation type="unfinished"></translation>
+        <translation>Татан хөөрөх</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/interfaces/dfontmenumanager.cpp" line="73"/>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>Устгах</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/interfaces/dfontmenumanager.cpp" line="75"/>
         <source>Export</source>
-        <translation type="unfinished"></translation>
+        <translation>Хуваалах</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/interfaces/dfontmenumanager.cpp" line="77"/>
         <source>Favorite</source>
-        <translation type="unfinished"></translation>
+        <translation>Хүндэтгэсэн</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/interfaces/dfontmenumanager.cpp" line="80"/>
         <source>Details</source>
-        <translation type="unfinished"></translation>
+        <translation>Дэлгэрэнгүй</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/interfaces/dfontmenumanager.cpp" line="83"/>
         <source>Display in file manager</source>
-        <translation type="unfinished"></translation>
+        <translation>Файлын хөтөчийн дэлгэцэнд харуулах</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/interfaces/dfontmenumanager.cpp" line="278"/>
         <source>Unfavorite</source>
-        <translation type="unfinished"></translation>
+        <translation>Хүндэтгэлээс арилгах</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/interfaces/dfontmenumanager.cpp" line="297"/>
         <source>Disable</source>
-        <translation type="unfinished"></translation>
+        <translation>Татан хөөрөөх</translation>
     </message>
 </context>
 <context>
     <name>MessageManager</name>
     <message>
+        <location filename="../deepin-font-manager/interfaces/dfontpreviewlistview.cpp" line="1867"/>
         <source>%1 is in use, so you cannot disable it</source>
-        <translation type="unfinished"></translation>
+        <translation>'%1 ашиглаж байна, татан хөөрөөх боломжгүй'</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/interfaces/dfontpreviewlistview.cpp" line="1869"/>
         <source>You cannot disable system fonts and the fonts in use</source>
-        <translation type="unfinished"></translation>
+        <translation>Хөтөчийн үсгийг болон ашиглаж байгаа үсгийг татан хөөрөөх боломжгүй</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/interfaces/dfontpreviewlistview.cpp" line="1871"/>
         <source>You cannot disable system fonts</source>
-        <translation type="unfinished"></translation>
+        <translation>Хөтөчийн үсгийг татан хөөрөөх боломжгүй</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/interfaces/dfontpreviewlistview.cpp" line="1875"/>
         <source>deactivated</source>
-        <translation type="unfinished"></translation>
+        <translation>Татан хөөрөөгдсөн</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/interfaces/dfontpreviewlistview.cpp" line="1877"/>
         <source>The fonts have been deactivated</source>
-        <translation type="unfinished"></translation>
+        <translation>Үсгүүд татан хөөрөөгдсөн байна</translation>
     </message>
 </context>
 <context>
     <name>NormalInstallWindow</name>
     <message>
+        <location filename="../deepin-font-manager/views/dfinstallnormalwindow.cpp" line="130"/>
         <source>Install Font</source>
-        <translation type="unfinished"></translation>
+        <translation>Хүнцэтгэх</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/views/dfinstallnormalwindow.cpp" line="143"/>
         <source>Verifying...</source>
-        <translation type="unfinished"></translation>
+        <translation>Шалгаж байна...</translation>
     </message>
 </context>
 <context>
     <name>QuickInstallWindow</name>
     <message>
+        <location filename="../deepin-font-manager/views/dfquickinstallwindow.cpp" line="77"/>
         <source>Unknown</source>
         <translation type="unfinished">Үл мэдэгдэх</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/views/dfquickinstallwindow.cpp" line="127"/>
         <source>Install Font</source>
-        <translation type="unfinished"></translation>
+        <translation>Хүнцэтгэх</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/views/dfquickinstallwindow.cpp" line="206"/>
         <source>Broken file</source>
-        <translation type="unfinished"></translation>
+        <translation>Хөгжмөн файл</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/views/dfquickinstallwindow.cpp" line="227"/>
         <source>Installed</source>
         <translation type="unfinished">Суулаа</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/views/dfquickinstallwindow.cpp" line="232"/>
         <source>Not Installed</source>
-        <translation type="unfinished"></translation>
+        <translation>Хүнцэтгэгдсэн биш</translation>
     </message>
 </context>
 <context>
     <name>SearchBar</name>
     <message>
+        <location filename="../deepin-font-manager/views/dfontmgrmainwindow.cpp" line="653"/>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>Хайх</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/views/dfontmgrmainwindow.cpp" line="838"/>
         <source>No search results</source>
-        <translation type="unfinished"></translation>
+        <translation>Хайх үр дүн байхгүй</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/views/dfontmgrmainwindow.cpp" line="860"/>
         <source>No fonts</source>
-        <translation type="unfinished"></translation>
+        <translation>Хүнцэтгэгдээгүй үсэг</translation>
     </message>
 </context>
 <context>
     <name>Shortcut</name>
     <message>
+        <location filename="../deepin-font-manager/views/dfontmgrmainwindow.cpp" line="2275"/>
         <source>Help</source>
-        <translation type="unfinished"></translation>
+        <translation>Тусламж</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/views/dfontmgrmainwindow.cpp" line="2280"/>
         <source>Display shortcuts</source>
-        <translation type="unfinished"></translation>
+        <translation>Хялбар болон хүснэгдүүлэх</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/views/dfontmgrmainwindow.cpp" line="2281"/>
         <source>Page up</source>
-        <translation type="unfinished"></translation>
+        <translation>Хуудас дээш</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/views/dfontmgrmainwindow.cpp" line="2282"/>
         <source>Page down</source>
-        <translation type="unfinished"></translation>
+        <translation>Нэг дэх</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/views/dfontmgrmainwindow.cpp" line="2285"/>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>Устгах</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/views/dfontmgrmainwindow.cpp" line="2286"/>
         <source>Add font</source>
-        <translation type="unfinished"></translation>
+        <translation>Хувилбар нэмэх</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/views/dfontmgrmainwindow.cpp" line="2287"/>
         <source>Favorite</source>
-        <translation type="unfinished"></translation>
+        <translation>Хүндэтгэх</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/views/dfontmgrmainwindow.cpp" line="2288"/>
         <source>Unfavorite</source>
-        <translation type="unfinished"></translation>
+        <translation>Хүндэтгэхийг устгах</translation>
     </message>
     <message>
+        <location filename="../deepin-font-manager/views/dfontmgrmainwindow.cpp" line="2289"/>
         <source>Font info</source>
-        <translation type="unfinished"></translation>
+        <translation>Хувилбар мэдээлэл</translation>
     </message>
 </context>
 <context>
     <name>StateBar</name>
     <message>
+        <location filename="../deepin-font-manager/views/dfontmgrmainwindow.cpp" line="901"/>
         <source>Input preview text</source>
-        <translation type="unfinished"></translation>
+        <translation>Оруулсан үзэгдэл текст</translation>
     </message>
 </context>
 </TS>
