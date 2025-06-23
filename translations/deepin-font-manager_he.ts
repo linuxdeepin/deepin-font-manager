@@ -6,7 +6,7 @@
     <message>
         <location filename="../deepin-font-manager/views/dsplitlistwidget.cpp" line="362"/>
         <source>All Fonts</source>
-        <translation>כל המילים ה 自动生成失败，请确保提供的YAML格式正确且包含必要的字段。 </translation>
+        <translation>כל המילים ה</translation>
     </message>
     <message>
         <location filename="../deepin-font-manager/views/dsplitlistwidget.cpp" line="363"/>
@@ -332,12 +332,12 @@
     <message>
         <location filename="../deepin-font-manager/views/dfontinfoscrollarea.cpp" line="80"/>
         <source>Trademark</source>
-        <translation><path trademark></translation>
+        <translation>סימן מסחרי</translation>
     </message>
     <message>
         <location filename="../deepin-font-manager/views/dfontinfoscrollarea.cpp" line="123"/>
         <source>Copyright</source>
-        <translation><path copyright></translation>
+        <translation>זכויות יוצרים</translation>
     </message>
     <message>
         <location filename="../deepin-font-manager/views/dfontinfoscrollarea.cpp" line="124"/>
