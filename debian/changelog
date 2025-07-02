@@ -1,3 +1,9 @@
+deepin-font-manager (6.5.20) unstable; urgency=medium
+
+  * chore: Update package URLs and digests in linglong.yaml files
+
+ -- dengzhongyuan <dengzhongyuan@uniontech.com>  Wed, 02 Jul 2025 10:44:50 +0800
+
 deepin-font-manager (6.5.19) unstable; urgency=medium
 
   * chore: New version 6.5.19.
