@@ -7,7 +7,7 @@ version: "1"
 package:
   id: org.deepin.fontmanager
   name: "deepin-font-manager"
-  version: 6.5.21.1
+  version: 6.5.22.1
   kind: app
   description: |
     font manager for deepin os.
@@ -21,7 +21,7 @@ command:
 build: |
   cat /var/lib/dpkg/status|grep "^Package: " > ${PREFIX}/packages.list
   bash ./install_dep linglong/sources "${PREFIX}"
-  sed -i "s|/usr|$(echo ${PREFIX})|g" ${PREFIX}/lib/${TRIPLET}/cmake/dfm-base/dfm-baseConfig.cmake
+  sed -i "s|/usr|$(echo ${PREFIX})|g" ${PREFIX}/lib/${TRIPLET}/cmake/dfm6-base/dfm6-baseConfig.cmake
 
   # add path for searching OpenGL
   export PATH=$PATH:/runtime/include:/runtime/lib/${TRIPLET}
