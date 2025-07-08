@@ -142,7 +142,7 @@ You can delete a font through Font Manager.
 1. Select a font in the **User** list on the Font Manager interface, right-click and select **Delete**.
 2. Click **Delete** in the pop-up box.
 
-![0|font_delete](fig/font_delete.png)
+
 
 ## Main Menu
 
