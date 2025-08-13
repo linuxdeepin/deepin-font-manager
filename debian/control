@@ -18,7 +18,7 @@ Build-Depends:
  deepin-gettext-tools,
  libgtest-dev
 Standards-Version: 3.9.8
-Homepage: http://www.deepin.org
+Homepage: https://github.com/linuxdeepin/deepin-font-manager
 
 Package: deepin-font-manager
 Architecture: any
