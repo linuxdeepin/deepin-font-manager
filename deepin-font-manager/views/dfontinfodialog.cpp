@@ -239,7 +239,8 @@ void DFontInfoDialog::initUI()
     } else if (DApplicationHelper::LightType == DGuiApplicationHelper::instance()->themeType()) {
         DPalette paFrame = DApplicationHelper::instance()->palette(m_scrollArea->viewport());
 #endif
-        QColor colorFrame = paFrame.textLively().color();
+        //使用白色背景，而不是文字颜色作为背景
+        QColor colorFrame(255, 255, 255);
         colorFrame.setAlphaF(0.70);
         paFrame.setColor(DPalette::Base, colorFrame);
 #if QT_VERSION_MAJOR > 5
