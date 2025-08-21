@@ -104,16 +104,20 @@
     <name>DFInstallErrorDialog</name>
     <message>
         <location filename="../deepin-font-manager/views/dfinstallerrordialog.cpp" line="103"/>
+        <location filename="../deepin-font-manager/views/dfinstallerrordialog.cpp" line="412"/>
         <source>Broken file</source>
         <translation>ໄອບອກເປັນໄອບົ້ງ</translation>
     </message>
     <message>
         <location filename="../deepin-font-manager/views/dfinstallerrordialog.cpp" line="114"/>
+        <location filename="../deepin-font-manager/views/dfinstallerrordialog.cpp" line="423"/>
+        <location filename="../deepin-font-manager/views/dfinstallerrordialog.cpp" line="450"/>
         <source>Same version installed</source>
         <translation>ເພີ່ມບໍ່ໄດ້ເພາະວ່າໃຫ້ມີບົດບາດເປັນດຽວກັນ</translation>
     </message>
     <message>
         <location filename="../deepin-font-manager/views/dfinstallerrordialog.cpp" line="125"/>
+        <location filename="../deepin-font-manager/views/dfinstallerrordialog.cpp" line="434"/>
         <source>System Font</source>
         <translation>ສ່ວນປະສິດທිພາບ ສ່ວນປະສິດທිພາບ</translation>
     </message>
@@ -168,12 +172,12 @@
     <message>
         <location filename="../deepin-font-manager/views/dfontmgrmainwindow.cpp" line="1654"/>
         <source>%1 font installed</source>
-        <translation>%1 සුපාම ෍ුරු ෍ුරු ෍ුරු</translation>
+        <translation>ຕິດຕັ້ງຟອນຕ໌ %1 ແລ້ວ</translation>
     </message>
     <message>
         <location filename="../deepin-font-manager/views/dfontmgrmainwindow.cpp" line="1656"/>
         <source>%1 fonts installed</source>
-        <translation>%1 ුුනු ෍ුරු ෍ුරු ෍ුරු</translation>
+        <translation>ຕິດຕັ້ງຟອນຕ໌ %1 ແລ້ວ</translation>
     </message>
     <message>
         <location filename="../deepin-font-manager/views/dfontmgrmainwindow.cpp" line="474"/>
@@ -196,17 +200,15 @@
         <translation>ບានລ้มเหลวກ្នុងການລំអៃ %1 ཀຳນຳ. ແບບົດບາດບໍ່ມີບ່ອນອົດທົນພพอທຸໆ.</translation>
     </message>
     <message>
-        <location filename="../libdeepin-font-manager/dcopyfilesmanager.h" line="12"/>
         <source>Fonts</source>
-        <translation>ບ្រភេນວົງຈອນ</translation>
+        <translation type="vanished">ບ្រភេນວົງຈອນ</translation>
     </message>
 </context>
 <context>
     <name>DFontWidget</name>
     <message>
-        <location filename="../libdeepin-font-manager/dfontwidget.cpp" line="127"/>
         <source>Broken file</source>
-        <translation>ཡຸດຕິບ້າງຂ້າງກົ້ງ</translation>
+        <translation type="vanished">ཡຸດຕິບ້າງຂ້າງກົ້ງ</translation>
     </message>
 </context>
 <context>
@@ -229,7 +231,7 @@
     <message>
         <location filename="../deepin-font-manager/views/dfdeletedialog.cpp" line="237"/>
         <source>The font &quot;%1&quot; in use cannot be deleted</source>
-        <translation>ដេសktop font &quot;%1&quot; ដែលកំពុងត្រូវបានប្រើប្រាសេនមិនអាចលើងឹកបានទេ</translation>
+        <translation>ຟອນທ໌ &quot;%1&quot; ທີ່ກຳລັງໃຊ້ບໍ່ສາມາດລຶບໄດ້</translation>
     </message>
     <message>
         <location filename="../deepin-font-manager/views/dfdeletedialog.cpp" line="240"/>
@@ -261,7 +263,7 @@
     <message>
         <location filename="../deepin-font-manager/views/dfinstallerrordialog.cpp" line="151"/>
         <source>Font Verification</source>
-        <translation type="unfinished"></translation>
+        <translation>ການກັບກັບບົດພຸດ</translation>
     </message>
     <message>
         <location filename="../deepin-font-manager/views/dfinstallerrordialog.cpp" line="252"/>
@@ -282,9 +284,8 @@
 <context>
     <name>Font</name>
     <message>
-        <location filename="../libdeepin-font-manager/dfontpreviewitemdef.h" line="15"/>
         <source>Don&apos;t let your dreams be dreams</source>
-        <translation>រក្សាទុកនូវស្រាប់ដែលអ្នកស្គាល់</translation>
+        <translation type="vanished">រក្សាទុកនូវស្រាប់ដែលអ្នកស្គាល់</translation>
     </message>
 </context>
 <context>
@@ -306,16 +307,21 @@
     </message>
     <message>
         <location filename="../deepin-font-manager/views/dfontinfoscrollarea.cpp" line="66"/>
+        <location filename="../deepin-font-manager/views/dfontinfoscrollarea.cpp" line="68"/>
         <source>Version</source>
-        <translation>バージョン</translation>
+        <translation>ສະບັບ</translation>
     </message>
     <message>
         <location filename="../deepin-font-manager/views/dfontinfoscrollarea.cpp" line="72"/>
+        <location filename="../deepin-font-manager/views/dfontinfoscrollarea.cpp" line="75"/>
         <source>Description</source>
-        <translation>_Description</translation>
+        <translation>ຄຳອະທິບາຍ</translation>
     </message>
     <message>
         <location filename="../deepin-font-manager/views/dfontinfoscrollarea.cpp" line="73"/>
+        <location filename="../deepin-font-manager/views/dfontinfoscrollarea.cpp" line="126"/>
+        <location filename="../deepin-font-manager/views/dfontinfoscrollarea.cpp" line="127"/>
+        <location filename="../deepin-font-manager/views/dfontinfoscrollarea.cpp" line="188"/>
         <source>Unknown</source>
         <translation>មិនស្គាល់</translation>
     </message>
@@ -336,11 +342,13 @@
     </message>
     <message>
         <location filename="../deepin-font-manager/views/dfontinfoscrollarea.cpp" line="123"/>
+        <location filename="../deepin-font-manager/views/dfontinfoscrollarea.cpp" line="126"/>
         <source>Copyright</source>
         <translation>របស់លេខសម្រែងចម្ងាយ</translation>
     </message>
     <message>
         <location filename="../deepin-font-manager/views/dfontinfoscrollarea.cpp" line="124"/>
+        <location filename="../deepin-font-manager/views/dfontinfoscrollarea.cpp" line="127"/>
         <source>License Description</source>
         <translation>ការពិពណ៌នាការអនុញ្ញាត</translation>
     </message>
@@ -348,7 +356,9 @@
 <context>
     <name>Main</name>
     <message>
+        <location filename="../deepin-font-manager/views/dfontmgrmainwindow.cpp" line="2293"/>
         <location filename="../deepin-font-manager/main.cpp" line="60"/>
+        <location filename="../deepin-font-manager/main.cpp" line="62"/>
         <source>Font Manager</source>
         <translation>ບົດບຳນຮບົດພຸດ</translation>
     </message>
@@ -359,6 +369,7 @@
     </message>
     <message>
         <location filename="../deepin-font-manager/views/dfontspinnerwidget.cpp" line="37"/>
+        <location filename="../deepin-font-manager/views/dfontspinnerwidget.cpp" line="72"/>
         <source>Loading fonts, please wait...</source>
         <translation>កំពុងโหลดទុក្រដេសktop, សូមរងំង</translation>
     </message>
@@ -387,11 +398,13 @@
     <name>Menu</name>
     <message>
         <location filename="../deepin-font-manager/interfaces/dfontmenumanager.cpp" line="63"/>
+        <location filename="../deepin-font-manager/interfaces/dfontmenumanager.cpp" line="68"/>
         <source>Add font</source>
         <translation>ເພີ່ມບົດພຸດ</translation>
     </message>
     <message>
         <location filename="../deepin-font-manager/interfaces/dfontmenumanager.cpp" line="71"/>
+        <location filename="../deepin-font-manager/interfaces/dfontmenumanager.cpp" line="301"/>
         <source>Enable</source>
         <translation>ປະເມີນການ</translation>
     </message>
@@ -407,6 +420,7 @@
     </message>
     <message>
         <location filename="../deepin-font-manager/interfaces/dfontmenumanager.cpp" line="77"/>
+        <location filename="../deepin-font-manager/interfaces/dfontmenumanager.cpp" line="281"/>
         <source>Favorite</source>
         <translation>ນຳໃຊ້ເປັນຄໍາສຳລັບ</translation>
     </message>
@@ -446,7 +460,7 @@
     <message>
         <location filename="../deepin-font-manager/interfaces/dfontpreviewlistview.cpp" line="1867"/>
         <source>%1 is in use, so you cannot disable it</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 ຖື່ງນຳໃຊ້, ດັ່ງນັ້ນທ່ານບໍ່ສາມາດປະເມີນບໍ່ເຖິງມັນໄດ້</translation>
     </message>
     <message>
         <location filename="../deepin-font-manager/interfaces/dfontpreviewlistview.cpp" line="1869"/>
@@ -476,6 +490,8 @@
     <name>QuickInstallWindow</name>
     <message>
         <location filename="../deepin-font-manager/views/dfquickinstallwindow.cpp" line="77"/>
+        <location filename="../deepin-font-manager/views/dfquickinstallwindow.cpp" line="217"/>
+        <location filename="../deepin-font-manager/views/dfquickinstallwindow.cpp" line="241"/>
         <source>Unknown</source>
         <translation>ລະບຸດ</translation>
     </message>

@@ -1,3 +1,9 @@
+deepin-font-manager (6.5.28) unstable; urgency=medium
+
+  * Update version to 6.5.28. 
+
+ -- Tian ShiLin <tianshilin@uniontech.com>  Thu, 21 Aug 2025 19:23:56 +0800
+
 deepin-font-manager (6.5.27) unstable; urgency=medium
 
   * feat: Update translations for Lao locale (#169)
