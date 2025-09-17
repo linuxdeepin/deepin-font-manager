@@ -26,10 +26,12 @@ CopyFontThread::CopyFontThread(OPType type, short index)
         setAutoDelete(true);
     if (!m_srcFiles.isEmpty())
         qDebug() << __FUNCTION__ << index << m_srcFiles.size();
+    qDebug() << "Exiting function: CopyFontThread::CopyFontThread";
 }
 
 void CopyFontThread::run()
 {
+    qDebug() << "Entering function: CopyFontThread::run";
     if (m_srcFiles.isEmpty()) {
         qWarning() << "No source files to process";
         return;
@@ -73,8 +75,12 @@ void CopyFontThread::run()
 
 void CopyFontThread::appendFile(const QString &filePath)
 {
-    if (!m_srcFiles.contains(filePath))
+    // qDebug() << "Entering function: CopyFontThread::appendFile with file:" << filePath;
+    if (!m_srcFiles.contains(filePath)) {
+        // qDebug() << "Adding new file to source files list";
         m_srcFiles.append(filePath);
+    }
+    // qDebug() << "Exiting function: CopyFontThread::appendFile";
 }
 
 //文件拷贝类型：导出 安装
@@ -129,6 +135,7 @@ DCopyFilesManager *DCopyFilesManager::instance()
 */
 void DCopyFilesManager::copyFiles(CopyFontThread::OPType type, QStringList &fontList)
 {
+    qDebug() << "Entering function: DCopyFilesManager::copyFiles with type:" << type << "fontList size:" << fontList.size();
     if (fontList.isEmpty()) {
         qWarning() << "Empty font list provided";
         return;
@@ -192,6 +199,8 @@ void DCopyFilesManager::copyFiles(CopyFontThread::OPType type, QStringList &font
 */
 QString DCopyFilesManager::getTargetPath(const QString &inPath, QString &srcPath, QString &targetPath)
 {
+    qDebug() << "Entering function: DCopyFilesManager::getTargetPath with inPath:" << inPath;
+
     QString targetDir;
     QStringList fileParamList = inPath.split("|");
 
@@ -200,6 +209,7 @@ QString DCopyFilesManager::getTargetPath(const QString &inPath, QString &srcPath
 
     //这里有过familyname中带有 /  的话，创建的目录会多一层，导致与其他不统一，也会造成删除时删除不完全的问题
     if (familyName.contains("/")) {
+        // qDebug() << "Replacing '/' in familyName with '-' - original:" << familyName;
         familyName.replace("/", "-");
     }
 
@@ -207,10 +217,12 @@ QString DCopyFilesManager::getTargetPath(const QString &inPath, QString &srcPath
     QString src = DFMDBManager::instance()->isFontInfoExist(fontInfo);
 
     if (!src.isEmpty()) {
+        // qDebug() << "Font already exists in database at:" << src;
         targetPath = src;
         return familyName;
     }
     if(DFontInfoManager::instance()->isFontInInstalledDirs(fontInfo.filePath)){
+        // qDebug() << "Font is in installed directories, creating target path";
         targetPath = QDir::homePath() + "/.local/share/fonts" + fontInfo.filePath.mid(fontInfo.filePath.lastIndexOf("/"));
         return familyName;
     }
@@ -219,6 +231,7 @@ QString DCopyFilesManager::getTargetPath(const QString &inPath, QString &srcPath
     QString dirName = familyName;
 
     if (dirName.isEmpty()) {
+        // qDebug() << "Family name is empty, using base filename:" << info.baseName();
         dirName = info.baseName();
     }
 
@@ -227,6 +240,7 @@ QString DCopyFilesManager::getTargetPath(const QString &inPath, QString &srcPath
 
     QDir dir(targetDir);
     dir.mkpath(".");
+    qDebug() << "Exiting function: DCopyFilesManager::getTargetPath";
     return familyName;
 }
 
@@ -251,4 +265,5 @@ void DCopyFilesManager::deleteFiles(const QStringList &fileList, bool isTarget)
             fileDir.removeRecursively();
         }
     }
+    qDebug() << "Exiting function: DCopyFilesManager::deleteFiles";
 }

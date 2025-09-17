@@ -54,6 +54,7 @@ bool Utils::isFontMimeType(const QString &filePath)
     const QString mimeName = QMimeDatabase().mimeTypeForFile(filePath).name();
 
     if (QString(FONT_FILE_MIME).contains(mimeName)) {
+        qDebug() << "File is a valid font type:" << mimeName;
         return true;
     }
 
@@ -71,6 +72,7 @@ bool Utils::isFontMimeType(const QString &filePath)
 *************************************************************************/
 QString Utils::suffixList()
 {
+    qDebug() << "Getting font file suffix list";
     return QString("Font Files (*.ttf *.ttc *.otf)");
 }
 
@@ -88,6 +90,7 @@ QPixmap Utils::renderSVG(const QString &filePath, const QSize &size)
 {
     qDebug() << "Rendering SVG:" << filePath << "size:" << size;
     if (m_imgCacheHash.contains(filePath)) {
+        qDebug() << "SVG found in cache:" << filePath;
         return m_imgCacheHash.value(filePath);
     }
 
@@ -97,6 +100,7 @@ QPixmap Utils::renderSVG(const QString &filePath, const QSize &size)
     reader.setFileName(filePath);
 
     if (reader.canRead()) {
+        qDebug() << "SVG can read:" << filePath;
         const qreal ratio = qApp->devicePixelRatio();
         reader.setScaledSize(size * ratio);
         pixmap = QPixmap::fromImage(reader.read());
@@ -107,6 +111,7 @@ QPixmap Utils::renderSVG(const QString &filePath, const QSize &size)
     }
 
     m_imgCacheHash.insert(filePath, pixmap);
+    qDebug() << "SVG added to cache:" << filePath;
 
     return pixmap;
 }
@@ -125,6 +130,7 @@ QString Utils::convertToPreviewString(const QString &fontFilePath, const QString
 {
     qDebug() << "Converting to preview string, font:" << fontFilePath << "text:" << srcString;
     if (fontFilePath.isEmpty()) {
+        qDebug() << "Empty font file path, returning source string";
         return srcString;
     }
 
@@ -134,6 +140,7 @@ QString Utils::convertToPreviewString(const QString &fontFilePath, const QString
     bool isSupport = rawFont.supportsCharacter(QChar('a'));
     bool isSupportF = rawFont.supportsCharacter(QChar('a' | 0xf000));
     if ((!isSupport && isSupportF)) {
+        qDebug() << "Converted preview string for special font characters";
         QChar *chArr = new QChar[srcString.length() + 1];
         for (int i = 0; i < srcString.length(); i++) {
             int ch = srcString.at(i).toLatin1();
@@ -151,6 +158,7 @@ QString Utils::convertToPreviewString(const QString &fontFilePath, const QString
         delete[] chArr;
     }
 
+    qDebug() << "Preview string conversion completed:" << strFontPreview;
     return strFontPreview;
 }
 
@@ -162,14 +170,16 @@ bool Utils::isWayland()
     QString WAYLAND_DISPLAY = e.value(QStringLiteral("WAYLAND_DISPLAY"));
 
     if (XDG_SESSION_TYPE == QLatin1String("wayland") || WAYLAND_DISPLAY.contains(QLatin1String("wayland"), Qt::CaseInsensitive)) {
+        qDebug() << "Running in Wayland environment";
         return true;
     } else {
+        qDebug() << "Not running in Wayland environment, XDG_SESSION_TYPE:" << XDG_SESSION_TYPE << "WAYLAND_DISPLAY:" << WAYLAND_DISPLAY;
         return false;
     }
 }
 
 void Utils::clearImgCache()
 {
-    qDebug() << "Clearing image cache, current size:" << m_imgCacheHash.size();
+    // qDebug() << "Clearing image cache, current size:" << m_imgCacheHash.size();
     m_imgCacheHash.clear();
 }

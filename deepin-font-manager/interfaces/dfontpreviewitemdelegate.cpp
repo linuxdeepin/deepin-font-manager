@@ -81,6 +81,7 @@ DFontPreviewItemDelegate::DFontPreviewItemDelegate(QAbstractItemView *parent)
 
 void DFontPreviewItemDelegate::paintForegroundCheckBox(QPainter *painter, const QStyleOptionViewItem &option, const FontData &itemData) const
 {
+    // qDebug() << "Entering function: DFontPreviewItemDelegate::paintForegroundCheckBox";
     int checkBoxWidth = CHECKBOX_SIZE - 4;
     int checkBoxHeight = CHECKBOX_SIZE - 4;
 
@@ -88,17 +89,25 @@ void DFontPreviewItemDelegate::paintForegroundCheckBox(QPainter *painter, const 
 
 #ifdef DTKWIDGET_CLASS_DSizeMode
     if (DGuiApplicationHelper::instance()->sizeMode() == DGuiApplicationHelper::SizeMode::CompactMode) {
+        // qDebug() << "Using compact mode for checkbox positioning";
         rect = QRect(option.rect.x() + 25, option.rect.y() + 6, checkBoxWidth, checkBoxHeight);
     }
 #endif
 
     QStyleOptionButton checkBoxOption;
     checkBoxOption.state |= QStyle::State_Enabled;
-    checkBoxOption.state |= itemData.isEnabled() ? QStyle::State_On : QStyle::State_Off;
+    if (itemData.isEnabled()) {
+        // qDebug() << "Checkbox is enabled, setting State_On";
+        checkBoxOption.state |= QStyle::State_On;
+    } else {
+        // qDebug() << "Checkbox is disabled, setting State_Off";
+        checkBoxOption.state |= QStyle::State_Off;
+    }
     checkBoxOption.rect = rect;
 
     QCheckBox checkBox;
     DApplication::style()->drawPrimitive(QStyle::PE_IndicatorCheckBox, &checkBoxOption, painter, &checkBox);
+    // qDebug() << "Exiting function: DFontPreviewItemDelegate::paintForegroundCheckBox";
 }
 
 
@@ -115,6 +124,7 @@ void DFontPreviewItemDelegate::paintForegroundCheckBox(QPainter *painter, const 
 *************************************************************************/
 void DFontPreviewItemDelegate::paintForegroundFontName(QPainter *painter, const QStyleOptionViewItem &option, const FontData &itemData) const
 {
+    // qDebug() << "Entering function: DFontPreviewItemDelegate::paintForegroundFontName";
     QFont nameFont = painter->font();
     nameFont.setPixelSize(DFontSizeManager::instance()->fontPixelSize(DFontSizeManager::T6));
     painter->setFont(nameFont);
@@ -129,6 +139,7 @@ void DFontPreviewItemDelegate::paintForegroundFontName(QPainter *painter, const 
     QColor fillColor = palette.color(DPalette::TextTips);
     // SP3--禁用置灰(539)
     if (!itemData.isEnabled()) {
+        // qDebug() << "Font is disabled, setting alpha to 0.6";
         fillColor.setAlphaF(0.6);
     }
     painter->setPen(QPen(fillColor));
@@ -137,6 +148,7 @@ void DFontPreviewItemDelegate::paintForegroundFontName(QPainter *painter, const 
                                option.rect.width() - 20, FONT_NAME_HEIGHT);
 #ifdef DTKWIDGET_CLASS_DSizeMode
     if (DGuiApplicationHelper::instance()->sizeMode() == DGuiApplicationHelper::SizeMode::CompactMode) {
+        // qDebug() << "Using compact mode for font name height";
         fontNameRect.setHeight(FONT_NAME_COMPACT_HEIGHT);
     }
 #endif
@@ -144,6 +156,7 @@ void DFontPreviewItemDelegate::paintForegroundFontName(QPainter *painter, const 
     QFontMetrics mt(nameFont);//特殊图案字体下截断字体名称/*UT000539*/
     QString elidedText = mt.elidedText(itemData.strFontName, Qt::ElideRight, option.rect.width() - 120);
     painter->drawText(fontNameRect, Qt::AlignLeft | Qt::AlignVCenter, elidedText);
+    // qDebug() << "Exiting function: DFontPreviewItemDelegate::paintForegroundFontName";
 }
 
 /*************************************************************************
@@ -159,17 +172,21 @@ void DFontPreviewItemDelegate::paintForegroundFontName(QPainter *painter, const 
 *************************************************************************/
 void DFontPreviewItemDelegate::paintForegroundCollectIcon(QPainter *painter, const QStyleOptionViewItem &option, const FontData &itemData) const
 {
+    // qDebug() << "Entering function: DFontPreviewItemDelegate::paintForegroundCollectIcon";
     DGuiApplicationHelper *appHelper = DGuiApplicationHelper::instance();
     QString strImgPrefix = (DGuiApplicationHelper::DarkType == appHelper->themeType()) ? QString("dark_") : QString("");
 
     QString iconStatus;
     IconStatus status = itemData.getHoverState();
     if (IconHover == status) {
+        // qDebug() << "Icon hover state detected";
         iconStatus = QString("hover");
     } else if (IconPress == status) {
+        // qDebug() << "Icon press state detected";
         iconStatus = QString("press");
         strImgPrefix = "";
     } else {
+        // qDebug() << "Icon normal state detected";
         iconStatus = QString("normal");
     }
 
@@ -179,9 +196,11 @@ void DFontPreviewItemDelegate::paintForegroundCollectIcon(QPainter *painter, con
     QString strImageSrc;
     QPixmap pixmap;
     if (itemData.isCollected()) {
+        // qDebug() << "Font is collected, using collection icon";
         strImageSrc = QString("://%1collection_%2.svg").arg(strImgPrefix).arg(iconStatus);
         pixmap = Utils::renderSVG(strImageSrc, QSize(COLLECT_ICON_SIZE, COLLECT_ICON_SIZE));
     } else {
+        // qDebug() << "Font is not collected, using uncollection icon";
         strImageSrc = QString("://%1uncollection_%2.svg").arg(strImgPrefix).arg(iconStatus);
         pixmap = Utils::renderSVG(strImageSrc, QSize(COLLECT_ICON_SIZE, COLLECT_ICON_SIZE));
     }
@@ -191,6 +210,7 @@ void DFontPreviewItemDelegate::paintForegroundCollectIcon(QPainter *painter, con
                                       COLLECT_ICON_SIZE, COLLECT_ICON_SIZE);
 #ifdef DTKWIDGET_CLASS_DSizeMode
     if (DGuiApplicationHelper::instance()->sizeMode() == DGuiApplicationHelper::SizeMode::CompactMode) {
+        // qDebug() << "Using compact mode for collect icon positioning";
         collectIconRealRect = QRect(option.rect.right() - COLLECT_ICON_SIZE - COLLECT_ICON_RIGHT_MARGIN,
                                               option.rect.top() + COLLECT_ICON_TOP_COMPACT_MARGIN,
                                               COLLECT_ICON_SIZE, COLLECT_ICON_SIZE);
@@ -203,6 +223,7 @@ void DFontPreviewItemDelegate::paintForegroundCollectIcon(QPainter *painter, con
 
     // 针对鼠标按下时进行处理
     if (IconPress == status) {
+        // qDebug() << "Processing icon press state with color transformation";
         QImage originImage = pixmap.toImage();  // 将原始图片转为image
         int iWidth = originImage.width();
         int iHeight = originImage.height();
@@ -219,9 +240,11 @@ void DFontPreviewItemDelegate::paintForegroundCollectIcon(QPainter *painter, con
 
         painter->drawPixmap(collectIconRealRect, QPixmap::fromImage(tempImage));    // 使用新图片绘制
     } else {
+        // qDebug() << "Using original pixmap for drawing";
         painter->drawPixmap(collectIconRealRect, pixmap);   // 使用原始图片绘制
     }
 
+    // qDebug() << "Exiting function: DFontPreviewItemDelegate::paintForegroundCollectIcon";
 }
 
 /*************************************************************************
@@ -236,6 +259,7 @@ void DFontPreviewItemDelegate::paintForegroundCollectIcon(QPainter *painter, con
 
 QRect DFontPreviewItemDelegate::adjustPreviewRect(const QRect bgRect) const
 {
+    // qDebug() << "Entering function: DFontPreviewItemDelegate::adjustPreviewRect";
     QRect fontPreviewRect;
     int fontRectWidth = bgRect.width() - FONT_PREVIEW_LEFT_MARGIN - FONT_PREVIEW_RIGHT_MARGIN;
     fontPreviewRect = QRect(bgRect.x() + FONT_PREVIEW_LEFT_MARGIN, bgRect.y() + FONT_PREVIEW_TOP_MARGIN,
@@ -243,10 +267,12 @@ QRect DFontPreviewItemDelegate::adjustPreviewRect(const QRect bgRect) const
 
 #ifdef DTKWIDGET_CLASS_DSizeMode
     if (DGuiApplicationHelper::instance()->sizeMode() == DGuiApplicationHelper::SizeMode::CompactMode) {
+        // qDebug() << "Using compact mode for preview rect adjustment";
         fontPreviewRect = QRect(bgRect.x() + FONT_PREVIEW_LEFT_MARGIN, bgRect.y() + FONT_PREVIEW_TOP_COMPACT_MARGIN,
                                 fontRectWidth, bgRect.height() - FONT_PREVIEW_TOP_COMPACT_MARGIN - FONT_PREVIEW_BOTTOM_COMPACT_MARGIN);
     }
 #endif
+    // qDebug() << "Exiting function: DFontPreviewItemDelegate::adjustPreviewRect";
     return fontPreviewRect;
 }
 
@@ -262,6 +288,7 @@ QRect DFontPreviewItemDelegate::adjustPreviewRect(const QRect bgRect) const
 *************************************************************************/
 QPoint DFontPreviewItemDelegate::adjustPreviewFontBaseLinePoint(const QRect &fontPreviewRect, const QFontMetrics &previewFontMetrics) const
 {
+    // qDebug() << "Entering function: DFontPreviewItemDelegate::adjustPreviewFontBaseLinePoint";
     Q_UNUSED(previewFontMetrics);
     /* 部分不规则的字体无法获取到有效QFontMetrics::height(),即 QFontMetrics::ascent(), QFontMetrics::descent()无效. */
 //    int baseLineY = 0;
@@ -275,6 +302,7 @@ QPoint DFontPreviewItemDelegate::adjustPreviewFontBaseLinePoint(const QRect &fon
     int baseLineX = fontPreviewRect.x();
     int baseLineY = fontPreviewRect.bottom() - commonFontDescent;
 
+    // qDebug() << "Exiting function: DFontPreviewItemDelegate::adjustPreviewFontBaseLinePoint";
     return QPoint(baseLineX, baseLineY);
 }
 
@@ -296,6 +324,7 @@ void DFontPreviewItemDelegate::paintForegroundPreviewFont(QPainter *painter, con
                                                           const QString &familyName, const QString &styleName, bool isEnabled,
                                                           int fontPixelSize, QString &fontPreviewText) const
 {
+    // qDebug() << "Entering function: DFontPreviewItemDelegate::paintForegroundPreviewFont";
     QFont previewFont;
 
     previewFont.setFamily(familyName);
@@ -312,8 +341,10 @@ void DFontPreviewItemDelegate::paintForegroundPreviewFont(QPainter *painter, con
 //    painter->setPen(QPen(option.palette.color(DPalette::Text)));
     //SP3--禁用置灰(539)
     QColor color(option.palette.color(DPalette::Text));
-    if (!isEnabled)
+    if (!isEnabled) {
+        // qDebug() << "Font preview is disabled, setting alpha to 0.6";
         color.setAlphaF(0.6);
+    }
     painter->setPen(QPen(color));
 
     QFontMetrics fontMetric(previewFont);
@@ -323,6 +354,7 @@ void DFontPreviewItemDelegate::paintForegroundPreviewFont(QPainter *painter, con
     QPoint baseLinePoint = adjustPreviewFontBaseLinePoint(fontPreviewRect, fontMetric);
     /* 使用baseline规则绘制预览文字，这样不用考虑特殊字体 UT000591 */
     painter->drawText(baseLinePoint.x(), baseLinePoint.y(), elidedText);
+    // qDebug() << "Exiting function: DFontPreviewItemDelegate::paintForegroundPreviewFont";
 }
 
 /*************************************************************************
@@ -338,8 +370,10 @@ void DFontPreviewItemDelegate::paintForegroundPreviewFont(QPainter *painter, con
 *************************************************************************/
 void DFontPreviewItemDelegate::paintBackground(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
+    // qDebug() << "Entering function: DFontPreviewItemDelegate::paintBackground";
     DPalette::ColorGroup colorGroup = option.state.testFlag(QStyle::State_Enabled) ? DPalette::Normal : DPalette::Disabled;
     if (colorGroup == DPalette::Normal && false == option.state.testFlag(QStyle::State_Active)) {
+        // qDebug() << "Setting color group to Inactive";
         colorGroup = DPalette::Inactive;
     }
 
@@ -357,10 +391,13 @@ void DFontPreviewItemDelegate::paintBackground(QPainter *painter, const QStyleOp
     }
 
     if (option.state.testFlag(QStyle::State_Selected)) {
+        // qDebug() << "Item is selected";
         //如果是通过tab获取到的焦点，绘制tab的选中效果
         if (m_parentView->getIsTabFocus() == true) {
+            // qDebug() << "Using tab focus background";
             paintTabFocusBackground(painter, option, bgRect);
         } else {
+            // qDebug() << "Using normal selected background";
             //不是通过tab获取到的焦点的情况，再去绘制默认的选中状态，避免的tab选中状态时四个角会出现直角的问题
             DStyleHelper styleHelper;
             QColor fillColor = styleHelper.getColor(static_cast<const QStyleOption *>(&option), DPalette::ToolTipText);
@@ -370,6 +407,7 @@ void DFontPreviewItemDelegate::paintBackground(QPainter *painter, const QStyleOp
             painter->fillPath(path, fillColor);
         }
     } else {
+        // qDebug() << "Item is not selected, using default background";
 #if QT_VERSION_MAJOR > 5
         DPalette pa = DGuiApplicationHelper::instance()->applicationPalette();
 #else
@@ -380,6 +418,7 @@ void DFontPreviewItemDelegate::paintBackground(QPainter *painter, const QStyleOp
         painter->setBrush(QBrush(fillColor));
         painter->fillPath(path, fillColor);
     }
+    // qDebug() << "Exiting function: DFontPreviewItemDelegate::paintBackground";
 }
 
 /*************************************************************************
@@ -395,6 +434,7 @@ void DFontPreviewItemDelegate::paintBackground(QPainter *painter, const QStyleOp
 *************************************************************************/
 void DFontPreviewItemDelegate::paintTabFocusBackground(QPainter *painter, const QStyleOptionViewItem &option, const QRect &bgRect) const
 {
+    // qDebug() << "Entering function: DFontPreviewItemDelegate::paintTabFocusBackground";
     //初始化绘制高亮色区域路径
     QPainterPath path;
     painter->setRenderHint(QPainter::Antialiasing, true);
@@ -428,6 +468,7 @@ void DFontPreviewItemDelegate::paintTabFocusBackground(QPainter *painter, const 
     fillColor3.setAlphaF(0.2);
     painter->setBrush(QBrush(fillColor3));
     painter->fillPath(path3, painter->brush());
+    // qDebug() << "Exiting function: DFontPreviewItemDelegate::paintTabFocusBackground";
 }
 
 /*************************************************************************
@@ -445,6 +486,7 @@ void DFontPreviewItemDelegate::paintTabFocusBackground(QPainter *painter, const 
 *************************************************************************/
 void DFontPreviewItemDelegate::setPaintPath(const QRect &bgRect, QPainterPath &path, const int xDifference, const int yDifference, const int radius) const
 {
+    // qDebug() << "Entering function: DFontPreviewItemDelegate::setPaintPath";
     QPoint path_bottomRight(bgRect.bottomRight().x() - xDifference, bgRect.bottomRight().y() - yDifference);
     QPoint path_topRight(bgRect.topRight().x() - xDifference, bgRect.topRight().y() + yDifference);
     QPoint path_topLeft(bgRect.topLeft().x() + xDifference, bgRect.topLeft().y() + yDifference);
@@ -458,6 +500,7 @@ void DFontPreviewItemDelegate::setPaintPath(const QRect &bgRect, QPainterPath &p
     path.arcTo(QRect(QPoint(path_bottomLeft - QPoint(0, radius * 2)), QSize(radius * 2, radius * 2)), 180, 90);
     path.lineTo(path_bottomRight - QPoint(10, 0));
     path.arcTo(QRect(QPoint(path_bottomRight - QPoint(radius * 2, radius * 2)), QSize(radius * 2, radius * 2)), 270, 90);
+    // qDebug() << "Exiting function: DFontPreviewItemDelegate::setPaintPath";
 }
 
 
@@ -475,7 +518,9 @@ void DFontPreviewItemDelegate::setPaintPath(const QRect &bgRect, QPainterPath &p
 void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
                                      const QModelIndex &index) const
 {
+    // qDebug() << "Entering function: DFontPreviewItemDelegate::paint";
     if (index.isValid()) {
+        // qDebug() << "Index is valid, proceeding with painting";
         painter->save();
         painter->setRenderHint(QPainter::TextAntialiasing, true);
 
@@ -500,8 +545,10 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
                                    fontPixelSize, fontPreviewContent);
         painter->restore();
     } else {
+        // qDebug() << "Index is invalid, delegating to parent paint";
         QStyledItemDelegate::paint(painter, option, index);
     }
+    // qDebug() << "Exiting function: DFontPreviewItemDelegate::paint";
 }
 
 /*************************************************************************
@@ -516,20 +563,24 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
 *************************************************************************/
 QSize DFontPreviewItemDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
+    // qDebug() << "Entering function: DFontPreviewItemDelegate::sizeHint";
     FontData data = index.data(Qt::DisplayRole).value<FontData>();
     int fontSize = (false == index.data(FontSizeRole).isNull()) ? index.data(FontSizeRole).toInt() : FTM_DEFAULT_PREVIEW_FONTSIZE;
 
     int itemHeight = FTM_PREVIEW_ITEM_HEIGHT;
 #ifdef DTKWIDGET_CLASS_DSizeMode
     if (DGuiApplicationHelper::instance()->sizeMode() == DGuiApplicationHelper::SizeMode::CompactMode) {
+        // qDebug() << "Using compact mode for item height";
         itemHeight = FTM_PREVIEW_ITEM_COMPACT_HEIGHT;
     }
 #endif
 
     if (fontSize > 30) {
+        // qDebug() << "Font size is larger than 30, adjusting item height";
         itemHeight += static_cast<int>(((fontSize - 30) + 1) * 1.5);
     }
 
+    // qDebug() << "Exiting function: DFontPreviewItemDelegate::sizeHint";
     return QSize(option.rect.width(), itemHeight);
 }
 
@@ -545,8 +596,10 @@ QSize DFontPreviewItemDelegate::sizeHint(const QStyleOptionViewItem &option, con
 *************************************************************************/
 bool DFontPreviewItemDelegate::eventFilter(QObject *object, QEvent *event)
 {
+    // qDebug() << "Entering function: DFontPreviewItemDelegate::eventFilter";
     Q_UNUSED(object)
     if (event->type() == QEvent::HoverLeave) {
+        // qDebug() << "Processing HoverLeave event";
         DFontPreviewListView *listview = qobject_cast<DFontPreviewListView *>(parent());
         listview->clearHoverState();
         listview->clearPressState(DFontPreviewListView::ClearType::PreviousClear);

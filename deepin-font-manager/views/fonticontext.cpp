@@ -50,28 +50,39 @@ void FontIconText::setFontName(const QString &familyName, const QString &styleNa
     m_font.setFamily(familyName);
 
     if (styleName.contains("Italic")) {
+        qDebug() << "Style name contains Italic";
         m_font.setItalic(true);
     }
 
     if (styleName.contains("Regular")) {
+        qDebug() << "Style name contains Regular";
         m_font.setWeight(QFont::Normal);
     } else if (styleName.contains("Bold")) {
+        qDebug() << "Style name contains Bold";
         m_font.setWeight(QFont::Bold);
     } else if (styleName.contains("Light")) {
+        qDebug() << "Style name contains Light";
         m_font.setWeight(QFont::Light);
     } else if (styleName.contains("Thin")) {
+        qDebug() << "Style name contains Thin";
         m_font.setWeight(QFont::Thin);
     } else if (styleName.contains("ExtraLight")) {
+        qDebug() << "Style name contains ExtraLight";
         m_font.setWeight(QFont::ExtraLight);
     } else if (styleName.contains("ExtraBold")) {
+        qDebug() << "Style name contains ExtraBold";
         m_font.setWeight(QFont::ExtraBold);
     } else if (styleName.contains("Medium")) {
+        qDebug() << "Style name contains Medium";
         m_font.setWeight(QFont::Medium);
     } else if (styleName.contains("DemiBold")) {
+        qDebug() << "Style name contains DemiBold";
         m_font.setWeight(QFont::DemiBold);
     } else if (styleName.contains("Black")) {
+        qDebug() << "Style name contains Black";
         m_font.setWeight(QFont::Black);
     }
+    qDebug() << "Exiting function: void FontIconText::setFontName";
 }
 
 /*************************************************************************
@@ -85,6 +96,7 @@ void FontIconText::setFontName(const QString &familyName, const QString &styleNa
 *************************************************************************/
 void FontIconText::paintEvent(QPaintEvent *event)
 {
+    // qDebug() << "Entering function: void FontIconText::paintEvent";
     Q_UNUSED(event)
     QPainter painter(this);
     painter.setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
@@ -104,6 +116,7 @@ void FontIconText::paintEvent(QPaintEvent *event)
     QPixmap p = m_fontIcon.pixmap(defaultSize);
     painter.drawPixmap(picRect, p);
 
+    // qDebug() << "Exiting function: void FontIconText::paintEvent";
 }
 
 /*************************************************************************
@@ -117,6 +130,6 @@ void FontIconText::paintEvent(QPaintEvent *event)
 *************************************************************************/
 void FontIconText::setContent(bool isTtf)
 {
-    qDebug() << "Setting TTF content flag to:" << isTtf;
+    // qDebug() << "Setting TTF content flag to:" << isTtf;
     m_isTtf = isTtf;
 }

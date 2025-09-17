@@ -8,7 +8,13 @@ build/
 *.user
 obj-x86_64-linux-gnu
 .vscode/
+.cache/
 
 #linglong building dir
 linglong
 build
+
+# AI and MCP configuration files
+.spec-workflow/
+.promptx/
+.claude/

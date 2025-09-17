@@ -74,19 +74,23 @@ bool SingleFontApplication::parseCmdLine(bool bAppExist)
     parser.process(*this);
 
     if (bAppExist) {
+        qDebug() << "parseCmdLine appExist";
         QList<QVariant> fontInstallPathList;
         fontInstallPathList << parser.positionalArguments();
         QDBusInterface notification("com.deepin.FontManager", "/com/deepin/FontManager", "com.deepin.FontManager", QDBusConnection::sessionBus());
         QDBusMessage msg = notification.callWithArgumentList(QDBus::AutoDetect, "installFonts", fontInstallPathList);
     } else {
         //Clear old parameter
+        qDebug() << "parseCmdLine !bAppExist";
         if (!m_selectedFiles.isEmpty()) {
             m_selectedFiles.clear();
+            qDebug() << "Cleared old selected files";
         }
 
         QStringList paraList = parser.positionalArguments();
         for (auto &it : paraList) {
             if (Utils::isFontMimeType(it)) {
+                // qDebug() << "Added valid font file:" << it;
                 m_selectedFiles.append(it);
             }
         }
@@ -99,6 +103,7 @@ bool SingleFontApplication::parseCmdLine(bool bAppExist)
         qDebug() << "Selected font files:" << m_selectedFiles;
     }
 
+    qDebug() << "parseCmdLine completed";
     return true;
 }
 
@@ -175,6 +180,7 @@ void SingleFontApplication::activateWindow()
     qDebug() << "Activating window with files:" << m_selectedFiles;
     //Hide quick window in normal mode
     if (nullptr != m_qspQuickWnd.get()) {
+        qDebug() << "Hid quick install window";
         m_qspQuickWnd->hide();
     }
 
@@ -188,9 +194,11 @@ void SingleFontApplication::activateWindow()
         //.toInt(&hWinDataStatus);
         m_qspMainWnd->setMinimumSize(MIN_WINDOWS_WIDTH, MIN_WINDOWS_HEIGHT);
         if(0 == windowWidth || 0 == windowHeight){
+            qDebug() << "Resized main window to default size";
             m_qspMainWnd->resize(DEFAULT_WINDOWS_WIDTH, DEFAULT_WINDOWS_HEIGHT);
         }
         else if (MIN_WINDOWS_WIDTH <= windowWidth && MIN_WINDOWS_HEIGHT <= windowHeight) {
+            qDebug() << "Resized main window to saved size:" << windowWidth << "x" << windowHeight;
             m_qspMainWnd->resize(windowWidth, windowHeight);
         }
 
@@ -201,8 +209,10 @@ void SingleFontApplication::activateWindow()
         bool IsWindowMax = reinterpret_cast<DFontMgrMainWindow *>(
                                m_qspMainWnd.get())->getIsMaximized();
         if (IsWindowMax == true) {
+            qDebug() << "Set main window to maximized state";
             m_qspMainWnd->setWindowState(Qt::WindowMaximized);
         } else {
+            qDebug() << "Set main window to active state";
             m_qspMainWnd->setWindowState(Qt::WindowActive);
         }
         m_qspMainWnd->activateWindow();
@@ -211,11 +221,13 @@ void SingleFontApplication::activateWindow()
     //For: Drag files on task bar app icon
     //need start installtion flow
     if (m_selectedFiles.size() > 0) {
+        qDebug() << "Invoked fileSelectedInSys for" << m_selectedFiles.size() << "files";
         QMetaObject::invokeMethod(m_qspMainWnd.get(), "fileSelectedInSys", Qt::QueuedConnection,
                                   Q_ARG(QStringList, m_selectedFiles));
     }
 //    }
     PerformanceMonitor::initializeAppFinish();
+    qDebug() << "activateWindow completed";
 }
 
 /*************************************************************************
@@ -237,6 +249,7 @@ void SingleFontApplication::slotBatchInstallFonts()
     activateWindow();
     m_selectedFiles.clear();
     waitForInstallSet.clear();
+    qDebug() << "Batch install fonts completed and lists cleared";
 }
 
 /*************************************************************************
@@ -253,6 +266,7 @@ void SingleFontApplication::onFontInstallFinished(const QStringList &fileList)
     qDebug() << "Font installation finished, files:" << fileList;
     Q_UNUSED(fileList);
     m_selectedFiles.clear();
+    qDebug() << "Font installation finished and selected files cleared";
 }
 
 /*************************************************************************
@@ -271,10 +285,12 @@ void SingleFontApplication::installFonts(const QStringList &fontPathList)
 //    qDebug() << __FUNCTION__ << fontPathList;
     for (QString fontPath : fontPathList) {
         if (Utils::isFontMimeType(fontPath)) {
+            // qDebug() << "Added font to install set:" << fontPath;
             /* bug#19081 UT00591 */
             waitForInstallSet.insert(fontPath);
         }
     }
     slotBatchInstallFonts();
+    qDebug() << "Font installation completed";
 }
 

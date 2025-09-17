@@ -38,6 +38,7 @@ DFInstallErrorListDelegate::DFInstallErrorListDelegate(QAbstractItemView *parent
     : DStyledItemDelegate(parent)
     , m_parentView(qobject_cast<DFInstallErrorListView *>(parent))
 {
+    // qDebug() << "Entering function: DFInstallErrorListDelegate::DFInstallErrorListDelegate";
 }
 
 /*************************************************************************
@@ -53,13 +54,16 @@ DFInstallErrorListDelegate::DFInstallErrorListDelegate(QAbstractItemView *parent
 *************************************************************************/
 void DFInstallErrorListDelegate::drawCheckBox(QPainter *painter, DFInstallErrorItemModel itemModel, QRect bgRect) const
 {
+    // qDebug() << "Entering function: DFInstallErrorListDelegate::drawCheckBox";
     QStyleOptionButton checkBoxOption;
     bool checked = itemModel.bChecked;
     checkBoxOption.state |= QStyle::State_Enabled;
     //根据值判断是否选中
     if (checked) {
+        // qDebug() << "Checkbox is checked, setting State_On";
         checkBoxOption.state |= QStyle::State_On;
     } else {
+        // qDebug() << "Checkbox is unchecked, setting State_Off";
         checkBoxOption.state |= QStyle::State_Off;
     }
 
@@ -71,6 +75,7 @@ void DFInstallErrorListDelegate::drawCheckBox(QPainter *painter, DFInstallErrorI
                                          &checkBoxOption,
                                          painter,
                                          &checkBox);
+    // qDebug() << "Exiting function: DFInstallErrorListDelegate::drawCheckBox";
 }
 
 /*************************************************************************
@@ -85,17 +90,21 @@ void DFInstallErrorListDelegate::drawCheckBox(QPainter *painter, DFInstallErrorI
 *************************************************************************/
 void DFInstallErrorListDelegate::drawCheckBoxIcon(QPainter *painter, QRect bgRect) const
 {
+    // qDebug() << "Entering function: DFInstallErrorListDelegate::drawCheckBoxIcon";
     int checkBoxSize = 30;
     QRect checkboxRect = QRect(bgRect.left() + 5, bgRect.top() + (bgRect.height() - checkBoxSize) / 2, checkBoxSize, checkBoxSize);
 
     DGuiApplicationHelper::ColorType themeType = DGuiApplicationHelper::instance()->themeType();
     if (themeType == DGuiApplicationHelper::LightType) {
+        // qDebug() << "Using light theme checkbox icon";
         QImage checkBox("://checkbox_unchecked_light.svg");
         painter->drawImage(checkboxRect, checkBox);
     } else {
+        // qDebug() << "Using dark theme checkbox icon";
         QImage checkBox("://checkbox_unchecked_dark.svg");
         painter->drawImage(checkboxRect, checkBox);
     }
+    // qDebug() << "Exiting function: DFInstallErrorListDelegate::drawCheckBoxIcon";
 }
 
 /*************************************************************************
@@ -114,6 +123,7 @@ void DFInstallErrorListDelegate::drawCheckBoxIcon(QPainter *painter, QRect bgRec
 void DFInstallErrorListDelegate::drawFontName(QPainter *painter, const QStyleOptionViewItem &option,
                                               DFInstallErrorItemModel itemModel, QRect bgRect, bool bSelectable) const
 {
+    // qDebug() << "Entering function: DFInstallErrorListDelegate::drawFontName";
     QFont nameFont = painter->font();
     nameFont.setPixelSize(DFontSizeManager::instance()->fontPixelSize(DFontSizeManager::T6));
     painter->setFont(nameFont);
@@ -164,11 +174,13 @@ void DFInstallErrorListDelegate::drawFontName(QPainter *painter, const QStyleOpt
 //    } else {
     QColor penColor = option.palette.color(DPalette::Text);
     if (bSelectable == false) {
+        // qDebug() << "Font is not selectable, setting alpha to 0.4";
         penColor.setAlphaF(0.4);
     }
     painter->setPen(QPen(penColor));
     painter->drawText(fontFileNameRect, Qt::AlignLeft | Qt::AlignVCenter, elidedFontFileNameText);
 //    }
+    // qDebug() << "Exiting function: DFInstallErrorListDelegate::drawFontName";
 }
 
 /*************************************************************************
@@ -187,6 +199,7 @@ void DFInstallErrorListDelegate::drawFontName(QPainter *painter, const QStyleOpt
 void DFInstallErrorListDelegate::drawFontStyle(QPainter *painter, const QStyleOptionViewItem &option,
                                                DFInstallErrorItemModel itemModel, QRect bgRect, bool bSelectable) const
 {
+    // qDebug() << "Entering function: DFInstallErrorListDelegate::drawFontStyle";
     Q_UNUSED(option);
     Q_UNUSED(bSelectable);
     int statusLabelMaxWidth = 160;
@@ -215,8 +228,10 @@ void DFInstallErrorListDelegate::drawFontStyle(QPainter *painter, const QStyleOp
 
     DGuiApplicationHelper::ColorType themeType = DGuiApplicationHelper::instance()->themeType();
     if (themeType == DGuiApplicationHelper::LightType) {
+        // qDebug() << "Using light theme color for status text";
         penColor = QColor("#FF6D6D");
     } else {
+        // qDebug() << "Using dark theme color for status text";
         penColor = QColor("#FF4E4E");
     }
 
@@ -224,6 +239,7 @@ void DFInstallErrorListDelegate::drawFontStyle(QPainter *painter, const QStyleOp
     painter->setPen(QPen(penColor));
     painter->drawText(installStatusRect, Qt::AlignRight | Qt::AlignVCenter, elidedStatusText);
     QFont::cleanup();
+    // qDebug() << "Exiting function: DFInstallErrorListDelegate::drawFontStyle";
 }
 
 /*************************************************************************
@@ -239,12 +255,14 @@ void DFInstallErrorListDelegate::drawFontStyle(QPainter *painter, const QStyleOp
 *************************************************************************/
 void DFInstallErrorListDelegate::drawSelectStatus(QPainter *painter, const QStyleOptionViewItem &option, QRect bgRect) const
 {
+    // qDebug() << "Entering function: DFInstallErrorListDelegate::drawSelectStatus";
     QPainterPath path;
     const int radius = 8;
 
     setPaintPath(bgRect, path, 0, 0, radius);
 
     if (option.state & QStyle::State_Selected) {
+        // qDebug() << "Selected";
 //        DPalette pa = DApplicationHelper::instance()->palette(m_parentView);//dtk库接口不稳定，更换palette获取方式
 // 如果是因为tab获取到的焦点，绘制tab选中的效果
         if (m_parentView->getIsTabFocus() == true) {
@@ -256,6 +274,7 @@ void DFInstallErrorListDelegate::drawSelectStatus(QPainter *painter, const QStyl
             painter->fillPath(path, QBrush(fillColor));
         }
     }
+    // qDebug() << "Exiting function: DFInstallErrorListDelegate::drawSelectStatus";
 }
 
 /*************************************************************************
@@ -271,6 +290,7 @@ void DFInstallErrorListDelegate::drawSelectStatus(QPainter *painter, const QStyl
 *************************************************************************/
 void DFInstallErrorListDelegate::paintTabFocusBackground(QPainter *painter, const QStyleOptionViewItem &option, const QRect &bgRect) const
 {
+    // qDebug() << "Entering function: DFInstallErrorListDelegate::paintTabFocusBackground";
     painter->setRenderHint(QPainter::Antialiasing, true);
     const int radius = 8;
 
@@ -307,6 +327,7 @@ void DFInstallErrorListDelegate::paintTabFocusBackground(QPainter *painter, cons
     fillColor3.setAlphaF(0.2);
     painter->setBrush(QBrush(fillColor3));
     painter->fillPath(path3, painter->brush());
+    // qDebug() << "Exiting function: DFInstallErrorListDelegate::paintTabFocusBackground";
 }
 
 /*************************************************************************
@@ -322,6 +343,7 @@ void DFInstallErrorListDelegate::paintTabFocusBackground(QPainter *painter, cons
 *************************************************************************/
 QString DFInstallErrorListDelegate::lengthAutoFeed(QPainter *painter, QString sourceStr, int m_StatusWidth) const
 {
+    // qDebug() << "Entering function: DFInstallErrorListDelegate::lengthAutoFeed";
     //ut000442 listview中字体名长度自适应处理
 
     QFont nameFont = painter->font();
@@ -370,6 +392,7 @@ QString DFInstallErrorListDelegate::lengthAutoFeed(QPainter *painter, QString so
 */
 void DFInstallErrorListDelegate::setPaintPath(const QRect &bgRect, QPainterPath &path, const int xDifference, const int yDifference, const int radius) const
 {
+    // qDebug() << "Entering function: DFInstallErrorListDelegate::setPaintPath";
     QPoint path_bottomRight(bgRect.bottomRight().x() - xDifference, bgRect.bottomRight().y() - yDifference);
     QPoint path_topRight(bgRect.topRight().x() - xDifference, bgRect.topRight().y() + yDifference);
     QPoint path_topLeft(bgRect.topLeft().x() + xDifference, bgRect.topLeft().y() + yDifference);
@@ -383,6 +406,7 @@ void DFInstallErrorListDelegate::setPaintPath(const QRect &bgRect, QPainterPath 
     path.arcTo(QRect(QPoint(path_bottomLeft - QPoint(0, radius * 2)), QSize(radius * 2, radius * 2)), 180, 90);
     path.lineTo(path_bottomRight - QPoint(10, 0));
     path.arcTo(QRect(QPoint(path_bottomRight - QPoint(radius * 2, radius * 2)), QSize(radius * 2, radius * 2)), 270, 90);
+    // qDebug() << "Exiting function: DFInstallErrorListDelegate::setPaintPath";
 }
 
 /*************************************************************************
@@ -399,8 +423,9 @@ void DFInstallErrorListDelegate::setPaintPath(const QRect &bgRect, QPainterPath 
 void DFInstallErrorListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
                                        const QModelIndex &index) const
 {
+    // qDebug() << "Entering function: DFInstallErrorListDelegate::paint (high frequency paint event - commented)";
     if (index.isValid()) {
-
+        // qDebug() << "Paint item";
         painter->save();
         painter->setRenderHint(QPainter::Antialiasing, true);
 
@@ -423,20 +448,24 @@ void DFInstallErrorListDelegate::paint(QPainter *painter, const QStyleOptionView
         QRect bgRect = QRect(rect.left(), rect.top(), rect.width(), rect.height());
 
         if (itemModel.bSelectable) {
+            // qDebug() << "Draw select status";
             drawSelectStatus(painter, option, bgRect);
             drawCheckBox(painter, itemModel, bgRect);
             drawFontName(painter, option, itemModel, bgRect);
             drawFontStyle(painter, option, itemModel, bgRect);
         } else {
+            // qDebug() << "Draw check box icon";
             drawCheckBoxIcon(painter, bgRect);
             drawFontName(painter, option, itemModel, bgRect, false);
             drawFontStyle(painter, option, itemModel, bgRect, false);
         }
         painter->restore();
     } else {
+        // qDebug() << "Paint item";
         QStyledItemDelegate::paint(painter, option, index);
     }
     QFont::cleanup();
+    // qDebug() << "Exiting function: DFInstallErrorListDelegate::paint";
 }
 
 /*************************************************************************
@@ -452,12 +481,14 @@ void DFInstallErrorListDelegate::paint(QPainter *painter, const QStyleOptionView
 QSize DFInstallErrorListDelegate::sizeHint(const QStyleOptionViewItem &option,
                                            const QModelIndex &index) const
 {
+    // qDebug() << "Entering function: DFInstallErrorListDelegate::sizeHint";
     Q_UNUSED(index)
 #ifdef DTKWIDGET_CLASS_DSizeMode
     if (DGuiApplicationHelper::instance()->sizeMode() == DGuiApplicationHelper::SizeMode::CompactMode) {
         return QSize(option.rect.width(), 38);
     }
 #endif
+    // qDebug() << "Exiting function: DFInstallErrorListDelegate::sizeHint";
     return QSize(option.rect.width(), 48);
 }
 
@@ -523,6 +554,7 @@ DFInstallErrorListView::~DFInstallErrorListView()
 *************************************************************************/
 void DFInstallErrorListView::initErrorListData()
 {
+    qDebug() << "Entering function: DFInstallErrorListView::initErrorListData";
     initModel();
     DFontInfo fontInfo;
     for (int i = 0; i < m_installErrorFontModelList.size(); i++) {
@@ -548,6 +580,7 @@ void DFInstallErrorListView::initErrorListData()
 //        selectionModel()->select(firstRowModelIndex, QItemSelectionModel::Select);
 //        setCurrentIndex(firstRowModelIndex);
 //    }
+    qDebug() << "Exiting function: DFInstallErrorListView::initErrorListData";
 }
 
 /*************************************************************************
@@ -560,6 +593,7 @@ void DFInstallErrorListView::initErrorListData()
 *************************************************************************/
 void DFInstallErrorListView::initDelegate()
 {
+    qDebug() << "Entering function: DFInstallErrorListView::initDelegate";
     m_errorListItemDelegate = new DFInstallErrorListDelegate(this);
     this->setItemDelegate(m_errorListItemDelegate);
 }
@@ -575,6 +609,7 @@ void DFInstallErrorListView::initDelegate()
 *************************************************************************/
 void DFInstallErrorListView::addErrorListData(const QList<DFInstallErrorItemModel> &installErrorFontModelList)
 {
+    qDebug() << "Entering function: DFInstallErrorListView::addErrorListData with" << installErrorFontModelList.size() << "items";
     initModel();
 
     QList<DFInstallErrorItemModel> m_newErrorFontModel;
@@ -607,6 +642,7 @@ void DFInstallErrorListView::addErrorListData(const QList<DFInstallErrorItemMode
     }
 
     this->setModel(m_errorListSourceModel);
+    qDebug() << "Exiting function: DFInstallErrorListView::addErrorListData - total items in model:" << m_installErrorFontModelList.size();
 }
 
 /*************************************************************************
@@ -622,16 +658,22 @@ void DFInstallErrorListView::addErrorListData(const QList<DFInstallErrorItemMode
 *************************************************************************/
 void DFInstallErrorListView::checkScrollToIndex(QStringList &addHalfInstalledFiles, QStringList &oldHalfInstalledFiles, QStringList &errorFileList)
 {
+    qDebug() << "Entering function: DFInstallErrorListView::checkScrollToIndex";
     if (addHalfInstalledFiles.count() > 0) {
+        qDebug() << "Scroll to addHalfInstalledFiles";
         scrollToIndex(addHalfInstalledFiles.first());
     } else if (addHalfInstalledFiles.count() == 0 && oldHalfInstalledFiles.count() != 0) {
+        qDebug() << "Scroll to oldHalfInstalledFiles";
         scrollToIndex(oldHalfInstalledFiles.first());
     } else if (addHalfInstalledFiles.count() == 0  && oldHalfInstalledFiles.count() == 0 && errorFileList.count() > 0) {
+        qDebug() << "Scroll to errorFileList";
         scrollToIndex(errorFileList.first());
     } else {
+        qDebug() << "Scroll to beforeSelectRow";
         QModelIndex modelIndex = m_errorListSourceModel->index(beforeSelectRow, 0);
         scrollTo(modelIndex);
     }
+    qDebug() << "Exiting function: DFInstallErrorListView::checkScrollToIndex";
 }
 
 /*************************************************************************
@@ -645,11 +687,14 @@ void DFInstallErrorListView::checkScrollToIndex(QStringList &addHalfInstalledFil
 *************************************************************************/
 void DFInstallErrorListView::scrollToIndex(QString &filePath)
 {
+    qDebug() << "Entering function: DFInstallErrorListView::scrollToIndex";
     DFontInfo fontinfo = m_fontInfoManager->getFontInfo(filePath);
     QString file;
     if (!fontinfo.psname.compare("")) {
+        qDebug() << "Scroll to familyName";
         file = fontinfo.familyName + fontinfo.styleName;
     } else {
+        qDebug() << "Scroll to psname";
         file = fontinfo.psname + fontinfo.styleName;
     }
 
@@ -661,14 +706,17 @@ void DFInstallErrorListView::scrollToIndex(QString &filePath)
         DFontInfo info =  m_fontInfoManager->getFontInfo(itemData.strFontFilePath);
         QString fileName;
         if (!info.psname.compare("")) {
+            // qDebug() << "Scroll to familyName";
             fileName = info.familyName + info.styleName;
         } else {
+            // qDebug() << "Scroll to psname";
             fileName = info.psname + info.styleName;
         }
         if (file == fileName) {
             scrollTo(modelIndex);
         }
     }
+    qDebug() << "Exiting function: DFInstallErrorListView::scrollToIndex";
 }
 
 /*************************************************************************
@@ -683,6 +731,7 @@ void DFInstallErrorListView::scrollToIndex(QString &filePath)
 *************************************************************************/
 void DFInstallErrorListView::setSelectStatus(QStringList &HalfInstalledFiles, QModelIndexList &beforeSelectFiles)
 {
+    qDebug() << "Entering function: DFInstallErrorListView::setSelectStatus";
     QStringList str;
     for (auto &it : HalfInstalledFiles) {
         DFontInfo fontinfo = m_fontInfoManager->getFontInfo(it);
@@ -706,11 +755,14 @@ void DFInstallErrorListView::setSelectStatus(QStringList &HalfInstalledFiles, QM
         DFontInfo info =  m_fontInfoManager->getFontInfo(itemData.strFontFilePath);
         QString fileName;
         if (!info.psname.compare("")) {
+            // qDebug() << "Select familyName";
             fileName = info.familyName + info.styleName;
         } else {
+            // qDebug() << "Select psname";
             fileName = info.psname + info.styleName;
         }
         if (str.contains(fileName)) {
+            // qDebug() << "Select fileName";
             if (!itemData.bChecked && itemData.bSelectable) {
                 itemData.bChecked = true;
                 updateErrorFontModelList(i, itemData);
@@ -718,6 +770,7 @@ void DFInstallErrorListView::setSelectStatus(QStringList &HalfInstalledFiles, QM
             }
 
             if (itemData.bSelectable) {
+                // qDebug() << "Select itemData.bSelectable";
                 selected = true;
                 selectionModel()->select(modelIndex, QItemSelectionModel::Select);
             }
@@ -725,6 +778,7 @@ void DFInstallErrorListView::setSelectStatus(QStringList &HalfInstalledFiles, QM
     }
 
     if (selected == false) {
+        qDebug() << "Select beforeSelectFiles";
 //        this->selectionModel()->select(beforeSelectFiles)
         for (auto &it : beforeSelectFiles) {
 //            selectionModel()->select(it, QItemSelectionModel::Select);
@@ -732,6 +786,7 @@ void DFInstallErrorListView::setSelectStatus(QStringList &HalfInstalledFiles, QM
             selectionModel()->select(modelIndex, QItemSelectionModel::Select);
         }
     }
+    qDebug() << "Exiting function: DFInstallErrorListView::setSelectStatus";
 }
 
 /*************************************************************************
@@ -747,6 +802,7 @@ void DFInstallErrorListView::setSelectStatus(QStringList &HalfInstalledFiles, QM
 *************************************************************************/
 void DFInstallErrorListView::updateErrorFontModelList(int index, DFInstallErrorItemModel m_currentItemModel)
 {
+    qDebug() << "Entering function: DFInstallErrorListView::updateErrorFontModelList";
     m_installErrorFontModelList.replace(index, m_currentItemModel);
 }
 
@@ -761,7 +817,9 @@ void DFInstallErrorListView::updateErrorFontModelList(int index, DFInstallErrorI
 *************************************************************************/
 void DFInstallErrorListView::initModel(bool newOne)
 {
+    qDebug() << "Entering function: DFInstallErrorListView::initModel";
     if (m_errorListSourceModel != nullptr) {
+        qDebug() << "Remove rows";
         int rowCnt = m_errorListSourceModel->rowCount();
         m_errorListSourceModel->removeRows(0, rowCnt);
         for (int i = rowCnt; i >= 0; i--) {
@@ -776,6 +834,7 @@ void DFInstallErrorListView::initModel(bool newOne)
 
     if (newOne)
         m_errorListSourceModel = new QStandardItemModel(this);
+    qDebug() << "Exiting function: DFInstallErrorListView::initModel";
 }
 
 /*************************************************************************
@@ -788,6 +847,7 @@ void DFInstallErrorListView::initModel(bool newOne)
 *************************************************************************/
 QStandardItemModel *DFInstallErrorListView::getErrorListSourceModel()
 {
+    // qDebug() << "Entering function: DFInstallErrorListView::getErrorListSourceModel";
     return m_errorListSourceModel;
 }
 
@@ -801,6 +861,7 @@ QStandardItemModel *DFInstallErrorListView::getErrorListSourceModel()
 *************************************************************************/
 bool DFInstallErrorListView::getIsTabFocus() const
 {
+    // qDebug() << "Entering function: DFInstallErrorListView::getIsTabFocus";
     return m_IsTabFocus;
 }
 
@@ -815,7 +876,9 @@ bool DFInstallErrorListView::getIsTabFocus() const
 *************************************************************************/
 void DFInstallErrorListView::mousePressEvent(QMouseEvent *event)
 {
+    // qDebug() << "Entering function: DFInstallErrorListView::mousePressEvent (high frequency mouse event - commented)";
     if (event->button() == Qt::LeftButton) {
+        qDebug() << "Left button pressed";
         QPoint point = event->pos();
         QModelIndex modelIndex = indexAt(point);
         DFInstallErrorItemModel itemModel =
@@ -825,6 +888,7 @@ void DFInstallErrorListView::mousePressEvent(QMouseEvent *event)
     }
 
     DListView::mousePressEvent(event);
+    // qDebug() << "Exiting function: DFInstallErrorListView::mousePressEvent";
 }
 
 /*************************************************************************
@@ -839,6 +903,7 @@ void DFInstallErrorListView::mousePressEvent(QMouseEvent *event)
 *************************************************************************/
 void DFInstallErrorListView::setSelection(const QRect &rect, QItemSelectionModel::SelectionFlags command)
 {
+    // qDebug() << "Entering function: DFInstallErrorListView::setSelection";
     DListView::setSelection(rect, command);
 }
 
@@ -853,6 +918,7 @@ void DFInstallErrorListView::setSelection(const QRect &rect, QItemSelectionModel
 *************************************************************************/
 bool DFInstallErrorListView::selectNextIndex(int nextIndex)
 {
+    // qDebug() << "Entering function: DFInstallErrorListView::selectNextIndex";
     if (nextIndex == currentIndex().row() && selectedIndexes().count() != 0)//循环到当前选中时，结束
         return true;
 
@@ -860,13 +926,16 @@ bool DFInstallErrorListView::selectNextIndex(int nextIndex)
     DFInstallErrorItemModel itemModel =
         qvariant_cast<DFInstallErrorItemModel>(getErrorListSourceModel()->data(nextModelIndex));
     if (itemModel.bIsNormalUserFont) {
+        // qDebug() << "Select nextIndex";
         if (selectedIndexes().count() == 0)//没有选项则设置并滚动到第一个可选项
             scrollTo(nextModelIndex);
         setCurrentIndex(nextModelIndex);
         return true;
     } else {
+        // qDebug() << "Not select nextIndex";
         return false;
     }
+    // qDebug() << "Exiting function: DFInstallErrorListView::selectNextIndex";
 //    return false;
 }
 
@@ -881,27 +950,35 @@ bool DFInstallErrorListView::selectNextIndex(int nextIndex)
 *************************************************************************/
 void DFInstallErrorListView::keyPressEvent(QKeyEvent *event)
 {
+    // qDebug() << "Entering function: DFInstallErrorListView::keyPressEvent with key:" << event->key();
     bool isEventResponsed = false;
     if (event->key() == Qt::Key_Up || event->key() == Qt::Key_Down) {
+        // qDebug() << "Processing Up/Down key event";
         if (QApplication::keyboardModifiers() == Qt::ControlModifier) {
+            // qDebug() << "Control+Up/Down key pressed - ignoring event";
             if (event->key() == Qt::Key_Up || event->key() == Qt::Key_Down) {
                 isEventResponsed = true;
             }
         } else if (QApplication::keyboardModifiers() == Qt::ShiftModifier) {
+            // qDebug() << "Shift+Up/Down key pressed - delegating to base class";
             DListView::keyPressEvent(event);
             isEventResponsed = true;
         } else {
+            // qDebug() << "Up/Down key with no modifier - processing selection logic";
             bool noneSelection = false;
             int cnt = 0;
             if (event->key() == Qt::Key_Down) {//循环判断是否可选,如果没有可选则不改变选项
+                // qDebug() << "Down key pressed - searching for next selectable item";
                 for (int i = currentIndex().row() + 1; i <= this->count(); i++) {
                     //没有选项则从头开始检查是否可选
                     if (selectedIndexes().count() == 0 && cnt == 0) {
+                        // qDebug() << "No selection, starting from beginning";
                         i = 0;
                         noneSelection = true;
                     }
                     cnt++;
                     if (selectNextIndex(i)) {
+                        // qDebug() << "Found selectable item at index:" << i;
                         return;
                     }
                     if (i == this->count() - 1 && noneSelection == true)
@@ -911,15 +988,19 @@ void DFInstallErrorListView::keyPressEvent(QKeyEvent *event)
                 }
                 isEventResponsed = true;
             } else {//循环判断是否可选,如果没有可选则不改变选项
+                // qDebug() << "Up key pressed - searching for previous selectable item";
                 for (int i = currentIndex().row() - 1; i >= -1; i--) {
                     //没有选项则从底部开始检查是否可选
                     if (selectedIndexes().count() == 0 && cnt == 0) {
+                        // qDebug() << "No selection, starting from end";
                         i = count() - 1;
                         noneSelection = true;
                     }
                     cnt++;
-                    if (selectNextIndex(i))
+                    if (selectNextIndex(i)) {
+                        // qDebug() << "Found selectable item at index:" << i;
                         return;
+                    }
                     if (i == 0 && noneSelection == true)
                         return;
                     if (i == 0 || i == -1)
@@ -929,22 +1010,30 @@ void DFInstallErrorListView::keyPressEvent(QKeyEvent *event)
             }
         }
     } else if (event->key() == Qt::Key_Home && event->modifiers() == Qt::NoModifier) {
+        // qDebug() << "Home key pressed - navigating to top";
         responseToHomeAndEnd(true);
         isEventResponsed = true;
     } else if (event->key() == Qt::Key_End && event->modifiers() == Qt::NoModifier) {
+        // qDebug() << "End key pressed - navigating to bottom";
         responseToHomeAndEnd(false);
         isEventResponsed = true;
     } else if (event->key() == Qt::Key_PageUp && event->modifiers() == Qt::NoModifier) {
+        // qDebug() << "PageUp key pressed - navigating up one page";
         responseToPageUpAndPageDown(true);
         isEventResponsed = true;
     } else if (event->key() == Qt::Key_PageDown && event->modifiers() == Qt::NoModifier) {
+        // qDebug() << "PageDown key pressed - navigating down one page";
         responseToPageUpAndPageDown(false);
         isEventResponsed = true;
     }
     //如果事件已被接收或事件为空格按键，不做响应，直接退出，如果以后要实现空格功能，在这里添加即可
-    if (isEventResponsed || event->key() == Qt::Key_Space)
+    if (isEventResponsed || event->key() == Qt::Key_Space) {
+        // qDebug() << "Exiting function: DFInstallErrorListView::keyPressEvent (event handled)";
         return;
+    }
+
     DListView::keyPressEvent(event);
+    // qDebug() << "Exiting function: DFInstallErrorListView::keyPressEvent";
 }
 /*************************************************************************
  <Function>      initSelectedItem
@@ -956,12 +1045,15 @@ void DFInstallErrorListView::keyPressEvent(QKeyEvent *event)
 *************************************************************************/
 void DFInstallErrorListView::initSelectedItem()
 {
+    qDebug() << "Entering function: DFInstallErrorListView::initSelectedItem";
     if (selectionModel()->selectedIndexes().count() == 0) {
+        qDebug() << "Init selected item";
         for (int i = 0; i < this->count(); i++) {
             if (selectNextIndex(i))
                 break;
         }
     }
+    qDebug() << "Exiting function: DFInstallErrorListView::initSelectedItem";
 }
 
 /*************************************************************************
@@ -975,6 +1067,7 @@ void DFInstallErrorListView::initSelectedItem()
 *************************************************************************/
 QRect DFInstallErrorListView::getIconRect(const QRect &rect)
 {
+    // qDebug() << "Entering function: DFInstallErrorListView::getIconRect";
     int checkBoxSize = 20 + 10;
     return QRect(rect.left() + 15, rect.top() + 10, checkBoxSize, checkBoxSize);
 }
@@ -992,11 +1085,14 @@ QRect DFInstallErrorListView::getIconRect(const QRect &rect)
 *************************************************************************/
 void DFInstallErrorListView::responseToHomeAndEnd(bool isHomeKeyPressed)
 {
+    qDebug() << "Entering function: DFInstallErrorListView::responseToHomeAndEnd";
     QModelIndex index;
     if (isHomeKeyPressed) {
+        qDebug() << "Scroll to top";
         index = m_errorListSourceModel->index(0, 0);
         scrollToTop();
     } else {
+        qDebug() << "Scroll to bottom";
         index = m_errorListSourceModel->index(count() - 1, 0);
         scrollToBottom();
     }
@@ -1007,6 +1103,7 @@ void DFInstallErrorListView::responseToHomeAndEnd(bool isHomeKeyPressed)
         selectionModel()->select(index, QItemSelectionModel::Select);
         setCurrentIndex(index);
     }
+    qDebug() << "Exiting function: DFInstallErrorListView::responseToHomeAndEnd";
 }
 
 /*************************************************************************
@@ -1020,18 +1117,24 @@ void DFInstallErrorListView::responseToHomeAndEnd(bool isHomeKeyPressed)
 *************************************************************************/
 void DFInstallErrorListView::responseToPageUpAndPageDown(bool isPageUpPressed)
 {
+    qDebug() << "Entering function: DFInstallErrorListView::responseToPageUpAndPageDown";
     if (isPageUpPressed) {
+        qDebug() << "Scroll to top";
         QModelIndex firstVisibleItem = indexAt(QPoint(3, 3));
         if (firstVisibleItem.isValid()) {
+            qDebug() << "Scroll to top";
             scrollTo(firstVisibleItem, QAbstractItemView::PositionAtBottom);
         }
     } else {
+        qDebug() << "Scroll to bottom";
         QRect visibleRect = geometry();
         QModelIndex lastVisibleItem = indexAt(QPoint(3, visibleRect.height() - 3));
         if (lastVisibleItem.isValid()) {
+            qDebug() << "Scroll to bottom";
             scrollTo(lastVisibleItem, QAbstractItemView::PositionAtTop);
         }
     }
+    qDebug() << "Exiting function: DFInstallErrorListView::responseToPageUpAndPageDown";
 }
 
 /*******************************************************************************
@@ -1042,6 +1145,7 @@ void DFInstallErrorListView::responseToPageUpAndPageDown(bool isPageUpPressed)
 *******************************************************************************/
 void DFInstallErrorListView::ifNeedScrollTo(QModelIndex idx)
 {
+    // qDebug() << "Entering function: DFInstallErrorListView::ifNeedScrollTo";
     if (!viewport()->visibleRegion().contains(visualRect(idx).center()))
         scrollTo(idx);
 }
@@ -1058,10 +1162,12 @@ void DFInstallErrorListView::ifNeedScrollTo(QModelIndex idx)
 *************************************************************************/
 bool DFInstallErrorListView::eventFilter(QObject *obj, QEvent *event)
 {
+    // qDebug() << "Entering function: DFInstallErrorListView::eventFilter";
     Q_UNUSED(obj)
 
     //失去焦点时重置各个标志位
     if (event->type() == QEvent::FocusOut) {
+        // qDebug() << "Focus out";
         QFocusEvent *focusEvent = dynamic_cast<QFocusEvent *>(event);
 
         //需要排除因为窗口切换导致errorlistview失去焦点的情况，这种情况不需要清空标志位
@@ -1072,6 +1178,7 @@ bool DFInstallErrorListView::eventFilter(QObject *obj, QEvent *event)
     }
 
     if (event->type() == QEvent::FocusIn) {
+        // qDebug() << "Focus in";
         QFocusEvent *focusEvent = dynamic_cast<QFocusEvent *>(event);
 
         //需要排除因为窗口切换导致errorlistview获取到焦点的情况
@@ -1090,5 +1197,6 @@ bool DFInstallErrorListView::eventFilter(QObject *obj, QEvent *event)
                 }*/
     }
 
+    // qDebug() << "Exiting function: DFInstallErrorListView::eventFilter";
     return false;
 }

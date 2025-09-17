@@ -41,7 +41,7 @@ DFQuickInstallWindow::DFQuickInstallWindow(const QStringList &files, QWidget *pa
 
 DFQuickInstallWindow::~DFQuickInstallWindow()
 {
-    qDebug() << "Quick install window destroyed";
+    // qDebug() << "Quick install window destroyed";
 }
 
 /*************************************************************************
@@ -55,6 +55,7 @@ DFQuickInstallWindow::~DFQuickInstallWindow()
 *************************************************************************/
 void DFQuickInstallWindow::initUI()
 {
+    qDebug() << "Entering function: void DFQuickInstallWindow::initUI";
     //hide maximize button, minimize button & menu button
     setTitlebarShadowEnabled(false);
     setWindowFlags(windowFlags() & ~Qt::WindowMaximizeButtonHint & ~Qt::WindowMinimizeButtonHint);
@@ -154,6 +155,7 @@ void DFQuickInstallWindow::initUI()
     m_stateLabel->setStyleSheet("background: blue");
     m_titleLabel->setStyleSheet("background: yellow");
 #endif
+    qDebug() << "Exiting function: void DFQuickInstallWindow::initUI";
 }
 
 /*************************************************************************
@@ -167,11 +169,13 @@ void DFQuickInstallWindow::initUI()
 *************************************************************************/
 void DFQuickInstallWindow::initConnections()
 {
+    qDebug() << "Entering function: void DFQuickInstallWindow::initConnections";
     connect(this, &DFQuickInstallWindow::fileSelected, this, &DFQuickInstallWindow::onFileSelected);
     connect(m_actionBtn, &DPushButton::clicked, this, &DFQuickInstallWindow::onInstallBtnClicked);
     connect(this, &DFQuickInstallWindow::quickInstall, this, [this]() {
         this->installFont(m_installFiles);
     });
+    qDebug() << "Exiting function: void DFQuickInstallWindow::initConnections";
 }
 
 /*************************************************************************
@@ -185,6 +189,7 @@ void DFQuickInstallWindow::initConnections()
 *************************************************************************/
 void DFQuickInstallWindow::resizeEvent(QResizeEvent *event)
 {
+    // qDebug() << "Entering function: void DFQuickInstallWindow::resizeEvent";
     DMainWindow::resizeEvent(event);
 
     // m_mainFrame->setFixedSize(event->size().width() - 150, event->size().height());
@@ -193,7 +198,9 @@ void DFQuickInstallWindow::resizeEvent(QResizeEvent *event)
 
 void DFQuickInstallWindow::onFileSelected(const QStringList &fileList)
 {
+    qDebug() << "Entering function: void DFQuickInstallWindow::onFileSelected";
     if (fileList.size() > 0) {
+        qDebug() << "File list size is greater than 0";
         QString file = fileList.at(0);
 
         //Clear old files
@@ -250,6 +257,7 @@ void DFQuickInstallWindow::onFileSelected(const QStringList &fileList)
             InitPreviewFont(fontInfo);
         }
     }
+    qDebug() << "Exiting function: void DFQuickInstallWindow::onFileSelected";
 }
 
 /*************************************************************************
@@ -283,12 +291,15 @@ void DFQuickInstallWindow::InitPreviewFont(DFontInfo &fontInfo)
     qDebug() << __FUNCTION__ << "enter";
 
     if (!fontInfo.isError) {
+        qDebug() << "Font info is not error";
         //fontInfo = m_fontInfoManager->getFontInfo(fontInfo.filePath);
         if (!fontInfo.isInstalled) {
+            qDebug() << "Font is not installed";
             int fontId = QFontDatabase::addApplicationFont(fontInfo.filePath);
             QStringList familys = QFontDatabase::applicationFontFamilies(fontId);
 
             if (familys.size() > 0) {
+                qDebug() << "Font family name is not empty";
                 fontInfo.familyName = familys.at(0);
             }
         }
@@ -301,27 +312,37 @@ void DFQuickInstallWindow::InitPreviewFont(DFontInfo &fontInfo)
         QString styleName = fontInfo.styleName;
 
         if (styleName.contains("Italic")) {
+            qDebug() << "Style name contains Italic";
             preivewFont.setItalic(true);
         }
 
         //之前代码顺序出现问题，导致有的时候contains判断出错 比如DemiBold与Bold，现在调整代码顺序
         if (styleName.contains("Regular", Qt::CaseInsensitive)) {
+            qDebug() << "Style name contains Regular";
             preivewFont.setWeight(QFont::Normal);
         } else if (styleName.contains("DemiBold", Qt::CaseInsensitive)) {
+            qDebug() << "Style name contains DemiBold";
             preivewFont.setWeight(QFont::DemiBold);
         } else if (styleName.contains("ExtraBold", Qt::CaseInsensitive)) {
+            qDebug() << "Style name contains ExtraBold";
             preivewFont.setWeight(QFont::ExtraBold);
         } else if (styleName.contains("Bold", Qt::CaseInsensitive)) {
+            qDebug() << "Style name contains Bold";
             preivewFont.setWeight(QFont::Bold);
         } else if (styleName.contains("ExtraLight", Qt::CaseInsensitive)) {
+            qDebug() << "Style name contains ExtraLight";
             preivewFont.setWeight(QFont::ExtraLight);
         } else if (styleName.contains("Light", Qt::CaseInsensitive)) {
+            qDebug() << "Style name contains Light";
             preivewFont.setWeight(QFont::Light);
         } else if (styleName.contains("Thin", Qt::CaseInsensitive)) {
+            qDebug() << "Style name contains Thin";
             preivewFont.setWeight(QFont::Thin);
         } else if (styleName.contains("Medium", Qt::CaseInsensitive)) {
+            qDebug() << "Style name contains Medium";
             preivewFont.setWeight(QFont::Medium);
         } else if (styleName.contains("Black", Qt::CaseInsensitive)) {
+            qDebug() << "Style name contains Black";
             preivewFont.setWeight(QFont::Black);
         }
 
@@ -330,6 +351,7 @@ void DFQuickInstallWindow::InitPreviewFont(DFontInfo &fontInfo)
 
         m_titleLabel->setText(fontInfo.familyName);
     }
+    qDebug() << "Exiting function: void DFQuickInstallWindow::InitPreviewFont";
 }
 
 /*************************************************************************
@@ -355,6 +377,7 @@ void DFQuickInstallWindow::installFont(const QStringList &files)
 
     Dtk::Widget::moveToCenter(&dfNormalInstalldlg);
     dfNormalInstalldlg.exec();
+    qDebug() << __FUNCTION__ << "exit";
 }
 
 /*************************************************************************
@@ -368,6 +391,7 @@ void DFQuickInstallWindow::installFont(const QStringList &files)
 *************************************************************************/
 void DFQuickInstallWindow::onFontInstallFinished()
 {
+    qDebug() << __FUNCTION__ << "enter";
     DFontPreviewItemData itemData;
     QFileInfo filePathInfo(m_installFiles[0]);
     itemData.fontInfo = m_fontInfoManager->getFontInfo(m_installFiles[0]);
@@ -377,6 +401,7 @@ void DFQuickInstallWindow::onFontInstallFinished()
     //Only insert record when db don't have record
     //avoid dummy record
     if (!itemData.fontInfo.isInstalled) {
+        qDebug() << "Font is not installed";
         QStringList chineseFontPathList = m_fontInfoManager->getAllChineseFontPath();
         QStringList monoSpaceFontPathList = m_fontInfoManager->getAllMonoSpaceFontPath();
 
@@ -389,9 +414,11 @@ void DFQuickInstallWindow::onFontInstallFinished()
         itemData.fontInfo.filePath = target;
 
         if (itemData.fontInfo.styleName.length() > 0) {
+            qDebug() << "Style name is not empty";
             itemData.fontData.strFontName =
                 QString("%1-%2").arg(itemData.fontInfo.familyName).arg(itemData.fontInfo.styleName);
         } else {
+            qDebug() << "Style name is empty";
             itemData.fontData.strFontName = itemData.fontInfo.familyName;
         }
 
@@ -416,4 +443,5 @@ void DFQuickInstallWindow::onFontInstallFinished()
     QStringList list;
     list << m_installFiles[0];
     Q_EMIT requestShowMainWindow(list);
+    qDebug() << __FUNCTION__ << "exit";
 }

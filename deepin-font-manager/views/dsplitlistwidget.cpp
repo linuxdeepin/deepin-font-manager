@@ -30,7 +30,7 @@ DNoFocusDelegate::DNoFocusDelegate(QAbstractItemView *parent)
     : DStyledItemDelegate(parent)
     , m_parentView(qobject_cast<DSplitListWidget *>(parent))
 {
-
+    // qDebug() << "Entering function: DNoFocusDelegate::DNoFocusDelegate";
 }
 
 //用于去除选中项的边框
@@ -48,7 +48,9 @@ DNoFocusDelegate::DNoFocusDelegate(QAbstractItemView *parent)
 void DNoFocusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
                              const QModelIndex &index) const
 {
+    // qDebug() << "Entering function: DNoFocusDelegate::paint";
     if (index.isValid()) {
+        // qDebug() << "index is valid";
         painter->save();
         painter->setFont(DApplication::font());
         painter->setRenderHint(QPainter::Antialiasing, true);
@@ -63,13 +65,15 @@ void DNoFocusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
         DPalette::ColorGroup cg = (option.state & QStyle::State_Enabled)
                                   ? DPalette::Normal : DPalette::Disabled;
         if (cg == DPalette::Normal && !(option.state & QStyle::State_Active)) {
+            // qDebug() << "cg is Normal and option.state is not Active";
             cg = DPalette::Inactive;
         }
 
         if (strTitle.startsWith(FTM_SPLIT_TOP_SPACE_TAG)) {
+            // qDebug() << "strTitle starts with FTM_SPLIT_TOP_SPACE_TAG";
             //用于ListView顶部空白
         } else if (strTitle.startsWith(FTM_SPLIT_TOP_SPLIT_TAG)) {
-
+            // qDebug() << "strTitle starts with FTM_SPLIT_TOP_SPLIT_TAG";
             QRect lineRect;
             lineRect.setX(option.rect.x() + 10);
             lineRect.setY(option.rect.y() + option.rect.height() - 2);
@@ -85,7 +89,7 @@ void DNoFocusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
             QColor fillColor = styleHelper.getColor(static_cast<const QStyleOption *>(&option), pa, DPalette::ItemBackground);
             painter->fillRect(lineRect, fillColor);
         } else {
-
+            // qDebug() << "strTitle does not start with FTM_SPLIT_TOP_SPACE_TAG or FTM_SPLIT_TOP_SPLIT_TAG";
             QRect rect;
             rect.setX(option.rect.x());
             rect.setY(option.rect.y());
@@ -100,8 +104,10 @@ void DNoFocusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
             /* bug#20266 UT000591 */ /*bug 21075 ut000442*/
             QRect fontNameRect;
             if (strTitle == "System") {
+                // qDebug() << "strTitle is System";
                 fontNameRect = QRect(backgroundRect.left() + 10, backgroundRect.top() + 1, backgroundRect.width() - 20, backgroundRect.height() - 7);
             } else {
+                // qDebug() << "strTitle is not System";
                 fontNameRect = QRect(backgroundRect.left() + 10, backgroundRect.top() + 2, backgroundRect.width() - 20, backgroundRect.height() - 7);
             }
 
@@ -110,17 +116,21 @@ void DNoFocusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
             painter->setFont(nameFont);
 
             if (option.state & QStyle::State_Selected) {
+                // qDebug() << "option.state is Selected";
                 painter->setPen(QPen(option.palette.color(DPalette::HighlightedText)));
                 painter->drawText(fontNameRect, Qt::AlignLeft | Qt::AlignVCenter, strTitle);
             } else {
+                // qDebug() << "option.state is not Selected";
                 painter->setPen(QPen(option.palette.color(DPalette::Text)));
                 painter->drawText(fontNameRect, Qt::AlignLeft | Qt::AlignVCenter, strTitle);
             }
         }
         painter->restore();
     } else {
+        // qDebug() << "index is not valid";
         QStyledItemDelegate::paint(painter, option, index);
     }
+    // qDebug() << "Exiting function: DNoFocusDelegate::paint";
 }
 
 /*************************************************************************
@@ -136,25 +146,32 @@ void DNoFocusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
 QSize DNoFocusDelegate::sizeHint(const QStyleOptionViewItem &option,
                                  const QModelIndex &index) const
 {
+    // qDebug() << "Entering function: DNoFocusDelegate::sizeHint";
     Q_UNUSED(index)
 
     int rowIndex = index.row();
 
 #ifdef DTKWIDGET_CLASS_DSizeMode
     if (DGuiApplicationHelper::instance()->sizeMode() == DGuiApplicationHelper::SizeMode::CompactMode) {
+        // qDebug() << "DGuiApplicationHelper::instance()->sizeMode() == DGuiApplicationHelper::SizeMode::CompactMode";
         if (FTM_SPLIT_LINE_INDEX == rowIndex) {
+            // qDebug() << "FTM_SPLIT_LINE_INDEX == rowIndex";
             return QSize(option.rect.width(), 20);
         } else {
+            // qDebug() << "FTM_SPLIT_LINE_INDEX != rowIndex";
             return QSize(option.rect.width(), 24);
         }
     }
 #endif
 
     if (FTM_SPLIT_LINE_INDEX == rowIndex) {
+        // qDebug() << "FTM_SPLIT_LINE_INDEX == rowIndex";
         return QSize(option.rect.width(), 24);
     } else {
+        // qDebug() << "FTM_SPLIT_LINE_INDEX != rowIndex";
         return QSize(option.rect.width(), 36);
     }
+    // qDebug() << "Exiting function: DNoFocusDelegate::sizeHint";
 }
 
 
@@ -172,24 +189,30 @@ QSize DNoFocusDelegate::sizeHint(const QStyleOptionViewItem &option,
 *************************************************************************/
 void DNoFocusDelegate::paintBackground(QPainter *painter, const QStyleOptionViewItem &option, const QRect &backgroundRect, const QPalette::ColorGroup cg) const
 {
+    // qDebug() << "Entering function: DNoFocusDelegate::paintBackground";
     //绘制左侧列表外部高亮区域的路径
     QPainterPath pathFirst;
     const int radius = 8;
     setPaintPath(backgroundRect, pathFirst, 0, 0, radius);
     bool isTabFocus = m_parentView->IsTabFocus();
     if (option.state & QStyle::State_Selected) {
+        // qDebug() << "option.state & QStyle::State_Selected";
         //判断是否为通过tab获得的焦点
         if (isTabFocus) {
             //如果为hover状态，颜色亮度需要加亮
             if (option.state & QStyle::State_MouseOver) {
+                // qDebug() << "option.state & QStyle::State_MouseOver";
                 paintTabBackground(painter, option, backgroundRect, cg, true);
             } else {
+                // qDebug() << "option.state & QStyle::State_MouseOver is false";
                 paintTabBackground(painter, option, backgroundRect, cg, false);
             }
         } else if (!isTabFocus) {
+            // qDebug() << "option.state & QStyle::State_Selected and isTabFocus is false";
             QColor fillColor = option.palette.color(cg, DPalette::Highlight);
             //如果为hover状态，颜色亮度需要加亮
             if (option.state & QStyle::State_MouseOver) {
+                // qDebug() << "option.state & QStyle::State_MouseOver";
 #if QT_VERSION_MAJOR > 5
                 fillColor = fillColor.lighter(120);
 #else
@@ -200,6 +223,7 @@ void DNoFocusDelegate::paintBackground(QPainter *painter, const QStyleOptionView
             painter->fillPath(pathFirst, painter->brush());
         }
     } else if (option.state & QStyle::State_MouseOver) {
+        // qDebug() << "option.state & QStyle::State_MouseOver";
         //未选中状态下的hover，需要有淡灰色背景
         DStyleHelper styleHelper;
         QColor fillColor = styleHelper.getColor(static_cast<const QStyleOption *>(&option), DPalette::ToolTipText);
@@ -207,6 +231,7 @@ void DNoFocusDelegate::paintBackground(QPainter *painter, const QStyleOptionView
         painter->setBrush(QBrush(fillColor));
         painter->fillPath(pathFirst, painter->brush());
     }
+    // qDebug() << "Exiting function: DNoFocusDelegate::paintBackground";
 }
 
 /*************************************************************************
@@ -225,6 +250,7 @@ void DNoFocusDelegate::paintBackground(QPainter *painter, const QStyleOptionView
 void DNoFocusDelegate::paintTabBackground(QPainter *painter, const QStyleOptionViewItem &option,
                                           const QRect &backgroundRect, const QPalette::ColorGroup cg, const bool isHover) const
 {
+    // qDebug() << "Entering function: DNoFocusDelegate::paintTabBackground";
     //绘制左侧列表外部高亮区域的路径
     QPainterPath pathFirst;
     const int radius = 8;
@@ -243,8 +269,10 @@ void DNoFocusDelegate::paintTabBackground(QPainter *painter, const QStyleOptionV
     //如果为hover状态，颜色亮度需要加亮
     if (isHover) {
 #if QT_VERSION_MAJOR > 5
+        // qDebug() << "fillColor is lighter";
         fillColor = fillColor.lighter(120);
 #else
+        // qDebug() << "fillColor is light";
         fillColor = fillColor.light(120);
 #endif
     }
@@ -258,6 +286,7 @@ void DNoFocusDelegate::paintTabBackground(QPainter *painter, const QStyleOptionV
     painter->setBrush(QBrush(fillColor));
     painter->fillPath(pathThird, painter->brush());
 
+    // qDebug() << "Exiting function: DNoFocusDelegate::paintTabBackground";
 }
 
 /*************************************************************************
@@ -275,6 +304,7 @@ void DNoFocusDelegate::paintTabBackground(QPainter *painter, const QStyleOptionV
 *************************************************************************/
 void DNoFocusDelegate::setPaintPath(const QRect &bgRect, QPainterPath &path, const int xDifference, const int yDifference, const int radius) const
 {
+    // qDebug() << "Entering function: DNoFocusDelegate::setPaintPath";
     QPoint path_bottomRight(bgRect.bottomRight().x() - xDifference, bgRect.bottomRight().y() - yDifference);
     QPoint path_topRight(bgRect.topRight().x() - xDifference, bgRect.topRight().y() + yDifference);
     QPoint path_topLeft(bgRect.topLeft().x() + xDifference, bgRect.topLeft().y() + yDifference);
@@ -288,6 +318,7 @@ void DNoFocusDelegate::setPaintPath(const QRect &bgRect, QPainterPath &path, con
     path.arcTo(QRect(QPoint(path_bottomLeft - QPoint(0, radius * 2)), QSize(radius * 2, radius * 2)), 180, 90);
     path.lineTo(path_bottomRight - QPoint(10, 0));
     path.arcTo(QRect(QPoint(path_bottomRight - QPoint(radius * 2, radius * 2)), QSize(radius * 2, radius * 2)), 270, 90);
+    // qDebug() << "Exiting function: DNoFocusDelegate::setPaintPath";
 }
 
 
@@ -304,6 +335,7 @@ void DNoFocusDelegate::setPaintPath(const QRect &bgRect, QPainterPath &path, con
 *************************************************************************/
 QString DNoFocusDelegate::adjustLength(QString &titleName, QFont &font) const
 {
+    // qDebug() << "Entering function: DNoFocusDelegate::adjustLength";
     QFontMetrics fontMetric(font);
 
     QString finalTitle = "";
@@ -336,12 +368,14 @@ QString DNoFocusDelegate::adjustLength(QString &titleName, QFont &font) const
         }
     }
 
+    // qDebug() << "Exiting function: DNoFocusDelegate::adjustLength";
     return finalTitle;
 }
 
 DSplitListWidget::DSplitListWidget(QWidget *parent)
     : DListView(parent)
 {
+    qDebug() << "Entering function: DSplitListWidget::DSplitListWidget";
     //去除选中项的边框
     this->setItemDelegate(new DNoFocusDelegate(this));
     this->setEditTriggers(QAbstractItemView::EditTrigger::NoEditTriggers);
@@ -353,12 +387,17 @@ DSplitListWidget::DSplitListWidget(QWidget *parent)
     connect(m_signalManager, &SignalManager::setLostFocusState, this, [ = ](bool isTrue) {
         m_isFocusFromFontListView = isTrue;
     });
+    qDebug() << "Exiting function: DSplitListWidget::DSplitListWidget";
 }
 
-DSplitListWidget::~DSplitListWidget() {}
+DSplitListWidget::~DSplitListWidget()
+{
+    qDebug() << "Entering function: DSplitListWidget::~DSplitListWidget";
+}
 
 void DSplitListWidget::initListData()
 {
+    qDebug() << "Entering function: DSplitListWidget::initListData";
     m_titleStringList << DApplication::translate("Category", "All Fonts")
                       << DApplication::translate("Category", "System")
                       << DApplication::translate("Category", "User")
@@ -391,6 +430,7 @@ void DSplitListWidget::initListData()
     //设置默认选中
     QModelIndex index = m_categoryItemModell->index(AllFont, 0);
     selectionModel()->select(index, QItemSelectionModel::Select);
+    qDebug() << "Exiting function: DSplitListWidget::initListData";
 }
 
 /*************************************************************************
@@ -404,6 +444,7 @@ void DSplitListWidget::initListData()
 *************************************************************************/
 void DSplitListWidget::setIsHalfWayFocus(bool IsHalfWayFocus)
 {
+    // qDebug() << "Entering function: DSplitListWidget::setIsHalfWayFocus";
     m_IsHalfWayFocus = IsHalfWayFocus;
 }
 
@@ -418,6 +459,7 @@ void DSplitListWidget::setIsHalfWayFocus(bool IsHalfWayFocus)
 *************************************************************************/
 bool DSplitListWidget::IsTabFocus() const
 {
+    // qDebug() << "Entering function: DSplitListWidget::IsTabFocus";
     return m_IsTabFocus;
 }
 
@@ -432,10 +474,12 @@ bool DSplitListWidget::IsTabFocus() const
 *************************************************************************/
 FocusStatus &DSplitListWidget::getStatus()
 {
+    // qDebug() << "Entering function: DSplitListWidget::getStatus";
     m_currentStatus.m_IsFirstFocus = this->m_IsFirstFocus;
     m_currentStatus.m_IsHalfWayFocus = this->m_IsHalfWayFocus;
     m_currentStatus.m_IsMouseClicked = this->m_IsMouseClicked;
 
+    // qDebug() << "Exiting function: DSplitListWidget::getStatus";
     return m_currentStatus;
 }
 
@@ -450,6 +494,7 @@ FocusStatus &DSplitListWidget::getStatus()
 *************************************************************************/
 void DSplitListWidget::setCurrentStatus(const FocusStatus &currentStatus)
 {
+    // qDebug() << "Entering function: DSplitListWidget::setCurrentStatus";
     m_currentStatus = currentStatus;
 }
 
@@ -464,14 +509,17 @@ void DSplitListWidget::setCurrentStatus(const FocusStatus &currentStatus)
 *************************************************************************/
 void DSplitListWidget::mouseMoveEvent(QMouseEvent *event)
 {
+    // qDebug() << "Entering function: DSplitListWidget::mouseMoveEvent";
     //正在安装过程中，禁止鼠标事件
     if (m_isIstalling) {
+        // qDebug() << "m_isIstalling is true";
         return;
     }
 
     //更新用于判断是否弹出提示信息的鼠标状态标志位
     m_isMouseMoved = true;
     if (QToolTip::isVisible()) {
+        // qDebug() << "QToolTip::isVisible is true";
         QToolTip::hideText();
     }
 
@@ -479,8 +527,10 @@ void DSplitListWidget::mouseMoveEvent(QMouseEvent *event)
 
     //通过亮的点的y值差距获得移动的趋势
     if (difference_pos.y() > 0) {
+        // qDebug() << "difference_pos.y() > 0";
         m_IsPositive = true;
     } else {
+        // qDebug() << "difference_pos.y() <= 0";
         m_IsPositive = false;
     }
 
@@ -490,6 +540,7 @@ void DSplitListWidget::mouseMoveEvent(QMouseEvent *event)
     if (modelIndex.row() == 5)
         return;
     DListView::mouseMoveEvent(event);
+    // qDebug() << "Exiting function: DSplitListWidget::mouseMoveEvent";
 }
 
 /*************************************************************************
@@ -503,11 +554,15 @@ void DSplitListWidget::mouseMoveEvent(QMouseEvent *event)
 *************************************************************************/
 void DSplitListWidget::setRefreshFinished(bool isInstalling)
 {
+    // qDebug() << "Entering function: DSplitListWidget::setRefreshFinished";
     if (isInstalling) {
+        // qDebug() << "isInstalling is true";
         m_refreshFinished = false;
     } else {
+        // qDebug() << "isInstalling is false";
         m_refreshFinished = true;
     }
+    // qDebug() << "Exiting function: DSplitListWidget::setRefreshFinished";
 }
 
 /*************************************************************************
@@ -521,6 +576,7 @@ void DSplitListWidget::setRefreshFinished(bool isInstalling)
 *************************************************************************/
 void DSplitListWidget::wheelEvent(QWheelEvent *event)
 {
+    // qDebug() << "Entering function: DSplitListWidget::wheelEvent";
     if (!m_refreshFinished)
         return;
     int now = -1;
@@ -557,8 +613,10 @@ void DSplitListWidget::wheelEvent(QWheelEvent *event)
         }
     }
     if (next == now) {
+        // qDebug() << "next == now";
         return;
     } else {
+        // qDebug() << "next != now";
         this->setModel(m_categoryItemModell);
         QStandardItem *item = m_categoryItemModell->item(next);
         QModelIndex modelIndex = m_categoryItemModell->indexFromItem(item);
@@ -570,6 +628,7 @@ void DSplitListWidget::wheelEvent(QWheelEvent *event)
             emit  onListWidgetItemClicked(next);
         }
     }
+    // qDebug() << "Exiting function: DSplitListWidget::wheelEvent";
 }
 
 /*************************************************************************
@@ -583,11 +642,13 @@ void DSplitListWidget::wheelEvent(QWheelEvent *event)
 *************************************************************************/
 void DSplitListWidget::setCurrentPage()
 {
+    qDebug() << "Entering function: DSplitListWidget::setCurrentPage";
     QModelIndex current = currentIndex();
 
     int row = current.row();
     qDebug() << __FUNCTION__ << row << m_LastPageNumber;
     if (row < 0 || FTM_SPLIT_LINE_INDEX == row || row == m_LastPageNumber) {
+        // qDebug() << "row < 0 || FTM_SPLIT_LINE_INDEX == row || row == m_LastPageNumber, return";
         return;
     }
 
@@ -598,6 +659,7 @@ void DSplitListWidget::setCurrentPage()
 
     emit onListWidgetItemClicked(realIndex);
     emit m_signalManager->changeView();
+    qDebug() << "Exiting function: DSplitListWidget::setCurrentPage";
 }
 
 /*************************************************************************
@@ -611,11 +673,13 @@ void DSplitListWidget::setCurrentPage()
 *************************************************************************/
 void DSplitListWidget::setLastPageNumber(int LastPageNumber)
 {
+    // qDebug() << "Entering function: DSplitListWidget::setLastPageNumber";
     m_LastPageNumber = LastPageNumber;
 }
 
 void DSplitListWidget::setIsIstalling(bool isIstalling)
 {
+    // qDebug() << "Entering function: DSplitListWidget::setIsIstalling";
     m_isIstalling = isIstalling;
 }
 
@@ -630,6 +694,7 @@ void DSplitListWidget::setIsIstalling(bool isIstalling)
 *************************************************************************/
 void DSplitListWidget::mouseReleaseEvent(QMouseEvent *event)
 {
+    // qDebug() << "Entering function: DSplitListWidget::mouseReleaseEvent";
     //TODO
     //正在安装过程中，禁止鼠标事件
     if (m_isIstalling)
@@ -638,11 +703,14 @@ void DSplitListWidget::mouseReleaseEvent(QMouseEvent *event)
     QModelIndex modelIndex = indexAt(clickPoint);
     //  根据移动趋势进行移动到分割线时的处理
     if (modelIndex.row() == FTM_SPLIT_LINE_INDEX) {
+        // qDebug() << "modelIndex.row() == FTM_SPLIT_LINE_INDEX";
         //
         if (m_IsPositive) {
+            // qDebug() << "m_IsPositive is true";
             modelIndex = m_categoryItemModell->index(6, 0);
             setCurrentIndex(modelIndex);
         } else {
+            // qDebug() << "m_IsPositive is false";
             modelIndex = m_categoryItemModell->index(4, 0);
             setCurrentIndex(modelIndex);
         }
@@ -651,6 +719,7 @@ void DSplitListWidget::mouseReleaseEvent(QMouseEvent *event)
 
     //如果鼠标释放时，位置在有效菜单项，则延时弹出提示信息
     if (viewport()->visibleRegion().contains(event->pos())) {
+        // qDebug() << "viewport()->visibleRegion().contains(event->pos())";
         //初始化鼠标状态标志位
         m_isMouseMoved = false;
 
@@ -666,6 +735,7 @@ void DSplitListWidget::mouseReleaseEvent(QMouseEvent *event)
     }
 
     DListView::mouseReleaseEvent(event);
+    // qDebug() << "Exiting function: DSplitListWidget::mouseReleaseEvent";
 }
 
 /*************************************************************************
@@ -679,27 +749,37 @@ void DSplitListWidget::mouseReleaseEvent(QMouseEvent *event)
 *************************************************************************/
 void DSplitListWidget::keyPressEvent(QKeyEvent *event)
 {
+    // qDebug() << "Entering function: DSplitListWidget::keyPressEvent";
     if (event->key() == Qt::Key_Up) {
+        // qDebug() << "event->key() == Qt::Key_Up";
         if (currentIndex().row() == 0) {
+            // qDebug() << "currentIndex().row() == 0";
             QModelIndex modelIndex = m_categoryItemModell->index(7, 0);
             setCurrentIndex(modelIndex);
         } else {
+            // qDebug() << "currentIndex().row() != 0";
             DListView::keyPressEvent(event);
         }
         setCurrentPage();
     } else if (event->key() == Qt::Key_Down) {
+        // qDebug() << "event->key() == Qt::Key_Down";
         if (currentIndex().row() == 7) {
+            // qDebug() << "currentIndex().row() == 7";
             QModelIndex modelIndex = m_categoryItemModell->index(0, 0);
             setCurrentIndex(modelIndex);
         } else {
+            // qDebug() << "currentIndex().row() != 7";
             DListView::keyPressEvent(event);
         }
         setCurrentPage();
     } else if (event->key() == Qt::Key_End || event->key() == Qt::Key_Home) {
+        // qDebug() << "event->key() == Qt::Key_End || event->key() == Qt::Key_Home";
         event->accept();
     } else {
+        // qDebug() << "event->key() != Qt::Key_Up && event->key() != Qt::Key_Down && event->key() != Qt::Key_End && event->key() != Qt::Key_Home";
         DListView::keyPressEvent(event);
     }
+    // qDebug() << "Exiting function: DSplitListWidget::keyPressEvent";
 }
 
 /*************************************************************************
@@ -714,6 +794,7 @@ void DSplitListWidget::keyPressEvent(QKeyEvent *event)
 *************************************************************************/
 bool DSplitListWidget::eventFilter(QObject *obj, QEvent *event)
 {
+    // qDebug() << "Entering function: DSplitListWidget::eventFilter";
     Q_UNUSED(obj)
 
 //失去焦点的时候对这几个标志位进行复位
@@ -726,13 +807,14 @@ bool DSplitListWidget::eventFilter(QObject *obj, QEvent *event)
 
 //获取焦点时只要不是通过鼠标点击获取焦点以及不是打开软件自动设置的焦点以及不是其他过程中途设置的焦点，就是判断为通过tab获取到的焦点
     if (event->type() == QEvent::FocusIn) {
-        qDebug() << m_isFocusFromFontListView;
+        // qDebug() << m_isFocusFromFontListView;
         if (!m_IsMouseClicked && !m_IsFirstFocus && !m_IsHalfWayFocus && !m_isFocusFromFontListView) {
             m_IsTabFocus = true;
         }
 //        m_IsFristTimeFocus = false;
         m_IsFirstFocus = false;
     }
+    // qDebug() << "Exiting function: DSplitListWidget::eventFilter";
     return false;
 }
 
@@ -752,13 +834,16 @@ bool DSplitListWidget::eventFilter(QObject *obj, QEvent *event)
 bool DNoFocusDelegate::helpEvent(QHelpEvent *event, QAbstractItemView *view
                                  , const QStyleOptionViewItem &option, const QModelIndex &index)
 {
+    // qDebug() << "Entering function: DNoFocusDelegate::helpEvent";
     QToolTip::hideText();
     if (event->type() == QEvent::ToolTip) {
+        // qDebug() << "event->type() == QEvent::ToolTip";
         const QString tooltip = index.data(Qt::DisplayRole).toString();
-        qDebug() << __FUNCTION__ << "__now Hover is :__" << tooltip;
+        // qDebug() << __FUNCTION__ << "__now Hover is :__" << tooltip;
         if (tooltip.isEmpty() || tooltip == "_split_") {
             hideTooltipImmediately();
         } else {
+            // qDebug() << "tooltip is not empty and not _split_";
             int tooltipsize = tooltip.size();
             const int nlong = 32;
             int lines = tooltipsize / nlong + 1;
@@ -778,6 +863,7 @@ bool DNoFocusDelegate::helpEvent(QHelpEvent *event, QAbstractItemView *view
         }
         return false;
     }
+    // qDebug() << "Exiting function: DNoFocusDelegate::helpEvent";
     return DNoFocusDelegate::helpEvent(event, view, option, index);
 }
 
@@ -792,12 +878,14 @@ bool DNoFocusDelegate::helpEvent(QHelpEvent *event, QAbstractItemView *view
 *************************************************************************/
 void DNoFocusDelegate::hideTooltipImmediately()
 {
+    // qDebug() << "Entering function: DNoFocusDelegate::hideTooltipImmediately";
     QWidgetList qwl = QApplication::topLevelWidgets();
     for (QWidget *qw : qwl) {
         if (QStringLiteral("QTipLabel") == qw->metaObject()->className()) {
             qw->close();
         }
     }
+    // qDebug() << "Exiting function: DNoFocusDelegate::hideTooltipImmediately";
 }
 
 /*************************************************************************
@@ -811,12 +899,14 @@ void DNoFocusDelegate::hideTooltipImmediately()
 *************************************************************************/
 void DSplitListWidget::mousePressEvent(QMouseEvent *event)
 {
+    // qDebug() << "Entering function: DSplitListWidget::mousePressEvent";
     QPoint clickPoint = event->pos();
     QModelIndex modelIndex = indexAt(clickPoint);
 
     m_IsMouseClicked = true;
     //正在安装过程中，禁止鼠标事件
     if (Qt::RightButton == event->button() || Qt::MiddleButton == event->button() || m_isIstalling) {
+        // qDebug() << "Qt::RightButton == event->button() || Qt::MiddleButton == event->button() || m_isIstalling, return";
         return;
     }
 
@@ -829,7 +919,9 @@ void DSplitListWidget::mousePressEvent(QMouseEvent *event)
         return;
     //ut000465根据产品要求左侧列表点击不做focus效果处理，因此即使左侧列表通过tab获取焦点，点击后去除tabfocus状态，不绘制focus选中边框
     if (hasFocus() && m_IsTabFocus) {
+        // qDebug() << "hasFocus() && m_IsTabFocus, m_IsTabFocus = false";
         m_IsTabFocus = false;
     }
     DListView::mousePressEvent(event);
+    // qDebug() << "Exiting function: DSplitListWidget::mousePressEvent";
 }

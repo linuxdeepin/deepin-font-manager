@@ -43,6 +43,7 @@ void DFontPreviewer::InitData()
                    << "创意空间快速无线上网"
                    << "㈠㈡㈢㈣㈤㈥㈦㈧㈨㈩"
                    << "AaBbCc ＡａＢｂＣｃ";
+    qDebug() << "Preview data initialized with" << m_previewTexts.size() << "items";
 }
 
 /*************************************************************************
@@ -59,6 +60,7 @@ void DFontPreviewer::InitConnections()
     qDebug() << "Initializing connections";
     connect(this, &DFontPreviewer::previewFontChanged,
             this, &DFontPreviewer::onPreviewFontChanged);
+    qDebug() << "Connections initialized";
 }
 
 
@@ -115,6 +117,7 @@ void DFontPreviewer::setPreviewFontPath(const QString &font)
 *************************************************************************/
 void DFontPreviewer::paintEvent(QPaintEvent *event)
 {
+    // qDebug() << "Paint event received, drawing preview";
     QPainter painter(this);
 
     //Save pen
@@ -153,4 +156,5 @@ void DFontPreviewer::paintEvent(QPaintEvent *event)
         startRect.setY(startRect.y() + textHeight);
         startRect.setHeight(textHeight);
     }
+    // qDebug() << "Preview drawing completed";
 }

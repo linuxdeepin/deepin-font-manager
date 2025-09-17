@@ -46,6 +46,7 @@ DFontPreview::DFontPreview(QWidget *parent)
     setFixedSize(FIXED_WIDTH, FIXED_HEIGHT);
     //    setFixedSize(static_cast<int>(qApp->primaryScreen()->geometry().width() / 1.5),
     //                 static_cast<int>(qApp->primaryScreen()->geometry().height() / 1.5));
+    qDebug() << "Exiting function: DFontPreview::DFontPreview";
 }
 
 /*************************************************************************
@@ -58,8 +59,10 @@ DFontPreview::DFontPreview(QWidget *parent)
 *************************************************************************/
 DFontPreview::~DFontPreview()
 {
+    // qDebug() << "Entering function: DFontPreview::~DFontPreview";
     FT_Done_Face(m_face);
     FT_Done_FreeType(m_library);
+    // qDebug() << "Exiting function: DFontPreview::~DFontPreview";
 }
 
 /*************************************************************************
@@ -89,6 +92,7 @@ void DFontPreview::setFileUrl(const QString &url)
     styleName = QString(m_face->style_name);
 
     repaint();
+    qDebug() << "Exiting function: DFontPreview::setFileUrl";
 }
 
 /*************************************************************************
@@ -102,6 +106,7 @@ void DFontPreview::setFileUrl(const QString &url)
 *************************************************************************/
 void DFontPreview::paintEvent(QPaintEvent *e)
 {
+    // qDebug() << "Painting font preview";
     currentMaxWidth = 1;
     if (m_error != 0) {
         qWarning() << "Cannot paint preview - font loading error";
@@ -133,6 +138,7 @@ void DFontPreview::paintEvent(QPaintEvent *e)
 
     /*根据获取的新point进行绘制 UT000539 fix bug 27030*/
     if (checkFontContainText(m_face, lowerTextStock)) {
+        // qDebug() << "Font contains lowercase text";
 #if QT_VERSION_MAJOR > 5
         const int lowerWidth = metrics.boundingRect(lowerTextStock).width();
 #else
@@ -146,6 +152,7 @@ void DFontPreview::paintEvent(QPaintEvent *e)
     }
 
     if (checkFontContainText(m_face, upperTextStock)) {
+        // qDebug() << "Font contains uppercase text";
 #if QT_VERSION_MAJOR > 5
         const int upperWidth = metrics.boundingRect(upperTextStock).width();
 #else
@@ -159,6 +166,7 @@ void DFontPreview::paintEvent(QPaintEvent *e)
     }
 
     if (checkFontContainText(m_face, punctuationTextStock)) {
+        // qDebug() << "Font contains punctuation text";
 #if QT_VERSION_MAJOR > 5
         const int punWidth = metrics.boundingRect(punctuationTextStock).width();
 #else
@@ -194,14 +202,17 @@ void DFontPreview::paintEvent(QPaintEvent *e)
     }
     /*判断是否需要滚动条 UT000539*/
     if (currentMaxWidth > viewWidth) {
+        // qDebug() << "Current max width is greater than view width, setting fixed width to:" << currentMaxWidth;
         setFixedWidth(currentMaxWidth);
         m_needScroll = true;
     } else {
+        // qDebug() << "Current max width is less than view width, setting fixed width to:" << FIXED_WIDTH;
 //        setFixedWidth(static_cast<int>(qApp->primaryScreen()->geometry().width() / 1.5));
         setFixedWidth(FIXED_WIDTH);
         m_needScroll = false;
     }
     QWidget::paintEvent(e);
+    // qDebug() << "Exiting function: DFontPreview::paintEvent";
 }
 
 /*************************************************************************
@@ -215,14 +226,18 @@ void DFontPreview::paintEvent(QPaintEvent *e)
 *************************************************************************/
 void DFontPreview::isNeedScroll(const int width)
 {
+    // qDebug() << "Checking if need scroll, width:" << width;
     if (m_needScroll == false) {
+        // qDebug() << "Need scroll, setting m_needScroll to true";
         if (width > textWidth) {
             m_needScroll = true;
         }
     }
     if (width > currentMaxWidth) {
+        // qDebug() << "Current max width is greater than width, setting currentMaxWidth to:" << width;
         currentMaxWidth = width;
     }
+    // qDebug() << "Exiting function: DFontPreview::isNeedScroll";
 }
 
 /*************************************************************************
@@ -255,6 +270,7 @@ void DFontPreview::initContents()
 
         m_contents.insert(items.at(0), items.at(1));
     }
+    qDebug() << "Exiting function: DFontPreview::initContents";
 }
 
 /*************************************************************************
@@ -267,6 +283,7 @@ void DFontPreview::initContents()
 *************************************************************************/
 QString DFontPreview::getSampleString()
 {
+    qDebug() << "Getting sample string";
     //[CPPCHECK]
     //局部变量sampleString与全局变量名称重复，更名sampString
     QString sampString = nullptr;
@@ -280,6 +297,7 @@ QString DFontPreview::getSampleString()
 
     // check english sample string.
     if (!isAvailable) {
+        qDebug() << "English sample string is not available, getting language sample string";
         sampString = getLanguageSampleString("en");
         if (checkFontContainText(m_face, sampString)) {
             isAvailable = true;
@@ -288,9 +306,11 @@ QString DFontPreview::getSampleString()
 
     // random string from available chars.
     if (!isAvailable) {
+        qDebug() << "Random string is not available, building character list for face";
         sampString = buildCharlistForFace(m_face, 36);
     }
 
+    qDebug() << "Exiting function: DFontPreview::getSampleString";
     return sampString;
 }
 
@@ -305,11 +325,14 @@ QString DFontPreview::getSampleString()
 *************************************************************************/
 QString DFontPreview::getLanguageSampleString(const QString &language)
 {
+    qDebug() << "Getting language sample string for language:" << language;
     QString result = nullptr;
     QString key = nullptr;
     if (m_contents.contains(language)) {
+        qDebug() << "Language sample string is available for language:" << language;
         key = language;
     } else {
+        qDebug() << "Language sample string is not available for language:" << language;
 #if QT_VERSION_MAJOR > 5
         const QStringList parseList = language.split("_", Qt::SkipEmptyParts);
 #else
@@ -317,15 +340,18 @@ QString DFontPreview::getLanguageSampleString(const QString &language)
 #endif
         if (parseList.length() > 0 &&
                 m_contents.contains(parseList.first())) {
+            qDebug() << "Language sample string is available for language:" << parseList.first();
             key = parseList.first();
         }
     }
 
     if (m_contents.contains(key)) {
+        qDebug() << "Language sample string is available for language:" << key;
         auto findResult = m_contents.find(key);
         result.append(findResult.value());
     }
 
+    qDebug() << "Exiting function: DFontPreview::getLanguageSampleString";
     return result;
 }
 
@@ -351,6 +377,7 @@ bool DFontPreview::checkFontContainText(FT_Face face, const QString &text)
     if (face->charmap == nullptr)
         err = FT_Select_Charmap(face, FT_ENCODING_UNICODE);
     if (err != 0) {
+        qDebug() << "Failed to select charmaps, trying to select charmaps";
         for (int i = 0; i < face->num_charmaps; ++i) {
             err = FT_Select_Charmap(face, face->charmaps[i]->encoding);
             if (err == 0) {
@@ -367,6 +394,7 @@ bool DFontPreview::checkFontContainText(FT_Face face, const QString &text)
         }
     }
 
+    qDebug() << "Exiting function: DFontPreview::checkFontContainText";
     return retval;
 }
 
@@ -382,12 +410,14 @@ bool DFontPreview::checkFontContainText(FT_Face face, const QString &text)
 *************************************************************************/
 bool isSpecialSymbol(FT_Face face, uint ucs4)
 {
+    qDebug() << "Checking if character is special symbol:" << ucs4;
     unsigned int glyph = FT_Get_Char_Index(face, ucs4);
     int err;
 
     err = FT_Load_Glyph(face, glyph, FT_LOAD_NO_SCALE);
 
     if (err == 0 && face->glyph->metrics.width == 0 && face->glyph->metrics.height == 0) {
+        qDebug() << "Character is special symbol";
         return true;
     }
 
@@ -411,6 +441,7 @@ bool isSpecialSymbol(FT_Face face, uint ucs4)
             || ((ucs4 >= 0x11300 && ucs4 <= 0x11303) || (ucs4 >= 0x1CD0 && ucs4 <= 0x1cF9) || (ucs4 == 0x20F0) || (ucs4 >= 0xD800 && ucs4 <= 0xDFFF)) //grantha
             || (ucs4  >= 0x10A01 && ucs4 <= 0x10A0F) || (ucs4 >= 0x10A38 && ucs4 <= 0x10A3F)) // kharoshthi
         return true;
+    qDebug() << "Character is not special symbol";
     return false;
 }
 
@@ -448,6 +479,7 @@ QString DFontPreview::buildCharlistForFace(FT_Face face, int length)
 
     QList<uint> ucs4List;
     if (count > 0) {
+        qDebug() << "Count is greater than 0, building character list for face";
         FcChar32 ucs4, pos, map[FC_CHARSET_MAP_SIZE];
         int retCount = 0;
         uint unicode = 0;
@@ -478,6 +510,7 @@ QString DFontPreview::buildCharlistForFace(FT_Face face, int length)
         int index = 0;
 
         if (static_cast<int>(count) > len) {
+            qDebug() << "Count is greater than len, finding index";
             for (int i = len - 2; i >= 0; i--) {
                 if (firstChar - ucs4List[i] > static_cast<uint>((len - 1 - i) + len - 1)) {
                     index = i + 1;
@@ -508,6 +541,7 @@ QString DFontPreview::buildCharlistForFace(FT_Face face, int length)
     // Destroy a character set
     FcCharSetDestroy(fcs);
 
+    qDebug() << "Exiting function: DFontPreview::buildCharlistForFace";
     return retval;
 }
 
@@ -523,10 +557,12 @@ QString DFontPreview::buildCharlistForFace(FT_Face face, int length)
 *************************************************************************/
 QPoint DFontPreview::adjustPreviewFontBaseLinePoint(const QRect &fontPreviewRect, const QFontMetrics &previewFontMetrics) const
 {
+    // qDebug() << "Adjusting preview font base line point";
     Q_UNUSED(previewFontMetrics);
     int commonFontDescent = fontPreviewRect.height() / 4;
     int baseLineX = fontPreviewRect.x();
     int baseLineY = fontPreviewRect.bottom() - commonFontDescent;
 
+    // qDebug() << "Exiting function: DFontPreview::adjustPreviewFontBaseLinePoint";
     return QPoint(baseLineX, baseLineY);
 }

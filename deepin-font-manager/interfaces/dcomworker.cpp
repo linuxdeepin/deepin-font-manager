@@ -17,35 +17,36 @@ FontManager *FontManager::m_fontManager = nullptr;
 
 FontManager *FontManager::instance()
 {
-    qDebug() << "FontManager instance requested";
+    // qDebug() << "FontManager instance requested";
     if (m_fontManager == nullptr) {
-        qDebug() << "Creating new FontManager instance";
+        // qDebug() << "Creating new FontManager instance";
         m_fontManager = new FontManager;
     }
 
-    qDebug() << "Returning FontManager instance";
+    // qDebug() << "Returning FontManager instance";
     return m_fontManager;
 }
 
 DComWorker::DComWorker(QObject *parent)
     : QObject(parent)
 {
-    qDebug() << "DComWorker created";
+    // qDebug() << "DComWorker created";
     if (!autoDelete()) {
-        qDebug() << "Setting autoDelete to true";
+        // qDebug() << "Setting autoDelete to true";
         setAutoDelete(true);
     }
 }
 
 void DComWorker::run()
 {
+    // qDebug() << "DComWorker::run() started";
 }
 
 GetFontListWorker::GetFontListWorker(GetFontListWorker::Type type, QObject *parent)
     : DComWorker(parent)
     , m_type(type)
 {
-    qDebug() << "GetFontListWorker created with type:" << type;
+    // qDebug() << "GetFontListWorker created with type:" << type;
 }
 
 
@@ -55,11 +56,13 @@ void GetFontListWorker::run()
     DFontInfoManager *inst = DFontInfoManager::instance();
     DFontPreviewListDataThread *thread = DFontPreviewListDataThread::instance();
     if (m_type == Startup) {
+        qDebug() << "Processing Startup font list";
         thread->m_allFontPathList.clear();
         thread->m_allFontPathList = inst->getAllFontPath(true);
 //        removeUserAddFonts();
 
         if(DFMDBManager::instance()->isDBDeleted()){
+            qDebug() << "Database is deleted, updating database";
             thread->updateDb();//想把它放在第1个，getStartFontList之前
             DFMDBManager::instance()->getAllRecords();
             QList<DFontPreviewItemData> list = DFMDBManager::instance()->getFontInfo(50, &thread->m_delFontInfoList);//DFMDBManager::recordList
@@ -67,6 +70,7 @@ void GetFontListWorker::run()
             thread->m_fontModelList.append(list);
         }
         else {
+            qDebug() << "Database exists, retrieving records";
             DFMDBManager::instance()->getAllRecords();
             QList<DFontPreviewItemData> list = DFMDBManager::instance()->getFontInfo(50, &thread->m_delFontInfoList);
             thread->m_startModelList = list;
@@ -75,16 +79,19 @@ void GetFontListWorker::run()
     }
 
     if (m_type == ALL || m_type == AllInSquence) {
+        qDebug() << "Processing ALL or AllInSquence font list";
         thread->m_allFontPathList.clear();
         thread->m_allFontPathList = inst->getAllFontPath(false);
     }
 
     if (m_type == CHINESE || m_type == AllInSquence) {
+        qDebug() << "Processing CHINESE or AllInSquence font list";
         thread->m_chineseFontPathList.clear();
         thread->m_chineseFontPathList = inst->getAllChineseFontPath();
     }
 
     if (m_type == MONOSPACE || m_type == AllInSquence) {
+        qDebug() << "Processing MONOSPACE or AllInSquence font list";
         thread->m_monoSpaceFontPathList.clear();
         thread->m_monoSpaceFontPathList = inst->getAllMonoSpaceFontPath();
     }
@@ -104,11 +111,13 @@ void GetFontListWorker::removeUserAddFonts()
     while (iter != DFontPreviewListDataThread::instance()->m_allFontPathList.end()) {
         QString filePath = *iter;
         if (!DFMDBManager::instance()->isSystemFont(filePath) && !installFont.contains(filePath)) {
+            // qDebug() << "Removing user-added font:" << filePath;
             QFileInfo openFile(filePath);
             QFile::remove(filePath);
 
             QDir fileDir(openFile.path());
             if (fileDir.isEmpty()) {
+                // qDebug() << "Removing empty directory:" << fileDir.path();
                 fileDir.removeRecursively();
             }
 
@@ -117,6 +126,7 @@ void GetFontListWorker::removeUserAddFonts()
             ++iter;
         }
     }
+    qDebug() << "Finished removeUserAddFonts";
 }
 
 void FontManager::getFontListInSequence()
@@ -142,6 +152,7 @@ void FontManager::getStartFontList()
     QThreadPool *threadPool = DCopyFilesManager::instance()->getPool();
     qInfo() << "Thread pool worker count:" << threadPool->maxThreadCount();
 
+    qDebug() << "Creating and starting GetAll worker";
     GetFontListWorker *getAll = new GetFontListWorker(GetFontListWorker::Startup);
     threadPool->start(getAll);
     GetFontListWorker *getChinese = new GetFontListWorker(GetFontListWorker::CHINESE);
@@ -149,6 +160,7 @@ void FontManager::getStartFontList()
     GetFontListWorker *getMonospace = new GetFontListWorker(GetFontListWorker::MONOSPACE);
     threadPool->start(getMonospace);
     threadPool->waitForDone();
+    qDebug() << "All workers completed";
 }
 
 /*************************************************************************
@@ -170,4 +182,5 @@ void FontManager::getChineseAndMonoFont()
     GetFontListWorker *getMonospace = new GetFontListWorker(GetFontListWorker::MONOSPACE);
     threadPool->start(getMonospace);
     threadPool->waitForDone();
+    qDebug() << "Workers completed";
 }

@@ -55,6 +55,7 @@ DFInstallErrorDialog::DFInstallErrorDialog(QWidget *parent, const QStringList &e
     slotSizeModeChanged(DGuiApplicationHelper::instance()->sizeMode());
     connect(DGuiApplicationHelper::instance(),&DGuiApplicationHelper::sizeModeChanged,this, &DFInstallErrorDialog::slotSizeModeChanged);
 #endif
+    qDebug() << "Exiting function: DFInstallErrorDialog::DFInstallErrorDialog";
 }
 
 /*************************************************************************
@@ -85,6 +86,7 @@ DFInstallErrorDialog::~DFInstallErrorDialog()
 *************************************************************************/
 void DFInstallErrorDialog::initData()
 {
+    qDebug() << "Entering function: DFInstallErrorDialog::initData with" << m_errorInstallFiles.size() << "error font files";
     DFontInfo fontInfo;
     DFontInfoManager *fontInfoManager = DFontInfoManager::instance();
     m_installErrorFontModelList.clear();
@@ -95,6 +97,7 @@ void DFInstallErrorDialog::initData()
 
         DFInstallErrorItemModel itemModel;
         if (fontInfo.isError) {
+            // qDebug() << "Processing broken font file:" << it;
             QFileInfo fileInfo(it);
             itemModel.bSelectable = false;
             itemModel.bChecked = false;
@@ -104,6 +107,7 @@ void DFInstallErrorDialog::initData()
             qWarning() << "Found broken font file:" << fileInfo.fileName();
             m_installErrorFontModelList.push_back(itemModel);
         } else if (fontInfo.isInstalled && !m_parent->isSystemFont(fontInfo)) {
+            // qDebug() << "Processing already installed font file:" << it;
             QFileInfo fileInfo(it);
             itemModel.bSelectable = true;
             //默认勾选已安装字体
@@ -115,6 +119,7 @@ void DFInstallErrorDialog::initData()
 //            m_NeedSelectFiles.append(it);
             m_installErrorFontModelList.push_back(itemModel);
         } else if (m_parent->isSystemFont(fontInfo)) {
+            // qDebug() << "Processing system font file:" << it;
             QFileInfo fileInfo(it);
 //            m_SystemFontCount++;
             itemModel.bSelectable = false;
@@ -130,6 +135,7 @@ void DFInstallErrorDialog::initData()
         }
     }
 
+    qDebug() << "Exiting function: DFInstallErrorDialog::initData";
 }
 
 /*************************************************************************
@@ -142,6 +148,7 @@ void DFInstallErrorDialog::initData()
 *************************************************************************/
 void DFInstallErrorDialog::initUI()
 {
+    qDebug() << "Entering function: DFInstallErrorDialog::initUI";
     setContentsMargins(0, 0, 0, 0);
 #if QT_VERSION_MAJOR > 5
     setIcon(Utils::renderSVG("://exception-logo.svg", QSize(32, 32)));
@@ -188,6 +195,7 @@ void DFInstallErrorDialog::initUI()
 
     connect(m_installErrorListView, SIGNAL(clickedErrorListItem(QModelIndex)), this,
             SLOT(onListItemClicked(QModelIndex)));
+    qDebug() << "Exiting function: DFInstallErrorDialog::initUI";
 }
 
 /*************************************************************************
@@ -200,6 +208,7 @@ void DFInstallErrorDialog::initUI()
 *************************************************************************/
 int DFInstallErrorDialog::getErrorFontCheckedCount()
 {
+    qDebug() << "Entering function: DFInstallErrorDialog::getErrorFontCheckedCount";
     int checkedCount = 0;
     QStandardItemModel *sourceModel = m_installErrorListView->getErrorListSourceModel();
     for (int i = 0; i < sourceModel->rowCount(); i++) {
@@ -210,6 +219,7 @@ int DFInstallErrorDialog::getErrorFontCheckedCount()
             ++checkedCount;
         }
     }
+    qDebug() << "Exiting function: DFInstallErrorDialog::getErrorFontCheckedCount";
     return checkedCount;
 }
 
@@ -223,6 +233,7 @@ int DFInstallErrorDialog::getErrorFontCheckedCount()
 *************************************************************************/
 int DFInstallErrorDialog::getErrorFontSelectableCount()
 {
+    qDebug() << "Entering function: DFInstallErrorDialog::getErrorFontSelectableCount";
     int checkedCount = 0;
     QStandardItemModel *sourceModel = m_installErrorListView->getErrorListSourceModel();
     for (int i = 0; i < sourceModel->rowCount(); i++) {
@@ -233,6 +244,7 @@ int DFInstallErrorDialog::getErrorFontSelectableCount()
             ++checkedCount;
         }
     }
+    qDebug() << "Exiting function: DFInstallErrorDialog::getErrorFontSelectableCount";
     return checkedCount;
 }
 
@@ -246,23 +258,30 @@ int DFInstallErrorDialog::getErrorFontSelectableCount()
 *************************************************************************/
 void DFInstallErrorDialog::resetContinueInstallBtnStatus()
 {
+    qDebug() << "Entering function: DFInstallErrorDialog::resetContinueInstallBtnStatus";
     //所有字体都未勾选时，禁止点击"继续安装"
     if (0 == getErrorFontCheckedCount()) {
+        qDebug() << "No fonts checked, disabling continue button";
         if (m_errorInstallFiles.count() > 0) {
             getButton(1)->setToolTip(DApplication::translate("ExceptionWindow", "No fonts to be installed"));
         }
         getButton(1)->setDisabled(true);
         getButton(1)->setFocusPolicy(Qt::NoFocus);
     } else {
+        qDebug() << "Fonts checked, enabling continue button";
         getButton(1)->setEnabled(true);
         getButton(1)->setFocusPolicy(Qt::TabFocus);
     }
 
     if (getErrorFontSelectableCount() > 0) {
+        qDebug() << "Selectable fonts available, enabling list view focus";
         m_installErrorListView->setFocusPolicy(Qt::TabFocus);
     } else {
+        qDebug() << "No selectable fonts, disabling list view focus";
         m_installErrorListView->setFocusPolicy(Qt::NoFocus);
     }
+
+    qDebug() << "Exiting function: DFInstallErrorDialog::resetContinueInstallBtnStatus";
 }
 
 /*************************************************************************
@@ -276,35 +295,50 @@ void DFInstallErrorDialog::resetContinueInstallBtnStatus()
 *************************************************************************/
 void DFInstallErrorDialog::keyPressEvent(QKeyEvent *event)
 {
+    // qDebug() << "Entering function: DFInstallErrorDialog::keyPressEvent with key:" << event->key();
+
     if (event->key() == Qt::Key_Escape) {
+        // qDebug() << "Escape key pressed - closing dialog";
         this->close();
     } else if ((event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter)) {
+        // qDebug() << "Return/Enter key pressed - processing list focus";
         //SP3--安装验证页面，回车取消/选中
         if (m_installErrorListView->hasFocus()) {
+            // qDebug() << "List view has focus - processing selection";
             if (m_installErrorListView->selectionModel()->selectedIndexes().count() == 1) {
+                // qDebug() << "Single item selected - calling onListItemClicked";
                 onListItemClicked(m_installErrorListView->selectionModel()->selectedIndexes().first());
                 return;
             } else if (m_installErrorListView->selectionModel()->selectedIndexes().count() > 1) {
+                // qDebug() << "Multiple items selected - calling onListItemsClicked";
                 onListItemsClicked(m_installErrorListView->selectionModel()->selectedIndexes());
             }
         } else {
+            // qDebug() << "List view has no focus - processing button clicks";
             //默认字体列表无焦点情况下，回车执行“继续”或“取消”按钮
             if (getButton(1)->isEnabled()) {
+                // qDebug() << "Continue button enabled - clicking continue button";
                 emit getButton(1)->click();
             } else {
+                // qDebug() << "Continue button disabled - clicking cancel button";
                 emit getButton(0)->click();
             }
         }
     } else if (event->key() == Qt::Key_Home && event->modifiers() == Qt::NoModifier) {
+        // qDebug() << "Home key pressed - navigating to top";
         m_installErrorListView->responseToHomeAndEnd(true);
     } else if (event->key() == Qt::Key_End && event->modifiers() == Qt::NoModifier) {
+        // qDebug() << "End key pressed - navigating to bottom";
         m_installErrorListView->responseToHomeAndEnd(false);
     } else if (event->key() == Qt::Key_PageUp && event->modifiers() == Qt::NoModifier) {
+        // qDebug() << "PageUp key pressed - navigating up one page";
         m_installErrorListView->responseToPageUpAndPageDown(true);
     } else if (event->key() == Qt::Key_PageDown && event->modifiers() == Qt::NoModifier) {
+        // qDebug() << "PageDown key pressed - navigating down one page";
         m_installErrorListView->responseToPageUpAndPageDown(false);
     }
     QWidget::keyPressEvent(event);
+    // qDebug() << "Exiting function: DFInstallErrorDialog::keyPressEvent";
 }
 
 /*************************************************************************
@@ -318,6 +352,7 @@ void DFInstallErrorDialog::keyPressEvent(QKeyEvent *event)
 *************************************************************************/
 void DFInstallErrorDialog::closeEvent(QCloseEvent *event)
 {
+    // qDebug() << "Entering function: DFInstallErrorDialog::closeEvent";
     Q_UNUSED(event)
     //设置菜单滚动可用
     emit m_signalManager->setSpliteWidgetScrollEnable(false);
@@ -326,6 +361,7 @@ void DFInstallErrorDialog::closeEvent(QCloseEvent *event)
     emit onCancelInstall();
 
     DDialog::closeEvent(event);
+    // qDebug() << "Exiting function: DFInstallErrorDialog::closeEvent";
 }
 
 /*************************************************************************
@@ -339,16 +375,19 @@ void DFInstallErrorDialog::closeEvent(QCloseEvent *event)
 *************************************************************************/
 void DFInstallErrorDialog::onListItemClicked(const QModelIndex &index)
 {
+    qDebug() << "Entering function: DFInstallErrorDialog::onListItemClicked";
     DFInstallErrorItemModel itemModel =
         qvariant_cast<DFInstallErrorItemModel>(m_installErrorListView->getErrorListSourceModel()->data(index));
     //SP3--安装验证页面，回车取消/选中(539)--正常字体可操作
     if (itemModel.bIsNormalUserFont) {
+        qDebug() << "Normal user font clicked, toggling checked state";
         itemModel.bChecked = !itemModel.bChecked;
         m_installErrorListView->ifNeedScrollTo(index);
         m_installErrorListView->getErrorListSourceModel()->setData(index, QVariant::fromValue(itemModel), Qt::DisplayRole);
         m_installErrorListView->updateErrorFontModelList(index.row(), itemModel);
         resetContinueInstallBtnStatus();
     }
+    qDebug() << "Exiting function: DFInstallErrorDialog::onListItemClicked";
 }
 
 /*************************************************************************/
@@ -362,6 +401,7 @@ void DFInstallErrorDialog::onListItemClicked(const QModelIndex &index)
 /* <Return>     无返回值                                                  */
 void DFInstallErrorDialog::onListItemsClicked(const QModelIndexList &indexList)
 {
+    qDebug() << "Entering function: DFInstallErrorDialog::onListItemsClicked";
     QModelIndex firstIndex;
     for (auto &it : indexList) {
         if (!firstIndex.isValid() || firstIndex.row() > it.row())
@@ -384,6 +424,7 @@ void DFInstallErrorDialog::onListItemsClicked(const QModelIndexList &indexList)
 
     }
     resetContinueInstallBtnStatus();
+    qDebug() << "Exiting function: DFInstallErrorDialog::onListItemsClicked";
 }
 
 
@@ -392,6 +433,7 @@ void DFInstallErrorDialog::onListItemsClicked(const QModelIndexList &indexList)
 void DFInstallErrorDialog::addData(QStringList &errorFileList, QStringList &halfInstalledFilelist,
                                    QStringList &addHalfInstalledFiles, QStringList &oldHalfInstalledFiles)
 {
+    qDebug() << "Entering function: DFInstallErrorDialog::addData";
     DFontInfo fontInfo;
     DFontInfoManager *fontInfoManager = DFontInfoManager::instance();
     QList<DFInstallErrorItemModel> m_updateInstallErrorFontModelList;
@@ -465,6 +507,7 @@ void DFInstallErrorDialog::addData(QStringList &errorFileList, QStringList &half
 
     resetContinueInstallBtnStatus();
 
+    qDebug() << "Exiting function: DFInstallErrorDialog::addData";
 }
 
 /*************************************************************************
@@ -478,11 +521,13 @@ void DFInstallErrorDialog::addData(QStringList &errorFileList, QStringList &half
 *************************************************************************/
 void DFInstallErrorDialog::onControlButtonClicked(int btnIndex)
 {
+    qDebug() << "Entering function: DFInstallErrorDialog::onControlButtonClicked with button index:" << btnIndex;
     if (0 == btnIndex) {
         //退出安装
         qInfo() << "User canceled font installation";
         this->close();
     } else {
+        qDebug() << "Continue installation";
         //继续安装
         QStringList continueInstallFontFileList;
 
@@ -498,13 +543,16 @@ void DFInstallErrorDialog::onControlButtonClicked(int btnIndex)
                << "selected fonts";
         this->reject();
     }
+    qDebug() << "Exiting function: DFInstallErrorDialog::onControlButtonClicked";
 }
 
 #ifdef DTKWIDGET_CLASS_DSizeMode
 void DFInstallErrorDialog::slotSizeModeChanged(DGuiApplicationHelper::SizeMode sizeMode)
 {
+    qDebug() << "Entering function: DFInstallErrorDialog::slotSizeModeChanged with sizeMode:" << sizeMode;
     Utils::clearImgCache();
     if (sizeMode == DGuiApplicationHelper::SizeMode::CompactMode) {
+        qDebug() << "Switching to compact mode";
         this->setFixedSize(448, 259);
 #if QT_VERSION_MAJOR > 5
         setIcon(Utils::renderSVG("://exception-logo.svg", QSize(25, 25)));
@@ -512,6 +560,7 @@ void DFInstallErrorDialog::slotSizeModeChanged(DGuiApplicationHelper::SizeMode s
         setIconPixmap(Utils::renderSVG("://exception-logo.svg", QSize(25, 25)));
 #endif
     } else {
+        qDebug() << "Switching to normal mode";
         this->setFixedSize(448, 302);
 #if QT_VERSION_MAJOR > 5
         setIcon(Utils::renderSVG("://exception-logo.svg", QSize(32, 32)));
@@ -519,5 +568,6 @@ void DFInstallErrorDialog::slotSizeModeChanged(DGuiApplicationHelper::SizeMode s
         setIconPixmap(Utils::renderSVG("://exception-logo.svg", QSize(32, 32)));
 #endif
     }
+    qDebug() << "Exiting function: DFInstallErrorDialog::slotSizeModeChanged";
 }
 #endif
