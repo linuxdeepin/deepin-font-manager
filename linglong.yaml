@@ -7,13 +7,13 @@ version: "1"
 package:
   id: org.deepin.fontmanager
   name: "deepin-font-manager"
-  version: 6.5.28.1
+  version: 6.5.29.1
   kind: app
   description: |
     font manager for deepin os.
 
-base: org.deepin.base/25.2.0
-runtime: org.deepin.runtime.dtk/25.2.0/x86_64
+base: org.deepin.base/25.2.1
+runtime: org.deepin.runtime.dtk/25.2.1/x86_64
 
 command:
   - deepin-font-manager
