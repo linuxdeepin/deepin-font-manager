@@ -21,18 +21,20 @@ DFMDBManager::DFMDBManager(QObject *parent)
 
 DFMDBManager::~DFMDBManager()
 {
+    // qDebug() << "Entering function: DFMDBManager::~DFMDBManager";
     delete m_sqlUtil;
 }
 
 DFMDBManager *DFMDBManager::instance()
 {
+    // qDebug() << "Entering function: DFMDBManager::instance";
     if (!INSTANCE) {
-        qDebug() << "Creating new DFMDBManager instance";
+        // qDebug() << "Creating new DFMDBManager instance";
         INSTANCE = new DFMDBManager;
     } else {
-        qDebug() << "Using existing DFMDBManager instance";
+        // qDebug() << "Using existing DFMDBManager instance";
     }
-
+    // qDebug() << "Exiting function: DFMDBManager::instance";
     return INSTANCE;
 }
 
@@ -47,6 +49,7 @@ DFMDBManager *DFMDBManager::instance()
 *************************************************************************/
 DFontPreviewItemData DFMDBManager::parseRecordToItemData(const QMap<QString, QString> &record)
 {
+    // qDebug() << "Parsing record to item data:" << record;
     DFontPreviewItemData itemData(record.value("filePath"), record.value("familyName"), record.value("styleName"),
                                   record.value("type"), record.value("version"), record.value("copyright"),
                                   record.value("description"), record.value("sysVersion"), record.value("fullname"),
@@ -62,6 +65,7 @@ DFontPreviewItemData DFMDBManager::parseRecordToItemData(const QMap<QString, QSt
     if (!itemData.fontData.strFontName.endsWith(itemData.fontInfo.styleName) && !itemData.fontInfo.styleName.isEmpty())
         itemData.fontData.strFontName += QString("-%1").arg(itemData.fontInfo.styleName);
 
+    // qDebug() << "Parsed item data:" << itemData;
     return itemData;
 }
 
@@ -111,6 +115,7 @@ DFontPreviewItemData DFMDBManager::parseRecordToItemData(const QMap<QString, QSt
 *************************************************************************/
 void DFMDBManager::appendAllKeys(QList<QString> &keyList)
 {
+    qDebug() << "Entering function: DFMDBManager::appendAllKeys";
     keyList.append("fontId");
     keyList.append("fontName");
     keyList.append("isEnabled");
@@ -133,6 +138,7 @@ void DFMDBManager::appendAllKeys(QList<QString> &keyList)
     keyList.append("trademark");
     //add for SP3 familyName
     keyList.append("fontPreview");
+    qDebug() << "Exiting function: DFMDBManager::appendAllKeys";
 }
 
 /*************************************************************************
@@ -146,6 +152,7 @@ void DFMDBManager::appendAllKeys(QList<QString> &keyList)
 *************************************************************************/
 QList<DFontPreviewItemData> DFMDBManager::getAllFontInfo(QList<DFontPreviewItemData> *deletedFontInfo)
 {
+    // qDebug() << "Entering function: DFMDBManager::getAllFontInfo";
     QList<DFontPreviewItemData> fontItemDataList;
 
     QList<QMap<QString, QString>> recordList;
@@ -166,12 +173,13 @@ QList<DFontPreviewItemData> DFMDBManager::getAllFontInfo(QList<DFontPreviewItemD
             }
         }
     }
-
+    // qDebug() << "Exiting function: DFMDBManager::getAllFontInfo with" << fontItemDataList.size() << "fonts found";
     return fontItemDataList;
 }
 
 QList<DFontPreviewItemData> DFMDBManager::getFontInfo(const int count, QList<DFontPreviewItemData> *deletedFontInfo)
 {
+    // qDebug() << "Entering function: DFMDBManager::getFontInfo";
     QMutex m_mutex;
     QMutexLocker locker(&m_mutex);
     QList<DFontPreviewItemData> fontItemDataList;
@@ -198,12 +206,14 @@ QList<DFontPreviewItemData> DFMDBManager::getFontInfo(const int count, QList<DFo
 
     recordList = recordList.mid(count, recordList.count());
 
+    // qDebug() << "Exiting function: DFMDBManager::getFontInfo";
     return fontItemDataList;
 
 }
 
 QList<DFontPreviewItemData> DFMDBManager::getFontInfo(QList<QMap<QString, QString> > list, QList<DFontPreviewItemData> *deletedFontInfo)
 {
+    // qDebug() << "Entering function: DFMDBManager::getFontInfo";
     QList<DFontPreviewItemData> fontItemDataList;
 
     for (QMap<QString, QString> &record : list) {
@@ -219,6 +229,7 @@ QList<DFontPreviewItemData> DFMDBManager::getFontInfo(QList<QMap<QString, QStrin
         }
     }
 
+    // qDebug() << "Exiting function: DFMDBManager::getFontInfo";
     return fontItemDataList;
 }
 
@@ -233,6 +244,7 @@ QList<DFontPreviewItemData> DFMDBManager::getFontInfo(QList<QMap<QString, QStrin
 *************************************************************************/
 int DFMDBManager::getRecordCount()
 {
+    // qDebug() << "Entering function: DFMDBManager::getRecordCount";
     return m_sqlUtil->getRecordCount();
 }
 
@@ -247,6 +259,7 @@ int DFMDBManager::getRecordCount()
 *************************************************************************/
 int DFMDBManager::getCurrMaxFontId()
 {
+    // qDebug() << "Entering function: DFMDBManager::getCurrMaxFontId";
     return m_sqlUtil->getMaxFontId();
 }
 
@@ -261,6 +274,7 @@ int DFMDBManager::getCurrMaxFontId()
 *************************************************************************/
 QStringList DFMDBManager::getInstalledFontsPath()
 {
+    // qDebug() << "Entering function: DFMDBManager::getInstalledFontsPath";
     return m_sqlUtil->getInstalledFontsPath();
 }
 
@@ -276,6 +290,7 @@ QStringList DFMDBManager::getInstalledFontsPath()
 *************************************************************************/
 QString DFMDBManager::isFontInfoExist(const DFontInfo &newFileFontInfo)
 {
+    // qDebug() << "Entering function: DFMDBManager::isFontInfoExist";
     QList<QMap<QString, QString>> recordList;
 
     QList<QString> keyList;
@@ -286,6 +301,7 @@ QString DFMDBManager::isFontInfoExist(const DFontInfo &newFileFontInfo)
     whereMap.insert("styleName", newFileFontInfo.styleName);
 
     if (newFileFontInfo.filePath.endsWith(".ttc", Qt::CaseInsensitive)) {
+        // qDebug() << "Adding application font:" << newFileFontInfo.filePath;
         QStringList fontFamilyList = QFontDatabase::applicationFontFamilies(QFontDatabase::addApplicationFont(newFileFontInfo.filePath));
         if (fontFamilyList.size() > 1) {
             for (QString &fontFamily : fontFamilyList) {
@@ -303,10 +319,12 @@ QString DFMDBManager::isFontInfoExist(const DFontInfo &newFileFontInfo)
     m_sqlUtil->findRecords(keyList, whereMap, &recordList);
 
     if (recordList.size() > 0) {
+        // qDebug() << "Font exists in database:" << recordList.first().value("filePath");
         QString result = recordList.first().value("filePath");
         return result;
     }
 
+    // qDebug() << "Font does not exist in database";
     return QString();
 }
 
@@ -321,6 +339,7 @@ QString DFMDBManager::isFontInfoExist(const DFontInfo &newFileFontInfo)
 *************************************************************************/
 QStringList DFMDBManager::getSpecifiedFontName(const QString &filePath)
 {
+    // qDebug() << "Entering function: DFMDBManager::getSpecifiedFontName";
     QList<QString> keyList;
     keyList.append("fontName");
 
@@ -332,11 +351,13 @@ QStringList DFMDBManager::getSpecifiedFontName(const QString &filePath)
 
     m_sqlUtil->findRecords(keyList, whereMap, &recordList);
     if (!recordList.empty()) {
+        // qDebug() << "Font exists in database:" << recordList.first().value("fontName");
         QListIterator<QMap<QString, QString>> iter(recordList);
         while (iter.hasNext()) {
             result.append(iter.next().value("fontName"));
         }
     }
+    // qDebug() << "Exiting function: DFMDBManager::getSpecifiedFontName";
     return result;
 }
 
@@ -390,6 +411,7 @@ bool DFMDBManager::addFontInfo(const DFontPreviewItemData &itemData)
 {
 //    qDebug() << __FUNCTION__ << itemData.fontInfo.toString();
     if (!m_addFontList.contains(itemData) || itemData.fontInfo.isSystemFont) {
+        // qDebug() << "Adding font info:" << itemData.fontInfo.toString();
         m_addFontList.append(itemData);
     }
     return true;
@@ -409,6 +431,7 @@ bool DFMDBManager::addFontInfo(const DFontPreviewItemData &itemData)
 *************************************************************************/
 bool DFMDBManager::updateFontInfo(const QMap<QString, QString> &whereMap, const QMap<QString, QString> &dataMap)
 {
+    // qDebug() << "Entering function: DFMDBManager::updateFontInfo";
     return m_sqlUtil->updateRecord(whereMap, dataMap);
 }
 
@@ -420,6 +443,7 @@ bool DFMDBManager::updateFontInfo(const QMap<QString, QString> &whereMap, const 
 */
 void DFMDBManager::updateSP3FamilyName(const QList<DFontInfo> &fontList, bool inFontList)
 {
+    // qDebug() << "Entering function: DFMDBManager::updateSP3FamilyName";
     m_sqlUtil->updateSP3FamilyName(fontList, inFontList);
 }
 
@@ -434,6 +458,7 @@ void DFMDBManager::updateSP3FamilyName(const QList<DFontInfo> &fontList, bool in
 *************************************************************************/
 void DFMDBManager::commitAddFontInfo()
 {
+    // qDebug() << "Entering function: DFMDBManager::commitAddFontInfo";
     if (m_addFontList.isEmpty()) {
         qDebug() << "No fonts to add, skipping commit";
         return;
@@ -445,6 +470,7 @@ void DFMDBManager::commitAddFontInfo()
     addFontInfo(m_addFontList);
     endTransaction();
     m_addFontList.clear();
+    // qDebug() << "Exiting function: DFMDBManager::commitAddFontInfo";
 }
 
 /*************************************************************************
@@ -458,6 +484,7 @@ void DFMDBManager::commitAddFontInfo()
 *************************************************************************/
 void DFMDBManager::addFontInfo(const QList<DFontPreviewItemData> &fontList)
 {
+    // qDebug() << "Entering function: DFMDBManager::addFontInfo";
     return m_sqlUtil->addFontInfo(fontList);
 }
 
@@ -472,8 +499,10 @@ void DFMDBManager::addFontInfo(const QList<DFontPreviewItemData> &fontList)
 *************************************************************************/
 void DFMDBManager::deleteFontInfo(const DFontPreviewItemData &itemData)
 {
+    // qDebug() << "Entering function: DFMDBManager::deleteFontInfo";
     if (!m_delFontList.contains(itemData))
         m_delFontList << itemData;
+    // qDebug() << "Exiting function: DFMDBManager::deleteFontInfo";
 }
 
 /*************************************************************************
@@ -487,6 +516,7 @@ void DFMDBManager::deleteFontInfo(const DFontPreviewItemData &itemData)
 *************************************************************************/
 void DFMDBManager::deleteFontInfo(const QList<DFontPreviewItemData> &fontList)
 {
+    // qDebug() << "Entering function: DFMDBManager::deleteFontInfo";
     m_sqlUtil->deleteFontInfo(fontList);
 }
 
@@ -501,6 +531,7 @@ void DFMDBManager::deleteFontInfo(const QList<DFontPreviewItemData> &fontList)
 *************************************************************************/
 void DFMDBManager::commitDeleteFontInfo()
 {
+    qDebug() << "Entering function: DFMDBManager::commitDeleteFontInfo";
     if (m_delFontList.isEmpty()) {
         qDebug() << "No fonts to delete, skipping commit";
         return;
@@ -511,6 +542,7 @@ void DFMDBManager::commitDeleteFontInfo()
     m_sqlUtil->deleteFontInfo(m_delFontList);
     endTransaction();
     m_delFontList.clear();
+    qDebug() << "Exiting function: DFMDBManager::commitDeleteFontInfo";
 }
 
 /*************************************************************************
@@ -525,11 +557,13 @@ void DFMDBManager::commitDeleteFontInfo()
 *************************************************************************/
 void DFMDBManager::updateFontInfo(const DFontPreviewItemData &itemData, const QString &strKey)
 {
+    // qDebug() << "Entering function: DFMDBManager::updateFontInfo";
     if (!m_updateFontList.contains(itemData) || itemData.fontInfo.isSystemFont) {
         m_updateFontList << itemData;
         if (m_strKey != strKey)
             m_strKey = strKey;
     }
+    // qDebug() << "Exiting function: DFMDBManager::updateFontInfo";
 }
 
 /*************************************************************************
@@ -544,6 +578,7 @@ void DFMDBManager::updateFontInfo(const DFontPreviewItemData &itemData, const QS
 *************************************************************************/
 void DFMDBManager::updateFontInfo(const QList<DFontPreviewItemData> &fontList, const QString &strKey)
 {
+    // qDebug() << "Entering function: DFMDBManager::updateFontInfo";
     return m_sqlUtil->updateFontInfo(fontList, strKey);
 }
 
@@ -558,6 +593,7 @@ void DFMDBManager::updateFontInfo(const QList<DFontPreviewItemData> &fontList, c
 *************************************************************************/
 void DFMDBManager::commitUpdateFontInfo()
 {
+    // qDebug() << "Entering function: DFMDBManager::commitUpdateFontInfo";
     if (m_updateFontList.isEmpty())
         return;
 
@@ -566,6 +602,7 @@ void DFMDBManager::commitUpdateFontInfo()
     //m_sqlUtil->updateOld2Record();//数据库表被重建时，先saveRecord，再updateOld2Record。
     endTransaction();
     m_updateFontList.clear();
+    // qDebug() << "Exiting function: DFMDBManager::commitUpdateFontInfo";
 }
 /*************************************************************************
  <Function>      syncOldRecords
@@ -578,20 +615,25 @@ void DFMDBManager::commitUpdateFontInfo()
 *************************************************************************/
 void DFMDBManager::syncOldRecords()
 {
+    // qDebug() << "Entering function: DFMDBManager::syncOldRecords";
     beginTransaction();
     m_sqlUtil->updateOld2Record();//数据库表被重建时，先saveRecord，再updateOld2Record。
     endTransaction();
+    // qDebug() << "Exiting function: DFMDBManager::syncOldRecords";
 }
 
 void DFMDBManager::getAllRecords()
 {
+    // qDebug() << "Entering function: DFMDBManager::getAllRecords";
     QList<QString> keyList;
     appendAllKeys(keyList);
 
     m_sqlUtil->findAllRecords(keyList, recordList);
+    // qDebug() << "Exiting function: DFMDBManager::getAllRecords";
 }
 
 void DFMDBManager::checkIfEmpty()
 {
+    // qDebug() << "Entering function: DFMDBManager::checkIfEmpty";
     m_sqlUtil->checkIfEmpty();
 }

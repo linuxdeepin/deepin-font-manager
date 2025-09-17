@@ -15,6 +15,7 @@ DFontLoadThread::DFontLoadThread(QObject *parent)
 
 DFontLoadThread::~DFontLoadThread()
 {
+    // qDebug() << "DFontLoadThread destroyed";
 }
 
 void DFontLoadThread::open(const QString &filepath)
@@ -31,7 +32,7 @@ void DFontLoadThread::run()
     if (file.open(QIODevice::ReadOnly)) {
         qDebug() << "Successfully opened font file:" << m_filePath;
         QByteArray fileContent = file.readAll();
-        qDebug() << "Read" << fileContent.size() << "bytes from font file";
+        // qDebug() << "Read" << fileContent.size() << "bytes from font file";
         
         emit loadFinished(fileContent);
     } else {

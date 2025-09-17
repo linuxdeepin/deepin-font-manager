@@ -11,6 +11,7 @@ QString DFMXmlWrapper::m_fontConfigFilePath = FontConfigFileDir + FTM_REJECT_FON
 
 DFMXmlWrapper::DFMXmlWrapper()
 {
+    // qDebug() << "DFMXmlWrapper constructor";
 }
 
 
@@ -165,9 +166,12 @@ bool DFMXmlWrapper::getNodeByName(QDomElement &rootEle,
     for (ele = rootEle.firstChildElement(); ele.isElement(); ele = ele.nextSiblingElement()) {
         //递归处理子节点，获取节点
         if (getNodeByName(ele, nodeName, node)) {
+            // qDebug() << "Exiting function: DFMXmlWrapper::getNodeByName with result: true";
             return true;
         }
     }
+
+    qDebug() << "Exiting function: DFMXmlWrapper::getNodeByName with result: false";
     return false;
 }
 
@@ -521,6 +525,7 @@ bool DFMXmlWrapper::deleteNodeWithTextList(const QString &fileName, const QStrin
         QDomNode node = list.at(i);
         if (nodeEle.isElement()) {
             if (nodeTextList.contains(node.toElement().text())) {
+                // qDebug() << "Marking node for deletion with text:" << node.toElement().text();
                 removeNodeList << node;
             }
         }
@@ -531,19 +536,21 @@ bool DFMXmlWrapper::deleteNodeWithTextList(const QString &fileName, const QStrin
         if (removeNode.isElement()) {
             QDomNode parentNode = removeNode.parentNode();
             if (parentNode.isElement()) {
-                qDebug() << "Deleting node:" << removeNode.toElement().tagName()
-                        << "with text:" << removeNode.toElement().text();
+                // qDebug() << "Deleting node:" << removeNode.toElement().tagName()
+                //         << "with text:" << removeNode.toElement().text();
                 parentNode.removeChild(removeNode);
             } else {
-                qDebug() << "delete node failed!" << Qt::endl;
+                // qDebug() << "delete node failed!" << Qt::endl;
                 return false;
             }
         } else {
-            qDebug() << "delete node failed!" << Qt::endl;
+            // qDebug() << "delete node failed!" << Qt::endl;
         }
     }
 
     if (!file.open(QFile::WriteOnly | QFile::Truncate)) {
+        qWarning() << "Failed to open file for writing after deletion:" << fileName
+                  << "Error:" << file.errorString();
         return false;
     }
 
@@ -551,7 +558,7 @@ bool DFMXmlWrapper::deleteNodeWithTextList(const QString &fileName, const QStrin
     QTextStream out_stream(&file);
     doc.save(out_stream, 4); //缩进4格
     file.close();
-
+    qDebug() << "Successfully deleted nodes from file:" << fileName;
     return true;
 }
 
@@ -570,7 +577,10 @@ bool DFMXmlWrapper::queryAllChildNodes_Text(const QString &fileName,
                                             const QString &nodeName,
                                             QStringList &textList)
 {
+    qDebug() << "Entering function: DFMXmlWrapper::queryAllChildNodes_Text with fileName:" << fileName << "nodeName:" << nodeName;
+
     if (fileName.isEmpty()) {
+        qDebug() << "Empty file name provided result: false";
         return false;
     }
 
@@ -580,11 +590,14 @@ bool DFMXmlWrapper::queryAllChildNodes_Text(const QString &fileName,
     QFile file(fileName);
     // 以只读方式打开
     if (!file.open(QIODevice::ReadOnly)) {
+        qWarning() << "Failed to open file for reading:" << fileName
+                  << "Error:" << file.errorString();
         return false;
     }
 
     // 将文件内容读到doc中
     if (!doc.setContent(&file)) {
+        qWarning() << "Failed to parse XML content from file:" << fileName;
         file.close();
         file.remove();
         return false;
@@ -595,6 +608,7 @@ bool DFMXmlWrapper::queryAllChildNodes_Text(const QString &fileName,
     QDomElement rootEle = doc.documentElement();
     QDomElement node;
     if (!getNodeByName(rootEle, nodeName, node)) {
+        qDebug() << "Failed to find node:" << nodeName;
         return false;
     }
 
@@ -603,11 +617,14 @@ bool DFMXmlWrapper::queryAllChildNodes_Text(const QString &fileName,
         QDomNode n = list.at(i);
         if (node.isElement()) {
             QString path = n.toElement().text();
-            if (QFile::exists(path))
+            if (QFile::exists(path)) {
+                // qDebug() << "Found existing path:" << path;
                 textList << path;
+            }
         }
     }
 
+    qDebug() << "Exiting function: DFMXmlWrapper::queryAllChildNodes_Text with result: true";
     return true;
 }
 
@@ -622,10 +639,13 @@ bool DFMXmlWrapper::queryAllChildNodes_Text(const QString &fileName,
 *************************************************************************/
 QStringList DFMXmlWrapper::getFontConfigDisableFontPathList()
 {
+    qDebug() << "Entering function: DFMXmlWrapper::getFontConfigDisableFontPathList";
+
     QStringList strDisableFontPathList;
     QString fontConfigFilePath = DFMXmlWrapper::m_fontConfigFilePath;
     DFMXmlWrapper::queryAllChildNodes_Text(fontConfigFilePath, "rejectfont", strDisableFontPathList);
 
+    qDebug() << "Exiting function: DFMXmlWrapper::getFontConfigDisableFontPathList";
     return strDisableFontPathList;
 }
 

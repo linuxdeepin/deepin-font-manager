@@ -37,11 +37,12 @@ public slots:
 Worker::Worker(QObject *parent)
     : QObject(parent)
 {
-
+    // qDebug() << "Worker constructor";
 }
 
 void Worker::slot_dowork(DFInstallNormalWindow *w)
 {
+    // qDebug() << "Worker slot_dowork";
     // Install the font list ,which may be changed in exception window
     if (nullptr != w) {
         w->getAllSysfiles();
@@ -126,6 +127,7 @@ DFInstallNormalWindow::~DFInstallNormalWindow()
 *************************************************************************/
 void DFInstallNormalWindow::initUI()
 {
+    qDebug() << "Entering function: DFInstallNormalWindow::initUI";
     setFixedSize(QSize(380, 136));
     setTitle(DApplication::translate("NormalInstallWindow", "Install Font"));
 
@@ -174,6 +176,7 @@ void DFInstallNormalWindow::initUI()
     m_currentFontLabel->setStyleSheet("background: silver");
     m_progressBar->setStyleSheet("background: silver");
 #endif
+    qDebug() << "Exiting function: DFInstallNormalWindow::initUI";
 }
 
 /*************************************************************************
@@ -186,6 +189,7 @@ void DFInstallNormalWindow::initUI()
 *************************************************************************/
 void DFInstallNormalWindow::initConnections()
 {
+    qDebug() << "Entering function: DFInstallNormalWindow::initConnections";
     connect(m_signalManager, &SignalManager::installDuringPopErrorDialog, this, &DFInstallNormalWindow::batchHalfwayInstall);
 
     connect(m_fontManager, &FontManagerCore::batchInstall, this, &DFInstallNormalWindow::onProgressChanged);
@@ -205,6 +209,7 @@ void DFInstallNormalWindow::initConnections()
     connect(m_pthread, &QThread::finished, m_pworker, &QObject::deleteLater); //线程结束资源释放
     connect(this, &DFInstallNormalWindow::sigdowork, m_pworker, &Worker::slot_dowork);
     connect(this, &DFInstallNormalWindow::sigShowInstallErrDlg, this, &DFInstallNormalWindow::showInstallErrDlg);
+    qDebug() << "Exiting function: DFInstallNormalWindow::initConnections";
 }
 
 /*************************************************************************
@@ -217,6 +222,7 @@ void DFInstallNormalWindow::initConnections()
 *************************************************************************/
 void DFInstallNormalWindow::getAllSysfiles()
 {
+    qDebug() << "Entering function: DFInstallNormalWindow::getAllSysfiles";
     for (auto &font : DFontPreviewListDataThread::instance()->getFontModelList()) {
         if (Q_UNLIKELY(font.fontInfo.filePath.contains("/usr/share/"))) {
             QString systemFileName;
@@ -227,6 +233,7 @@ void DFInstallNormalWindow::getAllSysfiles()
 
         }
     }
+    qDebug() << "Exiting function: DFInstallNormalWindow::getAllSysfiles";
 }
 
 
@@ -242,6 +249,8 @@ void DFInstallNormalWindow::getAllSysfiles()
 *************************************************************************/
 void DFInstallNormalWindow::verifyFontFiles()
 {
+    qDebug() << "Entering function: DFInstallNormalWindow::verifyFontFiles with" << m_installFiles.size() << "files to verify";
+
     DFontInfo fontInfo;
     QStringList fontInfos;
     QStringList instFontInfos;
@@ -260,12 +269,14 @@ void DFInstallNormalWindow::verifyFontFiles()
             needRefresh = true;
         }
         if (Q_UNLIKELY(fontInfo.isError)) {
+            // qDebug() << "Processing damaged font file:" << it;
             m_damagedFiles.append(it);
             qWarning() << "Found damaged font file:" << QFileInfo(it).fileName();
 #ifdef QT_QML_DEBUG
 //            qDebug() << __FUNCTION__ << " (" << it << " :Damaged file)";
 #endif
         } else if (fontInfo.isInstalled && !isSystemFont(fontInfo)) {
+            // qDebug() << "Processing already installed font file:" << it;
             QString familyStyleName = getFamilyStyleName(fontInfo);
             if (!instFontInfos.contains(familyStyleName)) {
                 instFontInfos.append(familyStyleName);
@@ -276,12 +287,14 @@ void DFInstallNormalWindow::verifyFontFiles()
 //            qDebug() << __FUNCTION__ << " (" << it << " :Installed file)";
 #endif
         } else if (isSystemFont(fontInfo)) {
+            // qDebug() << "Processing system font file:" << it;
             m_systemFiles.append(it);
             qInfo() << "Found system font:" << QFileInfo(it).fileName();
 #ifdef QT_QML_DEBUG
 //            qDebug() << __FUNCTION__ << " (" << it << " :System file)";
 #endif
         } else {
+            // qDebug() << "Processing new font file:" << it;
             QString familyStyleName = getFamilyStyleName(fontInfo);
             if (!fontInfos.contains(familyStyleName)) {
                 fontInfos.append(familyStyleName);
@@ -290,11 +303,14 @@ void DFInstallNormalWindow::verifyFontFiles()
                     /*这里获取需要新添加到验证框中的字体m_newHalfInstalledFiles和之前出现过的字体m_oldHalfInstalledFiles
                     ,用于之后listview滚动和设置选中状态使用*/
                     if (!m_halfInstalledFiles.contains(it)) {
+                        // qDebug() << "Adding to new half-installed files:" << it;
                         m_newHalfInstalledFiles.append(it);
                     } else {
+                        // qDebug() << "Adding to old half-installed files:" << it;
                         m_oldHalfInstalledFiles.append(it);
                     }
                 } else {
+                    // qDebug() << "Adding to new install files:" << it;
                     m_newInstallFiles.append(it);
                 }
             }
@@ -305,6 +321,7 @@ void DFInstallNormalWindow::verifyFontFiles()
         }
     }
     m_errorList = m_damagedFiles + m_installedFiles + m_systemFiles;
+    qDebug() << "Exiting function: DFInstallNormalWindow::verifyFontFiles";
 }
 
 /*************************************************************************
@@ -317,33 +334,41 @@ void DFInstallNormalWindow::verifyFontFiles()
 *************************************************************************/
 bool DFInstallNormalWindow::ifNeedShowExceptionWindow() const
 {
+    qDebug() << "Entering function: DFInstallNormalWindow::ifNeedShowExceptionWindow";
     // Skip Exception dialog
     if (m_isNeedSkipException) {
+        qDebug() << "Exception dialog skipped - m_isNeedSkipException is true";
         return false;
     }
     // If have new install file,install first,then check the exception list
     if (InstallState::Install == m_installState && m_newInstallFiles.size() > 0) {
+        qDebug() << "New install files exist, skipping exception dialog";
         return false;
     }
 
     // For all selected files is installed & damage
     if (InstallState::Install == m_installState
             && (m_installedFiles.size() > 0 || m_damagedFiles.size() > 0)) {
+        qDebug() << "Install state with installed or damaged files - showing exception dialog";
         return true;
     }
 
     if (InstallState::Install == m_installState && m_systemFiles.size() > 0) {
+        qDebug() << "Install state with system files - showing exception dialog";
         return true;
     }
 
     if (InstallState::reinstall == m_installState && m_installedFiles.size() > 0) {
+        qDebug() << "Reinstall state with installed files - showing exception dialog";
         return true;
     }
 
     if (InstallState::reinstall == m_installState && m_damagedFiles.size() > 0) {
+        qDebug() << "Reinstall state with damaged files - showing exception dialog";
         return true;
     }
 
+    qDebug() << "No conditions met for showing exception dialog";
     return false;
 }
 
@@ -358,11 +383,13 @@ bool DFInstallNormalWindow::ifNeedShowExceptionWindow() const
 *************************************************************************/
 bool DFInstallNormalWindow::isSystemFont(DFontInfo &f)
 {
+    qDebug() << "Entering function: DFInstallNormalWindow::isSystemFont";
     QString fontFullname = f.familyName + f.styleName;
     bool ret = m_AllSysFilesfamilyName.contains(fontFullname);
 
     // ttc文件包含多种ttf字体，需特殊处理
     if (!ret && f.filePath.endsWith(QLatin1String(".ttc"), Qt::CaseInsensitive)) {
+        qDebug() << "TTc file";
         QStringList fontFamilyList = QFontDatabase::applicationFontFamilies(QFontDatabase::addApplicationFont(f.filePath));
         if (fontFamilyList.size() > 1) {
             for (QString &fontFamily : fontFamilyList) {
@@ -375,7 +402,7 @@ bool DFInstallNormalWindow::isSystemFont(DFontInfo &f)
         }
     }
 
-
+    qDebug() << "Exiting function: DFInstallNormalWindow::isSystemFont";
     return ret;
 }
 
@@ -397,6 +424,7 @@ void DFInstallNormalWindow::checkShowMessage()
         qDebug() << "install refresh over";
         finishInstall();
     } else if (getInstallMessage == true && m_popedInstallErrorDialg == false) {
+        qDebug() << "Entering function: DFInstallNormalWindow::checkShowMessage";
         if (ifNeedShowExceptionWindow()) {
             qDebug() << "need reinstall " << Qt::endl;
             Q_EMIT sigShowInstallErrDlg();
@@ -407,6 +435,7 @@ void DFInstallNormalWindow::checkShowMessage()
             finishInstall();
         }
     }
+    qDebug() << "Exiting function: DFInstallNormalWindow::checkShowMessage";
 }
 
 /**
@@ -416,12 +445,14 @@ void DFInstallNormalWindow::checkShowMessage()
 */
 void DFInstallNormalWindow::finishInstall()
 {
+    qDebug() << "Entering function: DFInstallNormalWindow::finishInstall";
     getInstallMessage = false;
     getReInstallMessage = false;
 
     Q_EMIT m_signalManager->finishFontInstall(m_outfileList);
     m_cancelInstall = false;
     close();
+    qDebug() << "Exiting function: DFInstallNormalWindow::finishInstall";
 }
 
 /*************************************************************************
@@ -435,6 +466,7 @@ void DFInstallNormalWindow::finishInstall()
 *************************************************************************/
 void DFInstallNormalWindow::getNoSameFilesCount(const QStringList &filesList)
 {
+    qDebug() << "Entering function: DFInstallNormalWindow::getNoSameFilesCount";
     if (filesList.isEmpty())
         return;
 
@@ -443,10 +475,12 @@ void DFInstallNormalWindow::getNoSameFilesCount(const QStringList &filesList)
         QString familyStyleName = getFamilyStyleName(fontInfo);
 
         if (!m_installedFontsFamilyname.contains(familyStyleName)) {
+            // qDebug() << "Add to installed fonts familyname";
             m_installedFontsFamilyname.append(familyStyleName);
             m_outfileList.append(fontInfo.filePath);
         }
     }
+    qDebug() << "Exiting function: DFInstallNormalWindow::getNoSameFilesCount";
 }
 
 /**
@@ -456,8 +490,10 @@ void DFInstallNormalWindow::getNoSameFilesCount(const QStringList &filesList)
 */
 void DFInstallNormalWindow::installFinished()
 {
+    qDebug() << "Entering function: DFInstallNormalWindow::installFinished";
     getInstallMessage = true;
     checkShowMessage();
+    qDebug() << "Exiting function: DFInstallNormalWindow::installFinished";
 }
 
 /**
@@ -467,12 +503,14 @@ void DFInstallNormalWindow::installFinished()
 */
 void DFInstallNormalWindow::reInstallFinished(const QStringList &fileList)
 {
+    qDebug() << "Entering function: DFInstallNormalWindow::reInstallFinished";
     getReInstallMessage = true;
     getNoSameFilesCount(fileList);
     if (getInstallMessage == true && getReInstallMessage == true) {
         qDebug() << "install refresh over";
         finishInstall();
     }
+    qDebug() << "Exiting function: DFInstallNormalWindow::reInstallFinished";
 }
 
 /*************************************************************************
@@ -486,13 +524,16 @@ void DFInstallNormalWindow::reInstallFinished(const QStringList &fileList)
 *************************************************************************/
 void DFInstallNormalWindow::closeEvent(QCloseEvent *event)
 {
+    // qDebug() << "Entering function: DFInstallNormalWindow::closeEvent";
     Q_UNUSED(event);
-    qDebug() << __FUNCTION__ << m_cancelInstall;
+    // qDebug() << __FUNCTION__ << m_cancelInstall;
 
     if (m_cancelInstall) {
+        // qDebug() << "Cancel install";
         m_fontManager->cancelInstall();
         reject();
     }
+    // qDebug() << "Exiting function: DFInstallNormalWindow::closeEvent";
 }
 
 /*************************************************************************
@@ -506,13 +547,16 @@ void DFInstallNormalWindow::closeEvent(QCloseEvent *event)
 *************************************************************************/
 void DFInstallNormalWindow::batchInstall()
 {
+    qDebug() << "Entering function: DFInstallNormalWindow::batchInstall";
     // Check&Sort uninstalled ,installed & damaged font file here
 
     QStringList installList;
 
     if (m_newInstallFiles.size() > 0) {
+        qDebug() << "New install files";
         installList << m_newInstallFiles;
     } else {
+        qDebug() << "No new install files";
         m_fontManager->setCacheStatus(FontManagerCore::NoNewFonts);
         installFinished();
         return;
@@ -535,8 +579,10 @@ void DFInstallNormalWindow::batchInstall()
 //    qDebug() << installListWithFamliyName << Qt::endl;
 
     if (ifNeedShowExceptionWindow()) {
+        qDebug() << "Cache later";
         m_fontManager->setCacheStatus(FontManagerCore::CacheLater);
     } else {
+        qDebug() << "Cache now";
         m_fontManager->setCacheStatus(FontManagerCore::CacheNow);
     }
 
@@ -544,6 +590,7 @@ void DFInstallNormalWindow::batchInstall()
 
     m_fontManager->setInstallFileList(installListWithFamliyName);
     m_fontManager->start();
+    qDebug() << "Exiting function: DFInstallNormalWindow::batchInstall";
 }
 
 /*************************************************************************
@@ -571,6 +618,7 @@ void DFInstallNormalWindow::batchReInstall(const QStringList &reinstallFiles)
     m_fontManager->setType(FontManagerCore::ReInstall);
     m_fontManager->setInstallFileList(installListWithFamliyName);
     m_fontManager->start();
+    qDebug() << "Exiting function: DFInstallNormalWindow::batchReInstall";
 }
 
 /*************************************************************************
@@ -584,6 +632,7 @@ void DFInstallNormalWindow::batchReInstall(const QStringList &reinstallFiles)
 *************************************************************************/
 void DFInstallNormalWindow::batchHalfwayInstall(const QStringList &filelist)
 {
+    qDebug() << "Entering function: DFInstallNormalWindow::batchHalfwayInstall";
     m_installFiles = filelist;
     verifyFontFiles();
 
@@ -592,6 +641,7 @@ void DFInstallNormalWindow::batchHalfwayInstall(const QStringList &filelist)
 
     //当安装的字体是需要新添加到字体验证框时或者已经添加到字体验证框时,刷新listview.
     if (m_errorList.count() + m_newHalfInstalledFiles.count() + m_oldHalfInstalledFiles.count() > 0) {
+        qDebug() << "Update install error listview";
         emit m_signalManager->updateInstallErrorListview(m_errorList, m_halfInstalledFiles, m_newHalfInstalledFiles, m_oldHalfInstalledFiles);
     }
 
@@ -607,6 +657,7 @@ void DFInstallNormalWindow::batchHalfwayInstall(const QStringList &filelist)
     m_fontManager->setCacheStatus(FontManagerCore::CacheLater);
     m_fontManager->setInstallFileList(installListWithFamliyName);
     m_fontManager->start();
+    qDebug() << "Exiting function: DFInstallNormalWindow::batchHalfwayInstall";
 }
 
 /*************************************************************************
@@ -619,7 +670,9 @@ void DFInstallNormalWindow::batchHalfwayInstall(const QStringList &filelist)
 *************************************************************************/
 void DFInstallNormalWindow::batchReInstallContinue()
 {
+    qDebug() << "Entering function: DFInstallNormalWindow::batchReInstallContinue";
     if (m_installState == InstallState::reinstall) {
+        qDebug() << "Clear installed files";
         m_installedFiles.clear();
     }
 
@@ -635,6 +688,7 @@ void DFInstallNormalWindow::batchReInstallContinue()
     m_fontManager->setType(FontManagerCore::ReInstall);
     m_fontManager->setInstallFileList(installListWithFamliyName);
     m_fontManager->start();
+    qDebug() << "Exiting function: DFInstallNormalWindow::batchReInstallContinue";
 }
 
 /*************************************************************************
@@ -647,14 +701,17 @@ void DFInstallNormalWindow::batchReInstallContinue()
 *************************************************************************/
 void DFInstallNormalWindow::onCancelInstall()
 {
+    qDebug() << "Entering function: DFInstallNormalWindow::onCancelInstall";
 #ifdef QT_QML_DEBUG
     qDebug() << __FUNCTION__ << " called";
 #endif
     m_errCancelInstall = true;
 
     if(needRefresh){
+        qDebug() << "Refresh user font";
         emit m_signalManager->refreshUserFont();
     }
+    qDebug() << "Exiting function: DFInstallNormalWindow::onCancelInstall";
 }
 
 /*************************************************************************
@@ -677,8 +734,10 @@ void DFInstallNormalWindow::onContinueInstall(const QStringList &continueInstall
     m_skipStateRecovery = true;
     batchReInstall(continueInstallFontFileList);
     if(needRefresh){
+        qDebug() << "Refresh user font";
         emit m_signalManager->refreshUserFont();
     }
+    qDebug() << "Exiting function: DFInstallNormalWindow::onContinueInstall";
 }
 
 /*************************************************************************
@@ -693,7 +752,9 @@ void DFInstallNormalWindow::onContinueInstall(const QStringList &continueInstall
 *************************************************************************/
 void DFInstallNormalWindow::onProgressChanged(const QString &familyName, const double &percent)
 {
+    qDebug() << "Entering function: DFInstallNormalWindow::onProgressChanged";
     if (familyName.isEmpty()) {
+        qDebug() << "Family name is empty";
         return;
     }
 
@@ -702,6 +763,7 @@ void DFInstallNormalWindow::onProgressChanged(const QString &familyName, const d
 
     m_progressBar->setValue(static_cast<int>(percent));
     m_progressBar->setTextVisible(false);
+    qDebug() << "Exiting function: DFInstallNormalWindow::onProgressChanged";
 }
 
 /*************************************************************************
@@ -716,10 +778,12 @@ void DFInstallNormalWindow::onProgressChanged(const QString &familyName, const d
 *************************************************************************/
 void DFInstallNormalWindow::onInstallFinished(int state, const QStringList &fileList)
 {
+    qDebug() << "Entering function: DFInstallNormalWindow::onInstallFinished";
     // ToDo:
     //   May send signal to mainwindow refresh new installed font
     // QMIT notfiyRefresh;
     if (0 == state || 1 == state) {
+        qDebug() << "Clear install files";
         m_installFiles.clear();
         m_installState = InstallState::Install;
 
@@ -742,6 +806,7 @@ void DFInstallNormalWindow::onInstallFinished(int state, const QStringList &file
         }
     }
     installFinished();
+    qDebug() << "Exiting function: DFInstallNormalWindow::onInstallFinished";
 }
 
 /*************************************************************************
@@ -756,11 +821,13 @@ void DFInstallNormalWindow::onInstallFinished(int state, const QStringList &file
 *************************************************************************/
 void DFInstallNormalWindow::onReInstallFinished(int state, const QStringList &fileList)
 {
+    qDebug() << "Entering function: DFInstallNormalWindow::onReInstallFinished";
     // ToDo:
     //   May send signal to mainwindow refresh new installed font
     // QMIT notfiyRefresh;
 
     if (0 == state) {
+        qDebug() << "Clear install files";
         m_installFiles.clear();
         m_installState = InstallState::reinstall;
 
@@ -770,6 +837,7 @@ void DFInstallNormalWindow::onReInstallFinished(int state, const QStringList &fi
         m_installFiles << m_damagedFiles;
     }
     reInstallFinished(fileList);
+    qDebug() << "Exiting function: DFInstallNormalWindow::onReInstallFinished";
 }
 
 /*************************************************************************
@@ -782,6 +850,7 @@ void DFInstallNormalWindow::onReInstallFinished(int state, const QStringList &fi
 *************************************************************************/
 void DFInstallNormalWindow::showInstallErrDlg()
 {
+    qDebug() << "Entering function: DFInstallNormalWindow::showInstallErrDlg";
     m_popedInstallErrorDialg = true;
 
     m_pexceptionDlg = new DFInstallErrorDialog(this, m_errorList);
@@ -805,6 +874,7 @@ void DFInstallNormalWindow::showInstallErrDlg()
 
     m_pexceptionDlg->move(geometry().center() - m_pexceptionDlg->rect().center());
     m_pexceptionDlg->exec();
+    qDebug() << "Exiting function: DFInstallNormalWindow::showInstallErrDlg";
 }
 
 /*************************************************************************
@@ -818,10 +888,12 @@ void DFInstallNormalWindow::showInstallErrDlg()
 *************************************************************************/
 void DFInstallNormalWindow::setAddBtnHasTabs(bool AddBtnHasTabs)
 {
+    qDebug() << "Entering function: DFInstallNormalWindow::setAddBtnHasTabs";
     m_AddBtnHasTabs = AddBtnHasTabs;
 }
 void DFInstallNormalWindow::dowork()
 {
+    qDebug() << "Entering function: DFInstallNormalWindow::dowork";
     m_pthread->start();
     emit sigdowork(this);
 }
@@ -837,6 +909,7 @@ void DFInstallNormalWindow::dowork()
 *************************************************************************/
 void DFInstallNormalWindow::setSkipException(bool skip)
 {
+    qDebug() << "Entering function: DFInstallNormalWindow::setSkipException";
     m_isNeedSkipException = skip;
 }
 
@@ -850,6 +923,7 @@ void DFInstallNormalWindow::setSkipException(bool skip)
 *************************************************************************/
 void DFInstallNormalWindow::breakInstalltion()
 {
+    qDebug() << "Entering function: DFInstallNormalWindow::breakInstalltion";
     //Todo:
     //   Just close the installtion window
     if (m_pexceptionDlg->isVisible()) {
@@ -858,6 +932,7 @@ void DFInstallNormalWindow::breakInstalltion()
     }
 
     this->hide();
+    qDebug() << "Exiting function: DFInstallNormalWindow::breakInstalltion";
 }
 
 /*************************************************************************
@@ -871,10 +946,14 @@ void DFInstallNormalWindow::breakInstalltion()
 *************************************************************************/
 void DFInstallNormalWindow::keyPressEvent(QKeyEvent *event)
 {
+    // qDebug() << "Entering function: DFInstallNormalWindow::keyPressEvent with key:" << event->key();
     if (event->key() == Qt::Key_Escape) {
+        // qDebug() << "Escape key pressed - rejecting and closing dialog";
         reject();
         close();
     }
+
+    // qDebug() << "Exiting function: DFInstallNormalWindow::keyPressEvent";
 }
 
 #include "dfinstallnormalwindow.moc"

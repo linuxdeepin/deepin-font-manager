@@ -32,11 +32,12 @@ public:
 DFontSpinnerPrivate::DFontSpinnerPrivate(DFontSpinner *parent)
     : q_ptr(parent)
 {
-
+    qDebug() << "Spinner widget created";
 }
 
 DFontSpinnerPrivate::~DFontSpinnerPrivate()
 {
+    // qDebug() << "Spinner widget destroyed";
     refreshTimer.stop();
 }
 
@@ -56,7 +57,7 @@ DFontSpinner::DFontSpinner(QWidget *parent)
 
 DFontSpinner::~DFontSpinner()
 {
-    qDebug() << "Spinner widget destroyed";
+    // qDebug() << "Spinner widget destroyed";
     delete m_ptr;
 }
 
@@ -122,7 +123,9 @@ void DFontSpinner::stop()
 *************************************************************************/
 void DFontSpinner::paintEvent(QPaintEvent *)
 {
+    // qDebug() << "Entering function: DFontSpinner::paintEvent";
     if (m_ptr->indicatorColors.isEmpty()) {
+        // qDebug() << "m_ptr->indicatorColors.isEmpty()";
         for (int i = 0; i < 3; ++i)
             m_ptr->indicatorColors << m_ptr->createDefaultIndicatorColorList(palette().highlight().color());
     }
@@ -155,14 +158,17 @@ void DFontSpinner::paintEvent(QPaintEvent *)
             painter.fillPath(path, colors.value(j));
         }
     }
+    // qDebug() << "Exiting function: DFontSpinner::paintEvent";
 }
 
 void DFontSpinner::changeEvent(QEvent *e)
 {
+    // qDebug() << "Entering function: DFontSpinner::changeEvent";
     if (e->type() == QEvent::PaletteChange)
         m_ptr->indicatorColors.clear();
 
     QWidget::changeEvent(e);
+    // qDebug() << "Exiting function: DFontSpinner::changeEvent";
 }
 
 
@@ -177,6 +183,7 @@ void DFontSpinner::changeEvent(QEvent *e)
 *************************************************************************/
 QList<QColor> DFontSpinnerPrivate::createDefaultIndicatorColorList(QColor color)
 {
+    // qDebug() << "Entering function: DFontSpinnerPrivate::createDefaultIndicatorColorList";
     QList<QColor> colors;
     QList<int> opacitys;
     opacitys << 100 << 30 << 15 << 10 << 5 << 4 << 3 << 2 << 1;
@@ -184,5 +191,6 @@ QList<QColor> DFontSpinnerPrivate::createDefaultIndicatorColorList(QColor color)
         color.setAlpha(255 * opacitys.value(i) / 100);
         colors << color;
     }
+    // qDebug() << "Exiting function: DFontSpinnerPrivate::createDefaultIndicatorColorList";
     return colors;
 }

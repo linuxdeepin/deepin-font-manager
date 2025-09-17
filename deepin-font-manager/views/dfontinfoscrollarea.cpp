@@ -37,6 +37,7 @@ dfontinfoscrollarea::dfontinfoscrollarea(DFontPreviewItemData *pData,  DWidget *
 
     setFrameShape(QFrame::NoFrame);
     initUi();
+    qDebug() << "Exiting function: dfontinfoscrollarea::dfontinfoscrollarea";
 }
 
 /*************************************************************************
@@ -49,6 +50,7 @@ dfontinfoscrollarea::dfontinfoscrollarea(DFontPreviewItemData *pData,  DWidget *
 *************************************************************************/
 void dfontinfoscrollarea::initUi()
 {
+    qDebug() << "Entering function: dfontinfoscrollarea::initUi";
     QStringList sFontList;
     sFontList << "Bitstream Charter-Regular" << "Bitstream Charter-Bold" << "Bitstream Charter-Italic"
               <<"Bitstream Charter-Bold Italic" << "Courier 10 Pitch-Italic" << "Courier 10 Pitch-Bold Italic"
@@ -62,16 +64,20 @@ void dfontinfoscrollarea::initUi()
     createLabel(gridLayout, 1, DApplication::translate("FontDetailDailog", "Type")
                 , DApplication::translate("FontDetailDailog", m_fontInfo->fontInfo.type.toLatin1()));
     if (m_fontInfo->fontInfo.version.isEmpty()) {
+        qDebug() << "Version is empty";
         QString version = "Copyright 2014~2015 Adobe Syste-ms Incorporated (http://www.adob.com/), with Reserved Font Name cc Source.";
         createLabel(gridLayout, 2, DApplication::translate("FontDetailDailog", "Version"), version);
     } else {
+        qDebug() << "Version is not empty";
         createLabel(gridLayout, 2, DApplication::translate("FontDetailDailog", "Version")
                     , m_fontInfo->fontInfo.version);
     }
     if (m_fontInfo->fontInfo.description.isEmpty()) {
+        qDebug() << "Description is empty";
         createLabel(gridLayout, 3, DApplication::translate("FontDetailDailog", "Description")
                     , DApplication::translate("FontDetailDailog", "Unknown"));
     } else {
+        qDebug() << "Description is not empty";
         createLabel(gridLayout, 3, DApplication::translate("FontDetailDailog", "Description")
                     , m_fontInfo->fontInfo.description);
     }
@@ -85,6 +91,7 @@ void dfontinfoscrollarea::initUi()
     FT_Error error = FT_New_Face(library,  m_fontInfo->fontInfo.filePath.toUtf8().constData(), 0, &face);
     QString sLicense = "";
     if (error == 0) {
+        qDebug() << "Error is 0";
          if (FT_IS_SFNT(face)) {
              FT_SfntName sname;
              const unsigned int count = FT_Get_Sfnt_Name_Count(face);
@@ -135,6 +142,7 @@ BITSTREAM CHARTER is a registered trademark of Bitstream Inc.";
     vLayout->addItem(gridLayout);
     vLayout->addStretch(1);
     this->setLayout(vLayout);
+    qDebug() << "Exiting function: dfontinfoscrollarea::initUi";
 }
 
 /*************************************************************************
@@ -149,13 +157,16 @@ BITSTREAM CHARTER is a registered trademark of Bitstream Inc.";
 *************************************************************************/
 bool dfontinfoscrollarea::eventFilter(QObject *obj, QEvent *e)
 {
+    // qDebug() << "Entering function: dfontinfoscrollarea::eventFilter (high frequency event - commented)";
     if (e->type() == QEvent::FontChange) {
+        // qDebug() << "Font change event detected in scroll area - updating text and height";
         updateText();
         QTimer::singleShot(0, [ = ] {
             autoHeight();
         });
     }
     return  DFrame::eventFilter(obj, e);
+    // qDebug() << "Exiting function: dfontinfoscrollarea::eventFilter (high frequency event - commented)";
 }
 
 /*************************************************************************
@@ -172,6 +183,7 @@ bool dfontinfoscrollarea::eventFilter(QObject *obj, QEvent *e)
 *************************************************************************/
 void dfontinfoscrollarea::createLabel(QGridLayout *layout, const int &index, const QString &objName, const QString &sData)
 {
+    qDebug() << "Entering function: dfontinfoscrollarea::createLabel";
     QString str = objName;
     DLabel *label = new DLabel(elideText(str), this);
     DFontSizeManager::instance()->bind(label, DFontSizeManager::T8);
@@ -180,19 +192,23 @@ void dfontinfoscrollarea::createLabel(QGridLayout *layout, const int &index, con
     label->setFixedWidth(100);
     layout->addWidget(label, index, 0);
     if (pTitleMap.find(label) == pTitleMap.end()) {
+        qDebug() << "Insert title map";
         pTitleMap.insert(std::pair<QLabel *, QString>(label, objName));
     }
     if (sData == "") {
+        qDebug() << "Data is empty";
         DLabel *labelText = new DLabel(this);
         DFontSizeManager::instance()->bind(labelText, DFontSizeManager::T8);
         labelText->setText(DApplication::translate("FontDetailDailog", "Unknown"));
         labelText->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
         layout->addWidget(labelText, index, 1);
     } else {
+        qDebug() << "Data is not empty";
         DFrame *widgets = addTitleFrame(sData, objName);
         widgets->setFrameShape(QFrame::NoFrame);
         layout->addWidget(widgets, index, 1);
     }
+    qDebug() << "Exiting function: dfontinfoscrollarea::createLabel";
 }
 
 /*************************************************************************
@@ -207,6 +223,7 @@ void dfontinfoscrollarea::createLabel(QGridLayout *layout, const int &index, con
 *************************************************************************/
 DFrame *dfontinfoscrollarea::addTitleFrame(const QString &sData, const QString &objName)
 {
+    qDebug() << "Entering function: dfontinfoscrollarea::addTitleFrame";
     Q_UNUSED(objName);
     DFrame *m_textShowFrame = new DFrame(this);
     QString ts = elideText(sData, this->font(), INFO_VISIBLE_WIDTH);
@@ -238,6 +255,7 @@ DFrame *dfontinfoscrollarea::addTitleFrame(const QString &sData, const QString &
 
     m_textShowFrame->setContentsMargins(0, 0, 0, 0);
 
+    qDebug() << "Exiting function: dfontinfoscrollarea::addTitleFrame";
     return m_textShowFrame;
 }
 
@@ -252,6 +270,7 @@ DFrame *dfontinfoscrollarea::addTitleFrame(const QString &sData, const QString &
 *************************************************************************/
 QString dfontinfoscrollarea::elideText(QString &titleName) const
 {
+    qDebug() << "Entering function: dfontinfoscrollarea::elideText";
     QFont font = this->font();
     QFontMetrics fontMetric(font);
     QString finalTitle = "";
@@ -293,6 +312,7 @@ QString dfontinfoscrollarea::elideText(QString &titleName) const
             finalTitle = titleName;
         }
     }
+    qDebug() << "Exiting function: dfontinfoscrollarea::elideText";
     return finalTitle;
 }
 
@@ -310,6 +330,7 @@ QString dfontinfoscrollarea::elideText(QString &titleName) const
 *************************************************************************/
 QString dfontinfoscrollarea::elideText(const QString &text, const QFont &font, int nLabelSize)
 {
+    qDebug() << "Entering function: dfontinfoscrollarea::elideText";
     QFontMetrics fm(font);
     QString strText = text;
 #if QT_VERSION_MAJOR > 5
@@ -334,6 +355,7 @@ QString dfontinfoscrollarea::elideText(const QString &text, const QFont &font, i
             }
         }
     }
+    qDebug() << "Exiting function: dfontinfoscrollarea::elideText";
     return strText;
 }
 
@@ -364,6 +386,7 @@ void dfontinfoscrollarea::updateText()
         QString newtext = elideText(text, this->font(), INFO_VISIBLE_WIDTH);
         plabeliter.first->setText(newtext);
     }
+    qDebug() << "Exiting function: dfontinfoscrollarea::updateText";
 }
 
 /*************************************************************************
@@ -385,4 +408,5 @@ void dfontinfoscrollarea::autoHeight()
         totalHeight = totalHeight + plabeliter.first->height();
     }
     emit m_signalManager->sizeChange(totalHeight + 76 + basicLabel->height());
+    qDebug() << "Exiting function: dfontinfoscrollarea::autoHeight";
 }
