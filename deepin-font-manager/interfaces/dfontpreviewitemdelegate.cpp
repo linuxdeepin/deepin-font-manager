@@ -37,6 +37,8 @@
 #include <QPainter>
 #include <QCheckBox>
 #include <QPainterPath>
+#include <QTextLayout>
+#include <QTextOption>
 
 DWIDGET_USE_NAMESPACE
 
@@ -289,18 +291,40 @@ QRect DFontPreviewItemDelegate::adjustPreviewRect(const QRect bgRect) const
 QPoint DFontPreviewItemDelegate::adjustPreviewFontBaseLinePoint(const QRect &fontPreviewRect, const QFontMetrics &previewFontMetrics) const
 {
     // qDebug() << "Entering function: DFontPreviewItemDelegate::adjustPreviewFontBaseLinePoint";
-    Q_UNUSED(previewFontMetrics);
-    /* 部分不规则的字体无法获取到有效QFontMetrics::height(),即 QFontMetrics::ascent(), QFontMetrics::descent()无效. */
-//    int baseLineY = 0;
-//    if (previewFontMetrics.ascent() == previewFontMetrics.descent()) {
-//        baseLineY = fontPreviewRect.bottom() - fontPreviewRect.height() / 2;
-//    } else {
-//        baseLineY = fontPreviewRect.bottom() - (fontPreviewRect.height() - previewFontMetrics.height()) / 2;
-//    }
-    /* Bug#20555 调整descent值，用来调整预览效果 UT000591 */
-    int commonFontDescent = fontPreviewRect.height() / 5;
+    // 确保水平位置与字体名称对齐 - 使用预览区域的左边界，这应该与字体名称对齐
     int baseLineX = fontPreviewRect.x();
-    int baseLineY = fontPreviewRect.bottom() - commonFontDescent;
+    int baseLineY;
+    
+    if (previewFontMetrics.height() > 0 && previewFontMetrics.ascent() > 0 && previewFontMetrics.descent() >= 0) {
+        // 使用实际的字体度量信息来计算基线位置
+        // 确保文字不会超出预览区域的边界
+        int actualHeight = previewFontMetrics.height();
+        int availableHeight = fontPreviewRect.height();
+        
+        // 检查字体是否有异常的高度
+        if (actualHeight <= availableHeight * 0.9) {
+            // 字体高度适合预览区域，居中显示
+            int verticalPadding = (availableHeight - actualHeight) / 2;
+            baseLineY = fontPreviewRect.top() + verticalPadding + previewFontMetrics.ascent();
+        } else {
+            // 对于极高的字体（如NotoSansZanabazarSquare），使用更严格的限制
+            int maxAllowedAscent = availableHeight * 0.7; // 限制上升部分不超过70%的可用高度
+            int actualAscent = previewFontMetrics.ascent();
+            
+            if (actualAscent > maxAllowedAscent) {
+                // 如果上升部分太高，强制压缩
+                baseLineY = fontPreviewRect.top() + maxAllowedAscent;
+            } else {
+                // 正常处理但留足够边距
+                int topMargin = availableHeight * 0.1; // 10%上边距
+                baseLineY = fontPreviewRect.top() + topMargin + actualAscent;
+            }
+        }
+    } else {
+        /* Bug#20555 调整descent值，用来调整预览效果 UT000591 */
+        int commonFontDescent = fontPreviewRect.height() / 6; // 从1/5改为1/6，更保守
+        baseLineY = fontPreviewRect.bottom() - commonFontDescent;
+    }
 
     // qDebug() << "Exiting function: DFontPreviewItemDelegate::adjustPreviewFontBaseLinePoint";
     return QPoint(baseLineX, baseLineY);
@@ -350,10 +374,57 @@ void DFontPreviewItemDelegate::paintForegroundPreviewFont(QPainter *painter, con
     QFontMetrics fontMetric(previewFont);
 
     QString elidedText = fontMetric.elidedText(fontPreviewText, Qt::ElideRight, fontPreviewRect.width());
+    // 强制从左到右的文本方向，避免RTL字体（如Indic Siyaq Numbers）从左边界外开始绘制
+    static const QChar LRM(0x200E);
+    elidedText.prepend(LRM);
 
     QPoint baseLinePoint = adjustPreviewFontBaseLinePoint(fontPreviewRect, fontMetric);
+    
+    // 检查字体边界框是否异常，某些特殊字体可能有异常的度量值
+    QRect textBounds = fontMetric.boundingRect(elidedText);
+    
+    // 特殊处理水平位置异常的字体
+    if (textBounds.x() < -5) {
+        // 如果文本边界框有负x偏移，强制修正基线点的x坐标
+        // 这种情况在某些特殊字体（如NotoSansIndicSiyaqNumbers）中可能出现
+        int correctionOffset = qAbs(textBounds.x()) + 2; // 额外加2像素安全边距
+        baseLinePoint.setX(fontPreviewRect.x() + correctionOffset);
+    }
+    
+    // 特殊处理高度异常的字体，确保不会顶到上一行
+    int actualTextHeight = textBounds.height();
+    int availableHeight = fontPreviewRect.height();
+    if (actualTextHeight > availableHeight * 1.2) {
+        // 如果文本实际高度明显超过可用空间，重新调整Y坐标
+        // 确保文本底部不会超出预览区域底边界
+        int maxAllowedDescent = availableHeight / 4;
+        int adjustedY = fontPreviewRect.bottom() - maxAllowedDescent;
+        if (adjustedY < baseLinePoint.y()) {
+            baseLinePoint.setY(adjustedY);
+        }
+    }
+    
     /* 使用baseline规则绘制预览文字，这样不用考虑特殊字体 UT000591 */
-    painter->drawText(baseLinePoint.x(), baseLinePoint.y(), elidedText);
+    painter->save();
+    painter->setClipRect(fontPreviewRect);
+
+    // 使用 QTextLayout 强制 LTR 排版并消除特殊字体的负左侧承载导致的左越界
+    QTextOption textOption;
+    textOption.setWrapMode(QTextOption::NoWrap);
+    textOption.setAlignment(Qt::AlignLeft);
+    textOption.setTextDirection(Qt::LeftToRight);
+
+    QTextLayout layout(elidedText, previewFont);
+    layout.setTextOption(textOption);
+    layout.beginLayout();
+    QTextLine line = layout.createLine();
+    line.setLineWidth(fontPreviewRect.width());
+    // 将行基线对齐到我们计算的 baseline 上
+    line.setPosition(QPointF(fontPreviewRect.left(), baseLinePoint.y() - line.ascent()));
+    layout.endLayout();
+    layout.draw(painter, QPointF(0, 0));
+
+    painter->restore();
     // qDebug() << "Exiting function: DFontPreviewItemDelegate::paintForegroundPreviewFont";
 }
 
