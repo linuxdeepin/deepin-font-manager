@@ -147,6 +147,27 @@ void DFontPreview::paintEvent(QPaintEvent *e)
         isNeedScroll(lowerWidth);
         const int lowerHeight = metrics.height();
         QPoint baseLinePoint = adjustPreviewFontBaseLinePoint(QRect(x, y + padding, lowerWidth, lowerHeight), metrics);
+        
+        // 检查字体边界框是否异常，某些特殊字体可能有异常的度量值
+        QRect textBounds = metrics.boundingRect(lowerTextStock);
+        
+        // 特殊处理水平位置异常的字体
+        if (textBounds.x() < -5) {
+            // 如果文本边界框有负x偏移，强制修正基线点的x坐标
+            int correctionOffset = qAbs(textBounds.x()) + 2; // 额外加2像素安全边距
+            baseLinePoint.setX(x + correctionOffset);
+        }
+        
+        // 特殊处理高度异常的字体，确保不会超出显示区域
+        int actualTextHeight = textBounds.height();
+        if (actualTextHeight > lowerHeight * 1.5) {
+            // 如果文本实际高度明显超过预期，调整基线位置
+            int adjustedY = y + padding + actualTextHeight * 0.8;
+            if (adjustedY < baseLinePoint.y()) {
+                baseLinePoint.setY(adjustedY);
+            }
+        }
+        
         painter.drawText(baseLinePoint.x(), baseLinePoint.y(), lowerTextStock);
         y += lowerHeight;
     }
@@ -161,6 +182,27 @@ void DFontPreview::paintEvent(QPaintEvent *e)
         isNeedScroll(upperWidth);
         const int upperHeight = metrics.height();
         QPoint baseLinePoint = adjustPreviewFontBaseLinePoint(QRect(x, y + padding, upperWidth, upperHeight), metrics);
+        
+        // 检查字体边界框是否异常，某些特殊字体可能有异常的度量值
+        QRect textBounds = metrics.boundingRect(upperTextStock);
+        
+        // 特殊处理水平位置异常的字体
+        if (textBounds.x() < -5) {
+            // 如果文本边界框有负x偏移，强制修正基线点的x坐标
+            int correctionOffset = qAbs(textBounds.x()) + 2; // 额外加2像素安全边距
+            baseLinePoint.setX(x + correctionOffset);
+        }
+        
+        // 特殊处理高度异常的字体，确保不会超出显示区域
+        int actualTextHeight = textBounds.height();
+        if (actualTextHeight > upperHeight * 1.5) {
+            // 如果文本实际高度明显超过预期，调整基线位置
+            int adjustedY = y + padding + actualTextHeight * 0.8;
+            if (adjustedY < baseLinePoint.y()) {
+                baseLinePoint.setY(adjustedY);
+            }
+        }
+        
         painter.drawText(baseLinePoint.x(), baseLinePoint.y(), upperTextStock);
         y += upperHeight;
     }
@@ -175,6 +217,27 @@ void DFontPreview::paintEvent(QPaintEvent *e)
         isNeedScroll(punWidth);
         int punHeight = metrics.height();
         QPoint baseLinePoint = adjustPreviewFontBaseLinePoint(QRect(x, y + padding, punWidth, punHeight), metrics);
+        
+        // 检查字体边界框是否异常，某些特殊字体可能有异常的度量值
+        QRect textBounds = metrics.boundingRect(punctuationTextStock);
+        
+        // 特殊处理水平位置异常的字体
+        if (textBounds.x() < -5) {
+            // 如果文本边界框有负x偏移，强制修正基线点的x坐标
+            int correctionOffset = qAbs(textBounds.x()) + 2; // 额外加2像素安全边距
+            baseLinePoint.setX(x + correctionOffset);
+        }
+        
+        // 特殊处理高度异常的字体，确保不会超出显示区域
+        int actualTextHeight = textBounds.height();
+        if (actualTextHeight > punHeight * 1.5) {
+            // 如果文本实际高度明显超过预期，调整基线位置
+            int adjustedY = y + padding + actualTextHeight * 0.8;
+            if (adjustedY < baseLinePoint.y()) {
+                baseLinePoint.setY(adjustedY);
+            }
+        }
+        
         painter.drawText(baseLinePoint.x(), baseLinePoint.y(), punctuationTextStock);
         y += punHeight;
     }
@@ -197,6 +260,27 @@ void DFontPreview::paintEvent(QPaintEvent *e)
             break;
 
         QPoint baseLinePoint = adjustPreviewFontBaseLinePoint(QRect(x, y + padding * 2, sampleWidth, sampleHeight), met);
+        
+        // 检查字体边界框是否异常，某些特殊字体可能有异常的度量值
+        QRect textBounds = met.boundingRect(sampleString);
+        
+        // 特殊处理水平位置异常的字体
+        if (textBounds.x() < -5) {
+            // 如果文本边界框有负x偏移，强制修正基线点的x坐标
+            int correctionOffset = qAbs(textBounds.x()) + 2; // 额外加2像素安全边距
+            baseLinePoint.setX(x + correctionOffset);
+        }
+        
+        // 特殊处理高度异常的字体，确保不会超出显示区域
+        int actualTextHeight = textBounds.height();
+        if (actualTextHeight > sampleHeight * 1.5) {
+            // 如果文本实际高度明显超过预期，调整基线位置
+            int adjustedY = y + padding * 2 + actualTextHeight * 0.8;
+            if (adjustedY < baseLinePoint.y()) {
+                baseLinePoint.setY(adjustedY);
+            }
+        }
+        
         painter.drawText(baseLinePoint.x(), baseLinePoint.y(), sampleString);
         y += sampleHeight + padding;
     }
@@ -558,10 +642,31 @@ QString DFontPreview::buildCharlistForFace(FT_Face face, int length)
 QPoint DFontPreview::adjustPreviewFontBaseLinePoint(const QRect &fontPreviewRect, const QFontMetrics &previewFontMetrics) const
 {
     // qDebug() << "Adjusting preview font base line point";
-    Q_UNUSED(previewFontMetrics);
-    int commonFontDescent = fontPreviewRect.height() / 4;
     int baseLineX = fontPreviewRect.x();
-    int baseLineY = fontPreviewRect.bottom() - commonFontDescent;
+    int baseLineY;
+    
+    if (previewFontMetrics.height() > 0 && previewFontMetrics.ascent() > 0 && previewFontMetrics.descent() >= 0) {
+        // 使用实际的字体度量信息来计算基线位置
+        // 确保文字不会超出预览区域的边界
+        int actualHeight = previewFontMetrics.height();
+        int availableHeight = fontPreviewRect.height();
+        
+        if (actualHeight <= availableHeight) {
+            // 字体高度适合预览区域，居中显示
+            int verticalPadding = (availableHeight - actualHeight) / 2;
+            baseLineY = fontPreviewRect.top() + verticalPadding + previewFontMetrics.ascent();
+        } else {
+            // 字体太高，需要缩放显示位置以避免超出边界
+            // 计算缩放比例
+            double scaleFactor = (double)availableHeight / actualHeight * 0.9; // 留10%的边距
+            int adjustedAscent = (int)(previewFontMetrics.ascent() * scaleFactor);
+            baseLineY = fontPreviewRect.top() + (availableHeight - (int)(actualHeight * scaleFactor)) / 2 + adjustedAscent;
+        }
+    } else {
+        // 回退到原来的固定比例计算方式，但使用更保守的比例
+        int commonFontDescent = fontPreviewRect.height() / 5; // 保持1/5，这里预览区域通常较大
+        baseLineY = fontPreviewRect.bottom() - commonFontDescent;
+    }
 
     // qDebug() << "Exiting function: DFontPreview::adjustPreviewFontBaseLinePoint";
     return QPoint(baseLineX, baseLineY);
