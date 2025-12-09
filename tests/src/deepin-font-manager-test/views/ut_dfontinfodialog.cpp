@@ -83,14 +83,14 @@ TEST_F(TestDFontInfoDialog, checkAutoFeed)
 {
     QString str;
     str.fill('a', 100);
-    qDebug() << str << Qt::endl;
+    qDebug() << str << "\n";
     str = dFontInforDialog->AutoFeed(str);
     //进行处理之后字符串长度发生变化
     EXPECT_TRUE(str.size() != 100);
 
 
     str.fill('a', 300);
-    qDebug() << str << Qt::endl;
+    qDebug() << str << "\n";
     str = dFontInforDialog->AutoFeed(str);
     //进行处理之后字符串长度发生变化
     EXPECT_TRUE(str.size() != 300);

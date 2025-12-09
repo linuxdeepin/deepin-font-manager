@@ -10,7 +10,7 @@
 #include <QtMath>
 #include <QEvent>
 #include <QPainterPath>
-
+#include <QDebug>
 class DFontSpinnerPrivate : public QObject
 {
 public:

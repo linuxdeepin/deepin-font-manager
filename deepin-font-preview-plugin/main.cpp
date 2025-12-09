@@ -5,6 +5,8 @@
 
 #include "fontpreview.h"
 
+#include <QtPlugin>
+
 #ifdef DFM_BASE
 #include <dfm-base/interfaces/abstractfilepreviewplugin.h>
 #else

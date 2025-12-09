@@ -26,7 +26,13 @@ CONFIGURE_FILE(environments.h.in environments.h @ONLY)
 #编译翻译文件
 file(GLOB TS LIST_DIRECTORIES false ../translations/*.ts)
 set_source_files_properties(${TS} PROPERTIES OUTPUT_LOCATION ${PROJECT_SOURCE_DIR}/translations)
-qt_create_translation(QM ${SRC_FILES} ${TS})
+
+if(QT_VERSION_MAJOR EQUAL 5)
+    qt5_create_translation(QM ${SRC_FILES} ${TS})
+else()
+    qt6_create_translation(QM ${SRC_FILES} ${TS})
+endif()
+
 ADD_EXECUTABLE(${APP_BIN} ${QM})
 #安装翻译文件
 install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/../translations
@@ -48,9 +54,12 @@ TARGET_LINK_LIBRARIES(${APP_BIN} PUBLIC
     Qt${QT_VERSION_MAJOR}::Svg
     Qt${QT_VERSION_MAJOR}::DBus
     Qt${QT_VERSION_MAJOR}::Network
-    Dtk${DTK_VERSION}::Core
-    Dtk${DTK_VERSION}::Gui
-    Dtk${DTK_VERSION}::Widget
+    $<$<EQUAL:${QT_VERSION_MAJOR},5>:Dtk::Core>
+    $<$<EQUAL:${QT_VERSION_MAJOR},5>:Dtk::Gui>
+    $<$<EQUAL:${QT_VERSION_MAJOR},5>:Dtk::Widget>
+    $<$<EQUAL:${QT_VERSION_MAJOR},6>:Dtk${DTK_VERSION}::Core>
+    $<$<EQUAL:${QT_VERSION_MAJOR},6>:Dtk${DTK_VERSION}::Gui>
+    $<$<EQUAL:${QT_VERSION_MAJOR},6>:Dtk${DTK_VERSION}::Widget>
     ${FREETYPE_LIBRARIES}
     ${FREETYPE_LIBRARIES}
     PkgConfig::FontConfig)

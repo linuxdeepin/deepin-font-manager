@@ -133,7 +133,7 @@ TEST_F(TestDFontPreviewListDataThread, checkRefreshFontListData)
     QSignalSpy spy2(dfdatathead->m_view, SIGNAL(multiItemsAdded(QList<DFontPreviewItemData> &, DFontSpinnerWidget::SpinnerStyles)));
 
     dfdatathead->refreshFontListData(true, QStringList());
-    qDebug() << spy2.count() << Qt::endl;
+    qDebug() << spy2.count() << "\n";
     EXPECT_TRUE(dfdatathead->m_allFontPathList.isEmpty());
     EXPECT_TRUE(spy2.count() == 1);
     EXPECT_FALSE(dfdatathead->m_fontModelList.isEmpty());

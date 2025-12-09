@@ -36,14 +36,57 @@ SET(CMAKE_AUTOMOC ON)
 SET(CMAKE_AUTORCC ON)
 SET(CMAKE_VERBOSE_MAKEFILE ON)
 
-set(QT_VERSION_MAJOR 6)
-if (${QT_VERSION_MAJOR} GREATER_EQUAL 6)
-    set(DTK_VERSION 6)
+
+find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core)
+
+# 确保使用与 Qt 版本一致的 qmake/moc 等工具
+if(NOT DEFINED ENV{QT_SELECT})
+    set(ENV{QT_SELECT} "qt${QT_VERSION_MAJOR}")
 endif()
 
-FIND_PACKAGE(Qt${QT_VERSION_MAJOR} COMPONENTS Core Gui Svg Sql Xml DBus Network LinguistTools REQUIRED)
-FIND_PACKAGE(Dtk${DTK_VERSION}Widget REQUIRED)
-FIND_PACKAGE(Dtk${DTK_VERSION}Gui REQUIRED)
+# 在确定 QT_VERSION_MAJOR 之后，再查找QT具体模块
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Gui Svg Sql Xml DBus Network LinguistTools)
+
+# 根据 Qt 版本决定 DTK 版本
+if (QT_VERSION_MAJOR EQUAL 6)
+    set(DTK_VERSION 6)
+else()
+    set(DTK_VERSION "")
+endif()
+
+if(DTK_VERSION STREQUAL "")
+    set(DTK_MODULE_PREFIX "Dtk")
+else()
+    set(DTK_MODULE_PREFIX "Dtk${DTK_VERSION}")
+endif()
+message(STATUS "Searching for ${DTK_MODULE_PREFIX}Widget in CMAKE_PREFIX_PATH: ${CMAKE_PREFIX_PATH}")
+
+find_package(${DTK_MODULE_PREFIX}Widget QUIET)
+if(NOT ${DTK_MODULE_PREFIX}Widget_FOUND)
+    message(WARNING "${DTK_MODULE_PREFIX}Widget not found via find_package. Trying PkgConfig fallback.")
+    pkg_check_modules(DTK_WIDGET QUIET dtkwidget)
+    if(DTK_WIDGET_FOUND)
+        include_directories(${DTK_WIDGET_INCLUDE_DIRS})
+        link_directories(${DTK_WIDGET_LIBRARY_DIRS})
+    else()
+        message(FATAL_ERROR "${DTK_MODULE_PREFIX}Widget not found. Install libdtkwidget-dev and check CMAKE_PREFIX_PATH or PKG_CONFIG_PATH.")
+    endif()
+endif()
+
+message(STATUS "Searching for ${DTK_MODULE_PREFIX}Gui in CMAKE_PREFIX_PATH: ${CMAKE_PREFIX_PATH}")
+
+find_package(${DTK_MODULE_PREFIX}Gui QUIET)
+if(NOT ${DTK_MODULE_PREFIX}Gui_FOUND)
+    message(WARNING "${DTK_MODULE_PREFIX}Gui not found via find_package. Trying PkgConfig fallback.")
+    pkg_check_modules(DTK_GUI QUIET dtkgui)
+    if(DTK_GUI_FOUND)
+        include_directories(${DTK_GUI_INCLUDE_DIRS})
+        link_directories(${DTK_GUI_LIBRARY_DIRS})
+    else()
+        message(FATAL_ERROR "${DTK_MODULE_PREFIX}Gui not found. Install libdtkgui-dev and check CMAKE_PREFIX_PATH or PKG_CONFIG_PATH.")
+    endif()
+endif()
+
 FIND_PACKAGE(Freetype REQUIRED)
 FIND_PACKAGE(PkgConfig REQUIRED)
 
@@ -73,8 +116,10 @@ IF (CMAKE_BUILD_TYPE MATCHES "Debug")
     ADD_DEFINITIONS("-DQT_MESSAGELOGCONTEXT")
     ADD_SUBDIRECTORY(tests)
 ENDIF()
+
 ADD_SUBDIRECTORY(deepin-font-manager)
 ADD_SUBDIRECTORY(deepin-font-preview-plugin)
+
 
 #安装帮助手册需要文件
 install(DIRECTORY ${CMAKE_SOURCE_DIR}/deepin-font-manager-assets/deepin-font-manager
