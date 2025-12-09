@@ -65,7 +65,7 @@ bool stub_False()
 
 bool stub_True()
 {
-    qDebug() << "!!!!!!!!!!!11111" << Qt::endl;
+    qDebug() << "!!!!!!!!!!!11111" << "\n";
     return true;
 }
 
@@ -458,7 +458,7 @@ TEST_F(TestDFontPreviewListView, checkDeleteCurFonts)
     list << "first";
 
     listview->deleteCurFonts(list, true);
-    qDebug() << spy.count() << Qt::endl;
+    qDebug() << spy.count() << "\n";
     EXPECT_TRUE(spy.count() == 2);
     list.clear();
     list << "";
@@ -483,7 +483,7 @@ TEST_F(TestDFontPreviewListView, checkUpdateChangedDir)
 
     listview->updateChangedDir();
 
-    qDebug() << spy.count() << "!!!!!!!!!!" << spy2.count() << Qt::endl;
+    qDebug() << spy.count() << "!!!!!!!!!!" << spy2.count() << "\n";
     EXPECT_TRUE(spy.count() == 1);
     EXPECT_TRUE(spy2.count() == 1);
 }
@@ -658,7 +658,7 @@ TEST_F(TestDFontPreviewListView, checkOnCollectBtnClicked)
     FontData itemData =
         qvariant_cast<FontData>(listview->m_fontPreviewProxyModel->data(index));
     //mark
-    qDebug() << itemData.fontState << Qt::endl;
+    qDebug() << itemData.fontState << "\n";
     EXPECT_TRUE(itemData.fontState == 0x03);
 
     qDebug() << spy.count();
@@ -697,7 +697,7 @@ TEST_F(TestDFontPreviewListView, checkOnEnableBtnClickedEnable)
 
     FontData itemData =
         qvariant_cast<FontData>(listview->m_fontPreviewProxyModel->data(index));
-    qDebug() << itemData.fontState << Qt::endl;
+    qDebug() << itemData.fontState << "\n";
     EXPECT_TRUE(itemData.fontState == 0x00);
 
     DFontMgrMainWindow *mw = new DFontMgrMainWindow;
@@ -1070,7 +1070,7 @@ TEST_F(TestDFontPreviewListView, checkLoadLeftFonts)
 
     emit listview->m_dataLoadThread->dataLoadFinish(str);
 
-    qDebug() << spy.count() << Qt::endl;
+    qDebug() << spy.count() << "\n";
     EXPECT_TRUE(spy.count() == 1);
 }
 
@@ -1299,7 +1299,7 @@ TEST_F(TestDFontPreviewListView, checkSelectedFontsNotElse)
     listview->selectedFonts(data, &deleteCnt, &disableSysCnt, &systemCnt, &curFontCnt, &disableCnt,
                             &list, &indexlist, &disableIndexList, &allMinusSysFontList);
 
-    qDebug() << deleteCnt << disableSysCnt << systemCnt << curFontCnt << disableCnt << list.count() << disableIndexList.count() << allMinusSysFontList.count() << Qt::endl;
+    qDebug() << deleteCnt << disableSysCnt << systemCnt << curFontCnt << disableCnt << list.count() << disableIndexList.count() << allMinusSysFontList.count() << "\n";
 
     EXPECT_TRUE(deleteCnt == 5);
     EXPECT_TRUE(disableCnt == 5);

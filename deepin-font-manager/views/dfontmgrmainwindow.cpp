@@ -1159,7 +1159,7 @@ bool DFontMgrMainWindow::installFont(const QStringList &files, bool isAddBtnHasT
     }
 
     //ut000442 bug 54129
-    qDebug() << m_fIsInstalling << Qt::endl;
+    qDebug() << m_fIsInstalling << "\n";
     if (m_fIsInstalling || m_fontLoadingSpinner->isVisible()) {
         qDebug() << "Already exist a installtion flow";
         return false;
@@ -1170,7 +1170,7 @@ bool DFontMgrMainWindow::installFont(const QStringList &files, bool isAddBtnHasT
     m_installFinish = false;
 
     //m_fontPreviewListView->clearSelection();//取消安装不清空选中状态
-    qDebug() << "installFont new DFInstallNormalWindow " << installFiles.size() << Qt::endl;
+    qDebug() << "installFont new DFInstallNormalWindow " << installFiles.size() << "\n";
     m_installTm = QDateTime::currentMSecsSinceEpoch();
     m_dfNormalInstalldlg = new DFInstallNormalWindow(installFiles, this);
     connect(m_dfNormalInstalldlg, &DFInstallNormalWindow::destroyed, this, &DFontMgrMainWindow::onInstallWindowDestroyed);
@@ -1415,7 +1415,7 @@ void DFontMgrMainWindow::onSearchTextChanged(const QString &currStr)
 
     //QString strSearchFontName = currStr;
     const QString strSearchFontName = currStr;
-    qDebug() << "SearchFontName:" << strSearchFontName << Qt::endl;
+    qDebug() << "SearchFontName:" << strSearchFontName << "\n";
 
     m_searchTextStatusIsEmpty = strSearchFontName.isEmpty();
 
@@ -1426,7 +1426,7 @@ void DFontMgrMainWindow::onSearchTextChanged(const QString &currStr)
     filterModel->setFilterFontNamePattern(strSearchFontName);
     //filterModel->setEditStatus(m_searchTextStatusIsEmpty);
 
-    qDebug() << __FUNCTION__ << "filter Count:" << filterModel->rowCount() << Qt::endl;
+    qDebug() << __FUNCTION__ << "filter Count:" << filterModel->rowCount() << "\n";
     //记录搜索输入框焦点状态
     bool seachEditHasFocus = d->searchFontEdit->lineEdit()->hasFocus();
     onFontListViewRowCountChanged();
@@ -1474,7 +1474,7 @@ void DFontMgrMainWindow::onFontSizeChanged(int fontSize)
     }
 
     DFontPreviewProxyModel *filterModel = m_fontPreviewListView->getFontPreviewProxyModel();
-    qDebug() << __FUNCTION__ << "filter Count:" << filterModel->rowCount() << Qt::endl;
+    qDebug() << __FUNCTION__ << "filter Count:" << filterModel->rowCount() << "\n";
 
     for (int rowIndex = 0; rowIndex < filterModel->rowCount(); rowIndex++) {
         QModelIndex modelIndex = filterModel->index(rowIndex, 0);
@@ -1530,7 +1530,7 @@ void DFontMgrMainWindow::onLeftSiderBarItemClicked(int index, bool needClearSele
     m_leftIndex = static_cast<qint8>(index);
     //获取当前左侧列表选中的分组
     filterGroup = qvariant_cast<DSplitListWidget::FontGroup>(index);
-    qDebug() << "filterGroup" << filterGroup << Qt::endl;
+    qDebug() << "filterGroup" << filterGroup << "\n";
     //获取右侧预览列表proxymodel
     DFontPreviewProxyModel *filterModel = m_fontPreviewListView->getFontPreviewProxyModel();
     filterModel->setFilterKeyColumn(0);
@@ -1839,7 +1839,7 @@ void DFontMgrMainWindow::onconfirmDelDlgAccept()
     //disable file system watcher
     onShowSpinner(true, false, DFontSpinnerWidget::Delete);
     Q_EMIT DFontPreviewListDataThread::instance(m_fontPreviewListView)->requestRemoveFileWatchers(m_menuDelFontList);
-    qDebug() << m_menuDelFontList.count() << "!!!!!!!!!!!!!!!!11" << Qt::endl;
+    qDebug() << m_menuDelFontList.count() << "!!!!!!!!!!!!!!!!11" << "\n";
     FontManagerCore::instance()->setType(FontManagerCore::UnInstall);
     FontManagerCore::instance()->setUnInstallFile(m_menuDelFontList);
     FontManagerCore::instance()->start();
@@ -2335,7 +2335,7 @@ void DFontMgrMainWindow::dropEvent(QDropEvent *event)
                 installFont(installFileList, false);
             });
 
-            qDebug() << installFileList << "drop in files :" << Qt::endl;
+            qDebug() << installFileList << "drop in files :" << "\n";
         } else {
             // qDebug() << "installFileList.size() == 0";
             event->ignore();
@@ -2584,7 +2584,7 @@ void DFontMgrMainWindow::hideSpinner()
     emit m_signalManager->setSpliteWidgetScrollEnable(false);
     m_cacheFinish = false;
     m_installFinish = false;
-    qDebug() << __func__ << "install finish" << Qt::endl;
+    qDebug() << __func__ << "install finish" << "\n";
     m_fIsInstalling = false;
 
     m_installOutFileList.clear();
@@ -2652,7 +2652,7 @@ void DFontMgrMainWindow::onPreviewTextChanged()
 
     DFontPreviewProxyModel *filterModel = m_fontPreviewListView->getFontPreviewProxyModel();
     int total = filterModel->rowCount();
-    qDebug() << __FUNCTION__ << "filter Count:" << filterModel->rowCount() << Qt::endl;
+    qDebug() << __FUNCTION__ << "filter Count:" << filterModel->rowCount() << "\n";
 
     for (int rowIndex = 0; rowIndex < total; rowIndex++) {
         QModelIndex modelIndex = filterModel->index(rowIndex, 0);
@@ -2725,7 +2725,7 @@ QStringList DFontMgrMainWindow::checkFilesSpace(const QStringList &files, bool m
         }
     }
 
-    qDebug() << currentDiskSpace << totalSelectSpace << Qt::endl;
+    qDebug() << currentDiskSpace << totalSelectSpace << "\n";
 
     return map.values();
 }
@@ -2888,7 +2888,7 @@ void DFontMgrMainWindow::keyPressEvent(QKeyEvent *event)
     // qDebug() << "Entering function: DFontMgrMainWindow::keyPressEvent";
     if (Qt::Key_Left == event->key() || Qt::Key_Down == event->key()) {
         // qDebug() << "Qt::Key_Left == event->key() || Qt::Key_Down == event->key()";
-        qDebug() << d->fontScaleSlider << Qt::endl;
+        qDebug() << d->fontScaleSlider << "\n";
         if (d->fontScaleSlider->hasFocus()) {
             d->fontScaleSlider->setValue(d->fontScaleSlider->value() - 1);
         } else if (Qt::Key_Left == event->key() && (m_fontPreviewListView->hasFocus() || m_noInstallListView->hasFocus())) {

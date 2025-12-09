@@ -412,7 +412,7 @@ void DFInstallErrorDialog::onListItemsClicked(const QModelIndexList &indexList)
         qvariant_cast<DFInstallErrorItemModel>(m_installErrorListView->getErrorListSourceModel()->data(firstIndex));
 
     for (auto &it : indexList) {
-        qDebug() << it.row() << "++++++++++++++++++++++++++++++" << Qt::endl;
+        qDebug() << it.row() << "++++++++++++++++++++++++++++++" << "\n";
         DFInstallErrorItemModel itemModel2 =
             qvariant_cast<DFInstallErrorItemModel>(m_installErrorListView->getErrorListSourceModel()->data(it));
         if (itemModel2.bIsNormalUserFont) {
@@ -443,7 +443,7 @@ void DFInstallErrorDialog::addData(QStringList &errorFileList, QStringList &half
 
     for (auto &it : errorFileList) {
         fontInfo = fontInfoManager->getFontInfo(it);
-        qDebug() << "getfontinfo success!!!!!!!!!!1" << Qt::endl;
+        qDebug() << "getfontinfo success!!!!!!!!!!1" << "\n";
         DFInstallErrorItemModel itemModel;
         if (fontInfo.isError) {
             QFileInfo fileInfo(it);

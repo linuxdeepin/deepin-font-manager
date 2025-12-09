@@ -209,7 +209,11 @@ void DFontInfoDialog::initUI()
     p.drawRoundedRect(bmp.rect(), 12, 12);
     p.setRenderHint(QPainter::Antialiasing);
 
+#if QT_VERSION_MAJOR > 5
     m_scrollArea->viewport()->setMask(QBitmap::fromPixmap(bmp));
+#else
+    m_scrollArea->viewport()->setMask(bmp.mask());
+#endif
     m_scrollArea->setFrameShape(QFrame::Shape::NoFrame);
 
     m_fontinfoArea = new dfontinfoscrollarea(m_fontInfo, this);
@@ -381,7 +385,7 @@ void DFontInfoDialog::autoHeight(int height)
 #if QT_VERSION_MAJOR > 5
         m_scrollArea->viewport()->setMask(QBitmap::fromPixmap(bmp));
 #else
-        m_scrollArea->viewport()->setMask(bmp);
+        m_scrollArea->viewport()->setMask(bmp.mask());
 #endif
         m_scrollArea->viewport()->setFixedHeight(static_cast<int>(height * 1.1 + 10));
         m_scrollArea->setFixedHeight(static_cast<int>(height * 1.1 + 10));
@@ -395,7 +399,11 @@ void DFontInfoDialog::autoHeight(int height)
         p.setBrush(Qt::black);
         p.drawRoundedRect(bmp.rect(), 12, 12);
         p.setRenderHint(QPainter::Antialiasing);
+#if QT_VERSION_MAJOR > 5
         m_scrollArea->viewport()->setMask(QBitmap::fromPixmap(bmp));
+#else
+        m_scrollArea->viewport()->setMask(bmp.mask());
+#endif
         m_scrollArea->viewport()->setFixedHeight(375);
         m_scrollArea->setFixedHeight(375);
     }

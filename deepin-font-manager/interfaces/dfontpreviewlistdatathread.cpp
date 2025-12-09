@@ -310,7 +310,11 @@ void DFontPreviewListDataThread::onFileAdded(const QStringList &files)
     if (m_mutex != nullptr) {
         QMutexLocker locker(m_mutex);
     }
-    qDebug() << __func__ << "S" << QThread::currentThreadId() << Qt::endl;
+#if QT_VERSION_MAJOR <= 5
+    qDebug() << __func__ << "S" << QThread::currentThreadId() << "\n";
+#else
+    qDebug() << __func__ << "S" << QThread::currentThreadId() << std::endl;
+#endif
     refreshFontListData(false, files);
     qDebug() << "File addition processing complete";
 }
