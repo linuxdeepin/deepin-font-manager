@@ -243,3 +243,33 @@ int DFontPreviewProxyModel::rowCount(const QModelIndex &parent) const
 
     return filterRowCount;
 }
+
+#if QT_VERSION_MAJOR > 5
+/*************************************************************************
+ <Function>      setData
+ <Description>   Qt6 兼容：重写 setData 以正确处理自定义类型
+ <Author>        null
+ <Input>
+    <param1>     index            Description:模型索引
+    <param2>     value            Description:要设置的值
+    <param3>     role             Description:数据角色
+ <Return>        bool             Description:是否设置成功
+ <Note>          对于 FontData 类型，使用 setItemData 来确保数据正确更新
+*************************************************************************/
+bool DFontPreviewProxyModel::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+    if (!index.isValid())
+        return false;
+    
+    // 对于 FontData 类型，使用 setItemData 来确保数据正确更新
+    if (role == Qt::DisplayRole && value.canConvert<FontData>()) {
+        QModelIndex sourceIndex = mapToSource(index);
+        QMap<int, QVariant> itemDataMap = sourceModel()->itemData(sourceIndex);
+        itemDataMap[role] = value;
+        return sourceModel()->setItemData(sourceIndex, itemDataMap);
+    }
+    
+    // 其他情况使用默认实现
+    return QSortFilterProxyModel::setData(index, value, role);
+}
+#endif
