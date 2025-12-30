@@ -39,6 +39,7 @@
 #include <QPainterPath>
 #include <QTextLayout>
 #include <QTextOption>
+#include <QFontDatabase>
 
 DWIDGET_USE_NAMESPACE
 
@@ -350,15 +351,88 @@ void DFontPreviewItemDelegate::paintForegroundPreviewFont(QPainter *painter, con
 {
     // qDebug() << "Entering function: DFontPreviewItemDelegate::paintForegroundPreviewFont";
     QFont previewFont;
+    QFontDatabase fontDatabase;
 
-    previewFont.setFamily(familyName);
-    previewFont.setStyleName(styleName);
-    previewFont.setPixelSize(fontPixelSize);
+    // 首先尝试使用 QFontDatabase 来查找字体，这样可以确保找到正确的字体
+    // 特别是对于用户导入的字体，使用 QFontDatabase 更可靠
+    QStringList families = fontDatabase.families();
+    
+    // 检查字体族是否存在
+    bool familyExists = families.contains(familyName);
+    
+    if (familyExists) {
+        // 如果字体族存在，尝试使用 QFontDatabase::font() 来获取字体
+        // 这样可以确保样式名正确匹配
+        QStringList styles = fontDatabase.styles(familyName);
+        bool styleExists = false;
+        QString actualStyleName = styleName;
+        
+        // 检查样式是否存在
+        if (!styleName.isEmpty()) {
+            for (const QString &style : styles) {
+                if (style.compare(styleName, Qt::CaseInsensitive) == 0) {
+                    styleExists = true;
+                    actualStyleName = style;
+                    break;
+                }
+            }
+        }
+        
+        if (styleExists || styleName.isEmpty()) {
+            // 使用 QFontDatabase::font() 获取字体，这样可以确保样式正确
+            // 注意：font() 方法的第三个参数是点大小，我们使用默认值12，然后设置像素大小
+            previewFont = fontDatabase.font(familyName, actualStyleName.isEmpty() ? QString("Regular") : actualStyleName, 12);
+            previewFont.setPixelSize(fontPixelSize);
+        } else {
+            // 如果样式不存在，使用第一个可用样式
+            if (!styles.isEmpty()) {
+                previewFont = fontDatabase.font(familyName, styles.first(), 12);
+                previewFont.setPixelSize(fontPixelSize);
+            } else {
+                // 如果没有任何样式，直接设置字体族和像素大小
+                previewFont.setFamily(familyName);
+                previewFont.setPixelSize(fontPixelSize);
+            }
+        }
+    } else {
+        // 如果字体族不存在，尝试直接设置（可能是用户导入的字体但还未完全加载）
+        previewFont.setFamily(familyName);
+        previewFont.setStyleName(styleName);
+        previewFont.setPixelSize(fontPixelSize);
+    }
+    
     painter->setFont(previewFont);
 
-    if (painter->fontInfo().family().isEmpty()) {
-        qWarning() << "Empty font family, skipping preview";
-        return;
+    // 检查字体是否被正确加载
+    QString actualFamily = painter->fontInfo().family();
+    if (actualFamily.isEmpty() || (actualFamily != familyName && !familyName.isEmpty())) {
+        qWarning() << "Font family mismatch or empty. Expected:" << familyName 
+                   << "Got:" << actualFamily << "Style:" << styleName;
+        // 如果字体不匹配，尝试使用 QFontDatabase 重新查找
+        if (!familyName.isEmpty()) {
+            QStringList allFamilies = fontDatabase.families();
+            // 尝试模糊匹配字体族名
+            for (const QString &fam : allFamilies) {
+                if (fam.contains(familyName, Qt::CaseInsensitive) || familyName.contains(fam, Qt::CaseInsensitive)) {
+                    QStringList famStyles = fontDatabase.styles(fam);
+                    if (!famStyles.isEmpty()) {
+                        previewFont = fontDatabase.font(fam, famStyles.first(), 12);
+                        previewFont.setPixelSize(fontPixelSize);
+                        painter->setFont(previewFont);
+                        actualFamily = painter->fontInfo().family();
+                        if (!actualFamily.isEmpty() && actualFamily == fam) {
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        
+        // 如果仍然无法加载字体，跳过预览
+        if (painter->fontInfo().family().isEmpty()) {
+            qWarning() << "Cannot load font, skipping preview. Family:" << familyName << "Style:" << styleName;
+            return;
+        }
     }
 
     QRect fontPreviewRect = adjustPreviewRect(option.rect);
