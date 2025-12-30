@@ -20,6 +20,10 @@ public:
     bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const override;
     //获取行数
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+#if QT_VERSION_MAJOR > 5
+    // Qt6 兼容：重写 setData 以正确处理自定义类型
+    bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
+#endif
     //设置当前字体组
     void setFilterGroup(int filterGroup);
     //获取当前字体组
