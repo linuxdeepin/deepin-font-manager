@@ -90,8 +90,8 @@ TARGET_LINK_LIBRARIES(${PROJECT_NAME_TEST}
     Qt${QT_VERSION_MAJOR}::DBus
     Qt${QT_VERSION_MAJOR}::Network
     Qt${QT_VERSION_MAJOR}::Test
-    Dtk${DTK_VERSION}::Core
-    Dtk${DTK_VERSION}::Widget
+    Dtk${DTK_VERSION_MAJOR}::Core
+    Dtk${DTK_VERSION_MAJOR}::Widget
     ${FREETYPE_LIBRARIES}
     ${FREETYPE_LIBRARIES}
     PkgConfig::FontConfig

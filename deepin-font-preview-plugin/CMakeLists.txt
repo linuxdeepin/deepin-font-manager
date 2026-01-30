@@ -21,13 +21,46 @@
 #*
 #*****************************************************************************/
 
-find_package(dfm${DTK_VERSION}-base)
+# Find dfm-base based on Qt version (prefer matching version)
+# Qt6 -> dfm6-base, Qt5 -> dfm-base
+set(DFM_BASE_PACKAGE "")
+if (QT_VERSION_MAJOR EQUAL 6)
+    find_package(dfm6-base QUIET)
+    if (dfm6-base_FOUND)
+        set(DFM_BASE_PACKAGE "dfm6-base")
+        message(STATUS "Found dfm6-base for Qt6")
+    else()
+        # Fallback to dfm-base for Qt6
+        find_package(dfm-base QUIET)
+        if (dfm-base_FOUND)
+            set(DFM_BASE_PACKAGE "dfm-base")
+            message(STATUS "Found dfm-base (fallback) for Qt6")
+        endif()
+    endif()
+else()
+    # Qt5
+    find_package(dfm-base QUIET)
+    if (dfm-base_FOUND)
+        set(DFM_BASE_PACKAGE "dfm-base")
+        message(STATUS "Found dfm-base for Qt5")
+    else()
+        # Fallback to dfm5-base for Qt5 (if exists)
+        find_package(dfm5-base QUIET)
+        if (dfm5-base_FOUND)
+            set(DFM_BASE_PACKAGE "dfm5-base")
+            message(STATUS "Found dfm5-base for Qt5")
+        endif()
+    endif()
+endif()
+
+# Try legacy dde-file-manager as last resort
 PKG_SEARCH_MODULE(DeepinFileManager dde-file-manager IMPORTED_TARGET)
-if (dfm${DTK_VERSION}-base_FOUND)
-    message("dfm-base founded.")
+
+if (DFM_BASE_PACKAGE)
     add_definitions(-DDFM_BASE)
+    message(STATUS "Using ${DFM_BASE_PACKAGE}")
 elseif(DeepinFileManager_FOUND)
-    message("dde-file-manager founded.")
+    message(STATUS "Using legacy dde-file-manager")
 endif()
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
@@ -46,27 +79,28 @@ target_sources(${APP_PLUGIN} PRIVATE ${SRC_FILES} ${LIB_SRC_FILES})
 target_include_directories(${APP_PLUGIN} PRIVATE ${LIB_DIR})
 target_include_directories(${APP_PLUGIN} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 
-if (dfm-base_FOUND)
-    target_include_directories(${APP_PLUGIN} PRIVATE ${dfm-base_INCLUDE_DIRS})
+# Add dfm-base include directories if found
+if (DFM_BASE_PACKAGE)
+    # dfm-base typically provides include directories through imported targets
+    # Linking will automatically handle include paths
 elseif(DeepinFileManager_FOUND)
     target_include_directories(${APP_PLUGIN} PRIVATE ${DeepinFileManager_INCLUDE_DIRS})
 endif()
 
-# 这里直接复用顶层 CMakeLists.txt 里根据 Qt 版本计算出的 DTK_MODULE_PREFIX，
-# Qt5:  Dtk::Widget
-# Qt6:  Dtk6::Widget
 set(LIBS
     ${FREETYPE_LIBRARIES}
     PkgConfig::FontConfig
-    ${DTK_MODULE_PREFIX}::Widget
+    Dtk${DTK_VERSION_MAJOR}::Widget
     Qt${QT_VERSION_MAJOR}::Core
     Qt${QT_VERSION_MAJOR}::Widgets
     Qt${QT_VERSION_MAJOR}::Gui
     Qt${QT_VERSION_MAJOR}::Sql
 )
-if (dfm-base_FOUND)
-    list(APPEND LIBS dfm-base)
-elseif(dde-file-manager_FOUND)
+
+# Link dfm-base if found
+if (DFM_BASE_PACKAGE)
+    list(APPEND LIBS ${DFM_BASE_PACKAGE})
+elseif(DeepinFileManager_FOUND)
     list(APPEND LIBS PkgConfig::DeepinFileManager)
 endif()
 

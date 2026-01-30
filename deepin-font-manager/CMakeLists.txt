@@ -54,12 +54,9 @@ TARGET_LINK_LIBRARIES(${APP_BIN} PUBLIC
     Qt${QT_VERSION_MAJOR}::Svg
     Qt${QT_VERSION_MAJOR}::DBus
     Qt${QT_VERSION_MAJOR}::Network
-    $<$<EQUAL:${QT_VERSION_MAJOR},5>:Dtk::Core>
-    $<$<EQUAL:${QT_VERSION_MAJOR},5>:Dtk::Gui>
-    $<$<EQUAL:${QT_VERSION_MAJOR},5>:Dtk::Widget>
-    $<$<EQUAL:${QT_VERSION_MAJOR},6>:Dtk${DTK_VERSION}::Core>
-    $<$<EQUAL:${QT_VERSION_MAJOR},6>:Dtk${DTK_VERSION}::Gui>
-    $<$<EQUAL:${QT_VERSION_MAJOR},6>:Dtk${DTK_VERSION}::Widget>
+    Dtk${DTK_VERSION_MAJOR}::Core
+    Dtk${DTK_VERSION_MAJOR}::Gui
+    Dtk${DTK_VERSION_MAJOR}::Widget
     ${FREETYPE_LIBRARIES}
     ${FREETYPE_LIBRARIES}
     PkgConfig::FontConfig)
