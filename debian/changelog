@@ -1,3 +1,11 @@
+deepin-font-manager (6.5.35) unstable; urgency=medium
+
+  * build(debian): separate Qt5/Qt6 build configurations for V25/V20 support
+  * chore: Update compiler flags for security enhancements
+  * fix: Fix v20 env build issue
+
+ -- wangrong <wangrong@uniontech.com>  Wed, 04 Feb 2026 13:24:43 +0800
+
 deepin-font-manager (6.5.34) unstable; urgency=medium
 
   * Update version to 6.5.34 
