@@ -24,6 +24,7 @@
 #include <QMouseEvent>
 #include <QKeyEvent>
 #include <QFocusEvent>
+#include <QSet>
 
 DWIDGET_USE_NAMESPACE
 
@@ -2399,6 +2400,7 @@ void DFontPreviewListView::deleteCurFonts(QStringList &files, bool force)
     qDebug() << __FUNCTION__ << " before delete " << m_dataThread->getFontModelList().size() << m_fontPreviewProxyModel->rowCount();
 
     int deleteCount = files.count();
+    const QSet<QString> fileSet(files.begin(), files.end());
 
     if (!force)
         updateSpinner(DFontSpinnerWidget::Delete, false);
@@ -2408,7 +2410,7 @@ void DFontPreviewListView::deleteCurFonts(QStringList &files, bool force)
         DFontPreviewItemData itemData(*iter);
         QString filePath = itemData.fontInfo.filePath;
         //如果字体文件已经不存在，则从t_manager表中删除
-        if (files.contains(filePath)) {
+        if (fileSet.contains(filePath)) {
             //删除字体之前启用字体，防止下次重新安装后就被禁用
             enableFont(itemData.fontInfo.filePath);
             DFMDBManager::instance()->deleteFontInfo(itemData);
@@ -2416,6 +2418,7 @@ void DFontPreviewListView::deleteCurFonts(QStringList &files, bool force)
             m_dataThread->removePathWatcher(filePath);
             iter = m_dataThread->m_fontModelList.erase(iter);
             m_recoverSelectStateUserfontMultiMap.remove(filePath);
+            Q_EMIT itemRemoved(itemData);
         } else {
             ++iter;
         }
@@ -2425,7 +2428,21 @@ void DFontPreviewListView::deleteCurFonts(QStringList &files, bool force)
 
     enableFonts();
 
-    Q_EMIT requestUpdateModel(deleteCount, !force);
+    // 设置预览大小
+    emit m_signalManager->fontSizeRequestToSlider();
+
+    // 删除之后设置焦点
+    if (m_FontViewHasFocus) {
+        refreshFocuses();
+        setFontViewHasFocus(false);
+    }
+
+    Q_EMIT requestShowSpinner(false, true, DFontSpinnerWidget::Delete);
+    Q_EMIT rowCountChanged();
+    Q_EMIT deleteFinished();
+    syncTabStatus();
+    m_recoveryTabFocusState = false;
+    PerformanceMonitor::deleteFontFinish(deleteCount);
     m_dataThread->onAutoDirWatchers();
     qDebug() << "Exiting function: DFontPreviewListView::deleteCurFonts";
 }
