@@ -1,3 +1,9 @@
+deepin-font-manager (6.5.37) unstable; urgency=medium
+
+  * refactor: Optimize font deletion process in DFontPreviewListView
+
+ -- dengzhongyuan <dengzhongyuan@uniontech.com>  Thu, 12 Mar 2026 20:30:53 +0800
+
 deepin-font-manager (6.5.36) unstable; urgency=medium
 
   * chore: Unify linglong.yaml
