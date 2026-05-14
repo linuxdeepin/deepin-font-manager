@@ -26,6 +26,10 @@
 #include <QFocusEvent>
 #include <QSet>
 
+#include <QDBusInterface>
+#include <QDBusReply>
+#include <QDBusConnection>
+
 DWIDGET_USE_NAMESPACE
 
 DFontPreviewListView::DFontPreviewListView(QWidget *parent)
@@ -1955,8 +1959,25 @@ void DFontPreviewListView::onEnableBtnClicked(QModelIndexList &itemIndexes, int 
     // qDebug() << __FUNCTION__ << " before " << currModelIndex().row() << currentIndex().row();
     bool needShowTips = false;
     int count = 0;
-    QMutexLocker locker(&m_mutex);
+    int skippedInUse = 0;
+    QString skippedInUseFontName;
     QString fontName;
+
+    // 通过 D-Bus 查询 DDE 外观服务设置的当前系统字体（放在锁外，避免同步 IPC 阻塞其他线程）
+    QString ddeStandardFont;
+    {
+        QDBusInterface iface(QStringLiteral("org.deepin.dde.Appearance1"),
+                             QStringLiteral("/org/deepin/dde/Appearance1"),
+                             QStringLiteral("org.freedesktop.DBus.Properties"),
+                             QDBusConnection::sessionBus());
+        QDBusReply<QVariant> reply = iface.call(QStringLiteral("Get"),
+                                                QStringLiteral("org.deepin.dde.Appearance1"),
+                                                QStringLiteral("StandardFont"));
+        if (reply.isValid())
+            ddeStandardFont = reply.value().toString();
+    }
+
+    QMutexLocker locker(&m_mutex);
 
 #if QT_VERSION_MAJOR > 5
     if (isFromActiveFont)
@@ -1999,6 +2020,7 @@ void DFontPreviewListView::onEnableBtnClicked(QModelIndexList &itemIndexes, int 
     DFontPreviewProxyModel *filterModel = getFontPreviewProxyModel();
     int oldFilterGroup = filterModel->getFilterGroup(); // 保存当前字体组
     filterModel->setFilterGroup(DSplitListWidget::UserFont); // 只有用户字体才能被禁用
+    QString appFontFamily = qApp->font().family(); // 循环内不变，提前获取
     for (int i = 0; i < filterModel->rowCount(); ++i) {
         QModelIndex index = filterModel->index(i, 0);
         FontData fdata = qvariant_cast<FontData>(m_fontPreviewProxyModel->data(index));
@@ -2008,7 +2030,23 @@ void DFontPreviewListView::onEnableBtnClicked(QModelIndexList &itemIndexes, int 
             if (setValue) {
                 enableFont(itemData.fontInfo.filePath);
             } else {
-                if (systemCnt > 0 || curCnt > 0) {
+                // 正在使用的字体不被禁用，跳过并提示
+                QStringList fontFamilies = DFontInfoManager::instance()->getFontFamilyStyle(itemData.fontInfo.filePath);
+                bool isInUse = (itemData.fontData == m_curFontData) ||
+                    (itemData.fontInfo.filePath == m_dataThread->getFontData(m_curFontData).fontInfo.filePath) ||
+                    (itemData.fontInfo.familyName == appFontFamily) ||
+                    fontFamilies.contains(appFontFamily) ||
+                    (!ddeStandardFont.isEmpty() && itemData.fontInfo.familyName == ddeStandardFont) ||
+                    (!ddeStandardFont.isEmpty() && fontFamilies.contains(ddeStandardFont));
+                if (isInUse) {
+                    skippedInUse++;
+                    if (skippedInUseFontName.isEmpty())
+                        skippedInUseFontName = itemData.fontData.strFontName;
+                    needShowTips = true;
+                    continue;
+                }
+
+                if (systemCnt > 0) {
                     needShowTips = true;
                 }
 
@@ -2028,6 +2066,14 @@ void DFontPreviewListView::onEnableBtnClicked(QModelIndexList &itemIndexes, int 
     }
     filterModel->setFilterGroup(oldFilterGroup); // 恢复原字体组
 
+    // 若 selectedFonts() 已检测到正在使用的字体但被正确排除在 disableIndexList 外，
+    // 同样计入提示计数
+    if (curCnt > 0) {
+        if (skippedInUse == 0) {
+            skippedInUse = curCnt;
+        }
+        needShowTips = true;
+    }
 
     DFMDBManager::instance()->commitUpdateFontInfo();
 
@@ -2052,9 +2098,14 @@ void DFontPreviewListView::onEnableBtnClicked(QModelIndexList &itemIndexes, int 
     if (needShowTips) {
         qDebug() << "Need show tips";
         //不可禁用字体
-        if (curCnt > 0 && systemCnt == 0) {
-            message = QApplication::translate("MessageManager", "%1 is in use, so you cannot disable it").arg(m_curFontData.strFontName);
-        } else if (curCnt > 0 && systemCnt > 0) {
+        if (skippedInUse > 0 && systemCnt == 0) {
+            QString inUseName = skippedInUseFontName;
+            if (inUseName.isEmpty())
+                inUseName = m_curFontData.strFontName;
+            if (inUseName.isEmpty() && !ddeStandardFont.isEmpty())
+                inUseName = ddeStandardFont;
+            message = QApplication::translate("MessageManager", "%1 is in use, so you cannot disable it").arg(inUseName);
+        } else if (skippedInUse > 0 && systemCnt > 0) {
             message = QApplication::translate("MessageManager", "You cannot disable system fonts and the fonts in use");
         } else {
             message = QApplication::translate("MessageManager", "You cannot disable system fonts");
@@ -2068,7 +2119,7 @@ void DFontPreviewListView::onEnableBtnClicked(QModelIndexList &itemIndexes, int 
         }
     }
     //禁用字体大于零
-    if (count > 0)
+    if (count > 0 || needShowTips)
         DMessageManager::instance()->sendMessage(this->m_parentWidget, QIcon("://ok.svg"), message);
 
     qDebug() << __FUNCTION__ << " after " << currModelIndex().row() << currentIndex().row();
@@ -2564,6 +2615,20 @@ void DFontPreviewListView::selectedFonts(const DFontPreviewItemData &curData,
         curCollected = curData.fontData.isCollected();
     }
 
+    // 通过 D-Bus 查询 DDE 外观服务设置的当前系统字体
+    QString ddeStandardFont;
+    {
+        QDBusInterface iface(QStringLiteral("org.deepin.dde.Appearance1"),
+                             QStringLiteral("/org/deepin/dde/Appearance1"),
+                             QStringLiteral("org.freedesktop.DBus.Properties"),
+                             QDBusConnection::sessionBus());
+        QDBusReply<QVariant> reply = iface.call(QStringLiteral("Get"),
+                                                QStringLiteral("org.deepin.dde.Appearance1"),
+                                                QStringLiteral("StandardFont"));
+        if (reply.isValid())
+            ddeStandardFont = reply.value().toString();
+    }
+
     for (QModelIndex &index : list) {
         // qDebug() << "Calculate item";
         QVariant varModel = m_fontPreviewProxyModel->data(index, Qt::DisplayRole);
@@ -2597,8 +2662,15 @@ void DFontPreviewListView::selectedFonts(const DFontPreviewItemData &curData,
                 *systemCnt += 1;
             if (calCollect && (curCollected == itemData.fontData.isCollected()))
                 *allIndexList << index;
-        } else if ((itemData.fontData == m_curFontData) ||
-                   (itemData.fontInfo.filePath == m_dataThread->getFontData(m_curFontData).fontInfo.filePath)) {
+        } else {
+            const QStringList fontFamilies = DFontInfoManager::instance()->getFontFamilyStyle(itemData.fontInfo.filePath);
+            if ((itemData.fontData == m_curFontData) ||
+                (itemData.fontInfo.filePath == m_dataThread->getFontData(m_curFontData).fontInfo.filePath) ||
+                (itemData.fontInfo.familyName == qApp->font().family()) ||
+                fontFamilies.contains(qApp->font().family()) ||
+                (!ddeStandardFont.isEmpty() &&
+                 (itemData.fontInfo.familyName == ddeStandardFont ||
+                  fontFamilies.contains(ddeStandardFont)))) {
             // qDebug() << "Calculate current font";
             // 选中字体与当前使用的字体为同一字体文件
             // ttc字体集，即使不是同一个字体，也是同一个字体文件
@@ -2631,6 +2703,7 @@ void DFontPreviewListView::selectedFonts(const DFontPreviewItemData &curData,
                 // qDebug() << "Calculate collect item";
                 *allIndexList << index;
             }
+        }
         }
     }
 
