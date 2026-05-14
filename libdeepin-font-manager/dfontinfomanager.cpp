@@ -874,6 +874,7 @@ QStringList DFontInfoManager::getFontFamilyStyle(const QString &filePah)
     const FcChar8 *format = reinterpret_cast<const FcChar8 *>("%{=fclist}");
     FcObjectSet *os = FcObjectSetBuild(FC_FAMILY, FC_STYLE, FC_FILE, nullptr);
     FcPattern *pat = FcPatternCreate();
+    FcPatternAddString(pat, FC_FILE, reinterpret_cast<const FcChar8 *>(filePah.toUtf8().data()));
     FcFontSet *fs = FcFontList(nullptr, pat, os);
 
     if (os)
