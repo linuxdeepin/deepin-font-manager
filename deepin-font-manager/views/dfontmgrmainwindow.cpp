@@ -2194,6 +2194,7 @@ void DFontMgrMainWindow::delCurrentFont(bool activatedByRightmenu)
     DFDeleteDialog *confirmDelDlg = new DFDeleteDialog(this, m_menuDelCnt, m_menuSysCnt, m_menuCurCnt > 0, this);
 
     connect(confirmDelDlg, &DFDeleteDialog::accepted, this, &DFontMgrMainWindow::onconfirmDelDlgAccept);
+    connect(confirmDelDlg, &DFDeleteDialog::rejected, this, &DFontMgrMainWindow::cancelDelete);
 
     //confirmDelDlg->move((this->width() - confirmDelDlg->width() - 230 + mapToGlobal(QPoint(0, 0)).x()), (mapToGlobal(QPoint(0, 0)).y() + 180));
     confirmDelDlg->move(this->geometry().center() - confirmDelDlg->rect().center());
