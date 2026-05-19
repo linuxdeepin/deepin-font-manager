@@ -1,3 +1,9 @@
+deepin-font-manager (6.5.38) unstable; urgency=medium
+
+  * fix: reset m_fIsDeleting on cancel by listening to DFDeleteDialog::rejected
+
+ -- Wang Yu <wangyu@uniontech.com>  Tue, 19 May 2026 21:03:45 +0800
+
 deepin-font-manager (6.5.37) unstable; urgency=medium
 
   * refactor: Optimize font deletion process in DFontPreviewListView
