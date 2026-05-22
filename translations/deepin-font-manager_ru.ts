@@ -1,12 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="ru">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="ru">
 <context>
     <name>Category</name>
     <message>
         <location filename="../deepin-font-manager/views/dsplitlistwidget.cpp" line="362"/>
         <source>All Fonts</source>
-        <translation>Все Шрифты</translation>
+        <translation>Все шрифты</translation>
     </message>
     <message>
         <location filename="../deepin-font-manager/views/dsplitlistwidget.cpp" line="363"/>
@@ -67,12 +65,12 @@
     <message>
         <location filename="../deepin-font-manager/views/dfdeletedialog.cpp" line="563"/>
         <source>%1 is a font family, if you proceed, all fonts in it will be enabled</source>
-        <translation>%1 - это семейство шрифтов, если Вы продолжите, все шрифты в нем будут включены</translation>
+        <translation>%1 — это семейство шрифтов, если вы продолжите, все шрифты в нем будут включены</translation>
     </message>
     <message>
         <location filename="../deepin-font-manager/views/dfdeletedialog.cpp" line="565"/>
         <source>%1 is a font family, if you proceed, all fonts in it will be disabled</source>
-        <translation>%1 - это семейство шрифтов; если вы продолжите, все шрифты в нем будут отключены</translation>
+        <translation>%1 — это семейство шрифтов, если вы продолжите, все шрифты в нем будут отключены</translation>
     </message>
     <message>
         <location filename="../deepin-font-manager/views/dfdeletedialog.cpp" line="576"/>
@@ -177,7 +175,7 @@
     <message>
         <location filename="../deepin-font-manager/views/dfontmgrmainwindow.cpp" line="1656"/>
         <source>%1 fonts installed</source>
-        <translation>%1 установленный шрифт</translation>
+        <translation>%1 установленных шрифта</translation>
     </message>
     <message>
         <location filename="../deepin-font-manager/views/dfontmgrmainwindow.cpp" line="474"/>
@@ -368,7 +366,7 @@
     <message>
         <location filename="../deepin-font-manager/main.cpp" line="61"/>
         <source>Font Manager helps users install and manage fonts.</source>
-        <translation>Менеджер Шрифтов помогает пользователям устанавливать и управлять шрифтами.</translation>
+        <translation>Менеджер шрифтов помогает пользователям устанавливать и управлять шрифтами.</translation>
     </message>
     <message>
         <location filename="../deepin-font-manager/views/dfontspinnerwidget.cpp" line="37"/>
