@@ -1,3 +1,9 @@
+deepin-font-manager (6.5.39) unstable; urgency=medium
+
+  * update version to 6.5.39. 
+
+ -- Tian ShiLin <tianshilin@uniontech.com>  Thu, 28 May 2026 19:59:59 +0800
+
 deepin-font-manager (6.5.38) unstable; urgency=medium
 
   * fix: reset m_fIsDeleting on cancel by listening to DFDeleteDialog::rejected
