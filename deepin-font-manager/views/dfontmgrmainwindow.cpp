@@ -1226,7 +1226,7 @@ void DFontMgrMainWindow::installFontFromSys(const QStringList &files)
         this->m_isFromSys = true;
 
         QStringList reduceSameFiles;
-        foreach (auto it, files) {
+        for (const auto &it : files) {
             if (!reduceSameFiles.contains(it)) {
                 reduceSameFiles.append(it);
             }
@@ -2314,7 +2314,7 @@ void DFontMgrMainWindow::dropEvent(QDropEvent *event)
 
         if (dragFiles.size() > 1) {
             // qDebug() << "dragFiles.size() > 1";
-            foreach (auto it, event->mimeData()->urls()) {
+            for (const auto &it : event->mimeData()->urls()) {
                 if (Utils::isFontMimeType(it.path())) {
                     installFileList.append(it.path());
                 }

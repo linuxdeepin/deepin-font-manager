@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2022-2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -43,7 +43,7 @@
     #define REPLACE_FAR(t, fn, fn_stub)\
         ((uint32_t*)fn)[0] = 0x58000040 | 9;\
         ((uint32_t*)fn)[1] = 0xd61f0120 | (9 << 5);\
-        *(long long *)(fn + 8) = (long long )fn_stub;\
+        { long long _stub_val = (long long)fn_stub; std::memcpy(fn + 8, &_stub_val, sizeof(_stub_val)); }\
         CACHEFLUSH((char *)fn, CODESIZE);
     #define REPLACE_NEAR(t, fn, fn_stub) REPLACE_FAR(t, fn, fn_stub)
 #elif defined(__arm__) || defined(_M_ARM)
@@ -68,7 +68,7 @@
     #define REPLACE_FAR(t, fn, fn_stub)\
         *fn = 0x49;\
         *(fn + 1) = 0xbb;\
-        *(long long *)(fn + 2) = (long long)fn_stub;\
+        { long long _stub_val = (long long)fn_stub; std::memcpy(fn + 2, &_stub_val, sizeof(_stub_val)); }\
         *(fn + 10) = 0x41;\
         *(fn + 11) = 0xff;\
         *(fn + 12) = 0xe3;\
@@ -77,7 +77,7 @@
     //5 byte(jmp rel32)
     #define REPLACE_NEAR(t, fn, fn_stub)\
         *fn = 0xE9;\
-        *(int *)(fn + 1) = (int)(fn_stub - fn - CODESIZE_MIN);\
+        { int _stub_val = (int)(fn_stub - fn - CODESIZE_MIN); std::memcpy(fn + 1, &_stub_val, sizeof(_stub_val)); }\
         //CACHEFLUSH((char *)fn, CODESIZE);
 #endif
 

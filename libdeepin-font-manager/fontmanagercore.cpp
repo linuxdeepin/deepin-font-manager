@@ -295,7 +295,11 @@ void FontManagerCore::doUninstall(const QStringList &fileList)
     qDebug() << "Uninstall completed, files removed:" << m_uninstFile.size();
 
 //发现开机后先删除字体再安装字体时，偶现安装进程无法启动，修改这里后现象消失
+#if QT_VERSION_MAJOR > 5
+    bool ret = QProcess::startDetached("fc-cache", QStringList());
+#else
     bool ret = QProcess::startDetached("fc-cache");
+#endif
     Q_EMIT uninstallFcCacheFinish();
     qDebug() << "Font cache refresh result:" << ret;
 }
@@ -393,7 +397,11 @@ void FontManagerCore::doCache()
 {
     qDebug() << "Refreshing font cache";
     QProcess process;
+#if QT_VERSION_MAJOR > 5
+    process.startCommand("fc-cache");
+#else
     process.start("fc-cache");
+#endif
     process.waitForFinished(-1);
     Q_EMIT  cacheFinish();
     qDebug() << "Font cache refresh completed";

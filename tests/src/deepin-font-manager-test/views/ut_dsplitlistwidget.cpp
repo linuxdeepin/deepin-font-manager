@@ -201,7 +201,11 @@ TEST_F(TestDSplitListWidget, checkWheelEventDeltaN)
 
 TEST_F(TestDSplitListWidget, checkMouseMoveEvent)
 {
+#if QT_VERSION_MAJOR > 5
+    QMouseEvent *e = new QMouseEvent(QEvent::MouseMove, QPointF(600, 500), QPointF(), Qt::LeftButton, Qt::NoButton, Qt::NoModifier);
+#else
     QMouseEvent *e = new QMouseEvent(QEvent::MouseMove, QPoint(600, 500), Qt::LeftButton, Qt::NoButton, Qt::NoModifier);
+#endif
 
     dsp->mouseMoveEvent(e);
     EXPECT_TRUE(dsp->m_isMouseMoved);
@@ -292,7 +296,11 @@ TEST_F(TestDSplitListWidget, checkPaint)
 TEST_F(TestDSplitListWidget, checkMouseReleaseEvent)
 {
     dsp->m_isIstalling = true;
+#if QT_VERSION_MAJOR > 5
+    QMouseEvent *e = new QMouseEvent(QEvent::MouseButtonRelease, QPointF(), QPointF(), Qt::LeftButton, Qt::NoButton, Qt::NoModifier);
+#else
     QMouseEvent *e = new QMouseEvent(QEvent::MouseButtonRelease, QPoint(), Qt::LeftButton, Qt::NoButton, Qt::NoModifier);
+#endif
     dsp->mouseMoveEvent(e);
 
     Stub s;
