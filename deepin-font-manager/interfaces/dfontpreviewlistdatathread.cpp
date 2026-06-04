@@ -665,7 +665,7 @@ void DFontPreviewListDataThread:: refreshFontListData(bool isStartup, const QStr
         DFMDBManager::instance()->commitDeleteFontInfo();
         m_view->enableFonts();
 
-        foreach (auto it, m_startModelList) {
+        for (const auto &it : m_startModelList) {
             addPathWatcher(it.fontInfo.filePath);
         }
         m_delFontInfoList.clear();
@@ -765,7 +765,7 @@ void DFontPreviewListDataThread::refreshStartupFontListData()
     DFMDBManager::instance()->commitDeleteFontInfo();
     m_view->enableFonts();
 
-    foreach (auto it, m_startModelList) {
+    for (const auto &it : m_startModelList) {
         addPathWatcher(it.fontInfo.filePath);
     }
 

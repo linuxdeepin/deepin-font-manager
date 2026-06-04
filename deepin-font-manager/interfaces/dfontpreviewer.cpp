@@ -78,7 +78,7 @@ void DFontPreviewer::onPreviewFontChanged()
     qDebug() << "Preview font changed, path:" << m_fontPath;
     m_previewTexts.clear();
     InitData();
-    foreach (auto it, m_previewTexts) {
+    for (const auto &it : m_previewTexts) {
         QString text = Utils::convertToPreviewString(m_fontPath, it);
         m_previewTexts.replaceInStrings(it, text);
     }
@@ -150,7 +150,7 @@ void DFontPreviewer::paintEvent(QPaintEvent *event)
     painter.setPen(oldPen);
 
     QRect startRect(0, topSpace, event->rect().width(), textHeight);
-    foreach (auto it, m_previewTexts) {
+    for (const auto &it : m_previewTexts) {
         painter.drawText(startRect, Qt::AlignCenter, it);
 
         startRect.setY(startRect.y() + textHeight);

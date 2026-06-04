@@ -37,7 +37,7 @@ void LoadFontDataThread::run()
     thread->getView()->enableFonts();
 
     qDebug() << "Setting up file watchers for" << fontinfoList.size() << "fonts";
-    foreach (auto it, fontinfoList) {
+    for (const auto &it : fontinfoList) {
         thread->addPathWatcher(it.fontInfo.filePath);
     }
 

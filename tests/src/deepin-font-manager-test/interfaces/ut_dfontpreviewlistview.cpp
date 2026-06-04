@@ -986,7 +986,11 @@ TEST_F(TestDFontPreviewListView, checkIfHasSelection)
 TEST_F(TestDFontPreviewListView, checkMousePressEventLeft)
 {
     listview->m_fontPreviewProxyModel->insertRows(0, 5);
+#if QT_VERSION_MAJOR > 5
+    QMouseEvent *e = new QMouseEvent(QEvent::MouseButtonPress, QPointF(), QPointF(), Qt::LeftButton, Qt::NoButton, Qt::NoModifier);
+#else
     QMouseEvent *e = new QMouseEvent(QEvent::MouseButtonPress, QPoint(), Qt::LeftButton, Qt::NoButton, Qt::NoModifier);
+#endif
     listview->mousePressEvent(e);
     delete  e;
 }
@@ -998,7 +1002,11 @@ TEST_F(TestDFontPreviewListView, checkMousePressEventRight)
     s.set(ADDR(DFontPreviewListView, onMouseRightBtnPressed), stub_Return);
 
     listview->m_fontPreviewProxyModel->insertRows(0, 5);
+#if QT_VERSION_MAJOR > 5
+    QMouseEvent *e = new QMouseEvent(QEvent::MouseButtonPress, QPointF(), QPointF(), Qt::RightButton, Qt::NoButton, Qt::NoModifier);
+#else
     QMouseEvent *e = new QMouseEvent(QEvent::MouseButtonPress, QPoint(), Qt::RightButton, Qt::NoButton, Qt::NoModifier);
+#endif
     listview->mousePressEvent(e);
     delete  e;
 }
@@ -1008,7 +1016,7 @@ TEST_F(TestDFontPreviewListView, checkMousePressEventMid)
     listview->m_fontPreviewProxyModel->insertRows(0, 5);
     listview->selectAll();
 #if QT_VERSION_MAJOR > 5
-    QMouseEvent *e = new QMouseEvent(QEvent::MouseButtonPress, QPoint(), Qt::MiddleButton, Qt::NoButton, Qt::NoModifier);
+    QMouseEvent *e = new QMouseEvent(QEvent::MouseButtonPress, QPointF(), QPointF(), Qt::MiddleButton, Qt::NoButton, Qt::NoModifier);
 #else
     QMouseEvent *e = new QMouseEvent(QEvent::MouseButtonPress, QPoint(), Qt::MidButton, Qt::NoButton, Qt::NoModifier);
 #endif
@@ -1018,7 +1026,7 @@ TEST_F(TestDFontPreviewListView, checkMousePressEventMid)
 
     listview->clearSelection();
 #if QT_VERSION_MAJOR > 5
-    QMouseEvent *e2 = new QMouseEvent(QEvent::MouseButtonPress, QPoint(), Qt::MiddleButton, Qt::NoButton, Qt::ShiftModifier);
+    QMouseEvent *e2 = new QMouseEvent(QEvent::MouseButtonPress, QPointF(), QPointF(), Qt::MiddleButton, Qt::NoButton, Qt::ShiftModifier);
 #else
     QMouseEvent *e2 = new QMouseEvent(QEvent::MouseButtonPress, QPoint(), Qt::MidButton, Qt::NoButton, Qt::ShiftModifier);
 #endif
@@ -1028,7 +1036,7 @@ TEST_F(TestDFontPreviewListView, checkMousePressEventMid)
 
     listview->selectAll();
 #if QT_VERSION_MAJOR > 5
-    QMouseEvent *e3 = new QMouseEvent(QEvent::MouseButtonPress, QPoint(), Qt::MiddleButton, Qt::NoButton, Qt::ShiftModifier);
+    QMouseEvent *e3 = new QMouseEvent(QEvent::MouseButtonPress, QPointF(), QPointF(), Qt::MiddleButton, Qt::NoButton, Qt::ShiftModifier);
 #else
     QMouseEvent *e3 = new QMouseEvent(QEvent::MouseButtonPress, QPoint(), Qt::MidButton, Qt::NoButton, Qt::ShiftModifier);
 #endif
@@ -1036,7 +1044,7 @@ TEST_F(TestDFontPreviewListView, checkMousePressEventMid)
     SAFE_DELETE_ELE(e3);
 
 #if QT_VERSION_MAJOR > 5
-    QMouseEvent *e4 = new QMouseEvent(QEvent::MouseButtonPress, QPoint(), Qt::MiddleButton, Qt::NoButton, Qt::ControlModifier);
+    QMouseEvent *e4 = new QMouseEvent(QEvent::MouseButtonPress, QPointF(), QPointF(), Qt::MiddleButton, Qt::NoButton, Qt::ControlModifier);
 #else
     QMouseEvent *e4 = new QMouseEvent(QEvent::MouseButtonPress, QPoint(), Qt::MidButton, Qt::NoButton, Qt::ControlModifier);
 #endif
@@ -1047,7 +1055,7 @@ TEST_F(TestDFontPreviewListView, checkMousePressEventMid)
     s.set(ADDR(QModelIndex, isValid), stub_False);
     listview->selectAll();
 #if QT_VERSION_MAJOR > 5
-    QMouseEvent *e5 = new QMouseEvent(QEvent::MouseButtonPress, QPoint(), Qt::MiddleButton, Qt::NoButton, Qt::NoModifier);
+    QMouseEvent *e5 = new QMouseEvent(QEvent::MouseButtonPress, QPointF(), QPointF(), Qt::MiddleButton, Qt::NoButton, Qt::NoModifier);
 #else
     QMouseEvent *e5 = new QMouseEvent(QEvent::MouseButtonPress, QPoint(), Qt::MidButton, Qt::NoButton, Qt::NoModifier);
 #endif
@@ -1108,16 +1116,28 @@ TEST_F(TestDFontPreviewListView, checkmouseMoveEvent)
 //    s.set(ADDR(QModelIndex, isValid), stub_isValid);
 
     listview->m_fontPreviewProxyModel->insertRows(0, 5);
+#if QT_VERSION_MAJOR > 5
+    QMouseEvent *e = new QMouseEvent(QEvent::MouseMove, QPointF(623, 23), QPointF(), Qt::LeftButton, Qt::NoButton, Qt::NoModifier);
+#else
     QMouseEvent *e = new QMouseEvent(QEvent::MouseMove, QPoint(623, 23), Qt::LeftButton, Qt::NoButton, Qt::NoModifier);
+#endif
     listview->mouseMoveEvent(e);
 //    EXPECT_TRUE(listview->m_hoverModelIndex.row() == 0);
 
     listview->m_isMousePressNow = true;
+#if QT_VERSION_MAJOR > 5
+    QMouseEvent *e2 = new QMouseEvent(QEvent::MouseMove, QPointF(623, 23), QPointF(), Qt::LeftButton, Qt::NoButton, Qt::NoModifier);
+#else
     QMouseEvent *e2 = new QMouseEvent(QEvent::MouseMove, QPoint(623, 23), Qt::LeftButton, Qt::NoButton, Qt::NoModifier);
+#endif
     listview->mouseMoveEvent(e2);
 //    EXPECT_TRUE(listview->m_previousPressPos == 0);
 
+#if QT_VERSION_MAJOR > 5
+    QMouseEvent *e3 = new QMouseEvent(QEvent::MouseMove, QPointF(423, 23), QPointF(), Qt::LeftButton, Qt::NoButton, Qt::NoModifier);
+#else
     QMouseEvent *e3 = new QMouseEvent(QEvent::MouseMove, QPoint(423, 23), Qt::LeftButton, Qt::NoButton, Qt::NoModifier);
+#endif
     listview->mouseMoveEvent(e3);
 
     SAFE_DELETE_ELE(e);
@@ -1203,13 +1223,17 @@ TEST_F(TestDFontPreviewListView, checkMouseReleaseEvent)
     s.set(ADDR(DFontPreviewListView, onMouseLeftBtnReleased), stub_Return);
 
 #if QT_VERSION_MAJOR > 5
-    QMouseEvent *e1 = new QMouseEvent(QEvent::MouseButtonRelease, QPoint(623, 23), Qt::MiddleButton, Qt::NoButton, Qt::NoModifier);
+    QMouseEvent *e1 = new QMouseEvent(QEvent::MouseButtonRelease, QPointF(623, 23), QPointF(), Qt::MiddleButton, Qt::NoButton, Qt::NoModifier);
 #else
     QMouseEvent *e1 = new QMouseEvent(QEvent::MouseButtonRelease, QPoint(623, 23), Qt::MidButton, Qt::NoButton, Qt::NoModifier);
 #endif
     listview->mouseReleaseEvent(e1);
 
+#if QT_VERSION_MAJOR > 5
+    QMouseEvent *e2 = new QMouseEvent(QEvent::MouseButtonRelease, QPointF(623, 23), QPointF(), Qt::LeftButton, Qt::NoButton, Qt::NoModifier);
+#else
     QMouseEvent *e2 = new QMouseEvent(QEvent::MouseButtonRelease, QPoint(623, 23), Qt::LeftButton, Qt::NoButton, Qt::NoModifier);
+#endif
     listview->mouseReleaseEvent(e2);
 
     SAFE_DELETE_ELE(e1);

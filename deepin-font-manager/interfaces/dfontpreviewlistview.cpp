@@ -2355,7 +2355,7 @@ void DFontPreviewListView::updateChangedFile(const QStringList &pathlist)
     qDebug() << __FUNCTION__ << pathlist << " begin ";
     QMutexLocker locker(&m_mutex);
 
-    foreach (auto it, pathlist) {
+    for (const auto &it : pathlist) {
         changeFontFile(it);
     }
 

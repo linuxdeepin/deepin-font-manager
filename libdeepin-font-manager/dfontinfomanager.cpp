@@ -749,7 +749,11 @@ QStringList DFontInfoManager::getCurrentFontFamily()
     QStringList retStrList;
     QProcess process;
 
+#if QT_VERSION_MAJOR > 5
+    process.startCommand("fc-match");
+#else
     process.start("fc-match");
+#endif
     process.waitForFinished(-1);
 
     QString output = process.readAllStandardOutput();
@@ -832,7 +836,11 @@ QString DFontInfoManager::getFontPath()
     QStringList retStrList;
     QProcess process;
 
+#if QT_VERSION_MAJOR > 5
+    process.startCommand("fc-match -v |grep file");
+#else
     process.start("fc-match -v |grep file");
+#endif
     process.waitForFinished(-1);
 
     QString output = process.readAllStandardOutput();

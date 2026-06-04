@@ -31,7 +31,7 @@ void GetUserAddFontThread::run()
     QStringList reduceSameFontList;
     DFontInfo fontInfo;
     //通过fc-list获取安装字体并与数据库对比，如果存在选项不在数据库这该字体不是通过字体管理器安装，把它加入列表
-    foreach (auto it, fclistPathList) {
+    for (const auto &it : fclistPathList) {
         if (!dbPathlist.contains(it)) {
             qDebug() << "Found user-added font:" << it;
             fontInfo = fontInfoManager->getFontInfo(it, true);

@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2022-2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -610,9 +610,9 @@ TEST_F(TestDFontMgrMainWindow, checkDropEvent)
 TEST_F(TestDFontMgrMainWindow, checkDragEnterEvent)
 {
 
-    QPoint p(300, 300);
     QMimeData data;
 
+    QPoint p(300, 300);
     QDragEnterEvent *e = new QDragEnterEvent(p, Qt::CopyAction, &data, Qt::LeftButton, Qt::NoModifier);
     fm->dropEvent(e);
     EXPECT_FALSE(e->isAccepted());
