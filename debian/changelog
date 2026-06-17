@@ -1,3 +1,10 @@
+deepin-font-manager (6.5.40) unstable; urgency=medium
+
+  * test: migrate unit tests from Qt5 to Qt6 compatibility
+  * fix: skip in-use font when disabling via D-Bus StandardFont query
+
+ -- Wang Yu <wangyu@uniontech.com>  Wed, 17 Jun 2026 17:23:04 +0800
+
 deepin-font-manager (6.5.39) unstable; urgency=medium
 
   * update version to 6.5.39. 
