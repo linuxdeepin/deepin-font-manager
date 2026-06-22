@@ -1,5 +1,5 @@
 [Desktop Entry]
-Categories=Utility
+Categories=Utility;
 Exec=deepin-font-manager %F
 GenericName=Font Manager
 Icon=deepin-font-manager
