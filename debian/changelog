@@ -1,3 +1,10 @@
+deepin-font-manager (6.5.41) unstable; urgency=medium
+
+  * chore: Update version to 6.5.41
+  * fix: add missing semicolon to Categories in desktop entry
+
+ -- zhanghongyuan <zhanghongyuan@uniontech.com>  Thu, 09 Jul 2026 13:26:57 +0800
+
 deepin-font-manager (6.5.40) unstable; urgency=medium
 
   * test: migrate unit tests from Qt5 to Qt6 compatibility
