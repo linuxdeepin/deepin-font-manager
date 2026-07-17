@@ -9,6 +9,7 @@ StartupNotify=false
 TryExec=deepin-font-manager
 Type=Application
 X-Deepin-Vendor=deepin
+X-Deepin-Singleton=true
 
 # Translations:
 # Do not manually modify!
