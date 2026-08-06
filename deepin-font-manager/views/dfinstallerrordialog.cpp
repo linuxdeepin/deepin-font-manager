@@ -1,4 +1,4 @@
-// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd.
+// Copyright (C) 2019 ~ 2026 Uniontech Software Technology Co.,Ltd.
 // SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
@@ -150,6 +150,7 @@ void DFInstallErrorDialog::initUI()
 {
     qDebug() << "Entering function: DFInstallErrorDialog::initUI";
     setContentsMargins(0, 0, 0, 0);
+    setAccessibleName("InstallErrorDialog");
 #if QT_VERSION_MAJOR > 5
     setIcon(Utils::renderSVG("://exception-logo.svg", QSize(32, 32)));
 #else
@@ -188,6 +189,7 @@ void DFInstallErrorDialog::initUI()
     m_installErrorListView->setFixedWidth(width() - LISTVIEW_LEFT_SPACING * 2);
     m_installErrorListView->setEditTriggers(QAbstractItemView::NoEditTriggers);
     m_installErrorListView->setSelectionMode(QAbstractItemView::ExtendedSelection);
+    m_installErrorListView->setAccessibleName("InstallErrorListView");
     m_mainLayout->addWidget(m_installErrorListView);
 
     insertButton(0, DApplication::translate("ExceptionWindow", "Exit"), false, ButtonNormal);

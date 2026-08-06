@@ -1,4 +1,4 @@
-// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd.
+// Copyright (C) 2019 ~ 2026 Uniontech Software Technology Co.,Ltd.
 // SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
@@ -58,6 +58,7 @@ void DFontBaseDialog::initUI()
     m_titleBar = new QWidget(this);
     m_titleBar->setFixedHeight(50);
     m_titleBar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    m_titleBar->setAccessibleName("DialogTitleBar");
 
     m_titleBar->setLayout(titleLayout);
 
@@ -66,15 +67,18 @@ void DFontBaseDialog::initUI()
     m_logoIcon->setFocusPolicy(Qt::NoFocus);
     m_logoIcon->setAttribute(Qt::WA_TransparentForMouseEvents);
     m_logoIcon->setPixmap(QIcon::fromTheme("deepin-font-manager").pixmap(QSize(32, 32)));
+    m_logoIcon->setAccessibleName("DialogLogoIcon");
 
     m_closeButton = new DWindowCloseButton(this);
 //    m_closeButton->setFocusPolicy(Qt::NoFocus);//SP3--设置tab顺序--设置close按钮可聚焦(539)
     m_closeButton->setIconSize(QSize(50, 50));
+    m_closeButton->setAccessibleName("DialogCloseButton");
 
     m_tileText = new DLabel(this);
     m_tileText->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     m_tileText->setAlignment(Qt::AlignCenter);
     DFontSizeManager::instance()->bind(m_tileText, DFontSizeManager::T6);
+    m_tileText->setAccessibleName("DialogTitleText");
 
     titleLayout->addWidget(m_logoIcon, 0, Qt::AlignLeft | Qt::AlignVCenter);
     titleLayout->addWidget(m_tileText);

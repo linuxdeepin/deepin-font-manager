@@ -1,4 +1,4 @@
-// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd.
+// Copyright (C) 2019 ~ 2026 Uniontech Software Technology Co.,Ltd.
 // SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
@@ -137,6 +137,7 @@ BITSTREAM CHARTER is a registered trademark of Bitstream Inc.";
     vLayout->setContentsMargins(10, 10, 10, 10);
     basicLabel = new DLabel(DApplication::translate("FontDetailDailog", "Basic info"));
     DFontSizeManager::instance()->bind(basicLabel, DFontSizeManager::T6);
+    basicLabel->setAccessibleName("BasicInfoLabel");
 
     vLayout->addWidget(basicLabel);
     vLayout->addItem(gridLayout);

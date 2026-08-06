@@ -1,4 +1,4 @@
-// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd.
+// Copyright (C) 2019 ~ 2026 Uniontech Software Technology Co.,Ltd.
 // SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
@@ -34,8 +34,10 @@ void DFontSpinnerWidget::initUI()
     qDebug() << "Entering function: void DFontSpinnerWidget::initUI";
     m_spinner = new DFontSpinner(this);
     m_spinner->setFixedSize(QSize(32, 32));
+    m_spinner->setAccessibleName("FontSpinnerAnimation");
     m_label = new QLabel(this);
     m_label->setText(DApplication::translate("Main", "Loading fonts, please wait..."));
+    m_label->setAccessibleName("FontSpinnerLabel");
 
     QHBoxLayout *hLoadingView = new QHBoxLayout;
     hLoadingView->addStretch(1);

@@ -1,4 +1,4 @@
-// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd.
+// Copyright (C) 2019 ~ 2026 Uniontech Software Technology Co.,Ltd.
 // SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
@@ -157,6 +157,7 @@ void DFontMgrMainWindow::initUI()
     qDebug() << "Entering function: DFontMgrMainWindow::initUI";
     //Enable main window accept drag event
     setAcceptDrops(true);
+    setAccessibleName("FontManagerMainWindow");
     //m_loadingSpinner = new DSpinner(this);
     //m_loadingSpinner->setFixedSize(32, 32);
     //m_loadingSpinner->hide();
@@ -667,6 +668,7 @@ void DFontMgrMainWindow::initTileFrame()
 
     //Action area add a extra space
     d->titleActionArea = new QWidget(this);
+    d->titleActionArea->setAccessibleName("TitleActionArea");
 
     QHBoxLayout *titleActionAreaLayout = new QHBoxLayout(d->titleActionArea);
     titleActionAreaLayout->setSpacing(0);
@@ -675,6 +677,7 @@ void DFontMgrMainWindow::initTileFrame()
     // Add Font
     d->addFontButton = new DIconButton(DStyle::StandardPixmap::SP_IncreaseElement, this);
     d->addFontButton->setFlat(false);
+    d->addFontButton->setAccessibleName("AddFontButton");
 
     titleActionAreaLayout->addWidget(d->addFontButton);
 
@@ -683,6 +686,7 @@ void DFontMgrMainWindow::initTileFrame()
     DFontSizeManager::instance()->bind(d->searchFontEdit, DFontSizeManager::T6);
     d->searchFontEdit->setFixedWidth(FTM_SEARCH_BAR_W);
     d->searchFontEdit->setPlaceHolder(DApplication::translate("SearchBar", "Search"));
+    d->searchFontEdit->setAccessibleName("SearchFontEdit");
 
     titlebar()->addWidget(d->titleActionArea, Qt::AlignLeft | Qt::AlignVCenter);
     qDebug() << "Exiting function: DFontMgrMainWindow::initTileFrame";
@@ -703,6 +707,7 @@ void DFontMgrMainWindow::initMainVeiws()
     setWindowIcon(QIcon::fromTheme(DEEPIN_FONT_MANAGER));
 
     d->mainWndSpliter = new DSplitter(Qt::Horizontal, this);
+    d->mainWndSpliter->setAccessibleName("MainWindowSplitter");
     m_fontLoadingSpinner = new DFontSpinnerWidget(this);
 
     initLeftSideBar();
@@ -746,6 +751,7 @@ void DFontMgrMainWindow::initLeftSideBar()
     qDebug() << "Entering function: DFontMgrMainWindow::initLeftSideBar";
     d->leftBarHolder = new QWidget(d->mainWndSpliter);
     d->leftBarHolder->setObjectName("leftMainLayoutHolder");
+    d->leftBarHolder->setAccessibleName("LeftBarHolder");
     d->leftBarHolder->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
     d->leftBarHolder->setFixedWidth(FTM_LEFT_SIDE_BAR_WIDTH);
     d->leftBarHolder->setContentsMargins(0, 0, 2, 0);
@@ -796,6 +802,7 @@ void DFontMgrMainWindow::initRightFontView()
     d->rightViewHolder = new QWidget(d->mainWndSpliter);
     d->rightViewHolder->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     d->rightViewHolder->setObjectName("rightMainLayoutHolder");
+    d->rightViewHolder->setAccessibleName("RightViewHolder");
     d->rightViewHolder->setBackgroundRole(DPalette::Base);
     d->rightViewHolder->setAutoFillBackground(true);
 
@@ -806,6 +813,7 @@ void DFontMgrMainWindow::initRightFontView()
     d->fontShowArea = new QWidget(this);
     //d->fontShowArea->setFrameShape(DFrame::NoFrame);
     d->fontShowArea->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    d->fontShowArea->setAccessibleName("FontShowArea");
 
     initFontPreviewListView(d->fontShowArea);
 
@@ -813,6 +821,7 @@ void DFontMgrMainWindow::initRightFontView()
     d->sbarShadowLine = new DHorizontalLine(this);
     d->sbarShadowLine->setFixedHeight(1);
     d->sbarShadowLine->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    d->sbarShadowLine->setAccessibleName("StateBarShadowLine");
 
     rightMainLayout->addWidget(d->fontShowArea);
     rightMainLayout->addWidget(d->sbarShadowLine);
@@ -853,6 +862,7 @@ void DFontMgrMainWindow::initFontPreviewListView(QWidget *parent)
     parent->setLayout(listViewVBoxLayout);
 
     m_fontPreviewListView = new DFontPreviewListView(this);
+    m_fontPreviewListView->setAccessibleName("FontPreviewListView");
     m_fontPreviewListView->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     m_fontPreviewListView->setVerticalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAsNeeded);
     m_fontPreviewListView->setHorizontalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAlwaysOff);
@@ -872,6 +882,7 @@ void DFontMgrMainWindow::initFontPreviewListView(QWidget *parent)
 
     // 未搜索到结果view
     m_noResultListView = new DListView(this);
+    m_noResultListView->setAccessibleName("NoResultListView");
 
     DLabel *noResultLabel = new DLabel(m_noResultListView);
     noResultLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
@@ -894,6 +905,7 @@ void DFontMgrMainWindow::initFontPreviewListView(QWidget *parent)
 
     // 未安装字体view
     m_noInstallListView = new DListView(this);
+    m_noInstallListView->setAccessibleName("NoInstallListView");
 
     DLabel *noInstallLabel = new DLabel(m_noInstallListView);
     noInstallLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
@@ -936,12 +948,14 @@ void DFontMgrMainWindow::initStateBar()
     d->stateBar = new QWidget(this);
     d->stateBar->setFixedHeight(FTM_SBAR_HEIGHT);
     d->stateBar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    d->stateBar->setAccessibleName("StateBar");
 
     d->textInputEdit = new DLineEdit(this);
     DFontSizeManager::instance()->bind(d->textInputEdit, DFontSizeManager::T6);
     d->textInputEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     d->textInputEdit->setClearButtonEnabled(true);
     d->textInputEdit->lineEdit()->setPlaceholderText(DApplication::translate("StateBar", "Input preview text"));
+    d->textInputEdit->setAccessibleName("TextInputEdit");
 
     d->fontScaleSlider = new DSlider(Qt::Orientation::Horizontal, this);
     d->fontScaleSlider->setFixedSize(FTM_SBAR_SLIDER_W, FTM_SBAR_SLIDER_H);
@@ -949,6 +963,7 @@ void DFontMgrMainWindow::initStateBar()
     d->fontScaleSlider->setMaximum(MAX_FONT_SIZE);
     //设置初始显示字体大小
     d->fontScaleSlider->setValue(DEFAULT_FONT_SIZE);
+    d->fontScaleSlider->setAccessibleName("FontScaleSlider");
     setTabOrder(d->textInputEdit->lineEdit(), d->fontScaleSlider);
 
     d->fontSizeLabel = new DLabel(this);
@@ -957,6 +972,7 @@ void DFontMgrMainWindow::initStateBar()
     d->fontSizeLabel->setFont(fontScaleFont);
     d->fontSizeLabel->setFixedSize(FTM_SBAR_FSIZE_LABEL_W, FTM_SBAR_FSIZE_LABEL_H);
     d->fontSizeLabel->setAlignment(Qt::AlignCenter | Qt::AlignVCenter);
+    d->fontSizeLabel->setAccessibleName("FontSizeLabel");
 
     DFontSizeManager::instance()->bind(d->fontSizeLabel, DFontSizeManager::T6);
     // Init the default font size

@@ -1,4 +1,4 @@
-// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd.
+// Copyright (C) 2019 ~ 2026 Uniontech Software Technology Co.,Ltd.
 // SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
@@ -130,6 +130,7 @@ void DFInstallNormalWindow::initUI()
     qDebug() << "Entering function: DFInstallNormalWindow::initUI";
     setFixedSize(QSize(380, 136));
     setTitle(DApplication::translate("NormalInstallWindow", "Install Font"));
+    setAccessibleName("InstallNormalWindow");
 
     QVBoxLayout *mainLayout = new QVBoxLayout();
     mainLayout->setSpacing(0);
@@ -143,16 +144,19 @@ void DFInstallNormalWindow::initUI()
     DFontSizeManager::instance()->bind(m_progressStepLabel, DFontSizeManager::T6);
     m_progressStepLabel->setFixedHeight(m_progressStepLabel->fontMetrics().height());
     m_progressStepLabel->setText(DApplication::translate("NormalInstallWindow", "Verifying..."));
+    m_progressStepLabel->setAccessibleName("InstallProgressStepLabel");
 
     m_currentFontLabel = new DTipLabel("", this);
     DFontSizeManager::instance()->bind(m_currentFontLabel, DFontSizeManager::T8);
     m_currentFontLabel->setAlignment(Qt::AlignLeft);
     m_currentFontLabel->setFixedHeight(m_currentFontLabel->fontMetrics().height());
     m_currentFontLabel->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
+    m_currentFontLabel->setAccessibleName("InstallCurrentFontLabel");
 
     m_progressBar = new DProgressBar(this);
     m_progressBar->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     m_progressBar->setFixedSize(380 - 42, 6);
+    m_progressBar->setAccessibleName("InstallProgressBar");
 
     contentLayout->addSpacing(10);
     contentLayout->addWidget(m_progressStepLabel);
