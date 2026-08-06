@@ -1,4 +1,4 @@
-// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd.
+// Copyright (C) 2019 ~ 2026 Uniontech Software Technology Co.,Ltd.
 // SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
@@ -161,6 +161,7 @@ void DFontInfoDialog::initUI()
     m_mainFrame = new QWidget(this);
     //m_mainFrame->setFrameShape(DFrame::Shape::NoFrame);
     m_mainFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    m_mainFrame->setAccessibleName("FontInfoMainFrame");
 
     // Font logo
     m_fontLogo = new FontIconText("://font-info-logo.svg", this);
@@ -180,6 +181,7 @@ void DFontInfoDialog::initUI()
     m_fontFileName->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     m_fontFileName->setAlignment(Qt::AlignVCenter | Qt::AlignHCenter);
     m_fontFileName->setMinimumHeight(m_fontFileName->fontMetrics().height());
+    m_fontFileName->setAccessibleName("FontInfoFileName");
 //    m_fontFileName->setWordWrap(true);
 
     DFontSizeManager::instance()->bind(m_fontFileName, DFontSizeManager::T8);
@@ -197,6 +199,7 @@ void DFontInfoDialog::initUI()
     m_fontFileName->setPalette(pa);
 
     m_scrollArea = new QScrollArea(this);
+    m_scrollArea->setAccessibleName("FontInfoScrollArea");
 //    scrollArea->setLineWidth(120);
     m_scrollArea->setFixedSize(QSize(290, 375));
 //    scrollArea->setContentsMargins(0,0,30,0);

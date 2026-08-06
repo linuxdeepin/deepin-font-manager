@@ -1,4 +1,4 @@
-// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd.
+// Copyright (C) 2019 ~ 2026 Uniontech Software Technology Co.,Ltd.
 // SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
@@ -118,6 +118,7 @@ void DFDeleteDialog::initUI()
     qDebug() << "Entering function: DFDeleteDialog::initUI";
     setFixedWidth(DEFAULT_WINDOW_W);
     setIcon(QIcon::fromTheme("deepin-font-manager"));
+    setAccessibleName("DeleteConfirmDialog");
 
     initMessageTitle();
     initMessageDetail();
@@ -233,6 +234,7 @@ void DFDeleteDialog::initMessageDetail()
 {
     qDebug() << "Entering function: DFDeleteDialog::initMessageDetail";
     messageDetail = new DLabel(this);
+    messageDetail->setAccessibleName("DeleteMessageDetail");
 
     if (m_systemCnt == 0 && !m_hasCurFont) {
         qDebug() << "Case: no system fonts, no current font in use";
@@ -447,6 +449,7 @@ void DFHandleTTCDialog::initUI()
 {
     qDebug() << "Entering function: DFHandleTTCDialog::initUI";
     setFixedWidth(DEFAULT_WINDOW_W);
+    setAccessibleName("HandleTTCDialog");
 
     initMessageTitle();
     initMessageDetail();
@@ -530,9 +533,11 @@ QLayout *DFHandleTTCDialog::initBottomButtons()
     m_cancelBtn = new DPushButton(this);
     m_cancelBtn->setFixedSize(170, 36);
     m_cancelBtn->setText(tr("Cancel"));
+    m_cancelBtn->setAccessibleName("TTCCancelButton");
 
     m_confirmBtn = new DWarningButton(this);
     m_confirmBtn->setFixedSize(170, 36);
+    m_confirmBtn->setAccessibleName("TTCConfirmButton");
     setConfirmBtnText();
 
     DVerticalLine *verticalSplite = new DVerticalLine(this);

@@ -1,4 +1,4 @@
-// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd.
+// Copyright (C) 2019 ~ 2026 Uniontech Software Technology Co.,Ltd.
 // SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
@@ -62,6 +62,7 @@ void DFQuickInstallWindow::initUI()
     titlebar()->setMenuVisible(false);
 
     setFixedSize(QSize(DEFAULT_WINDOW_W, DEFAULT_WINDOW_H));
+    setAccessibleName("QuickInstallWindow");
 
     //Set task bar icon
     setWindowIcon(QIcon::fromTheme(DEEPIN_FONT_MANAGER));
@@ -76,6 +77,7 @@ void DFQuickInstallWindow::initUI()
     m_titleLabel = new DLabel(this);
     m_titleLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     m_titleLabel->setText(DApplication::translate("QuickInstallWindow", "Unknown"));
+    m_titleLabel->setAccessibleName("QuickInstallTitle");
 
     titlebar()->addWidget(m_titleLabel, Qt::AlignBottom | Qt::AlignHCenter);
 
@@ -86,9 +88,11 @@ void DFQuickInstallWindow::initUI()
     // Style combox
     m_fontType = new DComboBox(this);
     m_fontType->setFixedSize(QSize(114, 36));
+    m_fontType->setAccessibleName("QuickInstallFontType");
 
     // Text Preview
     m_fontPreviewTxt = new DFontPreviewer(this);
+    m_fontPreviewTxt->setAccessibleName("QuickInstallFontPreview");
     // m_fontPreviewTxt->setFixedSize(QSize(381, 216));
 
     // m_fontPreviewTxt->setFixedHeight(216);
@@ -108,6 +112,7 @@ void DFQuickInstallWindow::initUI()
     m_stateLabel = new DLabel(this);
     m_stateLabel->setFixedHeight(m_stateLabel->fontMetrics().height());
     m_stateLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    m_stateLabel->setAccessibleName("QuickInstallStateLabel");
     // m_stateLabel->setFont(actionFont);
 #if QT_VERSION_MAJOR > 5
     DPalette pa = m_stateLabel->palette();
@@ -124,6 +129,7 @@ void DFQuickInstallWindow::initUI()
     m_actionBtn = new DPushButton(this);
     m_actionBtn->setFixedSize(QSize(120, 40));
     m_actionBtn->setFocusPolicy(Qt::FocusPolicy::NoFocus);
+    m_actionBtn->setAccessibleName("QuickInstallActionButton");
     // m_actionBtn->setFont(actionFont);
     m_actionBtn->setText(DApplication::translate("QuickInstallWindow", "Install Font"));
 
