@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="pt">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="pt">
 <context>
     <name>Category</name>
     <message>
@@ -104,16 +102,20 @@
     <name>DFInstallErrorDialog</name>
     <message>
         <location filename="../deepin-font-manager/views/dfinstallerrordialog.cpp" line="103"/>
+        <location filename="../deepin-font-manager/views/dfinstallerrordialog.cpp" line="412"/>
         <source>Broken file</source>
         <translation>Ficheiro corrompido</translation>
     </message>
     <message>
         <location filename="../deepin-font-manager/views/dfinstallerrordialog.cpp" line="114"/>
+        <location filename="../deepin-font-manager/views/dfinstallerrordialog.cpp" line="423"/>
+        <location filename="../deepin-font-manager/views/dfinstallerrordialog.cpp" line="450"/>
         <source>Same version installed</source>
         <translation>Mesma versão instalada</translation>
     </message>
     <message>
         <location filename="../deepin-font-manager/views/dfinstallerrordialog.cpp" line="125"/>
+        <location filename="../deepin-font-manager/views/dfinstallerrordialog.cpp" line="434"/>
         <source>System Font</source>
         <translation>Fonte do sistema</translation>
     </message>
@@ -228,13 +230,13 @@
     </message>
     <message>
         <location filename="../deepin-font-manager/views/dfdeletedialog.cpp" line="237"/>
-        <source>The font "%1" in use cannot be deleted</source>
-        <translation>A fonte "%1" em uso não pode ser eliminada</translation>
+        <source>The font &quot;%1&quot; in use cannot be deleted</source>
+        <translation>A fonte &quot;%1&quot; em uso não pode ser eliminada</translation>
     </message>
     <message>
         <location filename="../deepin-font-manager/views/dfdeletedialog.cpp" line="240"/>
-        <source>The other %1 system fonts and the font "%2" in use cannot be deleted</source>
-        <translation>As outras %1 fontes do sistema e a fonte "%2" em uso não podem ser eliminadas</translation>
+        <source>The other %1 system fonts and the font &quot;%2&quot; in use cannot be deleted</source>
+        <translation>As outras %1 fontes do sistema e a fonte &quot;%2&quot; em uso não podem ser eliminadas</translation>
     </message>
     <message>
         <location filename="../deepin-font-manager/views/dfdeletedialog.cpp" line="204"/>
@@ -283,7 +285,7 @@
     <name>Font</name>
     <message>
         <location filename="../libdeepin-font-manager/dfontpreviewitemdef.h" line="15"/>
-        <source>Don't let your dreams be dreams</source>
+        <source>Don&apos;t let your dreams be dreams</source>
         <translation>Não deixes os teus sonhos serem sonhos</translation>
     </message>
 </context>
@@ -306,16 +308,21 @@
     </message>
     <message>
         <location filename="../deepin-font-manager/views/dfontinfoscrollarea.cpp" line="66"/>
+        <location filename="../deepin-font-manager/views/dfontinfoscrollarea.cpp" line="68"/>
         <source>Version</source>
         <translation>Versão</translation>
     </message>
     <message>
         <location filename="../deepin-font-manager/views/dfontinfoscrollarea.cpp" line="72"/>
+        <location filename="../deepin-font-manager/views/dfontinfoscrollarea.cpp" line="75"/>
         <source>Description</source>
         <translation>Descrição</translation>
     </message>
     <message>
         <location filename="../deepin-font-manager/views/dfontinfoscrollarea.cpp" line="73"/>
+        <location filename="../deepin-font-manager/views/dfontinfoscrollarea.cpp" line="126"/>
+        <location filename="../deepin-font-manager/views/dfontinfoscrollarea.cpp" line="127"/>
+        <location filename="../deepin-font-manager/views/dfontinfoscrollarea.cpp" line="188"/>
         <source>Unknown</source>
         <translation>Desconhecida</translation>
     </message>
@@ -336,11 +343,13 @@
     </message>
     <message>
         <location filename="../deepin-font-manager/views/dfontinfoscrollarea.cpp" line="123"/>
+        <location filename="../deepin-font-manager/views/dfontinfoscrollarea.cpp" line="126"/>
         <source>Copyright</source>
-        <translation>Direitos de Autor</translation>
+        <translation>Direitos de Cópia</translation>
     </message>
     <message>
         <location filename="../deepin-font-manager/views/dfontinfoscrollarea.cpp" line="124"/>
+        <location filename="../deepin-font-manager/views/dfontinfoscrollarea.cpp" line="127"/>
         <source>License Description</source>
         <translation>Descrição da Licença</translation>
     </message>
@@ -349,6 +358,8 @@
     <name>Main</name>
     <message>
         <location filename="../deepin-font-manager/main.cpp" line="60"/>
+        <location filename="../deepin-font-manager/main.cpp" line="62"/>
+        <location filename="../deepin-font-manager/views/dfontmgrmainwindow.cpp" line="2293"/>
         <source>Font Manager</source>
         <translation>Gestor de Fontes</translation>
     </message>
@@ -359,6 +370,7 @@
     </message>
     <message>
         <location filename="../deepin-font-manager/views/dfontspinnerwidget.cpp" line="37"/>
+        <location filename="../deepin-font-manager/views/dfontspinnerwidget.cpp" line="72"/>
         <source>Loading fonts, please wait...</source>
         <translation>A carregar as fontes, aguarde...</translation>
     </message>
@@ -387,11 +399,13 @@
     <name>Menu</name>
     <message>
         <location filename="../deepin-font-manager/interfaces/dfontmenumanager.cpp" line="63"/>
+        <location filename="../deepin-font-manager/interfaces/dfontmenumanager.cpp" line="68"/>
         <source>Add font</source>
         <translation>Adicionar fonte</translation>
     </message>
     <message>
         <location filename="../deepin-font-manager/interfaces/dfontmenumanager.cpp" line="71"/>
+        <location filename="../deepin-font-manager/interfaces/dfontmenumanager.cpp" line="301"/>
         <source>Enable</source>
         <translation>Ativar</translation>
     </message>
@@ -407,6 +421,7 @@
     </message>
     <message>
         <location filename="../deepin-font-manager/interfaces/dfontmenumanager.cpp" line="77"/>
+        <location filename="../deepin-font-manager/interfaces/dfontmenumanager.cpp" line="281"/>
         <source>Favorite</source>
         <translation>Adicionar às favoritas</translation>
     </message>
@@ -476,6 +491,8 @@
     <name>QuickInstallWindow</name>
     <message>
         <location filename="../deepin-font-manager/views/dfquickinstallwindow.cpp" line="77"/>
+        <location filename="../deepin-font-manager/views/dfquickinstallwindow.cpp" line="217"/>
+        <location filename="../deepin-font-manager/views/dfquickinstallwindow.cpp" line="241"/>
         <source>Unknown</source>
         <translation>Desconhecida</translation>
     </message>
