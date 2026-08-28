@@ -1,4 +1,4 @@
-// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd.
+// Copyright (C) 2019 - 2026 Uniontech Software Technology Co.,Ltd.
 // SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
@@ -515,6 +515,7 @@ void DFHandleTTCDialog::initMessageDetail()
 {
     qDebug() << "Entering function: DFHandleTTCDialog::initMessageDetail";
     applyAllCkb = new DCheckBox(tr("Apply to all selected font families"), this);
+    applyAllCkb->setObjectName("ApplyAllCkb");
     applyAllCkb->setAccessibleName("Applyall_btn");
     DFontSizeManager::instance()->bind(applyAllCkb, DFontSizeManager::T6, QFont::Medium);
     qDebug() << "Exiting function: DFHandleTTCDialog::initMessageDetail";
@@ -528,10 +529,14 @@ QLayout *DFHandleTTCDialog::initBottomButtons()
     layout->setContentsMargins(0, 0, 0, 0);
 
     m_cancelBtn = new DPushButton(this);
+    m_cancelBtn->setObjectName("CancelBtn");
+    m_cancelBtn->setAccessibleName("CancelBtn");
     m_cancelBtn->setFixedSize(170, 36);
     m_cancelBtn->setText(tr("Cancel"));
 
     m_confirmBtn = new DWarningButton(this);
+    m_confirmBtn->setObjectName("ConfirmBtn");
+    m_confirmBtn->setAccessibleName("ConfirmBtn");
     m_confirmBtn->setFixedSize(170, 36);
     setConfirmBtnText();
 

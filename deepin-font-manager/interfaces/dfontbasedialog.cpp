@@ -1,4 +1,4 @@
-// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd.
+// Copyright (C) 2019 - 2026 Uniontech Software Technology Co.,Ltd.
 // SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
@@ -68,6 +68,8 @@ void DFontBaseDialog::initUI()
     m_logoIcon->setPixmap(QIcon::fromTheme("deepin-font-manager").pixmap(QSize(32, 32)));
 
     m_closeButton = new DWindowCloseButton(this);
+    m_closeButton->setObjectName("CloseButton");
+    m_closeButton->setAccessibleName("CloseButton");
 //    m_closeButton->setFocusPolicy(Qt::NoFocus);//SP3--设置tab顺序--设置close按钮可聚焦(539)
     m_closeButton->setIconSize(QSize(50, 50));
 

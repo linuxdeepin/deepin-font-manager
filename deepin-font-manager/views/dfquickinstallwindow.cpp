@@ -1,4 +1,4 @@
-// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd.
+// Copyright (C) 2019 - 2026 Uniontech Software Technology Co.,Ltd.
 // SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
@@ -85,6 +85,8 @@ void DFQuickInstallWindow::initUI()
 
     // Style combox
     m_fontType = new DComboBox(this);
+    m_fontType->setObjectName("FontType");
+    m_fontType->setAccessibleName("FontType");
     m_fontType->setFixedSize(QSize(114, 36));
 
     // Text Preview
@@ -122,6 +124,8 @@ void DFQuickInstallWindow::initUI()
 #endif
 
     m_actionBtn = new DPushButton(this);
+    m_actionBtn->setObjectName("ActionBtn");
+    m_actionBtn->setAccessibleName("ActionBtn");
     m_actionBtn->setFixedSize(QSize(120, 40));
     m_actionBtn->setFocusPolicy(Qt::FocusPolicy::NoFocus);
     // m_actionBtn->setFont(actionFont);
