@@ -1,3 +1,11 @@
+deepin-font-manager (6.5.43) unstable; urgency=medium
+
+  * chore: Update version to 6.5.43
+  * chore: add call-update-changelog workflow
+  * chore: update Portuguese translation
+
+ -- Tian ShiLin <tianshilin@uniontech.com>  Fri, 28 Aug 2026 09:59:59 +0800
+
 deepin-font-manager (6.5.42) unstable; urgency=medium
 
   * chore: Update version to 6.5.42
