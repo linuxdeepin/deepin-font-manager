@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="pl">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="pl">
 <context>
     <name>Category</name>
     <message>
@@ -53,7 +51,7 @@
     <message>
         <location filename="../deepin-font-manager/views/dfdeletedialog.cpp" line="550"/>
         <source>%1 is a font family, if you proceed, all fonts in it will be deleted</source>
-        <translation>%1 jest rodziną czcionek, jeśli zamierzasz kontynuować, wszystkie czcionki w niej zostaną usunięte</translation>
+        <translation>%1 jest rodziną czcionek. Jeśli ją usuniesz, wszystkie czcionki w niej zostaną usunięte.</translation>
     </message>
     <message>
         <location filename="../deepin-font-manager/views/dfdeletedialog.cpp" line="544"/>
@@ -172,7 +170,7 @@
     <message>
         <location filename="../deepin-font-manager/views/dfontmgrmainwindow.cpp" line="1654"/>
         <source>%1 font installed</source>
-        <translation>Zainstalowano czcionkę %1</translation>
+        <translation>Zainstalowano %1 czcionkę</translation>
     </message>
     <message>
         <location filename="../deepin-font-manager/views/dfontmgrmainwindow.cpp" line="1656"/>
