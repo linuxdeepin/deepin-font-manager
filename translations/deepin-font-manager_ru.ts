@@ -43,7 +43,7 @@
         <location filename="../deepin-font-manager/views/dfdeletedialog.cpp" line="139"/>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation>Отменить</translation>
+        <translation>Отмена</translation>
     </message>
 </context>
 <context>
@@ -95,7 +95,7 @@
     <message>
         <location filename="../deepin-font-manager/views/dfdeletedialog.cpp" line="480"/>
         <source>Cancel</source>
-        <translation>Отменить</translation>
+        <translation>Отмена</translation>
     </message>
 </context>
 <context>
@@ -104,7 +104,7 @@
         <location filename="../deepin-font-manager/views/dfinstallerrordialog.cpp" line="103"/>
         <location filename="../deepin-font-manager/views/dfinstallerrordialog.cpp" line="412"/>
         <source>Broken file</source>
-        <translation>Поврежденный файл</translation>
+        <translation>Повреждённый файл</translation>
     </message>
     <message>
         <location filename="../deepin-font-manager/views/dfinstallerrordialog.cpp" line="114"/>
@@ -361,7 +361,7 @@
         <location filename="../deepin-font-manager/main.cpp" line="62"/>
         <location filename="../deepin-font-manager/views/dfontmgrmainwindow.cpp" line="2293"/>
         <source>Font Manager</source>
-        <translation>Менеджер Шрифтов</translation>
+        <translation>Менеджер шрифтов</translation>
     </message>
     <message>
         <location filename="../deepin-font-manager/main.cpp" line="61"/>
@@ -479,7 +479,7 @@
     <message>
         <location filename="../deepin-font-manager/views/dfinstallnormalwindow.cpp" line="130"/>
         <source>Install Font</source>
-        <translation>Установить Шрифт</translation>
+        <translation>Установить шрифт</translation>
     </message>
     <message>
         <location filename="../deepin-font-manager/views/dfinstallnormalwindow.cpp" line="143"/>
@@ -499,7 +499,7 @@
     <message>
         <location filename="../deepin-font-manager/views/dfquickinstallwindow.cpp" line="206"/>
         <source>Broken file</source>
-        <translation>Поврежденный файл</translation>
+        <translation>Повреждённый файл</translation>
     </message>
     <message>
         <location filename="../deepin-font-manager/views/dfquickinstallwindow.cpp" line="227"/>
@@ -509,12 +509,12 @@
     <message>
         <location filename="../deepin-font-manager/views/dfquickinstallwindow.cpp" line="232"/>
         <source>Not Installed</source>
-        <translation>Не Установлен</translation>
+        <translation>Не установлен</translation>
     </message>
     <message>
         <location filename="../deepin-font-manager/views/dfquickinstallwindow.cpp" line="127"/>
         <source>Install Font</source>
-        <translation>Установить Шрифт</translation>
+        <translation>Установить шрифт</translation>
     </message>
 </context>
 <context>
