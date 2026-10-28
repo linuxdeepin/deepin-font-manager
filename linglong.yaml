@@ -19,12 +19,6 @@ command:
   - deepin-font-manager
 
 build: |
-  # 下载和安装依赖
-  apt -y install --download-only libdtk6widget-dev libdtk6gui-dev qt6-base-dev qt6-tools-dev qt6-tools-dev-tools qt6-svg-dev libfontconfig1-dev libfreetype6-dev dde-file-manager-dev deepin-gettext-tools libgtest-dev
-  bash ./install_dep /var/cache/apt/archives "$PREFIX"
-
-  sed -i "s|/usr|$(echo ${PREFIX})|g" ${PREFIX}/lib/${TRIPLET}/cmake/dfm6-base/*.cmake
-
   # add path for searching OpenGL
   export PATH=$PATH:/runtime/include:/runtime/lib/${TRIPLET}
 
@@ -41,18 +35,11 @@ build: |
         -DVERSION=${VERSION}
 
   cmake --build build -j`nproc`
-  cmake --build build --target install > install.log 2>&1
-
-  # 项目生成应用名和动态隐式加载的依赖库，ldd无法找到的其他库
-  LDD_FILES=(
-    deepin-font-manager
-  )
-
-  # 生成.install 文件
-  bash ./deploy_dep "${LDD_FILES[@]}"
+  cmake --build build --target install
 
 # allow apt download in build and do apt update
 buildext:
   apt:
     build_depends:
-      - libc6
+      - cmake
+      - dde-file-manager-dev
