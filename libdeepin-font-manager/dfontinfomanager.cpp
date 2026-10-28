@@ -1,5 +1,5 @@
 // Copyright (C) 2017 ~ 2018 Deepin Technology Co., Ltd.
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2022-2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -84,7 +84,14 @@ QString convertToUtf8(unsigned char *content, unsigned int len)
     return convertedStr;
 }
 
-QString getDefaultPreviewText(FT_Face face, qint8 &lang, int len = FTM_DEFAULT_PREVIEW_LENGTH);
+
+static const QStringList s_chineseFontKeywords = {
+    QStringLiteral("宋体"), QStringLiteral("黑体"), QStringLiteral("楷体"),
+    QStringLiteral("仿宋"), QStringLiteral("圆体"), QStringLiteral("幼圆"),
+    QStringLiteral("隶书"), QStringLiteral("行楷")
+};
+
+QString getDefaultPreviewText(FT_Face face, qint8 &lang, int len = FTM_DEFAULT_PREVIEW_LENGTH, bool isChineseFont = false);
 
 /*************************************************************************
  <Function>      getDefaultPreviewText
@@ -97,7 +104,7 @@ QString getDefaultPreviewText(FT_Face face, qint8 &lang, int len = FTM_DEFAULT_P
  <Return>        QString         Description:预览显示内容
  <Note>          null
 *************************************************************************/
-QString getDefaultPreviewText(FT_Face face, qint8 &lang, int len)
+QString getDefaultPreviewText(FT_Face face, qint8 &lang, int len, bool isChineseFont)
 {
     // qDebug() << "Entering function: getDefaultPreviewText";
     QString previewTxt;
@@ -111,6 +118,11 @@ QString getDefaultPreviewText(FT_Face face, qint8 &lang, int len)
     //first check chinese preview
     if (DFontPreview::checkFontContainText(face, FTM_DEFAULT_PREVIEW_CN_TEXT)) {
         // qDebug() << "Font contains Chinese preview text";
+        lang = FONT_LANG_CHINESE;
+        if (language.startsWith("zh_")) {
+            return previewTxt;
+        }
+    } else if (isChineseFont) {
         lang = FONT_LANG_CHINESE;
         if (language.startsWith("zh_")) {
             return previewTxt;
@@ -345,6 +357,23 @@ QStringList DFontInfoManager::getAllChineseFontPath() const
         QString filePath = line.split(QChar(':')).first().simplified();
         if (filePath.length() > 0) {
             pathList << filePath;
+        }
+    }
+
+    // Supplement with family-name based queries for fonts whose non-standard
+    // cmap table causes fc-list :lang=zh to miss them
+    for (const QString &keyword : s_chineseFontKeywords) {
+        QString pattern = QStringLiteral(":family=*") + keyword + QStringLiteral("*");
+        QProcess fcList;
+        fcList.start("fc-list", QStringList() << pattern);
+        fcList.waitForFinished(-1);
+        QString famOutput = fcList.readAllStandardOutput();
+        QStringList famLines = famOutput.split(QChar('\n'));
+        for (QString &line : famLines) {
+            QString filePath = line.split(QChar(':')).first().simplified();
+            if (filePath.length() > 0 && !pathList.contains(filePath)) {
+                pathList << filePath;
+            }
         }
     }
 
@@ -660,10 +689,12 @@ DFontInfo DFontInfoManager:: getFontInfo(const QString &filePath, bool withPrevi
     //default preview text
     if (withPreviewTxt) {
         qDebug() << "With preview text";
+        static const QStringList s_chineseFontPaths = getAllChineseFontPath();
+        bool isChineseFont = s_chineseFontPaths.contains(fontInfo.filePath);
         if (fontInfo.familyName == "Noto Sans Grantha") {
-            fontInfo.defaultPreview = getDefaultPreviewText(face, fontInfo.previewLang, INT_MAX);
+            fontInfo.defaultPreview = getDefaultPreviewText(face, fontInfo.previewLang, INT_MAX, isChineseFont);
         } else {
-            fontInfo.defaultPreview = getDefaultPreviewText(face, fontInfo.previewLang);
+            fontInfo.defaultPreview = getDefaultPreviewText(face, fontInfo.previewLang, FTM_DEFAULT_PREVIEW_LENGTH, isChineseFont);
         }
     }
 
@@ -727,7 +758,9 @@ QString DFontInfoManager::getDefaultPreview(const QString &filePath, qint8 &prei
         return defaultPreview;
     }
 
-    defaultPreview = getDefaultPreviewText(m_face, preivewLang);
+    static const QStringList s_chineseFontPaths = getAllChineseFontPath();
+    bool isChineseFont = s_chineseFontPaths.contains(filePath);
+    defaultPreview = getDefaultPreviewText(m_face, preivewLang, FTM_DEFAULT_PREVIEW_LENGTH, isChineseFont);
     FT_Done_Face(m_face);
     FT_Done_FreeType(m_library);
     qDebug() << "Exiting function: DFontInfoManager::getDefaultPreview";
