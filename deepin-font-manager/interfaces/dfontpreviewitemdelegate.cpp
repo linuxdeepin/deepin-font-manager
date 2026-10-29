@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2022-2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -711,18 +711,57 @@ QSize DFontPreviewItemDelegate::sizeHint(const QStyleOptionViewItem &option, con
     // qDebug() << "Entering function: DFontPreviewItemDelegate::sizeHint";
     FontData data = index.data(Qt::DisplayRole).value<FontData>();
     int fontSize = (false == index.data(FontSizeRole).isNull()) ? index.data(FontSizeRole).toInt() : FTM_DEFAULT_PREVIEW_FONTSIZE;
+    fontSize = (fontSize <= 0) ? FTM_DEFAULT_PREVIEW_FONTSIZE : fontSize;
 
     int itemHeight = FTM_PREVIEW_ITEM_HEIGHT;
+    int topMargin = FONT_PREVIEW_TOP_MARGIN;
+    int bottomMargin = FONT_PREVIEW_BOTTOM_MARGIN;
 #ifdef DTKWIDGET_CLASS_DSizeMode
     if (DGuiApplicationHelper::instance()->sizeMode() == DGuiApplicationHelper::SizeMode::CompactMode) {
         // qDebug() << "Using compact mode for item height";
         itemHeight = FTM_PREVIEW_ITEM_COMPACT_HEIGHT;
+        topMargin = FONT_PREVIEW_TOP_COMPACT_MARGIN;
+        bottomMargin = FONT_PREVIEW_BOTTOM_COMPACT_MARGIN;
     }
 #endif
 
     if (fontSize > 30) {
         // qDebug() << "Font size is larger than 30, adjusting item height";
         itemHeight += static_cast<int>(((fontSize - 30) + 1) * 1.5);
+    }
+
+    FontDelegateData dData = index.data(FontFamilyStylePreviewRole).value<FontDelegateData>();
+    if (!dData.familyName.isEmpty()) {
+        QFont previewFont;
+        QFontDatabase fontDatabase;
+        if (fontDatabase.families().contains(dData.familyName)) {
+            QStringList styles = fontDatabase.styles(dData.familyName);
+            QString actualStyle = dData.styleName;
+            if (!dData.styleName.isEmpty()) {
+                for (const QString &style : styles) {
+                    if (style.compare(dData.styleName, Qt::CaseInsensitive) == 0) {
+                        actualStyle = style;
+                        break;
+                    }
+                }
+            }
+            if (styles.isEmpty()) {
+                previewFont.setFamily(dData.familyName);
+            } else {
+                previewFont = fontDatabase.font(dData.familyName,
+                    actualStyle.isEmpty() ? styles.first() : actualStyle, 12);
+            }
+        } else {
+            previewFont.setFamily(dData.familyName);
+            previewFont.setStyleName(dData.styleName);
+        }
+        previewFont.setPixelSize(fontSize);
+
+        QFontMetrics fontMetric(previewFont);
+        int requiredHeight = fontMetric.height() + topMargin + bottomMargin;
+        if (requiredHeight > itemHeight) {
+            itemHeight = requiredHeight;
+        }
     }
 
     // qDebug() << "Exiting function: DFontPreviewItemDelegate::sizeHint";
