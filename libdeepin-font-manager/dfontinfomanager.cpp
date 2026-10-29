@@ -3,6 +3,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#include "ddlog.h"
 #include "dfontinfomanager.h"
 #include "dfmdbmanager.h"
 #include "dfontpreview.h"
@@ -149,7 +150,7 @@ DFontInfoManager::DFontInfoManager(QObject *parent)
     : QObject(parent)
     , m_strSysLanguage(QLocale::system().name())
 {
-    qDebug() << "Entering function: DFontInfoManager::DFontInfoManager";
+    qCDebug(fmLog) << "Entering function: DFontInfoManager::DFontInfoManager";
     //Should not be called in constructor
     //refreshList();
 
@@ -186,7 +187,7 @@ DFontInfoManager::DFontInfoManager(QObject *parent)
         m_langpriority2 = TT_MS_LANGID_ENGLISH_UNITED_STATES;
         m_langpriority1 = TT_MS_LANGID_ENGLISH_UNITED_STATES;
     }
-    qDebug() << "Exiting function: DFontInfoManager::DFontInfoManager";
+    qCDebug(fmLog) << "Exiting function: DFontInfoManager::DFontInfoManager";
 }
 
 DFontInfoManager::~DFontInfoManager() {}
@@ -202,9 +203,9 @@ DFontInfoManager::~DFontInfoManager() {}
 *************************************************************************/
 void DFontInfoManager::refreshList(const QStringList &allFontPathList)
 {
-    qDebug() << "Refreshing font list with" << allFontPathList.size() << "fonts";
+    qCDebug(fmLog) << "Refreshing font list with" << allFontPathList.size() << "fonts";
     if (!dataList.isEmpty()) {
-        qDebug() << "Clearing existing font data list";
+        qCDebug(fmLog) << "Clearing existing font data list";
         dataList.clear();
     }
 
@@ -215,7 +216,7 @@ void DFontInfoManager::refreshList(const QStringList &allFontPathList)
     }
 
     updateSP3FamilyName(dataList);
-    qDebug() << "Exiting function: DFontInfoManager::refreshList";
+    qCDebug(fmLog) << "Exiting function: DFontInfoManager::refreshList";
 }
 
 /*************************************************************************
@@ -229,7 +230,7 @@ void DFontInfoManager::refreshList(const QStringList &allFontPathList)
 *************************************************************************/
 QStringList DFontInfoManager::getAllFontPath(bool isStartup) const
 {
-    qDebug() << "Getting all font paths, isStartup:" << isStartup;
+    qCDebug(fmLog) << "Getting all font paths, isStartup:" << isStartup;
 #if 0
     QStringList pathList = getFonts(DFontInfoManager::All);
 #endif
@@ -238,7 +239,7 @@ QStringList DFontInfoManager::getAllFontPath(bool isStartup) const
     pathList = getAllFclistPathList();
 
     if (isStartup) {
-        qDebug() << "Getting system font files";
+        qCDebug(fmLog) << "Getting system font files";
         //系统字体文件
         QStringList systemfilelist = getFileNames(FONT_SYSTEM_DIR);
         for (const QString &str : systemfilelist) {
@@ -256,13 +257,13 @@ QStringList DFontInfoManager::getAllFontPath(bool isStartup) const
         }
     }
 
-    qDebug() << "Exiting function: DFontInfoManager::getAllFontPath";
+    qCDebug(fmLog) << "Exiting function: DFontInfoManager::getAllFontPath";
     return pathList;
 }
 
 QStringList DFontInfoManager::getAllFclistPathList() const
 {
-    qDebug() << "Entering function: DFontInfoManager::getAllFclistPathList";
+    qCDebug(fmLog) << "Entering function: DFontInfoManager::getAllFclistPathList";
     QProcess process;
     QStringList pathList;
 
@@ -279,7 +280,7 @@ QStringList DFontInfoManager::getAllFclistPathList() const
             pathList << filePath;
         }
     }
-    qDebug() << "Exiting function: DFontInfoManager::getAllFclistPathList";
+    qCDebug(fmLog) << "Exiting function: DFontInfoManager::getAllFclistPathList";
     return pathList;
 }
 
@@ -296,12 +297,12 @@ QStringList DFontInfoManager::getAllFclistPathList() const
 *************************************************************************/
 QStringList DFontInfoManager::getFileNames(const QString &path)const
 {
-    qDebug() << "Getting font files from path:" << path;
+    qCDebug(fmLog) << "Getting font files from path:" << path;
     QStringList string_list;
     //判断路径是否存在
     QDir dir(path);
     if (!dir.exists()) {
-        qWarning() << "Directory does not exist:" << path;
+        qCWarning(fmLog) << "Directory does not exist:" << path;
         return string_list;
     }
 
@@ -317,7 +318,7 @@ QStringList DFontInfoManager::getFileNames(const QString &path)const
         QString absolute_file_path = file_info.absoluteFilePath();
         string_list.append(absolute_file_path);
     }
-    qDebug() << "Exiting function: DFontInfoManager::getFileNames";
+    qCDebug(fmLog) << "Exiting function: DFontInfoManager::getFileNames";
     return string_list;
 }
 
@@ -332,7 +333,7 @@ QStringList DFontInfoManager::getFileNames(const QString &path)const
 *************************************************************************/
 QStringList DFontInfoManager::getAllChineseFontPath() const
 {
-    qDebug() << "Entering function: DFontInfoManager::getAllChineseFontPath";
+    qCDebug(fmLog) << "Entering function: DFontInfoManager::getAllChineseFontPath";
     QStringList pathList;
     QProcess process;
     process.start("fc-list", QStringList() << ":lang=zh");
@@ -348,7 +349,7 @@ QStringList DFontInfoManager::getAllChineseFontPath() const
         }
     }
 
-    qDebug() << "Exiting function: DFontInfoManager::getAllChineseFontPath";
+    qCDebug(fmLog) << "Exiting function: DFontInfoManager::getAllChineseFontPath";
     return pathList;
 #if 0
     return getFonts(Chinese);
@@ -366,7 +367,7 @@ QStringList DFontInfoManager::getAllChineseFontPath() const
 *************************************************************************/
 QStringList DFontInfoManager::getAllMonoSpaceFontPath() const
 {
-    qDebug() << "Entering function: DFontInfoManager::getAllMonoSpaceFontPath";
+    qCDebug(fmLog) << "Entering function: DFontInfoManager::getAllMonoSpaceFontPath";
     QStringList pathList;
     QProcess process;
     process.start("fc-list", QStringList() << ":spacing=mono");
@@ -384,7 +385,7 @@ QStringList DFontInfoManager::getAllMonoSpaceFontPath() const
 #if 0
     QStringList pathList = getFonts(MonoSpace);
 #endif
-    qDebug() << "Exiting function: DFontInfoManager::getAllMonoSpaceFontPath";
+    qCDebug(fmLog) << "Exiting function: DFontInfoManager::getAllMonoSpaceFontPath";
     return pathList;
 }
 
@@ -399,7 +400,7 @@ QStringList DFontInfoManager::getAllMonoSpaceFontPath() const
 *************************************************************************/
 QString DFontInfoManager::getFontType(const QString &filePath)
 {
-    qDebug() << "Getting font type for:" << filePath;
+    qCDebug(fmLog) << "Getting font type for:" << filePath;
     const QFileInfo fileInfo(filePath);
     const QString suffix = fileInfo.suffix().toLower();
 
@@ -408,10 +409,10 @@ QString DFontInfoManager::getFontType(const QString &filePath)
     } else if (suffix == "otf") {
         return FONT_OTF;
     } else {
-        qWarning() << "Unknown font type for:" << filePath;
+        qCWarning(fmLog) << "Unknown font type for:" << filePath;
         return FONT_UNKNOWN;
     }
-    qDebug() << "Exiting function: DFontInfoManager::getFontType";
+    qCDebug(fmLog) << "Exiting function: DFontInfoManager::getFontType";
 }
 
 struct NameIdFlag {
@@ -433,7 +434,7 @@ struct NameIdFlag {
 *************************************************************************/
 void DFontInfoManager::setFontInfo(DFontInfo& fontInfo)
 {
-    qDebug() << "Entering function: DFontInfoManager::setFontInfo";
+    qCDebug(fmLog) << "Entering function: DFontInfoManager::setFontInfo";
     /*****************************************
     字体显示名称规则
     规则说明：
@@ -453,7 +454,7 @@ void DFontInfoManager::setFontInfo(DFontInfo& fontInfo)
     ****************************************/
     QString familyName;
     if (fontInfo.sp3FamilyName.isEmpty() || fontInfo.sp3FamilyName.contains(QChar('?'))) {
-        qDebug() << "Adding application font";
+        qCDebug(fmLog) << "Adding application font";
         int appFontId = QFontDatabase::addApplicationFont(fontInfo.filePath);
 
         QStringList fontFamilyList = QFontDatabase::applicationFontFamilies(appFontId);
@@ -463,46 +464,46 @@ void DFontInfoManager::setFontInfo(DFontInfo& fontInfo)
             familyName = family;
         }
         if (familyName.isEmpty()) {
-            qDebug() << "Family name is empty";
+            qCDebug(fmLog) << "Family name is empty";
             if (!fontInfo.fullname.isEmpty() && !fontInfo.fullname.contains(QChar('?'))) {
-                qDebug() << "Full name is not empty";
+                qCDebug(fmLog) << "Full name is not empty";
                 familyName = fontInfo.fullname;
             } else if (!fontInfo.psname.isEmpty() && !fontInfo.psname.contains(QChar('?'))) {
-                qDebug() << "PS name is not empty";
+                qCDebug(fmLog) << "PS name is not empty";
                 familyName = fontInfo.fullname;
             } else {
-                qDebug() << "Full name and PS name are empty";
+                qCDebug(fmLog) << "Full name and PS name are empty";
                 familyName = QLatin1String("UntitledFont");
             }
         }
         fontInfo.sp3FamilyName = familyName;
     } else {
-        qDebug() << "Family name is not empty";
+        qCDebug(fmLog) << "Family name is not empty";
         familyName = fontInfo.sp3FamilyName;
     }
 
     if (!fontInfo.styleName.isEmpty() && !familyName.endsWith(fontInfo.styleName) && familyName != QLatin1String("UntitledFont")) {
-        qDebug() << "Style name is not empty";
+        qCDebug(fmLog) << "Style name is not empty";
         fontInfo.familyName = familyName;//从Sfnt接口获取的familyname读取宋体文件时解析为韩语或者?，替换为字体显示名称
     } else {
-        qDebug() << "Style name is empty";
+        qCDebug(fmLog) << "Style name is empty";
         //从Sfnt接口获取的familyname读取宋体文件时解析为韩语或者?，替换为字体显示名称
         // 例如Consolas-Regular(或Consolas Regular)获取到Consolas
         if(fontInfo.styleName.isEmpty()){
-            qDebug() << "Style name is empty";
+            qCDebug(fmLog) << "Style name is empty";
             fontInfo.familyName = familyName;
         }
         else {
 #if QT_VERSION_MAJOR > 5
-            qDebug() << "Style name is not empty";
+            qCDebug(fmLog) << "Style name is not empty";
             fontInfo.familyName = familyName.replace(QRegularExpression(QString("[ -]" + fontInfo.styleName + "$")), "");
 #else
-            qDebug() << "Style name is not empty";
+            qCDebug(fmLog) << "Style name is not empty";
             fontInfo.familyName = familyName.replace(QRegExp(QString("[ -]" + fontInfo.styleName + "$")), "");
 #endif
         }
     }
-    qDebug() << "Exiting function: DFontInfoManager::setFontInfo";
+    qCDebug(fmLog) << "Exiting function: DFontInfoManager::setFontInfo";
     return;
 }
 
@@ -517,7 +518,7 @@ void DFontInfoManager::setFontInfo(DFontInfo& fontInfo)
 *************************************************************************/
 DFontInfo DFontInfoManager:: getFontInfo(const QString &filePath, bool withPreviewTxt)
 {
-    qDebug() << "Getting font info for:" << filePath << "withPreviewTxt:" << withPreviewTxt;
+    qCDebug(fmLog) << "Getting font info for:" << filePath << "withPreviewTxt:" << withPreviewTxt;
     DFontInfo fontInfo;
     fontInfo.isSystemFont = isSystemFont(filePath);
 
@@ -528,7 +529,7 @@ DFontInfo DFontInfoManager:: getFontInfo(const QString &filePath, bool withPrevi
     FT_Error error = FT_New_Face(library, filePath.toUtf8().constData(), 0, &face);
 
     if (error != 0) {
-        qWarning() << "Failed to load font file:" << filePath << "error:" << error;
+        qCWarning(fmLog) << "Failed to load font file:" << filePath << "error:" << error;
         fontInfo.isError = true;
         FT_Done_Face(face);
         FT_Done_FreeType(library);
@@ -637,7 +638,7 @@ DFontInfo DFontInfoManager:: getFontInfo(const QString &filePath, bool withPrevi
     }
     //compitable with SP2 update1 and previous versions
     if (!fontInfo.fullname.isEmpty()) {
-        qDebug() << "Full name is not empty";
+        qCDebug(fmLog) << "Full name is not empty";
         // 例如Consolas-Regular(或Consolas Regular)获取到Consolas
 #if QT_VERSION_MAJOR > 5
         fontInfo.familyName = fontInfo.fullname.replace(QRegularExpression(QString("[ -]" + fontInfo.styleName + "$")), "");
@@ -647,19 +648,19 @@ DFontInfo DFontInfoManager:: getFontInfo(const QString &filePath, bool withPrevi
     }
 
     if (fontInfo.familyName.trimmed().length() < 1) {
-        qDebug() << "Family name is empty";
+        qCDebug(fmLog) << "Family name is empty";
         fontInfo.familyName = QString::fromLatin1(face->family_name).trimmed();
     }
 
     // 防止部分sp3FamilyName乱码
     if (flagsetsp3FN) {
-        qDebug() << "Flag set SP3 family name";
+        qCDebug(fmLog) << "Flag set SP3 family name";
         fontInfo.sp3FamilyName = fontInfo.familyName;
     }
 
     //default preview text
     if (withPreviewTxt) {
-        qDebug() << "With preview text";
+        qCDebug(fmLog) << "With preview text";
         if (fontInfo.familyName == "Noto Sans Grantha") {
             fontInfo.defaultPreview = getDefaultPreviewText(face, fontInfo.previewLang, INT_MAX);
         } else {
@@ -678,23 +679,23 @@ DFontInfo DFontInfoManager:: getFontInfo(const QString &filePath, bool withPrevi
 
     DFMDBManager *dbManager = DFMDBManager::instance();
     if (dbManager->getRecordCount() > 0) {
-        qDebug() << "Database record count is greater than 0";
+        qCDebug(fmLog) << "Database record count is greater than 0";
         fontInfo.sysVersion = fontInfo.version;
         if (dbManager->isFontInfoExist(fontInfo).isEmpty()) {
-            qDebug() << "Font info does not exist";
+            qCDebug(fmLog) << "Font info does not exist";
             fontInfo.isInstalled = false;
         } else {
-            qDebug() << "Font info exists";
+            qCDebug(fmLog) << "Font info exists";
             fontInfo.isInstalled = true;
         }
     } /*else {
         fontInfo.isInstalled = isFontInstalled(fontInfo);
     }*/
     if(!fontInfo.isInstalled){
-        qDebug() << "Font info does not exist in database";
+        qCDebug(fmLog) << "Font info does not exist in database";
         fontInfo.isInstalled = isFontInInstalledDirs(fontInfo.filePath);
     }
-    qDebug() << "Exiting function: DFontInfoManager::getFontInfo";
+    qCDebug(fmLog) << "Exiting function: DFontInfoManager::getFontInfo";
     return fontInfo;
 }
 
@@ -710,7 +711,7 @@ DFontInfo DFontInfoManager:: getFontInfo(const QString &filePath, bool withPrevi
 *************************************************************************/
 QString DFontInfoManager::getDefaultPreview(const QString &filePath, qint8 &preivewLang)
 {
-    qDebug() << "Entering function: DFontInfoManager::getDefaultPreview";
+    qCDebug(fmLog) << "Entering function: DFontInfoManager::getDefaultPreview";
     FT_Library m_library = nullptr;
     FT_Face m_face = nullptr;
     QString defaultPreview;
@@ -719,7 +720,7 @@ QString DFontInfoManager::getDefaultPreview(const QString &filePath, qint8 &prei
     FT_Error error = FT_New_Face(m_library, filePath.toUtf8().constData(), 0, &m_face);
 
     if (error != 0) {
-        qDebug() << __FUNCTION__ << " error " << error << filePath;
+        qCDebug(fmLog) << __FUNCTION__ << " error " << error << filePath;
         FT_Done_Face(m_face);
         m_face = nullptr;
         FT_Done_FreeType(m_library);
@@ -730,7 +731,7 @@ QString DFontInfoManager::getDefaultPreview(const QString &filePath, qint8 &prei
     defaultPreview = getDefaultPreviewText(m_face, preivewLang);
     FT_Done_Face(m_face);
     FT_Done_FreeType(m_library);
-    qDebug() << "Exiting function: DFontInfoManager::getDefaultPreview";
+    qCDebug(fmLog) << "Exiting function: DFontInfoManager::getDefaultPreview";
     return defaultPreview;
 }
 
@@ -745,7 +746,7 @@ QString DFontInfoManager::getDefaultPreview(const QString &filePath, qint8 &prei
 *************************************************************************/
 QStringList DFontInfoManager::getCurrentFontFamily()
 {
-    qDebug() << "Entering function: DFontInfoManager::getCurrentFontFamily";
+    qCDebug(fmLog) << "Entering function: DFontInfoManager::getCurrentFontFamily";
     QStringList retStrList;
     QProcess process;
 
@@ -808,7 +809,7 @@ QStringList DFontInfoManager::getCurrentFontFamily()
             }
             FcStrFree(s);
         }
-        qDebug() << __FUNCTION__ << retStrList;
+        qCDebug(fmLog) << __FUNCTION__ << retStrList;
         FcPatternDestroy(font);
         if (!retStrList.isEmpty())
             break;
@@ -816,7 +817,7 @@ QStringList DFontInfoManager::getCurrentFontFamily()
     FcFontSetDestroy(fs);
     FcFini();
 #endif
-    qDebug() << "Exiting function: DFontInfoManager::getCurrentFontFamily";
+    qCDebug(fmLog) << "Exiting function: DFontInfoManager::getCurrentFontFamily";
     return retStrList;
 }
 
@@ -831,7 +832,7 @@ QStringList DFontInfoManager::getCurrentFontFamily()
 *************************************************************************/
 QString DFontInfoManager::getFontPath()
 {
-    qDebug() << "Entering function: DFontInfoManager::getFontPath";
+    qCDebug(fmLog) << "Entering function: DFontInfoManager::getFontPath";
     QString filePath;
     QStringList retStrList;
     QProcess process;
@@ -862,7 +863,7 @@ QString DFontInfoManager::getFontPath()
             }
         }
     }
-    qDebug() << "Exiting function: DFontInfoManager::getFontPath";
+    qCDebug(fmLog) << "Exiting function: DFontInfoManager::getFontPath";
     return filePath;
 }
 
@@ -877,7 +878,7 @@ QString DFontInfoManager::getFontPath()
 *************************************************************************/
 QStringList DFontInfoManager::getFontFamilyStyle(const QString &filePah)
 {
-    qDebug() << "Entering function: DFontInfoManager::getFontFamilyStyle";
+    qCDebug(fmLog) << "Entering function: DFontInfoManager::getFontFamilyStyle";
     QStringList fontFamilyList;
     const FcChar8 *format = reinterpret_cast<const FcChar8 *>("%{=fclist}");
     FcObjectSet *os = FcObjectSetBuild(FC_FAMILY, FC_STYLE, FC_FILE, nullptr);
@@ -890,7 +891,7 @@ QStringList DFontInfoManager::getFontFamilyStyle(const QString &filePah)
     if (pat)
         FcPatternDestroy(pat);
     if (fs) {
-        qDebug() << "Font set is not empty";
+        qCDebug(fmLog) << "Font set is not empty";
         for (int j = 0; j < fs->nfont; j++) {
             FcChar8 *s = FcPatternFormat(fs->fonts[j], format);
             if (s == nullptr)
@@ -906,7 +907,7 @@ QStringList DFontInfoManager::getFontFamilyStyle(const QString &filePah)
             }
             QString fontpath = const_cast<const QString &>(retStrList.at(0));
             if (fontpath.simplified() == filePah) {
-                qDebug() << __FUNCTION__ << " found " << filePah;
+                qCDebug(fmLog) << __FUNCTION__ << " found " << filePah;
                 QString families = const_cast<const QString &>(retStrList.at(1)).simplified();
                 fontFamilyList = families.split(",");
                 for (QString &fontStr : fontFamilyList) {
@@ -924,7 +925,7 @@ QStringList DFontInfoManager::getFontFamilyStyle(const QString &filePah)
 
 //    FcFini();
 
-    qDebug() << "Exiting function: DFontInfoManager::getFontFamilyStyle";
+    qCDebug(fmLog) << "Exiting function: DFontInfoManager::getFontFamilyStyle";
     return fontFamilyList;
 }
 
@@ -939,7 +940,7 @@ QStringList DFontInfoManager::getFontFamilyStyle(const QString &filePah)
 *************************************************************************/
 QStringList DFontInfoManager::getFonts(DFontInfoManager::FontTYpe type) const
 {
-    qDebug() << "Entering function: DFontInfoManager::getFonts";
+    qCDebug(fmLog) << "Entering function: DFontInfoManager::getFonts";
     QStringList fontList;
     const FcChar8 *format = reinterpret_cast<const FcChar8 *>("%{=fclist}");
     FcPattern *pat = nullptr;
@@ -958,7 +959,7 @@ QStringList DFontInfoManager::getFonts(DFontInfoManager::FontTYpe type) const
     if (opt != nullptr) {
         pat = FcNameParse(opt);
         if (pat == nullptr) {
-            qDebug() << __FUNCTION__ << " err " << type;
+            qCDebug(fmLog) << __FUNCTION__ << " err " << type;
             return fontList;
         }
     } else {
@@ -974,7 +975,7 @@ QStringList DFontInfoManager::getFonts(DFontInfoManager::FontTYpe type) const
         FcPatternDestroy(pat);
 
     if (fs) {
-        qDebug() << "Font set is not empty";
+        qCDebug(fmLog) << "Font set is not empty";
         for (int j = 0; j < fs->nfont; j++) {
             FcChar8 *s = FcPatternFormat(fs->fonts[j], format);
             if (s == nullptr)
@@ -991,7 +992,7 @@ QStringList DFontInfoManager::getFonts(DFontInfoManager::FontTYpe type) const
     }
 
 //    FcFini();
-    qDebug() << "Exiting function: DFontInfoManager::getFonts";
+    qCDebug(fmLog) << "Exiting function: DFontInfoManager::getFonts";
     return fontList;
 }
 
@@ -1006,7 +1007,7 @@ QStringList DFontInfoManager::getFonts(DFontInfoManager::FontTYpe type) const
 *************************************************************************/
 bool DFontInfoManager::isFontInstalled(DFontInfo &data)
 {
-    qDebug() << "Entering function: DFontInfoManager::isFontInstalled";
+    qCDebug(fmLog) << "Entering function: DFontInfoManager::isFontInstalled";
     for (DFontInfo &item : dataList) {
         if (data == item) {
             data.sysVersion = item.version;
@@ -1014,7 +1015,7 @@ bool DFontInfoManager::isFontInstalled(DFontInfo &data)
         }
     }
 
-    qDebug() << "Exiting function: DFontInfoManager::isFontInstalled";
+    qCDebug(fmLog) << "Exiting function: DFontInfoManager::isFontInstalled";
     return false;
 }
 
@@ -1029,21 +1030,21 @@ bool DFontInfoManager::isFontInstalled(DFontInfo &data)
 *************************************************************************/
 bool DFontInfoManager::isFontInInstalledDirs(const QString &filePath)
 {
-    qDebug() << "Entering function: DFontInfoManager::isFontInInstalledDirs";
+    qCDebug(fmLog) << "Entering function: DFontInfoManager::isFontInInstalledDirs";
     if (filePath.contains(QDir::homePath() + "/.local/share/fonts/")) {
-        qDebug() << "File path contains .local/share/fonts";
+        qCDebug(fmLog) << "File path contains .local/share/fonts";
         return true;
     }
     if (filePath.lastIndexOf("/") < 0){
-        qDebug() << "File path last index of / is less than 0";
+        qCDebug(fmLog) << "File path last index of / is less than 0";
         return false;
     }
     QFile file(QDir::homePath() + "/.local/share/fonts" + filePath.mid(filePath.lastIndexOf("/")));
     if (file.exists()) {
-        qDebug() << "File exists";
+        qCDebug(fmLog) << "File exists";
         return true;
     }
-    qDebug() << "Exiting function: DFontInfoManager::isFontInInstalledDirs";
+    qCDebug(fmLog) << "Exiting function: DFontInfoManager::isFontInInstalledDirs";
     return false;
 }
 
@@ -1058,7 +1059,7 @@ bool DFontInfoManager::isFontInInstalledDirs(const QString &filePath)
 *************************************************************************/
 void DFontInfoManager::getDefaultPreview(DFontInfo &data)
 {
-    qDebug() << "Entering function: DFontInfoManager::getDefaultPreview";
+    qCDebug(fmLog) << "Entering function: DFontInfoManager::getDefaultPreview";
 //    for (DFontInfo &item : dataList) {
 //        if (data == item) {
 //            data.defaultPreview = item.defaultPreview;
@@ -1068,7 +1069,7 @@ void DFontInfoManager::getDefaultPreview(DFontInfo &data)
 //    }
 
     data.defaultPreview = getDefaultPreview(data.filePath, data.previewLang);
-    qDebug() << "Exiting function: DFontInfoManager::getDefaultPreview";
+    qCDebug(fmLog) << "Exiting function: DFontInfoManager::getDefaultPreview";
 }
 
 /**
@@ -1079,12 +1080,12 @@ void DFontInfoManager::getDefaultPreview(DFontInfo &data)
 */
 void DFontInfoManager::updateSP3FamilyName(const QList<DFontInfo> &fontList, bool inFontList)
 {
-    qDebug() << "Entering function: DFontInfoManager::updateSP3FamilyName";
+    qCDebug(fmLog) << "Entering function: DFontInfoManager::updateSP3FamilyName";
     if (fontList.isEmpty())
         return;
     //compitable with sp2 update1 and previous versions
     DFMDBManager::instance()->updateSP3FamilyName(fontList,  inFontList);
-    qDebug() << "Exiting function: DFontInfoManager::updateSP3FamilyName";
+    qCDebug(fmLog) << "Exiting function: DFontInfoManager::updateSP3FamilyName";
 }
 
 /*************************************************************************
@@ -1098,68 +1099,68 @@ void DFontInfoManager::updateSP3FamilyName(const QList<DFontInfo> &fontList, boo
 *************************************************************************/
 void DFontInfoManager::checkStyleName(DFontInfo &f)
 {
-    qDebug() << "Entering function: DFontInfoManager::checkStyleName";
+    qCDebug(fmLog) << "Entering function: DFontInfoManager::checkStyleName";
     //有些字体文件因为不规范导致的stylename为空，通过psname来判断该字体的stylename。
     //之前代码顺序出现问题，导致有的时候contains判断出错 比如DemiBold与Bold，现在调整代码顺序
     if (f.styleName.contains("?") || f.styleName.isEmpty()) {
-        qDebug() << "Style name contains ? or is empty";
+        qCDebug(fmLog) << "Style name contains ? or is empty";
         if (f.psname != "") {
-            qDebug() << "PS name is not empty";
+            qCDebug(fmLog) << "PS name is not empty";
             if (f.psname.contains("Regular", Qt::CaseInsensitive)) {
                 f.styleName = "Regular";
             } else if (f.psname.contains("DemiBold", Qt::CaseInsensitive)) {
-                qDebug() << "PS name contains DemiBold";
+                qCDebug(fmLog) << "PS name contains DemiBold";
                 f.styleName = "DemiBold";
             } else if (f.psname.contains("ExtraBold", Qt::CaseInsensitive)) {
-                qDebug() << "PS name contains ExtraBold";
+                qCDebug(fmLog) << "PS name contains ExtraBold";
                 f.styleName = "ExtraBold";
             } else if (f.psname.contains("Bold", Qt::CaseInsensitive)) {
-                qDebug() << "PS name contains Bold";
+                qCDebug(fmLog) << "PS name contains Bold";
                 f.styleName = "Bold";
             } else if (f.psname.contains("ExtraLight", Qt::CaseInsensitive)) {
-                qDebug() << "PS name contains ExtraLight";
+                qCDebug(fmLog) << "PS name contains ExtraLight";
                 f.styleName = "ExtraLight";
             } else if (f.psname.contains("Light", Qt::CaseInsensitive)) {
-                qDebug() << "PS name contains Light";
+                qCDebug(fmLog) << "PS name contains Light";
                 f.styleName = "Light";
             } else if (f.psname.contains("Thin", Qt::CaseInsensitive)) {
-                qDebug() << "PS name contains Thin";
+                qCDebug(fmLog) << "PS name contains Thin";
                 f.styleName = "Thin";
             } else if (f.psname.contains("Medium", Qt::CaseInsensitive)) {
-                qDebug() << "PS name contains Medium";
+                qCDebug(fmLog) << "PS name contains Medium";
                 f.styleName = "Medium";
             } else if (f.psname.contains("AnyStretch", Qt::CaseInsensitive)) {
-                qDebug() << "PS name contains AnyStretch";
+                qCDebug(fmLog) << "PS name contains AnyStretch";
                 f.styleName = "AnyStretch";
             } else if (f.psname.contains("UltraCondensed", Qt::CaseInsensitive)) {
-                qDebug() << "PS name contains UltraCondensed";
+                qCDebug(fmLog) << "PS name contains UltraCondensed";
                 f.styleName = "UltraCondensed";
             } else if (f.psname.contains("ExtraCondensed", Qt::CaseInsensitive)) {
-                qDebug() << "PS name contains ExtraCondensed";
+                qCDebug(fmLog) << "PS name contains ExtraCondensed";
                 f.styleName = "ExtraCondensed";
             } else if (f.psname.contains("SemiCondensed", Qt::CaseInsensitive)) {
-                qDebug() << "PS name contains SemiCondensed";
+                qCDebug(fmLog) << "PS name contains SemiCondensed";
                 f.styleName = "SemiCondensed";
             } else if (f.psname.contains("Condensed", Qt::CaseInsensitive)) {
-                qDebug() << "PS name contains Condensed";
+                qCDebug(fmLog) << "PS name contains Condensed";
                 f.styleName = "Condensed";
             } else if (f.psname.contains("Unstretched", Qt::CaseInsensitive)) {
-                qDebug() << "PS name contains Unstretched";
+                qCDebug(fmLog) << "PS name contains Unstretched";
                 f.styleName = "Unstretched";
             } else if (f.psname.contains("SemiExpanded", Qt::CaseInsensitive)) {
-                qDebug() << "PS name contains SemiExpanded";
+                qCDebug(fmLog) << "PS name contains SemiExpanded";
                 f.styleName = "SemiExpanded";
             } else if (f.psname.contains("ExtraExpanded", Qt::CaseInsensitive)) {
-                qDebug() << "PS name contains ExtraExpanded";
+                qCDebug(fmLog) << "PS name contains ExtraExpanded";
                 f.styleName = "ExtraExpanded";
             } else if (f.psname.contains("UltraExpanded", Qt::CaseInsensitive)) {
-                qDebug() << "PS name contains UltraExpanded";
+                qCDebug(fmLog) << "PS name contains UltraExpanded";
                 f.styleName = "UltraExpanded";
             } else if (f.psname.contains("Expanded", Qt::CaseInsensitive)) {
-                qDebug() << "PS name contains Expanded";
+                qCDebug(fmLog) << "PS name contains Expanded";
                 f.styleName = "Expanded";
             } else {
-                qDebug() << "PS name contains Unknown";
+                qCDebug(fmLog) << "PS name contains Unknown";
                 f.styleName = "Unknown";
             }
         }
@@ -1168,5 +1169,5 @@ void DFontInfoManager::checkStyleName(DFontInfo &f)
 //            f.styleName = "Unknown";
 //        }
     }
-    qDebug() << "Exiting function: DFontInfoManager::checkStyleName";
+    qCDebug(fmLog) << "Exiting function: DFontInfoManager::checkStyleName";
 }

@@ -3,6 +3,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#include "ddlog.h"
 #include "views/dfontmgrmainwindow.h"
 #include "dfinstallnormalwindow.h"
 #include "globaldef.h"
@@ -78,7 +79,7 @@ DFontMgrMainWindow::DFontMgrMainWindow(bool isQuickMode, QWidget *parent)
     , m_quickInstallWnd(nullptr)
     , m_ptr(new DFontMgrMainWindowPrivate(this))
 {
-    qDebug() << "Font manager main window created, quick mode:" << isQuickMode;
+    qCDebug(fmLog) << "Font manager main window created, quick mode:" << isQuickMode;
     // setWindoDSpinnerwOpacity(0.5); //Debug
     // setWindowFlags(windowFlags() | (Qt::FramelessWindowHint | Qt::WindowMaximizeButtonHint));
     initData();
@@ -119,7 +120,7 @@ DFontMgrMainWindow::~DFontMgrMainWindow()
 *************************************************************************/
 void DFontMgrMainWindow::initData()
 {
-    qDebug() << "Entering function: DFontMgrMainWindow::initData";
+    qCDebug(fmLog) << "Entering function: DFontMgrMainWindow::initData";
     D_D(DFontMgrMainWindow);
     //Initialize app Theme
     QVariant theme;
@@ -131,17 +132,17 @@ void DFontMgrMainWindow::initData()
     DGuiApplicationHelper::ColorType colorType = DGuiApplicationHelper::ColorType::UnknownType;
 
     if (ok) {
-        qDebug() << "ok is true";
+        qCDebug(fmLog) << "ok is true";
         colorType = static_cast<DGuiApplicationHelper::ColorType>(color);
     }
 
     m_winHight = static_cast<short>(d->settingsQsPtr->value(FTM_MWSIZE_H_KEY).toInt());
     m_winWidth = static_cast<short>(d->settingsQsPtr->value(FTM_MWSIZE_W_KEY).toInt());
     m_IsWindowMax = d->settingsQsPtr->value(FTM_MWSTATUS_KEY).toBool();
-    qDebug() << __FUNCTION__ << "init theme = " << colorType;
+    qCDebug(fmLog) << __FUNCTION__ << "init theme = " << colorType;
 
     DGuiApplicationHelper::instance()->setPaletteType(colorType);
-    qDebug() << "Exiting function: DFontMgrMainWindow::initData";
+    qCDebug(fmLog) << "Exiting function: DFontMgrMainWindow::initData";
 }
 
 /*************************************************************************
@@ -154,7 +155,7 @@ void DFontMgrMainWindow::initData()
 *************************************************************************/
 void DFontMgrMainWindow::initUI()
 {
-    qDebug() << "Entering function: DFontMgrMainWindow::initUI";
+    qCDebug(fmLog) << "Entering function: DFontMgrMainWindow::initUI";
     //Enable main window accept drag event
     setAcceptDrops(true);
     //m_loadingSpinner = new DSpinner(this);
@@ -167,7 +168,7 @@ void DFontMgrMainWindow::initUI()
 #ifdef DTKWIDGET_CLASS_DSizeMode
     slotSizeModeChanged(DGuiApplicationHelper::instance()->sizeMode());
 #endif
-    qDebug() << "Exiting function: DFontMgrMainWindow::initUI";
+    qCDebug(fmLog) << "Exiting function: DFontMgrMainWindow::initUI";
 }
 
 /*************************************************************************
@@ -180,7 +181,7 @@ void DFontMgrMainWindow::initUI()
 *************************************************************************/
 void DFontMgrMainWindow::installEventFilters()
 {
-    qDebug() << "Entering function: DFontMgrMainWindow::installEventFilters";
+    qCDebug(fmLog) << "Entering function: DFontMgrMainWindow::installEventFilters";
     D_D(DFontMgrMainWindow);
     titlebar()->installEventFilter(this);//标题栏
     d->leftSiderBar->installEventFilter(this);// 菜单
@@ -191,7 +192,7 @@ void DFontMgrMainWindow::installEventFilters()
     d->searchFontEdit->lineEdit()->installEventFilter(this);//输入框
     m_noInstallListView->installEventFilter(this);//无字体页面
     m_noResultListView->installEventFilter(this);//无结果页面
-    qDebug() << "Exiting function: DFontMgrMainWindow::installEventFilters";
+    qCDebug(fmLog) << "Exiting function: DFontMgrMainWindow::installEventFilters";
 }
 
 /*************************************************************************
@@ -204,13 +205,13 @@ void DFontMgrMainWindow::installEventFilters()
 *************************************************************************/
 void DFontMgrMainWindow::initConnections()
 {
-    qDebug() << "Entering function: DFontMgrMainWindow::initConnections";
+    qCDebug(fmLog) << "Entering function: DFontMgrMainWindow::initConnections";
     D_D(DFontMgrMainWindow);
 
     //Theme change event
     connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::paletteTypeChanged,
     [this](DGuiApplicationHelper::ColorType type) {
-        qDebug() << "Update Theme type:" << type;
+        qCDebug(fmLog) << "Update Theme type:" << type;
         //Save theme value
         d_func()->settingsQsPtr->setValue(FTM_THEME_KEY, type);
     });
@@ -222,7 +223,7 @@ void DFontMgrMainWindow::initConnections()
     connect(this, &DFontMgrMainWindow::fileSelected, this, &DFontMgrMainWindow::installFont);
     //文官中选择字体进行安装
     connect(this, &DFontMgrMainWindow::fileSelectedInSys, this, &DFontMgrMainWindow::installFontFromSys);
-    qDebug() << "Font installation signal connections established";
+    qCDebug(fmLog) << "Font installation signal connections established";
 
     connect(d->searchFontEdit, &DSearchEdit::searchAborted, [ = ] {
         d->searchFontEdit->lineEdit()->setFocus(Qt::TabFocusReason);
@@ -315,7 +316,7 @@ void DFontMgrMainWindow::initConnections()
 #ifdef DTKWIDGET_CLASS_DSizeMode
     connect(DGuiApplicationHelper::instance(),&DGuiApplicationHelper::sizeModeChanged,this, &DFontMgrMainWindow::slotSizeModeChanged);
 #endif
-    qDebug() << "Exiting function: DFontMgrMainWindow::initConnections";
+    qCDebug(fmLog) << "Exiting function: DFontMgrMainWindow::initConnections";
 }
 
 /*************************************************************************
@@ -328,12 +329,12 @@ void DFontMgrMainWindow::initConnections()
 *************************************************************************/
 void DFontMgrMainWindow::initShortcuts()
 {
-    qDebug() << "Entering function: DFontMgrMainWindow::initShortcuts";
+    qCDebug(fmLog) << "Entering function: DFontMgrMainWindow::initShortcuts";
     D_D(DFontMgrMainWindow);
 
     //设置字体放大快捷键
     if (nullptr == m_scZoomIn) {
-        qDebug() << "m_scZoomIn is nullptr";
+        qCDebug(fmLog) << "m_scZoomIn is nullptr";
         m_scZoomIn = new QShortcut(this);
         m_scZoomIn->setKey(tr("Ctrl+="));
         m_scZoomIn->setContext(Qt::ApplicationShortcut);
@@ -350,7 +351,7 @@ void DFontMgrMainWindow::initShortcuts()
 
     //设置字体缩小快捷键
     if (!m_scZoomOut) {
-        qDebug() << "m_scZoomOut is nullptr";
+        qCDebug(fmLog) << "m_scZoomOut is nullptr";
         m_scZoomOut = new QShortcut(this);
         m_scZoomOut->setKey(tr("Ctrl+-"));
         m_scZoomOut->setContext(Qt::ApplicationShortcut);
@@ -367,7 +368,7 @@ void DFontMgrMainWindow::initShortcuts()
 
     //设置字体默认大小快捷键
     if (!m_scDefaultSize) {
-        qDebug() << "m_scDefaultSize is nullptr";
+        qCDebug(fmLog) << "m_scDefaultSize is nullptr";
         m_scDefaultSize = new QShortcut(this);
         m_scDefaultSize->setKey(tr("Ctrl+0"));
         m_scDefaultSize->setContext(Qt::ApplicationShortcut);
@@ -381,7 +382,7 @@ void DFontMgrMainWindow::initShortcuts()
 
     //Show shortcut --> Ctrl+Shift+/
     if (nullptr == m_scShowAllSC) {
-        qDebug() << "m_scShowAllSC is nullptr";
+        qCDebug(fmLog) << "m_scShowAllSC is nullptr";
         m_scShowAllSC = new QShortcut(this);
         m_scShowAllSC->setKey(tr("Ctrl+Shift+/"));
         m_scShowAllSC->setContext(Qt::ApplicationShortcut);
@@ -395,7 +396,7 @@ void DFontMgrMainWindow::initShortcuts()
 
     //Show previous page --> PageUp
     if (nullptr == m_scPageUp) {
-        qDebug() << "m_scPageUp is nullptr";
+        qCDebug(fmLog) << "m_scPageUp is nullptr";
         m_scPageUp = new QShortcut(this);
         m_scPageUp->setKey(tr("PgUp"));
         m_scPageUp->setContext(Qt::ApplicationShortcut);
@@ -415,7 +416,7 @@ void DFontMgrMainWindow::initShortcuts()
 
     //Show next page --> PageDown
     if (nullptr == m_scPageDown) {
-        qDebug() << "m_scPageDown is nullptr";
+        qCDebug(fmLog) << "m_scPageDown is nullptr";
         m_scPageDown = new QShortcut(this);
         m_scPageDown->setKey(tr("PgDown"));
         m_scPageDown->setContext(Qt::ApplicationShortcut);
@@ -436,7 +437,7 @@ void DFontMgrMainWindow::initShortcuts()
 
     //Resize Window --> Ctrl+Alt+F
     if (nullptr == m_scWndReize) {
-        qDebug() << "m_scWndReize is nullptr";
+        qCDebug(fmLog) << "m_scWndReize is nullptr";
         m_scWndReize = new QShortcut(this);
         m_scWndReize->setKey(tr("Ctrl+Alt+F"));
         m_scWndReize->setContext(Qt::ApplicationShortcut);
@@ -455,7 +456,7 @@ void DFontMgrMainWindow::initShortcuts()
 
     //Find font --> Ctrl+F
     if (nullptr == m_scFindFont) {
-        qDebug() << "m_scFindFont is nullptr";
+        qCDebug(fmLog) << "m_scFindFont is nullptr";
         m_scFindFont = new QShortcut(this);
         m_scFindFont->setKey(tr("Ctrl+F"));
         m_scFindFont->setContext(Qt::ApplicationShortcut);
@@ -468,7 +469,7 @@ void DFontMgrMainWindow::initShortcuts()
 
     //Delete font --> Delete
     if (nullptr == m_scDeleteFont) {
-        qDebug() << "m_scDeleteFont is nullptr";
+        qCDebug(fmLog) << "m_scDeleteFont is nullptr";
         m_scDeleteFont = new QShortcut(this);
         m_scDeleteFont->setKey(Qt::Key_Delete);
         m_scDeleteFont->setContext(Qt::ApplicationShortcut);
@@ -477,20 +478,20 @@ void DFontMgrMainWindow::initShortcuts()
         connect(m_scDeleteFont, &QShortcut::activated, this, [this] {
             //Only can't delete user font
             //first disable delete
-            qDebug() << "Delete font requested, cache state:" << m_cacheFinish << "install state:" << m_installFinish;
+            qCDebug(fmLog) << "Delete font requested, cache state:" << m_cacheFinish << "install state:" << m_installFinish;
             if (m_fIsInstalling) {
-                qWarning() << "Cannot delete font during installation";
+                qCWarning(fmLog) << "Cannot delete font during installation";
                 return;
             }
             m_fontPreviewListView->syncRecoveryTabStatus();
-            qInfo() << "Deleting current font";
+            qCInfo(fmLog) << "Deleting current font";
             delCurrentFont(false);
         });
     }
 
     //ShowMenu --> Alt+M//SP3--Alt+M菜单--快捷键
     if (nullptr == m_scShowMenu) {
-        qDebug() << "m_scShowMenu is nullptr";
+        qCDebug(fmLog) << "m_scShowMenu is nullptr";
         m_scShowMenu = new QShortcut(this);
         m_scShowMenu->setKey(tr("Alt+M"));
         m_scShowMenu->setContext(Qt::ApplicationShortcut);
@@ -510,7 +511,7 @@ void DFontMgrMainWindow::initShortcuts()
                     // The normal approach is to create the event on the stack
                     QContextMenuEvent eve(QContextMenuEvent::Reason::Keyboard, popPosition, popPosition);
                     m_isSearchLineEditMenuPoped = QApplication::sendEvent(d->searchFontEdit->lineEdit(), &eve);
-                    qDebug() << m_isSearchLineEditMenuPoped;
+                    qCDebug(fmLog) << m_isSearchLineEditMenuPoped;
                 }
 
             } else if (d->textInputEdit->lineEdit()->hasFocus())
@@ -538,7 +539,7 @@ void DFontMgrMainWindow::initShortcuts()
 
     //Add Font --> Ctrl+O
     if (nullptr == m_scAddNewFont) {
-        qDebug() << "m_scAddNewFont is nullptr";
+        qCDebug(fmLog) << "m_scAddNewFont is nullptr";
         m_scAddNewFont = new QShortcut(this);
         m_scAddNewFont->setKey(tr("Ctrl+O"));
         m_scAddNewFont->setContext(Qt::ApplicationShortcut);
@@ -552,7 +553,7 @@ void DFontMgrMainWindow::initShortcuts()
 
     //Add or cancel favorite --> .
     if (nullptr == m_scAddOrCancelFavFont) {
-        qDebug() << "m_scAddOrCancelFavFont is nullptr";
+        qCDebug(fmLog) << "m_scAddOrCancelFavFont is nullptr";
         m_scAddOrCancelFavFont = new QShortcut(this);
         m_scAddOrCancelFavFont->setKey(/*tr(".")*/Qt::Key_Period);
         m_scAddOrCancelFavFont->setContext(Qt::ApplicationShortcut);
@@ -581,7 +582,7 @@ void DFontMgrMainWindow::initShortcuts()
 
     //Font information --> CTRL+I
     if (nullptr == m_scFontInfo) {
-        qDebug() << "m_scFontInfo is nullptr";
+        qCDebug(fmLog) << "m_scFontInfo is nullptr";
         m_scFontInfo = new QShortcut(this);
         m_scFontInfo->setKey(tr("CTRL+I"));
         m_scFontInfo->setContext(Qt::ApplicationShortcut);
@@ -591,12 +592,12 @@ void DFontMgrMainWindow::initShortcuts()
             DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
             if (m_fontPreviewListView->selectionModel()->selectedIndexes().length() < 1)
             {
-                qDebug() << "m_fontPreviewListView->selectionModel()->selectedIndexes().length() < 1, return";
+                qCDebug(fmLog) << "m_fontPreviewListView->selectionModel()->selectedIndexes().length() < 1, return";
                 return ;
             }
             if (!currItemData.fontInfo.filePath.isEmpty())
             {
-                qDebug() << "currItemData.fontInfo.filePath is not empty";
+                qCDebug(fmLog) << "currItemData.fontInfo.filePath is not empty";
                 QAction *fontInfoAction = DFontMenuManager::getInstance()->getActionByMenuAction(
                     DFontMenuManager::M_FontInfo, DFontMenuManager::MenuType::RightKeyMenu);
                 m_fontPreviewListView->syncRecoveryTabStatus();
@@ -604,7 +605,7 @@ void DFontMgrMainWindow::initShortcuts()
             }
         });
     }
-    qDebug() << "Exiting function: DFontMgrMainWindow::initShortcuts";
+    qCDebug(fmLog) << "Exiting function: DFontMgrMainWindow::initShortcuts";
 }
 
 /*************************************************************************
@@ -618,14 +619,14 @@ void DFontMgrMainWindow::initShortcuts()
 void DFontMgrMainWindow::respondToValueChanged(int value)
 {
     D_D(DFontMgrMainWindow);
-    qDebug() << "Entering function: DFontMgrMainWindow::respondToValueChanged";
+    qCDebug(fmLog) << "Entering function: DFontMgrMainWindow::respondToValueChanged";
     m_previewFontSize = static_cast<qint8>(value);
     QString fontSizeText = QString(FMT_FONT_SIZE).arg(value);
     //d->fontSizeLabel->setText(fontSizeText);
     //调节右下角字体大小显示label显示内容/*UT000539*/
     autoLabelWidth(fontSizeText, d->fontSizeLabel, d->fontSizeLabel->fontMetrics());
     onFontSizeChanged(value);
-    qDebug() << "Exiting function: DFontMgrMainWindow::respondToValueChanged";
+    qCDebug(fmLog) << "Exiting function: DFontMgrMainWindow::respondToValueChanged";
 }
 
 /*************************************************************************
@@ -640,13 +641,13 @@ void DFontMgrMainWindow::initTileBar()
 {
     D_D(DFontMgrMainWindow);
 
-    qDebug() << "Entering function: DFontMgrMainWindow::initTileBar";
+    qCDebug(fmLog) << "Entering function: DFontMgrMainWindow::initTileBar";
     initTileFrame();
 
     d->toolBarMenu = DFontMenuManager::getInstance()->createToolBarSettingsMenu();
     titlebar()->setMenu(d->toolBarMenu);
     titlebar()->setContentsMargins(0, 0, 0, 0);
-    qDebug() << "Exiting function: DFontMgrMainWindow::initTileBar";
+    qCDebug(fmLog) << "Exiting function: DFontMgrMainWindow::initTileBar";
 }
 
 /*************************************************************************
@@ -661,7 +662,7 @@ void DFontMgrMainWindow::initTileFrame()
 {
     D_D(DFontMgrMainWindow);
 
-    qDebug() << "Entering function: DFontMgrMainWindow::initTileFrame";
+    qCDebug(fmLog) << "Entering function: DFontMgrMainWindow::initTileFrame";
     //Add logo
     titlebar()->setIcon(QIcon::fromTheme(DEEPIN_FONT_MANAGER));
 
@@ -685,7 +686,7 @@ void DFontMgrMainWindow::initTileFrame()
     d->searchFontEdit->setPlaceHolder(DApplication::translate("SearchBar", "Search"));
 
     titlebar()->addWidget(d->titleActionArea, Qt::AlignLeft | Qt::AlignVCenter);
-    qDebug() << "Exiting function: DFontMgrMainWindow::initTileFrame";
+    qCDebug(fmLog) << "Exiting function: DFontMgrMainWindow::initTileFrame";
 }
 
 /*************************************************************************
@@ -699,7 +700,7 @@ void DFontMgrMainWindow::initTileFrame()
 void DFontMgrMainWindow::initMainVeiws()
 {
     D_D(DFontMgrMainWindow);
-    qDebug() << "Entering function: DFontMgrMainWindow::initMainVeiws";
+    qCDebug(fmLog) << "Entering function: DFontMgrMainWindow::initMainVeiws";
     setWindowIcon(QIcon::fromTheme(DEEPIN_FONT_MANAGER));
 
     d->mainWndSpliter = new DSplitter(Qt::Horizontal, this);
@@ -711,7 +712,7 @@ void DFontMgrMainWindow::initMainVeiws()
     //Disable spliter drag & resize
     QSplitterHandle *handle = d->mainWndSpliter->handle(1);
     if (handle) {
-        qDebug() << "handle is not nullptr";
+        qCDebug(fmLog) << "handle is not nullptr";
         handle->setFixedWidth(2);
         handle->setDisabled(true);
 
@@ -728,7 +729,7 @@ void DFontMgrMainWindow::initMainVeiws()
     }
 
     setCentralWidget(d->mainWndSpliter);
-    qDebug() << "Exiting function: DFontMgrMainWindow::initMainVeiws";
+    qCDebug(fmLog) << "Exiting function: DFontMgrMainWindow::initMainVeiws";
 }
 
 /*************************************************************************
@@ -743,7 +744,7 @@ void DFontMgrMainWindow::initLeftSideBar()
 {
     D_D(DFontMgrMainWindow);
 
-    qDebug() << "Entering function: DFontMgrMainWindow::initLeftSideBar";
+    qCDebug(fmLog) << "Entering function: DFontMgrMainWindow::initLeftSideBar";
     d->leftBarHolder = new QWidget(d->mainWndSpliter);
     d->leftBarHolder->setObjectName("leftMainLayoutHolder");
     d->leftBarHolder->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
@@ -774,7 +775,7 @@ void DFontMgrMainWindow::initLeftSideBar()
     d->leftBarHolder->setStyleSheet("background: blue");
     d->leftSiderBar->setStyleSheet("background: yellow");
 #endif
-    qDebug() << "Exiting function: DFontMgrMainWindow::initLeftSideBar";
+    qCDebug(fmLog) << "Exiting function: DFontMgrMainWindow::initLeftSideBar";
 }
 
 /*************************************************************************
@@ -789,7 +790,7 @@ void DFontMgrMainWindow::initRightFontView()
 {
     Q_D(DFontMgrMainWindow);
 
-    qDebug() << "Entering function: DFontMgrMainWindow::initRightFontView";
+    qCDebug(fmLog) << "Entering function: DFontMgrMainWindow::initRightFontView";
     // initialize state bar
     initStateBar();
 
@@ -826,7 +827,7 @@ void DFontMgrMainWindow::initRightFontView()
     m_fontPreviewListView->setStyleSheet("background: green");
     d->rightViewHolder->setStyleSheet("background: red");
 #endif
-    qDebug() << "Exiting function: DFontMgrMainWindow::initRightFontView";
+    qCDebug(fmLog) << "Exiting function: DFontMgrMainWindow::initRightFontView";
 }
 
 /*************************************************************************
@@ -842,7 +843,7 @@ void DFontMgrMainWindow::initFontPreviewListView(QWidget *parent)
 {
     Q_D(DFontMgrMainWindow);
 
-    qDebug() << "Entering function: DFontMgrMainWindow::initFontPreviewListView";
+    qCDebug(fmLog) << "Entering function: DFontMgrMainWindow::initFontPreviewListView";
     QVBoxLayout *listViewVBoxLayout = new QVBoxLayout();
 #if QT_VERSION_MAJOR <= 5
     listViewVBoxLayout->setMargin(0);
@@ -913,7 +914,7 @@ void DFontMgrMainWindow::initFontPreviewListView(QWidget *parent)
     listViewVBoxLayout->addWidget(m_noInstallListView);
 
     m_noInstallListView->hide();
-    qDebug() << "Exiting function: DFontMgrMainWindow::initFontPreviewListView";
+    qCDebug(fmLog) << "Exiting function: DFontMgrMainWindow::initFontPreviewListView";
 }
 
 /*************************************************************************
@@ -928,7 +929,7 @@ void DFontMgrMainWindow::initStateBar()
 {
     Q_D(DFontMgrMainWindow);
 
-    qDebug() << "Entering function: DFontMgrMainWindow::initStateBar";
+    qCDebug(fmLog) << "Entering function: DFontMgrMainWindow::initStateBar";
     QHBoxLayout *stateBarLayout = new QHBoxLayout();
     stateBarLayout->setContentsMargins(0, 0, 0, 0);
     stateBarLayout->setSpacing(0);
@@ -982,7 +983,7 @@ void DFontMgrMainWindow::initStateBar()
     d->fontScaleSlider->setStyleSheet("background: yellow");
     d->fontSizeLabel->setStyleSheet("background: yellow");
 #endif
-    qDebug() << "Exiting function: DFontMgrMainWindow::initStateBar";
+    qCDebug(fmLog) << "Exiting function: DFontMgrMainWindow::initStateBar";
 }
 
 /*************************************************************************
@@ -996,7 +997,7 @@ void DFontMgrMainWindow::initStateBar()
 void DFontMgrMainWindow::handleAddFontEvent()
 {
     Q_D(DFontMgrMainWindow);
-    qDebug() << "Entering function: DFontMgrMainWindow::handleAddFontEvent";
+    qCDebug(fmLog) << "Entering function: DFontMgrMainWindow::handleAddFontEvent";
     //SP3--添加字体按钮取消安装后恢复选中状态--记录选中状态
     bool hasTabFocus = d->addFontButton->hasFocus();
     if (hasTabFocus)
@@ -1008,14 +1009,14 @@ void DFontMgrMainWindow::handleAddFontEvent()
 
     QString historyDir = d->settingsQsPtr->value("dir").toString();
     if (historyDir.isEmpty()) {
-        qDebug() << "historyDir is empty";
+        qCDebug(fmLog) << "historyDir is empty";
         historyDir = QDir::homePath();
     }
     if (!mhistoryDir.isEmpty()) {
-        qDebug() << "mhistoryDir is not empty";
+        qCDebug(fmLog) << "mhistoryDir is not empty";
         dialog.setDirectory(mhistoryDir);
     } else {
-        qDebug() << "mhistoryDir is empty";
+        qCDebug(fmLog) << "mhistoryDir is empty";
         dialog.setDirectory(historyDir);
     }
 
@@ -1038,7 +1039,7 @@ void DFontMgrMainWindow::handleAddFontEvent()
 
     QStringList filelist = dialog.selectedFiles();
     if (filelist.count() > 0) {
-        qDebug() << "filelist is not empty";
+        qCDebug(fmLog) << "filelist is not empty";
         mhistoryDir.clear();
         QStringList strlist;
         strlist = filelist.at(0).split("/");
@@ -1057,7 +1058,7 @@ void DFontMgrMainWindow::handleAddFontEvent()
 
     m_previewText = d->textInputEdit->text();
     Q_EMIT fileSelected(filelist, hasTabFocus);
-    qDebug() << "Exiting function: DFontMgrMainWindow::handleAddFontEvent";
+    qCDebug(fmLog) << "Exiting function: DFontMgrMainWindow::handleAddFontEvent";
 }
 
 /*************************************************************************
@@ -1071,25 +1072,25 @@ void DFontMgrMainWindow::handleAddFontEvent()
 *************************************************************************/
 void DFontMgrMainWindow::handleMenuEvent(QAction *action)
 {
-    qDebug() << "Entering function: DFontMgrMainWindow::handleMenuEvent";
+    qCDebug(fmLog) << "Entering function: DFontMgrMainWindow::handleMenuEvent";
     if (action->data().isValid()) {
         m_hasMenuTriggered = true;
         bool ok = false;
         int type = action->data().toInt(&ok);
 
         if (ok) {
-            qDebug() << "ok is true";
+            qCDebug(fmLog) << "ok is true";
             DFontMenuManager::MenuAction actionId = static_cast<DFontMenuManager::MenuAction>(type);
 
             // Add menu handler code here
             switch (actionId) {
             case DFontMenuManager::MenuAction::M_AddFont: {
-                qDebug() << "M_AddFont";
+                qCDebug(fmLog) << "M_AddFont";
                 handleAddFontEvent();
             }
             break;
             case DFontMenuManager::MenuAction::M_FontInfo: {
-                qDebug() << "M_FontInfo";
+                qCDebug(fmLog) << "M_FontInfo";
                 m_fontPreviewListView->setIsTabFocus(false);
                 DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
                 DFontInfoDialog *fontInfoDlg = new DFontInfoDialog(&currItemData, this);
@@ -1097,42 +1098,42 @@ void DFontMgrMainWindow::handleMenuEvent(QAction *action)
             }
             break;
             case DFontMenuManager::MenuAction::M_DeleteFont: {
-                qDebug() << "M_DeleteFont";
+                qCDebug(fmLog) << "M_DeleteFont";
                 delCurrentFont();
             }
             break;
             case DFontMenuManager::MenuAction::M_ExportFont: {
-                qDebug() << "M_ExportFont";
+                qCDebug(fmLog) << "M_ExportFont";
                 exportFont();
                 m_fontPreviewListView->syncTabStatus();
             }
             break;
             case DFontMenuManager::MenuAction::M_EnableOrDisable: {
-                qDebug() << "M_EnableOrDisable";
+                qCDebug(fmLog) << "M_EnableOrDisable";
                 m_fontPreviewListView->onEnableBtnClicked(m_menuDisableIndexList, m_menuSysCnt, m_menuCurCnt, !m_menuCurData.fontData.isEnabled(),
                                                           filterGroup == DSplitListWidget::FontGroup::ActiveFont);
                 m_fontPreviewListView->syncTabStatus();
             }
             break;
             case DFontMenuManager::MenuAction::M_Faverator: {
-                qDebug() << "M_Faverator";
+                qCDebug(fmLog) << "M_Faverator";
                 m_fontPreviewListView->onCollectBtnClicked(m_menuAllIndexList, !m_menuCurData.fontData.isCollected(),
                                                            filterGroup == DSplitListWidget::FontGroup::CollectFont);
                 m_fontPreviewListView->syncTabStatus();
             }
             break;
             case DFontMenuManager::MenuAction::M_ShowFontPostion:
-                qDebug() << "M_ShowFontPostion";
+                qCDebug(fmLog) << "M_ShowFontPostion";
                 m_fontPreviewListView->setIsTabFocus(false);
                 showFontFilePostion();
                 break;
             default:
-                qDebug() << "handleMenuEvent->(id=" << actionId << ")";
+                qCDebug(fmLog) << "handleMenuEvent->(id=" << actionId << ")";
                 break;
             }
         }
     }
-    qDebug() << "Exiting function: DFontMgrMainWindow::handleMenuEvent";
+    qCDebug(fmLog) << "Exiting function: DFontMgrMainWindow::handleMenuEvent";
 }
 
 /*************************************************************************
@@ -1146,22 +1147,22 @@ void DFontMgrMainWindow::handleMenuEvent(QAction *action)
 *************************************************************************/
 bool DFontMgrMainWindow::installFont(const QStringList &files, bool isAddBtnHasTabs)
 {
-    qDebug() << "Entering function: DFontMgrMainWindow::installFont";
+    qCDebug(fmLog) << "Entering function: DFontMgrMainWindow::installFont";
     PerformanceMonitor::installFontStart();
 
     Q_D(DFontMgrMainWindow);
 
     QStringList installFiles = checkFilesSpace(files);
     if (installFiles.count() == 0) {
-        qDebug() << "installFiles.count() == 0";
+        qCDebug(fmLog) << "installFiles.count() == 0";
         onShowMessage(files.count(), false);
         return false;
     }
 
     //ut000442 bug 54129
-    qDebug() << m_fIsInstalling << "\n";
+    qCDebug(fmLog) << m_fIsInstalling << "\n";
     if (m_fIsInstalling || m_fontLoadingSpinner->isVisible()) {
-        qDebug() << "Already exist a installtion flow";
+        qCDebug(fmLog) << "Already exist a installtion flow";
         return false;
     }
 
@@ -1170,19 +1171,19 @@ bool DFontMgrMainWindow::installFont(const QStringList &files, bool isAddBtnHasT
     m_installFinish = false;
 
     //m_fontPreviewListView->clearSelection();//取消安装不清空选中状态
-    qDebug() << "installFont new DFInstallNormalWindow " << installFiles.size() << "\n";
+    qCDebug(fmLog) << "installFont new DFInstallNormalWindow " << installFiles.size() << "\n";
     m_installTm = QDateTime::currentMSecsSinceEpoch();
     m_dfNormalInstalldlg = new DFInstallNormalWindow(installFiles, this);
     connect(m_dfNormalInstalldlg, &DFInstallNormalWindow::destroyed, this, &DFontMgrMainWindow::onInstallWindowDestroyed);
 
     if (isAddBtnHasTabs) {
-        qDebug() << "isAddBtnHasTabs is true";
+        qCDebug(fmLog) << "isAddBtnHasTabs is true";
         m_dfNormalInstalldlg->setAddBtnHasTabs(true);
     }
 
     emit m_signalManager->setSpliteWidgetScrollEnable(true);//开始安装
     if (m_isQuickMode) {
-        qDebug() << "m_isQuickMode is true";
+        qCDebug(fmLog) << "m_isQuickMode is true";
         m_dfNormalInstalldlg->setSkipException(true);
     }
 
@@ -1202,7 +1203,7 @@ bool DFontMgrMainWindow::installFont(const QStringList &files, bool isAddBtnHasT
 
     m_dfNormalInstalldlg->exec();
 
-    qDebug() << "Exiting function: DFontMgrMainWindow::installFont, return true";
+    qCDebug(fmLog) << "Exiting function: DFontMgrMainWindow::installFont, return true";
     return true;
 }
 
@@ -1217,7 +1218,7 @@ bool DFontMgrMainWindow::installFont(const QStringList &files, bool isAddBtnHasT
 *************************************************************************/
 void DFontMgrMainWindow::installFontFromSys(const QStringList &files)
 {
-    qDebug() << "Entering function: DFontMgrMainWindow::installFontFromSys";
+    qCDebug(fmLog) << "Entering function: DFontMgrMainWindow::installFontFromSys";
     if (m_bLoadLeftFontsFinsihFlag) { // 保证先加载完启动过程中未加载的字体
         if (m_fontPreviewListView->getFontLoadTimer()->isActive()) {
             m_fontPreviewListView->getFontLoadTimer()->stop();
@@ -1233,17 +1234,17 @@ void DFontMgrMainWindow::installFontFromSys(const QStringList &files)
         }
 
         if (!m_fontPreviewListView->isListDataLoadFinished()) {
-            qDebug() << "Is loading ,quit";
+            qCDebug(fmLog) << "Is loading ,quit";
             m_waitForInstall = reduceSameFiles;
             return;
         } else if (m_fIsDeleting) {
-            qDebug() << "Is deleting ,quit";
+            qCDebug(fmLog) << "Is deleting ,quit";
             m_waitForInstall = reduceSameFiles;
             return;
         } else if (m_isPopInstallErrorDialog) {
             emit m_signalManager->installDuringPopErrorDialog(reduceSameFiles);
         } else if (m_fIsInstalling || m_fontLoadingSpinner->isVisible()) {
-            qDebug() << "Font is installing , save installation task and reinstall later";
+            qCDebug(fmLog) << "Font is installing , save installation task and reinstall later";
             for (QString &it : reduceSameFiles) {
                 if (!m_waitForInstall.contains(it)) {
                     m_waitForInstall.append(it);
@@ -1259,7 +1260,7 @@ void DFontMgrMainWindow::installFontFromSys(const QStringList &files)
             disconnect(this, &DFontMgrMainWindow::singalLoadLeftFontsFinsih, nullptr, nullptr);
         });
     }
-    qDebug() << "Exiting function: DFontMgrMainWindow::installFontFromSys";
+    qCDebug(fmLog) << "Exiting function: DFontMgrMainWindow::installFontFromSys";
 }
 
 /*************************************************************************
@@ -1274,9 +1275,9 @@ void DFontMgrMainWindow::initRightKeyMenu()
 {
     Q_D(DFontMgrMainWindow);
 
-    qDebug() << "Entering function: DFontMgrMainWindow::initRightKeyMenu";
+    qCDebug(fmLog) << "Entering function: DFontMgrMainWindow::initRightKeyMenu";
     d->rightKeyMenu = DFontMenuManager::getInstance()->createRightKeyMenu();
-    qDebug() << "Exiting function: DFontMgrMainWindow::initRightKeyMenu";
+    qCDebug(fmLog) << "Exiting function: DFontMgrMainWindow::initRightKeyMenu";
 }
 
 /*************************************************************************
@@ -1290,7 +1291,7 @@ void DFontMgrMainWindow::initRightKeyMenu()
 void DFontMgrMainWindow::setQuickInstallMode(bool isQuick)
 {
 #ifdef QT_QML_DEBUG
-    qDebug() << __FUNCTION__ << " isQuickMode=" << isQuick;
+    qCDebug(fmLog) << __FUNCTION__ << " isQuickMode=" << isQuick;
 #endif
     m_isQuickMode = isQuick;
 }
@@ -1305,12 +1306,12 @@ void DFontMgrMainWindow::setQuickInstallMode(bool isQuick)
 *************************************************************************/
 void DFontMgrMainWindow::hideQucikInstallWindow()
 {
-    qDebug() << "Entering function: DFontMgrMainWindow::hideQucikInstallWindow";
+    qCDebug(fmLog) << "Entering function: DFontMgrMainWindow::hideQucikInstallWindow";
     if (m_quickInstallWnd.get() != nullptr) {
-        qDebug() << "m_quickInstallWnd is not nullptr";
+        qCDebug(fmLog) << "m_quickInstallWnd is not nullptr";
         m_quickInstallWnd->setVisible(false);
     }
-    qDebug() << "Exiting function: DFontMgrMainWindow::hideQucikInstallWindow";
+    qCDebug(fmLog) << "Exiting function: DFontMgrMainWindow::hideQucikInstallWindow";
 }
 
 /*************************************************************************
@@ -1323,9 +1324,9 @@ void DFontMgrMainWindow::hideQucikInstallWindow()
 *************************************************************************/
 void DFontMgrMainWindow::InitQuickWindowIfNeeded()
 {
-    qDebug() << "Entering function: DFontMgrMainWindow::InitQuickWindowIfNeeded";
+    qCDebug(fmLog) << "Entering function: DFontMgrMainWindow::InitQuickWindowIfNeeded";
     if (m_quickInstallWnd.get() == nullptr) {
-        qDebug() << "m_quickInstallWnd is nullptr";
+        qCDebug(fmLog) << "m_quickInstallWnd is nullptr";
         m_quickInstallWnd.reset(new DFQuickInstallWindow());
 
         // Quick install mode handle
@@ -1345,7 +1346,7 @@ void DFontMgrMainWindow::InitQuickWindowIfNeeded()
             Dtk::Widget::moveToCenter(m_quickInstallWnd.get());
         });
     }
-    qDebug() << "Exiting function: DFontMgrMainWindow::InitQuickWindowIfNeeded";
+    qCDebug(fmLog) << "Exiting function: DFontMgrMainWindow::InitQuickWindowIfNeeded";
 }
 
 /*************************************************************************
@@ -1358,13 +1359,13 @@ void DFontMgrMainWindow::InitQuickWindowIfNeeded()
 *************************************************************************/
 void DFontMgrMainWindow::forceNoramlInstalltionQuitIfNeeded()
 {
-    qDebug() << "Entering function: DFontMgrMainWindow::forceNoramlInstalltionQuitIfNeeded";
+    qCDebug(fmLog) << "Entering function: DFontMgrMainWindow::forceNoramlInstalltionQuitIfNeeded";
     if (m_fIsInstalling) {
-        qDebug() << "In normal installtion flow, force quit!";
+        qCDebug(fmLog) << "In normal installtion flow, force quit!";
         m_fontPreviewListView->setIsTabFocus(false);
         m_dfNormalInstalldlg->breakInstalltion();
     }
-    qDebug() << "Exiting function: DFontMgrMainWindow::forceNoramlInstalltionQuitIfNeeded";
+    qCDebug(fmLog) << "Exiting function: DFontMgrMainWindow::forceNoramlInstalltionQuitIfNeeded";
 }
 
 /*************************************************************************
@@ -1379,7 +1380,7 @@ void DFontMgrMainWindow::setDeleteFinish()
 {
     // qDebug() << "Entering function: DFontMgrMainWindow::setDeleteFinish";
     m_fIsDeleting &= ~Delete_Deleting;
-    qDebug() << __FUNCTION__ << m_fIsDeleting;
+    qCDebug(fmLog) << __FUNCTION__ << m_fIsDeleting;
 }
 
 /*************************************************************************
@@ -1407,7 +1408,7 @@ void DFontMgrMainWindow::cancelDelete()
 *************************************************************************/
 void DFontMgrMainWindow::onSearchTextChanged(const QString &currStr)
 {
-    qDebug() << "Entering function: DFontMgrMainWindow::onSearchTextChanged";
+    qCDebug(fmLog) << "Entering function: DFontMgrMainWindow::onSearchTextChanged";
     Q_D(DFontMgrMainWindow);
     if (!m_fontPreviewListView->isListDataLoadFinished()) {
         return;
@@ -1415,7 +1416,7 @@ void DFontMgrMainWindow::onSearchTextChanged(const QString &currStr)
 
     //QString strSearchFontName = currStr;
     const QString strSearchFontName = currStr;
-    qDebug() << "SearchFontName:" << strSearchFontName << "\n";
+    qCDebug(fmLog) << "SearchFontName:" << strSearchFontName << "\n";
 
     m_searchTextStatusIsEmpty = strSearchFontName.isEmpty();
 
@@ -1426,7 +1427,7 @@ void DFontMgrMainWindow::onSearchTextChanged(const QString &currStr)
     filterModel->setFilterFontNamePattern(strSearchFontName);
     //filterModel->setEditStatus(m_searchTextStatusIsEmpty);
 
-    qDebug() << __FUNCTION__ << "filter Count:" << filterModel->rowCount() << "\n";
+    qCDebug(fmLog) << __FUNCTION__ << "filter Count:" << filterModel->rowCount() << "\n";
     //记录搜索输入框焦点状态
     bool seachEditHasFocus = d->searchFontEdit->lineEdit()->hasFocus();
     onFontListViewRowCountChanged();
@@ -1435,7 +1436,7 @@ void DFontMgrMainWindow::onSearchTextChanged(const QString &currStr)
         d->searchFontEdit->lineEdit()->setFocus(Qt::TabFocusReason);
     onPreviewTextChanged();
     m_fontPreviewListView->scrollToTop();
-    qDebug() << "Exiting function: DFontMgrMainWindow::onSearchTextChanged";
+    qCDebug(fmLog) << "Exiting function: DFontMgrMainWindow::onSearchTextChanged";
 }
 
 /*************************************************************************
@@ -1449,11 +1450,11 @@ void DFontMgrMainWindow::onSearchTextChanged(const QString &currStr)
 *************************************************************************/
 void DFontMgrMainWindow::onPreviewTextChanged(const QString &text)
 {
-    qDebug() << __FUNCTION__ << text;
+    qCDebug(fmLog) << __FUNCTION__ << text;
     m_previewText = text;
 
     onPreviewTextChanged();
-    qDebug() << "Exiting function: DFontMgrMainWindow::onPreviewTextChanged";
+    qCDebug(fmLog) << "Exiting function: DFontMgrMainWindow::onPreviewTextChanged";
 }
 
 /*************************************************************************
@@ -1467,14 +1468,14 @@ void DFontMgrMainWindow::onPreviewTextChanged(const QString &text)
 *************************************************************************/
 void DFontMgrMainWindow::onFontSizeChanged(int fontSize)
 {
-    qDebug() << "Entering function: DFontMgrMainWindow::onFontSizeChanged";
+    qCDebug(fmLog) << "Entering function: DFontMgrMainWindow::onFontSizeChanged";
     //Q_EMIT m_signalManager->refreshCurRect();
     if (!m_fontPreviewListView->isListDataLoadFinished()) {
         return;
     }
 
     DFontPreviewProxyModel *filterModel = m_fontPreviewListView->getFontPreviewProxyModel();
-    qDebug() << __FUNCTION__ << "filter Count:" << filterModel->rowCount() << "\n";
+    qCDebug(fmLog) << __FUNCTION__ << "filter Count:" << filterModel->rowCount() << "\n";
 
     for (int rowIndex = 0; rowIndex < filterModel->rowCount(); rowIndex++) {
         QModelIndex modelIndex = filterModel->index(rowIndex, 0);
@@ -1482,7 +1483,7 @@ void DFontMgrMainWindow::onFontSizeChanged(int fontSize)
         //filterModel->setEditStatus(m_searchTextStatusIsEmpty);
     }
     //Q_EMIT m_signalManager->prevFontChanged();
-    qDebug() << "Exiting function: DFontMgrMainWindow::onFontSizeChanged";
+    qCDebug(fmLog) << "Exiting function: DFontMgrMainWindow::onFontSizeChanged";
 }
 
 /*************************************************************************
@@ -1495,7 +1496,7 @@ void DFontMgrMainWindow::onFontSizeChanged(int fontSize)
 *************************************************************************/
 void DFontMgrMainWindow::showFontFilePostion()
 {
-    qDebug() << "Entering function: DFontMgrMainWindow::showFontFilePostion";
+    qCDebug(fmLog) << "Entering function: DFontMgrMainWindow::showFontFilePostion";
     DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
 
 #if QT_VERSION_MAJOR > 5
@@ -1505,7 +1506,7 @@ void DFontMgrMainWindow::showFontFilePostion()
 #endif
         DDesktopServices::showFileItem(currItemData.fontInfo.filePath);
     }
-    qDebug() << "Exiting function: DFontMgrMainWindow::showFontFilePostion";
+    qCDebug(fmLog) << "Exiting function: DFontMgrMainWindow::showFontFilePostion";
 }
 
 /*************************************************************************
@@ -1519,9 +1520,9 @@ void DFontMgrMainWindow::showFontFilePostion()
 *************************************************************************/
 void DFontMgrMainWindow::onLeftSiderBarItemClicked(int index, bool needClearSelect)
 {
-    qDebug() << "Entering function: DFontMgrMainWindow::onLeftSiderBarItemClicked";
+    qCDebug(fmLog) << "Entering function: DFontMgrMainWindow::onLeftSiderBarItemClicked";
     if (!m_fontPreviewListView->isListDataLoadFinished()) {
-        qDebug() << "m_fontPreviewListView->isListDataLoadFinished() is false";
+        qCDebug(fmLog) << "m_fontPreviewListView->isListDataLoadFinished() is false";
         //save index to update
         m_leftIndex = static_cast<qint8>(index);
         return;
@@ -1530,7 +1531,7 @@ void DFontMgrMainWindow::onLeftSiderBarItemClicked(int index, bool needClearSele
     m_leftIndex = static_cast<qint8>(index);
     //获取当前左侧列表选中的分组
     filterGroup = qvariant_cast<DSplitListWidget::FontGroup>(index);
-    qDebug() << "filterGroup" << filterGroup << "\n";
+    qCDebug(fmLog) << "filterGroup" << filterGroup << "\n";
     //获取右侧预览列表proxymodel
     DFontPreviewProxyModel *filterModel = m_fontPreviewListView->getFontPreviewProxyModel();
     filterModel->setFilterKeyColumn(0);
@@ -1543,7 +1544,7 @@ void DFontMgrMainWindow::onLeftSiderBarItemClicked(int index, bool needClearSele
         m_fontPreviewListView->clearSelection();
     if (m_fontPreviewListView->hasFocus() && m_fontPreviewListView->isVisible())
         m_fontPreviewListView->setFocus(Qt::MouseFocusReason);
-    qDebug() << "Exiting function: DFontMgrMainWindow::onLeftSiderBarItemClicked";
+    qCDebug(fmLog) << "Exiting function: DFontMgrMainWindow::onLeftSiderBarItemClicked";
 }
 
 /*************************************************************************
@@ -1557,14 +1558,14 @@ void DFontMgrMainWindow::onLeftSiderBarItemClicked(int index, bool needClearSele
 *************************************************************************/
 void DFontMgrMainWindow::onFontInstallFinished(const QStringList &fileList)
 {
-    qDebug() << __FUNCTION__ << fileList.size();
+    qCDebug(fmLog) << __FUNCTION__ << fileList.size();
     m_isInstallOver = true;
     m_installOutFileList = fileList;
 }
 
 void DFontMgrMainWindow::onRefreshUserFont()
 {
-    qDebug() << "Entering function: DFontMgrMainWindow::onRefreshUserFont";
+    qCDebug(fmLog) << "Entering function: DFontMgrMainWindow::onRefreshUserFont";
     afterAllStartup();
 }
 
@@ -1579,7 +1580,7 @@ void DFontMgrMainWindow::onRefreshUserFont()
 void DFontMgrMainWindow::onUninstallFcCacheFinish()
 {
     m_fIsDeleting &= ~Delete_Cacheing;
-    qDebug() << __FUNCTION__ << m_fIsDeleting;
+    qCDebug(fmLog) << __FUNCTION__ << m_fIsDeleting;
 }
 
 /*************************************************************************
@@ -1598,28 +1599,28 @@ void DFontMgrMainWindow::onFontListViewRowCountChanged()
 {
     Q_D(DFontMgrMainWindow);
 
-    qDebug() << "Entering function: DFontMgrMainWindow::onFontListViewRowCountChanged";
+    qCDebug(fmLog) << "Entering function: DFontMgrMainWindow::onFontListViewRowCountChanged";
     unsigned int bShow = 0;
     DFontPreviewProxyModel *filterModel = m_fontPreviewListView->getFontPreviewProxyModel();
     if (filterModel == nullptr)
         return;
 
     if (0 == filterModel->rowCount()) {
-        qDebug() << "filterModel->rowCount() is 0";
+        qCDebug(fmLog) << "filterModel->rowCount() is 0";
         if (m_searchTextStatusIsEmpty) {
-            qDebug() << "m_searchTextStatusIsEmpty is true";
+            qCDebug(fmLog) << "m_searchTextStatusIsEmpty is true";
             bShow = 2;
         } else {
-            qDebug() << "m_searchTextStatusIsEmpty is false";
+            qCDebug(fmLog) << "m_searchTextStatusIsEmpty is false";
             bShow = 1; //未找到字体
         }
     }
-    qDebug() << __FUNCTION__ << filterModel->rowCount() << "-------" << bShow;
+    qCDebug(fmLog) << __FUNCTION__ << filterModel->rowCount() << "-------" << bShow;
     bool isSpinnerHidden = m_fontLoadingSpinner->isHidden();
     switch (bShow) {
     case 0:
         if (isSpinnerHidden) {
-            qDebug() << "isSpinnerHidden is true";
+            qCDebug(fmLog) << "isSpinnerHidden is true";
             m_fontPreviewListView->show();
             m_noResultListView->hide();
             m_isNoResultViewShow = false;
@@ -1631,9 +1632,9 @@ void DFontMgrMainWindow::onFontListViewRowCountChanged()
         return;
     case 1:
         if (!m_isNoResultViewShow) {
-            qDebug() << "m_isNoResultViewShow is false";
+            qCDebug(fmLog) << "m_isNoResultViewShow is false";
             if (!m_fIsInstalling) {
-                qDebug() << "m_fIsInstalling is false";
+                qCDebug(fmLog) << "m_fIsInstalling is false";
                 m_fontPreviewListView->hide();
                 //QTimer::singleShot(5, [ = ]() {
                 m_noResultListView->show();
@@ -1651,7 +1652,7 @@ void DFontMgrMainWindow::onFontListViewRowCountChanged()
 
     case 2:
         if (isSpinnerHidden) {
-            qDebug() << "isSpinnerHidden is true";
+            qCDebug(fmLog) << "isSpinnerHidden is true";
             m_fontPreviewListView->hide();
             d->stateBar->hide();
             if (m_noResultListView->isVisible()) {
@@ -1665,14 +1666,14 @@ void DFontMgrMainWindow::onFontListViewRowCountChanged()
         }
         return;
     default:
-        qDebug() << "default";
+        qCDebug(fmLog) << "default";
         m_fontPreviewListView->show();
         m_noResultListView->hide();
         m_isNoResultViewShow = false;
         d->stateBar->show();
         break;
     }
-    qDebug() << "Exiting function: DFontMgrMainWindow::onFontListViewRowCountChanged";
+    qCDebug(fmLog) << "Exiting function: DFontMgrMainWindow::onFontListViewRowCountChanged";
 }
 
 /*************************************************************************
@@ -1687,10 +1688,10 @@ void DFontMgrMainWindow::onFontListViewRowCountChanged()
 void DFontMgrMainWindow::onLoadStatus(int type)
 {
     D_D(DFontMgrMainWindow);
-    qDebug() << "Entering function: DFontMgrMainWindow::onLoadStatus";
+    qCDebug(fmLog) << "Entering function: DFontMgrMainWindow::onLoadStatus";
     switch (type) {
     case 0:
-        qDebug() << "type is 0";
+        qCDebug(fmLog) << "type is 0";
         m_fontPreviewListView->hide();
         if (m_noResultListView->isVisible()) {
             m_noResultListView->hide();
@@ -1700,28 +1701,28 @@ void DFontMgrMainWindow::onLoadStatus(int type)
         m_fontLoadingSpinner->show();
         break;
     case 1:
-        qDebug() << "type is 1";
+        qCDebug(fmLog) << "type is 1";
         if (m_fontPreviewListView->isListDataLoadFinished()) {
-            qDebug() << "m_fontPreviewListView->isListDataLoadFinished() is true";
+            qCDebug(fmLog) << "m_fontPreviewListView->isListDataLoadFinished() is true";
             m_fontLoadingSpinner->hide();
             m_fontLoadingSpinner->spinnerStop();
         }
         if (m_leftIndex >= 0) {
-            qDebug() << "m_leftIndex >= 0";
+            qCDebug(fmLog) << "m_leftIndex >= 0";
             onLeftSiderBarItemClicked(m_leftIndex);
         }
         //弹出之前判断是否已有无结果view 539 31107
         if (!m_noInstallListView->isVisible()) {
-            qDebug() << "m_noInstallListView->isVisible() is false";
+            qCDebug(fmLog) << "m_noInstallListView->isVisible() is false";
             m_fontPreviewListView->show();
         }
         //检查启动过程结束后是否需要进行安装
         waitForInsert();
         //第一次打开软件，正在加载数据时，搜索框的内容不为空，为做此操作 ut000794
         if (m_openfirst) {
-            qDebug() << "m_openfirst is true";
+            qCDebug(fmLog) << "m_openfirst is true";
             if (!d->searchFontEdit->text().isEmpty()) {
-                qDebug() << "d->searchFontEdit->text().isEmpty() is false";
+                qCDebug(fmLog) << "d->searchFontEdit->text().isEmpty() is false";
                 emit d->searchFontEdit->textChanged(d->searchFontEdit->text());
             }
             m_openfirst = false;
@@ -1731,20 +1732,20 @@ void DFontMgrMainWindow::onLoadStatus(int type)
         m_fontPreviewListView->onFontChanged(qApp->font());
         break;
     case 3:
-        qDebug() << "type is 3";
+        qCDebug(fmLog) << "type is 3";
         //加载用户字体结束后做个判断，如果当前切换到非所有选项并且当前显示为字体未安装则再刷新一下，
         //防止启动后就切换页面，此时数据还未加载完成会提示字体未安装但实际是切换时还没有数据(目前为了启动效果只加载50条数据就认为已加载完成其它数据后台加载）
         if (m_leftIndex > 0 && m_noInstallListView->isVisible()) {
-            qDebug() << "m_leftIndex > 0 && m_noInstallListView->isVisible() is true";
+            qCDebug(fmLog) << "m_leftIndex > 0 && m_noInstallListView->isVisible() is true";
             onLeftSiderBarItemClicked(m_leftIndex);
         }
         break;
     default:
-        qDebug() << "default";
+        qCDebug(fmLog) << "default";
         break;
     }
 
-    qDebug() << "Exiting function: DFontMgrMainWindow::onLoadStatus";
+    qCDebug(fmLog) << "Exiting function: DFontMgrMainWindow::onLoadStatus";
     //if (type == 1 && !m_fileList.isEmpty()) {
     //    showInstalledFiles(m_fileList);
     //}
@@ -1761,11 +1762,11 @@ void DFontMgrMainWindow::onLoadStatus(int type)
 *************************************************************************/
 void DFontMgrMainWindow::onShowMessage(int totalCount, bool success)
 {
-    qDebug() << "Entering function: DFontMgrMainWindow::onShowMessage";
+    qCDebug(fmLog) << "Entering function: DFontMgrMainWindow::onShowMessage";
     QString message;
 
     if (success) {
-        qDebug() << "success is true";
+        qCDebug(fmLog) << "success is true";
         if (totalCount == 1) {
             message = DApplication::translate("DFontMgrMainWindow", "%1 font installed").arg(totalCount);
         } else if (totalCount > 1) {
@@ -1773,7 +1774,7 @@ void DFontMgrMainWindow::onShowMessage(int totalCount, bool success)
         }
         DMessageManager::instance()->sendMessage(this, QIcon("://ok.svg"), message);
     } else {
-        qDebug() << "success is false";
+        qCDebug(fmLog) << "success is false";
         if (totalCount == 1) {
             message = DApplication::translate("DFontMgrMainWindow", "Failed to install %1 font. There is not enough disk space.").arg(totalCount);
         } else if (totalCount > 1) {
@@ -1784,8 +1785,8 @@ void DFontMgrMainWindow::onShowMessage(int totalCount, bool success)
 
     PerformanceMonitor::installFontFinish(totalCount);
 
-    qDebug() << __FUNCTION__ << " pop toast message " << message << " total (ms) :" << QDateTime::currentMSecsSinceEpoch() - m_installTm;
-    qDebug() << "Exiting function: DFontMgrMainWindow::onShowMessage";
+    qCDebug(fmLog) << __FUNCTION__ << " pop toast message " << message << " total (ms) :" << QDateTime::currentMSecsSinceEpoch() - m_installTm;
+    qCDebug(fmLog) << "Exiting function: DFontMgrMainWindow::onShowMessage";
 }
 
 /*************************************************************************
@@ -1801,12 +1802,12 @@ void DFontMgrMainWindow::onShowMessage(int totalCount, bool success)
 *************************************************************************/
 void DFontMgrMainWindow::onShowSpinner(bool bShow, bool force, DFontSpinnerWidget::SpinnerStyles style)
 {
-    qDebug() << __FUNCTION__ << bShow << force << "begin";
+    qCDebug(fmLog) << __FUNCTION__ << bShow << force << "begin";
     if (bShow) {
-        qDebug() << "bShow is true";
+        qCDebug(fmLog) << "bShow is true";
         showSpinner(/*DFontSpinnerWidget::Delete*/style, force);
     } else {
-        qDebug() << "bShow is false";
+        qCDebug(fmLog) << "bShow is false";
         m_fontLoadingSpinner->spinnerStop();
         m_fontLoadingSpinner->hide();
 
@@ -1814,7 +1815,7 @@ void DFontMgrMainWindow::onShowSpinner(bool bShow, bool force, DFontSpinnerWidge
         onFontListViewRowCountChanged();
         onPreviewTextChanged();
     }
-    qDebug() << __FUNCTION__ << bShow << "end";
+    qCDebug(fmLog) << __FUNCTION__ << bShow << "end";
 }
 
 /*************************************************************************
@@ -1827,23 +1828,23 @@ void DFontMgrMainWindow::onShowSpinner(bool bShow, bool force, DFontSpinnerWidge
 *************************************************************************/
 void DFontMgrMainWindow::onconfirmDelDlgAccept()
 {
-    qDebug() << "Entering function: DFontMgrMainWindow::onconfirmDelDlgAccept";
+    qCDebug(fmLog) << "Entering function: DFontMgrMainWindow::onconfirmDelDlgAccept";
     PerformanceMonitor::deleteFontStart();
 
     //记录移除前位置
     m_fontPreviewListView->markPositionBeforeRemoved();
     DFontPreviewItemData currItemData = m_fontPreviewListView->currModelData();
-    qDebug() << "Confirm delete:" << currItemData.fontInfo.filePath
+    qCDebug(fmLog) << "Confirm delete:" << currItemData.fontInfo.filePath
              << " is system font:" << currItemData.fontInfo.isSystemFont;
     //force delete all fonts
     //disable file system watcher
     onShowSpinner(true, false, DFontSpinnerWidget::Delete);
     Q_EMIT DFontPreviewListDataThread::instance(m_fontPreviewListView)->requestRemoveFileWatchers(m_menuDelFontList);
-    qDebug() << m_menuDelFontList.count() << "!!!!!!!!!!!!!!!!11" << "\n";
+    qCDebug(fmLog) << m_menuDelFontList.count() << "!!!!!!!!!!!!!!!!11" << "\n";
     FontManagerCore::instance()->setType(FontManagerCore::UnInstall);
     FontManagerCore::instance()->setUnInstallFile(m_menuDelFontList);
     FontManagerCore::instance()->start();
-    qDebug() << "Exiting function: DFontMgrMainWindow::onconfirmDelDlgAccept";
+    qCDebug(fmLog) << "Exiting function: DFontMgrMainWindow::onconfirmDelDlgAccept";
 }
 
 /*************************************************************************
@@ -1856,28 +1857,28 @@ void DFontMgrMainWindow::onconfirmDelDlgAccept()
 *************************************************************************/
 void DFontMgrMainWindow::onInstallWindowDestroyed(QObject *)
 {
-    qDebug() << __FUNCTION__ << m_installOutFileList.size();
+    qCDebug(fmLog) << __FUNCTION__ << m_installOutFileList.size();
     if (m_installOutFileList.size() > 0) {
-        qDebug() << "m_installOutFileList.size() > 0";
+        qCDebug(fmLog) << "m_installOutFileList.size() > 0";
         showSpinner(DFontSpinnerWidget::Load);
         Q_EMIT DFontPreviewListDataThread::instance()->requestAdded(m_installOutFileList);
         //check if need to do cache
         if (m_fontManager->needCache()) {
-            qDebug() << __FUNCTION__ << "need doCache";
+            qCDebug(fmLog) << __FUNCTION__ << "need doCache";
             if (m_fontManager->isFinished()) {
-                qDebug() << "m_fontManager->isFinished() is true";
+                qCDebug(fmLog) << "m_fontManager->isFinished() is true";
                 m_fontManager->setType(FontManagerCore::DoCache);
                 m_fontManager->start();
             } else {
-                qDebug() << "m_fontManager->isFinished() is false";
+                qCDebug(fmLog) << "m_fontManager->isFinished() is false";
                 m_needWaitThreadStop = true;
             }
         } else {
-            qDebug() << __FUNCTION__ << "no need doCache";
+            qCDebug(fmLog) << __FUNCTION__ << "no need doCache";
         }
     } else {
         //成功安装的字体数目为0时,在这里将安装标志位复位
-        qDebug() << __func__ << "install finish" << " set m_installFinish = true";
+        qCDebug(fmLog) << __func__ << "install finish" << " set m_installFinish = true";
         m_installFinish = true;
 
         if (!SignalManager::m_isDataLoadFinish) {
@@ -1891,7 +1892,7 @@ void DFontMgrMainWindow::onInstallWindowDestroyed(QObject *)
     emit  DFontPreviewListDataThread::instance()->requestAutoDirWatchers();
     m_fIsInstalling = false;
     waitForInsert();
-    qDebug() << __FUNCTION__ << "end";
+    qCDebug(fmLog) << __FUNCTION__ << "end";
 }
 
 /*************************************************************************
@@ -1904,7 +1905,7 @@ void DFontMgrMainWindow::onInstallWindowDestroyed(QObject *)
 *************************************************************************/
 void DFontMgrMainWindow::onRightMenuAboutToShow()
 {
-    qDebug() << __FUNCTION__ << "about toshow";
+    qCDebug(fmLog) << __FUNCTION__ << "about toshow";
     //记录操作之前有无tab聚焦
     m_hasMenuTriggered = false;
 //        m_fontPreviewListView->setFocus(Qt::MouseFocusReason);
@@ -1916,7 +1917,7 @@ void DFontMgrMainWindow::onRightMenuAboutToShow()
                                          &m_menuDisableIndexList, &m_menuAllMinusSysFontList);
 
     DFontMenuManager::getInstance()->onRightKeyMenuPopup(m_menuCurData, (m_menuDelCnt > 0), (m_menuDisableCnt > 0), (m_menuCurCnt > 0));
-    qDebug() << __FUNCTION__ << "about toshow end \n";
+    qCDebug(fmLog) << __FUNCTION__ << "about toshow end \n";
 }
 
 /*************************************************************************
@@ -1929,11 +1930,11 @@ void DFontMgrMainWindow::onRightMenuAboutToShow()
 *************************************************************************/
 void DFontMgrMainWindow::onRightMenuAboutToHide()
 {
-    qDebug() << __FUNCTION__ << "about to hide\n\n";
+    qCDebug(fmLog) << __FUNCTION__ << "about to hide\n\n";
     m_fontPreviewListView->clearPressState(DFontPreviewListView::ClearType::MoveClear);
     //检查鼠标是否处于hover状态
     m_fontPreviewListView->checkHoverState();
-    qDebug() << __FUNCTION__ << "about to hide end\n\n";
+    qCDebug(fmLog) << __FUNCTION__ << "about to hide end\n\n";
 }
 
 /*************************************************************************
@@ -1946,7 +1947,7 @@ void DFontMgrMainWindow::onRightMenuAboutToHide()
 *************************************************************************/
 void DFontMgrMainWindow::onUninstallFontFinished(QStringList &files)
 {
-    qDebug() << __FUNCTION__ << "onUninstallFontFinished";
+    qCDebug(fmLog) << __FUNCTION__ << "onUninstallFontFinished";
     m_fontPreviewListView->updateSpinner(DFontSpinnerWidget::Delete);
     Q_EMIT DFontPreviewListDataThread::instance()->requestDeleted(files);
 }
@@ -1961,7 +1962,7 @@ void DFontMgrMainWindow::onUninstallFontFinished(QStringList &files)
 *************************************************************************/
 void DFontMgrMainWindow::onCacheFinish()
 {
-    qDebug() << "set m_cacheFinish = true";
+    qCDebug(fmLog) << "set m_cacheFinish = true";
     m_cacheFinish = true;
     hideSpinner();
 }
@@ -1979,7 +1980,7 @@ void DFontMgrMainWindow::onCacheFinish()
 *************************************************************************/
 void DFontMgrMainWindow::onHandleDeleteTTC(QString filePath, bool &isDelete, bool &isAapplyToAll)
 {
-    qDebug() << "Entering function: DFontMgrMainWindow::onHandleDeleteTTC";
+    qCDebug(fmLog) << "Entering function: DFontMgrMainWindow::onHandleDeleteTTC";
     // 获取ttc对应的fontname，转为"font1 & font2 & font3"格式显示
     QString fontNames;
     QStringList fontNameList = DFMDBManager::instance()->getSpecifiedFontName(filePath);
@@ -1988,7 +1989,7 @@ void DFontMgrMainWindow::onHandleDeleteTTC(QString filePath, bool &isDelete, boo
         fontNames = fontNames + " & " + iter.next();
     }
     if (!fontNames.isEmpty()) {
-        qDebug() << "fontNames is not empty";
+        qCDebug(fmLog) << "fontNames is not empty";
         fontNames = fontNames.mid(3);
     }
 
@@ -1997,7 +1998,7 @@ void DFontMgrMainWindow::onHandleDeleteTTC(QString filePath, bool &isDelete, boo
 
     isDelete = confirmDelDlg->getDeleting();
     isAapplyToAll = confirmDelDlg->getAapplyToAll();
-    qDebug() << "Exiting function: DFontMgrMainWindow::onHandleDeleteTTC";
+    qCDebug(fmLog) << "Exiting function: DFontMgrMainWindow::onHandleDeleteTTC";
 }
 
 /*************************************************************************
@@ -2010,7 +2011,7 @@ void DFontMgrMainWindow::onHandleDeleteTTC(QString filePath, bool &isDelete, boo
 *************************************************************************/
 void DFontMgrMainWindow::onRequestInstFontsUiAdded()
 {
-    qDebug() << "set m_installFinish = true";
+    qCDebug(fmLog) << "set m_installFinish = true";
     m_installFinish = true;
     hideSpinner();
 }
@@ -2027,12 +2028,12 @@ void DFontMgrMainWindow::onFontChanged()
 {
     D_D(DFontMgrMainWindow);
 
-    qDebug() << "Entering function: DFontMgrMainWindow::onFontChanged";
+    qCDebug(fmLog) << "Entering function: DFontMgrMainWindow::onFontChanged";
     int size = d->fontScaleSlider->value();
     QString fontSize = QString::number(size) + "px";
     autoLabelWidth(fontSize, d->fontSizeLabel, d->fontSizeLabel->fontMetrics());
     m_fontPreviewListView->onFontChanged(qApp->font());
-    qDebug() << "Exiting function: DFontMgrMainWindow::onFontChanged";
+    qCDebug(fmLog) << "Exiting function: DFontMgrMainWindow::onFontChanged";
 }
 
 /*************************************************************************
@@ -2047,12 +2048,12 @@ void DFontMgrMainWindow::onFontSizeRequestToSlider()
 {
     D_D(DFontMgrMainWindow);
 
-    qDebug() << "Entering function: DFontMgrMainWindow::onFontSizeRequestToSlider";
+    qCDebug(fmLog) << "Entering function: DFontMgrMainWindow::onFontSizeRequestToSlider";
     if (!d->searchFontEdit->text().isEmpty()) {
         onSearchTextChanged(d->searchFontEdit->text());
     }
     //删除过程中安装字体，删除过后要继续安装
-    qDebug() << "m_waitForInstall" << m_waitForInstall;
+    qCDebug(fmLog) << "m_waitForInstall" << m_waitForInstall;
     waitForInsert();
 }
 
@@ -2066,7 +2067,7 @@ void DFontMgrMainWindow::onFontSizeRequestToSlider()
 *************************************************************************/
 void DFontMgrMainWindow::onExportFontFinished(int count)
 {
-    qDebug() << "Entering function: DFontMgrMainWindow::onExportFontFinished";
+    qCDebug(fmLog) << "Entering function: DFontMgrMainWindow::onExportFontFinished";
     showExportFontMessage(count, m_menuAllMinusSysFontList.count() - count);
     PerformanceMonitor::exportFontFinish(count);
 }
@@ -2081,7 +2082,7 @@ void DFontMgrMainWindow::onExportFontFinished(int count)
 *************************************************************************/
 void DFontMgrMainWindow::onMenuHidden()
 {
-    qDebug() << "Entering function: DFontMgrMainWindow::onMenuHidden";
+    qCDebug(fmLog) << "Entering function: DFontMgrMainWindow::onMenuHidden";
     if (m_fontPreviewListView->getFontViewHasFocus()) {
         m_fontPreviewListView->setFocus(Qt::TabFocusReason);
         if (!m_hasMenuTriggered)
@@ -2093,7 +2094,7 @@ void DFontMgrMainWindow::onMenuHidden()
         //  m_fontPreviewListView->setFontViewHasFocus(false);
     }
     m_hasMenuTriggered = false;
-    qDebug() << "Exiting function: DFontMgrMainWindow::onMenuHidden";
+    qCDebug(fmLog) << "Exiting function: DFontMgrMainWindow::onMenuHidden";
 }
 
 /*************************************************************************
@@ -2106,19 +2107,19 @@ void DFontMgrMainWindow::onMenuHidden()
 *************************************************************************/
 void DFontMgrMainWindow::onFontManagerFinished()
 {
-    qDebug() << "Entering function: DFontMgrMainWindow::onFontManagerFinished";
+    qCDebug(fmLog) << "Entering function: DFontMgrMainWindow::onFontManagerFinished";
     if (m_needWaitThreadStop) {
-        qDebug() << "m_needWaitThreadStop is true";
+        qCDebug(fmLog) << "m_needWaitThreadStop is true";
         m_fontManager->setType(FontManagerCore::DoCache);
         m_fontManager->start();
         m_needWaitThreadStop = false;
     }
-    qDebug() << "Exiting function: DFontMgrMainWindow::onFontManagerFinished";
+    qCDebug(fmLog) << "Exiting function: DFontMgrMainWindow::onFontManagerFinished";
 }
 
 void DFontMgrMainWindow::onHandleDisableTTC(const QString &filePath, bool &isEnable, bool &isConfirm, bool &isAapplyToAll)
 {
-    qDebug() << "Entering function: DFontMgrMainWindow::onHandleDisableTTC";
+    qCDebug(fmLog) << "Entering function: DFontMgrMainWindow::onHandleDisableTTC";
     // 获取ttc对应的fontname，转为"font1 & font2 & font3"格式显示
     QString fontNames;
     QStringList fontNameList = DFMDBManager::instance()->getSpecifiedFontName(filePath);
@@ -2127,7 +2128,7 @@ void DFontMgrMainWindow::onHandleDisableTTC(const QString &filePath, bool &isEna
         fontNames = fontNames + " & " + iter.next();
     }
     if (!fontNames.isEmpty()) {
-        qDebug() << "fontNames is not empty";
+        qCDebug(fmLog) << "fontNames is not empty";
         fontNames = fontNames.mid(3);
     }
 
@@ -2136,13 +2137,13 @@ void DFontMgrMainWindow::onHandleDisableTTC(const QString &filePath, bool &isEna
 
     isConfirm = confirmDelDlg->getDeleting();
     isAapplyToAll = confirmDelDlg->getAapplyToAll();
-    qDebug() << "Exiting function: DFontMgrMainWindow::onHandleDisableTTC";
+    qCDebug(fmLog) << "Exiting function: DFontMgrMainWindow::onHandleDisableTTC";
 }
 
 #ifdef DTKWIDGET_CLASS_DSizeMode
 void DFontMgrMainWindow::slotSizeModeChanged(DGuiApplicationHelper::SizeMode sizeMode)
 {
-    qDebug() << "Entering function: DFontMgrMainWindow::slotSizeModeChanged";
+    qCDebug(fmLog) << "Entering function: DFontMgrMainWindow::slotSizeModeChanged";
     // update search edit position
     D_D(DFontMgrMainWindow);
     int w = this->rect().width();
@@ -2162,7 +2163,7 @@ void DFontMgrMainWindow::slotSizeModeChanged(DGuiApplicationHelper::SizeMode siz
     } else {
         d->stateBar->setFixedHeight(FTM_SBAR_HEIGHT);
     }
-    qDebug() << "Exiting function: DFontMgrMainWindow::slotSizeModeChanged";
+    qCDebug(fmLog) << "Exiting function: DFontMgrMainWindow::slotSizeModeChanged";
 }
 #endif
 
@@ -2176,7 +2177,7 @@ void DFontMgrMainWindow::slotSizeModeChanged(DGuiApplicationHelper::SizeMode siz
 *************************************************************************/
 void DFontMgrMainWindow::delCurrentFont(bool activatedByRightmenu)
 {
-    qDebug() << __FUNCTION__ << m_fIsDeleting;
+    qCDebug(fmLog) << __FUNCTION__ << m_fIsDeleting;
     m_fontPreviewListView->setFontViewHasFocus(m_fontPreviewListView->hasFocus());
     if (m_fIsDeleting > UnDeleting)
         return;
@@ -2185,7 +2186,7 @@ void DFontMgrMainWindow::delCurrentFont(bool activatedByRightmenu)
         m_fontPreviewListView->selectedFonts(m_menuCurData, &m_menuDelCnt, &m_menuDisableSysCnt,
                                              &m_menuSysCnt, &m_menuCurCnt, nullptr, &m_menuDelFontList);
     if (m_menuDelCnt < 1) {
-        qDebug() << "m_menuDelCnt < 1";
+        qCDebug(fmLog) << "m_menuDelCnt < 1";
         m_fIsDeleting = UnDeleting;
         m_fontPreviewListView->setUserFontInUseSelected(false);
         return;
@@ -2199,7 +2200,7 @@ void DFontMgrMainWindow::delCurrentFont(bool activatedByRightmenu)
     //confirmDelDlg->move((this->width() - confirmDelDlg->width() - 230 + mapToGlobal(QPoint(0, 0)).x()), (mapToGlobal(QPoint(0, 0)).y() + 180));
     confirmDelDlg->move(this->geometry().center() - confirmDelDlg->rect().center());
     confirmDelDlg->exec();
-    qDebug() << "Exiting function: DFontMgrMainWindow::delCurrentFont";
+    qCDebug(fmLog) << "Exiting function: DFontMgrMainWindow::delCurrentFont";
 }
 
 /*************************************************************************
@@ -2212,17 +2213,17 @@ void DFontMgrMainWindow::delCurrentFont(bool activatedByRightmenu)
 *************************************************************************/
 void DFontMgrMainWindow::exportFont()
 {
-    qDebug() << "Entering function: DFontMgrMainWindow::exportFont";
+    qCDebug(fmLog) << "Entering function: DFontMgrMainWindow::exportFont";
     PerformanceMonitor::exportFontStart();
     QStringList exportFiles = checkFilesSpace(m_menuAllMinusSysFontList, false);
     if (exportFiles.count() == 0) {
-        qDebug() << "exportFiles.count() == 0";
+        qCDebug(fmLog) << "exportFiles.count() == 0";
         showExportFontMessage(0, m_menuAllMinusSysFontList.count());
         return;
     }
 
     Q_EMIT DFontPreviewListDataThread::instance()->requestExportFont(exportFiles);
-    qDebug() << "Exiting function: DFontMgrMainWindow::exportFont";
+    qCDebug(fmLog) << "Exiting function: DFontMgrMainWindow::exportFont";
 }
 
 /*************************************************************************
@@ -2237,10 +2238,10 @@ void DFontMgrMainWindow::exportFont()
 *************************************************************************/
 void DFontMgrMainWindow::showExportFontMessage(int successCount, int abandonFilesCount)
 {
-    qDebug() << "Entering function: DFontMgrMainWindow::showExportFontMessage";
+    qCDebug(fmLog) << "Entering function: DFontMgrMainWindow::showExportFontMessage";
     QString message;
     if (abandonFilesCount == 0) {
-        qDebug() << "abandonFilesCount == 0";
+        qCDebug(fmLog) << "abandonFilesCount == 0";
         if (successCount == 1) {
             message = DApplication::translate("Main", "The font exported to your desktop");
         } else {
@@ -2248,15 +2249,15 @@ void DFontMgrMainWindow::showExportFontMessage(int successCount, int abandonFile
         }
         DMessageManager::instance()->sendMessage(this, QIcon("://ok.svg"), message);
     } else if (abandonFilesCount == 1) {
-        qDebug() << "abandonFilesCount == 1";
+        qCDebug(fmLog) << "abandonFilesCount == 1";
         message = DApplication::translate("Main", "Failed to export 1 font. There is not enough disk space.");
         DMessageManager::instance()->sendMessage(this, QIcon("://exception-logo.svg"), message);
     } else if (abandonFilesCount > 1) {
-        qDebug() << "abandonFilesCount > 1";
+        qCDebug(fmLog) << "abandonFilesCount > 1";
         message = DApplication::translate("Main", "Failed to export %1 fonts. There is not enough disk space.").arg(abandonFilesCount);
         DMessageManager::instance()->sendMessage(this, QIcon("://exception-logo.svg"), message);
     }
-    qDebug() << __FUNCTION__ << " pop toast message " << message;
+    qCDebug(fmLog) << __FUNCTION__ << " pop toast message " << message;
 }
 
 /*************************************************************************
@@ -2336,7 +2337,7 @@ void DFontMgrMainWindow::dropEvent(QDropEvent *event)
                 installFont(installFileList, false);
             });
 
-            qDebug() << installFileList << "drop in files :" << "\n";
+            qCDebug(fmLog) << installFileList << "drop in files :" << "\n";
         } else {
             // qDebug() << "installFileList.size() == 0";
             event->ignore();
@@ -2439,7 +2440,7 @@ void DFontMgrMainWindow::changeEvent(QEvent *event)
 *************************************************************************/
 void DFontMgrMainWindow::showAllShortcut()
 {
-    qDebug() << "Entering function: DFontMgrMainWindow::showAllShortcut";
+    qCDebug(fmLog) << "Entering function: DFontMgrMainWindow::showAllShortcut";
     QRect rect = window()->geometry();
     QPoint pos(rect.x() + rect.width() / 2,
                rect.y() + rect.height() / 2);
@@ -2493,7 +2494,7 @@ void DFontMgrMainWindow::showAllShortcut()
     shortcutViewProcess->startDetached("deepin-shortcut-viewer", shortcutString);
 
     connect(shortcutViewProcess, SIGNAL(finished(int)), shortcutViewProcess, SLOT(deleteLater()));
-    qDebug() << "Exiting function: DFontMgrMainWindow::showAllShortcut";
+    qCDebug(fmLog) << "Exiting function: DFontMgrMainWindow::showAllShortcut";
 }
 
 /*************************************************************************
@@ -2507,13 +2508,13 @@ void DFontMgrMainWindow::showAllShortcut()
 void DFontMgrMainWindow::showInstalledFiles()
 {
     D_D(DFontMgrMainWindow);
-    qDebug() << "Entering function: DFontMgrMainWindow::showInstalledFiles";
+    qCDebug(fmLog) << "Entering function: DFontMgrMainWindow::showInstalledFiles";
 
     d->leftSiderBar->setCurrentIndex(d->leftSiderBar->model()->index(DSplitListWidget::UserFont, 0));
     onLeftSiderBarItemClicked(DSplitListWidget::UserFont, false);
     //ut000442 界面切换后记录上一个界面
     d->leftSiderBar->setLastPageNumber(DSplitListWidget::UserFont);
-    qDebug() << "Exiting function: DFontMgrMainWindow::showInstalledFiles";
+    qCDebug(fmLog) << "Exiting function: DFontMgrMainWindow::showInstalledFiles";
 }
 
 /*************************************************************************
@@ -2529,7 +2530,7 @@ void DFontMgrMainWindow::showInstalledFiles()
 void DFontMgrMainWindow::showSpinner(DFontSpinnerWidget::SpinnerStyles styles, bool force)
 {
     D_D(DFontMgrMainWindow);
-    qDebug() << __FUNCTION__ << styles << force;
+    qCDebug(fmLog) << __FUNCTION__ << styles << force;
     m_noInstallListView->hide();
     m_fontPreviewListView->hide();
     m_noResultListView->hide();
@@ -2544,7 +2545,7 @@ void DFontMgrMainWindow::showSpinner(DFontSpinnerWidget::SpinnerStyles styles, b
     }
     m_fontLoadingSpinner->spinnerStart();
     m_fontLoadingSpinner->show();
-    qDebug() << "Exiting function: DFontMgrMainWindow::showSpinner";
+    qCDebug(fmLog) << "Exiting function: DFontMgrMainWindow::showSpinner";
 }
 
 /*************************************************************************
@@ -2559,7 +2560,7 @@ void DFontMgrMainWindow::hideSpinner()
 {
     Q_D(DFontMgrMainWindow);
 
-    qDebug() << __FUNCTION__ << "m_cacheFinish : " << m_cacheFinish << m_installFinish;
+    qCDebug(fmLog) << __FUNCTION__ << "m_cacheFinish : " << m_cacheFinish << m_installFinish;
     if (!m_cacheFinish || !m_installFinish) {
         return;
     }
@@ -2576,7 +2577,7 @@ void DFontMgrMainWindow::hideSpinner()
     showInstalledFiles();
 
     if (m_isInstallOver) {
-        qDebug() << "m_isInstallOver is true";
+        qCDebug(fmLog) << "m_isInstallOver is true";
         onShowMessage(m_installOutFileList.size());
         m_isInstallOver = false;
     }
@@ -2585,7 +2586,7 @@ void DFontMgrMainWindow::hideSpinner()
     emit m_signalManager->setSpliteWidgetScrollEnable(false);
     m_cacheFinish = false;
     m_installFinish = false;
-    qDebug() << __func__ << "install finish" << "\n";
+    qCDebug(fmLog) << __func__ << "install finish" << "\n";
     m_fIsInstalling = false;
 
     m_installOutFileList.clear();
@@ -2596,12 +2597,12 @@ void DFontMgrMainWindow::hideSpinner()
     m_fontPreviewListView->scrollWithTheSelected();
     m_fontPreviewListView->refreshFocuses();
     waitForInsert();
-    qDebug() << "Exiting function: DFontMgrMainWindow::hideSpinner";
+    qCDebug(fmLog) << "Exiting function: DFontMgrMainWindow::hideSpinner";
 }
 
 void DFontMgrMainWindow::afterAllStartup()
 {
-    qDebug() << "Entering function: DFontMgrMainWindow::afterAllStartup";
+    qCDebug(fmLog) << "Entering function: DFontMgrMainWindow::afterAllStartup";
     //获取用户不通过本应用安装的字体
     GetUserAddFontThread *getUsrAddFontThread = new GetUserAddFontThread(this);
     getUsrAddFontThread->start();
@@ -2613,7 +2614,7 @@ void DFontMgrMainWindow::afterAllStartup()
             emit singalLoadLeftFontsFinsih();
         }
     });
-    qDebug() << "Exiting function: DFontMgrMainWindow::afterAllStartup";
+    qCDebug(fmLog) << "Exiting function: DFontMgrMainWindow::afterAllStartup";
 }
 
 /*************************************************************************
@@ -2626,13 +2627,13 @@ void DFontMgrMainWindow::afterAllStartup()
 *************************************************************************/
 void DFontMgrMainWindow::waitForInsert()
 {
-    qDebug() << "Entering function: DFontMgrMainWindow::waitForInsert";
+    qCDebug(fmLog) << "Entering function: DFontMgrMainWindow::waitForInsert";
     if (m_waitForInstall.isEmpty())
         return;
 
     if (installFont(m_waitForInstall, false))
         m_waitForInstall.clear();
-    qDebug() << "Exiting function: DFontMgrMainWindow::waitForInsert";
+    qCDebug(fmLog) << "Exiting function: DFontMgrMainWindow::waitForInsert";
 }
 
 /*************************************************************************
@@ -2645,15 +2646,15 @@ void DFontMgrMainWindow::waitForInsert()
 *************************************************************************/
 void DFontMgrMainWindow::onPreviewTextChanged()
 {
-    qDebug() << "Entering function: DFontMgrMainWindow::onPreviewTextChanged";
+    qCDebug(fmLog) << "Entering function: DFontMgrMainWindow::onPreviewTextChanged";
     if (!m_fontPreviewListView->isListDataLoadFinished()) {
-        qDebug() << "m_fontPreviewListView->isListDataLoadFinished() is false";
+        qCDebug(fmLog) << "m_fontPreviewListView->isListDataLoadFinished() is false";
         return;
     }
 
     DFontPreviewProxyModel *filterModel = m_fontPreviewListView->getFontPreviewProxyModel();
     int total = filterModel->rowCount();
-    qDebug() << __FUNCTION__ << "filter Count:" << filterModel->rowCount() << "\n";
+    qCDebug(fmLog) << __FUNCTION__ << "filter Count:" << filterModel->rowCount() << "\n";
 
     for (int rowIndex = 0; rowIndex < total; rowIndex++) {
         QModelIndex modelIndex = filterModel->index(rowIndex, 0);
@@ -2663,7 +2664,7 @@ void DFontMgrMainWindow::onPreviewTextChanged()
         if (m_previewFontSize != filterModel->data(modelIndex, DFontPreviewItemDelegate::FontSizeRole).toInt())
             filterModel->setData(modelIndex, QVariant(m_previewFontSize), DFontPreviewItemDelegate::FontSizeRole);
     }
-    qDebug() << "Exiting function: DFontMgrMainWindow::onPreviewTextChanged";
+    qCDebug(fmLog) << "Exiting function: DFontMgrMainWindow::onPreviewTextChanged";
 }
 
 /*************************************************************************
@@ -2677,7 +2678,7 @@ void DFontMgrMainWindow::onPreviewTextChanged()
 *************************************************************************/
 qint64 DFontMgrMainWindow::getDiskSpace(bool m_bInstall)
 {
-    qDebug() << "Entering function: DFontMgrMainWindow::getDiskSpace";
+    qCDebug(fmLog) << "Entering function: DFontMgrMainWindow::getDiskSpace";
     QStorageInfo storage;
     if (m_bInstall) {
         storage = QStorageInfo(QDir::homePath());
@@ -2688,7 +2689,7 @@ qint64 DFontMgrMainWindow::getDiskSpace(bool m_bInstall)
     }
     //不用转换直接用bytes更加准确
     qint64 m_remainSpace = storage.bytesAvailable()/*/1000/1000*/;
-    qDebug() << "Exiting function: DFontMgrMainWindow::getDiskSpace";
+    qCDebug(fmLog) << "Exiting function: DFontMgrMainWindow::getDiskSpace";
     return m_remainSpace;
 }
 
@@ -2704,7 +2705,7 @@ qint64 DFontMgrMainWindow::getDiskSpace(bool m_bInstall)
 *************************************************************************/
 QStringList DFontMgrMainWindow::checkFilesSpace(const QStringList &files, bool m_bInstall)
 {
-    qDebug() << "Entering function: DFontMgrMainWindow::checkFilesSpace";
+    qCDebug(fmLog) << "Entering function: DFontMgrMainWindow::checkFilesSpace";
     if (files.isEmpty())
         return files;
 
@@ -2726,7 +2727,7 @@ QStringList DFontMgrMainWindow::checkFilesSpace(const QStringList &files, bool m
         }
     }
 
-    qDebug() << currentDiskSpace << totalSelectSpace << "\n";
+    qCDebug(fmLog) << currentDiskSpace << totalSelectSpace << "\n";
 
     return map.values();
 }
@@ -2740,15 +2741,15 @@ void DFontMgrMainWindow::mainwindowFocusOutCheck(QObject *obj, QEvent *event)
 {
     D_D(DFontMgrMainWindow);
 
-    qDebug() << "Entering function: DFontMgrMainWindow::mainwindowFocusOutCheck";
+    qCDebug(fmLog) << "Entering function: DFontMgrMainWindow::mainwindowFocusOutCheck";
     // bug 39973 焦点因为窗口激活原因移出去之前判断左侧listview的状态，如果为Tabfocus的状态记录下此时的各个状态留
     //到焦点移回来之后给左侧listview重新设置状态。
     if (obj == d->leftSiderBar) {
-        qDebug() << "obj == d->leftSiderBar";
+        qCDebug(fmLog) << "obj == d->leftSiderBar";
         QFocusEvent *focusEvent = dynamic_cast<QFocusEvent *>(event);
         if (focusEvent->reason() == Qt::ActiveWindowFocusReason) {
             m_leftListViewTabFocus =  d->leftSiderBar->IsTabFocus();
-            qDebug() << "m_leftListViewTabFocus is true";
+            qCDebug(fmLog) << "m_leftListViewTabFocus is true";
             if (m_leftListViewTabFocus) {
                 m_currentStatus =  d->leftSiderBar->getStatus();
             }
@@ -2756,7 +2757,7 @@ void DFontMgrMainWindow::mainwindowFocusOutCheck(QObject *obj, QEvent *event)
     }
 
     if (obj == m_fontPreviewListView) {
-        qDebug() << "obj == m_fontPreviewListView";
+        qCDebug(fmLog) << "obj == m_fontPreviewListView";
         QFocusEvent *focusEvent = dynamic_cast<QFocusEvent *>(event);
         if (focusEvent->reason() == Qt::ActiveWindowFocusReason) {
             m_previewListViewTabFocus  = m_fontPreviewListView->getIsTabFocus();
@@ -2765,7 +2766,7 @@ void DFontMgrMainWindow::mainwindowFocusOutCheck(QObject *obj, QEvent *event)
 
     if (obj == d->fontScaleSlider)
         m_fontPreviewListView->setIsGetFocusFromSlider(true);
-    qDebug() << "Exiting function: DFontMgrMainWindow::mainwindowFocusOutCheck";
+    qCDebug(fmLog) << "Exiting function: DFontMgrMainWindow::mainwindowFocusOutCheck";
 }
 
 /**
@@ -2777,53 +2778,53 @@ void DFontMgrMainWindow::mainwindowFocusInCheck(QObject *obj, QEvent *event)
 {
     D_D(DFontMgrMainWindow);
 
-    qDebug() << "Entering function: DFontMgrMainWindow::mainwindowFocusInCheck";
+    qCDebug(fmLog) << "Entering function: DFontMgrMainWindow::mainwindowFocusInCheck";
     //bug 39973 左侧listview因为窗口激活原因获取焦点时，根据之前获取的状态进行判断，并重新给listview
     //设置状态。
     if (obj == d->leftSiderBar) {
-        qDebug() << "obj == d->leftSiderBar";
+        qCDebug(fmLog) << "obj == d->leftSiderBar";
         QFocusEvent *focusEvent = dynamic_cast<QFocusEvent *>(event);
         if (focusEvent->reason() == Qt::ActiveWindowFocusReason) {
             if (m_leftListViewTabFocus) {
                 d->leftSiderBar->setCurrentStatus(m_currentStatus);
                 m_leftListViewTabFocus = false;
-                qDebug() << "m_leftListViewTabFocus is false";
+                qCDebug(fmLog) << "m_leftListViewTabFocus is false";
             } else {
                 d->leftSiderBar->setIsHalfWayFocus(true);
             }
         }
     } else {
-        qDebug() << "obj != d->leftSiderBar";
+        qCDebug(fmLog) << "obj != d->leftSiderBar";
         emit m_signalManager->setLostFocusState(false);
     }
 
     if (obj == m_fontPreviewListView) {
-        qDebug() << "obj == m_fontPreviewListView";
+        qCDebug(fmLog) << "obj == m_fontPreviewListView";
         QFocusEvent *focusEvent = dynamic_cast<QFocusEvent *>(event);
         if (focusEvent->reason() == Qt::ActiveWindowFocusReason) {
             //如果是窗口隐藏失去焦点，则根据m_fontPreviewListView标志位恢复tab状态，否则根据m_recoveryTabFocusState进行恢复
             if (m_previewListViewTabFocus)
                 m_fontPreviewListView->setIsTabFocus(true);
             else {
-                qDebug() << "m_previewListViewTabFocus is false";
+                qCDebug(fmLog) << "m_previewListViewTabFocus is false";
                 m_fontPreviewListView->syncTabStatus(false);
             }
         }
     } else {
-        qDebug() << "obj != m_fontPreviewListView";
+        qCDebug(fmLog) << "obj != m_fontPreviewListView";
         m_fontPreviewListView->setIsGetFocusFromSlider(false);
     }
 
     //设置searchEdit的tab方式
     if (obj == d->searchFontEdit->lineEdit()) {
-        qDebug() << "obj == d->searchFontEdit->lineEdit()";
+        qCDebug(fmLog) << "obj == d->searchFontEdit->lineEdit()";
         d->searchFontEdit->lineEdit()->setFocusPolicy(Qt::StrongFocus);
         m_isSearchLineEditMenuPoped  = false;
     }
 
     if (obj == d->textInputEdit->lineEdit())
         m_isInputLineEditMunuPoped  = false;
-    qDebug() << "Exiting function: DFontMgrMainWindow::mainwindowFocusInCheck";
+    qCDebug(fmLog) << "Exiting function: DFontMgrMainWindow::mainwindowFocusInCheck";
 }
 
 /*************************************************************************
@@ -2839,7 +2840,7 @@ void DFontMgrMainWindow::mainwindowFocusInCheck(QObject *obj, QEvent *event)
 *************************************************************************/
 void DFontMgrMainWindow::autoLabelWidth(QString text, DLabel *lab, QFontMetrics fm)
 {
-    qDebug() << "Entering function: DFontMgrMainWindow::autoLabelWidth";
+    qCDebug(fmLog) << "Entering function: DFontMgrMainWindow::autoLabelWidth";
     QString str = text;
 #if QT_VERSION_MAJOR > 5
     if (fm.boundingRect(text).width() <= 65) {
@@ -2868,7 +2869,7 @@ void DFontMgrMainWindow::autoLabelWidth(QString text, DLabel *lab, QFontMetrics 
         }
     }
     lab->setText(str);
-    qDebug() << "Exiting function: DFontMgrMainWindow::autoLabelWidth";
+    qCDebug(fmLog) << "Exiting function: DFontMgrMainWindow::autoLabelWidth";
 }
 
 /*************************************************************************
@@ -2889,7 +2890,7 @@ void DFontMgrMainWindow::keyPressEvent(QKeyEvent *event)
     // qDebug() << "Entering function: DFontMgrMainWindow::keyPressEvent";
     if (Qt::Key_Left == event->key() || Qt::Key_Down == event->key()) {
         // qDebug() << "Qt::Key_Left == event->key() || Qt::Key_Down == event->key()";
-        qDebug() << d->fontScaleSlider << "\n";
+        qCDebug(fmLog) << d->fontScaleSlider << "\n";
         if (d->fontScaleSlider->hasFocus()) {
             d->fontScaleSlider->setValue(d->fontScaleSlider->value() - 1);
         } else if (Qt::Key_Left == event->key() && (m_fontPreviewListView->hasFocus() || m_noInstallListView->hasFocus())) {

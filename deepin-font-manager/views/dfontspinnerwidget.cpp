@@ -3,6 +3,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#include "ddlog.h"
 #include "dfontspinnerwidget.h"
 #include "dfontspinner.h"
 
@@ -16,7 +17,7 @@ DFontSpinnerWidget::DFontSpinnerWidget(QWidget *parent,  SpinnerStyles styles) :
 {
     Q_UNUSED(styles)
 //    setStyles(styles);
-    qDebug() << "Spinner widget container created";
+    qCDebug(fmLog) << "Spinner widget container created";
     initUI();
 }
 
@@ -31,7 +32,7 @@ DFontSpinnerWidget::DFontSpinnerWidget(QWidget *parent,  SpinnerStyles styles) :
 *************************************************************************/
 void DFontSpinnerWidget::initUI()
 {
-    qDebug() << "Entering function: void DFontSpinnerWidget::initUI";
+    qCDebug(fmLog) << "Entering function: void DFontSpinnerWidget::initUI";
     m_spinner = new DFontSpinner(this);
     m_spinner->setFixedSize(QSize(32, 32));
     m_label = new QLabel(this);
@@ -50,7 +51,7 @@ void DFontSpinnerWidget::initUI()
     hLoadingView->addStretch(1);
 
     this->setLayout(hLoadingView);
-    qDebug() << "Exiting function: void DFontSpinnerWidget::initUI";
+    qCDebug(fmLog) << "Exiting function: void DFontSpinnerWidget::initUI";
 }
 
 DFontSpinnerWidget::~DFontSpinnerWidget()
@@ -69,19 +70,19 @@ DFontSpinnerWidget::~DFontSpinnerWidget()
 *************************************************************************/
 void DFontSpinnerWidget::setStyles(SpinnerStyles styles)
 {
-    qDebug() << "Entering function: void DFontSpinnerWidget::setStyles";
+    qCDebug(fmLog) << "Entering function: void DFontSpinnerWidget::setStyles";
     m_Styles = styles;
     if (m_Styles == SpinnerStyles::Load || m_Styles == SpinnerStyles::StartupLoad) {
-        qDebug() << "Loading fonts, please wait...";
+        qCDebug(fmLog) << "Loading fonts, please wait...";
         m_label->setText(DApplication::translate("Main", "Loading fonts, please wait..."));
     } else if (m_Styles == SpinnerStyles::Delete) {
-        qDebug() << "Deleting fonts, please wait...";
+        qCDebug(fmLog) << "Deleting fonts, please wait...";
         m_label->setText(DApplication::translate("Dfuninstalldialog", "Deleting fonts, please wait..."));
     } else {
-        qDebug() << "Unknown styles";
+        qCDebug(fmLog) << "Unknown styles";
         m_label->setText(QString());
     }
-    qDebug() << "Exiting function: void DFontSpinnerWidget::setStyles";
+    qCDebug(fmLog) << "Exiting function: void DFontSpinnerWidget::setStyles";
 }
 
 /*************************************************************************
@@ -95,7 +96,7 @@ void DFontSpinnerWidget::setStyles(SpinnerStyles styles)
 *************************************************************************/
 void DFontSpinnerWidget::spinnerStart()
 {
-    qDebug() << "Spinner animation started in container";
+    qCDebug(fmLog) << "Spinner animation started in container";
     m_spinner->start();
 }
 
@@ -110,6 +111,6 @@ void DFontSpinnerWidget::spinnerStart()
 *************************************************************************/
 void DFontSpinnerWidget::spinnerStop()
 {
-    qDebug() << "Spinner animation stopped in container";
+    qCDebug(fmLog) << "Spinner animation stopped in container";
     m_spinner->stop();
 }

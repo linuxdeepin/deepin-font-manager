@@ -3,6 +3,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#include "ddlog.h"
 #include "fonticontext.h"
 #include <QDebug>
 
@@ -27,7 +28,7 @@ FontIconText::FontIconText(const QString &picPath, QWidget *parent)
     , render(new DSvgRenderer(this))
     , m_isTtf(false)
 {
-    qDebug() << "Font icon widget created with image:" << picPath;
+    qCDebug(fmLog) << "Font icon widget created with image:" << picPath;
     render->load(picPath);
     QSize defaultSize = render->defaultSize();
     setFixedSize(defaultSize.width(), defaultSize.height());
@@ -45,44 +46,44 @@ FontIconText::FontIconText(const QString &picPath, QWidget *parent)
 *************************************************************************/
 void FontIconText::setFontName(const QString &familyName, const QString &styleName)
 {
-    qDebug() << "Setting font name to:" << familyName << "style:" << styleName;
+    qCDebug(fmLog) << "Setting font name to:" << familyName << "style:" << styleName;
     m_font = font();
     m_font.setFamily(familyName);
 
     if (styleName.contains("Italic")) {
-        qDebug() << "Style name contains Italic";
+        qCDebug(fmLog) << "Style name contains Italic";
         m_font.setItalic(true);
     }
 
     if (styleName.contains("Regular")) {
-        qDebug() << "Style name contains Regular";
+        qCDebug(fmLog) << "Style name contains Regular";
         m_font.setWeight(QFont::Normal);
     } else if (styleName.contains("Bold")) {
-        qDebug() << "Style name contains Bold";
+        qCDebug(fmLog) << "Style name contains Bold";
         m_font.setWeight(QFont::Bold);
     } else if (styleName.contains("Light")) {
-        qDebug() << "Style name contains Light";
+        qCDebug(fmLog) << "Style name contains Light";
         m_font.setWeight(QFont::Light);
     } else if (styleName.contains("Thin")) {
-        qDebug() << "Style name contains Thin";
+        qCDebug(fmLog) << "Style name contains Thin";
         m_font.setWeight(QFont::Thin);
     } else if (styleName.contains("ExtraLight")) {
-        qDebug() << "Style name contains ExtraLight";
+        qCDebug(fmLog) << "Style name contains ExtraLight";
         m_font.setWeight(QFont::ExtraLight);
     } else if (styleName.contains("ExtraBold")) {
-        qDebug() << "Style name contains ExtraBold";
+        qCDebug(fmLog) << "Style name contains ExtraBold";
         m_font.setWeight(QFont::ExtraBold);
     } else if (styleName.contains("Medium")) {
-        qDebug() << "Style name contains Medium";
+        qCDebug(fmLog) << "Style name contains Medium";
         m_font.setWeight(QFont::Medium);
     } else if (styleName.contains("DemiBold")) {
-        qDebug() << "Style name contains DemiBold";
+        qCDebug(fmLog) << "Style name contains DemiBold";
         m_font.setWeight(QFont::DemiBold);
     } else if (styleName.contains("Black")) {
-        qDebug() << "Style name contains Black";
+        qCDebug(fmLog) << "Style name contains Black";
         m_font.setWeight(QFont::Black);
     }
-    qDebug() << "Exiting function: void FontIconText::setFontName";
+    qCDebug(fmLog) << "Exiting function: void FontIconText::setFontName";
 }
 
 /*************************************************************************

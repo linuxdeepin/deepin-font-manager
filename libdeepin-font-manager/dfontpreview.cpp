@@ -3,6 +3,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#include "ddlog.h"
 #include "dfontpreview.h"
 #include "dfontwidget.h"
 
@@ -40,13 +41,13 @@ DFontPreview::DFontPreview(QWidget *parent)
     , m_library(nullptr)
     , m_face(nullptr)
 {
-    qDebug() << "DFontPreview created";
+    qCDebug(fmLog) << "DFontPreview created";
     initContents();
 
     setFixedSize(FIXED_WIDTH, FIXED_HEIGHT);
     //    setFixedSize(static_cast<int>(qApp->primaryScreen()->geometry().width() / 1.5),
     //                 static_cast<int>(qApp->primaryScreen()->geometry().height() / 1.5));
-    qDebug() << "Exiting function: DFontPreview::DFontPreview";
+    qCDebug(fmLog) << "Exiting function: DFontPreview::DFontPreview";
 }
 
 /*************************************************************************
@@ -76,7 +77,7 @@ DFontPreview::~DFontPreview()
 *************************************************************************/
 void DFontPreview::setFileUrl(const QString &url)
 {
-    qDebug() << "Setting font file url:" << url;
+    qCDebug(fmLog) << "Setting font file url:" << url;
     // fontDatabase->removeAllApplicationFonts();
     // fontDatabase->addApplicationFont(url);
 
@@ -84,7 +85,7 @@ void DFontPreview::setFileUrl(const QString &url)
     m_error = FT_New_Face(m_library, url.toUtf8().constData(), 0, &m_face);
 
     if (m_error != 0 && QFileInfo(url).completeSuffix() != "pcf.gz") {
-        qWarning() << "Failed to load font file:" << url << "error:" << m_error;
+        qCWarning(fmLog) << "Failed to load font file:" << url << "error:" << m_error;
         return;
     }
 
@@ -92,7 +93,7 @@ void DFontPreview::setFileUrl(const QString &url)
     styleName = QString(m_face->style_name);
 
     repaint();
-    qDebug() << "Exiting function: DFontPreview::setFileUrl";
+    qCDebug(fmLog) << "Exiting function: DFontPreview::setFileUrl";
 }
 
 /*************************************************************************
@@ -109,7 +110,7 @@ void DFontPreview::paintEvent(QPaintEvent *e)
     // qDebug() << "Painting font preview";
     currentMaxWidth = 1;
     if (m_error != 0) {
-        qWarning() << "Cannot paint preview - font loading error";
+        qCWarning(fmLog) << "Cannot paint preview - font loading error";
         return;
     }
 
@@ -334,12 +335,12 @@ void DFontPreview::isNeedScroll(const int width)
 *************************************************************************/
 void DFontPreview::initContents()
 {
-    qDebug() << "Initializing preview contents";
+    qCDebug(fmLog) << "Initializing preview contents";
     // libfont-manager.so中已经有CONTENTS.txt，需要重命名为contents.txt才可以安装。
     QFile file("/usr/share/deepin-font-manager/contents.txt");
 
     if (!file.open(QIODevice::ReadOnly)) {
-        qWarning() << "Failed to open contents file:" << file.fileName() << "error:" << file.errorString();
+        qCWarning(fmLog) << "Failed to open contents file:" << file.fileName() << "error:" << file.errorString();
         return;
     }
 
@@ -354,7 +355,7 @@ void DFontPreview::initContents()
 
         m_contents.insert(items.at(0), items.at(1));
     }
-    qDebug() << "Exiting function: DFontPreview::initContents";
+    qCDebug(fmLog) << "Exiting function: DFontPreview::initContents";
 }
 
 /*************************************************************************
@@ -367,7 +368,7 @@ void DFontPreview::initContents()
 *************************************************************************/
 QString DFontPreview::getSampleString()
 {
-    qDebug() << "Getting sample string";
+    qCDebug(fmLog) << "Getting sample string";
     //[CPPCHECK]
     //局部变量sampleString与全局变量名称重复，更名sampString
     QString sampString = nullptr;
@@ -381,7 +382,7 @@ QString DFontPreview::getSampleString()
 
     // check english sample string.
     if (!isAvailable) {
-        qDebug() << "English sample string is not available, getting language sample string";
+        qCDebug(fmLog) << "English sample string is not available, getting language sample string";
         sampString = getLanguageSampleString("en");
         if (checkFontContainText(m_face, sampString)) {
             isAvailable = true;
@@ -390,11 +391,11 @@ QString DFontPreview::getSampleString()
 
     // random string from available chars.
     if (!isAvailable) {
-        qDebug() << "Random string is not available, building character list for face";
+        qCDebug(fmLog) << "Random string is not available, building character list for face";
         sampString = buildCharlistForFace(m_face, 36);
     }
 
-    qDebug() << "Exiting function: DFontPreview::getSampleString";
+    qCDebug(fmLog) << "Exiting function: DFontPreview::getSampleString";
     return sampString;
 }
 
@@ -409,14 +410,14 @@ QString DFontPreview::getSampleString()
 *************************************************************************/
 QString DFontPreview::getLanguageSampleString(const QString &language)
 {
-    qDebug() << "Getting language sample string for language:" << language;
+    qCDebug(fmLog) << "Getting language sample string for language:" << language;
     QString result = nullptr;
     QString key = nullptr;
     if (m_contents.contains(language)) {
-        qDebug() << "Language sample string is available for language:" << language;
+        qCDebug(fmLog) << "Language sample string is available for language:" << language;
         key = language;
     } else {
-        qDebug() << "Language sample string is not available for language:" << language;
+        qCDebug(fmLog) << "Language sample string is not available for language:" << language;
 #if QT_VERSION_MAJOR > 5
         const QStringList parseList = language.split("_", Qt::SkipEmptyParts);
 #else
@@ -424,18 +425,18 @@ QString DFontPreview::getLanguageSampleString(const QString &language)
 #endif
         if (parseList.length() > 0 &&
                 m_contents.contains(parseList.first())) {
-            qDebug() << "Language sample string is available for language:" << parseList.first();
+            qCDebug(fmLog) << "Language sample string is available for language:" << parseList.first();
             key = parseList.first();
         }
     }
 
     if (m_contents.contains(key)) {
-        qDebug() << "Language sample string is available for language:" << key;
+        qCDebug(fmLog) << "Language sample string is available for language:" << key;
         auto findResult = m_contents.find(key);
         result.append(findResult.value());
     }
 
-    qDebug() << "Exiting function: DFontPreview::getLanguageSampleString";
+    qCDebug(fmLog) << "Exiting function: DFontPreview::getLanguageSampleString";
     return result;
 }
 
@@ -451,7 +452,7 @@ QString DFontPreview::getLanguageSampleString(const QString &language)
 *************************************************************************/
 bool DFontPreview::checkFontContainText(FT_Face face, const QString &text)
 {
-    qDebug() << "Checking if font contains text:" << text;
+    qCDebug(fmLog) << "Checking if font contains text:" << text;
     if (face == nullptr || face->num_charmaps == 0)
         return false;
 
@@ -461,7 +462,7 @@ bool DFontPreview::checkFontContainText(FT_Face face, const QString &text)
     if (face->charmap == nullptr)
         err = FT_Select_Charmap(face, FT_ENCODING_UNICODE);
     if (err != 0) {
-        qDebug() << "Failed to select charmaps, trying to select charmaps";
+        qCDebug(fmLog) << "Failed to select charmaps, trying to select charmaps";
         for (int i = 0; i < face->num_charmaps; ++i) {
             err = FT_Select_Charmap(face, face->charmaps[i]->encoding);
             if (err == 0) {
@@ -472,13 +473,13 @@ bool DFontPreview::checkFontContainText(FT_Face face, const QString &text)
 
     for (auto ch : text) {
         if (!FT_Get_Char_Index(face, ch.unicode()) && ch != "，") {
-            qDebug() << "Character not found in font:" << ch;
+            qCDebug(fmLog) << "Character not found in font:" << ch;
             retval = false;
             break;
         }
     }
 
-    qDebug() << "Exiting function: DFontPreview::checkFontContainText";
+    qCDebug(fmLog) << "Exiting function: DFontPreview::checkFontContainText";
     return retval;
 }
 
@@ -494,14 +495,14 @@ bool DFontPreview::checkFontContainText(FT_Face face, const QString &text)
 *************************************************************************/
 bool isSpecialSymbol(FT_Face face, uint ucs4)
 {
-    qDebug() << "Checking if character is special symbol:" << ucs4;
+    qCDebug(fmLog) << "Checking if character is special symbol:" << ucs4;
     unsigned int glyph = FT_Get_Char_Index(face, ucs4);
     int err;
 
     err = FT_Load_Glyph(face, glyph, FT_LOAD_NO_SCALE);
 
     if (err == 0 && face->glyph->metrics.width == 0 && face->glyph->metrics.height == 0) {
-        qDebug() << "Character is special symbol";
+        qCDebug(fmLog) << "Character is special symbol";
         return true;
     }
 
@@ -525,7 +526,7 @@ bool isSpecialSymbol(FT_Face face, uint ucs4)
             || ((ucs4 >= 0x11300 && ucs4 <= 0x11303) || (ucs4 >= 0x1CD0 && ucs4 <= 0x1cF9) || (ucs4 == 0x20F0) || (ucs4 >= 0xD800 && ucs4 <= 0xDFFF)) //grantha
             || (ucs4  >= 0x10A01 && ucs4 <= 0x10A0F) || (ucs4 >= 0x10A38 && ucs4 <= 0x10A3F)) // kharoshthi
         return true;
-    qDebug() << "Character is not special symbol";
+    qCDebug(fmLog) << "Character is not special symbol";
     return false;
 }
 
@@ -541,7 +542,7 @@ bool isSpecialSymbol(FT_Face face, uint ucs4)
 *************************************************************************/
 QString DFontPreview::buildCharlistForFace(FT_Face face, int length)
 {
-    qDebug() << "Building character list for font preview, length:" << length;
+    qCDebug(fmLog) << "Building character list for font preview, length:" << length;
     QString retval;
     if (face == nullptr)
         return retval;
@@ -563,7 +564,7 @@ QString DFontPreview::buildCharlistForFace(FT_Face face, int length)
 
     QList<uint> ucs4List;
     if (count > 0) {
-        qDebug() << "Count is greater than 0, building character list for face";
+        qCDebug(fmLog) << "Count is greater than 0, building character list for face";
         FcChar32 ucs4, pos, map[FC_CHARSET_MAP_SIZE];
         int retCount = 0;
         uint unicode = 0;
@@ -594,7 +595,7 @@ QString DFontPreview::buildCharlistForFace(FT_Face face, int length)
         int index = 0;
 
         if (static_cast<int>(count) > len) {
-            qDebug() << "Count is greater than len, finding index";
+            qCDebug(fmLog) << "Count is greater than len, finding index";
             for (int i = len - 2; i >= 0; i--) {
                 if (firstChar - ucs4List[i] > static_cast<uint>((len - 1 - i) + len - 1)) {
                     index = i + 1;
@@ -625,7 +626,7 @@ QString DFontPreview::buildCharlistForFace(FT_Face face, int length)
     // Destroy a character set
     FcCharSetDestroy(fcs);
 
-    qDebug() << "Exiting function: DFontPreview::buildCharlistForFace";
+    qCDebug(fmLog) << "Exiting function: DFontPreview::buildCharlistForFace";
     return retval;
 }
 

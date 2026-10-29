@@ -3,6 +3,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#include "ddlog.h"
 #include "dfontloadthread.h"
 #include <QFile>
 #include <QDebug>
@@ -10,7 +11,7 @@
 DFontLoadThread::DFontLoadThread(QObject *parent)
     : QThread(parent)
 {
-    qDebug() << "DFontLoadThread created";
+    qCDebug(fmLog) << "DFontLoadThread created";
 }
 
 DFontLoadThread::~DFontLoadThread()
@@ -20,26 +21,26 @@ DFontLoadThread::~DFontLoadThread()
 
 void DFontLoadThread::open(const QString &filepath)
 {
-    qDebug() << "Preparing to load font file:" << filepath;
+    qCDebug(fmLog) << "Preparing to load font file:" << filepath;
     m_filePath = filepath;
 }
 
 void DFontLoadThread::run()
 {
-    qDebug() << "Starting to load font file:" << m_filePath;
+    qCDebug(fmLog) << "Starting to load font file:" << m_filePath;
     QFile file(m_filePath);
 
     if (file.open(QIODevice::ReadOnly)) {
-        qDebug() << "Successfully opened font file:" << m_filePath;
+        qCDebug(fmLog) << "Successfully opened font file:" << m_filePath;
         QByteArray fileContent = file.readAll();
         // qDebug() << "Read" << fileContent.size() << "bytes from font file";
         
         emit loadFinished(fileContent);
     } else {
-        qWarning() << "Failed to open font file:" << m_filePath << "Error:" << file.errorString();
+        qCWarning(fmLog) << "Failed to open font file:" << m_filePath << "Error:" << file.errorString();
         emit loadFinished(QByteArray());
     }
 
     file.close();
-    qDebug() << "Font loading thread finished";
+    qCDebug(fmLog) << "Font loading thread finished";
 }
