@@ -3,6 +3,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#include "ddlog.h"
 #include "dfinstallerrorlistview.h"
 #include "globaldef.h"
 #include "utils.h"
@@ -509,7 +510,7 @@ DFInstallErrorListView::DFInstallErrorListView(const QList<DFInstallErrorItemMod
     , m_errorListSourceModel(nullptr)
     , m_installErrorFontModelList(installErrorFontModelList)
 {
-    qDebug() << "DFInstallErrorListView created with" << installErrorFontModelList.size()
+    qCDebug(fmLog) << "DFInstallErrorListView created with" << installErrorFontModelList.size()
              << "error font items";
 //    QWidget *topSpaceWidget = new QWidget;
 //    topSpaceWidget->setFixedSize(this->width(), 70 - FTM_TITLE_FIXED_HEIGHT);
@@ -518,12 +519,12 @@ DFInstallErrorListView::DFInstallErrorListView(const QList<DFInstallErrorItemMod
     setAutoScroll(true);
     setMouseTracking(true);
 
-    qDebug() << "Initializing error list data";
+    qCDebug(fmLog) << "Initializing error list data";
     initErrorListData();
     initDelegate();
     initSelectedItem();
     installEventFilter(this);
-    qInfo() << "DFInstallErrorListView initialized with"
+    qCInfo(fmLog) << "DFInstallErrorListView initialized with"
             << m_installErrorFontModelList.size() << "error font items,"
             << "scrollable:" << hasAutoScroll()
             << "mouseTracking:" << hasMouseTracking();
@@ -539,7 +540,7 @@ DFInstallErrorListView::DFInstallErrorListView(const QList<DFInstallErrorItemMod
 *************************************************************************/
 DFInstallErrorListView::~DFInstallErrorListView()
 {
-    qDebug() << "DFInstallErrorListView destroyed";
+    qCDebug(fmLog) << "DFInstallErrorListView destroyed";
     initModel(false);
     m_installErrorFontModelList.clear();
 }
@@ -554,7 +555,7 @@ DFInstallErrorListView::~DFInstallErrorListView()
 *************************************************************************/
 void DFInstallErrorListView::initErrorListData()
 {
-    qDebug() << "Entering function: DFInstallErrorListView::initErrorListData";
+    qCDebug(fmLog) << "Entering function: DFInstallErrorListView::initErrorListData";
     initModel();
     DFontInfo fontInfo;
     for (int i = 0; i < m_installErrorFontModelList.size(); i++) {
@@ -580,7 +581,7 @@ void DFInstallErrorListView::initErrorListData()
 //        selectionModel()->select(firstRowModelIndex, QItemSelectionModel::Select);
 //        setCurrentIndex(firstRowModelIndex);
 //    }
-    qDebug() << "Exiting function: DFInstallErrorListView::initErrorListData";
+    qCDebug(fmLog) << "Exiting function: DFInstallErrorListView::initErrorListData";
 }
 
 /*************************************************************************
@@ -593,7 +594,7 @@ void DFInstallErrorListView::initErrorListData()
 *************************************************************************/
 void DFInstallErrorListView::initDelegate()
 {
-    qDebug() << "Entering function: DFInstallErrorListView::initDelegate";
+    qCDebug(fmLog) << "Entering function: DFInstallErrorListView::initDelegate";
     m_errorListItemDelegate = new DFInstallErrorListDelegate(this);
     this->setItemDelegate(m_errorListItemDelegate);
 }
@@ -609,7 +610,7 @@ void DFInstallErrorListView::initDelegate()
 *************************************************************************/
 void DFInstallErrorListView::addErrorListData(const QList<DFInstallErrorItemModel> &installErrorFontModelList)
 {
-    qDebug() << "Entering function: DFInstallErrorListView::addErrorListData with" << installErrorFontModelList.size() << "items";
+    qCDebug(fmLog) << "Entering function: DFInstallErrorListView::addErrorListData with" << installErrorFontModelList.size() << "items";
     initModel();
 
     QList<DFInstallErrorItemModel> m_newErrorFontModel;
@@ -642,7 +643,7 @@ void DFInstallErrorListView::addErrorListData(const QList<DFInstallErrorItemMode
     }
 
     this->setModel(m_errorListSourceModel);
-    qDebug() << "Exiting function: DFInstallErrorListView::addErrorListData - total items in model:" << m_installErrorFontModelList.size();
+    qCDebug(fmLog) << "Exiting function: DFInstallErrorListView::addErrorListData - total items in model:" << m_installErrorFontModelList.size();
 }
 
 /*************************************************************************
@@ -658,22 +659,22 @@ void DFInstallErrorListView::addErrorListData(const QList<DFInstallErrorItemMode
 *************************************************************************/
 void DFInstallErrorListView::checkScrollToIndex(QStringList &addHalfInstalledFiles, QStringList &oldHalfInstalledFiles, QStringList &errorFileList)
 {
-    qDebug() << "Entering function: DFInstallErrorListView::checkScrollToIndex";
+    qCDebug(fmLog) << "Entering function: DFInstallErrorListView::checkScrollToIndex";
     if (addHalfInstalledFiles.count() > 0) {
-        qDebug() << "Scroll to addHalfInstalledFiles";
+        qCDebug(fmLog) << "Scroll to addHalfInstalledFiles";
         scrollToIndex(addHalfInstalledFiles.first());
     } else if (addHalfInstalledFiles.count() == 0 && oldHalfInstalledFiles.count() != 0) {
-        qDebug() << "Scroll to oldHalfInstalledFiles";
+        qCDebug(fmLog) << "Scroll to oldHalfInstalledFiles";
         scrollToIndex(oldHalfInstalledFiles.first());
     } else if (addHalfInstalledFiles.count() == 0  && oldHalfInstalledFiles.count() == 0 && errorFileList.count() > 0) {
-        qDebug() << "Scroll to errorFileList";
+        qCDebug(fmLog) << "Scroll to errorFileList";
         scrollToIndex(errorFileList.first());
     } else {
-        qDebug() << "Scroll to beforeSelectRow";
+        qCDebug(fmLog) << "Scroll to beforeSelectRow";
         QModelIndex modelIndex = m_errorListSourceModel->index(beforeSelectRow, 0);
         scrollTo(modelIndex);
     }
-    qDebug() << "Exiting function: DFInstallErrorListView::checkScrollToIndex";
+    qCDebug(fmLog) << "Exiting function: DFInstallErrorListView::checkScrollToIndex";
 }
 
 /*************************************************************************
@@ -687,14 +688,14 @@ void DFInstallErrorListView::checkScrollToIndex(QStringList &addHalfInstalledFil
 *************************************************************************/
 void DFInstallErrorListView::scrollToIndex(QString &filePath)
 {
-    qDebug() << "Entering function: DFInstallErrorListView::scrollToIndex";
+    qCDebug(fmLog) << "Entering function: DFInstallErrorListView::scrollToIndex";
     DFontInfo fontinfo = m_fontInfoManager->getFontInfo(filePath);
     QString file;
     if (!fontinfo.psname.compare("")) {
-        qDebug() << "Scroll to familyName";
+        qCDebug(fmLog) << "Scroll to familyName";
         file = fontinfo.familyName + fontinfo.styleName;
     } else {
-        qDebug() << "Scroll to psname";
+        qCDebug(fmLog) << "Scroll to psname";
         file = fontinfo.psname + fontinfo.styleName;
     }
 
@@ -716,7 +717,7 @@ void DFInstallErrorListView::scrollToIndex(QString &filePath)
             scrollTo(modelIndex);
         }
     }
-    qDebug() << "Exiting function: DFInstallErrorListView::scrollToIndex";
+    qCDebug(fmLog) << "Exiting function: DFInstallErrorListView::scrollToIndex";
 }
 
 /*************************************************************************
@@ -731,7 +732,7 @@ void DFInstallErrorListView::scrollToIndex(QString &filePath)
 *************************************************************************/
 void DFInstallErrorListView::setSelectStatus(QStringList &HalfInstalledFiles, QModelIndexList &beforeSelectFiles)
 {
-    qDebug() << "Entering function: DFInstallErrorListView::setSelectStatus";
+    qCDebug(fmLog) << "Entering function: DFInstallErrorListView::setSelectStatus";
     QStringList str;
     for (auto &it : HalfInstalledFiles) {
         DFontInfo fontinfo = m_fontInfoManager->getFontInfo(it);
@@ -778,7 +779,7 @@ void DFInstallErrorListView::setSelectStatus(QStringList &HalfInstalledFiles, QM
     }
 
     if (selected == false) {
-        qDebug() << "Select beforeSelectFiles";
+        qCDebug(fmLog) << "Select beforeSelectFiles";
 //        this->selectionModel()->select(beforeSelectFiles)
         for (auto &it : beforeSelectFiles) {
 //            selectionModel()->select(it, QItemSelectionModel::Select);
@@ -786,7 +787,7 @@ void DFInstallErrorListView::setSelectStatus(QStringList &HalfInstalledFiles, QM
             selectionModel()->select(modelIndex, QItemSelectionModel::Select);
         }
     }
-    qDebug() << "Exiting function: DFInstallErrorListView::setSelectStatus";
+    qCDebug(fmLog) << "Exiting function: DFInstallErrorListView::setSelectStatus";
 }
 
 /*************************************************************************
@@ -802,7 +803,7 @@ void DFInstallErrorListView::setSelectStatus(QStringList &HalfInstalledFiles, QM
 *************************************************************************/
 void DFInstallErrorListView::updateErrorFontModelList(int index, DFInstallErrorItemModel m_currentItemModel)
 {
-    qDebug() << "Entering function: DFInstallErrorListView::updateErrorFontModelList";
+    qCDebug(fmLog) << "Entering function: DFInstallErrorListView::updateErrorFontModelList";
     m_installErrorFontModelList.replace(index, m_currentItemModel);
 }
 
@@ -817,9 +818,9 @@ void DFInstallErrorListView::updateErrorFontModelList(int index, DFInstallErrorI
 *************************************************************************/
 void DFInstallErrorListView::initModel(bool newOne)
 {
-    qDebug() << "Entering function: DFInstallErrorListView::initModel";
+    qCDebug(fmLog) << "Entering function: DFInstallErrorListView::initModel";
     if (m_errorListSourceModel != nullptr) {
-        qDebug() << "Remove rows";
+        qCDebug(fmLog) << "Remove rows";
         int rowCnt = m_errorListSourceModel->rowCount();
         m_errorListSourceModel->removeRows(0, rowCnt);
         for (int i = rowCnt; i >= 0; i--) {
@@ -834,7 +835,7 @@ void DFInstallErrorListView::initModel(bool newOne)
 
     if (newOne)
         m_errorListSourceModel = new QStandardItemModel(this);
-    qDebug() << "Exiting function: DFInstallErrorListView::initModel";
+    qCDebug(fmLog) << "Exiting function: DFInstallErrorListView::initModel";
 }
 
 /*************************************************************************
@@ -878,7 +879,7 @@ void DFInstallErrorListView::mousePressEvent(QMouseEvent *event)
 {
     // qDebug() << "Entering function: DFInstallErrorListView::mousePressEvent (high frequency mouse event - commented)";
     if (event->button() == Qt::LeftButton) {
-        qDebug() << "Left button pressed";
+        qCDebug(fmLog) << "Left button pressed";
         QPoint point = event->pos();
         QModelIndex modelIndex = indexAt(point);
         DFInstallErrorItemModel itemModel =
@@ -1045,15 +1046,15 @@ void DFInstallErrorListView::keyPressEvent(QKeyEvent *event)
 *************************************************************************/
 void DFInstallErrorListView::initSelectedItem()
 {
-    qDebug() << "Entering function: DFInstallErrorListView::initSelectedItem";
+    qCDebug(fmLog) << "Entering function: DFInstallErrorListView::initSelectedItem";
     if (selectionModel()->selectedIndexes().count() == 0) {
-        qDebug() << "Init selected item";
+        qCDebug(fmLog) << "Init selected item";
         for (int i = 0; i < this->count(); i++) {
             if (selectNextIndex(i))
                 break;
         }
     }
-    qDebug() << "Exiting function: DFInstallErrorListView::initSelectedItem";
+    qCDebug(fmLog) << "Exiting function: DFInstallErrorListView::initSelectedItem";
 }
 
 /*************************************************************************
@@ -1085,14 +1086,14 @@ QRect DFInstallErrorListView::getIconRect(const QRect &rect)
 *************************************************************************/
 void DFInstallErrorListView::responseToHomeAndEnd(bool isHomeKeyPressed)
 {
-    qDebug() << "Entering function: DFInstallErrorListView::responseToHomeAndEnd";
+    qCDebug(fmLog) << "Entering function: DFInstallErrorListView::responseToHomeAndEnd";
     QModelIndex index;
     if (isHomeKeyPressed) {
-        qDebug() << "Scroll to top";
+        qCDebug(fmLog) << "Scroll to top";
         index = m_errorListSourceModel->index(0, 0);
         scrollToTop();
     } else {
-        qDebug() << "Scroll to bottom";
+        qCDebug(fmLog) << "Scroll to bottom";
         index = m_errorListSourceModel->index(count() - 1, 0);
         scrollToBottom();
     }
@@ -1103,7 +1104,7 @@ void DFInstallErrorListView::responseToHomeAndEnd(bool isHomeKeyPressed)
         selectionModel()->select(index, QItemSelectionModel::Select);
         setCurrentIndex(index);
     }
-    qDebug() << "Exiting function: DFInstallErrorListView::responseToHomeAndEnd";
+    qCDebug(fmLog) << "Exiting function: DFInstallErrorListView::responseToHomeAndEnd";
 }
 
 /*************************************************************************
@@ -1117,24 +1118,24 @@ void DFInstallErrorListView::responseToHomeAndEnd(bool isHomeKeyPressed)
 *************************************************************************/
 void DFInstallErrorListView::responseToPageUpAndPageDown(bool isPageUpPressed)
 {
-    qDebug() << "Entering function: DFInstallErrorListView::responseToPageUpAndPageDown";
+    qCDebug(fmLog) << "Entering function: DFInstallErrorListView::responseToPageUpAndPageDown";
     if (isPageUpPressed) {
-        qDebug() << "Scroll to top";
+        qCDebug(fmLog) << "Scroll to top";
         QModelIndex firstVisibleItem = indexAt(QPoint(3, 3));
         if (firstVisibleItem.isValid()) {
-            qDebug() << "Scroll to top";
+            qCDebug(fmLog) << "Scroll to top";
             scrollTo(firstVisibleItem, QAbstractItemView::PositionAtBottom);
         }
     } else {
-        qDebug() << "Scroll to bottom";
+        qCDebug(fmLog) << "Scroll to bottom";
         QRect visibleRect = geometry();
         QModelIndex lastVisibleItem = indexAt(QPoint(3, visibleRect.height() - 3));
         if (lastVisibleItem.isValid()) {
-            qDebug() << "Scroll to bottom";
+            qCDebug(fmLog) << "Scroll to bottom";
             scrollTo(lastVisibleItem, QAbstractItemView::PositionAtTop);
         }
     }
-    qDebug() << "Exiting function: DFInstallErrorListView::responseToPageUpAndPageDown";
+    qCDebug(fmLog) << "Exiting function: DFInstallErrorListView::responseToPageUpAndPageDown";
 }
 
 /*******************************************************************************

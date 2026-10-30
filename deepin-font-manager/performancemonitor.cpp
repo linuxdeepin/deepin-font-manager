@@ -3,6 +3,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#include "ddlog.h"
 #include <QTime>
 #include <QDebug>
 #include "performancemonitor.h"
@@ -53,7 +54,7 @@ PerformanceMonitor::PerformanceMonitor(QObject *parent) : QObject(parent)
 void PerformanceMonitor::initializeAppStart()
 {
     QDateTime current = QDateTime::currentDateTime();
-    qDebug() << LOG_FLAG
+    qCDebug(fmLog) << LOG_FLAG
              << QDateTime::currentDateTime().toString(Qt::ISODateWithMs)
              << "start to initialize app";
     initializeAppStartMs = current.toMSecsSinceEpoch();
@@ -71,13 +72,13 @@ void PerformanceMonitor::initializeAppStart()
 void PerformanceMonitor::initializeAppFinish()
 {
     QDateTime current = QDateTime::currentDateTime();
-    qDebug() << LOG_FLAG
+    qCDebug(fmLog) << LOG_FLAG
              << QDateTime::currentDateTime().toString(Qt::ISODateWithMs)
              << " finish to initialize app";
 
     initializeAppFinishMs = current.toMSecsSinceEpoch();
     qint64 time = initializeAppFinishMs - initializeAppStartMs;
-    qInfo() << QString("%1 %2-%3 %4 #(Init app time)").arg(GRAB_POINT).arg(APP_NAME).arg(INIT_APP_TIME).arg(time);
+    qCInfo(fmLog) << QString("%1 %2-%3 %4 #(Init app time)").arg(GRAB_POINT).arg(APP_NAME).arg(INIT_APP_TIME).arg(time);
 }
 
 /*************************************************************************
@@ -92,7 +93,7 @@ void PerformanceMonitor::initializeAppFinish()
 void PerformanceMonitor::loadFontStart()
 {
     QDateTime current = QDateTime::currentDateTime();
-    qDebug() << LOG_FLAG
+    qCDebug(fmLog) << LOG_FLAG
              << QDateTime::currentDateTime().toString(Qt::ISODateWithMs)
              << "start to load fonts";
     loadFontStartMs = current.toMSecsSinceEpoch();
@@ -110,15 +111,15 @@ void PerformanceMonitor::loadFontStart()
 void PerformanceMonitor::loadFontFinish()
 {
     QDateTime current = QDateTime::currentDateTime();
-    qDebug() << LOG_FLAG
+    qCDebug(fmLog) << LOG_FLAG
              << QDateTime::currentDateTime().toString(Qt::ISODateWithMs)
              << " finish to load fonts";
 
     loadFontFinishMs = current.toMSecsSinceEpoch();
     qint64 time1 = loadFontFinishMs - loadFontStartMs;
-    qInfo() << QString("%1 %2-%3 %4 #(Load fonts time)").arg(GRAB_POINT).arg(APP_NAME).arg(LOAD_FONTS_TIME).arg(time1);
+    qCInfo(fmLog) << QString("%1 %2-%3 %4 #(Load fonts time)").arg(GRAB_POINT).arg(APP_NAME).arg(LOAD_FONTS_TIME).arg(time1);
     qint64 time2 = loadFontFinishMs - initializeAppStartMs;
-    qInfo() << QString("%1 %2-%3 %4 #(Init and load time)").arg(GRAB_POINT).arg(APP_NAME).arg(INIT_AND_LOAD_TIME).arg(time2);
+    qCInfo(fmLog) << QString("%1 %2-%3 %4 #(Init and load time)").arg(GRAB_POINT).arg(APP_NAME).arg(INIT_AND_LOAD_TIME).arg(time2);
 }
 
 /*************************************************************************
@@ -133,7 +134,7 @@ void PerformanceMonitor::loadFontFinish()
 void PerformanceMonitor::installFontStart()
 {
     QDateTime current = QDateTime::currentDateTime();
-    qDebug() << LOG_FLAG
+    qCDebug(fmLog) << LOG_FLAG
              << QDateTime::currentDateTime().toString(Qt::ISODateWithMs)
              << " start to install fonts";
     installFontStartMs = current.toMSecsSinceEpoch();
@@ -151,13 +152,13 @@ void PerformanceMonitor::installFontStart()
 void PerformanceMonitor::installFontFinish(int fontCount)
 {
     QDateTime current = QDateTime::currentDateTime();
-    qDebug() << LOG_FLAG
+    qCDebug(fmLog) << LOG_FLAG
              << QDateTime::currentDateTime().toString(Qt::ISODateWithMs)
              << " finish to install fonts";
 
     installFontFinishMs = current.toMSecsSinceEpoch();
     qint64 time = installFontFinishMs - installFontStartMs;
-    qInfo() << QString("%1 %2-%3 %4 %5 #(Install fonts time)").arg(GRAB_POINT).arg(APP_NAME).arg(INSTALL_FONTS_TIME).arg(fontCount).arg(time);
+    qCInfo(fmLog) << QString("%1 %2-%3 %4 %5 #(Install fonts time)").arg(GRAB_POINT).arg(APP_NAME).arg(INSTALL_FONTS_TIME).arg(fontCount).arg(time);
 }
 
 ///*************************************************************************
@@ -188,7 +189,7 @@ void PerformanceMonitor::installFontFinish(int fontCount)
 void PerformanceMonitor::exportFontStart()
 {
     QDateTime current = QDateTime::currentDateTime();
-    qDebug() << LOG_FLAG
+    qCDebug(fmLog) << LOG_FLAG
              << QDateTime::currentDateTime().toString(Qt::ISODateWithMs)
              << " start to export fonts";
     exportFontStartMs = current.toMSecsSinceEpoch();
@@ -206,13 +207,13 @@ void PerformanceMonitor::exportFontStart()
 void PerformanceMonitor::exportFontFinish(int fontCount)
 {
     QDateTime current = QDateTime::currentDateTime();
-    qDebug() << LOG_FLAG
+    qCDebug(fmLog) << LOG_FLAG
              << QDateTime::currentDateTime().toString(Qt::ISODateWithMs)
              << " finish to export fonts";
 
     exportFontFinishMs = current.toMSecsSinceEpoch();
     qint64 time = exportFontFinishMs - exportFontStartMs;
-    qInfo() << QString("%1 %2-%3 %4 %5 #(Export fonts time)").arg(GRAB_POINT).arg(APP_NAME).arg(EXPORT_FONTS_TIME).arg(fontCount).arg(time);
+    qCInfo(fmLog) << QString("%1 %2-%3 %4 %5 #(Export fonts time)").arg(GRAB_POINT).arg(APP_NAME).arg(EXPORT_FONTS_TIME).arg(fontCount).arg(time);
 }
 
 /*************************************************************************
@@ -227,7 +228,7 @@ void PerformanceMonitor::exportFontFinish(int fontCount)
 void PerformanceMonitor::deleteFontStart()
 {
     QDateTime current = QDateTime::currentDateTime();
-    qDebug() << LOG_FLAG
+    qCDebug(fmLog) << LOG_FLAG
              << QDateTime::currentDateTime().toString(Qt::ISODateWithMs)
              << " start to delete fonts";
     deleteFontStartMs = current.toMSecsSinceEpoch();
@@ -245,13 +246,13 @@ void PerformanceMonitor::deleteFontStart()
 void PerformanceMonitor::deleteFontFinish(int fontCount)
 {
     QDateTime current = QDateTime::currentDateTime();
-    qDebug() << LOG_FLAG
+    qCDebug(fmLog) << LOG_FLAG
              << QDateTime::currentDateTime().toString(Qt::ISODateWithMs)
              << " finish to delete fonts";
 
     deleteFontFinishMs = current.toMSecsSinceEpoch();
     qint64 time = deleteFontFinishMs - deleteFontStartMs;
-    qInfo() << QString("%1 %2-%3 %4 %5 #(delete fonts time)").arg(GRAB_POINT).arg(APP_NAME).arg(DELETE_FONTS_TIME).arg(fontCount).arg(time);
+    qCInfo(fmLog) << QString("%1 %2-%3 %4 %5 #(delete fonts time)").arg(GRAB_POINT).arg(APP_NAME).arg(DELETE_FONTS_TIME).arg(fontCount).arg(time);
 }
 
 /*************************************************************************
@@ -266,7 +267,7 @@ void PerformanceMonitor::deleteFontFinish(int fontCount)
 void PerformanceMonitor::activeFontStart()
 {
     QDateTime current = QDateTime::currentDateTime();
-    qDebug() << LOG_FLAG
+    qCDebug(fmLog) << LOG_FLAG
              << QDateTime::currentDateTime().toString(Qt::ISODateWithMs)
              << " start to active fonts";
     activeFontStartMs = current.toMSecsSinceEpoch();
@@ -285,16 +286,16 @@ void PerformanceMonitor::activeFontStart()
 void PerformanceMonitor::activeFontFinish(bool isDeActive, int fontCount)
 {
     QDateTime current = QDateTime::currentDateTime();
-    qDebug() << LOG_FLAG
+    qCDebug(fmLog) << LOG_FLAG
              << QDateTime::currentDateTime().toString(Qt::ISODateWithMs)
              << " finish to active or deactive fonts";
 
     activeFontFinishMs = current.toMSecsSinceEpoch();
     qint64 time = activeFontFinishMs - activeFontStartMs;
     if (isDeActive)
-        qInfo() << QString("%1 %2-%3 %4 %5 #(deactive fonts time)").arg(GRAB_POINT).arg(APP_NAME).arg(DEACTIVE_FONTS_TIME).arg(fontCount).arg(time);
+        qCInfo(fmLog) << QString("%1 %2-%3 %4 %5 #(deactive fonts time)").arg(GRAB_POINT).arg(APP_NAME).arg(DEACTIVE_FONTS_TIME).arg(fontCount).arg(time);
     else {
-        qInfo() << QString("%1 %2-%3 %4 %5 #(active fonts time)").arg(GRAB_POINT).arg(APP_NAME).arg(ACTIVE_FONTS_TIME).arg(fontCount).arg(time);
+        qCInfo(fmLog) << QString("%1 %2-%3 %4 %5 #(active fonts time)").arg(GRAB_POINT).arg(APP_NAME).arg(ACTIVE_FONTS_TIME).arg(fontCount).arg(time);
     }
 }
 
@@ -310,7 +311,7 @@ void PerformanceMonitor::activeFontFinish(bool isDeActive, int fontCount)
 void PerformanceMonitor::favoriteFontStart()
 {
     QDateTime current = QDateTime::currentDateTime();
-    qDebug() << LOG_FLAG
+    qCDebug(fmLog) << LOG_FLAG
              << QDateTime::currentDateTime().toString(Qt::ISODateWithMs)
              << " start to favorite fonts";
     favoriteFontStartMs = current.toMSecsSinceEpoch();
@@ -329,15 +330,15 @@ void PerformanceMonitor::favoriteFontStart()
 void PerformanceMonitor::favoriteFontFinish(bool isFavorite, int fontCount)
 {
     QDateTime current = QDateTime::currentDateTime();
-    qDebug() << LOG_FLAG
+    qCDebug(fmLog) << LOG_FLAG
              << QDateTime::currentDateTime().toString(Qt::ISODateWithMs)
              << " finish to favorite fonts";
 
     favoriteFontFinishMs = current.toMSecsSinceEpoch();
     qint64 time = favoriteFontFinishMs - favoriteFontStartMs;
     if (isFavorite)
-        qInfo() << QString("%1 %2-%3 %4 %5 #(Favorite fonts time)").arg(GRAB_POINT).arg(APP_NAME).arg(FAVORITE_FONTS_TIME).arg(fontCount).arg(time);
+        qCInfo(fmLog) << QString("%1 %2-%3 %4 %5 #(Favorite fonts time)").arg(GRAB_POINT).arg(APP_NAME).arg(FAVORITE_FONTS_TIME).arg(fontCount).arg(time);
     else {
-        qInfo() << QString("%1 %2-%3 %4 %5 #(UnFavorite fonts time)").arg(GRAB_POINT).arg(APP_NAME).arg(UNFAVORITE_FONTS_TIME).arg(fontCount).arg(time);
+        qCInfo(fmLog) << QString("%1 %2-%3 %4 %5 #(UnFavorite fonts time)").arg(GRAB_POINT).arg(APP_NAME).arg(UNFAVORITE_FONTS_TIME).arg(fontCount).arg(time);
     }
 }

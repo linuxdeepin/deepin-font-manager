@@ -3,6 +3,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#include "ddlog.h"
 #include "dfdeletedialog.h"
 #include "utils.h"
 #include "globaldef.h"
@@ -97,12 +98,12 @@ DFDeleteDialog::DFDeleteDialog(DFontMgrMainWindow *win, int deleteCnt, int syste
     , m_deleting(false)
     , m_hasCurFont(hasCurrent)
 {
-    qDebug() << "DFDeleteDialog constructor - deleteCnt:" << deleteCnt
+    qCDebug(fmLog) << "DFDeleteDialog constructor - deleteCnt:" << deleteCnt
              << "systemCnt:" << systemCnt << "hasCurrent:" << hasCurrent;
     initUI();
     initConnections();
     setTheme();
-    qDebug() << "Exiting function: DFDeleteDialog::DFDeleteDialog";
+    qCDebug(fmLog) << "Exiting function: DFDeleteDialog::DFDeleteDialog";
 }
 
 /*************************************************************************
@@ -115,7 +116,7 @@ DFDeleteDialog::DFDeleteDialog(DFontMgrMainWindow *win, int deleteCnt, int syste
 *************************************************************************/
 void DFDeleteDialog::initUI()
 {
-    qDebug() << "Entering function: DFDeleteDialog::initUI";
+    qCDebug(fmLog) << "Entering function: DFDeleteDialog::initUI";
     setFixedWidth(DEFAULT_WINDOW_W);
     setIcon(QIcon::fromTheme("deepin-font-manager"));
 
@@ -142,7 +143,7 @@ void DFDeleteDialog::initUI()
 
     insertButton(0, DApplication::translate("DFDeleteDialog", "Cancel", "button"), false, ButtonNormal);
     insertButton(1, DApplication::translate("DeleteConfirmDailog", "Delete", "button"), true, ButtonWarning);
-    qDebug() << "Exiting function: DFDeleteDialog::initUI";
+    qCDebug(fmLog) << "Exiting function: DFDeleteDialog::initUI";
 }
 
 /*************************************************************************
@@ -155,11 +156,11 @@ void DFDeleteDialog::initUI()
 *************************************************************************/
 void DFDeleteDialog::initConnections()
 {
-    qDebug() << "Entering function: DFDeleteDialog::initConnections";
+    qCDebug(fmLog) << "Entering function: DFDeleteDialog::initConnections";
     //关闭删除确认对话框并且没有点击"确认"按钮时,取消删除操作
     connect(this, &DFDeleteDialog::closed, this, [ = ]() {
         if (m_mainWindow != nullptr && !m_deleting) {
-            qDebug() << "User canceled font deletion";
+            qCDebug(fmLog) << "User canceled font deletion";
             m_mainWindow->cancelDelete();
             emit m_signalManager->clearRecoverList();
         }
@@ -177,7 +178,7 @@ void DFDeleteDialog::initConnections()
             if (m_deleting)
                 return;
             m_deleting = true;
-            qDebug() << "User confirmed deletion of" << m_deleteCnt << "fonts";
+            qCDebug(fmLog) << "User confirmed deletion of" << m_deleteCnt << "fonts";
             accept();
             close();
             break;
@@ -194,7 +195,7 @@ void DFDeleteDialog::initConnections()
 #else
     connect(DApplicationHelper::instance(), &DApplicationHelper::themeTypeChanged, this, &DFDeleteDialog::setTheme);
 #endif
-    qDebug() << "Exiting function: DFDeleteDialog::initConnections";
+    qCDebug(fmLog) << "Exiting function: DFDeleteDialog::initConnections";
 }
 
 /*************************************************************************
@@ -207,7 +208,7 @@ void DFDeleteDialog::initConnections()
 *************************************************************************/
 void DFDeleteDialog::initMessageTitle()
 {
-    qDebug() << "Entering function: DFDeleteDialog::initMessageTitle";
+    qCDebug(fmLog) << "Entering function: DFDeleteDialog::initMessageTitle";
     messageTitle = new DLabel(this);
     messageTitle->setText(DApplication::translate("DeleteConfirmDailog", "Are you sure you want to delete %1 font(s)?").arg(m_deleteCnt));
 
@@ -218,7 +219,7 @@ void DFDeleteDialog::initMessageTitle()
     messageTitle->setAlignment(Qt::AlignCenter);
 
     DFontSizeManager::instance()->bind(messageTitle, DFontSizeManager::T6, QFont::Medium);
-    qDebug() << "Exiting function: DFDeleteDialog::initMessageTitle";
+    qCDebug(fmLog) << "Exiting function: DFDeleteDialog::initMessageTitle";
 }
 
 /*************************************************************************
@@ -231,28 +232,28 @@ void DFDeleteDialog::initMessageTitle()
 *************************************************************************/
 void DFDeleteDialog::initMessageDetail()
 {
-    qDebug() << "Entering function: DFDeleteDialog::initMessageDetail";
+    qCDebug(fmLog) << "Entering function: DFDeleteDialog::initMessageDetail";
     messageDetail = new DLabel(this);
 
     if (m_systemCnt == 0 && !m_hasCurFont) {
-        qDebug() << "Case: no system fonts, no current font in use";
+        qCDebug(fmLog) << "Case: no system fonts, no current font in use";
         if (m_deleteCnt == 1) {
-            qDebug() << "Single font deletion message";
+            qCDebug(fmLog) << "Single font deletion message";
             messageDetail->setText(DApplication::translate("DeleteConfirmDailog", "This font will not be available to applications"));
         } else {
-            qDebug() << "Multiple fonts deletion message";
+            qCDebug(fmLog) << "Multiple fonts deletion message";
             messageDetail->setText(DApplication::translate("DeleteConfirmDailog", "These fonts will not be available to applications"));
         }
     } else if (m_systemCnt > 0 && !m_hasCurFont) {
-        qDebug() << "Case: system fonts present, no current font in use";
+        qCDebug(fmLog) << "Case: system fonts present, no current font in use";
         messageDetail->setText(DApplication::translate("DeleteConfirmDailog",
                                                        "The other %1 system fonts cannot be deleted").arg(m_systemCnt));
     } else if (m_systemCnt == 0 && m_hasCurFont) {
-        qDebug() << "Case: no system fonts, current font in use";
+        qCDebug(fmLog) << "Case: no system fonts, current font in use";
         messageDetail->setText(DApplication::translate("DeleteConfirmDailog",
                                                        "The font \"%1\" in use cannot be deleted").arg(m_mainWindow->getPreviewListView()->getCurFontStrName()));
     } else {
-        qDebug() << "Case: system fonts present and current font in use";
+        qCDebug(fmLog) << "Case: system fonts present and current font in use";
         messageDetail->setText(DApplication::translate("DeleteConfirmDailog",
                                                        "The other %1 system fonts and the font \"%2\" in use cannot be deleted").arg(m_systemCnt)
                                .arg(m_mainWindow->getPreviewListView()->getCurFontStrName()));
@@ -266,7 +267,7 @@ void DFDeleteDialog::initMessageDetail()
 
     DFontSizeManager::instance()->bind(messageDetail, DFontSizeManager::T6, QFont::Medium);
 
-    qDebug() << "Exiting function: DFDeleteDialog::initMessageDetail";
+    qCDebug(fmLog) << "Exiting function: DFDeleteDialog::initMessageDetail";
 }
 
 /*************************************************************************
@@ -282,12 +283,12 @@ void DFDeleteDialog::initMessageDetail()
 *************************************************************************/
 void DFDeleteDialog::onFontChanged(const QFont &font)
 {
-    qDebug() << "Entering function: DFDeleteDialog::onFontChanged";
+    qCDebug(fmLog) << "Entering function: DFDeleteDialog::onFontChanged";
     Q_UNUSED(font);
     /* Bug#20953 #21069  UT000591 */
     messageDetail->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     resize(sizeHint());
-    qDebug() << "Exiting function: DFDeleteDialog::onFontChanged";
+    qCDebug(fmLog) << "Exiting function: DFDeleteDialog::onFontChanged";
 }
 
 /*************************************************************************
@@ -334,7 +335,7 @@ void DFDeleteDialog::keyPressEvent(QKeyEvent *event)
 *************************************************************************/
 void DFDeleteDialog::setTheme()
 {
-    qDebug() << "Theme changed, updating dialog colors";
+    qCDebug(fmLog) << "Theme changed, updating dialog colors";
     // 根据主题设置文字颜色
 #if QT_VERSION_MAJOR > 5
     DPalette pamessageTitle = messageTitle->palette();
@@ -364,7 +365,7 @@ void DFDeleteDialog::setTheme()
     DApplicationHelper::instance()->setPalette(messageTitle, pamessageTitle);
     DApplicationHelper::instance()->setPalette(messageDetail, pamessageDetail);
 #endif
-    qDebug() << "Exiting function: DFDeleteDialog::setTheme";
+    qCDebug(fmLog) << "Exiting function: DFDeleteDialog::setTheme";
 }
 
 DFHandleTTCDialog::DFHandleTTCDialog(DFontMgrMainWindow *win, QString &file, QWidget *parent)
@@ -372,7 +373,7 @@ DFHandleTTCDialog::DFHandleTTCDialog(DFontMgrMainWindow *win, QString &file, QWi
     , m_mainWindow(win)
     , fontset(file)
 {
-    qDebug() << "DFHandleTTCDialog created for font file:" << file;
+    qCDebug(fmLog) << "DFHandleTTCDialog created for font file:" << file;
 }
 
 bool DFHandleTTCDialog::getDeleting()
@@ -417,14 +418,14 @@ bool DFHandleTTCDialog::eventFilter(QObject *watched, QEvent *event)
 
 int DFHandleTTCDialog::execDialog()
 {
-    qDebug() << "Entering function: DFHandleTTCDialog::execDialog";
+    qCDebug(fmLog) << "Entering function: DFHandleTTCDialog::execDialog";
     // 因为使用了adjustSize()，在exec之前dialog的大小未知，
     // 所以需要延时5ms(经验值)后moveToCenter才准确
     QTimer::singleShot(5, this, [&]() {
         moveToCenter();
     });
 
-    qDebug() << "Exiting function: DFHandleTTCDialog::execDialog";
+    qCDebug(fmLog) << "Exiting function: DFHandleTTCDialog::execDialog";
     return exec();
 }
 
@@ -445,7 +446,7 @@ void DFHandleTTCDialog::keyPressEvent(QKeyEvent *event)
 
 void DFHandleTTCDialog::initUI()
 {
-    qDebug() << "Entering function: DFHandleTTCDialog::initUI";
+    qCDebug(fmLog) << "Entering function: DFHandleTTCDialog::initUI";
     setFixedWidth(DEFAULT_WINDOW_W);
 
     initMessageTitle();
@@ -471,12 +472,12 @@ void DFHandleTTCDialog::initUI()
 
     addContent(mainFrame);
     applyAllCkb->installEventFilter(this);
-    qDebug() << "Exiting function: DFHandleTTCDialog::initUI";
+    qCDebug(fmLog) << "Exiting function: DFHandleTTCDialog::initUI";
 }
 
 void DFHandleTTCDialog::initConnections()
 {
-    qDebug() << "Entering function: DFHandleTTCDialog::initConnections";
+    qCDebug(fmLog) << "Entering function: DFHandleTTCDialog::initConnections";
     connect(m_cancelBtn, &DPushButton::clicked, this, [ = ]() {
         reject();
         close();
@@ -490,12 +491,12 @@ void DFHandleTTCDialog::initConnections()
     connect(applyAllCkb, &DCheckBox::clicked, this, [ = ]() {
         m_bAapplyToAll = applyAllCkb->isChecked();
     });
-    qDebug() << "Exiting function: DFHandleTTCDialog::initConnections";
+    qCDebug(fmLog) << "Exiting function: DFHandleTTCDialog::initConnections";
 }
 
 void DFHandleTTCDialog::initMessageTitle()
 {
-    qDebug() << "Entering function: DFHandleTTCDialog::initMessageTitle";
+    qCDebug(fmLog) << "Entering function: DFHandleTTCDialog::initMessageTitle";
     messageTitle = new DLabel(this);
     messageTitle->setObjectName("messageTitle");
     setMessageTitleText();
@@ -508,22 +509,22 @@ void DFHandleTTCDialog::initMessageTitle()
     messageTitle->setForegroundRole(DPalette::WindowText);
 
     autoFeed(messageTitle);
-    qDebug() << "Exiting function: DFHandleTTCDialog::initMessageTitle";
+    qCDebug(fmLog) << "Exiting function: DFHandleTTCDialog::initMessageTitle";
 }
 
 void DFHandleTTCDialog::initMessageDetail()
 {
-    qDebug() << "Entering function: DFHandleTTCDialog::initMessageDetail";
+    qCDebug(fmLog) << "Entering function: DFHandleTTCDialog::initMessageDetail";
     applyAllCkb = new DCheckBox(tr("Apply to all selected font families"), this);
     applyAllCkb->setObjectName("ApplyAllCkb");
     applyAllCkb->setAccessibleName("Applyall_btn");
     DFontSizeManager::instance()->bind(applyAllCkb, DFontSizeManager::T6, QFont::Medium);
-    qDebug() << "Exiting function: DFHandleTTCDialog::initMessageDetail";
+    qCDebug(fmLog) << "Exiting function: DFHandleTTCDialog::initMessageDetail";
 }
 
 QLayout *DFHandleTTCDialog::initBottomButtons()
 {
-    qDebug() << "Entering function: DFHandleTTCDialog::initBottomButtons";
+    qCDebug(fmLog) << "Entering function: DFHandleTTCDialog::initBottomButtons";
     QHBoxLayout *layout = new QHBoxLayout();
     layout->setSpacing(0);
     layout->setContentsMargins(0, 0, 0, 0);
@@ -559,13 +560,13 @@ QLayout *DFHandleTTCDialog::initBottomButtons()
     layout->addSpacing(9);
     layout->addWidget(m_confirmBtn);
 
-    qDebug() << "Exiting function: DFHandleTTCDialog::initBottomButtons";
+    qCDebug(fmLog) << "Exiting function: DFHandleTTCDialog::initBottomButtons";
     return layout;
 }
 
 void DFHandleTTCDialog::autoFeed(DLabel *label)
 {
-    qDebug() << "Entering function: DFHandleTTCDialog::autoFeed";
+    qCDebug(fmLog) << "Entering function: DFHandleTTCDialog::autoFeed";
     NewStr newstr = autoCutText(m_messageTitleText, label);
     label->setText(newstr.resultStr);
     int height_lable = newstr.strList.size() * newstr.fontHeifht;
@@ -577,7 +578,7 @@ void DFHandleTTCDialog::autoFeed(DLabel *label)
         setFixedHeight(m_iDialogOldHeight - m_iLabelOldHeight + height_lable); //字号变化后自适应调整
     }
     m_iLabelOldHeight = height_lable;
-    qDebug() << "Exiting function: DFHandleTTCDialog::autoFeed";
+    qCDebug(fmLog) << "Exiting function: DFHandleTTCDialog::autoFeed";
 }
 
 void DFHandleTTCDialog::changeEvent(QEvent *event)
@@ -597,62 +598,62 @@ void DFHandleTTCDialog::changeEvent(QEvent *event)
 DFDeleteTTCDialog::DFDeleteTTCDialog(DFontMgrMainWindow *win, QString &file, QWidget *parent)
     : DFHandleTTCDialog(win, file, parent)
 {
-    qDebug() << "Entering function: DFDeleteTTCDialog::DFDeleteTTCDialog";
+    qCDebug(fmLog) << "Entering function: DFDeleteTTCDialog::DFDeleteTTCDialog";
     initUI();
     initConnections();
-    qDebug() << "Exiting function: DFDeleteTTCDialog::DFDeleteTTCDialog";
+    qCDebug(fmLog) << "Exiting function: DFDeleteTTCDialog::DFDeleteTTCDialog";
 }
 
 void DFDeleteTTCDialog::setConfirmBtnText()
 {
-    qDebug() << "Entering function: DFDeleteTTCDialog::setConfirmBtnText";
+    qCDebug(fmLog) << "Entering function: DFDeleteTTCDialog::setConfirmBtnText";
     if (m_confirmBtn) {
         m_confirmBtn->setText(tr("Delete", "button"));
     }
-    qDebug() << "Exiting function: DFDeleteTTCDialog::setConfirmBtnText";
+    qCDebug(fmLog) << "Exiting function: DFDeleteTTCDialog::setConfirmBtnText";
 }
 
 void DFDeleteTTCDialog::setMessageTitleText()
 {
-    qDebug() << "Entering function: DFDeleteTTCDialog::setMessageTitleText";
+    qCDebug(fmLog) << "Entering function: DFDeleteTTCDialog::setMessageTitleText";
     m_messageTitleText = (tr("%1 is a font family, if you proceed, all fonts in it will be deleted").arg(fontset));
-    qDebug() << "Exiting function: DFDeleteTTCDialog::setMessageTitleText";
+    qCDebug(fmLog) << "Exiting function: DFDeleteTTCDialog::setMessageTitleText";
 }
 
 DFDisableTTCDialog::DFDisableTTCDialog(DFontMgrMainWindow *win, QString &file, bool &isEnable, QWidget *parent)
     : DFHandleTTCDialog(win, file, parent)
     , m_isEnable(isEnable)
 {
-    qDebug() << "Entering function: DFDisableTTCDialog::DFDisableTTCDialog";
+    qCDebug(fmLog) << "Entering function: DFDisableTTCDialog::DFDisableTTCDialog";
     initUI();
     initConnections();
-    qDebug() << "Exiting function: DFDisableTTCDialog::DFDisableTTCDialog";
+    qCDebug(fmLog) << "Exiting function: DFDisableTTCDialog::DFDisableTTCDialog";
 }
 void DFDisableTTCDialog::setMessageTitleText()
 {
-    qDebug() << "Entering function: DFDisableTTCDialog::setMessageTitleText";
+    qCDebug(fmLog) << "Entering function: DFDisableTTCDialog::setMessageTitleText";
     if (m_isEnable) {
         m_messageTitleText = (tr("%1 is a font family, if you proceed, all fonts in it will be enabled").arg(fontset));
     } else {
         m_messageTitleText = (tr("%1 is a font family, if you proceed, all fonts in it will be disabled").arg(fontset));
     }
-    qDebug() << "Exiting function: DFDisableTTCDialog::setMessageTitleText";
+    qCDebug(fmLog) << "Exiting function: DFDisableTTCDialog::setMessageTitleText";
 }
 
 void DFDisableTTCDialog::setConfirmBtnText()
 {
-    qDebug() << "Entering function: DFDisableTTCDialog::setConfirmBtnText";
+    qCDebug(fmLog) << "Entering function: DFDisableTTCDialog::setConfirmBtnText";
     if (!m_confirmBtn) {
-        qDebug() << "Confirm button is not found";
+        qCDebug(fmLog) << "Confirm button is not found";
         return;
     }
 
     if (m_isEnable) {
-        qDebug() << "Enable button";
+        qCDebug(fmLog) << "Enable button";
         m_confirmBtn->setText(tr("Enable", "button"));
     } else {
-        qDebug() << "Disable button";
+        qCDebug(fmLog) << "Disable button";
         m_confirmBtn->setText(tr("Disable", "button"));
     }
-    qDebug() << "Exiting function: DFDisableTTCDialog::setConfirmBtnText";
+    qCDebug(fmLog) << "Exiting function: DFDisableTTCDialog::setConfirmBtnText";
 }
