@@ -1,3 +1,11 @@
+deepin-font-manager (6.5.44) unstable; urgency=medium
+
+  * docs(font-manager): add Portuguese help manual
+  * refactor(packaging): migrate dependencies to buildext
+  * fix: add AT-SPI accessible names for interactive widgets
+
+ -- re2zero <yangwu@uniontech.com>  Fri, 30 Oct 2026 13:48:49 +0800
+
 deepin-font-manager (6.5.43) unstable; urgency=medium
 
   * chore: Update version to 6.5.43
