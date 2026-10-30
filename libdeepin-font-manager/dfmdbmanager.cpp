@@ -3,6 +3,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#include "ddlog.h"
 #include "dfmdbmanager.h"
 #include "dfontinfomanager.h"
 
@@ -16,7 +17,7 @@ DFMDBManager::DFMDBManager(QObject *parent)
     : QObject(parent)
     , m_sqlUtil(new DSqliteUtil(QDir::homePath() + "/.local/share/deepin/deepin-font-manager/.font_manager.db"))
 {
-    qDebug() << "Initializing DFMDBManager with database:" << QDir::homePath() + "/.local/share/deepin/deepin-font-manager/.font_manager.db";
+    qCDebug(fmLog) << "Initializing DFMDBManager with database:" << QDir::homePath() + "/.local/share/deepin/deepin-font-manager/.font_manager.db";
 }
 
 DFMDBManager::~DFMDBManager()
@@ -115,7 +116,7 @@ DFontPreviewItemData DFMDBManager::parseRecordToItemData(const QMap<QString, QSt
 *************************************************************************/
 void DFMDBManager::appendAllKeys(QList<QString> &keyList)
 {
-    qDebug() << "Entering function: DFMDBManager::appendAllKeys";
+    qCDebug(fmLog) << "Entering function: DFMDBManager::appendAllKeys";
     keyList.append("fontId");
     keyList.append("fontName");
     keyList.append("isEnabled");
@@ -138,7 +139,7 @@ void DFMDBManager::appendAllKeys(QList<QString> &keyList)
     keyList.append("trademark");
     //add for SP3 familyName
     keyList.append("fontPreview");
-    qDebug() << "Exiting function: DFMDBManager::appendAllKeys";
+    qCDebug(fmLog) << "Exiting function: DFMDBManager::appendAllKeys";
 }
 
 /*************************************************************************
@@ -160,7 +161,7 @@ QList<DFontPreviewItemData> DFMDBManager::getAllFontInfo(QList<DFontPreviewItemD
     QList<QString> keyList;
     appendAllKeys(keyList);
 
-    qDebug() << "Querying all font records from database";
+    qCDebug(fmLog) << "Querying all font records from database";
     m_sqlUtil->findAllRecords(keyList, recordList);
     for (QMap<QString, QString> &record : recordList) {
         if (record.size() > 0) {
@@ -306,7 +307,7 @@ QString DFMDBManager::isFontInfoExist(const DFontInfo &newFileFontInfo)
         if (fontFamilyList.size() > 1) {
             for (QString &fontFamily : fontFamilyList) {
                 whereMap.insert("familyName", fontFamily);
-                qDebug() << "Checking if font exists in database:" << newFileFontInfo.familyName << newFileFontInfo.styleName;
+                qCDebug(fmLog) << "Checking if font exists in database:" << newFileFontInfo.familyName << newFileFontInfo.styleName;
                 m_sqlUtil->findRecords(keyList, whereMap, &recordList);
                 if (recordList.size() > 0) {
                     QString result = recordList.first().value("filePath");
@@ -460,10 +461,10 @@ void DFMDBManager::commitAddFontInfo()
 {
     // qDebug() << "Entering function: DFMDBManager::commitAddFontInfo";
     if (m_addFontList.isEmpty()) {
-        qDebug() << "No fonts to add, skipping commit";
+        qCDebug(fmLog) << "No fonts to add, skipping commit";
         return;
     }
-    qDebug() << "Committing" << m_addFontList.size() << "fonts to database";
+    qCDebug(fmLog) << "Committing" << m_addFontList.size() << "fonts to database";
 
 //    QMutexLocker locker(&m_mutex);
     beginTransaction();
@@ -531,18 +532,18 @@ void DFMDBManager::deleteFontInfo(const QList<DFontPreviewItemData> &fontList)
 *************************************************************************/
 void DFMDBManager::commitDeleteFontInfo()
 {
-    qDebug() << "Entering function: DFMDBManager::commitDeleteFontInfo";
+    qCDebug(fmLog) << "Entering function: DFMDBManager::commitDeleteFontInfo";
     if (m_delFontList.isEmpty()) {
-        qDebug() << "No fonts to delete, skipping commit";
+        qCDebug(fmLog) << "No fonts to delete, skipping commit";
         return;
     }
-    qDebug() << "Committing deletion of" << m_delFontList.size() << "fonts from database";
+    qCDebug(fmLog) << "Committing deletion of" << m_delFontList.size() << "fonts from database";
 
     beginTransaction();
     m_sqlUtil->deleteFontInfo(m_delFontList);
     endTransaction();
     m_delFontList.clear();
-    qDebug() << "Exiting function: DFMDBManager::commitDeleteFontInfo";
+    qCDebug(fmLog) << "Exiting function: DFMDBManager::commitDeleteFontInfo";
 }
 
 /*************************************************************************

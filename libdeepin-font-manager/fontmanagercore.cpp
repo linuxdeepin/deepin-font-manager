@@ -3,6 +3,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#include "ddlog.h"
 #include "fontmanagercore.h"
 #include "dcopyfilesmanager.h"
 
@@ -89,14 +90,14 @@ void FontManagerCore::setType(Type type)
 *************************************************************************/
 void FontManagerCore::setInstallFileList(const QStringList &list)
 {
-    qDebug() << "Setting install file list, count:" << list.size();
+    qCDebug(fmLog) << "Setting install file list, count:" << list.size();
     if (!m_instFileList.isEmpty()) {
-        qDebug() << "Clearing existing install file list";
+        qCDebug(fmLog) << "Clearing existing install file list";
         m_instFileList.clear();
     }
 
     m_instFileList << list;
-    qDebug() << "Exiting function: FontManagerCore::setInstallFileList";
+    qCDebug(fmLog) << "Exiting function: FontManagerCore::setInstallFileList";
 }
 
 /*************************************************************************
@@ -110,11 +111,11 @@ void FontManagerCore::setInstallFileList(const QStringList &list)
 *************************************************************************/
 void FontManagerCore::setUnInstallFile(const QStringList &filePath)
 {
-    qDebug() << "Setting uninstall file list, count:" << filePath.size();
+    qCDebug(fmLog) << "Setting uninstall file list, count:" << filePath.size();
     if (!m_uninstFile.isEmpty())
         m_uninstFile.clear();
     m_uninstFile = filePath;
-    qDebug() << "Exiting function: FontManagerCore::setUnInstallFile";
+    qCDebug(fmLog) << "Exiting function: FontManagerCore::setUnInstallFile";
 }
 
 /*************************************************************************
@@ -127,26 +128,26 @@ void FontManagerCore::setUnInstallFile(const QStringList &filePath)
 *************************************************************************/
 void FontManagerCore::run()
 {
-    qInfo() << "Starting font operation, type:" << m_type;
+    qCInfo(fmLog) << "Starting font operation, type:" << m_type;
     switch (m_type) {
     case Install:
     case HalfwayInstall:
     case ReInstall:
-        qDebug() << "Handling install operation";
+        qCDebug(fmLog) << "Handling install operation";
         handleInstall();
         break;
     case UnInstall:
-        qDebug() << "Handling uninstall operation";
+        qCDebug(fmLog) << "Handling uninstall operation";
         handleUnInstall();
         break;
     case DoCache:
-        qDebug() << "Handling cache operation";
+        qCDebug(fmLog) << "Handling cache operation";
         doCache();
         break;
     default:
         break;
     }
-    qInfo() << "Finished font operation, type:" << m_type;
+    qCInfo(fmLog) << "Finished font operation, type:" << m_type;
 }
 
 /*************************************************************************
@@ -160,22 +161,22 @@ void FontManagerCore::run()
 *************************************************************************/
 void FontManagerCore::doCmd(QStringList &arguments)
 {
-    qDebug() << "Starting font operation process, type:" << m_type;
+    qCDebug(fmLog) << "Starting font operation process, type:" << m_type;
     switch (m_type) {
     case Install:
     case ReInstall:
     case HalfwayInstall:
-        qDebug() << "Handling install operation";
+        qCDebug(fmLog) << "Handling install operation";
         doInstall(arguments);
         break;
     case UnInstall:
-        qDebug() << "Handling uninstall operation";
+        qCDebug(fmLog) << "Handling uninstall operation";
         doUninstall(arguments);
         break;
     default:
         break;
     }
-    qDebug() << "Exiting function: FontManagerCore::doCmd";
+    qCDebug(fmLog) << "Exiting function: FontManagerCore::doCmd";
 }
 
 /*************************************************************************
@@ -189,7 +190,7 @@ void FontManagerCore::doCmd(QStringList &arguments)
 *************************************************************************/
 void FontManagerCore::handleInstall()
 {
-    qDebug() << "Starting install operation";
+    qCDebug(fmLog) << "Starting install operation";
     doCmd(m_instFileList);
 }
 
@@ -203,13 +204,13 @@ void FontManagerCore::handleInstall()
 *************************************************************************/
 void FontManagerCore::handleUnInstall()
 {
-    qDebug() << "Starting uninstall operation, file count:" << m_uninstFile.size();
+    qCDebug(fmLog) << "Starting uninstall operation, file count:" << m_uninstFile.size();
     doCmd(m_uninstFile);
 //        qDebug() << __FUNCTION__ << m_uninstFile.size();
 //        emit uninstallFontFinished(m_uninstFile);
     //clear
     m_uninstFile.clear();
-    qDebug() << "Exiting function: FontManagerCore::handleUnInstall";
+    qCDebug(fmLog) << "Exiting function: FontManagerCore::handleUnInstall";
 }
 
 /*************************************************************************
@@ -223,7 +224,7 @@ void FontManagerCore::handleUnInstall()
 *************************************************************************/
 void FontManagerCore::doInstall(QStringList &fileList)
 {
-    qDebug() << "Starting install operation, file count:" << fileList.size();
+    qCDebug(fmLog) << "Starting install operation, file count:" << fileList.size();
 
     m_installOutList.clear();
     m_installCanceled = false;
@@ -233,13 +234,13 @@ void FontManagerCore::doInstall(QStringList &fileList)
 
     //delete installed fonts to prevent next time install take long time
     if (!m_installCanceled) {
-        qDebug() << "Install operation canceled";
+        qCDebug(fmLog) << "Install operation canceled";
         return;
     }
 
     m_installCanceled = false;
     Q_EMIT requestCancelInstall();
-    qDebug() << "Exiting function: FontManagerCore::doInstall";
+    qCDebug(fmLog) << "Exiting function: FontManagerCore::doInstall";
 }
 
 /*************************************************************************
@@ -253,7 +254,7 @@ void FontManagerCore::doInstall(QStringList &fileList)
 *************************************************************************/
 void FontManagerCore::doUninstall(const QStringList &fileList)
 {
-    qDebug() << "Starting uninstall operation, file count:" << fileList.size();
+    qCDebug(fmLog) << "Starting uninstall operation, file count:" << fileList.size();
     bool isDelete = false; // 是否删除ttc
     bool isAapplyToAll = false; // 选择应用于全部ttc
     for (const QString &file : fileList) {
@@ -292,7 +293,7 @@ void FontManagerCore::doUninstall(const QStringList &fileList)
 
     //修复删除时间有时候长的问题, 35479
     Q_EMIT uninstallFontFinished(m_uninstFile);
-    qDebug() << "Uninstall completed, files removed:" << m_uninstFile.size();
+    qCDebug(fmLog) << "Uninstall completed, files removed:" << m_uninstFile.size();
 
 //发现开机后先删除字体再安装字体时，偶现安装进程无法启动，修改这里后现象消失
 #if QT_VERSION_MAJOR > 5
@@ -301,7 +302,7 @@ void FontManagerCore::doUninstall(const QStringList &fileList)
     bool ret = QProcess::startDetached("fc-cache");
 #endif
     Q_EMIT uninstallFcCacheFinish();
-    qDebug() << "Font cache refresh result:" << ret;
+    qCDebug(fmLog) << "Font cache refresh result:" << ret;
 }
 
 /**
@@ -312,7 +313,7 @@ void FontManagerCore::doUninstall(const QStringList &fileList)
 */
 void FontManagerCore::onInstallResult(const QString &familyName, const QString &target)
 {
-    qDebug() << "Installing font:" << target;
+    qCDebug(fmLog) << "Installing font:" << target;
     m_installedCount += 1;
     m_installOutList << target;
     const int totalCount = m_instFileList.count();
@@ -321,33 +322,33 @@ void FontManagerCore::onInstallResult(const QString &familyName, const QString &
     /* 此处需要优化,信号太频繁,进度每增加1%发送一次信号即可 UT000591 */
     static double lastSendPercent = 0.0;
     if ((lastSendPercent < 0.001) || (percent - lastSendPercent > 0.999) || (percent - lastSendPercent < -0.001)) {
-        qDebug() << "Emitting batchInstall signal for font:" << target;
+        qCDebug(fmLog) << "Emitting batchInstall signal for font:" << target;
         Q_EMIT batchInstall(familyName, percent);
         lastSendPercent = percent;
     }
 
     if (m_installedCount != totalCount) {
-        qDebug() << "Install progress - installed:" << m_installOutList.size() << "cache status:" << m_CacheStatus;
+        qCDebug(fmLog) << "Install progress - installed:" << m_installOutList.size() << "cache status:" << m_CacheStatus;
         return;
     } else {
         lastSendPercent = 0.0;
     }
 
-    qDebug() << "Install progress - installed:" << m_installOutList.size() << "cache status:" << m_CacheStatus;
+    qCDebug(fmLog) << "Install progress - installed:" << m_installOutList.size() << "cache status:" << m_CacheStatus;
     //  bug 47332 47325 Ut000442 在字体验证框弹出时进行安装，类型是HalfwayInstall，之前只对Install类型的做了
     //  安装后的处理导致bug现象的出现
     if (m_type == Install || m_type == HalfwayInstall) {
-        qDebug() << "Emitting installFinished signal for font:" << m_installOutList;
+        qCDebug(fmLog) << "Emitting installFinished signal for font:" << m_installOutList;
         Q_EMIT installFinished(InstallStatus::InstallSuccess, m_installOutList);
     } else if (m_type == ReInstall) {
-        qDebug() << "Emitting reInstallFinished signal for font:" << m_installOutList;
+        qCDebug(fmLog) << "Emitting reInstallFinished signal for font:" << m_installOutList;
         Q_EMIT reInstallFinished(0, m_installOutList);
     }
 
     //clear
     m_installOutList.clear();
     m_installedCount = 0;
-    qDebug() << "Exiting function: FontManagerCore::onInstallResult";
+    qCDebug(fmLog) << "Exiting function: FontManagerCore::onInstallResult";
 }
 
 /*************************************************************************
@@ -361,7 +362,7 @@ void FontManagerCore::onInstallResult(const QString &familyName, const QString &
 *************************************************************************/
 void FontManagerCore::setCacheStatus(const CacheStatus &CacheStatus)
 {
-    qDebug() << "Setting cache status:" << CacheStatus;
+    qCDebug(fmLog) << "Setting cache status:" << CacheStatus;
     m_CacheStatus = CacheStatus;
 }
 
@@ -375,14 +376,14 @@ void FontManagerCore::setCacheStatus(const CacheStatus &CacheStatus)
 *************************************************************************/
 void FontManagerCore::cancelInstall()
 {
-    qDebug() << "Canceling install";
+    qCDebug(fmLog) << "Canceling install";
     if (m_installCanceled)
         return;
 
     m_installCanceled = true;
     DCopyFilesManager::cancelInstall();
     Q_EMIT cacheFinish();
-    qDebug() << "Exiting function: FontManagerCore::cancelInstall";
+    qCDebug(fmLog) << "Exiting function: FontManagerCore::cancelInstall";
 }
 
 /*************************************************************************
@@ -395,7 +396,7 @@ void FontManagerCore::cancelInstall()
 *************************************************************************/
 void FontManagerCore::doCache()
 {
-    qDebug() << "Refreshing font cache";
+    qCDebug(fmLog) << "Refreshing font cache";
     QProcess process;
 #if QT_VERSION_MAJOR > 5
     process.startCommand("fc-cache");
@@ -404,5 +405,5 @@ void FontManagerCore::doCache()
 #endif
     process.waitForFinished(-1);
     Q_EMIT  cacheFinish();
-    qDebug() << "Font cache refresh completed";
+    qCDebug(fmLog) << "Font cache refresh completed";
 }
