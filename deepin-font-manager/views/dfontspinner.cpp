@@ -3,6 +3,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#include "ddlog.h"
 #include "dfontspinner.h"
 
 #include <QTimer>
@@ -32,7 +33,7 @@ public:
 DFontSpinnerPrivate::DFontSpinnerPrivate(DFontSpinner *parent)
     : q_ptr(parent)
 {
-    qDebug() << "Spinner widget created";
+    qCDebug(fmLog) << "Spinner widget created";
 }
 
 DFontSpinnerPrivate::~DFontSpinnerPrivate()
@@ -45,7 +46,7 @@ DFontSpinner::DFontSpinner(QWidget *parent)
     : QWidget(parent)
     , m_ptr(new DFontSpinnerPrivate(this))
 {
-    qDebug() << "Spinner widget created";
+    qCDebug(fmLog) << "Spinner widget created";
     m_ptr->refreshTimer.setInterval(30);
 
     connect(&m_ptr->refreshTimer, &QTimer::timeout,
@@ -72,7 +73,7 @@ DFontSpinner::~DFontSpinner()
 *************************************************************************/
 void DFontSpinner::start()
 {
-    qDebug() << "Spinner animation started";
+    qCDebug(fmLog) << "Spinner animation started";
     m_ptr->currentDegree += 14;
     update();
     m_ptr->refreshTimer.start();
@@ -89,7 +90,7 @@ void DFontSpinner::start()
 *************************************************************************/
 void DFontSpinner::stop()
 {
-    qDebug() << "Spinner animation stopped";
+    qCDebug(fmLog) << "Spinner animation stopped";
     m_ptr->refreshTimer.stop();
 }
 
