@@ -99,7 +99,13 @@ set(LIBS
 
 # Link dfm-base if found
 if (DFM_BASE_PACKAGE)
-    list(APPEND LIBS ${DFM_BASE_PACKAGE})
+    # dfm6-base 提供的导入目标名为 DFM6::dfm6-base，链接它才能传播
+    # INTERFACE_INCLUDE_DIRECTORIES（裸名只会变成 -ldfm6-base 且丢失头文件路径）
+    if (TARGET DFM6::dfm6-base)
+        list(APPEND LIBS DFM6::dfm6-base)
+    else()
+        list(APPEND LIBS ${DFM_BASE_PACKAGE})
+    endif()
 elseif(DeepinFileManager_FOUND)
     list(APPEND LIBS PkgConfig::DeepinFileManager)
 endif()

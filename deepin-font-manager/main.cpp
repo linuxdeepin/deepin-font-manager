@@ -3,7 +3,9 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#include "ddlog.h"
 #include "globaldef.h"
+#include "logger.h"
 #include "performancemonitor.h"
 #include "utils.h"
 #include "views/dfontmgrmainwindow.h"
@@ -36,12 +38,18 @@ DCORE_USE_NAMESPACE
 *************************************************************************/
 int main(int argc, char *argv[])
 {
-    qDebug() << "Enter main function";
+    // 调试模式适配：动态日志监听必须先于任何日志打印初始化（qunsetenv 之前
+    // 不能有日志输出），且对象需存活整个 main 生命周期，保证 DConfig 变更
+    // 监听（调试模式运行中切换日志级别）持续生效
+    static MLogger fontManagerLogger;
+    Q_UNUSED(fontManagerLogger)
+
+    qCDebug(fmLog) << "Enter main function";
     PerformanceMonitor::initializeAppStart();
 
     // 依赖DTK的程序，如果要在root下或者非deepin/uos环境下运行不会发生异常，就需要加上该环境变量
     if (!QString(qgetenv("XDG_CURRENT_DESKTOP")).toLower().startsWith("deepin")) {
-        qInfo() << "Setting XDG_CURRENT_DESKTOP to Deepin";
+        qCInfo(fmLog) << "Setting XDG_CURRENT_DESKTOP to Deepin";
         setenv("XDG_CURRENT_DESKTOP", "Deepin", 1); //setenv改变或添加一个环境变量
     }
 
@@ -73,16 +81,16 @@ int main(int argc, char *argv[])
     /* 使用DBus实现单例模式 UT000591 */
     QDBusConnection dbus = QDBusConnection::sessionBus();
     if (dbus.registerService("com.deepin.FontManager")) {
-        qInfo() << "DBus service registered successfully";
+        qCInfo(fmLog) << "DBus service registered successfully";
         dbus.registerObject("/com/deepin/FontManager", &app, QDBusConnection::ExportScriptableSlots);
         app.parseCmdLine();
         app.activateWindow();
-        qDebug() << "Application running";
+        qCDebug(fmLog) << "Application running";
         int ret = app.exec();
-        qDebug() << "Exit main function with code:" << ret;
+        qCDebug(fmLog) << "Exit main function with code:" << ret;
         return ret;
     } else {
-        qWarning() << "DBus service already registered, exiting";
+        qCWarning(fmLog) << "DBus service already registered, exiting";
         app.parseCmdLine(true);
         return 0;
     }
