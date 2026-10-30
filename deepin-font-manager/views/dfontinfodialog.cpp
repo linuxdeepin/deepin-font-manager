@@ -3,6 +3,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#include "ddlog.h"
 #include "dfontinfodialog.h"
 #include "dfontpreviewitemdef.h"
 #include "utils.h"
@@ -39,13 +40,13 @@ DFontInfoDialog::DFontInfoDialog(DFontPreviewItemData *fontInfo, QWidget *parent
     , m_fontinfoArea(nullptr)
     , m_scrollArea(nullptr)
 {
-    qDebug() << "Font info dialog opened for:" << fontInfo->fontInfo.familyName
+    qCDebug(fmLog) << "Font info dialog opened for:" << fontInfo->fontInfo.familyName
              << "Style:" << fontInfo->fontInfo.styleName;
     connect(m_signalManager, &SignalManager::sizeChange, this, &DFontInfoDialog::autoHeight);
     initUI();
     initConnections();
     this->move(parent->geometry().center() - this->rect().center());
-    qDebug() << "Exiting function: DFontInfoDialog::DFontInfoDialog";
+    qCDebug(fmLog) << "Exiting function: DFontInfoDialog::DFontInfoDialog";
 }
 
 /*************************************************************************
@@ -59,7 +60,7 @@ DFontInfoDialog::DFontInfoDialog(DFontPreviewItemData *fontInfo, QWidget *parent
 *************************************************************************/
 QString DFontInfoDialog::AutoFeed(QString text)
 {
-    qDebug() << "Entering function: DFontInfoDialog::AutoFeed";
+    qCDebug(fmLog) << "Entering function: DFontInfoDialog::AutoFeed";
     QFont m_CurrentFont = this->font();
     QFontMetrics fm(m_CurrentFont);
 #if QT_VERSION_MAJOR > 5
@@ -69,7 +70,7 @@ QString DFontInfoDialog::AutoFeed(QString text)
 #endif
     int count  = 0;
     if (n_TextSize > NAME_TITLE_WIDTH) {
-        qDebug() << "Text size is greater than NAME_TITLE_WIDTH";
+        qCDebug(fmLog) << "Text size is greater than NAME_TITLE_WIDTH";
         int n_position = 0;
         long n_curSumWidth = 0;
         for (int i = 0; i < text.size(); i++) {
@@ -79,13 +80,13 @@ QString DFontInfoDialog::AutoFeed(QString text)
             n_curSumWidth += fm.width(text.at(i));
 #endif
             if (n_curSumWidth >= NAME_TITLE_WIDTH * (count + 1)) {
-                qDebug() << "Insert newline";
+                qCDebug(fmLog) << "Insert newline";
                 n_position = i;
                 text.insert(n_position, "\n");
                 count++;
             }
             if (count == 2) {
-                qDebug() << "Insert third line";
+                qCDebug(fmLog) << "Insert third line";
                 QString thirdLine = text.right(text.size() - n_position);
                 text.remove(thirdLine);
                 thirdLine = adaptiveLengthForNameTitle(fm, thirdLine, NAME_TITLE_WIDTH);
@@ -94,7 +95,7 @@ QString DFontInfoDialog::AutoFeed(QString text)
             }
         }
     }
-    qDebug() << "Exiting function: DFontInfoDialog::AutoFeed";
+    qCDebug(fmLog) << "Exiting function: DFontInfoDialog::AutoFeed";
     return text;
 }
 
@@ -111,7 +112,7 @@ QString DFontInfoDialog::AutoFeed(QString text)
 *************************************************************************/
 QString DFontInfoDialog::adaptiveLengthForNameTitle(QFontMetrics fm, QString thirdLineText, int lineWidth)
 {
-    qDebug() << "Entering function: DFontInfoDialog::adaptiveLengthForNameTitle";
+    qCDebug(fmLog) << "Entering function: DFontInfoDialog::adaptiveLengthForNameTitle";
 #if QT_VERSION_MAJOR > 5
     if (fm.boundingRect(thirdLineText).width() > lineWidth) {
 #else
@@ -133,7 +134,7 @@ QString DFontInfoDialog::adaptiveLengthForNameTitle(QFontMetrics fm, QString thi
             }
         }
     }
-    qDebug() << "Exiting function: DFontInfoDialog::adaptiveLengthForNameTitle";
+    qCDebug(fmLog) << "Exiting function: DFontInfoDialog::adaptiveLengthForNameTitle";
     return thirdLineText;
 }
 
@@ -147,7 +148,7 @@ QString DFontInfoDialog::adaptiveLengthForNameTitle(QFontMetrics fm, QString thi
 *************************************************************************/
 void DFontInfoDialog::initUI()
 {
-    qDebug() << "Entering function: DFontInfoDialog::initUI";
+    qCDebug(fmLog) << "Entering function: DFontInfoDialog::initUI";
     setFixedSize(QSize(DEFAULT_WINDOW_W, DEFAULT_WINDOW_H));
     setLogoVisable(false);
 
@@ -265,7 +266,7 @@ void DFontInfoDialog::initUI()
     }
     m_fontinfoArea->autoHeight();
     m_scrollArea->setFocus(Qt::MouseFocusReason);
-    qDebug() << "Exiting function: DFontInfoDialog::initUI";
+    qCDebug(fmLog) << "Exiting function: DFontInfoDialog::initUI";
 }
 
 /*************************************************************************
@@ -278,7 +279,7 @@ void DFontInfoDialog::initUI()
 *************************************************************************/
 void DFontInfoDialog::initConnections()
 {
-    qDebug() << "Entering function: DFontInfoDialog::initConnections";
+    qCDebug(fmLog) << "Entering function: DFontInfoDialog::initConnections";
 #if QT_VERSION_MAJOR > 5
     connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, this, [ = ] {
         DGuiApplicationHelper::ColorType themeType = DGuiApplicationHelper::instance()->themeType();
@@ -332,7 +333,7 @@ void DFontInfoDialog::initConnections()
         }
     });
 #endif
-    qDebug() << "Exiting function: DFontInfoDialog::initConnections";
+    qCDebug(fmLog) << "Exiting function: DFontInfoDialog::initConnections";
 }
 
 /*************************************************************************
@@ -350,7 +351,7 @@ void DFontInfoDialog::keyPressEvent(QKeyEvent *ev)
     QDialog::keyPressEvent(ev);
     if (QApplication::keyboardModifiers()
             == Qt::ControlModifier && ev->key() == Qt::Key_I) {
-        qDebug() << "Font info dialog closed by shortcut Ctrl+I";
+        qCDebug(fmLog) << "Font info dialog closed by shortcut Ctrl+I";
         this->close();
         deleteLater();
     }
@@ -368,12 +369,12 @@ void DFontInfoDialog::keyPressEvent(QKeyEvent *ev)
 *************************************************************************/
 void DFontInfoDialog::autoHeight(int height)
 {
-    qDebug() << "Adjusting dialog height to:" << height;
+    qCDebug(fmLog) << "Adjusting dialog height to:" << height;
     //repaint m_fontFileName/*UT000539*/
     m_fontFileName->setText(AutoFeed(m_FileName));
 
     if (height * 1.1 + 280 < DEFAULT_WINDOW_H) {
-        qDebug() << "Using dynamic height calculation:" << static_cast<int>(height * 1.1 + 280);
+        qCDebug(fmLog) << "Using dynamic height calculation:" << static_cast<int>(height * 1.1 + 280);
         this->setFixedHeight(static_cast<int>(height * 1.1 + 280));
         QPixmap bmp(QSize(280, (static_cast<int>(height * 1.1 + 10))));
         bmp.fill();
@@ -390,7 +391,7 @@ void DFontInfoDialog::autoHeight(int height)
         m_scrollArea->viewport()->setFixedHeight(static_cast<int>(height * 1.1 + 10));
         m_scrollArea->setFixedHeight(static_cast<int>(height * 1.1 + 10));
     } else {
-        qDebug() << "Using default height:" << DEFAULT_WINDOW_H;
+        qCDebug(fmLog) << "Using default height:" << DEFAULT_WINDOW_H;
         this->setFixedHeight(DEFAULT_WINDOW_H);
         QPixmap bmp(QSize(280, 375));
         bmp.fill();
@@ -407,5 +408,5 @@ void DFontInfoDialog::autoHeight(int height)
         m_scrollArea->viewport()->setFixedHeight(375);
         m_scrollArea->setFixedHeight(375);
     }
-    qDebug() << "Exiting function: DFontInfoDialog::autoHeight";
+    qCDebug(fmLog) << "Exiting function: DFontInfoDialog::autoHeight";
 }

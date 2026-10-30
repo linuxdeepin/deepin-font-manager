@@ -3,6 +3,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#include "ddlog.h"
 #include "dsplitlistwidget.h"
 #include "globaldef.h"
 #include "utils.h"
@@ -375,7 +376,7 @@ QString DNoFocusDelegate::adjustLength(QString &titleName, QFont &font) const
 DSplitListWidget::DSplitListWidget(QWidget *parent)
     : DListView(parent)
 {
-    qDebug() << "Entering function: DSplitListWidget::DSplitListWidget";
+    qCDebug(fmLog) << "Entering function: DSplitListWidget::DSplitListWidget";
     //去除选中项的边框
     this->setItemDelegate(new DNoFocusDelegate(this));
     this->setEditTriggers(QAbstractItemView::EditTrigger::NoEditTriggers);
@@ -387,17 +388,17 @@ DSplitListWidget::DSplitListWidget(QWidget *parent)
     connect(m_signalManager, &SignalManager::setLostFocusState, this, [ = ](bool isTrue) {
         m_isFocusFromFontListView = isTrue;
     });
-    qDebug() << "Exiting function: DSplitListWidget::DSplitListWidget";
+    qCDebug(fmLog) << "Exiting function: DSplitListWidget::DSplitListWidget";
 }
 
 DSplitListWidget::~DSplitListWidget()
 {
-    qDebug() << "Entering function: DSplitListWidget::~DSplitListWidget";
+    qCDebug(fmLog) << "Entering function: DSplitListWidget::~DSplitListWidget";
 }
 
 void DSplitListWidget::initListData()
 {
-    qDebug() << "Entering function: DSplitListWidget::initListData";
+    qCDebug(fmLog) << "Entering function: DSplitListWidget::initListData";
     m_titleStringList << DApplication::translate("Category", "All Fonts")
                       << DApplication::translate("Category", "System")
                       << DApplication::translate("Category", "User")
@@ -430,7 +431,7 @@ void DSplitListWidget::initListData()
     //设置默认选中
     QModelIndex index = m_categoryItemModell->index(AllFont, 0);
     selectionModel()->select(index, QItemSelectionModel::Select);
-    qDebug() << "Exiting function: DSplitListWidget::initListData";
+    qCDebug(fmLog) << "Exiting function: DSplitListWidget::initListData";
 }
 
 /*************************************************************************
@@ -642,11 +643,11 @@ void DSplitListWidget::wheelEvent(QWheelEvent *event)
 *************************************************************************/
 void DSplitListWidget::setCurrentPage()
 {
-    qDebug() << "Entering function: DSplitListWidget::setCurrentPage";
+    qCDebug(fmLog) << "Entering function: DSplitListWidget::setCurrentPage";
     QModelIndex current = currentIndex();
 
     int row = current.row();
-    qDebug() << __FUNCTION__ << row << m_LastPageNumber;
+    qCDebug(fmLog) << __FUNCTION__ << row << m_LastPageNumber;
     if (row < 0 || FTM_SPLIT_LINE_INDEX == row || row == m_LastPageNumber) {
         // qDebug() << "row < 0 || FTM_SPLIT_LINE_INDEX == row || row == m_LastPageNumber, return";
         return;
@@ -659,7 +660,7 @@ void DSplitListWidget::setCurrentPage()
 
     emit onListWidgetItemClicked(realIndex);
     emit m_signalManager->changeView();
-    qDebug() << "Exiting function: DSplitListWidget::setCurrentPage";
+    qCDebug(fmLog) << "Exiting function: DSplitListWidget::setCurrentPage";
 }
 
 /*************************************************************************
