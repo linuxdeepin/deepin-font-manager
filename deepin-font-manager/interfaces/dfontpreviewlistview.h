@@ -5,6 +5,7 @@
 
 #ifndef DFONTPREVIEWLISTVIEW_H
 #define DFONTPREVIEWLISTVIEW_H
+#include "ddlog.h"
 
 #include "dfontpreviewitemdef.h"
 #include "dfontpreviewitemdelegate.h"
@@ -109,7 +110,7 @@ public:
         if ((allFontList != nullptr) && (!allFontList->contains(filePath))) {
             *allFontList << filePath;
         } else if (allFontList != nullptr && allFontList->contains(filePath)) {
-            qDebug() << filePath << __FUNCTION__ << " duplicate end";
+            qCDebug(fmLog) << filePath << __FUNCTION__ << " duplicate end";
         }
     }
     //根据文件路径删除字体列表中项

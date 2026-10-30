@@ -3,6 +3,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#include "ddlog.h"
 #include "dcomworker.h"
 #include "dfontinfomanager.h"
 #include "dfontpreviewlistdatathread.h"
@@ -52,17 +53,17 @@ GetFontListWorker::GetFontListWorker(GetFontListWorker::Type type, QObject *pare
 
 void GetFontListWorker::run()
 {
-    qDebug() << __FUNCTION__ << m_type << "begin";
+    qCDebug(fmLog) << __FUNCTION__ << m_type << "begin";
     DFontInfoManager *inst = DFontInfoManager::instance();
     DFontPreviewListDataThread *thread = DFontPreviewListDataThread::instance();
     if (m_type == Startup) {
-        qDebug() << "Processing Startup font list";
+        qCDebug(fmLog) << "Processing Startup font list";
         thread->m_allFontPathList.clear();
         thread->m_allFontPathList = inst->getAllFontPath(true);
 //        removeUserAddFonts();
 
         if(DFMDBManager::instance()->isDBDeleted()){
-            qDebug() << "Database is deleted, updating database";
+            qCDebug(fmLog) << "Database is deleted, updating database";
             thread->updateDb();//想把它放在第1个，getStartFontList之前
             DFMDBManager::instance()->getAllRecords();
             QList<DFontPreviewItemData> list = DFMDBManager::instance()->getFontInfo(50, &thread->m_delFontInfoList);//DFMDBManager::recordList
@@ -70,7 +71,7 @@ void GetFontListWorker::run()
             thread->m_fontModelList.append(list);
         }
         else {
-            qDebug() << "Database exists, retrieving records";
+            qCDebug(fmLog) << "Database exists, retrieving records";
             DFMDBManager::instance()->getAllRecords();
             QList<DFontPreviewItemData> list = DFMDBManager::instance()->getFontInfo(50, &thread->m_delFontInfoList);
             thread->m_startModelList = list;
@@ -79,30 +80,30 @@ void GetFontListWorker::run()
     }
 
     if (m_type == ALL || m_type == AllInSquence) {
-        qDebug() << "Processing ALL or AllInSquence font list";
+        qCDebug(fmLog) << "Processing ALL or AllInSquence font list";
         thread->m_allFontPathList.clear();
         thread->m_allFontPathList = inst->getAllFontPath(false);
     }
 
     if (m_type == CHINESE || m_type == AllInSquence) {
-        qDebug() << "Processing CHINESE or AllInSquence font list";
+        qCDebug(fmLog) << "Processing CHINESE or AllInSquence font list";
         thread->m_chineseFontPathList.clear();
         thread->m_chineseFontPathList = inst->getAllChineseFontPath();
     }
 
     if (m_type == MONOSPACE || m_type == AllInSquence) {
-        qDebug() << "Processing MONOSPACE or AllInSquence font list";
+        qCDebug(fmLog) << "Processing MONOSPACE or AllInSquence font list";
         thread->m_monoSpaceFontPathList.clear();
         thread->m_monoSpaceFontPathList = inst->getAllMonoSpaceFontPath();
     }
-    qDebug() << __FUNCTION__ << m_type << "end";
+    qCDebug(fmLog) << __FUNCTION__ << m_type << "end";
 }
 
 void GetFontListWorker::removeUserAddFonts()
 {
-    qDebug() << "Starting removeUserAddFonts";
+    qCDebug(fmLog) << "Starting removeUserAddFonts";
     if (geteuid() == 0) {
-        qWarning() << "Running as root, skipping user font removal";
+        qCWarning(fmLog) << "Running as root, skipping user font removal";
         return;
     }
     QStringList installFont = DFMDBManager::instance()->getInstalledFontsPath();
@@ -126,15 +127,15 @@ void GetFontListWorker::removeUserAddFonts()
             ++iter;
         }
     }
-    qDebug() << "Finished removeUserAddFonts";
+    qCDebug(fmLog) << "Finished removeUserAddFonts";
 }
 
 void FontManager::getFontListInSequence()
 {
-    qDebug() << "Getting font list in sequence";
+    qCDebug(fmLog) << "Getting font list in sequence";
     GetFontListWorker getFontList(GetFontListWorker::AllInSquence);
     getFontList.run();
-    qDebug() << "Font list sequence completed";
+    qCDebug(fmLog) << "Font list sequence completed";
 }
 
 
@@ -148,11 +149,11 @@ void FontManager::getFontListInSequence()
 *************************************************************************/
 void FontManager::getStartFontList()
 {
-    qDebug() << "Getting startup font list";
+    qCDebug(fmLog) << "Getting startup font list";
     QThreadPool *threadPool = DCopyFilesManager::instance()->getPool();
-    qInfo() << "Thread pool worker count:" << threadPool->maxThreadCount();
+    qCInfo(fmLog) << "Thread pool worker count:" << threadPool->maxThreadCount();
 
-    qDebug() << "Creating and starting GetAll worker";
+    qCDebug(fmLog) << "Creating and starting GetAll worker";
     GetFontListWorker *getAll = new GetFontListWorker(GetFontListWorker::Startup);
     threadPool->start(getAll);
     GetFontListWorker *getChinese = new GetFontListWorker(GetFontListWorker::CHINESE);
@@ -160,7 +161,7 @@ void FontManager::getStartFontList()
     GetFontListWorker *getMonospace = new GetFontListWorker(GetFontListWorker::MONOSPACE);
     threadPool->start(getMonospace);
     threadPool->waitForDone();
-    qDebug() << "All workers completed";
+    qCDebug(fmLog) << "All workers completed";
 }
 
 /*************************************************************************
@@ -173,14 +174,14 @@ void FontManager::getStartFontList()
 *************************************************************************/
 void FontManager::getChineseAndMonoFont()
 {
-    qDebug() << "Getting Chinese and monospace fonts";
+    qCDebug(fmLog) << "Getting Chinese and monospace fonts";
     QThreadPool *threadPool = DCopyFilesManager::instance()->getPool();
-    qInfo() << "Thread pool worker count:" << threadPool->maxThreadCount();
+    qCInfo(fmLog) << "Thread pool worker count:" << threadPool->maxThreadCount();
 
     GetFontListWorker *getChinese = new GetFontListWorker(GetFontListWorker::CHINESE);
     threadPool->start(getChinese);
     GetFontListWorker *getMonospace = new GetFontListWorker(GetFontListWorker::MONOSPACE);
     threadPool->start(getMonospace);
     threadPool->waitForDone();
-    qDebug() << "Workers completed";
+    qCDebug(fmLog) << "Workers completed";
 }
