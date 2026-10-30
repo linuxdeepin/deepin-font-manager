@@ -71,3 +71,11 @@ INSTALL(FILES ${ICON_FILE} DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/sc
 
 SET(PREVIEW_CONTENT_FILE ${CMAKE_CURRENT_SOURCE_DIR}/../deepin-font-manager-assets/contents.txt)
 INSTALL(FILES ${PREVIEW_CONTENT_FILE} DESTINATION ${CMAKE_INSTALL_DATADIR}/${APP_BIN}/)
+
+# dconfig meta（调试模式动态日志规则，安装到 /usr/share/dsg/configs/<appId>/）
+set(DCONFIG_APPID org.deepin.font-manager)
+file(GLOB DCONFIG_META_FILES ${CMAKE_CURRENT_SOURCE_DIR}/../deepin-font-manager-assets/configs/*.json)
+if(DCONFIG_META_FILES)
+    install(FILES ${DCONFIG_META_FILES}
+        DESTINATION share/dsg/configs/${DCONFIG_APPID})
+endif()
