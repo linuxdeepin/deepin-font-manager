@@ -3,6 +3,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#include "ddlog.h"
 #include "dfmxmlwrapper.h"
 #include "globaldef.h"
 
@@ -68,21 +69,21 @@ DFMXmlWrapper::DFMXmlWrapper()
 *************************************************************************/
 bool DFMXmlWrapper::createFontConfigFile(const QString &xmlFilePath)
 {
-    qDebug() << "Creating font config file:" << xmlFilePath;
+    qCDebug(fmLog) << "Creating font config file:" << xmlFilePath;
     QFile file(xmlFilePath);
     if (file.exists()) {
-        qDebug() << "Font config file already exists:" << xmlFilePath;
+        qCDebug(fmLog) << "Font config file already exists:" << xmlFilePath;
         return true;
     }
 
     if (!QFile::exists(FontConfigFileDir)) {
-        qDebug() << "Creating font config directory:" << FontConfigFileDir;
+        qCDebug(fmLog) << "Creating font config directory:" << FontConfigFileDir;
         QDir dir(FontConfigFileDir);
         dir.mkpath(FontConfigFileDir);
     }
 
     if (!file.open(QFile::WriteOnly | QFile::Text)) { // 只写模式打开文件
-        qWarning() << "Failed to open file for writing:" << xmlFilePath
+        qCWarning(fmLog) << "Failed to open file for writing:" << xmlFilePath
                   << "Error:" << file.errorString();
         return false;
     }
@@ -111,7 +112,7 @@ bool DFMXmlWrapper::createFontConfigFile(const QString &xmlFilePath)
     writer.writeEndDocument();
 
     file.close();
-    qDebug() << "Successfully created font config file:" << xmlFilePath;
+    qCDebug(fmLog) << "Successfully created font config file:" << xmlFilePath;
     return true;
 }
 
@@ -154,9 +155,9 @@ bool DFMXmlWrapper::getNodeByName(QDomElement &rootEle,
                                   const QString &nodeName,
                                   QDomElement &node)
 {
-    qDebug() << "Searching for node:" << nodeName;
+    qCDebug(fmLog) << "Searching for node:" << nodeName;
     if (nodeName == rootEle.tagName()) { // 若为根节点，则返回
-        qDebug() << "Found root node:" << nodeName;
+        qCDebug(fmLog) << "Found root node:" << nodeName;
         node = rootEle;
         return true;
     }
@@ -171,7 +172,7 @@ bool DFMXmlWrapper::getNodeByName(QDomElement &rootEle,
         }
     }
 
-    qDebug() << "Exiting function: DFMXmlWrapper::getNodeByName with result: false";
+    qCDebug(fmLog) << "Exiting function: DFMXmlWrapper::getNodeByName with result: false";
     return false;
 }
 
@@ -204,9 +205,9 @@ bool DFMXmlWrapper::addNodesWithText(const QString &fileName,
                                      const QList<QSTRING_MAP> &nodeAttributeList,
                                      const QString &lastNodeText)
 {
-    qDebug() << "Adding nodes with text to file:" << fileName;
+    qCDebug(fmLog) << "Adding nodes with text to file:" << fileName;
     if (fileName.isEmpty()) { // 文件名为空
-        qWarning() << "Empty file name provided";
+        qCWarning(fmLog) << "Empty file name provided";
         return false;
     }
 
@@ -216,14 +217,14 @@ bool DFMXmlWrapper::addNodesWithText(const QString &fileName,
     QFile file(fileName);
     // 以只读方式打开
     if (!file.open(QIODevice::ReadOnly)) {
-        qWarning() << "Failed to open file for reading:" << fileName
+        qCWarning(fmLog) << "Failed to open file for reading:" << fileName
                   << "Error:" << file.errorString();
         return false;
     }
 
     // 将文件内容读到doc中
     if (!doc.setContent(&file)) {
-        qWarning() << "Failed to parse XML content from file:" << fileName;
+        qCWarning(fmLog) << "Failed to parse XML content from file:" << fileName;
         file.close();
         return false;
     }
@@ -260,7 +261,7 @@ bool DFMXmlWrapper::addNodesWithText(const QString &fileName,
     }
 
     if (!file.open(QFile::WriteOnly | QFile::Truncate)) {
-        qWarning() << "Failed to open file for writing:" << fileName
+        qCWarning(fmLog) << "Failed to open file for writing:" << fileName
                   << "Error:" << file.errorString();
         return false;
     }
@@ -270,16 +271,16 @@ bool DFMXmlWrapper::addNodesWithText(const QString &fileName,
     // 将文档保存到文件，4为子元素缩进字符数
     doc.save(out, 4);
     file.close();
-    qDebug() << "Successfully added nodes to file:" << fileName;
+    qCDebug(fmLog) << "Successfully added nodes to file:" << fileName;
     return true;
 }
 
 bool DFMXmlWrapper::addNodesWithTextList(const QString &fileName, const QString &parentNodeName, const QStringList &nodeNameList,
                                          const QList<QSTRING_MAP> &nodeAttributeList, const QStringList &lastNodeTextList)
 {
-    qDebug() << "Adding multiple nodes with text to file:" << fileName;
+    qCDebug(fmLog) << "Adding multiple nodes with text to file:" << fileName;
     if (fileName.isEmpty()) { // 文件名为空
-        qWarning() << "Empty file name provided";
+        qCWarning(fmLog) << "Empty file name provided";
         return false;
     }
 
@@ -289,14 +290,14 @@ bool DFMXmlWrapper::addNodesWithTextList(const QString &fileName, const QString 
     QFile file(fileName);
     // 以只读方式打开
     if (!file.open(QIODevice::ReadOnly)) {
-        qWarning() << "Failed to open file for reading:" << fileName
+        qCWarning(fmLog) << "Failed to open file for reading:" << fileName
                   << "Error:" << file.errorString();
         return false;
     }
 
     // 将文件内容读到doc中
     if (!doc.setContent(&file)) {
-        qWarning() << "Failed to parse XML content from file:" << fileName;
+        qCWarning(fmLog) << "Failed to parse XML content from file:" << fileName;
         file.close();
         return false;
     }
@@ -337,7 +338,7 @@ bool DFMXmlWrapper::addNodesWithTextList(const QString &fileName, const QString 
     }
 
     if (!file.open(QFile::WriteOnly | QFile::Truncate)) {
-        qWarning() << "Failed to open file for writing:" << fileName
+        qCWarning(fmLog) << "Failed to open file for writing:" << fileName
                   << "Error:" << file.errorString();
         return false;
     }
@@ -348,7 +349,7 @@ bool DFMXmlWrapper::addNodesWithTextList(const QString &fileName, const QString 
     // 将文档保存到文件，4为子元素缩进字符数
     doc.save(out, 4);
     file.close();
-    qDebug() << "Successfully added multiple nodes to file:" << fileName;
+    qCDebug(fmLog) << "Successfully added multiple nodes to file:" << fileName;
     return true;
 }
 
@@ -373,7 +374,7 @@ bool DFMXmlWrapper::addNodesWithTextList(const QString &fileName, const QString 
 
 bool DFMXmlWrapper::addPatternNodesWithTextList(const QString &fileName, const QString &parentNodeName, const QStringList &lastNodeTextList)
 {
-    qDebug() << "Adding pattern nodes with text list to file:" << fileName;
+    qCDebug(fmLog) << "Adding pattern nodes with text list to file:" << fileName;
     QStringList nodeNameList;
     nodeNameList << "pattern" << "patelt" << "string";
     QList<QMap<QString, QString>> attributeList;
@@ -387,9 +388,9 @@ bool DFMXmlWrapper::addPatternNodesWithTextList(const QString &fileName, const Q
 
     bool ret = DFMXmlWrapper::addNodesWithTextList(fileName, parentNodeName, nodeNameList, attributeList, lastNodeTextList);
     if (ret) {
-        qDebug() << "Successfully added pattern nodes to file:" << fileName;
+        qCDebug(fmLog) << "Successfully added pattern nodes to file:" << fileName;
     } else {
-        qWarning() << "Failed to add pattern nodes to file:" << fileName;
+        qCWarning(fmLog) << "Failed to add pattern nodes to file:" << fileName;
     }
     return ret;
 }
@@ -484,23 +485,23 @@ bool DFMXmlWrapper::addPatternNodesWithTextList(const QString &fileName, const Q
 *************************************************************************/
 bool DFMXmlWrapper::deleteNodeWithTextList(const QString &fileName, const QString &nodeName, const QStringList &nodeTextList)
 {
-    qDebug() << "Deleting nodes with text list from file:" << fileName;
+    qCDebug(fmLog) << "Deleting nodes with text list from file:" << fileName;
     if (fileName.isEmpty()) {
-        qWarning() << "Empty file name provided";
+        qCWarning(fmLog) << "Empty file name provided";
         return false;
     }
 
     QFile file(fileName);
     //打开文件
     if (!file.open(QFile::ReadOnly)) {
-        qWarning() << "Failed to open file for reading:" << fileName
+        qCWarning(fmLog) << "Failed to open file for reading:" << fileName
                   << "Error:" << file.errorString();
         return false;
     }
 
     QDomDocument doc;
     if (!doc.setContent(&file)) {
-        qWarning() << "Failed to parse XML content from file:" << fileName;
+        qCWarning(fmLog) << "Failed to parse XML content from file:" << fileName;
         file.close();
         return false;
     }
@@ -514,7 +515,7 @@ bool DFMXmlWrapper::deleteNodeWithTextList(const QString &fileName, const QStrin
 
     // 假如是根节点
     if (rootEle == nodeEle) {
-        qWarning() << "Cannot delete root node";
+        qCWarning(fmLog) << "Cannot delete root node";
         return false;
     }
 
@@ -531,7 +532,7 @@ bool DFMXmlWrapper::deleteNodeWithTextList(const QString &fileName, const QStrin
         }
     }
 
-    qDebug() << "Found" << removeNodeList.size() << "nodes to delete";
+    qCDebug(fmLog) << "Found" << removeNodeList.size() << "nodes to delete";
     for (QDomNode &removeNode : removeNodeList) {
         if (removeNode.isElement()) {
             QDomNode parentNode = removeNode.parentNode();
@@ -549,7 +550,7 @@ bool DFMXmlWrapper::deleteNodeWithTextList(const QString &fileName, const QStrin
     }
 
     if (!file.open(QFile::WriteOnly | QFile::Truncate)) {
-        qWarning() << "Failed to open file for writing after deletion:" << fileName
+        qCWarning(fmLog) << "Failed to open file for writing after deletion:" << fileName
                   << "Error:" << file.errorString();
         return false;
     }
@@ -558,7 +559,7 @@ bool DFMXmlWrapper::deleteNodeWithTextList(const QString &fileName, const QStrin
     QTextStream out_stream(&file);
     doc.save(out_stream, 4); //缩进4格
     file.close();
-    qDebug() << "Successfully deleted nodes from file:" << fileName;
+    qCDebug(fmLog) << "Successfully deleted nodes from file:" << fileName;
     return true;
 }
 
@@ -577,10 +578,10 @@ bool DFMXmlWrapper::queryAllChildNodes_Text(const QString &fileName,
                                             const QString &nodeName,
                                             QStringList &textList)
 {
-    qDebug() << "Entering function: DFMXmlWrapper::queryAllChildNodes_Text with fileName:" << fileName << "nodeName:" << nodeName;
+    qCDebug(fmLog) << "Entering function: DFMXmlWrapper::queryAllChildNodes_Text with fileName:" << fileName << "nodeName:" << nodeName;
 
     if (fileName.isEmpty()) {
-        qDebug() << "Empty file name provided result: false";
+        qCDebug(fmLog) << "Empty file name provided result: false";
         return false;
     }
 
@@ -590,14 +591,14 @@ bool DFMXmlWrapper::queryAllChildNodes_Text(const QString &fileName,
     QFile file(fileName);
     // 以只读方式打开
     if (!file.open(QIODevice::ReadOnly)) {
-        qWarning() << "Failed to open file for reading:" << fileName
+        qCWarning(fmLog) << "Failed to open file for reading:" << fileName
                   << "Error:" << file.errorString();
         return false;
     }
 
     // 将文件内容读到doc中
     if (!doc.setContent(&file)) {
-        qWarning() << "Failed to parse XML content from file:" << fileName;
+        qCWarning(fmLog) << "Failed to parse XML content from file:" << fileName;
         file.close();
         file.remove();
         return false;
@@ -608,7 +609,7 @@ bool DFMXmlWrapper::queryAllChildNodes_Text(const QString &fileName,
     QDomElement rootEle = doc.documentElement();
     QDomElement node;
     if (!getNodeByName(rootEle, nodeName, node)) {
-        qDebug() << "Failed to find node:" << nodeName;
+        qCDebug(fmLog) << "Failed to find node:" << nodeName;
         return false;
     }
 
@@ -624,7 +625,7 @@ bool DFMXmlWrapper::queryAllChildNodes_Text(const QString &fileName,
         }
     }
 
-    qDebug() << "Exiting function: DFMXmlWrapper::queryAllChildNodes_Text with result: true";
+    qCDebug(fmLog) << "Exiting function: DFMXmlWrapper::queryAllChildNodes_Text with result: true";
     return true;
 }
 
@@ -639,13 +640,13 @@ bool DFMXmlWrapper::queryAllChildNodes_Text(const QString &fileName,
 *************************************************************************/
 QStringList DFMXmlWrapper::getFontConfigDisableFontPathList()
 {
-    qDebug() << "Entering function: DFMXmlWrapper::getFontConfigDisableFontPathList";
+    qCDebug(fmLog) << "Entering function: DFMXmlWrapper::getFontConfigDisableFontPathList";
 
     QStringList strDisableFontPathList;
     QString fontConfigFilePath = DFMXmlWrapper::m_fontConfigFilePath;
     DFMXmlWrapper::queryAllChildNodes_Text(fontConfigFilePath, "rejectfont", strDisableFontPathList);
 
-    qDebug() << "Exiting function: DFMXmlWrapper::getFontConfigDisableFontPathList";
+    qCDebug(fmLog) << "Exiting function: DFMXmlWrapper::getFontConfigDisableFontPathList";
     return strDisableFontPathList;
 }
 

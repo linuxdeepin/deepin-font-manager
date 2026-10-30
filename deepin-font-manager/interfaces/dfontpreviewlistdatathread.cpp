@@ -3,6 +3,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#include "ddlog.h"
 #include "dfontpreviewlistdatathread.h"
 #include "dfmxmlwrapper.h"
 #include "dfontpreviewlistview.h"
@@ -52,10 +53,10 @@ DFontPreviewListDataThread::DFontPreviewListDataThread(DFontPreviewListView *vie
     , m_fsWatcher(nullptr)
     , m_mutex(nullptr)
 {
-    qDebug() << "Initializing DFontPreviewListDataThread";
+    qCDebug(fmLog) << "Initializing DFontPreviewListDataThread";
     if (view != nullptr) {
         m_mutex = view->getMutex();
-        qDebug() << "Mutex obtained from view";
+        qCDebug(fmLog) << "Mutex obtained from view";
     }
 
     m_dbManager = DFMDBManager::instance();
@@ -69,10 +70,10 @@ DFontPreviewListDataThread::DFontPreviewListDataThread(DFontPreviewListView *vie
     connect(this, &DFontPreviewListDataThread::requestExportFont, this, &DFontPreviewListDataThread::onExportFont);
 
     QTimer::singleShot(3, [this] {
-        qDebug() << "Starting worker thread";
+        qCDebug(fmLog) << "Starting worker thread";
         mThread.start();
     });
-    qDebug() << "DFontPreviewListDataThread initialized";
+    qCDebug(fmLog) << "DFontPreviewListDataThread initialized";
 }
 
 DFontPreviewListDataThread::~DFontPreviewListDataThread()
@@ -91,7 +92,7 @@ DFontPreviewListDataThread::~DFontPreviewListDataThread()
 *************************************************************************/
 void DFontPreviewListDataThread::doWork()
 {
-    qDebug() << "Starting worker thread function";
+    qCDebug(fmLog) << "Starting worker thread function";
     QMutexLocker locker(m_mutex);
     initFileSystemWatcher();
     m_fontModelList.clear();
@@ -103,7 +104,7 @@ void DFontPreviewListDataThread::doWork()
     // qDebug() << "Got disabled font list, count:" << disableFontList.count();
 
     if (disableFontList.count() > 0) {
-        qDebug() << "Syncing font enable/disable status";
+        qCDebug(fmLog) << "Syncing font enable/disable status";
         syncFontEnableDisableStatusData(disableFontList);
     }
 
@@ -114,12 +115,12 @@ void DFontPreviewListDataThread::doWork()
         //syncFontEnableDisableStatusData(disableFontList);
         refreshStartupFontListData();
         m_view->onFinishedDataLoad(); //当前只加载了50条数据所以切换到用户数据显示未安装
-        qDebug() << "Worker thread function completed with startup data";
+        qCDebug(fmLog) << "Worker thread function completed with startup data";
         return;
     }
     //withoutDbRefreshDb(m_allFontPathList);
     Q_EMIT m_view->multiItemsAdded(m_fontModelList, DFontSpinnerWidget::StartupLoad);
-    qDebug() << "Worker thread function completed";
+    qCDebug(fmLog) << "Worker thread function completed";
 }
 
 /*************************************************************************
@@ -133,21 +134,21 @@ void DFontPreviewListDataThread::doWork()
 *************************************************************************/
 void DFontPreviewListDataThread::initFileSystemWatcher()
 {
-    qDebug() << "Initializing file system watcher";
+    qCDebug(fmLog) << "Initializing file system watcher";
     if (m_fsWatcher == nullptr) {
-        qDebug() << "Creating new QFileSystemWatcher";
+        qCDebug(fmLog) << "Creating new QFileSystemWatcher";
         m_fsWatcher = new QFileSystemWatcher(this);
     }
 
     QDir dir(FONTS_DIR);
     if (!dir.exists()) {
-        qDebug() << "Creating fonts directory:" << FONTS_DIR;
+        qCDebug(fmLog) << "Creating fonts directory:" << FONTS_DIR;
         dir.mkpath(FONTS_DIR);
     }
 
     m_deleteFileRecivetimer = new QTimer;
 
-    qDebug() << "Adding watch paths:" << FONTS_DIR << FONTS_UP_DIR;
+    qCDebug(fmLog) << "Adding watch paths:" << FONTS_DIR << FONTS_UP_DIR;
     m_fsWatcher->addPath(FONTS_DIR);
     m_fsWatcher->addPath(FONTS_UP_DIR);
 
@@ -156,28 +157,28 @@ void DFontPreviewListDataThread::initFileSystemWatcher()
         //启动定时器收集需要删除的字体
         m_deleteFileRecivetimer->start(20);
         m_waitForDeleteFiles << path;
-        qDebug() << "Added to wait for delete list, count:" << m_waitForDeleteFiles.count();
+        qCDebug(fmLog) << "Added to wait for delete list, count:" << m_waitForDeleteFiles.count();
     });
 
     //定时器停止表示没有需要删除的字体了,开始进行进行删除
     connect(m_deleteFileRecivetimer, &QTimer::timeout, this, [ = ] {
-        qDebug() << m_waitForDeleteFiles.count();
+        qCDebug(fmLog) << m_waitForDeleteFiles.count();
         //删除前显示加载动画
         m_view->updateSpinner(DFontSpinnerWidget::Delete, false);
         m_view->updateChangedFile(m_waitForDeleteFiles);
         //删除后加载动画消失
         Q_EMIT m_view->requestShowSpinner(false, true, DFontSpinnerWidget::Delete);
         m_deleteFileRecivetimer->stop();
-        qDebug() << "Deleted files processed, list cleared";
+        qCDebug(fmLog) << "Deleted files processed, list cleared";
         m_waitForDeleteFiles.clear();
     });
 
     connect(m_fsWatcher, &QFileSystemWatcher::directoryChanged,
     this, [ = ](const QString & path) {
-        qDebug() << "Directory changed:" << path;
+        qCDebug(fmLog) << "Directory changed:" << path;
         QFileInfo f(path);
         if (!f.isDir()) {
-            qDebug() << "Not a directory, skipping";
+            qCDebug(fmLog) << "Not a directory, skipping";
             return;
         }
 
@@ -189,11 +190,11 @@ void DFontPreviewListDataThread::initFileSystemWatcher()
         Q_EMIT m_view->requestShowSpinner(false, true, DFontSpinnerWidget::Delete);
 
         if (!dir.exists()) {
-            qDebug() << "Directory removed, removing watch";
+            qCDebug(fmLog) << "Directory removed, removing watch";
             m_fsWatcher->removePath(FONTS_DIR);
         }
     });
-    qDebug() << "File system watcher initialized";
+    qCDebug(fmLog) << "File system watcher initialized";
 }
 
 /*************************************************************************
@@ -207,10 +208,10 @@ void DFontPreviewListDataThread::initFileSystemWatcher()
 *************************************************************************/
 void DFontPreviewListDataThread::updateChangedDir()
 {
-    qDebug() << "Updating changed directory";
+    qCDebug(fmLog) << "Updating changed directory";
     QMutexLocker locker(m_mutex);
     m_view->updateChangedDir();
-    qDebug() << "Changed directory updated";
+    qCDebug(fmLog) << "Changed directory updated";
 }
 
 /*************************************************************************
@@ -224,30 +225,30 @@ void DFontPreviewListDataThread::updateChangedDir()
 *************************************************************************/
 void DFontPreviewListDataThread::addPathWatcher(const QString &path)
 {
-    qDebug() << "Adding path watcher for:" << path;
+    qCDebug(fmLog) << "Adding path watcher for:" << path;
     if (m_fsWatcher == nullptr) {
-        qWarning() << "File system watcher is null";
+        qCWarning(fmLog) << "File system watcher is null";
         return;
     }
 
     if (!QFileInfo(path).exists()) {
-        qWarning() << "Path does not exist:" << path;
+        qCWarning(fmLog) << "Path does not exist:" << path;
         return;
     }
 
     if (m_fsWatcher->addPath(path)) {
-        qDebug() << "Path watcher added successfully";
+        qCDebug(fmLog) << "Path watcher added successfully";
         if (!m_fsWatcher->directories().contains(FONTS_DIR)) {
-            qDebug() << "Adding FONTS_DIR to watcher";
+            qCDebug(fmLog) << "Adding FONTS_DIR to watcher";
             m_fsWatcher->addPath(FONTS_DIR);
         }
 
         if (!m_fsWatcher->directories().contains(FONTS_UP_DIR)) {
-            qDebug() << "Adding FONTS_UP_DIR to watcher";
+            qCDebug(fmLog) << "Adding FONTS_UP_DIR to watcher";
             m_fsWatcher->addPath(FONTS_UP_DIR);
         }
     }
-    qDebug() << "Path watcher added successfully";
+    qCDebug(fmLog) << "Path watcher added successfully";
 }
 
 /*************************************************************************
@@ -261,13 +262,13 @@ void DFontPreviewListDataThread::addPathWatcher(const QString &path)
 *************************************************************************/
 void DFontPreviewListDataThread::removePathWatcher(const QString &path)
 {
-    qDebug() << "Removing path watcher for:" << path;
+    qCDebug(fmLog) << "Removing path watcher for:" << path;
     if (m_fsWatcher == nullptr) {
-        qWarning() << "File system watcher is null";
+        qCWarning(fmLog) << "File system watcher is null";
         return;
     }
     m_fsWatcher->removePath(path);
-    qDebug() << "Path watcher removed successfully";
+    qCDebug(fmLog) << "Path watcher removed successfully";
 }
 
 /*************************************************************************
@@ -281,13 +282,13 @@ void DFontPreviewListDataThread::removePathWatcher(const QString &path)
 *************************************************************************/
 void DFontPreviewListDataThread::onFileDeleted(QStringList &files)
 {
-    qDebug() << __FUNCTION__ << files.size();
+    qCDebug(fmLog) << __FUNCTION__ << files.size();
     if (m_mutex != nullptr) {
         // qDebug() << "Mutex is not null, locking mutex";
         QMutexLocker locker(m_mutex);
     }
     m_view->deleteCurFonts(files, false);
-    qDebug() << "File deletion processed";
+    qCDebug(fmLog) << "File deletion processed";
 }
 
 /*************************************************************************
@@ -301,9 +302,9 @@ void DFontPreviewListDataThread::onFileDeleted(QStringList &files)
 *************************************************************************/
 void DFontPreviewListDataThread::onFileAdded(const QStringList &files)
 {
-    qDebug() << "Processing file addition, count:" << files.size();
+    qCDebug(fmLog) << "Processing file addition, count:" << files.size();
     if (files.isEmpty()) {
-        qDebug() << "Empty files list, skipping";
+        qCDebug(fmLog) << "Empty files list, skipping";
         return;
     }
 
@@ -311,10 +312,10 @@ void DFontPreviewListDataThread::onFileAdded(const QStringList &files)
         QMutexLocker locker(m_mutex);
     }
     
-    qDebug() << __func__ << "S" << QThread::currentThreadId() << "\n";
+    qCDebug(fmLog) << __func__ << "S" << QThread::currentThreadId() << "\n";
 
     refreshFontListData(false, files);
-    qDebug() << "File addition processing complete";
+    qCDebug(fmLog) << "File addition processing complete";
 }
 
 /*************************************************************************
@@ -328,7 +329,7 @@ void DFontPreviewListDataThread::onFileAdded(const QStringList &files)
 *************************************************************************/
 QList<DFontPreviewItemData> DFontPreviewListDataThread::getFontModelList()
 {
-    qDebug() << "Getting font model list";
+    qCDebug(fmLog) << "Getting font model list";
     if (m_view->isListDataLoadFinished())
         return m_fontModelList;
     return QList<DFontPreviewItemData>();
@@ -364,13 +365,13 @@ void DFontPreviewListDataThread::updateItemStatus(int index, const DFontPreviewI
 *************************************************************************/
 void DFontPreviewListDataThread::forceDeleteFiles(QStringList &files)
 {
-    qDebug() << __FUNCTION__ << files << m_mutex;
+    qCDebug(fmLog) << __FUNCTION__ << files << m_mutex;
     if (m_mutex != nullptr)
         QMutexLocker locker(m_mutex);
     m_view->deleteFontFiles(files, true);
 
     Q_EMIT requestBatchReInstallContinue();
-    qDebug() << __FUNCTION__ << files << " end ";
+    qCDebug(fmLog) << __FUNCTION__ << files << " end ";
 }
 
 /*************************************************************************
@@ -384,10 +385,10 @@ void DFontPreviewListDataThread::forceDeleteFiles(QStringList &files)
 *************************************************************************/
 void DFontPreviewListDataThread::onRemoveFileWatchers(const QStringList &files)
 {
-    qDebug() << "Removing file watchers, count:" << files.size();
+    qCDebug(fmLog) << "Removing file watchers, count:" << files.size();
     if (!files.isEmpty()) {
         //消除files为空的警告
-        qDebug() << __FUNCTION__ << files.size() << m_fsWatcher->removePaths(files);
+        qCDebug(fmLog) << __FUNCTION__ << files.size() << m_fsWatcher->removePaths(files);
     }
     m_fsWatcher->removePath(FONTS_DIR);
     m_fsWatcher->removePath(FONTS_UP_DIR);
@@ -404,7 +405,7 @@ void DFontPreviewListDataThread::onRemoveFileWatchers(const QStringList &files)
 *************************************************************************/
 void DFontPreviewListDataThread::onAutoDirWatchers()
 {
-    qDebug() << "Adding auto directory watchers";
+    qCDebug(fmLog) << "Adding auto directory watchers";
     m_fsWatcher->addPath(FONTS_DIR);
     m_fsWatcher->addPath(FONTS_UP_DIR);
 }
@@ -416,17 +417,17 @@ void DFontPreviewListDataThread::onAutoDirWatchers()
 */
 void DFontPreviewListDataThread::onExportFont(QStringList &fontList)
 {
-    qDebug() << __FUNCTION__ << fontList.size();
+    qCDebug(fmLog) << __FUNCTION__ << fontList.size();
 
     QDir dir(FONTS_DESKTOP_DIR);
     if (!dir.exists()) {
-        qDebug() << "Creating desktop fonts directory";
+        qCDebug(fmLog) << "Creating desktop fonts directory";
         dir.mkpath(FONTS_DESKTOP_DIR);
     }
 
     DCopyFilesManager::instance()->copyFiles(CopyFontThread::EXPORT, fontList);
     Q_EMIT exportFontFinished(fontList.size());
-    qDebug() << "Font export completed, count:" << fontList.size();
+    qCDebug(fmLog) << "Font export completed, count:" << fontList.size();
 }
 
 DFontPreviewListView *DFontPreviewListDataThread::getView() const
@@ -437,9 +438,9 @@ DFontPreviewListView *DFontPreviewListDataThread::getView() const
 
 void DFontPreviewListDataThread::onRefreshUserAddFont(QList<DFontInfo> &fontInfoList)
 {
-    qDebug() << "Refreshing user added fonts, count:" << fontInfoList.size();
+    qCDebug(fmLog) << "Refreshing user added fonts, count:" << fontInfoList.size();
     if (fontInfoList.size() < 1) {
-        qDebug() << "No fonts to refresh, skipping";
+        qCDebug(fmLog) << "No fonts to refresh, skipping";
         return;
     }
     int index =  m_dbManager->getCurrMaxFontId() + 1;
@@ -452,7 +453,7 @@ void DFontPreviewListDataThread::onRefreshUserAddFont(QList<DFontInfo> &fontInfo
     fDbManager->commitAddFontInfo();
     m_isAllLoaded = true; //用户字体加载完成才是全部完成
     emit m_view->refreshListview(m_diffFontModelList);
-    qDebug() << "User added fonts refreshed";
+    qCDebug(fmLog) << "User added fonts refreshed";
 }
 /*************************************************************************
  <Function>      updateDb
@@ -482,12 +483,12 @@ void DFontPreviewListDataThread::updateDb()
 *************************************************************************/
 void DFontPreviewListDataThread::withoutDbRefreshDb()
 {
-    qDebug() << "Refreshing database without existing data";
+    qCDebug(fmLog) << "Refreshing database without existing data";
     if(!m_dbManager->isDBDeleted()){
-        qDebug() << "Database exists, skipping refresh";
+        qCDebug(fmLog) << "Database exists, skipping refresh";
         return;
     }
-    qDebug() << "All font list size:" << m_allFontPathList.size();
+    qCDebug(fmLog) << "All font list size:" << m_allFontPathList.size();
 
     int index = 0;
     DFontInfoManager *fontInfoMgr = DFontInfoManager::instance();
@@ -499,19 +500,19 @@ void DFontPreviewListDataThread::withoutDbRefreshDb()
         if (filePath.length() > 0) {
             info = fontInfoMgr->getFontInfo(filePath, true);
             if (!fontInfolist.contains(info)) {
-                qDebug() << "Adding font info for:" << filePath;
+                qCDebug(fmLog) << "Adding font info for:" << filePath;
                 fontInfolist << info;
                 index = insertFontItemData(info, index, m_chineseFontPathList, m_monoSpaceFontPathList, true);
             }
         }
     }
 
-    qDebug() << "Committing font info to database";
+    qCDebug(fmLog) << "Committing font info to database";
     m_dbManager->commitAddFontInfo();
 
     m_dbManager->syncOldRecords();//数据库t_fontmanager表被重建时，先saveRecord，再updateOld2Record。
     m_view->onFinishedDataLoad();
-    qDebug() << "Database refresh complete";
+    qCDebug(fmLog) << "Database refresh complete";
 }
 
 /*************************************************************************
@@ -564,7 +565,7 @@ int DFontPreviewListDataThread::insertFontItemData(const DFontInfo info,
                                                    const QStringList &monoSpaceFontPathList,
                                                    bool isStartup, bool isEnabled)
 {
-    qDebug() << "Inserting font item data, index:" << index << "startup:" << isStartup << "enabled:" << isEnabled;
+    qCDebug(fmLog) << "Inserting font item data, index:" << index << "startup:" << isStartup << "enabled:" << isEnabled;
     DFontPreviewItemData itemData;
     itemData.fontInfo = info;
 
@@ -620,7 +621,7 @@ int DFontPreviewListDataThread::insertFontItemData(const DFontInfo info,
 //    Q_EMIT m_view->itemAdded(itemData);
     addPathWatcher(info.filePath);
 
-    qDebug() << "Font item data inserted, new index:" << (index + 1);
+    qCDebug(fmLog) << "Font item data inserted, new index:" << (index + 1);
     return (index + 1);
 }
 
@@ -636,7 +637,7 @@ int DFontPreviewListDataThread::insertFontItemData(const DFontInfo info,
 *************************************************************************/
 void DFontPreviewListDataThread:: refreshFontListData(bool isStartup, const QStringList &installFont)
 {
-    qDebug() << __FUNCTION__ << " begin" << isStartup << installFont.size() << QThread::currentThreadId() << m_fontModelList.size();
+    qCDebug(fmLog) << __FUNCTION__ << " begin" << isStartup << installFont.size() << QThread::currentThreadId() << m_fontModelList.size();
 
     if (isStartup) {
         // qDebug() << "Adding install font to all font path list";
@@ -705,7 +706,7 @@ void DFontPreviewListDataThread:: refreshFontListData(bool isStartup, const QStr
 #endif
     QSet<QString> diffSet = allFontListSet.subtract(dbFilePathSet);
 
-    qInfo() << "diffSet count:" << diffSet.count();
+    qCInfo(fmLog) << "diffSet count:" << diffSet.count();
     if (diffSet.count() > 0) {
         int maxFontId = m_dbManager->getCurrMaxFontId();
 #if QT_VERSION_MAJOR > 5
@@ -726,7 +727,7 @@ void DFontPreviewListDataThread:: refreshFontListData(bool isStartup, const QStr
 
         m_dbManager->commitAddFontInfo();
     }
-    qInfo() << __FUNCTION__ << " end " << QThread::currentThreadId() << m_diffFontModelList.size() << m_fontModelList.size();
+    qCInfo(fmLog) << __FUNCTION__ << " end " << QThread::currentThreadId() << m_diffFontModelList.size() << m_fontModelList.size();
 
     if (!isStartup && !installFont.isEmpty()) {
         // qDebug() << "Emitting multi items added signal";
@@ -741,7 +742,7 @@ void DFontPreviewListDataThread:: refreshFontListData(bool isStartup, const QStr
         // qDebug() << "Emitting multi items added signal";
         Q_EMIT m_view->multiItemsAdded(m_fontModelList, DFontSpinnerWidget::Load);
     }
-    qDebug() << "Font list data refreshed";
+    qCDebug(fmLog) << "Font list data refreshed";
 }
 
 /*************************************************************************
@@ -754,7 +755,7 @@ void DFontPreviewListDataThread:: refreshFontListData(bool isStartup, const QStr
 *************************************************************************/
 void DFontPreviewListDataThread::refreshStartupFontListData()
 {
-    qDebug() << "Refreshing startup font list data";
+    qCDebug(fmLog) << "Refreshing startup font list data";
     for (DFontPreviewItemData &itemData : m_delFontInfoList) {
         //如果字体文件已经不存在，则从t_manager表中删除
         //删除字体之前启用字体，防止下次重新安装后就被禁用
@@ -772,7 +773,7 @@ void DFontPreviewListDataThread::refreshStartupFontListData()
     Q_EMIT m_view->multiItemsAdded(m_startModelList, DFontSpinnerWidget::StartupLoad);
 
     m_delFontInfoList.clear();
-    qDebug() << "Startup font list data refreshed";
+    qCDebug(fmLog) << "Startup font list data refreshed";
 }
 
 
@@ -789,7 +790,7 @@ void DFontPreviewListDataThread::refreshStartupFontListData()
 *************************************************************************/
 void DFontPreviewListDataThread::syncFontEnableDisableStatusData(const QStringList &disableFontPathList)
 {
-    qDebug() << "Syncing font enable/disable status data, disabled count:" << disableFontPathList.size();
+    qCDebug(fmLog) << "Syncing font enable/disable status data, disabled count:" << disableFontPathList.size();
     //disableFontPathList为被禁用的字体路径列表
 //    if (disableFontPathList.size() == 0) {
 //        return;
@@ -819,7 +820,7 @@ void DFontPreviewListDataThread::syncFontEnableDisableStatusData(const QStringLi
     }
 
     m_dbManager->commitUpdateFontInfo();
-    qDebug() << "Font enable/disable status data synced";
+    qCDebug(fmLog) << "Font enable/disable status data synced";
 }
 
 
@@ -836,9 +837,9 @@ void DFontPreviewListDataThread::syncFontEnableDisableStatusData(const QStringLi
 *************************************************************************/
 void DFontPreviewListDataThread::updateFontId(const DFontPreviewItemData &itemData, int id)
 {
-    qDebug() << "Updating font ID, id:" << id;
+    qCDebug(fmLog) << "Updating font ID, id:" << id;
     if (id < 0) {
-        qWarning() << "Invalid font ID, skipping update";
+        qCWarning(fmLog) << "Invalid font ID, skipping update";
         return;
     }
     int index = m_fontModelList.indexOf(itemData);
@@ -846,7 +847,7 @@ void DFontPreviewListDataThread::updateFontId(const DFontPreviewItemData &itemDa
         m_fontModelList[index].appFontId = id;
         if (m_fontModelList[index].fontInfo.sp3FamilyName != itemData.fontInfo.sp3FamilyName)
             m_fontModelList[index].fontInfo.sp3FamilyName = itemData.fontInfo.sp3FamilyName;
-        qDebug() << "Font ID updated";
+        qCDebug(fmLog) << "Font ID updated";
     }
-    qDebug() << "Font ID updated";
+    qCDebug(fmLog) << "Font ID updated";
 }
