@@ -3,6 +3,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#include "ddlog.h"
 #include "dcopyfilesmanager.h"
 #include "fontmanagercore.h"
 #include "dfontinfomanager.h"
@@ -21,19 +22,19 @@ CopyFontThread::CopyFontThread(OPType type, short index)
     : m_opType(type)
     , m_index(index)
 {
-    qDebug() << "CopyFontThread created, type:" << type << "index:" << index;
+    qCDebug(fmLog) << "CopyFontThread created, type:" << type << "index:" << index;
     if (!autoDelete())
         setAutoDelete(true);
     if (!m_srcFiles.isEmpty())
-        qDebug() << __FUNCTION__ << index << m_srcFiles.size();
-    qDebug() << "Exiting function: CopyFontThread::CopyFontThread";
+        qCDebug(fmLog) << __FUNCTION__ << index << m_srcFiles.size();
+    qCDebug(fmLog) << "Exiting function: CopyFontThread::CopyFontThread";
 }
 
 void CopyFontThread::run()
 {
-    qDebug() << "Entering function: CopyFontThread::run";
+    qCDebug(fmLog) << "Entering function: CopyFontThread::run";
     if (m_srcFiles.isEmpty()) {
-        qWarning() << "No source files to process";
+        qCWarning(fmLog) << "No source files to process";
         return;
     }
     qint64 startTm = QDateTime::currentMSecsSinceEpoch();
@@ -52,9 +53,9 @@ void CopyFontThread::run()
             }
 
             if (!QFile::copy(fontFile, target)) {
-                qWarning() << "Failed to copy file:" << fontFile << "to:" << target;
+                qCWarning(fmLog) << "Failed to copy file:" << fontFile << "to:" << target;
             } else {
-                qDebug() << "Successfully copied file:" << fontFile << "to:" << target;
+                qCDebug(fmLog) << "Successfully copied file:" << fontFile << "to:" << target;
             }
         } else if (m_opType == INSTALL) {
             if (DCopyFilesManager::isInstallCanceled()) {
@@ -70,7 +71,7 @@ void CopyFontThread::run()
             Q_EMIT fileInstalled(familyName, target);
         }
     }
-    qDebug() << __FUNCTION__ << m_index << m_opType << m_srcFiles.size() << " take time (ms) " << QDateTime::currentMSecsSinceEpoch() - startTm;
+    qCDebug(fmLog) << __FUNCTION__ << m_index << m_opType << m_srcFiles.size() << " take time (ms) " << QDateTime::currentMSecsSinceEpoch() - startTm;
 }
 
 void CopyFontThread::appendFile(const QString &filePath)
@@ -97,7 +98,7 @@ DCopyFilesManager::DCopyFilesManager(QObject *parent)
     , m_installMaxThreadCnt(static_cast<qint8>(QThread::idealThreadCount()))
     , m_sortOrder(1)
 {
-    qDebug() << "DCopyFilesManager created, max threads:" << m_maxThreadCnt;
+    qCDebug(fmLog) << "DCopyFilesManager created, max threads:" << m_maxThreadCnt;
     // libdeepin-font-manger.so在安装时需要安装com.deepin.font-manager.gschema.xml
     // 到目录/usr/share/glib-2.0/schemas中。
     // 现在取消libdeepin-font-manger.so，且此配置文件并没有实际作用，故不再使用此文件，
@@ -119,7 +120,7 @@ DCopyFilesManager::DCopyFilesManager(QObject *parent)
         getPool()->setExpiryTimeout(m_expiryTimeout);
     }
 
-    qDebug() << __FUNCTION__ << "export max thread count = " << m_exportMaxThreadCnt << ", install max thread count = " << m_installMaxThreadCnt;
+    qCDebug(fmLog) << __FUNCTION__ << "export max thread count = " << m_exportMaxThreadCnt << ", install max thread count = " << m_installMaxThreadCnt;
 }
 
 DCopyFilesManager *DCopyFilesManager::instance()
@@ -135,9 +136,9 @@ DCopyFilesManager *DCopyFilesManager::instance()
 */
 void DCopyFilesManager::copyFiles(CopyFontThread::OPType type, QStringList &fontList)
 {
-    qDebug() << "Entering function: DCopyFilesManager::copyFiles with type:" << type << "fontList size:" << fontList.size();
+    qCDebug(fmLog) << "Entering function: DCopyFilesManager::copyFiles with type:" << type << "fontList size:" << fontList.size();
     if (fontList.isEmpty()) {
-        qWarning() << "Empty font list provided";
+        qCWarning(fmLog) << "Empty font list provided";
         return;
     }
 
@@ -158,7 +159,7 @@ void DCopyFilesManager::copyFiles(CopyFontThread::OPType type, QStringList &font
     }
 
     //debug log
-    qDebug() << __FUNCTION__ << tcount  << type << fontList;
+    qCDebug(fmLog) << __FUNCTION__ << tcount  << type << fontList;
 
     int index = 0;
     int maxMod = (2 * tcount - 1) % (2 * tcount);
@@ -182,12 +183,12 @@ void DCopyFilesManager::copyFiles(CopyFontThread::OPType type, QStringList &font
     getPool()->waitForDone();
 
     if (m_installCanceled) {
-        qWarning() << "Installation was canceled, cleaning up files";
+        qCWarning(fmLog) << "Installation was canceled, cleaning up files";
         m_installCanceled = false;
         deleteFiles(fontList, false);
     }
     m_type = CopyFontThread::INVALID;
-    qDebug() << __FUNCTION__ << " take (ms) :" << QDateTime::currentMSecsSinceEpoch() - start;
+    qCDebug(fmLog) << __FUNCTION__ << " take (ms) :" << QDateTime::currentMSecsSinceEpoch() - start;
 }
 
 /**
@@ -199,7 +200,7 @@ void DCopyFilesManager::copyFiles(CopyFontThread::OPType type, QStringList &font
 */
 QString DCopyFilesManager::getTargetPath(const QString &inPath, QString &srcPath, QString &targetPath)
 {
-    qDebug() << "Entering function: DCopyFilesManager::getTargetPath with inPath:" << inPath;
+    qCDebug(fmLog) << "Entering function: DCopyFilesManager::getTargetPath with inPath:" << inPath;
 
     QString targetDir;
     QStringList fileParamList = inPath.split("|");
@@ -240,7 +241,7 @@ QString DCopyFilesManager::getTargetPath(const QString &inPath, QString &srcPath
 
     QDir dir(targetDir);
     dir.mkpath(".");
-    qDebug() << "Exiting function: DCopyFilesManager::getTargetPath";
+    qCDebug(fmLog) << "Exiting function: DCopyFilesManager::getTargetPath";
     return familyName;
 }
 
@@ -252,7 +253,7 @@ QString DCopyFilesManager::getTargetPath(const QString &inPath, QString &srcPath
 */
 void DCopyFilesManager::deleteFiles(const QStringList &fileList, bool isTarget)
 {
-    qDebug() << "Deleting files, count:" << fileList.size() << "isTarget:" << isTarget;
+    qCDebug(fmLog) << "Deleting files, count:" << fileList.size() << "isTarget:" << isTarget;
     for (const QString &font : fileList) {
         QString target = font;
         QString src;
@@ -265,5 +266,5 @@ void DCopyFilesManager::deleteFiles(const QStringList &fileList, bool isTarget)
             fileDir.removeRecursively();
         }
     }
-    qDebug() << "Exiting function: DCopyFilesManager::deleteFiles";
+    qCDebug(fmLog) << "Exiting function: DCopyFilesManager::deleteFiles";
 }

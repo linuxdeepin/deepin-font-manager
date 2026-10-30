@@ -3,6 +3,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#include "ddlog.h"
 #include "fontpreview.h"
 
 #ifdef DFM_BASE
@@ -20,12 +21,12 @@ FontPreview::FontPreview(QObject *parent):
 #endif
     m_previewWidget(new DFontWidget)
 {
-    qDebug() << "FontPreview constructor";
+    qCDebug(fmPreviewLog) << "FontPreview constructor";
 }
 
 FontPreview::~FontPreview()
 {
-    qDebug() << "FontPreview destructor";
+    qCDebug(fmPreviewLog) << "FontPreview destructor";
 //    bug 142781
 //    插件中不需要释放。释放会导致文管异常退出。
 //    if (m_previewWidget)
@@ -47,30 +48,30 @@ bool FontPreview::setFileUrl(const QUrl &url)
 bool FontPreview::setFileUrl(const DUrl &url)
 #endif
 {
-    qDebug() << "setFileUrl called with url:" << url;
+    qCDebug(fmPreviewLog) << "setFileUrl called with url:" << url;
     
     if (m_url == url) {
-        qDebug() << "URL unchanged, skipping";
+        qCDebug(fmPreviewLog) << "URL unchanged, skipping";
         return true;
     }
 
     if (!url.isLocalFile()) {
-        qWarning() << "Non-local file URL not supported:" << url;
+        qCWarning(fmPreviewLog) << "Non-local file URL not supported:" << url;
         return false;
     }
 
     m_url = url;
-    qInfo() << "Setting new file URL:" << url;
+    qCInfo(fmPreviewLog) << "Setting new file URL:" << url;
     
     m_previewWidget->setFileUrl(url.toLocalFile());
-    qDebug() << "Preview widget URL set to:" << url.toLocalFile();
+    qCDebug(fmPreviewLog) << "Preview widget URL set to:" << url.toLocalFile();
     
     m_title = url.toString();
-    qDebug() << "Initial title:" << m_title;
+    qCDebug(fmPreviewLog) << "Initial title:" << m_title;
 
     if (!m_title.split("/").isEmpty()) {
         m_title = m_title.split("/").last();
-        qDebug() << "Extracted title:" << m_title;
+        qCDebug(fmPreviewLog) << "Extracted title:" << m_title;
     }
 
     Q_EMIT titleChanged();
@@ -107,7 +108,7 @@ DUrl FontPreview::fileUrl() const
 *************************************************************************/
 QWidget *FontPreview::contentWidget() const
 {
-    qDebug() << "Getting content widget";
+    qCDebug(fmPreviewLog) << "Getting content widget";
     return m_previewWidget;
 }
 
@@ -122,7 +123,7 @@ QWidget *FontPreview::contentWidget() const
 *************************************************************************/
 QString FontPreview::title() const
 {
-    qDebug() << "Getting title:" << m_title;
+    qCDebug(fmPreviewLog) << "Getting title:" << m_title;
     return m_title;
 }
 
