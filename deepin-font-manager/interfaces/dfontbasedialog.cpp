@@ -3,6 +3,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#include "ddlog.h"
 #include "dfontbasedialog.h"
 #include "globaldef.h"
 #include "utils.h"
@@ -17,7 +18,7 @@ DWIDGET_USE_NAMESPACE
 DFontBaseDialog::DFontBaseDialog(QWidget *parent)
     : DAbstractDialog(parent)
 {
-    qDebug() << "Creating DFontBaseDialog";
+    qCDebug(fmLog) << "Creating DFontBaseDialog";
     setAttribute(Qt::WA_DeleteOnClose);
     initUI();
     InitConnections();
@@ -28,9 +29,9 @@ DFontBaseDialog::DFontBaseDialog(QWidget *parent)
 
 DFontBaseDialog::~DFontBaseDialog()
 {
-    qDebug() << "Destroying DFontBaseDialog";
+    qCDebug(fmLog) << "Destroying DFontBaseDialog";
     if (qApp->activeWindow() == this) {
-        qDebug() << "Resetting active window before closing";
+        qCDebug(fmLog) << "Resetting active window before closing";
         qApp->setActiveWindow(nullptr);
         hide();
     }
@@ -46,7 +47,7 @@ DFontBaseDialog::~DFontBaseDialog()
 *************************************************************************/
 void DFontBaseDialog::initUI()
 {
-    qDebug() << "Initializing DFontBaseDialog UI";
+    qCDebug(fmLog) << "Initializing DFontBaseDialog UI";
     QVBoxLayout *mainLayout = new QVBoxLayout();
     mainLayout->setSpacing(0);
     mainLayout->setContentsMargins(0, 0, 0, 0);
@@ -94,7 +95,7 @@ void DFontBaseDialog::initUI()
     mainLayout->addWidget(m_titleBar);
     mainLayout->addWidget(m_content);
     setLayout(mainLayout);
-    qDebug() << "DFontBaseDialog UI initialization completed";
+    qCDebug(fmLog) << "DFontBaseDialog UI initialization completed";
 }
 
 
@@ -108,16 +109,16 @@ void DFontBaseDialog::initUI()
 *************************************************************************/
 void DFontBaseDialog::InitConnections()
 {
-    qDebug() << "Initializing DFontBaseDialog connections";
+    qCDebug(fmLog) << "Initializing DFontBaseDialog connections";
     connect(m_closeButton, &DWindowCloseButton::clicked, this, [this]() {
-        qDebug() << "Close button clicked";
+        qCDebug(fmLog) << "Close button clicked";
         Q_EMIT closeBtnClicked();
         this->close();
     });
 #ifdef DTKWIDGET_CLASS_DSizeMode
     connect(DGuiApplicationHelper::instance(),&DGuiApplicationHelper::sizeModeChanged,this, &DFontBaseDialog::slotSizeModeChanged);
 #endif
-    qDebug() << "DFontBaseDialog connections initialized";
+    qCDebug(fmLog) << "DFontBaseDialog connections initialized";
 }
 
 /*************************************************************************
@@ -131,12 +132,12 @@ void DFontBaseDialog::InitConnections()
 *************************************************************************/
 void DFontBaseDialog::setLogoVisable(bool visible)
 {
-    qDebug() << "Setting logo visibility:" << visible;
+    qCDebug(fmLog) << "Setting logo visibility:" << visible;
     if (nullptr != m_logoIcon) {
-        qDebug() << "Setting logo visibility:" << visible;
+        qCDebug(fmLog) << "Setting logo visibility:" << visible;
         m_logoIcon->setVisible(visible);
     } else {
-        qWarning() << "Logo icon is null";
+        qCWarning(fmLog) << "Logo icon is null";
     }
 }
 
@@ -152,12 +153,12 @@ void DFontBaseDialog::setLogoVisable(bool visible)
 *************************************************************************/
 void DFontBaseDialog::setTitle(const QString &title)
 {
-    qDebug() << "Setting dialog title:" << title;
+    qCDebug(fmLog) << "Setting dialog title:" << title;
     if (nullptr != m_tileText) {
-        qDebug() << "Setting dialog title:" << title;
+        qCDebug(fmLog) << "Setting dialog title:" << title;
         m_tileText->setText(title);
     } else {
-        qWarning() << "Title text label is null";
+        qCWarning(fmLog) << "Title text label is null";
     }
 }
 
@@ -186,9 +187,9 @@ QLayout *DFontBaseDialog::getContentLayout()
 *************************************************************************/
 void DFontBaseDialog::addContent(QWidget *content)
 {
-    qDebug() << "Adding content to dialog";
+    qCDebug(fmLog) << "Adding content to dialog";
     if (nullptr != getContentLayout()) {
-        qDebug() << "Adding content to dialog";
+        qCDebug(fmLog) << "Adding content to dialog";
         getContentLayout()->addWidget(content);
     }
 }
@@ -205,22 +206,22 @@ void DFontBaseDialog::addContent(QWidget *content)
 *************************************************************************/
 void DFontBaseDialog::setIconPixmap(const QPixmap &iconPixmap)
 {
-    qDebug() << "Setting dialog icon";
+    qCDebug(fmLog) << "Setting dialog icon";
     if (nullptr != m_logoIcon) {
-        qDebug() << "Setting dialog icon";
+        qCDebug(fmLog) << "Setting dialog icon";
         m_logoIcon->setPixmap(iconPixmap);
     } else {
-        qWarning() << "Logo icon is null";
+        qCWarning(fmLog) << "Logo icon is null";
     }
 }
 
 void DFontBaseDialog::closeEvent(QCloseEvent *event)
 {
     Q_UNUSED(event)
-    qDebug() << "Dialog close event received";
+    qCDebug(fmLog) << "Dialog close event received";
 
     done(-1);
-    qDebug() << "Dialog closed with result -1";
+    qCDebug(fmLog) << "Dialog closed with result -1";
 
     Q_EMIT closed();
 }
@@ -229,21 +230,21 @@ void DFontBaseDialog::closeEvent(QCloseEvent *event)
 #ifdef DTKWIDGET_CLASS_DSizeMode
 void DFontBaseDialog::slotSizeModeChanged(DGuiApplicationHelper::SizeMode sizeMode)
 {
-    qDebug() << "Size mode changed to:" << sizeMode;
+    qCDebug(fmLog) << "Size mode changed to:" << sizeMode;
     if (sizeMode == DGuiApplicationHelper::SizeMode::CompactMode) {
-        qDebug() << "Switching to compact mode UI";
+        qCDebug(fmLog) << "Switching to compact mode UI";
         m_titleBar->setFixedHeight(40);
         m_logoIcon->setFixedSize(QSize(25, 25));
         m_logoIcon->setPixmap(QIcon::fromTheme("deepin-font-manager").pixmap(QSize(25, 25)));
         m_closeButton->setIconSize(QSize(40, 40));
     } else {
-        qDebug() << "Switching to normal mode UI";
+        qCDebug(fmLog) << "Switching to normal mode UI";
         m_titleBar->setFixedHeight(50);
         m_logoIcon->setFixedSize(QSize(32, 32));
         m_logoIcon->setPixmap(QIcon::fromTheme("deepin-font-manager").pixmap(QSize(32, 32)));
         m_closeButton->setIconSize(QSize(50, 50));
     }
-    qDebug() << "Size mode change handled";
+    qCDebug(fmLog) << "Size mode change handled";
 }
 #endif
 

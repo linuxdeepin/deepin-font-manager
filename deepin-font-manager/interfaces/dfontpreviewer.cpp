@@ -3,6 +3,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#include "ddlog.h"
 #include "dfontpreviewer.h"
 #include "utils.h"
 
@@ -19,10 +20,10 @@ DGUI_USE_NAMESPACE
 DFontPreviewer::DFontPreviewer(QWidget *parent)
     : QWidget(parent)
 {
-    qDebug() << "Creating DFontPreviewer";
+    qCDebug(fmLog) << "Creating DFontPreviewer";
     InitData();
     InitConnections();
-    qDebug() << "DFontPreviewer initialized";
+    qCDebug(fmLog) << "DFontPreviewer initialized";
 }
 
 /*************************************************************************
@@ -36,14 +37,14 @@ DFontPreviewer::DFontPreviewer(QWidget *parent)
 *************************************************************************/
 void DFontPreviewer::InitData()
 {
-    qDebug() << "Initializing preview data";
+    qCDebug(fmLog) << "Initializing preview data";
     m_previewTexts << "汉体书写信息技术标准相容"
                    << "档案下载使用界面简单"
                    << "支援服务升级资讯专业制作"
                    << "创意空间快速无线上网"
                    << "㈠㈡㈢㈣㈤㈥㈦㈧㈨㈩"
                    << "AaBbCc ＡａＢｂＣｃ";
-    qDebug() << "Preview data initialized with" << m_previewTexts.size() << "items";
+    qCDebug(fmLog) << "Preview data initialized with" << m_previewTexts.size() << "items";
 }
 
 /*************************************************************************
@@ -57,10 +58,10 @@ void DFontPreviewer::InitData()
 *************************************************************************/
 void DFontPreviewer::InitConnections()
 {
-    qDebug() << "Initializing connections";
+    qCDebug(fmLog) << "Initializing connections";
     connect(this, &DFontPreviewer::previewFontChanged,
             this, &DFontPreviewer::onPreviewFontChanged);
-    qDebug() << "Connections initialized";
+    qCDebug(fmLog) << "Connections initialized";
 }
 
 
@@ -75,14 +76,14 @@ void DFontPreviewer::InitConnections()
 *************************************************************************/
 void DFontPreviewer::onPreviewFontChanged()
 {
-    qDebug() << "Preview font changed, path:" << m_fontPath;
+    qCDebug(fmLog) << "Preview font changed, path:" << m_fontPath;
     m_previewTexts.clear();
     InitData();
     for (const auto &it : m_previewTexts) {
         QString text = Utils::convertToPreviewString(m_fontPath, it);
         m_previewTexts.replaceInStrings(it, text);
     }
-    qDebug() << "Preview text updated";
+    qCDebug(fmLog) << "Preview text updated";
 }
 
 /*************************************************************************
@@ -96,13 +97,13 @@ void DFontPreviewer::onPreviewFontChanged()
 *************************************************************************/
 void DFontPreviewer::setPreviewFontPath(const QString &font)
 {
-    qDebug() << "Setting preview font path:" << font;
+    qCDebug(fmLog) << "Setting preview font path:" << font;
     if (m_fontPath != font) {
         m_fontPath = font;
-        qInfo() << "Font path changed to:" << font;
+        qCInfo(fmLog) << "Font path changed to:" << font;
         Q_EMIT previewFontChanged();
     } else {
-        qDebug() << "Font path unchanged";
+        qCDebug(fmLog) << "Font path unchanged";
     }
 }
 

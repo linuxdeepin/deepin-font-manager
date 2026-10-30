@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2022-2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -23,6 +23,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "ddlog.h"
 #include "dfontpreviewitemdelegate.h"
 #include "dfontpreviewlistview.h"
 #include "globaldef.h"
@@ -65,9 +66,9 @@ DFontPreviewItemDelegate::DFontPreviewItemDelegate(QAbstractItemView *parent)
     : QStyledItemDelegate(parent)
     , m_parentView(qobject_cast<DFontPreviewListView *>(parent))
 {
-    qDebug() << "Creating DFontPreviewItemDelegate";
+    qCDebug(fmLog) << "Creating DFontPreviewItemDelegate";
     parent->viewport()->installEventFilter(this);
-    qDebug() << "Event filter installed on viewport";
+    qCDebug(fmLog) << "Event filter installed on viewport";
 }
 
 /*************************************************************************
@@ -406,7 +407,7 @@ void DFontPreviewItemDelegate::paintForegroundPreviewFont(QPainter *painter, con
     // 检查字体是否被正确加载
     QString actualFamily = painter->fontInfo().family();
     if (actualFamily.isEmpty() || (actualFamily != familyName && !familyName.isEmpty())) {
-        qWarning() << "Font family mismatch or empty. Expected:" << familyName 
+        qCWarning(fmLog) << "Font family mismatch or empty. Expected:" << familyName 
                    << "Got:" << actualFamily << "Style:" << styleName;
         // 如果字体不匹配，尝试使用 QFontDatabase 重新查找
         if (!familyName.isEmpty()) {
@@ -430,7 +431,7 @@ void DFontPreviewItemDelegate::paintForegroundPreviewFont(QPainter *painter, con
         
         // 如果仍然无法加载字体，跳过预览
         if (painter->fontInfo().family().isEmpty()) {
-            qWarning() << "Cannot load font, skipping preview. Family:" << familyName << "Style:" << styleName;
+            qCWarning(fmLog) << "Cannot load font, skipping preview. Family:" << familyName << "Style:" << styleName;
             return;
         }
     }
@@ -676,7 +677,7 @@ void DFontPreviewItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
         QString fontPreviewContent = index.data(FontPreviewRole).toString().isEmpty()
                                      ? dData.ownPreview : index.data(FontPreviewRole).toString();
         if ((fontPreviewContent.isEmpty() || 0 == fontPixelSize)) {
-            qWarning() << "Empty preview content or invalid font size, skipping paint";
+            qCWarning(fmLog) << "Empty preview content or invalid font size, skipping paint";
             painter->restore();
             return;
         }

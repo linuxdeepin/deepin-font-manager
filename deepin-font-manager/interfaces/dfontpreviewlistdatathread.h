@@ -5,6 +5,7 @@
 
 #ifndef DFONTPREVIEWLISTDATATHREAD_H
 #define DFONTPREVIEWLISTDATATHREAD_H
+#include "ddlog.h"
 
 #include "dfmdbmanager.h"
 #include "dfontinfomanager.h"
@@ -71,7 +72,7 @@ public:
 //            qDebug() << __FUNCTION__ << fontData.strFontName << index;
             return m_fontModelList.at(index);
         } else {
-            qDebug() << __FUNCTION__ << " not found " << fontData.getFontType() << fontData.strFontName << DFontPreviewListDataThread::instance()->getFontModelList().size();
+            qCDebug(fmLog) << __FUNCTION__ << " not found " << fontData.getFontType() << fontData.strFontName << DFontPreviewListDataThread::instance()->getFontModelList().size();
         }
         return itemdata;
     }
