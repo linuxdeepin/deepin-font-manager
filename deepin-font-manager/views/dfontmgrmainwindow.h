@@ -26,6 +26,7 @@
 #include <QDir>
 #include <QShortcut>
 #include <QScreen>
+#include <QTimer>
 
 DWIDGET_USE_NAMESPACE
 
@@ -362,6 +363,7 @@ protected:
     bool m_IsWindowMax = false;
 
     bool m_searchTextStatusIsEmpty = true;
+    QTimer *m_searchDebounceTimer = nullptr;
     bool m_isFromSys = false;
     bool m_isPopInstallErrorDialog = false;
     bool m_isNoResultViewShow = false;

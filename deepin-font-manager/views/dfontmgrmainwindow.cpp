@@ -240,7 +240,14 @@ void DFontMgrMainWindow::initConnections()
     // State bar event
     connect(d->fontScaleSlider, &DSlider::valueChanged, this, &DFontMgrMainWindow::respondToValueChanged);
     // Search text changed
-    connect(d->searchFontEdit, SIGNAL(textChanged(const QString &)), this, SLOT(onSearchTextChanged(const QString &)));
+    m_searchDebounceTimer = new QTimer(this);
+    m_searchDebounceTimer->setSingleShot(true);
+    connect(m_searchDebounceTimer, &QTimer::timeout, this, [this, d]() {
+        onSearchTextChanged(d->searchFontEdit->text());
+    });
+    connect(d->searchFontEdit, &DLineEdit::textChanged, this, [this](const QString &) {
+        m_searchDebounceTimer->start(300);
+    });
     connect(d->textInputEdit, SIGNAL(textChanged(const QString &)), this, SLOT(onPreviewTextChanged(const QString &)));
     connect(d->leftSiderBar, SIGNAL(onListWidgetItemClicked(int, bool)), this, SLOT(onLeftSiderBarItemClicked(int, bool)));
     //UT000539 增加slider press聚焦的判断
