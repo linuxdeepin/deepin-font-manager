@@ -1310,6 +1310,11 @@ void DFontPreviewListView::onMouseLeftBtnReleased(const QModelIndex &modelIndex,
                            == m_dataThread->getFontData(m_curFontData).fontInfo.filePath)) ? 1 : 0;
         if (sysFontCnt == 0 && curFontCnt == 0)
             indexList << modelIndex;
+        if (sysFontCnt > 0) {
+            DMessageManager::instance()->sendMessage(this->m_parentWidget, QIcon("://ok.svg"),
+                QApplication::translate("MessageManager", "You cannot disable system fonts"));
+            return;
+        }
         onEnableBtnClicked(indexList, sysFontCnt, curFontCnt, !fdata.isEnabled(),
                            m_parentWidget->currentFontGroup() == DSplitListWidget::ActiveFont);
     } else if (collectIconRect.contains(clickPoint)) {
