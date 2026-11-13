@@ -1033,6 +1033,11 @@ void DFInstallErrorListView::keyPressEvent(QKeyEvent *event)
         return;
     }
 
+    if (event->key() == Qt::Key_Tab || event->key() == Qt::Key_Backtab) {
+        event->ignore();
+        return;
+    }
+
     DListView::keyPressEvent(event);
     // qDebug() << "Exiting function: DFInstallErrorListView::keyPressEvent";
 }
