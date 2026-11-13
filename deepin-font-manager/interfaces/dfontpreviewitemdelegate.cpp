@@ -99,7 +99,9 @@ void DFontPreviewItemDelegate::paintForegroundCheckBox(QPainter *painter, const 
 #endif
 
     QStyleOptionButton checkBoxOption;
-    checkBoxOption.state |= QStyle::State_Enabled;
+    if (!itemData.isSystemFont) {
+        checkBoxOption.state |= QStyle::State_Enabled;
+    }
     if (itemData.isEnabled()) {
         // qDebug() << "Checkbox is enabled, setting State_On";
         checkBoxOption.state |= QStyle::State_On;
