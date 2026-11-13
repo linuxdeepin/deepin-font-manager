@@ -1689,6 +1689,9 @@ bool DFontPreviewListView::eventFilter(QObject *obj, QEvent *event)
         if (fxEvent->reason() == Qt::TabFocusReason && m_isGetFocusFromSlider == true) {
             emit m_signalManager->requestSetTabFocusToAddBtn();
         }
+        if (fxEvent->reason() == Qt::TabFocusReason && m_isGetFocusFromSlider == false) {
+            m_IsTabFocus = true;
+        }
     }
 
     // qDebug() << "Exiting function: DFontPreviewListView::eventFilter";
