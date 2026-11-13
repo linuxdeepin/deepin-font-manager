@@ -540,7 +540,7 @@
     <message>
         <location filename="../deepin-font-manager/views/dfontmgrmainwindow.cpp" line="2275"/>
         <source>Help</source>
-        <translation>Помощь</translation>
+        <translation>Справка</translation>
     </message>
     <message>
         <location filename="../deepin-font-manager/views/dfontmgrmainwindow.cpp" line="2280"/>
