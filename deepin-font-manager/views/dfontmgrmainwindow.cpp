@@ -1000,8 +1000,6 @@ void DFontMgrMainWindow::handleAddFontEvent()
     qCDebug(fmLog) << "Entering function: DFontMgrMainWindow::handleAddFontEvent";
     //SP3--添加字体按钮取消安装后恢复选中状态--记录选中状态
     bool hasTabFocus = d->addFontButton->hasFocus();
-    if (hasTabFocus)
-        titlebar()->setFocus(Qt::TabFocusReason);
     //bug 51084 使用this指定父窗口
     DFileDialog dialog(this);
     dialog.setFileMode(DFileDialog::ExistingFiles);
