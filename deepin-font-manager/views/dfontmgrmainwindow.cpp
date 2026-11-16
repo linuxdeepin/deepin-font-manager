@@ -2997,7 +2997,7 @@ bool DFontMgrMainWindow::eventFilter(QObject *obj, QEvent *event)
         if (obj == d->searchFontEdit->lineEdit() && m_lastIsCloseBtn) {
             m_lastIsCloseBtn = false;
             d->searchFontEdit->lineEdit()->clear();
-            setNextTabFocus(d->leftSiderBar);
+            d->leftSiderBar->setFocus(Qt::TabFocusReason);
             return true;
         }
         mainwindowFocusInCheck(obj, event);
