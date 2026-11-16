@@ -301,3 +301,19 @@ TEST_F(TestDfontmanager, checkDoCache)
 
 
 
+
+TEST_F(TestDfontmanager, checkLastFailedCount)
+{
+    QSignalSpy spy(fm, SIGNAL(installFinished(int, const QStringList)));
+
+    fm->m_instFileList.clear();
+    fm->m_instFileList << "first" << "second";
+    fm->m_type = FontManagerCore::Install;
+    fm->setCacheStatus(FontManagerCore::CacheNow);
+    fm->onInstallFailed("first", "/tmp/first.ttf");
+    fm->onInstallFailed("second", "/tmp/second.ttf");
+
+    EXPECT_TRUE(spy.count() == 1);
+    EXPECT_TRUE(fm->lastInstallFailed());
+    EXPECT_EQ(fm->lastFailedCount(), 2);
+}

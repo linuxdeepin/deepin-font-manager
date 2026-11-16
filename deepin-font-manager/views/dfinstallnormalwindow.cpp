@@ -806,6 +806,10 @@ void DFInstallNormalWindow::onInstallFinished(int state, const QStringList &file
             }
         }
     }
+    if (2 == state) {
+        qCDebug(fmLog) << "Install failed, some fonts were not installed";
+        m_installFiles.clear();
+    }
     installFinished();
     qCDebug(fmLog) << "Exiting function: DFInstallNormalWindow::onInstallFinished";
 }

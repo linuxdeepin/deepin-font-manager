@@ -59,6 +59,11 @@ bool stub_copy(void *, const QString &)
     g_funcname = __FUNCTION__;
     return true;
 }
+bool stub_copy_false(void *, const QString &)
+{
+    g_funcname = __FUNCTION__;
+    return false;
+}
 bool stub_removeRecursively()
 {
     g_funcname = __FUNCTION__;
@@ -86,11 +91,34 @@ TEST_F(TestDCopyFilesManager, checkRunInstall)
 
     Stub s;
     s.set(ADDR(DCopyFilesManager, getTargetPath), stub_getTargetPath);
+    s.set((bool(QFile::*)(const QString &))ADDR(QFile, copy), stub_copy);
     t->appendFile("first");
     DCopyFilesManager::m_installCanceled = false;
     t->run();
     EXPECT_TRUE(t->m_targetFiles.count() == 1);
     EXPECT_TRUE(spy.count() == 1) << spy.count();
+    delete  t;
+}
+
+TEST_F(TestDCopyFilesManager, checkRunInstallFailed)
+{
+    CopyFontThread *t = new CopyFontThread(CopyFontThread::INSTALL, 0);
+
+    QSignalSpy spyInstalled(t, SIGNAL(fileInstalled(const QString &, const QString &)));
+    QSignalSpy spyFailed(t, SIGNAL(fileInstallFailed(const QString &, const QString &)));
+
+    t->m_srcFiles.clear();
+    t->run();
+
+    Stub s;
+    s.set(ADDR(DCopyFilesManager, getTargetPath), stub_getTargetPath);
+    s.set((bool(QFile::*)(const QString &))ADDR(QFile, copy), stub_copy_false);
+    t->appendFile("first");
+    DCopyFilesManager::m_installCanceled = false;
+    t->run();
+    EXPECT_TRUE(t->m_targetFiles.count() == 0);
+    EXPECT_TRUE(spyInstalled.count() == 0) << spyInstalled.count();
+    EXPECT_TRUE(spyFailed.count() == 1) << spyFailed.count();
     delete  t;
 }
 

@@ -34,6 +34,7 @@ public:
 
 signals:
     void fileInstalled(const QString &familyName, const QString &targetName);
+    void fileInstallFailed(const QString &familyName, const QString &targetName);
 
 private:
     //拷贝类型：导出 安装

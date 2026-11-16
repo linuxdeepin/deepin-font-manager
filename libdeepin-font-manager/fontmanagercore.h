@@ -76,6 +76,11 @@ public:
     //取消安装
     void cancelInstall();
 
+    //查询上次安装是否有失败
+    bool lastInstallFailed() const { return m_lastInstallFailed; }
+    //查询上次安装失败的字体数量
+    int lastFailedCount() const { return m_lastFailedCount; }
+
 signals:
     //批量安装信号
     void batchInstall(const QString &filePath, const double &percent);
@@ -97,6 +102,8 @@ signals:
 public slots:
     //安装拷贝字体文件槽函数
     void onInstallResult(const QString &familyName, const QString &target);
+    //安装拷贝字体文件失败槽函数
+    void onInstallFailed(const QString &familyName, const QString &target);
 
 protected:
     //线程执行入口函数-安装、中途安装、重装与卸载
@@ -113,6 +120,8 @@ private:
     void doInstall(QStringList &fileList);
     //字体卸载-具体执行函数
     void doUninstall(const QStringList &fileList);
+    //安装进度更新与完成检查
+    void checkInstallCompletion(const QString &familyName);
 
 private:
     QStringList m_instFileList;
@@ -123,5 +132,8 @@ private:
     Type m_type{Type::DefaultNullType};
     CacheStatus m_CacheStatus {CacheStatus::CacheNow};
     int m_installedCount = 0;
+    int m_failedCount = 0;
+    double m_lastSendPercent = 0.0;
+    bool m_lastInstallFailed = false;
+    int m_lastFailedCount = 0;
 };
-
