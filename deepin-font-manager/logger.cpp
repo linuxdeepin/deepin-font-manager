@@ -31,16 +31,21 @@ MLogger::MLogger(QObject *parent)
 #ifdef DTKCORE_CLASS_DConfigFile
     // dconfig 规则：与 deepin-debug-config 调试模式脚本写入的 log_rules 联动
     m_config = DConfig::create("org.deepin.font-manager", "org.deepin.font-manager");
-    logRules = m_config->value("log_rules").toByteArray();
-    appendRules(logRules);
-    setRules(m_rules);
+    if (m_config) {
+        logRules = m_config->value("log_rules").toByteArray();
+        appendRules(logRules);
+        setRules(m_rules);
 
-    // 监听 dconfig 变更，实现运行中动态调整（对象需存活整个 main 生命周期）
-    connect(m_config, &DConfig::valueChanged, this, [this](const QString &key) {
-        if (key == "log_rules") {
-            setRules(m_config->value(key).toByteArray());
-        }
-    });
+        // 监听 dconfig 变更，实现运行中动态调整（对象需存活整个 main 生命周期）
+        connect(m_config, &DConfig::valueChanged, this, [this](const QString &key) {
+            if (key == "log_rules") {
+                setRules(m_config->value(key).toByteArray());
+            }
+        });
+    } else {
+        // DConfig 不可用时回退到环境变量规则
+        setRules(m_rules);
+    }
 #else
     setRules(m_rules);
 #endif

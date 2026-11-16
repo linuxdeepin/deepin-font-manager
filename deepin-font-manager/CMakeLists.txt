@@ -28,9 +28,9 @@ file(GLOB TS LIST_DIRECTORIES false ../translations/*.ts)
 set_source_files_properties(${TS} PROPERTIES OUTPUT_LOCATION ${PROJECT_SOURCE_DIR}/translations)
 
 if(QT_VERSION_MAJOR EQUAL 5)
-    qt5_create_translation(QM ${SRC_FILES} ${TS})
+    qt5_create_translation(QM ${SRC_FILES} ${LIB_SRC_FILES} ${TS})
 else()
-    qt6_create_translation(QM ${SRC_FILES} ${TS})
+    qt6_create_translation(QM ${SRC_FILES} ${LIB_SRC_FILES} ${TS})
 endif()
 
 ADD_EXECUTABLE(${APP_BIN} ${QM})
