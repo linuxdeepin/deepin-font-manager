@@ -1301,8 +1301,14 @@ void DFontPreviewListView::onMouseLeftBtnReleased(const QModelIndex &modelIndex,
     clearPressState(ClearType::MoveClear);
     if (checkboxRealRect.contains(clickPoint)) {
         // qDebug() << "Checkbox rect contains click point";
+        // 系统字体不可禁用，拦截点击并提示
+        if (fdata.isSystemFont) {
+            QString message = QApplication::translate("MessageManager", "You cannot disable system fonts");
+            DMessageManager::instance()->sendMessage(this->m_parentWidget, QIcon("://ok.svg"), message);
+            return;
+        }
         //触发启用/禁用字体
-        int sysFontCnt = (fdata.isEnabled() && fdata.isSystemFont) ? 1 : 0;
+        int sysFontCnt = 0;
         // 选中字体与当前使用的字体为同一字体文件
         // 对于ttc字体集，即使不是同一个字体名称，它们也是同一个字体文件，
         int curFontCnt = ((fdata == m_curFontData) ||
