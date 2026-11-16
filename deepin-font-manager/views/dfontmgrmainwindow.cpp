@@ -1780,6 +1780,9 @@ void DFontMgrMainWindow::onShowMessage(int totalCount, bool success)
         } else if (totalCount > 1) {
             message = DApplication::translate("DFontMgrMainWindow", "Failed to install %1 fonts. There is not enough disk space.").arg(totalCount);
         }
+        if (message.isEmpty()) {
+            message = DApplication::translate("DFontMgrMainWindow", "Failed to install fonts. There is not enough disk space.");
+        }
         DMessageManager::instance()->sendMessage(this, QIcon("://exception-logo.svg"), message);
     }
 
@@ -2571,14 +2574,20 @@ void DFontMgrMainWindow::hideSpinner()
 
     d->leftSiderBar->setIsIstalling(false);
     //如果无新装字体，不做后续操作，直接return
-    if (m_installOutFileList.isEmpty())
+    if (m_installOutFileList.isEmpty()) {
+        if (m_isInstallOver) {
+            qCDebug(fmLog) << "m_isInstallOver is true, no files installed";
+            onShowMessage(m_fontManager->lastInstallFailed() ? m_fontManager->lastFailedCount() : m_installOutFileList.size(), !m_fontManager->lastInstallFailed());
+            m_isInstallOver = false;
+        }
         return;
+    }
 
     showInstalledFiles();
 
     if (m_isInstallOver) {
         qCDebug(fmLog) << "m_isInstallOver is true";
-        onShowMessage(m_installOutFileList.size());
+        onShowMessage(m_fontManager->lastInstallFailed() ? m_fontManager->lastFailedCount() : m_installOutFileList.size(), !m_fontManager->lastInstallFailed());
         m_isInstallOver = false;
     }
 

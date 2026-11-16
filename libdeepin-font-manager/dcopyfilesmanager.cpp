@@ -66,9 +66,13 @@ void CopyFontThread::run()
             QString filePathOrig;
             QString target;
             QString familyName = DCopyFilesManager::getTargetPath(fontFile, filePathOrig, target);
-            QFile::copy(filePathOrig, target);
-            m_targetFiles << target;
-            Q_EMIT fileInstalled(familyName, target);
+            if (QFile::copy(filePathOrig, target)) {
+                m_targetFiles << target;
+                Q_EMIT fileInstalled(familyName, target);
+            } else {
+                qCWarning(fmLog) << "Failed to copy font file:" << filePathOrig << "to:" << target;
+                Q_EMIT fileInstallFailed(familyName, target);
+            }
         }
     }
     qCDebug(fmLog) << __FUNCTION__ << m_index << m_opType << m_srcFiles.size() << " take time (ms) " << QDateTime::currentMSecsSinceEpoch() - startTm;
@@ -177,6 +181,7 @@ void DCopyFilesManager::copyFiles(CopyFontThread::OPType type, QStringList &font
     for (CopyFontThread *thread : threads) {
         if (type == CopyFontThread::INSTALL) {
             connect(thread, &CopyFontThread::fileInstalled, FontManagerCore::instance(), &FontManagerCore::onInstallResult);
+            connect(thread, &CopyFontThread::fileInstallFailed, FontManagerCore::instance(), &FontManagerCore::onInstallFailed);
         }
         getPool()->start(thread);
     }

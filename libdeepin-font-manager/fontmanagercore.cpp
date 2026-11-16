@@ -229,6 +229,9 @@ void FontManagerCore::doInstall(QStringList &fileList)
     m_installOutList.clear();
     m_installCanceled = false;
     m_installedCount = 0;
+    m_failedCount = 0;
+    m_lastSendPercent = 0.0;
+    m_lastInstallFailed = false;
 
     DCopyFilesManager::instance()->copyFiles(CopyFontThread::INSTALL, fileList);
 
@@ -316,30 +319,61 @@ void FontManagerCore::onInstallResult(const QString &familyName, const QString &
     qCDebug(fmLog) << "Installing font:" << target;
     m_installedCount += 1;
     m_installOutList << target;
+    checkInstallCompletion(familyName);
+    qCDebug(fmLog) << "Exiting function: FontManagerCore::onInstallResult";
+}
+
+/**
+* @brief FontManagerCore::onInstallFailed 安装拷贝字体文件失败槽函数
+* @param familyName 字体文件的familyName
+* @param target 拷贝的目的文件路径
+* @return void
+*/
+void FontManagerCore::onInstallFailed(const QString &familyName, const QString &target)
+{
+    qCWarning(fmLog) << "Failed to install font:" << target;
+    m_failedCount += 1;
+    checkInstallCompletion(familyName);
+    qCDebug(fmLog) << "Exiting function: FontManagerCore::onInstallFailed";
+}
+
+/**
+* @brief FontManagerCore::checkInstallCompletion 安装进度更新与完成检查
+* @param familyName 当前处理的字体familyName
+* @return void
+*/
+void FontManagerCore::checkInstallCompletion(const QString &familyName)
+{
     const int totalCount = m_instFileList.count();
+    const int processedCount = m_installedCount + m_failedCount;
 
-    double percent = m_installedCount / double(totalCount) * 100;
+    double percent = processedCount / double(totalCount) * 100;
     /* 此处需要优化,信号太频繁,进度每增加1%发送一次信号即可 UT000591 */
-    static double lastSendPercent = 0.0;
-    if ((lastSendPercent < 0.001) || (percent - lastSendPercent > 0.999) || (percent - lastSendPercent < -0.001)) {
-        qCDebug(fmLog) << "Emitting batchInstall signal for font:" << target;
+    if ((m_lastSendPercent < 0.001) || (percent - m_lastSendPercent > 0.999) || (percent - m_lastSendPercent < -0.001)) {
+        qCDebug(fmLog) << "Emitting batchInstall signal, processed:" << processedCount;
         Q_EMIT batchInstall(familyName, percent);
-        lastSendPercent = percent;
+        m_lastSendPercent = percent;
     }
 
-    if (m_installedCount != totalCount) {
-        qCDebug(fmLog) << "Install progress - installed:" << m_installOutList.size() << "cache status:" << m_CacheStatus;
+    if (processedCount != totalCount) {
+        qCDebug(fmLog) << "Install progress - installed:" << m_installedCount << "failed:" << m_failedCount << "cache status:" << m_CacheStatus;
         return;
-    } else {
-        lastSendPercent = 0.0;
     }
+    m_lastSendPercent = 0.0;
 
-    qCDebug(fmLog) << "Install progress - installed:" << m_installOutList.size() << "cache status:" << m_CacheStatus;
+    qCDebug(fmLog) << "Install complete - installed:" << m_installedCount << "failed:" << m_failedCount << "cache status:" << m_CacheStatus;
     //  bug 47332 47325 Ut000442 在字体验证框弹出时进行安装，类型是HalfwayInstall，之前只对Install类型的做了
     //  安装后的处理导致bug现象的出现
     if (m_type == Install || m_type == HalfwayInstall) {
-        qCDebug(fmLog) << "Emitting installFinished signal for font:" << m_installOutList;
-        Q_EMIT installFinished(InstallStatus::InstallSuccess, m_installOutList);
+        m_lastInstallFailed = (m_failedCount > 0);
+        m_lastFailedCount = m_failedCount;
+        if (m_lastInstallFailed) {
+            qCDebug(fmLog) << "Emitting installFinished(Failed) signal";
+            Q_EMIT installFinished(InstallStatus::Failed, m_installOutList);
+        } else {
+            qCDebug(fmLog) << "Emitting installFinished(InstallSuccess) signal";
+            Q_EMIT installFinished(InstallStatus::InstallSuccess, m_installOutList);
+        }
     } else if (m_type == ReInstall) {
         qCDebug(fmLog) << "Emitting reInstallFinished signal for font:" << m_installOutList;
         Q_EMIT reInstallFinished(0, m_installOutList);
@@ -348,7 +382,7 @@ void FontManagerCore::onInstallResult(const QString &familyName, const QString &
     //clear
     m_installOutList.clear();
     m_installedCount = 0;
-    qCDebug(fmLog) << "Exiting function: FontManagerCore::onInstallResult";
+    m_failedCount = 0;
 }
 
 /*************************************************************************

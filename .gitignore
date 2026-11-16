@@ -18,3 +18,4 @@ build
 .spec-workflow/
 .promptx/
 .claude/
+build-ut/
