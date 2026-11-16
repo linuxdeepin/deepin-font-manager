@@ -1087,6 +1087,7 @@ void DFontMgrMainWindow::handleMenuEvent(QAction *action)
             case DFontMenuManager::MenuAction::M_AddFont: {
                 qCDebug(fmLog) << "M_AddFont";
                 handleAddFontEvent();
+                m_fontPreviewListView->syncTabStatus();
             }
             break;
             case DFontMenuManager::MenuAction::M_FontInfo: {
